@@ -54,6 +54,7 @@ antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
 
 # source fzf and set its defaults
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# set up fzf defaults
 export FZF_DEFAULT_OPTS="-m --height 50% --layout=reverse --border --inline-info 
   --preview-window=:hidden
   --preview '([[ -f {} ]] && (bat --style=numbers --color=always {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
@@ -61,6 +62,3 @@ export FZF_DEFAULT_OPTS="-m --height 50% --layout=reverse --border --inline-info
 "
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
-
-# enable ALT-C keybinding on macOS for fzf
-bindkey "ç" fzf-cd-widget
