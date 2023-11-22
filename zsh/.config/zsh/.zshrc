@@ -5,10 +5,22 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+
+### ---- keybind config -------------------------------------
+
+# emulate ctrl-u in bash
+bindkey "^[k" backward-kill-line
+
+# enable zsh  widget
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^x^e" edit-command-line
+
 # source aliases
 . $ZDOTDIR/.zsh_aliases
 
 ### ---- history config -------------------------------------
+
 export HISTFILE=$ZDOTDIR/.zsh_history
 
 # How many commands zsh will load to memory.

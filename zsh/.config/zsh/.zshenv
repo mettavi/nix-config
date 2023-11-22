@@ -5,3 +5,5 @@ export XDG_CACHE_HOME="$HOME/.cache"
 
 export ZDOTDIR=$XDG_CONFIG_HOME/zsh
 export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
+export EDITOR="vim"
+
