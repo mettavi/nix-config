@@ -7,3 +7,5 @@ export ZDOTDIR=$XDG_CONFIG_HOME/zsh
 export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
 export EDITOR="vim"
 
+# enable colorful ls output by default
+export CLICOLOR=1

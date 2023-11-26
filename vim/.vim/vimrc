@@ -8,24 +8,25 @@
 "                 ╚═══╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝
 "               
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" Store .viminfo in the .vim folder
+" In case this config file is loaded some other way 
+" (e.g. saved as `foo`, and then Vim started with `vim -u foo`).
+set nocompatible
+
+" Store viminfo file in ~/.vim
 set viminfo+=n~/.vim/viminfo
+" Syntax for future move to neovim
+if has('nvim') | let &viminfo .= '.nvim' | endif
 
 " Disable the default Vim startup message.
 set shortmess+=I
+
+" Synchronise unnamed register with OS clipboard
+set clipboard+=unnamed
 
 " Show relative line numbers except for current line
 set number
 set relativenumber
 
-" Vim is based on Vi. Setting `nocompatible` switches from the default
-" Vi-compatibility mode and enables useful Vim functionality. This
-" configuration option turns out not to be necessary for the file named
-" '~/.vimrc', because Vim automatically enters nocompatible mode if that file
-" is present. But we're including it here just in case this config file is
-" loaded some other way (e.g. saved as `foo`, and then Vim started with
-" `vim -u foo`).
-set nocompatible
 
 " Enable type file detection. Vim will be able to try to detect the type of file in use.
 filetype on
@@ -129,8 +130,10 @@ set hidden
 " Plugin code goes here.
 call plug#begin('~/.vim/plugged')
 
+" Asynchronous Lint Engine (linting/lsp)
   Plug 'dense-analysis/ale'
 
+" Nerdtree file browser
   Plug 'preservim/nerdtree'
 
 " Enable core fzf installed by homebrew and plugin 
@@ -138,8 +141,11 @@ call plug#begin('~/.vim/plugged')
   Plug 'junegunn/fzf.vim'
 
   Plug 'tpope/vim-commentary'
-
 call plug#end()
+
+"BUILTIN PLUGINS
+
+runtime ftplugin/man.vim
 " }}}
 
 
@@ -224,8 +230,12 @@ nnoremap <F3> :NERDTreeToggle<cr>
 " Have nerdtree ignore certain files and directories.
 let NERDTreeIgnore=['\.git$', '\.jpg$', '\.mp4$', '\.ogg$', '\.iso$', '\.pdf$', '\.pyc$', '\.odt$', '\.png$', '\.gif$', '\.db$']
 
+" Commentary Plugin specific mappings
+" Toggle comments with <leader> + /
+noremap <leader>/ :Commentary<cr>
+
 " Source Vim configuration file and install plugins
-nnoremap <silent><leader>1 :source ~/.vimrc \| :PlugInstall<CR>
+nnoremap <silent><leader>1 :source ~/.vim/vimrc \| :PlugInstall<CR>
 
 " }}}
 

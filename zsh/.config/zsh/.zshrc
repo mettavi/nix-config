@@ -8,6 +8,9 @@ fi
 
 ### ---- keybind config -------------------------------------
 
+# use emacs mode despite setting EDITOR to vim
+bindkey -e
+
 # emulate ctrl-u in bash
 bindkey "^[k" backward-kill-line
 
