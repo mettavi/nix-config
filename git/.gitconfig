@@ -1,0 +1,17 @@
+[user]
+	name = Mettavihari
+	email = timotheos.allen@gmail.com
+	username = scop22
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[init]
+	defaultBranch = main
+[color]
+	ui = auto
+[pull]
+	rebase = false
+[core]
+	excludesfile = /Users/timotheos/.gitignore_global

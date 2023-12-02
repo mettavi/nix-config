@@ -9,3 +9,6 @@ export EDITOR="vim"
 
 # enable colorful ls output by default
 export CLICOLOR=1
+
+# open man pages from terminal with Vim
+export MANPAGER="vim -M +MANPAGER -" 

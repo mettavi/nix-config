@@ -14,13 +14,18 @@ bindkey -e
 # emulate ctrl-u in bash
 bindkey "^[k" backward-kill-line
 
-# enable zsh  widget
+# enable zsh widget
 autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^x^e" edit-command-line
 
-# source aliases
-. $ZDOTDIR/.zsh_aliases
+# disable official git completion in favour of zsh git completion
+# see https://bit.ly/3QXliO8 for details
+rm -f $HOMEBREW_PREFIX/share/zsh/site-functions/_git
+
+# source aliases and functions
+[[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
+[[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
 
 ### ---- history config -------------------------------------
 

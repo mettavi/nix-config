@@ -145,7 +145,10 @@ call plug#end()
 
 "BUILTIN PLUGINS
 
+" manpage viewer: See :help Man
 runtime ftplugin/man.vim
+" Use K without <leader> to open keyword in man
+set keywordprg=:Man
 " }}}
 
 
@@ -172,20 +175,21 @@ inoremap <Right> <ESC>:echoe "Use l"<CR>
 inoremap <Up>    <ESC>:echoe "Use k"<CR>
 inoremap <Down>  <ESC>:echoe "Use j"<CR>
 
-" Set the backslash as the leader key.
+" Set the backslash as the official leader key and map space to it 
+" (so space key will show up as \ in status bar).
 let mapleader = "\\"
 map <space> <leader>
 
-" Press ,\ to jump back to the last cursor position.
+" Press <leader>\ to jump back to the last cursor position.
 nnoremap <leader>\ ``
 
-" Press ,p to print the current file to the default printer from a Linux/Mac operating system.
+" Press <leader>p to print the current file to the default printer from a Linux/Mac operating system.
 " View available printers:   lpstat -v
 " Set default printer:       lpoptions -d <printer_name>
 " <silent> means do not display output.
 nnoremap <silent> <leader>p :%w !lp<CR>
 
-" Press the space bar to type the : character in command mode.
+" Press return to type the : character in command mode.
 nnoremap <CR> :
 vnoremap <CR> :
 
@@ -194,9 +198,10 @@ vnoremap <CR> :
 nnoremap o o<esc>
 nnoremap O O<esc>
 
-" Center the cursor vertically when moving to the next word during a search.
-nnoremap n nzz
-nnoremap N Nzz
+" Center the cursor vertically and automatically open folds 
+" when moving to the next word during a search.
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
 " Yank from cursor to the end of line.
 nnoremap Y y$
