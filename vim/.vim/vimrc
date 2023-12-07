@@ -12,10 +12,8 @@
 " (e.g. saved as `foo`, and then Vim started with `vim -u foo`).
 set nocompatible
 
-" Store viminfo file in ~/.vim
-set viminfo+=n~/.vim/viminfo
-" Syntax for future move to neovim
-if has('nvim') | let &viminfo .= '.nvim' | endif
+" Customise location of viminfo file
+if !has('nvim') | set viminfo+=n~/.vim/viminfo | endif
 
 " Disable the default Vim startup message.
 set shortmess+=I
@@ -131,23 +129,35 @@ set hidden
 call plug#begin('~/.vim/plugged')
 
 " Asynchronous Lint Engine (linting/lsp)
-  Plug 'dense-analysis/ale'
+" Plug 'dense-analysis/ale'
 
 " Nerdtree file browser
   Plug 'preservim/nerdtree'
 
-" Enable core fzf installed by homebrew and plugin 
+" Enable core fzf installed by homebrew and vim-plug 
   Plug '/usr/local/opt/fzf' 
   Plug 'junegunn/fzf.vim'
 
+" language aware (un)commenting
   Plug 'tpope/vim-commentary'
+
+" sensible vim defaults
+  Plug 'tpope/vim-sensible'
+
+
+" Plugins for LSP functionality 
+  Plug 'prabirshrestha/vim-lsp'
+  Plug 'mattn/vim-lsp-settings'
+  Plug 'prabirshrestha/asyncomplete.vim'
+  Plug 'prabirshrestha/asyncomplete-lsp.vim'
+  
 call plug#end()
 
-"BUILTIN PLUGINS
+"--------BUILTIN PLUGINS
 
 " manpage viewer: See :help Man
 runtime ftplugin/man.vim
-" Use K without <leader> to open keyword in man
+" Use <SHIFT>-K without <leader> to open keyword in man within vim
 set keywordprg=:Man
 " }}}
 
@@ -228,6 +238,12 @@ noremap <c-down> <c-w>-
 noremap <c-left> <c-w>>
 noremap <c-right> <c-w><
 
+" Source Vim configuration file and install plugins
+nnoremap <silent><leader>1 :source ~/.vim/vimrc \| :PlugInstall<CR>
+
+
+" ------------------ Plugin Specific Mappings ------------------------
+
 " NERDTree specific mappings.
 " Map the F3 key to toggle NERDTree open and close.
 nnoremap <F3> :NERDTreeToggle<cr>
@@ -239,8 +255,6 @@ let NERDTreeIgnore=['\.git$', '\.jpg$', '\.mp4$', '\.ogg$', '\.iso$', '\.pdf$', 
 " Toggle comments with <leader> + /
 noremap <leader>/ :Commentary<cr>
 
-" Source Vim configuration file and install plugins
-nnoremap <silent><leader>1 :source ~/.vim/vimrc \| :PlugInstall<CR>
 
 " }}}
 
@@ -314,6 +328,39 @@ if has('gui_running')
         \endif<CR>
 
 endif
+
+" ------Plugin specific vimscript--------
+
+"-------------- Enable vim-lsp functionality ----------------
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap<buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+    nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
+
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+    
+    " refer to doc to add more commands
+endfunction
+
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
 " }}}
 
 

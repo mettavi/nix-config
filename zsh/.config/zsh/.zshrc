@@ -14,7 +14,7 @@ bindkey -e
 # emulate ctrl-u in bash
 bindkey "^[k" backward-kill-line
 
-# enable zsh widget
+# enable zsh widget to send command line to text editor
 autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^x^e" edit-command-line
