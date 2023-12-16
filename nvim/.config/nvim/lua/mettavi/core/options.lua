@@ -40,3 +40,10 @@ opt.splitbelow = true -- split horizontal window to the bottom
 
 -- turn off swapfile
 opt.swapfile = false
+
+-------------- CUSTOM OPTIONS -------------------
+
+-- open terminal in a new tab
+vim.cmd([[
+  command! -nargs=* T split | terminal <args>
+]])

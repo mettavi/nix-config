@@ -6,14 +6,31 @@ local keymap = vim.keymap -- for conciseness
 ---------------------
 -- General Keymaps -------------------
 
--- use jk to exit insert mode
-keymap.set("i", "jk", "<ESC>", { desc = "Exit insert mode with jk" })
+-- prevent the bad habit of using arrow keys
+keymap.set({ "n", "i", "v" }, "<Left>", "<cmd>echoe 'Use h'<CR>")
+keymap.set({ "n", "i", "v" }, "<Right>", "<cmd>echoe 'Use l'<CR>")
+keymap.set({ "n", "i", "v" }, "<Up>", "<cmd>echoe 'Use k'<CR>")
+keymap.set({ "n", "i", "v" }, "<Down>", "<cmd>echoe 'Use j'<CR>")
+
+-- use jk to exit insert or visual mode
+keymap.set({ "i", "v" }, "jk", "<Esc>", { desc = "Exit insert or visual mode with jk" })
+
+-- vim.cmd([[
+-- nnoremap ; :
+-- vnoremap ; :
+-- ]])
+
+-- use ; without SHIFT to enter command line mode
+keymap.set({ "n", "v" }, ";", ":", { desc = "Enter command line mode" })
+
+-- use ;; after f/t to find the next occurrence
+keymap.set({ "n", "v" }, ";;", ";", { desc = "Find next occurrence in line" })
 
 -- clear search highlights
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
 -- delete single character without copying into register
--- keymap.set("n", "x", '"_x')
+keymap.set("n", "x", '"_x')
 
 -- increment/decrement numbers
 keymap.set("n", "<leader>+", "<C-a>", { desc = "Increment number" }) -- increment
@@ -30,3 +47,6 @@ keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close current tab" 
 keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  go to next tab
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
+
+-- print the current file
+keymap.set("n", "<leader>p", "<cmd>%w !lp<CR>", { desc = "Print file" })

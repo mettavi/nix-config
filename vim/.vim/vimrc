@@ -41,9 +41,6 @@ syntax on
 " Set dark mode
 set background=dark
 
-" Specify persistent colorscheme 
-" colorscheme molokai
-
 " Highlight cursor line underneath the cursor horizontally.
 set cursorline
 
@@ -128,6 +125,12 @@ set hidden
 " Plugin code goes here.
 call plug#begin('~/.vim/plugged')
 
+" status/tabline for vim
+Plug 'vim-airline/vim-airline'
+
+" Maximizes and restores the current window
+Plug 'szw/vim-maximizer'
+
 " Asynchronous Lint Engine (linting/lsp)
 " Plug 'dense-analysis/ale'
 
@@ -200,15 +203,21 @@ nnoremap <leader>\ ``
 nnoremap <silent> <leader>p :%w !lp<CR>
 
 " Press return to type the : character in command mode.
-nnoremap <CR> :
-vnoremap <CR> :
+" nnoremap <CR> :
+" vnoremap <CR> :
+
+nnoremap ; :
+vnoremap ; :
+
+nnoremap ;; ;
+vnoremap ;; ;
 
 " Pressing the letter o will open a new line below the current one.
 " Exit insert mode after creating a new line above or below the current line.
 nnoremap o o<esc>
 nnoremap O O<esc>
 
-" Center the cursor vertically and automatically open folds 
+" Center the cursor vertically and automatically open folds
 " when moving to the next word during a search.
 nnoremap n nzzzv
 nnoremap N Nzzzv
@@ -363,23 +372,26 @@ augroup END
 
 " }}}
 
+" open terminal in a split using 'T'
+command! -nargs=* T split | terminal <args> 
 
+" Status line block currently disabled to test airline plugin defaults 
 " STATUS LINE ------------------------------------------------------------ {{{
 
 " Status bar code goes here.
 " Clear status line when vimrc is reloaded.
-set statusline=
+" set statusline=
 
 " Status line left side.
-set statusline+=\ %F\ %M\ %Y\ %R
+" set statusline+=\ %F\ %M\ %Y\ %R
 
 " Use a divider to separate the left side from the right side.
-set statusline+=%=
+" set statusline+=%=
 
 " Status line right side.
-set statusline+=\ ascii:\ %b\ hex:\ 0x%B\ row:\ %l\ col:\ %c\ percent:\ %p%%
+" set statusline+=\ ascii:\ %b\ hex:\ 0x%B\ row:\ %l\ col:\ %c\ percent:\ %p%%
 
 " Show the status on the second to last line.
-set laststatus=2
+" set laststatus=2
 
 " }}}
