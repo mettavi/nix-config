@@ -12,4 +12,4 @@ export EDITOR="vim"
 export CLICOLOR=1
 
 # open man pages from terminal with Vim
-export MANPAGER="vim -M +MANPAGER -" 
+export MANPAGER="nvim +Man!"

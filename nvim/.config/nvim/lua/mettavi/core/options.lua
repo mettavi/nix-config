@@ -43,7 +43,9 @@ opt.swapfile = false
 
 -------------- CUSTOM OPTIONS -------------------
 
--- open terminal in a new tab
+-- open terminal in a split window
 vim.cmd([[
   command! -nargs=* T split | terminal <args>
 ]])
+
+opt.timeoutlen = 500 -- shorten delay when pressing first key of a mapping (default 1000)

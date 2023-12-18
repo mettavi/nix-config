@@ -12,14 +12,10 @@ keymap.set({ "n", "i", "v" }, "<Right>", "<cmd>echoe 'Use l'<CR>")
 keymap.set({ "n", "i", "v" }, "<Up>", "<cmd>echoe 'Use k'<CR>")
 keymap.set({ "n", "i", "v" }, "<Down>", "<cmd>echoe 'Use j'<CR>")
 
--- use jk to exit insert or visual mode
-keymap.set({ "i", "v" }, "jk", "<Esc>", { desc = "Exit insert or visual mode with jk" })
+-- use jk to exit insert mode
+keymap.set({ "i" }, "jk", "<Esc>", { desc = "Exit insert or visual mode with jk" })
 
--- vim.cmd([[
--- nnoremap ; :
--- vnoremap ; :
--- ]])
-
+-- NB: The following 2 keymaps also need to to be set in nvim-treesitter-textobjects.lua
 -- use ; without SHIFT to enter command line mode
 keymap.set({ "n", "v" }, ";", ":", { desc = "Enter command line mode" })
 
