@@ -19,8 +19,8 @@ keymap.set({ "i" }, "jk", "<Esc>", { desc = "Exit insert or visual mode with jk"
 -- use ; without SHIFT to enter command line mode
 keymap.set({ "n", "v" }, ";", ":", { desc = "Enter command line mode" })
 
--- use ;; after f/t to find the next occurrence
-keymap.set({ "n", "v" }, ";;", ";", { desc = "Find next occurrence in line" })
+-- use <leader>; after f/t to find the next occurrence
+keymap.set({ "n", "v" }, "<leader>;", ";", { desc = "Find next occurrence in line" })
 
 -- clear search highlights
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })

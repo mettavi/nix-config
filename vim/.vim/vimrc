@@ -135,7 +135,7 @@ Plug 'szw/vim-maximizer'
 " Plug 'dense-analysis/ale'
 
 " Nerdtree file browser
-  Plug 'preservim/nerdtree'
+Plug 'preservim/nerdtree'
 
 " Enable core fzf installed by homebrew and vim-plug 
   Plug '/usr/local/opt/fzf' 
@@ -209,8 +209,8 @@ nnoremap <silent> <leader>p :%w !lp<CR>
 nnoremap ; :
 vnoremap ; :
 
-nnoremap ;; ;
-vnoremap ;; ;
+nnoremap <leader>; ;
+vnoremap <leader>; ;
 
 " Pressing the letter o will open a new line below the current one.
 " Exit insert mode after creating a new line above or below the current line.
@@ -254,8 +254,8 @@ nnoremap <silent><leader>1 :source ~/.vim/vimrc \| :PlugInstall<CR>
 " ------------------ Plugin Specific Mappings ------------------------
 
 " NERDTree specific mappings.
-" Map the F3 key to toggle NERDTree open and close.
-nnoremap <F3> :NERDTreeToggle<cr>
+" Map the <C-t> to toggle NERDTree open and close.
+nnoremap <C-t> :NERDTreeToggle<cr>
 
 " Have nerdtree ignore certain files and directories.
 let NERDTreeIgnore=['\.git$', '\.jpg$', '\.mp4$', '\.ogg$', '\.iso$', '\.pdf$', '\.pyc$', '\.odt$', '\.png$', '\.gif$', '\.db$']
@@ -355,18 +355,36 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> [g <plug>(lsp-previous-diagnostic)
     nmap <buffer> ]g <plug>(lsp-next-diagnostic)
     nmap <buffer> K <plug>(lsp-hover)
+    nmap <expr><buffer> <c-d> popup_list()->empty() ? '<c-d>' : lsp#scroll(+4)
+    nmap <expr><buffer> <c-u> popup_list()->empty() ? '<c-u>' : lsp#scroll(-4)
+    " Replaced by the two above which do not overwrite normal functionality
+    " See https://github.com/prabirshrestha/vim-lsp/issues/1522 
     " nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
     " nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
 
     let g:lsp_format_sync_timeout = 1000
     autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
     
+"------------------------------------------------------------------------
+    " code to enable typescript language server
+    " see https://github.com/mattn/vim-lsp-settings/issues/547
+
+    let g:lsp_diagnostics_echo_cursor = 1
+    let g:lsp_settings = {
+    \ 'efm-langserver': {
+    \   'disabled': v:false
+    \ },
+    \ }
+
+    autocmd BufWritePre *.ts,*.tsx call execute('LspDocumentFormatSync --server=efm-langserver')
+
+"--------------------------------------------------------------------------
     " refer to doc to add more commands
 endfunction
 
 augroup lsp_install
     au!
-    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    " call s:on_lsp_buffer_enabled only for languages that have the server registered.
     autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
 
