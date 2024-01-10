@@ -11,7 +11,7 @@ fi
 # use emacs mode despite setting EDITOR to vim
 bindkey -e
 
-# emulate ctrl-u in bash
+# emulate ctrl-u in bash (ALT-k)
 bindkey "^[k" backward-kill-line
 
 # enable zsh widget to send command line to text editor
@@ -43,16 +43,6 @@ setopt HIST_IGNORE_ALL_DUPS
 # History won't show duplicates on search.
 setopt HIST_FIND_NO_DUPS
 
-export PATH="/Users/timotheos/Qt/6.6.0/macos/bin:$PATH"
-
-export PATH="/usr/local/sbin:$PATH"
-
-# Added by n-install (see http://git.io/n-install-repo).
-export N_PREFIX="$HOME/Applications/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  
-
-# Created by `pipx` on 2023-10-06 14:39:03
-export PATH="$PATH:/Users/timotheos/.local/bin"
-export PATH="/usr/local/opt/libarchive/bin:$PATH"
 
 eval "$(rbenv init - zsh)"
 
@@ -80,5 +70,24 @@ export FZF_DEFAULT_OPTS="-m --height 50% --layout=reverse --border --inline-info
   --preview '([[ -f {} ]] && (bat --style=numbers --color=always {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
   --bind '?:toggle-preview' 
 "
-export FZF_DEFAULT_COMMAND='rg --files --hidden'
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow'
 export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
+
+
+# --------custom PATH entries -------------------------
+
+# Added by n-install (see http://git.io/n-install-repo).
+export N_PREFIX="$HOME/Applications/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  
+
+export PATH="/Users/timotheos/Qt/6.6.0/macos/bin:$PATH"
+
+export PATH="/usr/local/sbin:$PATH"
+
+export PATH="/usr/local/opt/mongodb-community@5.0/bin:$PATH"
+ 
+# Created by `pipx` on 2023-10-06 14:39:03
+export PATH="$PATH:/Users/timotheos/.local/bin"
+export PATH="/usr/local/opt/libarchive/bin:$PATH"
+
+export PATH="$HOME/Applications/n/bin:$PATH"
+# ---------------------------------------------------------

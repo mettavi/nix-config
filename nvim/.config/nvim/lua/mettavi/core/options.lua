@@ -41,6 +41,8 @@ opt.splitbelow = true -- split horizontal window to the bottom
 -- turn off swapfile
 opt.swapfile = false
 
+-- enable undofile
+opt.undofile = true
 -------------- CUSTOM OPTIONS -------------------
 
 -- open terminal in a split window

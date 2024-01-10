@@ -1,2 +1,2 @@
-# git aliases pluging from OMZ
+# git aliases plugin from OMZ
 ohmyzsh/ohmyzsh path:plugins/git
