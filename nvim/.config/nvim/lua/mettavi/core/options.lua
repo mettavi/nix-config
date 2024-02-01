@@ -43,11 +43,14 @@ opt.swapfile = false
 
 -- enable undofile
 opt.undofile = true
+
 -------------- CUSTOM OPTIONS -------------------
 
 -- open terminal in a split window
-vim.cmd([[
-  command! -nargs=* T split | terminal <args>
-]])
+vim.api.nvim_create_user_command(
+	"T",
+	"split | terminal <args>",
+	{ bang = true, nargs = "*", desc = "Open terminal in a split window" }
+)
 
 opt.timeoutlen = 500 -- shorten delay when pressing first key of a mapping (default 1000)
