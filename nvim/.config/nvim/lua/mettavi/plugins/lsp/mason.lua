@@ -3,6 +3,7 @@ return {
   dependencies = {
     "williamboman/mason-lspconfig.nvim",
     "WhoIsSethDaniel/mason-tool-installer.nvim",
+    "jay-babu/mason-nvim-dap.nvim",
   },
   config = function()
     -- import mason
@@ -12,6 +13,8 @@ return {
     local mason_lspconfig = require("mason-lspconfig")
 
     local mason_tool_installer = require("mason-tool-installer")
+
+    local mason_nvim_dap = require("mason-nvim-dap")
 
     -- enable mason and configure icons
     mason.setup({
@@ -50,5 +53,7 @@ return {
         "eslint_d", -- js linter
       },
     })
+
+    mason_nvim_dap.setup()
   end,
 }
