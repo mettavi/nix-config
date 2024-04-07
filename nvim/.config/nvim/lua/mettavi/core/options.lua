@@ -48,9 +48,9 @@ opt.undofile = true
 
 -- open terminal in a split window
 vim.api.nvim_create_user_command(
-	"T",
-	"split | terminal <args>",
-	{ bang = true, nargs = "*", desc = "Open terminal in a split window" }
+  "T",
+  "split | terminal <args>",
+  { bang = true, nargs = "*", desc = "Open terminal in a split window" }
 )
 
 opt.timeoutlen = 500 -- shorten delay when pressing first key of a mapping (default 1000)
