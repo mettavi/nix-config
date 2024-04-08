@@ -1,7 +1,27 @@
-alias dev="cd ~/dev"
+# cd aliases
+alias dv="cd ~/dev"
 alias lrn="cd ~/learn"
 alias qt="cd ~/Qt"
-alias en="cd ~/Applications/n"
-alias loc="cd /usr/local"
+alias njs="cd ~/Applications/n"
+alias brw="cd /usr/local/Cellar"
 alias map="cd ~/Applications"
-alias tbw="cd ~/Sites/thebuddhaswords-dpd"
+alias nvc="cd ~/.config/nvim"
+alias nvs="cd ~/.local/share/nvim"
+alias zsh="cd  ~/.config/zsh"
+alias df="cd ~/.dotfiles"
+alias cf="cd ~/.config"
+
+# git aliases
+alias gst="git status"
+alias ga="git add"
+alias gc="git commit"
+alias gps="git push"
+alias gpl="git pull"
+alias gl="git log --stat"
+alias gr="git reset HEAD~"  # undo the most recent commit
+
+# shell aliases
+alias la="ls -al"
+
+# launch aliases
+alias nv="nvim"
