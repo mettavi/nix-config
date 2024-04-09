@@ -40,6 +40,8 @@ return {
           "dockerfile",
           "gitignore",
           "query",
+          "vimdoc",
+          "c",
         },
         incremental_selection = {
           enable = true,
