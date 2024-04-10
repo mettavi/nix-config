@@ -131,12 +131,6 @@ return {
           },
         })
       end,
-      -- configure html server
-      ["html"] = function()
-        lspconfig["html"].setup({
-          capabilities = capabilities,
-        })
-      end,
 
       -- configure typescript server with plugin
       ["tsserver"] = function()
@@ -147,20 +141,6 @@ return {
           --  checkJs = true,
           --    },
           --  },
-        })
-      end,
-
-      -- configure css server
-      ["cssls"] = function()
-        lspconfig["cssls"].setup({
-          capabilities = capabilities,
-        })
-      end,
-
-      -- configure tailwindcss server
-      ["tailwindcss"] = function()
-        lspconfig["tailwindcss"].setup({
-          capabilities = capabilities,
         })
       end,
     })
