@@ -1,3 +1,5 @@
+# Put $PATH variables in .zshrc, not here!
+# See https://0xmachos.com/2021-05-13-zsh-path-macos/ for details
 export JAVA_HOME=$(/usr/libexec/java_home) 
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
