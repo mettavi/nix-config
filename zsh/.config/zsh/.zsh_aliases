@@ -17,11 +17,13 @@ alias ga="git add"
 alias gc="git commit"
 alias gps="git push"
 alias gpl="git pull"
-alias gl="git log --stat"
+alias gl="git log --stat" # recent commits showing changed files
 alias gr="git reset HEAD~"  # undo the most recent commit
+alias gd="git diff"
 
 # shell aliases
 alias la="ls -al"
+alias cl="clear"
 
 # launch aliases
 alias nv="nvim"
