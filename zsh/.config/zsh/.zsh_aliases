@@ -15,6 +15,7 @@ alias cf="cd ~/.config"
 alias gst="git status"
 alias ga="git add"
 alias gc="git commit"
+alias gca='git commit -am'
 alias gps="git push"
 alias gpl="git pull"
 alias gl="git log --stat" # recent commits showing changed files
