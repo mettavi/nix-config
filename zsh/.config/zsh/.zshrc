@@ -43,8 +43,11 @@ setopt HIST_IGNORE_ALL_DUPS
 # History won't show duplicates on search.
 setopt HIST_FIND_NO_DUPS
 
-# Append new history to old, as it is executed
+# Append to file immediately 
 setopt INC_APPEND_HISTORY
+
+# add timestamp for each entry 
+setopt EXTENDED_HISTORY
 
 eval "$(rbenv init - zsh)"
 
