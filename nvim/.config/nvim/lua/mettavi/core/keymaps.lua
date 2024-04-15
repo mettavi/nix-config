@@ -14,7 +14,6 @@ keymap.set({ "n", "i", "v" }, "<Down>", "<cmd>echoe 'Use j'<CR>")
 
 -- save the current buffers
 keymap.set({ "n" }, "zz", "<cmd>up<CR>", { desc = "Save the current buffer" })
-keymap.set({ "i" }, "<leader>z", "<Esc><cmd>up<CR>", { desc = "Save the current buffer" })
 keymap.set({ "v" }, "zz", "<Esc><cmd>up<CR>", { desc = "Save the current buffer" })
 
 -- use jk to exit insert mode
