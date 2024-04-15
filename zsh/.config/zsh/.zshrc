@@ -43,11 +43,14 @@ setopt HIST_IGNORE_ALL_DUPS
 # History won't show duplicates on search.
 setopt HIST_FIND_NO_DUPS
 
+# Read and write $HISTFILE for each command
+setopt SHARE_HISTORY
+
 # Append to rather than replace history file, after each command
-setopt INC_APPEND_HISTORY
+# setopt INC_APPEND_HISTORY
 
 # add timestamp for each entry 
-setopt EXTENDED_HISTORY
+# setopt EXTENDED_HISTORY
 
 eval "$(rbenv init - zsh)"
 
