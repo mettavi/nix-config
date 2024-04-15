@@ -369,6 +369,8 @@
 	<false/>
 	<key>HotkeyMigratedFromSingleToMulti</key>
 	<true/>
+	<key>IRMemory</key>
+	<integer>4</integer>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -779,11 +781,11 @@
 				<key>0x73-0x100000-0x1</key>
 				<dict>
 					<key>Action</key>
-					<integer>11</integer>
+					<integer>38</integer>
 					<key>Label</key>
 					<string></string>
 					<key>Text</key>
-					<string>0x1b 0x3a 0x75 0x70 0x0a</string>
+					<string>\&lt;D-s&gt;</string>
 					<key>Version</key>
 					<integer>1</integer>
 				</dict>
