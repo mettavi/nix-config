@@ -43,7 +43,7 @@ setopt HIST_IGNORE_ALL_DUPS
 # History won't show duplicates on search.
 setopt HIST_FIND_NO_DUPS
 
-# Append to file immediately 
+# Append to rather than replace history file, after each command
 setopt INC_APPEND_HISTORY
 
 # add timestamp for each entry 
