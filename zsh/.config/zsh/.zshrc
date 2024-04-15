@@ -46,7 +46,7 @@ setopt HIST_FIND_NO_DUPS
 # Read and write $HISTFILE for each command
 setopt SHARE_HISTORY
 
-# Disable use of temporary file when history is being written
+# Disable use of temporary file when new history file is being written
 # This prevents problems with symlinking $HISTFILE for dotfiles
 unsetopt HIST_SAVE_BY_COPY
 
