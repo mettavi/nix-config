@@ -37,6 +37,9 @@ export HISTSIZE=10000
 # How many commands history will save on file.
 export SAVEHIST=10000
 
+# Remove command from history if prepended with a space
+setopt HIST_IGNORE_SPACE
+
 # History won't save duplicates.
 setopt HIST_IGNORE_ALL_DUPS
 
