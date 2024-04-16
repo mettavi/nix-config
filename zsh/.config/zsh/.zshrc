@@ -29,7 +29,7 @@ rm -f $HOMEBREW_PREFIX/share/zsh/site-functions/_git
 
 ### ---- history config -------------------------------------
 
-export HISTFILE=$ZDOTDIR/.zsh_history
+export HISTFILE=~/.dotfiles/.zsh_history
 
 # How many commands zsh will load to memory.
 export HISTSIZE=10000
@@ -45,10 +45,6 @@ setopt HIST_FIND_NO_DUPS
 
 # Read and write $HISTFILE for each command
 setopt SHARE_HISTORY
-
-# Disable use of temporary file when new history file is being written
-# This prevents problems with symlinking $HISTFILE for dotfiles
-unsetopt HIST_SAVE_BY_COPY
 
 # Append to rather than replace history file, after each command
 # setopt INC_APPEND_HISTORY
