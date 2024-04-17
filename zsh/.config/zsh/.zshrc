@@ -49,7 +49,7 @@ setopt HIST_FIND_NO_DUPS
 # Read and write $HISTFILE for each command
 setopt SHARE_HISTORY
 
-# load rbenv automatically
+# load rbenv for managing ruby versions
 eval "$(rbenv init - zsh)"
 
 # Update fpath, enable and initialise zsh completions
