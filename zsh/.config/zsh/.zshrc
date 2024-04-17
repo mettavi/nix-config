@@ -29,7 +29,7 @@ rm -f $HOMEBREW_PREFIX/share/zsh/site-functions/_git
 
 ### ---- history config -------------------------------------
 
-export HISTFILE=~/.dotfiles/.zsh_history
+export HISTFILE=$ZDOTDIR/.zsh_history
 
 # How many commands zsh will load to memory.
 export HISTSIZE=10000
@@ -49,12 +49,7 @@ setopt HIST_FIND_NO_DUPS
 # Read and write $HISTFILE for each command
 setopt SHARE_HISTORY
 
-# Append to rather than replace history file, after each command
-# setopt INC_APPEND_HISTORY
-
-# add timestamp for each entry 
-# setopt EXTENDED_HISTORY
-
+# load rbenv automatically
 eval "$(rbenv init - zsh)"
 
 # Update fpath, enable and initialise zsh completions
