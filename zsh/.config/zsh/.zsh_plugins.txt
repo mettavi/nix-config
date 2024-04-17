@@ -1,2 +1,6 @@
 # git aliases plugin from OMZ
 # ohmyzsh/ohmyzsh path:plugins/git
+# sync zsh shell history securely 
+# vitobotta/zsh-history-sync
+# encrypted .zsh_history git sync
+wulfgarpro/history-sync
