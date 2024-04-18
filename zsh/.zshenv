@@ -13,5 +13,5 @@ export EDITOR="vim"
 # enable colorful ls output by default
 export CLICOLOR=1
 
-# open man pages from terminal with Vim
+# open man pages from terminal with neovim
 export MANPAGER="nvim +Man!"
