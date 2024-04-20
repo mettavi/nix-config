@@ -28,3 +28,4 @@ alias cl="clear"
 
 # launch aliases
 alias nv="nvim"
+alias pip="pip3"
