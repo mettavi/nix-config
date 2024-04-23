@@ -14,7 +14,7 @@ alias cf="cd ~/.config"
 # git aliases
 alias gst="git status"
 alias ga="git add"
-alias gc="git commit"
+alias gc="git commit -m"
 alias gca='git commit -am'
 alias gps="git push"
 alias gpl="git pull"
@@ -25,6 +25,7 @@ alias gd="git diff"
 # shell aliases
 alias la="ls -al"
 alias cl="clear"
+alias tr="trash"
 
 # launch aliases
 alias nv="nvim"
