@@ -21,7 +21,7 @@ bindkey "^x^e" edit-command-line
 
 # disable official git completion in favour of zsh git completion
 # see https://bit.ly/3QXliO8 for details
-rm -f $HOMEBREW_PREFIX/share/zsh/site-functions/_git
+\rm -f $HOMEBREW_PREFIX/share/zsh/site-functions/_git
 
 # source aliases and functions
 [[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
