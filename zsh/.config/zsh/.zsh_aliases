@@ -26,6 +26,7 @@ alias gd="git diff"
 alias la="ls -al"
 alias cl="clear"
 alias tr="trash"
+alias rm="echo 'Use trash instead'"
 
 # launch aliases
 alias nv="nvim"
