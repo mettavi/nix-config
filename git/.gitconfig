@@ -1,7 +1,7 @@
 [user]
 	name = Mettavihari
 	email = timotheos.allen@gmail.com
-	username = scop22
+	username = mettavi
 [filter "lfs"]
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
