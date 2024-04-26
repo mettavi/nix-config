@@ -1,0 +1,14 @@
+{
+    "[yaml]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.autoIndent": "advanced",
+        "diffEditor.ignoreTrimWhitespace": false,
+        "terminal.integrated.fontFamily": "MesloLGS NF",
+    },
+    "window.zoomLevel": 1,
+    "eslint.codeActionsOnSave.rules": null,
+    "editor.fontLigatures": false,
+    "terminal.integrated.fontFamily": "MesloLGS Nerd Font Mono",
+    "editor.fontFamily": "MesloLGS Nerd Font Mono, Monaco, 'Courier New', monospace"
+}
