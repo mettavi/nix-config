@@ -7,6 +7,9 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_STATE_HOME="$HOME/.local/state"
 
 export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
+
+# VISUAL is default for editors, EDITOR is fallback for historical reasons
+export VISUAL="nvim"
 export EDITOR="nvim"
 
 # enable colorful ls output by default
