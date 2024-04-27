@@ -60,7 +60,7 @@ opt.timeoutlen = 500 -- shorten delay when pressing first key of a mapping (defa
 
 --------------- AUTOCOMMANDS ---------------------
 
--- Highlight when yanking (copying) text (config from kickstarter)
+-- Highlight when yanking (copying) text (config from kickstart.nvim)
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd("TextYankPost", {
