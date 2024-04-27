@@ -76,10 +76,21 @@ export FZF_DEFAULT_OPTS="-m --height 50% --layout=reverse --border --inline-info
   --preview '([[ -f {} ]] && (bat --style=numbers --color=always {} || cat {})) || ([[ -d {} ]] && (tree -C {} | less)) || echo {} 2> /dev/null | head -200'
   --bind '?:toggle-preview' 
 "
-export FZF_DEFAULT_COMMAND='fd --hidden --follow'
+export FZF_DEFAULT_COMMAND='fd --hidden --follow --strip-cwd-prefix --exclude .git'
 export FZF_CTRL_T_COMMAND=$FZF_DEFAULT_COMMAND
-export FZF_ALT_C_COMMAND='fd --type directory --hidden --follow'
+export FZF_ALT_C_COMMAND='fd --type directory --hidden --follow --strip-cwd-prefix --exclude .git'
 
+# Configure fzf ** completion
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude .git . "$1"
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type=d --hidden --follow --exclude .git . "$1"
+}
 # --------custom PATH entries -------------------------
 
 # Added by n-install (see http://git.io/n-install-repo).
