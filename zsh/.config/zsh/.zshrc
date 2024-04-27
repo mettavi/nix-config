@@ -91,6 +91,10 @@ _fzf_compgen_path() {
 _fzf_compgen_dir() {
   fd --type=d --hidden --follow --exclude .git . "$1"
 }
+
+# Script to use git with fzf
+source ~/fzf-git.sh/fzf-git.sh
+
 # --------custom PATH entries -------------------------
 
 # Added by n-install (see http://git.io/n-install-repo).
