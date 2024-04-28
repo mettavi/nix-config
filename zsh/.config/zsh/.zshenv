@@ -8,7 +8,7 @@ export XDG_STATE_HOME="$HOME/.local/state"
 
 export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
 
-# VISUAL is default for editors, EDITOR is fallback for historical reasons
+# VISUAL is default for modern editors, EDITOR is historical fallback
 export VISUAL="nvim"
 export EDITOR="nvim"
 
