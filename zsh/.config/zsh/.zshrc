@@ -71,6 +71,9 @@ antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
 # source config for fzf
 source ~/.config/.fzfrc
 
+# ---- Zoxide (better cd) ----
+eval "$(zoxide init zsh)"
+
 # --------custom PATH entries -------------------------
 
 # Added by n-install (see http://git.io/n-install-repo).
