@@ -17,3 +17,5 @@ export CLICOLOR=1
 
 # open man pages from terminal with neovim
 export MANPAGER="nvim +Man!"
+
+export BAT_THEME=tokyonight_night
