@@ -68,6 +68,7 @@ source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/opt/antidote/share/antidote/antidote.zsh
 antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
 
+# source config for fzf
 source ~/.config/.fzfrc
 
 # --------custom PATH entries -------------------------
