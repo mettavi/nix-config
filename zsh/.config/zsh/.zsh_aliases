@@ -31,3 +31,4 @@ alias rm="echo 'Use trash instead'"
 # launch aliases
 alias nv="nvim"
 alias pip="pip3"
+eval $(thefuck --alias fk)
