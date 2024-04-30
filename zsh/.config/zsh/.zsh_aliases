@@ -23,7 +23,8 @@ alias gr="git reset HEAD~"  # undo the most recent commit
 alias gd="git diff"
 
 # shell aliases
-alias la="ls -al"
+alias ls="eza --color=always --long --git --git-ignore --no-filesize --icons=always --no-time --no-user --no-permissions"
+alias la="eza --color=always --long --all --git --icons=always"
 alias cl="clear"
 alias tr="trash"
 alias rm="echo 'Use trash instead'"
