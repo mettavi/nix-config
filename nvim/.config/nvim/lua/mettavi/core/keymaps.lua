@@ -6,6 +6,8 @@ local keymap = vim.keymap -- for conciseness
 ---------------------
 -- General Keymaps -------------------
 
+keymap.set("n", "<C-s>", "<cmd>update<CR>", { desc = "Save current buffer" })
+
 -- prevent the bad habit of using arrow keys
 keymap.set({ "n", "i", "v" }, "<Left>", "<cmd>echoe 'Use h'<CR>")
 keymap.set({ "n", "i", "v" }, "<Right>", "<cmd>echoe 'Use l'<CR>")
