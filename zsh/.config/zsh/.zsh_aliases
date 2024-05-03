@@ -18,7 +18,8 @@ alias gc="git commit -m"
 alias gca='git commit -am'
 alias gps="git push"
 alias gpl="git pull"
-alias gl="git log --stat" # recent commits showing changed files
+alias gls="git log --stat" # generate a diffstat history (insertions/deletions/modifications) per file 
+alias glp="git log -p --" # generate a patch history per file
 alias gr="git reset HEAD~"  # undo the most recent commit
 alias gd="git diff"
 
