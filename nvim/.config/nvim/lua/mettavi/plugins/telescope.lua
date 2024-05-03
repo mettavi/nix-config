@@ -34,18 +34,24 @@ return {
           },
         },
       },
+      pickers = {
+        find_files = {
+          hidden = true,
+        },
+        grep_string = {
+          additional_args = { "--hidden" },
+        },
+        live_grep = {
+          additional_args = { "--hidden" },
+        },
+      },
     })
 
     telescope.load_extension("fzf")
 
     -- set keymaps
     local keymap = vim.keymap -- for conciseness
-    keymap.set(
-      "n",
-      "<leader>ff",
-      "<cmd>Telescope find_files hidden=true follow=true<cr>",
-      { desc = "Fuzzy find files in cwd" }
-    )
+    keymap.set("n", "<leader>ff", "<cmd>Telescope find_files follow=true<cr>", { desc = "Fuzzy find files in cwd" })
     keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
     keymap.set(
       "n",
