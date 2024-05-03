@@ -3,10 +3,10 @@ vim.g.mapleader = " "
 
 local keymap = vim.keymap -- for conciseness
 
----------------------
 -- General Keymaps -------------------
 
 keymap.set("n", "<C-s>", "<cmd>update<CR>", { desc = "Save current buffer" })
+keymap.set("i", "<C-s>", "<Esc><cmd>update<CR>gi", { desc = "Save current buffer & return to insert mode" })
 
 -- prevent the bad habit of using arrow keys
 keymap.set({ "n", "i", "v" }, "<Left>", "<cmd>echoe 'Use h'<CR>")
