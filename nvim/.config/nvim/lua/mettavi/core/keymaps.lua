@@ -4,7 +4,6 @@ vim.g.mapleader = " "
 local keymap = vim.keymap -- for conciseness
 
 ---------------------
--- test
 -- General Keymaps -------------------
 
 -- prevent the bad habit of using arrow keys
