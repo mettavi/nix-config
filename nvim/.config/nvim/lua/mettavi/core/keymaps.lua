@@ -6,6 +6,7 @@ local keymap = vim.keymap -- for conciseness
 -- General Keymaps -------------------
 
 keymap.set("n", "<C-s>", "<cmd>update<CR>", { desc = "Save current buffer" })
+-- Save and return to same location in insert mode (option "gi")
 keymap.set("i", "<C-s>", "<Esc><cmd>update<CR>gi", { desc = "Save current buffer & return to insert mode" })
 
 -- prevent the bad habit of using arrow keys
