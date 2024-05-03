@@ -4,6 +4,7 @@ vim.g.mapleader = " "
 local keymap = vim.keymap -- for conciseness
 
 ---------------------
+-- test
 -- General Keymaps -------------------
 
 -- prevent the bad habit of using arrow keys
@@ -11,9 +12,6 @@ keymap.set({ "n", "i", "v" }, "<Left>", "<cmd>echoe 'Use h'<CR>")
 keymap.set({ "n", "i", "v" }, "<Right>", "<cmd>echoe 'Use l'<CR>")
 keymap.set({ "n", "i", "v" }, "<Up>", "<cmd>echoe 'Use k'<CR>")
 keymap.set({ "n", "i", "v" }, "<Down>", "<cmd>echoe 'Use j'<CR>")
-
--- use jk to exit insert mode
-keymap.set({ "i" }, "jk", "<Esc>", { desc = "Exit insert mode with jk" })
 
 -- NB: The following 2 keymaps also need to to be set in nvim-treesitter-textobjects.lua
 -- use ; without SHIFT to enter command line mode
