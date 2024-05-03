@@ -3,6 +3,7 @@ return {
   config = function()
     require("better_escape").setup({
       mapping = { "jk", "kj" },
+      keys = "<Esc><cmd>up<CR>",
     })
   end,
 }
