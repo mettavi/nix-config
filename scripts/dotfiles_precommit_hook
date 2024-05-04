@@ -1,0 +1,3 @@
+#! /usr/bin/env bash
+$HOME/.dotfiles/scripts/vscode/save_vscode_exts.sh
+git add $HOME/.dotfiles/scripts/vscode/install_vscode_exts.sh
