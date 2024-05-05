@@ -1,5 +1,8 @@
 #! /usr/bin/env bash
 
+scriptDir=$(dirname -- "$(readlink -f -- "$BASH_SOURCE")")
+cd $scriptDir
+
 # Download the git script for fzf
 git clone git@github.com:junegunn/fzf-git.sh.git ~/
 
@@ -11,7 +14,7 @@ curl -O https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/subl
 
 # Copy after vscode is installed
 ./vscode/save_vscode_exts.sh
-./vscode/install_vscode_exts.sh # ensure these two lines are first to prevent git hook overwriting them!
+./vscode/install_vscode_exts.sh # must execute this before enabling git hooks in next command 
 
 # Point git to config file within repo
 git config --local include.path ../.gitconfig
