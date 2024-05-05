@@ -12,5 +12,6 @@ curl -O https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/subl
 # Copy after vscode is installed
 ./vscode/save_vscode_exts.sh
 ./vscode/install_vscode_exts.sh # ensure these two lines are first to prevent git hook overwriting them!
-chmod +x ./dotfiles_precommit_hook
-cp ./dotfiles_precommit_hook ../.git/hooks/pre-commit
+
+# Point git to config file within repo
+git config --local include.path ../.gitconfig
