@@ -3,4 +3,5 @@
 git add scripts/vscode/install_vscode_exts.sh
 
 # commit current version of nvim (Lazy) plugins catalogue
+echo "Adding lazy-lock.json"
 git add nvim/.config/nvim/lazy-lock.json
