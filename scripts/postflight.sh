@@ -12,6 +12,9 @@ patch  /Library/Application\ Support/Logitech.localized/LogiOptionsPlus/app_perm
 # Download theme after brew has installed bat
 curl -O https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/sublime/tokyonight_night.tmTheme --create-dirs --output $(bat --config-dir)/themes
 
+# Set up symlink for vscode command line binary
+ln -s "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" /usr/local/bin/code
+
 # Copy after vscode is installed
 ./vscode/save_vscode_exts.sh
 ./vscode/install_vscode_exts.sh # must execute this before enabling git hooks in next command 
