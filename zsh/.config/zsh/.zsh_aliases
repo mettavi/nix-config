@@ -25,7 +25,7 @@ alias gr="git reset HEAD~"  # undo the most recent commit
 alias gd="git diff"
 
 # shell aliases
-alias ls="eza --color=always --long --git --git-ignore --no-filesize --icons=always --no-time --no-user --no-permissions"
+alias l="eza --color=always --long --git --git-ignore --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias la="eza --color=always --long --all --git --icons=always"
 alias cd="z"
 alias cl="clear"
