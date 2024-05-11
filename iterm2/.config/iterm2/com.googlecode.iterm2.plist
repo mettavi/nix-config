@@ -778,17 +778,6 @@
 					<key>Text</key>
 					<string>0x7f</string>
 				</dict>
-				<key>0x73-0x100000-0x1</key>
-				<dict>
-					<key>Action</key>
-					<integer>38</integer>
-					<key>Label</key>
-					<string></string>
-					<key>Text</key>
-					<string>\&lt;D-s&gt;</string>
-					<key>Version</key>
-					<integer>1</integer>
-				</dict>
 				<key>0xf700-0x220000</key>
 				<dict>
 					<key>Action</key>
