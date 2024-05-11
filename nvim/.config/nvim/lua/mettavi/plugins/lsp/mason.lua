@@ -53,7 +53,6 @@ return {
         "pylint", -- python linter
         "eslint_d", -- js linter
         "shfmt", -- bash formatter
-        "shellcheck", -- bash linter
       },
     })
 
