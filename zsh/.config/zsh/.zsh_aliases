@@ -16,6 +16,7 @@ alias gst="git status"
 alias ga="git add"
 alias gc="git commit -m"
 alias gca='git commit -am'
+alias gcam='git commit --amend'
 alias gps="git push"
 alias gpl="git pull"
 alias gls="git log --stat" # generate a diffstat history (insertions/deletions/modifications) per file 
