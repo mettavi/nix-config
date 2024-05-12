@@ -100,6 +100,13 @@ return {
           end,
         })
       end,
+      ["bashls"] = function()
+        -- configure bash language server
+        lspconfig["bashls"].setup({
+          capabilities = capabilities,
+          filetypes = { "sh", "bash" },
+        })
+      end,
       ["graphql"] = function()
         -- configure graphql language server
         lspconfig["graphql"].setup({
