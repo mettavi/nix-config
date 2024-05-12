@@ -53,6 +53,15 @@ return {
         "pylint", -- python linter
         "eslint_d", -- js linter
         "shfmt", -- bash formatter
+        "tsserver",
+        "html",
+        "cssls",
+        "tailwindcss",
+        "svelte",
+        "lua_ls",
+        "emmet_ls",
+        "pyright",
+        "bashls", -- uses shellcheck linter installed with brew
       },
       -- if set to true this will check each tool for updates. If updates
       -- are available the tool will be updated. This setting does not
