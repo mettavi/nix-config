@@ -27,8 +27,24 @@ return {
       },
     })
 
-    mason_lspconfig.setup({
+    mason_lspconfig.setup({ -- use mason_tool_installer instead to also autoupdate
       -- list of servers for mason to install
+      -- ensure_installed = {
+      --   "tsserver",
+      --   "html",
+      --   "cssls",
+      --   "tailwindcss",
+      --   "svelte",
+      --   "lua_ls",
+      --   "emmet_ls",
+      --   "pyright",
+      --   "bashls", -- uses shellcheck linter installed with brew
+      -- },
+      -- auto-install configured servers (with lspconfig)
+      -- automatic_installation = true, -- not the same as ensure_installed
+    })
+
+    mason_tool_installer.setup({
       ensure_installed = {
         "tsserver",
         "html",
@@ -39,13 +55,6 @@ return {
         "emmet_ls",
         "pyright",
         "bashls", -- uses shellcheck linter installed with brew
-      },
-      -- auto-install configured servers (with lspconfig)
-      automatic_installation = true, -- not the same as ensure_installed
-    })
-
-    mason_tool_installer.setup({
-      ensure_installed = {
         "prettier", -- prettier formatter
         "stylua", -- lua formatter
         "isort", -- python formatter
@@ -53,15 +62,6 @@ return {
         "pylint", -- python linter
         "eslint_d", -- js linter
         "shfmt", -- bash formatter
-        "tsserver",
-        "html",
-        "cssls",
-        "tailwindcss",
-        "svelte",
-        "lua_ls",
-        "emmet_ls",
-        "pyright",
-        "bashls", -- uses shellcheck linter installed with brew
       },
       -- if set to true this will check each tool for updates. If updates
       -- are available the tool will be updated. This setting does not
