@@ -19,9 +19,20 @@ autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^x^e" edit-command-line
 
+###########  Config zsh completions ############################
+
+# Update fpath, enable and initialise zsh completions
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+fi
+fpath+=$ZDOTDIR/.zfunc
+autoload -Uz compinit && compinit
+
 # disable official git completion in favour of zsh git completion
 # see https://bit.ly/3QXliO8 for details
 \rm -f $HOMEBREW_PREFIX/share/zsh/site-functions/_git
+
+################################################################
 
 # source aliases and functions
 [[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
@@ -52,12 +63,6 @@ setopt SHARE_HISTORY
 # load rbenv for managing ruby versions
 eval "$(rbenv init - zsh)"
 
-# Update fpath, enable and initialise zsh completions
-if type brew &>/dev/null; then
-     FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-fi
-fpath+=$ZDOTDIR/.zfunc
-autoload -Uz compinit && compinit
 
 # Load zsh plugins
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
