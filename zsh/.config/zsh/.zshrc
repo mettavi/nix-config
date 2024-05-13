@@ -34,9 +34,6 @@ autoload -Uz compinit && compinit
 
 ################################################################
 
-# source aliases and functions
-[[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
-[[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
 
 ### ---- history config -------------------------------------
 
@@ -63,7 +60,16 @@ setopt SHARE_HISTORY
 # load rbenv for managing ruby versions
 eval "$(rbenv init - zsh)"
 
+# -------------- SOURCE FILES --------------------------
+# source aliases and functions
+[[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
+[[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
 
+# Set up wrapper for brew-file package
+if [ -f $(brew --prefix)/etc/brew-wrap ];then
+  source $(brew --prefix)/etc/brew-wrap
+fi
+ 
 # Load zsh plugins
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
@@ -82,7 +88,7 @@ source ~/.config/.fzfrc
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"
 
-# --------custom PATH entries -------------------------
+# -------- custom PATH entries --------------------------------------
 
 # Added by n-install (see http://git.io/n-install-repo).
 export N_PREFIX="$HOME/Applications/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  
