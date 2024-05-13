@@ -37,3 +37,4 @@ alias nv="nvim"
 alias pip="pip3"
 eval $(thefuck --alias fk)
 alias tm="tmux"
+alias bash="bash --rcfile $HOME/.config/bash/.bashrc" # Load .bashrc from $XDG_CONFIG_HOME
