@@ -7,7 +7,7 @@ alias brw="cd /usr/local/Cellar"
 alias map="cd ~/Applications"
 alias nvc="cd ~/.config/nvim"
 alias nvs="cd ~/.local/share/nvim"
-alias zsh="cd  ~/.config/zsh"
+alias zcf="cd  ~/.config/zsh"
 alias dot="cd ~/.dotfiles"
 alias cf="cd ~/.config"
 
