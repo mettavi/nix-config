@@ -26,7 +26,7 @@ alias gd="git diff"
 
 # shell aliases
 alias l="eza --color=always --long --git --git-ignore --no-filesize --icons=always --no-time --no-user --no-permissions"
-alias ll="eza --color=always --long --all --git --icons=always"
+alias ll="eza --color=always --long --all --group --git --icons=always"
 alias cd="z"
 alias cl="clear"
 alias tr="trash"
