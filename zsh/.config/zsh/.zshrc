@@ -66,9 +66,9 @@ eval "$(rbenv init - zsh)"
 [[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
 
 # Set up wrapper for brew-file package
-if [ -f $(brew --prefix)/etc/brew-wrap ];then
-  source $(brew --prefix)/etc/brew-wrap
-fi
+# if [ -f $(brew --prefix)/etc/brew-wrap ];then
+#   source $(brew --prefix)/etc/brew-wrap
+# fi
  
 # Load zsh plugins
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
