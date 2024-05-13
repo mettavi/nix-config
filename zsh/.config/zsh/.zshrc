@@ -53,6 +53,9 @@ setopt SHARE_HISTORY
 eval "$(rbenv init - zsh)"
 
 # Update fpath, enable and initialise zsh completions
+if type brew &>/dev/null; then
+     FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+fi
 fpath+=$ZDOTDIR/.zfunc
 autoload -Uz compinit && compinit
 
