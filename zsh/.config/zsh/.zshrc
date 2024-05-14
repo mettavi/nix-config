@@ -57,23 +57,11 @@ setopt HIST_FIND_NO_DUPS
 # Read and write $HISTFILE for each command
 setopt SHARE_HISTORY
 
+# -------------- LOAD PLUGINS --------------------------
+
 # load rbenv for managing ruby versions
 eval "$(rbenv init - zsh)"
 
-# -------------- SOURCE FILES --------------------------
-# source aliases and functions
-[[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
-[[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
-
-# Set up wrapper for brew-file package
-# if [ -f $(brew --prefix)/etc/brew-wrap ];then
-#   source $(brew --prefix)/etc/brew-wrap
-#
-#   _post_brewfile_update () {
-#     echo "Brewfile was updated!"
-#   }
-# fi
- 
 # Load zsh plugins
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
@@ -86,11 +74,27 @@ source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/opt/antidote/share/antidote/antidote.zsh
 antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
 
+# ----------------- LOAD CONFIGS ---------------------------
+
 # source config for fzf
 source ~/.config/.fzfrc
 
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"
+
+# source aliases and functions
+[[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
+[[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
+
+# Set up wrapper for brew-file package
+if [ -f $(brew --prefix)/etc/brew-wrap ];then
+  source $(brew --prefix)/etc/brew-wrap
+
+  _post_brewfile_update () {
+    echo "Brewfile was updated!"
+  }
+fi
+ 
 
 # -------- custom PATH entries --------------------------------------
 
