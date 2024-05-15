@@ -1,0 +1,8 @@
+[*.{sh,bash}]
+# like -i=2
+indent_style = space
+indent_size = 2
+[[bash]]
+# like -i=2
+indent_style = space
+indent_size = 2
