@@ -10,20 +10,23 @@ osascript -e 'tell application "System Preferences" to quit'
 sudo -v
 
 # Keep-alive: update existing `sudo` time stamp until `.macos` has finished
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do
+	sudo -n true
+	sleep 60
+	kill -0 "$$" || exit
+done 2>/dev/null &
 
 ################################################################################
-# iTerm2.app                                                                   #  
+# iTerm2.app                                                                   #
 ################################################################################
 
 # Specify the preferences directory
-defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "~/.dotfiles/iterm2/.config/iterm2"
+# defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "$HOME/.dotfiles/iterm2/.config/iterm2"
 # Tell iTerm2 to use the custom preferences in the directory
-defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
-
+# defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 
 ################################################################################
-# General macOS Preferences 
+# General macOS Preferences
 ################################################################################
 
 # Set a blazingly fast keyboard repeat rate
