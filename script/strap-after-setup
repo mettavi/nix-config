@@ -19,5 +19,5 @@ ln -s "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" /us
 ./vscode/save_vscode_exts.sh
 ./vscode/install_vscode_exts.sh # must execute this before enabling git hooks in next command
 
-# Point git to config file within repo
+# Point git to config file within repo containing path to custom githooks directory
 git config --local include.path ../.gitconfig
