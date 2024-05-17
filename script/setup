@@ -175,7 +175,7 @@ if command -v tmux &>/dev/null; then
     tic -x "${DOTFILES}/terminfo/xterm-256color-italic.terminfo"
   fi
 
-  if [ ! -d "${DOTFILES}/tmux/.config/tmux/plugins" ]; then
+  if [ ! -d "$HOME/.config/tmux/plugins" ]; then
     dotfiles_echo "Installing Tmux Plugin Manager..."
     git clone https://github.com/tmux-plugins/tpm "$HOME/.config/tmux/plugins/tpm"
   fi
