@@ -21,3 +21,9 @@ export CLICOLOR=1
 export MANPAGER="nvim +Man!"
 
 export BAT_THEME=tokyonight_night
+
+# configure options for homebrew-file brew manager package
+export HOMEBREW_BREWFILE_LEAVES=1
+export HOMEBREW_BREWFILE_ON_REQUEST=1
+# add comma separated list of packages which have no requirements but are required by others (eg. go, coreutils)
+# export HOMEBREW_BREWFILE_TOP_PACKAGES=
