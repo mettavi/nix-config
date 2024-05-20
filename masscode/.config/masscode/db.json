@@ -1,0 +1,79 @@
+{
+  "folders": [
+    {
+      "id": "cZPMRM_U",
+      "name": "Default",
+      "defaultLanguage": "typescript",
+      "parentId": null,
+      "isOpen": false,
+      "isSystem": false,
+      "createdAt": 1715189079313,
+      "updatedAt": 1715189079313,
+      "index": 0
+    }
+  ],
+  "snippets": [
+    {
+      "isDeleted": false,
+      "isFavorites": false,
+      "folderId": "cZPMRM_U",
+      "tagsIds": [
+        "lgG-bB0b",
+        "XtkUizWq"
+      ],
+      "description": null,
+      "name": "Get directory of bash script",
+      "content": [
+        {
+          "label": "Fragment 1",
+          "language": "sh",
+          "value": "# A concise and reliable method to get the directory of a bash script\nscriptDir=$(dirname -- \"$(readlink -f -- \"$BASH_SOURCE\")\")\ncd $scriptDir"
+        }
+      ],
+      "id": "1xYmTay4",
+      "createdAt": 1715189381122,
+      "updatedAt": 1715192829023
+    },
+    {
+      "isDeleted": false,
+      "isFavorites": false,
+      "folderId": "cZPMRM_U",
+      "tagsIds": [
+        "Hnn1yq5e",
+        "XtkUizWq"
+      ],
+      "description": null,
+      "name": "List brew dependencies",
+      "content": [
+        {
+          "label": "Fragment 1",
+          "language": "sh",
+          "value": "# list packages that require a certain currently installed package/all packages\nbrew uses --installed [package]\n\n# list packages required by a certain currently installed package/all packages\nbrew deps --installed [package]\n\n# list all packages not required by any other packages\nbrew leaves [--installed-on-request] [--installed-as-dependency]"
+        }
+      ],
+      "id": "n-qBY8NQ",
+      "createdAt": 1716165017514,
+      "updatedAt": 1716166137985
+    }
+  ],
+  "tags": [
+    {
+      "name": "scripting",
+      "id": "lgG-bB0b",
+      "createdAt": 1715189481792,
+      "updatedAt": 1715189481792
+    },
+    {
+      "name": "bash shell",
+      "id": "XtkUizWq",
+      "createdAt": 1715189487010,
+      "updatedAt": 1715189487010
+    },
+    {
+      "name": "homebrew",
+      "id": "Hnn1yq5e",
+      "createdAt": 1716165224390,
+      "updatedAt": 1716165224390
+    }
+  ]
+}
