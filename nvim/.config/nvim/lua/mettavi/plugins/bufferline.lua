@@ -1,8 +1,7 @@
 return {
   "akinsho/bufferline.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
-  -- disable version config to solve bug https://github.com/akinsho/bufferline.nvim/issues/903
-  -- version = "*",
+  version = "*",
   opts = {
     options = {
       mode = "tabs",
