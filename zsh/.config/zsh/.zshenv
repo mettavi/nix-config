@@ -8,6 +8,7 @@ export XDG_STATE_HOME="$HOME/.local/state"
 
 export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
 
+export devfiles="$HOME/Developer"
 export dotfiles="$HOME/.dotfiles"
 
 # VISUAL is default for modern editors, EDITOR is historical fallback
