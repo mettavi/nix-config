@@ -24,8 +24,8 @@ git config --local include.path ../.gitconfig
 
 # Download and build Zeal (execute after dependencies (eg. qt) are installed by Brewfile)
 export CMAKE_PREFIX_PATH="$(brew --prefix qt@6):$(brew --prefix libarchive):$(brew --prefix vulkan-headers)"
-git clone https://github.com/zealdocs/zeal.git "$HOME/dev/git_repos/package_repos/zealdocs"
-cd "$HOME/dev/git_repos/package_repos/zealdocs/zeal" || exit
+git clone https://github.com/zealdocs/zeal.git "$devfiles/git_repos/package_repos/zealdocs"
+cd "$devfiles/git_repos/package_repos/zealdocs/zeal" || exit
 mkdir build
 cmake -S . -B build
 cmake --build build --config Release --parallel
