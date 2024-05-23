@@ -59,6 +59,9 @@ setopt SHARE_HISTORY
 
 # -------------- LOAD PLUGINS --------------------------
 
+# load pyenv for managing python versions
+eval "$(pyenv init -)"
+
 # load rbenv for managing ruby versions
 eval "$(rbenv init - zsh)"
 
