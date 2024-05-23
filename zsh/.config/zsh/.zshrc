@@ -1,3 +1,4 @@
+#### POWERLEVEL 10K ####
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -5,8 +6,11 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-### ---- keybind config -------------------------------------
+
+#### keybind config ####
 
 # use emacs mode despite setting EDITOR to vim
 bindkey -e
@@ -35,7 +39,7 @@ autoload -Uz compinit && compinit
 ################################################################
 
 
-### ---- history config -------------------------------------
+#### history config #### 
 
 export HISTFILE=$ZDOTDIR/.zsh_history
 
@@ -57,7 +61,20 @@ setopt HIST_FIND_NO_DUPS
 # Read and write $HISTFILE for each command
 setopt SHARE_HISTORY
 
-# -------------- LOAD PLUGINS --------------------------
+#### LOAD PLUGINS & CONFIGS #### 
+
+# Load zsh plugins
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# enable antidote plugin manager
+source /usr/local/opt/antidote/share/antidote/antidote.zsh
+antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
+
+# source aliases and functions
+[[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
+[[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
 
 # load pyenv for managing python versions
 eval "$(pyenv init -)"
@@ -65,29 +82,11 @@ eval "$(pyenv init -)"
 # load rbenv for managing ruby versions
 eval "$(rbenv init - zsh)"
 
-# Load zsh plugins
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# enable antidote plugin manager
-source /usr/local/opt/antidote/share/antidote/antidote.zsh
-antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
-
-# ----------------- LOAD CONFIGS ---------------------------
-
-# source config for fzf
-source ~/.config/.fzfrc
-
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"
 
-# source aliases and functions
-[[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
-[[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
+# source config for fzf
+source ~/.config/.fzfrc
 
 # Set up wrapper for brew-file package
 if [ -f $(brew --prefix)/etc/brew-wrap ];then
@@ -114,6 +113,3 @@ export PATH="/usr/local/opt/mongodb-community@5.0/bin:$PATH"
 # Created by `pipx` on 2023-10-06 14:39:03
 export PATH="$PATH:/Users/timotheos/.local/bin"
 export PATH="/usr/local/opt/libarchive/bin:$PATH"
-
-# export PATH="$HOME/Applications/n/bin:$PATH"
-# ---------------------------------------------------------
