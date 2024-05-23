@@ -111,5 +111,5 @@ export PATH="/usr/local/opt/mongodb-community@5.0/bin:$PATH"
 export PATH="$PATH:/Users/timotheos/.local/bin"
 export PATH="/usr/local/opt/libarchive/bin:$PATH"
 
-export PATH="$HOME/Applications/n/bin:$PATH"
+# export PATH="$HOME/Applications/n/bin:$PATH"
 # ---------------------------------------------------------
