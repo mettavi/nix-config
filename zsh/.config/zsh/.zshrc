@@ -101,8 +101,6 @@ fi
 # Added by n-install (see http://git.io/n-install-repo).
 export N_PREFIX="$HOME/Applications/n"; [[ :$PATH: == *":$N_PREFIX/bin:"* ]] || PATH+=":$N_PREFIX/bin"  
 
-export PATH="/Users/timotheos/Qt/6.6.0/macos/bin:$PATH"
-
 export PATH="/usr/local/sbin:$PATH"
 
 export PATH="/usr/local/opt/mongodb-community@5.0/bin:$PATH"
