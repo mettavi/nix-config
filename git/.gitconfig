@@ -1,24 +1,24 @@
 [include]
-  # For username / creds / etc
+  # For sensitive info like username / creds / etc
   path = ~/.gitconfig.local
 
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
 
 [init]
-	defaultBranch = main
+  defaultBranch = main
 
 [color]
-	ui = auto
+  ui = auto
 
 [pull]
-	rebase = false
+  rebase = false
 
 [core]
-	excludesfile = /Users/timotheos/.gitignore_global
+  excludesfile = /Users/timotheos/.gitignore_global
   pager = delta
 
 [interactive]
