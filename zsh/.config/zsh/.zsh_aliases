@@ -33,8 +33,11 @@ alias tr="trash"
 alias rm="echo 'Use trash instead'"
 
 # launch aliases
+
 alias nv="nvim"
 alias pip="pip3"
 eval $(thefuck --alias fk)
 alias tm="tmux"
 alias bash="bash --rcfile $HOME/.config/bash/.bashrc" # Load .bashrc from $XDG_CONFIG_HOME
+# prevent brew forumulae accidentally linking against a pyenv-provided python
+alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew' 
