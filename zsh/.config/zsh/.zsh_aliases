@@ -36,7 +36,7 @@ alias rm="echo 'Use trash instead'"
 
 alias bash="bash --rcfile $HOME/.config/bash/.bashrc" # Load .bashrc from $XDG_CONFIG_HOME
 # prevent brew forumulae accidentally linking against a pyenv-provided python
-alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew' 
+# alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew' 
 alias lg="lazygit"
 alias nv="nvim"
 alias pip="pip3"
