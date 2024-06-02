@@ -21,7 +21,7 @@ alias gps="git push"
 alias gpl="git pull"
 alias gls="git log --stat" # generate a diffstat history (insertions/deletions/modifications) per file 
 alias glp="git log -p --" # generate a patch history per file
-alias gr="git reset HEAD~"  # undo the most recent commit
+alias gr="git reset HEAD~"  # undo the most recent commit (or ~1 for most recent plus one etc.)
 alias gd="git diff"
 alias gdc="git diff --cached"
 
