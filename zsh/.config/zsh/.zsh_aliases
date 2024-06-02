@@ -23,6 +23,7 @@ alias gls="git log --stat" # generate a diffstat history (insertions/deletions/m
 alias glp="git log -p --" # generate a patch history per file
 alias gr="git reset HEAD~"  # undo the most recent commit
 alias gd="git diff"
+alias gdc="git diff --cached"
 
 # shell aliases
 alias l="eza --color=always --long --git --git-ignore --no-filesize --icons=always --no-time --no-user --no-permissions"
