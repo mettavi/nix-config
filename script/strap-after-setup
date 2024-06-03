@@ -31,4 +31,4 @@ cmake -S . -B build
 cmake --build build --config Release --parallel
 cp -Rp build/Zeal.app /Applications/
 cd "$scriptDir" || exit
-stow "$dotfiles/script/zeal"
+stow --target "$HOME" "$dotfiles/script/zeal"
