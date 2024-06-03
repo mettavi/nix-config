@@ -10,7 +10,6 @@ return {
   config = function()
     local telescope = require("telescope")
     local actions = require("telescope.actions")
-    local transform_mod = require("telescope.actions.mt").transform_mod
 
     local open_with_trouble = require("trouble.sources.telescope").open
     -- Use this to add more results without clearing the trouble list
