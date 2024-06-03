@@ -29,5 +29,5 @@ cd "$devfiles/git_repos/package_repos/zealdocs/zeal" || exit
 mkdir build
 cmake -S . -B build
 cmake --build build --config Release --parallel
-cp -Rp build/Zeal.app ~/Applications/
+cp -Rp build/Zeal.app /Applications/
 cd "$scriptDir" || exit
