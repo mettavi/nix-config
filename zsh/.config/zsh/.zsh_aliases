@@ -24,6 +24,7 @@ alias glp="git log -p --" # generate a patch history per file
 alias gr="git reset HEAD~"  # undo the most recent commit (or ~1 for most recent plus one etc.)
 alias gd="git diff"
 alias gdc="git diff --cached"
+alias gb="git branch"
 
 # shell aliases
 alias l="eza --color=always --long --git --git-ignore --no-filesize --icons=always --no-time --no-user --no-permissions"
