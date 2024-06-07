@@ -54,6 +54,26 @@
       "id": "n-qBY8NQ",
       "createdAt": 1716165017514,
       "updatedAt": 1716166137985
+    },
+    {
+      "isDeleted": false,
+      "isFavorites": false,
+      "folderId": "cZPMRM_U",
+      "tagsIds": [
+        "BpDSaubU"
+      ],
+      "description": null,
+      "name": "Reload zsh",
+      "content": [
+        {
+          "label": "Fragment 1",
+          "language": "sh",
+          "value": "# first method is quickest\nexec $SHELL # or \"exec zsh\"\n# another method\nsource ~/.zshrc\n# this \"dot notation\" is a shorthand for source\n. ~/.zshrc\n# or quit and restart terminal"
+        }
+      ],
+      "id": "qJx-sOok",
+      "createdAt": 1717684587734,
+      "updatedAt": 1717684745180
     }
   ],
   "tags": [
@@ -74,6 +94,12 @@
       "id": "Hnn1yq5e",
       "createdAt": 1716165224390,
       "updatedAt": 1716165224390
+    },
+    {
+      "name": "zsh",
+      "id": "BpDSaubU",
+      "createdAt": 1717684603122,
+      "updatedAt": 1717684603122
     }
   ]
 }
