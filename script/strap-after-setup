@@ -23,7 +23,8 @@ ln -s "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" /us
 git config --local include.path ../.gitconfig
 
 # Download and build Zeal (execute after dependencies (eg. qt) are installed by Brewfile)
-export CMAKE_PREFIX_PATH="$(brew --prefix qt@6):$(brew --prefix libarchive):$(brew --prefix vulkan-headers)"
+CMAKE_PREFIX_PATH="$(brew --prefix qt@6):$(brew --prefix libarchive):$(brew --prefix vulkan-headers)"
+export CMAKE_PREFIX_PATH
 git clone https://github.com/zealdocs/zeal.git "$DEVFILES/git_repos/package_repos/zealdocs"
 cd "$DEVFILES/git_repos/package_repos/zealdocs/zeal" || exit
 mkdir build
