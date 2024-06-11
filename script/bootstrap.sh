@@ -361,9 +361,9 @@ else
   logk
 fi
 
-# Experimental code: add ssh passphrase to ssh-agent from env variable
+# Experimental code: pass ssh passphrase to ssh-add command from env variable
 # eval "$(ssh-agent -s)"
-# SSH_ASKPASS_REQUIRE=force SSH_ASKPASS="$DOTFILES/script/askpass.sh" ssh-add "$HOME/.ssh/id_ed25519"
+# SSH_ASKPASS_REQUIRE=force SSH_ASKPASS="$DOTFILES/script/askpass.sh" ssh-add "$Q" "$HOME/.ssh/id_ed25519"
 
 # Set up dotfiles
 # shellcheck disable=SC2086
