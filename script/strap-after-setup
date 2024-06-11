@@ -35,14 +35,14 @@ cd "$scriptDir" || exit
 stow --target "$HOME" "$DOTFILES/script/zeal"
 
 # Before configuring pinentry-touchid, configure pinentry-mac to use the Keychain at least once
-echo "pinentry-program $HOMEBREW_PREFIX/bin/pinentry-mac" >>"$HOME/.gnupg/gpg-agent.conf"
+sed -i "s|^pinentry-program.*|pinentry-program $HOMEBREW_PREFIX/bin/pinentry-mac" "$HOME/.gnupg/gpg-agent.conf"
 gpgconf --kill gpg-agent
 
 # NOTE: Manual steps to enable pinentry-touchid (ref: https://bit.ly/3yWLvHq)
 # 1. Use pinentry-mac once (select "save in keychain" and "always allow"):
 # echo 1234 | gpg -as -
 # 2. Update gpg-agent.conf to point to pinentry-touchid binary:
-# echo "pinentry-program $HOMEBREW_PREFIX/bin/pinentry-touchid" > "$HOME/.gnupg/gpg-agent.conf"
+# sed -i "s|^pinentry-program.*|pinentry-program $HOMEBREW_PREFIX/bin/pinentry-touchid" "$HOME/.gnupg/gpg-agent.conf"
 # 3. Restart GPG agent after change to config file:
 # gpgconf --kill gpg-agent
 # 4. Let pinentry-touchid manage keychain instead of pinentry-mac:
