@@ -27,8 +27,8 @@ export HOMEBREW_BREWFILE_ON_REQUEST=1
 
 #### Custom script variables  ####
 
-export devfiles="$HOME/Developer"
-export dotfiles="$HOME/.dotfiles"
+export DEVFILES="$HOME/Developer"
+export DOTFILES="$HOME/.dotfiles"
 
 
 ##### SHELL CONFIG ######
@@ -44,4 +44,3 @@ export MANPAGER="nvim +Man!"
 
 # enable colorful ls output by default
 export CLICOLOR=1
-
