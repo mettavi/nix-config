@@ -29,6 +29,7 @@ alias gb="git branch"
 # shell aliases
 alias l="eza --color=always --long --git --git-ignore --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias ll="eza --color=always --long --all --group --git --icons=always"
+alias lt="eza --color --tree --level=3 --long --icons --git"
 alias cd="z"
 alias cl="clear"
 alias tr="trash"
