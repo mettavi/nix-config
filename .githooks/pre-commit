@@ -1,8 +1,8 @@
 #! /usr/bin/env bash
 echo "Saving list of current vscode extensions..."
-./script/vscode/save_vscode_exts.sh
+./scripts/vscode/save_vscode_exts.sh
 echo "Checking for changes to install_vscode_exts..."
-git add script/vscode/install_vscode_exts.sh
+git add scripts/vscode/install_vscode_exts.sh
 
 # commit current version of nvim (Lazy) plugins catalogue
 echo "Checking for changes to lazy-lock.json..."
