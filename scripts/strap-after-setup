@@ -32,7 +32,7 @@ cmake -S . -B build
 cmake --build build --config Release --parallel
 cp -Rp build/Zeal.app /Applications/
 cd "$scriptDir" || exit
-stow --target "$HOME" "$DOTFILES/script/zeal"
+stow --target "$HOME" "$DOTFILES/scripts/zeal"
 
 # Before configuring pinentry-touchid, configure pinentry-mac to use the Keychain at least once
 sed -i '' -e "s|^pinentry-program.*|pinentry-program $HOMEBREW_PREFIX/bin/pinentry-mac|" "$DOTFILES/gnupg/.gnupg/gpg-agent.conf"
