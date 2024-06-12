@@ -56,6 +56,7 @@ return {
       })
 
       -- enable nvim-ts-context-commentstring plugin for commenting tsx and jsx
+      ---@diagnostic disable-next-line: missing-fields
       require("ts_context_commentstring").setup({
         enable_autocmd = false,
       })
