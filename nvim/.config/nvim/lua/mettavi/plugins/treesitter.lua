@@ -12,7 +12,7 @@ return {
       local treesitter = require("nvim-treesitter.configs")
 
       -- configure treesitter
-    ---@diagnostic disable-next-line: missing-fields
+      ---@diagnostic disable-next-line: missing-fields
       treesitter.setup({ -- enable syntax highlighting
         highlight = {
           enable = true,
@@ -56,7 +56,9 @@ return {
       })
 
       -- enable nvim-ts-context-commentstring plugin for commenting tsx and jsx
-      require("ts_context_commentstring").setup({})
+      require("ts_context_commentstring").setup({
+        enable_autocmd = false,
+      })
     end,
   },
 }
