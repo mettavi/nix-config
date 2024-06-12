@@ -1,7 +1,6 @@
 # cd aliases
 alias dv="cd ~/dev"
 alias lrn="cd ~/learn"
-alias qt="cd ~/Qt"
 alias njs="cd ~/Applications/n"
 alias brw="cd /usr/local/Cellar"
 alias map="cd ~/Applications"
