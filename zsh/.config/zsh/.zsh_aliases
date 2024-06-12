@@ -7,7 +7,7 @@ alias map="cd ~/Applications"
 alias nvc="cd ~/.config/nvim"
 alias nvs="cd ~/.local/share/nvim"
 alias zcf="cd  ~/.config/zsh"
-alias dot="cd ~/.dotfiles"
+alias dt="cd ~/.dotfiles"
 alias cf="cd ~/.config"
 
 # git aliases
