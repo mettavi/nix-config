@@ -49,3 +49,6 @@ gpgconf --kill gpg-agent
 # defaults write org.gpgtools.common DisableKeychain -bool yes
 # 5. Ensure pinentry-mac is default (fallback for pinentry-touchid)
 # /usr/local/bin/pinentry-touchid -fix
+
+# NOTE: Apps to install manually:
+# - Goldendict-ng
