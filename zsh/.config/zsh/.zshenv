@@ -21,7 +21,8 @@ export BAT_THEME=tokyonight_night
 # (homebrew-file package)
 export HOMEBREW_BREWFILE_LEAVES=1
 export HOMEBREW_BREWFILE_ON_REQUEST=1
-# add comma separated list of packages which have no requirements but are required by others (jeg. go, coreutilsj)
+export HOMEBREW_BREWFILE=$DOTFILES
+# add comma separated list of packages which have no requirements but are required by others (eg. go, coreutilsj)
 # export HOMEBREW_BREWFILE_TOP_PACKAGES=
 
 
