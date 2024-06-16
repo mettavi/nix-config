@@ -8,6 +8,11 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_STATE_HOME="$HOME/.local/state"
 
+#### Custom script variables  ####
+
+export DEVFILES="$HOME/Developer"
+export DOTFILES="$HOME/.dotfiles"
+
 ##### Installed binaries - HOME DIRECTORIES #####
 
 export JAVA_HOME=$(/usr/libexec/java_home) 
@@ -24,13 +29,6 @@ export HOMEBREW_BREWFILE_ON_REQUEST=1
 export HOMEBREW_BREWFILE=$DOTFILES
 # add comma separated list of packages which have no requirements but are required by others (eg. go, coreutilsj)
 # export HOMEBREW_BREWFILE_TOP_PACKAGES=
-
-
-#### Custom script variables  ####
-
-export DEVFILES="$HOME/Developer"
-export DOTFILES="$HOME/.dotfiles"
-
 
 ##### SHELL CONFIG ######
 
