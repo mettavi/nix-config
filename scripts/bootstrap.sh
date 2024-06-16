@@ -384,7 +384,6 @@ log "Checking out $strap_dotfiles_branch_name in ~/.dotfiles."
   git checkout "$strap_dotfiles_branch_name"
   git pull $Q --rebase --autostash
 )
-run_dotfile_scripts scripts/symlink.sh
 logk
 
 # The second call to `configure_git` is needed for CI use cases when certain
@@ -520,6 +519,8 @@ NONINTERACTIVE=$STRAP_CI \
 [ "$LINUX" -gt 0 ] && run_dotfile_scripts scripts/linuxbrew.sh
 
 run_brew_installs || abort "Homebrew installs were not successful."
+
+run_dotfile_scripts scripts/symlink.sh
 
 run_dotfile_scripts scripts/strap-after-setup.sh
 
