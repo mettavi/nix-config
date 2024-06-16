@@ -85,6 +85,9 @@ eval "$(rbenv init - zsh)"
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init zsh)"
 
+# source config for fzf
+source ~/.config/fzf/.fzfrc
+
 # Set up wrapper for brew-file package
 if [ -f $(brew --prefix)/etc/brew-wrap ];then
   source $(brew --prefix)/etc/brew-wrap

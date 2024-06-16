@@ -22,7 +22,6 @@ export PYENV_ROOT="$HOME/.pyenv"
 ##### Installed binaries - CONFIG ###### 
 
 export BAT_THEME=tokyonight_night
-export FZF_DEFAULT_OPTS_FILE=~/.config/fzf/.fzfrc
 
 # (homebrew-file package)
 export HOMEBREW_BREWFILE_LEAVES=1
