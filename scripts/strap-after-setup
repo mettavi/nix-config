@@ -1,4 +1,4 @@
-#! /usr/bin/env bash
+#!/usr/bin/env bash
 
 scriptDir=$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")"])
 cd "$scriptDir" || exit
