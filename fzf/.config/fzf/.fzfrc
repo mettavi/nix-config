@@ -1,6 +1,6 @@
 
-# source fzf and set its defaults
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# set up shell integration for fzf
+source <(fzf --zsh)
 
 # set up fzf default commands
 export FZF_DEFAULT_COMMAND='fd --hidden --follow --strip-cwd-prefix --exclude .git'
