@@ -486,7 +486,7 @@ run_brew_installs() {
   else
     [ -z "$STRAP_DOTFILES_BRANCH" ] && STRAP_DOTFILES_BRANCH=HEAD
     git_branch="${STRAP_DOTFILES_BRANCH##*/}"
-    github_user="${STRAP_GITHUB_USER:-br3ndonland}"
+    github_user="${STRAP_GITHUB_USER:-mettavi}"
     brewfile_domain="https://raw.githubusercontent.com"
     brewfile_path="$github_user/dotfiles/$git_branch/Brewfile"
     brewfile_url="$brewfile_domain/$brewfile_path"
