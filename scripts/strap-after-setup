@@ -4,9 +4,6 @@
 # Scripts must be executable (chmod +x)
 echo "-> Running strap-after-setup. Some steps may require password entry."
 
-scriptDir=$(dirname -- "$(readlink -f -- "${BASH_SOURCE[0]}")"])
-cd "$scriptDir" || exit
-
 ### Configure macOS
 if [ "${MACOS:-0}" -gt 0 ] || [ "$(uname)" = "Darwin" ]; then
   "$HOME"/.dotfiles/scripts/macos.sh
@@ -29,6 +26,15 @@ else
   echo "Shell is already set to Zsh."
 fi
 
+### ----------------- Custom setup of other packages ----------------- ###
+
+# # Install node js and n using n-install script
+# set -i # turn on interactive mode
+# curl -L https://bit.ly/n-install | N_PREFIX=~/util/n bash -s -- -y
+# # shellcheck source=/Users/timotheos/.config/zsh/.zshrc
+# source "$HOME/.config/zsh/.zshrc" # reload (source) the initialization file
+# set +i                            # turn interactive mode back off
+
 # Download the git script for fzf
 git clone git@github.com:junegunn/fzf-git.sh.git ~/.local/bin
 
@@ -38,6 +44,7 @@ patch /Library/Application\ Support/Logitech.localized/LogiOptionsPlus/app_permi
 # Download theme after brew has installed bat
 curl -O "https://raw.githubusercontent.com/folke/tokyonight.nvim/main/extras/sublime/tokyonight_night.tmTheme --create-dirs --output $(bat --config-dir)/themes"
 
+############## vscode setup ####################
 # Set up symlink for vscode command line binary
 ln -s "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" /usr/local/bin/code
 
