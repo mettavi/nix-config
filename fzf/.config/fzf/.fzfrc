@@ -1,4 +1,4 @@
-#! /usr/bin/env zsh
+#!/usr/bin/env zsh
 # set up shell integration for fzf
 source <(fzf --zsh)
 
@@ -43,4 +43,4 @@ _fzf_comprun() {
 }
 
 # Script to use git with fzf
-source ~/fzf-git.sh/fzf-git.sh
+source "$XDG_BIN_HOME/fzf-git.sh/fzf-git.sh"
