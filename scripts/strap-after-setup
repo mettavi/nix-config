@@ -29,11 +29,13 @@ fi
 ### ----------------- Custom setup of other packages ----------------- ###
 
 # # Install node js and n using n-install script
-# set -i # turn on interactive mode
+# set -i                                   # turn on interactive mode to handle potential problem
+# Install node.js and n automatically
 # curl -L https://bit.ly/n-install | N_PREFIX=~/util/n bash -s -- -y
-# # shellcheck source=/Users/timotheos/.config/zsh/.zshrc
-# source "$HOME/.config/zsh/.zshrc" # reload (source) the initialization file
-# set +i                            # turn interactive mode back off
+# shellcheck source=/Users/timotheos/.config/zsh/.zshrc
+# source "$HOME/.config/zsh/.zshrc"        # reload (source) the initialization file
+# set +i                                   # turn interactive mode back off
+# NOTE: N-install may add duplicate config code to .zshrc (and may append rather than prepend to PATH)
 
 # Download the git script for fzf
 git clone git@github.com:junegunn/fzf-git.sh.git ~/.local/bin
