@@ -99,7 +99,7 @@ stow_conflicts=(
   ".gitconfig.local"
   ".gitignore_global"
   ".gnupg"
-  ".config/lazygit"
+  ".config/masscode"
   ".config/nvim"
   ".config/tmux"
   ".config/zsh"
