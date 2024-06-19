@@ -83,6 +83,9 @@ brew 'pinentry-touchid'
 tap 'mongodb/brew'
 brew 'mongodb-community@5.0'
 
+tap 'olets/tap'
+brew 'zsh-abbr'
+
 tap 'rcmdnk/file'
 brew 'brew-file'
 
