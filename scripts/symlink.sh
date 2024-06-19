@@ -99,6 +99,7 @@ stow_conflicts=(
   ".gitconfig.local"
   ".gitignore_global"
   ".gnupg"
+  ".npmrc"
   ".config/masscode"
   ".config/nvim"
   ".config/tmux"
