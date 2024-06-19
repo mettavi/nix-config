@@ -25,9 +25,10 @@ bindkey "^x^e" edit-command-line
 
 ###########  Config zsh completions ############################
 
-# Update fpath, enable and initialise zsh completions
+# Update fpath, enable and initialise zsh extensions
 if type brew &>/dev/null; then
   FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+  FPATH=$(brew --prefix)/share/zsh-abbr:$FPATH
 fi
 fpath+=$ZDOTDIR/.zfunc
 autoload -Uz compinit && compinit
@@ -87,6 +88,9 @@ eval "$(zoxide init zsh)"
 
 # source config for fzf
 source ~/.config/fzf/.fzfrc
+
+# load zsh-abbr for expanding abbreviations in zsh 
+source /usr/local/share/zsh-abbr/zsh-abbr.zsh
 
 # Set up wrapper for brew-file package
 if [ -f $(brew --prefix)/etc/brew-wrap ];then
