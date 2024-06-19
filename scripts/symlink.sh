@@ -92,13 +92,18 @@ cd "${DOTFILES}/" # stow needs to run from inside dotfiles dir
 stow_conflicts=(
   ".config/bash"
   ".config/bat"
+  ".docker"
+  "Library/Group Containers/group.com.docker"
+  ".config/fzf"
+  ".gitconfig"
+  ".gitconfig.local"
+  ".gitignore_global"
+  ".gnupg"
   ".config/lazygit"
   ".config/nvim"
   ".config/tmux"
   ".config/zsh"
   ".config/zsh-abbr"
-  ".gitconfig"
-  ".gitignore_global"
   ".npmrc"
 )
 
