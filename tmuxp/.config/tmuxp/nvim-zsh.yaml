@@ -1,0 +1,11 @@
+session_name: nvim-zsh
+start_directory: $DOTFILES
+windows:
+  - window_name: nvim
+    panes:
+      - shell_command: nvim
+
+  - window_name: zsh
+    panes:
+      - shell_command: 
+        - git status 
