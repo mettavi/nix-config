@@ -104,10 +104,15 @@ stow_conflicts=(
   ".config/nvim"
   "Library/Preferences/com.plexapp.plexmediaserver.plist"
   ".ssh"
+  ".stow-global-ignore"
+  "stowrc"
   ".config/tmux"
+  ".config/tmuxp"
+  ".vim"
+  "Library/Application Support/Code/User"
   ".config/zsh"
-  ".config/zsh-abbr"
-  ".npmrc"
+  ".zshenv"
+  ".p10k.zsh"
 )
 
 for item in "${stow_conflicts[@]}"; do
