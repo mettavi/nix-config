@@ -27,6 +27,7 @@ bindkey "^x^e" edit-command-line
 
 # Update fpath, enable and initialise zsh extensions
 if type brew &>/dev/null; then
+  # Additional completion definitions for zsh
   FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
   FPATH=$(brew --prefix)/share/zsh-abbr:$FPATH
 fi
