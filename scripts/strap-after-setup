@@ -63,7 +63,7 @@ mkdir build
 cmake -S . -B build
 cmake --build build --config Release --parallel
 cp -Rp build/Zeal.app /Applications/
-cd "$scriptDir" || exit
+cd "$DOTFILES/scripts" || exit
 stow --target "$HOME" "$DOTFILES/scripts/zeal"
 
 # Before configuring pinentry-touchid, configure pinentry-mac to use the Keychain at least once
