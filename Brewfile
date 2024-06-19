@@ -41,7 +41,7 @@ brew 'shellcheck'
 brew 'stow'
 brew 'thefuck'
 brew 'tldr'
-brew 'tmux'
+brew 'tmuxp'
 brew 'trash'
 brew 'tree'
 brew 'vulkan-headers'
@@ -91,14 +91,14 @@ tap 'sandreas/tap'
 # App Store applications
 mas 'Bitwarden (2024.5.0)', id: 1352778147
 mas 'Contacts Sync for Google Gmail (8.3.3)', id: 451691288
-mas 'CotEditor (4.8.5)', id: 1024640650
+mas 'CotEditor (4.8.6)', id: 1024640650
 mas 'Foldor (1.3.1)', id: 1559426624
 mas 'GarageBand (10.4.11)', id: 682658836
 mas 'iMovie (10.4)', id: 408981434
 mas 'Keynote (14.1)', id: 409183694
 mas 'Numbers (14.1)', id: 409203825
 mas 'Pages (14.1)', id: 409201541
-mas 'PastePal (2.15.6)', id: 1503446680
+mas 'PastePal (2.15.8)', id: 1503446680
 mas 'Patterns (1.3)', id: 429449079
 mas 'PDF Squeezer (4.5.3)', id: 1502111349
 mas 'Snip (1.7)', id: 1527428847
