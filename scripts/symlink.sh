@@ -105,6 +105,7 @@ stow_conflicts=(
   ".config/zsh/.zsh_plugins.txt"
   ".config/zsh/.zshenv"
   ".config/zsh/.zshrc"
+  ".config/zsh-abbr"
   ".docker/daemon.json"
   ".gitconfig"
   ".gitignore_global"
