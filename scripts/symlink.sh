@@ -103,6 +103,7 @@ stow_conflicts=(
   ".config/masscode"
   ".config/nvim"
   "Library/Preferences/com.plexapp.plexmediaserver.plist"
+  ".ssh"
   ".config/tmux"
   ".config/zsh"
   ".config/zsh-abbr"
