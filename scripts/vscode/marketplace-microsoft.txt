@@ -1,0 +1,4 @@
+chrmarti.regex
+dbaeumer.vscode-eslint
+formulahendry.code-runner
+ritwickdey.liveserver
