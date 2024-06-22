@@ -30,7 +30,7 @@ check_open_vsx() {
 install_extensions() {
   printf "\nInstalling extensions for %s...\n\n" "$1"
   local extension_info extension_name extensions installed prefix
-  prefix="$HOME/.dotfiles/vscode/extensions/marketplace"
+  prefix="$HOME/.dotfiles/scripts/vscode/marketplace"
   case $1 in
   code*)
     cat "$prefix-open-vsx.txt" "$prefix-microsoft.txt" >"$prefix-all.txt"
