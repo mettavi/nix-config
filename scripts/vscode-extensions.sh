@@ -73,7 +73,9 @@ for i in "$@"; do
   if command -v "$i" &>/dev/null; then
     printf "\n%s command on PATH.\n" "$i"
   elif [ "$(uname -s)" = "Darwin" ] && [ -d "$MACOS_BIN" ]; then
-    export PATH="$MACOS_BIN:$PATH"
+    # export PATH="$MACOS_BIN:$PATH"
+    # Deprecate above to use path already on $PATH
+    ln -s "$MACOS_BIN/code" /usr/local/bin/code
     printf "\n%s command loaded onto PATH.\n" "$i"
   fi
   if ! command -v "$i" &>/dev/null; then
