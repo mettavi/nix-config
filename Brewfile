@@ -59,6 +59,7 @@ cask 'iterm2'
 cask 'key-codes'
 cask 'masscode'
 cask 'qlmarkdown'
+cask 'visual-studio-code'
 cask 'xcodes'
 
 tap 'homebrew/bundle'
