@@ -43,10 +43,6 @@ git clone git@github.com:junegunn/fzf-git.sh.git ~/.local/bin
 # This has to be applied after brew has installed cask logi-options-plus
 patch /Library/Application\ Support/Logitech.localized/LogiOptionsPlus/app_permissions.json <./app_permissions.json.diff
 
-############## vscode setup ####################
-# Set up symlink for vscode command line binary
-ln -s "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" /usr/local/bin/code
-
 # Point git to config file within repo containing path to custom githooks directory
 git config --local include.path ../.gitconfig
 
