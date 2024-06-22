@@ -47,10 +47,6 @@ patch /Library/Application\ Support/Logitech.localized/LogiOptionsPlus/app_permi
 # Set up symlink for vscode command line binary
 ln -s "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" /usr/local/bin/code
 
-# Execute after vscode is installed
-./vscode/save_vscode_exts.sh
-./vscode/install_vscode_exts.sh # must execute this before enabling git hooks in next command
-
 # Point git to config file within repo containing path to custom githooks directory
 git config --local include.path ../.gitconfig
 
