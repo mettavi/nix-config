@@ -1,0 +1,237 @@
+<config>
+ <paths>
+  <path recursive="1">/Users/timotheos/Documents/Dictionaries</path>
+ </paths>
+ <sounddirs/>
+ <dictionaryOrder id="0" name="">
+  <dictionary name="DPD Grammar (pi-en)">b71a9acd2c3e73fe7f5b7ad85630b76e</dictionary>
+  <dictionary name="DPD Deconstructor (pi-pi)">cc2b075181b29dd9a329479f3348d4bd</dictionary>
+  <dictionary name="Digital Pāḷi Dictionary (pi-en)">a88cce0b4d40b424f3de972dcf4db466</dictionary>
+  <dictionary name="Combined Pali - English Dictionary">c7cb869a0d76a41caa124e2988fbab3f</dictionary>
+  <dictionary name="vipassana_research_institute">394da065f416b64ba97fb18e38c79cb3</dictionary>
+  <dictionary name="Critical Pāli Dictionary">81049f9ed3f8af8f6dc260b1f55a2ad0</dictionary>
+  <dictionary name="Pāḷi Myanmar Abhidhan">16519cbd6870252278d4393c3f23824d</dictionary>
+  <dictionary name="Pure Dhamma Pali-English Glossary [399 words] 25Feb2020.mdx">8a12f726b0da33bb67da0d8c6553f2a2</dictionary>
+  <dictionary name="Longman Dictionary of Contemporary English 6th edition">965acce84e544d87ba5577780dd02682</dictionary>
+  <dictionary name="Oxford English Dictionary 2nd Ed. P1">dbe0fe629f8e162728b62e56063f0c3e</dictionary>
+  <dictionary name="Oxford English Dictionary 2nd Ed. P2">76b9536f7fcdc93ab62c4291c6ad8e6b</dictionary>
+  <dictionary name="Monier-Williams Sanskrit-English Dictionary, 1899">0cbf33c1bc8cc335c768746d299dfb99</dictionary>
+  <dictionary name="apte-bi">8df4d3c0dc1c090d67a35f06652d4ae6</dictionary>
+  <dictionary name="mw-bi-itrans-dev">5800b5b9c72188f75e09c701d269da0a</dictionary>
+  <dictionary name="Whitney Sanskrit Roots">0c182cb527e68005557ac384e2ec5027</dictionary>
+  <dictionary name="English (GB) Morphology">13cb374c4197ef52ff950e22a0e4b53a</dictionary>
+  <mutedDictionaries/>
+ </dictionaryOrder>
+ <inactiveDictionaries id="0" name="">
+  <mutedDictionaries/>
+ </inactiveDictionaries>
+ <groups nextId="6">
+  <group id="3" name="Pali">
+   <dictionary name="DPD Grammar (pi-en)">b71a9acd2c3e73fe7f5b7ad85630b76e</dictionary>
+   <dictionary name="DPD Deconstructor (pi-pi)">cc2b075181b29dd9a329479f3348d4bd</dictionary>
+   <dictionary name="Digital Pāḷi Dictionary (pi-en)">a88cce0b4d40b424f3de972dcf4db466</dictionary>
+   <dictionary name="Combined Pali - English Dictionary">c7cb869a0d76a41caa124e2988fbab3f</dictionary>
+   <dictionary name="vipassana_research_institute">394da065f416b64ba97fb18e38c79cb3</dictionary>
+   <dictionary name="Pure Dhamma Pali-English Glossary [399 words] 25Feb2020.mdx">8a12f726b0da33bb67da0d8c6553f2a2</dictionary>
+   <dictionary name="English (GB) Morphology">13cb374c4197ef52ff950e22a0e4b53a</dictionary>
+   <mutedDictionaries/>
+  </group>
+  <group id="4" name="English">
+   <dictionary name="Longman Dictionary of Contemporary English 6th edition">965acce84e544d87ba5577780dd02682</dictionary>
+   <dictionary name="Oxford English Dictionary 2nd Ed. P1">dbe0fe629f8e162728b62e56063f0c3e</dictionary>
+   <dictionary name="Oxford English Dictionary 2nd Ed. P2">76b9536f7fcdc93ab62c4291c6ad8e6b</dictionary>
+   <dictionary name="English (GB) Morphology">13cb374c4197ef52ff950e22a0e4b53a</dictionary>
+   <mutedDictionaries/>
+  </group>
+  <group id="5" name="Sanskrit">
+   <dictionary name="Monier-Williams Sanskrit-English Dictionary, 1899">0cbf33c1bc8cc335c768746d299dfb99</dictionary>
+   <mutedDictionaries/>
+  </group>
+ </groups>
+ <hunspell dictionariesPath="/Users/timotheos/Library/Spelling">
+  <enabled>en_GB</enabled>
+ </hunspell>
+ <transliteration>
+  <enableRussianTransliteration>0</enableRussianTransliteration>
+  <enableGermanTransliteration>0</enableGermanTransliteration>
+  <enableGreekTransliteration>0</enableGreekTransliteration>
+  <enableBelarusianTransliteration>0</enableBelarusianTransliteration>
+  <chinese>
+   <enable>0</enable>
+   <enableSCToTWConversion>1</enableSCToTWConversion>
+   <enableSCToHKConversion>1</enableSCToHKConversion>
+   <enableTCToSCConversion>1</enableTCToSCConversion>
+  </chinese>
+  <romaji>
+   <enable>0</enable>
+   <enableHepburn>1</enableHepburn>
+   <enableNihonShiki>0</enableNihonShiki>
+   <enableKunreiShiki>0</enableKunreiShiki>
+   <enableHiragana>1</enableHiragana>
+   <enableKatakana>1</enableKatakana>
+  </romaji>
+  <customtrans>
+   <enable>0</enable>
+   <context></context>
+  </customtrans>
+ </transliteration>
+ <lingua>
+  <enable>1</enable>
+  <languageCodes></languageCodes>
+ </lingua>
+ <forvo>
+  <enable>0</enable>
+  <apiKey></apiKey>
+  <languageCodes></languageCodes>
+ </forvo>
+ <mediawikis>
+  <mediawiki enabled="0" icon="" id="ae6f89aac7151829681b85f035d54e48" lang="" name="English Wikipedia" url="https://en.wikipedia.org/w"/>
+  <mediawiki enabled="0" icon="" id="affcf9678e7bfe701c9b071f97eccba3" lang="" name="English Wiktionary" url="https://en.wiktionary.org/w"/>
+  <mediawiki enabled="0" icon="" id="8e0c1c2b6821dab8bdba8eb869ca7176" lang="" name="Russian Wikipedia" url="https://ru.wikipedia.org/w"/>
+  <mediawiki enabled="0" icon="" id="b09947600ae3902654f8ad4567ae8567" lang="" name="Russian Wiktionary" url="https://ru.wiktionary.org/w"/>
+  <mediawiki enabled="0" icon="" id="a8a66331a1242ca2aeb0b4aed361c41d" lang="" name="German Wikipedia" url="https://de.wikipedia.org/w"/>
+  <mediawiki enabled="0" icon="" id="21c64bca5ec10ba17ff19f3066bc962a" lang="" name="German Wiktionary" url="https://de.wiktionary.org/w"/>
+  <mediawiki enabled="0" icon="" id="96957cb2ad73a20c7a1d561fc83c253a" lang="" name="Portuguese Wikipedia" url="https://pt.wikipedia.org/w"/>
+  <mediawiki enabled="0" icon="" id="ed4c3929196afdd93cc08b9a903aad6a" lang="" name="Portuguese Wiktionary" url="https://pt.wiktionary.org/w"/>
+  <mediawiki enabled="0" icon="" id="f3b4ec8531e52ddf5b10d21e4577a7a2" lang="" name="Greek Wikipedia" url="https://el.wikipedia.org/w"/>
+  <mediawiki enabled="0" icon="" id="5d45232075d06e002dea72fe3e137da1" lang="" name="Greek Wiktionary" url="https://el.wiktionary.org/w"/>
+ </mediawikis>
+ <websites>
+  <website enabled="0" icon="" id="b88cb2898e634c6638df618528284c2d" inside_iframe="1" name="Google En-En (Oxford)" url="https://www.google.com/search?q=define:%GDWORD%&amp;hl=en"/>
+  <website enabled="0" icon="" id="f376365a0de651fd7505e7e5e683aa45" inside_iframe="1" name="Urban Dictionary" url="https://www.urbandictionary.com/define.php?term=%GDWORD%"/>
+  <website enabled="0" icon="" id="324ca0306187df7511b26d3847f4b07c" inside_iframe="1" name="Multitran (En)" url="https://multitran.ru/c/m.exe?CL=1&amp;l1=1&amp;s=%GD1251%"/>
+  <website enabled="0" icon="" id="924db471b105299c82892067c0f10787" inside_iframe="1" name="Lingvo (En-Ru)" url="http://lingvopro.abbyyonline.com/en/Search/en-ru/%GDWORD%"/>
+  <website enabled="0" icon="" id="087a6d65615fb047f4c80eef0a9465db" inside_iframe="1" name="Michaelis (Pt-En)" url="http://michaelis.uol.com.br/moderno/ingles/index.php?lingua=portugues-ingles&amp;palavra=%GDISO1%"/>
+ </websites>
+ <dictservers/>
+ <programs/>
+ <mutedDictionaries>
+  <mutedDictionary>8a12f726b0da33bb67da0d8c6553f2a2</mutedDictionary>
+  <mutedDictionary>394da065f416b64ba97fb18e38c79cb3</mutedDictionary>
+  <mutedDictionary>76b9536f7fcdc93ab62c4291c6ad8e6b</mutedDictionary>
+ </mutedDictionaries>
+ <popupMutedDictionaries>
+  <mutedDictionary>8a12f726b0da33bb67da0d8c6553f2a2</mutedDictionary>
+  <mutedDictionary>76b9536f7fcdc93ab62c4291c6ad8e6b</mutedDictionary>
+  <mutedDictionary>dbe0fe629f8e162728b62e56063f0c3e</mutedDictionary>
+ </popupMutedDictionaries>
+ <preferences>
+  <interfaceLanguage></interfaceLanguage>
+  <interfaceFont></interfaceFont>
+  <customFonts monospace="Menlo" sans-serif="Helvetica" serif="Times New Roman" standard="Times New Roman"/>
+  <displayStyle></displayStyle>
+  <interfaceStyle>Default</interfaceStyle>
+  <newTabsOpenAfterCurrentOne>0</newTabsOpenAfterCurrentOne>
+  <newTabsOpenInBackground>1</newTabsOpenInBackground>
+  <hideSingleTab>0</hideSingleTab>
+  <mruTabOrder>0</mruTabOrder>
+  <hideMenubar>0</hideMenubar>
+  <enableTrayIcon>1</enableTrayIcon>
+  <startToTray>0</startToTray>
+  <closeToTray>1</closeToTray>
+  <autoStart>0</autoStart>
+  <doubleClickTranslates>1</doubleClickTranslates>
+  <selectWordBySingleClick>0</selectWordBySingleClick>
+  <autoScrollToTargetArticle>1</autoScrollToTargetArticle>
+  <escKeyHidesMainWindow>0</escKeyHidesMainWindow>
+  <darkMode>0</darkMode>
+  <darkReaderMode>0</darkReaderMode>
+  <zoomFactor>1.1</zoomFactor>
+  <helpZoomFactor>1</helpZoomFactor>
+  <wordsZoomLevel>1</wordsZoomLevel>
+  <enableMainWindowHotkey>1</enableMainWindowHotkey>
+  <mainWindowHotkey>Ctrl+F11, Ctrl+F11</mainWindowHotkey>
+  <enableClipboardHotkey>1</enableClipboardHotkey>
+  <clipboardHotkey>Ctrl+C, Ctrl+C</clipboardHotkey>
+  <startWithScanPopupOn>0</startWithScanPopupOn>
+  <enableScanPopupModifiers>0</enableScanPopupModifiers>
+  <scanPopupModifiers>0</scanPopupModifiers>
+  <ignoreOwnClipboardChanges>0</ignoreOwnClipboardChanges>
+  <scanToMainWindow>0</scanToMainWindow>
+  <ignoreDiacritics>0</ignoreDiacritics>
+  <ignorePunctuation>0</ignorePunctuation>
+  <sessionCollapse>0</sessionCollapse>
+  <pronounceOnLoadMain>0</pronounceOnLoadMain>
+  <pronounceOnLoadPopup>0</pronounceOnLoadPopup>
+  <useInternalPlayer>1</useInternalPlayer>
+  <internalPlayerBackend>FFmpeg</internalPlayerBackend>
+  <audioPlaybackProgram>mplayer</audioPlaybackProgram>
+  <alwaysOnTop>0</alwaysOnTop>
+  <searchInDock>0</searchInDock>
+  <historyStoreInterval>0</historyStoreInterval>
+  <favoritesStoreInterval>0</favoritesStoreInterval>
+  <confirmFavoritesDeletion>1</confirmFavoritesDeletion>
+  <proxyserver enabled="0" useSystemProxy="0">
+   <type>0</type>
+   <host></host>
+   <port>3128</port>
+   <user></user>
+   <password></password>
+   <systemProxyUser></systemProxyUser>
+   <systemProxyPassword></systemProxyPassword>
+  </proxyserver>
+  <ankiConnectServer enabled="1">
+   <host>127.0.0.1</host>
+   <port>8765</port>
+   <deck>Pali</deck>
+   <model>Pali reversed</model>
+   <text>Back</text>
+   <word>Front</word>
+   <sentence>Sentence</sentence>
+  </ankiConnectServer>
+  <checkForNewReleases>1</checkForNewReleases>
+  <disallowContentFromOtherSites>1</disallowContentFromOtherSites>
+  <hideGoldenDictHeader>0</hideGoldenDictHeader>
+  <maxNetworkCacheSize>50</maxNetworkCacheSize>
+  <clearNetworkCacheOnExit>1</clearNetworkCacheOnExit>
+  <removeInvalidIndexOnExit>0</removeInvalidIndexOnExit>
+  <maxStringsInHistory>500</maxStringsInHistory>
+  <storeHistory>1</storeHistory>
+  <alwaysExpandOptionalParts>0</alwaysExpandOptionalParts>
+  <addonStyle></addonStyle>
+  <collapseBigArticles>0</collapseBigArticles>
+  <articleSizeLimit>2000</articleSizeLimit>
+  <limitInputPhraseLength>0</limitInputPhraseLength>
+  <inputPhraseLengthLimit>1000</inputPhraseLengthLimit>
+  <maxDictionaryRefsInContextMenu>20</maxDictionaryRefsInContextMenu>
+  <synonymSearchEnabled>1</synonymSearchEnabled>
+  <stripClipboard>0</stripClipboard>
+  <raiseWindowOnSearch>1</raiseWindowOnSearch>
+  <fullTextSearch>
+   <searchMode>0</searchMode>
+   <dialogGeometry>AdnQywADAAAAAAHQAAAAgAAAA7sAAALsAAAB0AAAAJwAAAO7AAAC7AAAAAAAAAAABaAAAAHQAAAAnAAAA7sAAALs</dialogGeometry>
+   <disabledTypes></disabledTypes>
+   <enabled>1</enabled>
+   <enablePosition>0</enablePosition>
+   <maxDictionarySize>0</maxDictionarySize>
+   <parallelThreads>3</parallelThreads>
+  </fullTextSearch>
+ </preferences>
+ <lastMainGroupId>4294967294</lastMainGroupId>
+ <lastPopupGroupId>0</lastPopupGroupId>
+ <popupWindowState>AAAA/wAAAAD9AAAAAAAAAAAAAAAAAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAQAAAAEAAAAaAGQAaQBjAHQAaQBvAG4AYQByAHkAQgBhAHIDAAAAAP////8AAAAAAAAAAA==</popupWindowState>
+ <popupWindowGeometry>AdnQywADAAAAAAJbAAABjgAABIcAAAMgAAACWwAAAY4AAASHAAADIAAAAAAAAAAABaAAAAJbAAABjgAABIcAAAMg</popupWindowGeometry>
+ <pinPopupWindow>0</pinPopupWindow>
+ <popupWindowAlwaysOnTop>0</popupWindowAlwaysOnTop>
+ <mainWindowState>AAAA/wAAAAD9AAAAAgAAAAAAAABVAAACTPwCAAAAAfsAAAAUAHMAZQBhAHIAYwBoAFAAYQBuAGUAAAAAJwAAAkwAAACIAP///wAAAAEAAADMAAACTPwCAAAAA/sAAAASAGQAaQBjAHQAcwBQAGEAbgBlAQAAACcAAADAAAAAYgD////7AAAAGgBmAGEAdgBvAHIAaQB0AGUAcwBQAGEAbgBlAQAAAO0AAADAAAAAYgD////7AAAAFgBoAGkAcwB0AG8AcgB5AFAAYQBuAGUBAAABswAAAMAAAABiAP///wAAAvUAAAJMAAAABAAAAAQAAAAIAAAACPwAAAABAAAAAgAAAAIAAAAUAG4AYQB2AFQAbwBvAGwAYgBhAHIBAAAAAP////8AAAAAAAAAAAAAABoAZABpAGMAdABpAG8AbgBhAHIAeQBCAGEAcgAAAAKA/////wAAAAAAAAAA</mainWindowState>
+ <mainWindowGeometry>AdnQywADAAAAAAEDAAAAeAAABMkAAAMGAAABAwAAAJQAAATJAAADBgAAAAAAAAAABaAAAAEDAAAAlAAABMkAAAMG</mainWindowGeometry>
+ <dictInfoGeometry>AdnQywADAAAAAAFfAAAA2QAAA8kAAAKEAAABXwAAAPUAAAPJAAAChAAAAAAAAAAABaAAAAFfAAAA9QAAA8kAAAKE</dictInfoGeometry>
+ <inspectorGeometry></inspectorGeometry>
+ <dictionariesDialogGeometry>AdnQywADAAAAAABfAAAAiwAABTYAAAMbAAAAXwAAAKcAAAU2AAADGwAAAAAAAAAABaAAAABfAAAApwAABTYAAAMb</dictionariesDialogGeometry>
+ <timeForNewReleaseCheck>2023-04-30T20:16:52</timeForNewReleaseCheck>
+ <skippedRelease></skippedRelease>
+ <showingDictBarNames>0</showingDictBarNames>
+ <usingSmallIconsInToolbars>0</usingSmallIconsInToolbars>
+ <historyExportPath>/Users/timotheos/Downloads</historyExportPath>
+ <resourceSavePath>/Users/timotheos/Downloads</resourceSavePath>
+ <editDictionaryCommandLine></editDictionaryCommandLine>
+ <maxHeadwordSize>256</maxHeadwordSize>
+ <maxHeadwordsToExpand>0</maxHeadwordsToExpand>
+ <headwordsDialog>
+  <searchMode>0</searchMode>
+  <matchCase>0</matchCase>
+  <autoApply>0</autoApply>
+  <headwordsExportPath></headwordsExportPath>
+  <headwordsDialogGeometry>AdnQywADAAAAAAGmAAAAjgAAA28AAALPAAABpgAAAKoAAANvAAACzwAAAAAAAAAABaAAAAGmAAAAqgAAA28AAALP</headwordsDialogGeometry>
+ </headwordsDialog>
+</config>
