@@ -24,7 +24,7 @@ export PYENV_ROOT="$HOME/.pyenv"
 
 export BAT_THEME=tokyonight_night
 
-export ABBR_USER_ABBREVIATIONS_FILE="$DOTFILES/zsh-abbr/user-abbreviations"
+export ABBR_USER_ABBREVIATIONS_FILE="$DOTFILES/zsh/.config/zsh/user-abbreviations"
 
 # (homebrew-file package)
 export HOMEBREW_BREWFILE_LEAVES=1
