@@ -1,2 +1,3 @@
+abbr -g "lyb"="learnyoubash"
 abbr "gst"="git status"
 abbr "hw"="echo hello world"
