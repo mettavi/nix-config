@@ -33,7 +33,7 @@ export HOMEBREW_BREWFILE=$DOTFILES/Brewfile
 # add comma separated list of packages which have no requirements but are required by others (eg. go, coreutilsj)
 # export HOMEBREW_BREWFILE_TOP_PACKAGES=
 
-##### SHELL CONFIG ######
+########## SHELL CONFIG ###########
 
 export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
 
@@ -46,3 +46,7 @@ export MANPAGER="nvim +Man!"
 
 # enable colorful ls output by default
 export CLICOLOR=1
+
+# point to the more up-to-date hombrew version of the ncurses terminfo db 
+# (which includes the tmux-255color profile)
+export TERMINFO=/usr/local/opt/ncurses/share/terminfo
