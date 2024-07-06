@@ -1,4 +1,5 @@
 chrmarti.regex
 dbaeumer.vscode-eslint
 formulahendry.code-runner
+ms-vscode-remote.remote-containers
 ritwickdey.liveserver
