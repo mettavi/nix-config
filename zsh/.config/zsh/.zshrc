@@ -115,8 +115,6 @@ export PATH="/usr/local/sbin:$PATH"
 
 export PATH="/usr/local/opt/mongodb-community@5.0/bin:$PATH"
 
-export PATH="/usr/local/opt/ncurses/bin:$PATH"
-
 # Created by `pipx` on 2023-10-06 14:39:03
 export PATH="$PATH:/Users/timotheos/.local/bin"
 export PATH="/usr/local/opt/libarchive/bin:$PATH"
