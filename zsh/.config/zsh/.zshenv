@@ -47,6 +47,5 @@ export MANPAGER="nvim +Man!"
 # enable colorful ls output by default
 export CLICOLOR=1
 
-# point to the more up-to-date hombrew version of the ncurses terminfo db 
-# (which includes the tmux-255color profile)
-export TERMINFO=/usr/local/opt/ncurses/share/terminfo
+# point to custom terminfo path
+export TERMINFO_DIRS=$TERMINFO_DIRS:$HOME/.local/share/terminfo
