@@ -69,6 +69,8 @@ setopt SHARE_HISTORY
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /usr/local/share/zsh-abbr/zsh-abbr.zsh # for expanding abbreviations in zsh
+
 
 # enable antidote plugin manager
 source /usr/local/opt/antidote/share/antidote/antidote.zsh
@@ -89,9 +91,6 @@ eval "$(zoxide init zsh)"
 
 # source config for fzf
 source ~/.config/fzf/.fzfrc
-
-# load zsh-abbr for expanding abbreviations in zsh 
-source /usr/local/share/zsh-abbr/zsh-abbr.zsh
 
 # Set up wrapper for brew-file package
 if [ -f $(brew --prefix)/etc/brew-wrap ];then
