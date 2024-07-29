@@ -165,7 +165,8 @@ if command -v tmux &>/dev/null; then
   if [ ! -d "${HOME}/.local/share/terminfo" ]; then
     dotfiles_echo "Installing custom terminfo entries..."
     # These entries enable, among other things, italic text in the terminal.
-    /usr/bin/tic -x -o "$HOME/.local/share/terminfo" "${DOTFILES}/terminfo/tmux-256color.terminfo"
+    # From macOS Sonoma, tmux-256color is already included
+    # /usr/bin/tic -x -o "$HOME/.local/share/terminfo" "${DOTFILES}/terminfo/tmux-256color.terminfo"
     /usr/bin/tic -x -o "$HOME/.local/share/terminfo" "${DOTFILES}/terminfo/xterm-256color-italic.terminfo"
   fi
 
