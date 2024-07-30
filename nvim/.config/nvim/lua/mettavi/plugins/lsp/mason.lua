@@ -55,6 +55,7 @@ return {
         "emmet_ls",
         "pyright",
         "bashls", -- uses shellcheck linter installed with brew
+        "taplo", -- toml ls and formatter
         "prettier", -- prettier formatter
         "stylua", -- lua formatter
         "isort", -- python formatter
