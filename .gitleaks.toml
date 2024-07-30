@@ -87,8 +87,6 @@ useDefault = true
 [allowlist]
 description = "global allow list"
 commits = [ "e5f5f0c1f471e4b847f7ec778f5773ec6e17853e", 
-            "8f94d8a8e8f4179926549aaa1e4baaf5c640f4f1", 
-            "8fb3938a9965c854244f707ccc4d6bdb099bfe16",
 ]
 # paths = [
 #   '''gitleaks\.toml''',
