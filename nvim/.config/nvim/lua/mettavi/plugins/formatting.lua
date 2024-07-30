@@ -20,6 +20,7 @@ return {
         lua = { "stylua" },
         python = { "isort", "black" },
         sh = { "shfmt" },
+        toml = { "taplo" },
       },
       format_on_save = {
         lsp_format = "fallback",
