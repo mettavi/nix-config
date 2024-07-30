@@ -86,8 +86,7 @@ useDefault = true
 # # secrets will be detected for said commit. The same logic applies for regexes and paths.
 [allowlist]
 description = "global allow list"
-commits = [ "e5f5f0c1f471e4b847f7ec778f5773ec6e17853e", 
-]
+commits = ["e5f5f0c1f471e4b847f7ec778f5773ec6e17853e"]
 # paths = [
 #   '''gitleaks\.toml''',
 #   '''(.*?)(jpg|gif|doc)'''
