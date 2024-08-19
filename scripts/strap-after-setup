@@ -58,6 +58,10 @@ cp -Rp build/Zeal.app /Applications/
 cd "$DOTFILES/scripts" || exit
 stow --target "$HOME" "$DOTFILES/scripts/zeal"
 
+# Copy file to enable style separator feature in Word 365 for Mac
+cd "$DOTFILES" || exit
+cp ../word/StyleSeparatorForMacAutoText.dotx "$HOME/Library/Group Containers/UBF8T346G9.Office/User Content.localized/Startup.localized/Word/"
+
 # Before configuring pinentry-touchid, configure pinentry-mac to use the Keychain at least once
 sed -i '' -e "s|^pinentry-program.*|pinentry-program $HOMEBREW_PREFIX/bin/pinentry-mac|" "$DOTFILES/gnupg/.gnupg/gpg-agent.conf"
 gpgconf --kill gpg-agent
