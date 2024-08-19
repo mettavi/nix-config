@@ -54,6 +54,7 @@ brew 'zsh-completions'
 brew 'zsh-syntax-highlighting'
 
 tap 'homebrew/cask'
+cask 'brave-browser'
 cask 'dbeaver-community'
 cask 'font-meslo-lg-nerd-font'
 cask 'iterm2'
@@ -61,6 +62,7 @@ cask 'key-codes'
 cask 'macfuse'
 cask 'masscode'
 cask 'mounty'
+cask 'pdf-expert'
 cask 'qlmarkdown'
 cask 'visual-studio-code'
 cask 'xcodes'
@@ -99,7 +101,7 @@ brew 'brew-file'
 tap 'sandreas/tap'
 
 # App Store applications
-mas 'Bitwarden (2024.6.4)', id: 1352778147
+mas 'Bitwarden (2024.7.1)', id: 1352778147
 mas 'Contacts Sync for Google Gmail (8.3.3)', id: 451691288
 mas 'CotEditor (4.8.7)', id: 1024640650
 mas 'Foldor (1.3.1)', id: 1559426624
@@ -111,7 +113,8 @@ mas 'Pages (14.1)', id: 409201541
 mas 'PastePal (2.16.0)', id: 1503446680
 mas 'Patterns (1.3)', id: 429449079
 mas 'PDF Squeezer (4.5.3)', id: 1502111349
+mas 'PDFgear (2.6)', id: 6469021132
 mas 'Snip (1.7)', id: 1527428847
 mas 'Sync Folders Pro (4.7.5)', id: 522706442
-mas 'Tipitaka Pali Reader (2.6.1)', id: 1541426949
+mas 'tipitaka_pali_reader (2.6.4)', id: 1541426949
 mas 'Tomito (2.1.2)', id: 1526042938
