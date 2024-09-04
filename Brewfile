@@ -65,7 +65,6 @@ cask 'mounty'
 cask 'pdf-expert'
 cask 'qlmarkdown'
 cask 'visual-studio-code'
-cask 'whatsapp'
 cask 'xcodes'
 
 tap 'homebrew/bundle'
@@ -102,7 +101,7 @@ brew 'brew-file'
 tap 'sandreas/tap'
 
 # App Store applications
-mas 'Bitwarden (2024.7.1)', id: 1352778147
+mas 'Bitwarden (2024.8.1)', id: 1352778147
 mas 'Contacts Sync for Google Gmail (8.3.3)', id: 451691288
 mas 'CotEditor (4.8.7)', id: 1024640650
 mas 'Foldor (1.3.1)', id: 1559426624
