@@ -10,5 +10,7 @@
     "eslint.codeActionsOnSave.rules": null,
     "editor.fontLigatures": false,
     "terminal.integrated.fontFamily": "MesloLGS Nerd Font Mono",
-    "editor.fontFamily": "MesloLGS Nerd Font Mono, Monaco, 'Courier New', monospace"
+    "editor.fontFamily": "MesloLGS Nerd Font Mono, Monaco, 'Courier New', monospace",
+    "update.mode": "manual",
+    "telemetry.telemetryLevel": "off"
 }
