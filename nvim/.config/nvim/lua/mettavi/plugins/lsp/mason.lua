@@ -42,7 +42,7 @@ return {
     mason_lspconfig.setup({ -- use mason_tool_installer instead to also autoupdate
       -- list of servers for mason to install
       -- ensure_installed = {
-      --   "tsserver",
+      --   "ts_ls",
       --   "html",
       --   "cssls",
       --   "tailwindcss",
@@ -58,7 +58,7 @@ return {
 
     mason_tool_installer.setup({
       ensure_installed = {
-        "tsserver",
+        "ts_ls",
         "html",
         "cssls",
         "tailwindcss",
@@ -88,10 +88,6 @@ return {
     mason_lspconfig.setup_handlers({
       -- default handler for installed servers
       function(server_name)
-        -- https://github.com/neovim/nvim-lspconfig/pull/3232
-        if server_name == "tsserver" then
-          server_name = "ts_ls"
-        end
         lspconfig[server_name].setup({
           capabilities = capabilities,
         })
@@ -149,18 +145,17 @@ return {
           },
         })
       end,
-
-      -- configure typescript server with plugin
-      -- ["tsserver"] = function()
-      --   lspconfig["tsserver"].setup({
-      --     capabilities = capabilities,
-      --     --  settings = {
-      --     --  implicitProjectConfiguration = {
-      --     --  checkJs = true,
-      --     --    },
-      --     --  },
-      -- })
-      -- end,
+      ["ts_ls"] = function()
+        -- configure typescript server with plugin
+        lspconfig["ts_ls"].setup({
+          capabilities = capabilities,
+          --  settings = {
+          --  implicitProjectConfiguration = {
+          --  checkJs = true,
+          --    },
+          --  },
+        })
+      end,
     })
   end,
 }
