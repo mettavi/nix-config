@@ -12,5 +12,6 @@
     "terminal.integrated.fontFamily": "MesloLGS Nerd Font Mono",
     "editor.fontFamily": "MesloLGS Nerd Font Mono, Monaco, 'Courier New', monospace",
     "update.mode": "manual",
-    "telemetry.telemetryLevel": "off"
+    "telemetry.telemetryLevel": "off",
+    "files.autoSave": "afterDelay"
 }
