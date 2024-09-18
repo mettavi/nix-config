@@ -13,5 +13,6 @@
     "editor.fontFamily": "MesloLGS Nerd Font Mono, Monaco, 'Courier New', monospace",
     "update.mode": "manual",
     "telemetry.telemetryLevel": "off",
-    "files.autoSave": "afterDelay"
+    "files.autoSave": "afterDelay",
+    "terminal.integrated.macOptionIsMeta": true
 }
