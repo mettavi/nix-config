@@ -1,4 +1,4 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""               
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
 "               
 "               ██╗   ██╗██╗███╗   ███╗██████╗  ██████╗
 "               ██║   ██║██║████╗ ████║██╔══██╗██╔════╝
@@ -162,6 +162,9 @@ Plug 'preservim/nerdtree'
   Plug 'prabirshrestha/asyncomplete.vim'
   Plug 'prabirshrestha/asyncomplete-lsp.vim'
   
+" Lookup API documentation from devdocs.io without leaving Vim
+  Plug 'girishji/devdocs.vim'
+
 call plug#end()
 
 "--------BUILTIN PLUGINS
@@ -268,6 +271,8 @@ nnoremap <C-t> :NERDTreeToggle<cr>
 " Have nerdtree ignore certain files and directories.
 let NERDTreeIgnore=['\.git$', '\.jpg$', '\.mp4$', '\.ogg$', '\.iso$', '\.pdf$', '\.pyc$', '\.odt$', '\.png$', '\.gif$', '\.db$']
 
+let NERDTreeShowHidden=1
+
 " Commentary Plugin specific mappings
 " Toggle comments with <leader> + /
 noremap <leader>/ :Commentary<cr>
@@ -275,6 +280,12 @@ noremap <leader>/ :Commentary<cr>
 
 " }}}
 
+" Devdocs.vim
+if exists('g:loaded_devdocs')
+    nnoremap <leader>df :DevdocsFind<CR>
+    nnoremap <leader>di :DevdocsInstall<CR>
+    nnoremap <leader>du :DevdocsUninstall<CR>
+endif
 
 " VIMSCRIPT -------------------------------------------------------------- {{{
 
@@ -347,6 +358,7 @@ if has('gui_running')
 endif
 
 " ------Plugin specific vimscript--------
+
 
 "-------------- Enable vim-lsp functionality ----------------
 function! s:on_lsp_buffer_enabled() abort
