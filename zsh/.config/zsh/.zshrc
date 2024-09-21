@@ -87,7 +87,7 @@ eval "$(pyenv init -)"
 eval "$(rbenv init - zsh)"
 
 # ---- Zoxide (better cd) ----
-eval "$(zoxide init zsh)"
+eval "$(zoxide init --cmd cd zsh )"
 
 # source config for fzf
 source ~/.config/fzf/.fzfrc
