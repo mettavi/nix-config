@@ -18,6 +18,10 @@ bindkey -e
 # emulate ctrl-u in bash (ALT-k)
 bindkey "^[k" backward-kill-line
 
+# only match lines from command history with characters already typed
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
+
 # enable zsh widget to send command line to text editor
 autoload -z edit-command-line
 zle -N edit-command-line
