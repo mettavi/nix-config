@@ -38,6 +38,10 @@ fi
 fpath+=$ZDOTDIR/.zfunc
 autoload -Uz compinit && compinit
 
+# Completion styling
+# Show colours in preview when using tab-completion
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
 # disable official git completion in favour of zsh git completion
 # see https://bit.ly/3QXliO8 for details
 \rm -f $HOMEBREW_PREFIX/share/zsh/site-functions/_git
