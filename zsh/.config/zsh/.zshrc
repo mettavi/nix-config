@@ -73,16 +73,15 @@ setopt SHARE_HISTORY
 
 #### LOAD PLUGINS & CONFIGS #### 
 
+# enable antidote plugin manager
+source /usr/local/opt/antidote/share/antidote/antidote.zsh
+antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
+
 # Load zsh plugins
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/share/zsh-abbr/zsh-abbr.zsh # for expanding abbreviations in zsh
-
-
-# enable antidote plugin manager
-source /usr/local/opt/antidote/share/antidote/antidote.zsh
-antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
 
 # source aliases and functions
 [[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
