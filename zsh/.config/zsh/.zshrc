@@ -41,6 +41,8 @@ autoload -Uz compinit && compinit
 # Completion styling
 # Show colours in preview when using tab-completion
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+# Make completion case insensitive
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
 zstyle ':completion:*' menu no
 # preview directory's content with eza when completing cd
