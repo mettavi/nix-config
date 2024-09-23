@@ -46,7 +46,7 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 # force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
 zstyle ':completion:*' menu no
 # preview directory's content with eza when completing cd
-zstyle ':fzf-tab:complete:*' fzf-preview 'eza -1 --color=always $realpath'
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 
 # disable official git completion in favour of zsh git completion
 # see https://bit.ly/3QXliO8 for details
