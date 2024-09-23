@@ -77,7 +77,8 @@ setopt HIST_FIND_NO_DUPS
 # Read and write $HISTFILE for each command
 setopt SHARE_HISTORY
 
-#### LOAD PLUGINS & CONFIGS #### 
+
+#################### LOAD PLUGINS & CONFIGS #################### 
 
 # enable antidote plugin manager
 source /usr/local/opt/antidote/share/antidote/antidote.zsh
@@ -101,6 +102,9 @@ eval "$(rbenv init - zsh)"
 
 # ---- Zoxide (better cd) ----
 eval "$(zoxide init --cmd cd zsh )"
+
+# enable and set custom alias
+eval $(thefuck --alias wtf)
 
 # source config for fzf
 source ~/.config/fzf/.fzfrc
