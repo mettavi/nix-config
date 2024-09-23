@@ -29,6 +29,16 @@ bindkey "^x^e" edit-command-line
 
 ###########  Config zsh completions ############################
 
+# Completion styling (configurations should precede compinit)
+# Show colours in preview when using tab-completion
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+# Make completion case insensitive
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+# force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
+zstyle ':completion:*' menu no
+# preview directory's content with eza when completing cd
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+
 # Update fpath, enable and initialise zsh extensions
 if type brew &>/dev/null; then
   # Additional completion definitions for zsh
@@ -38,15 +48,6 @@ fi
 fpath+=$ZDOTDIR/.zfunc
 autoload -Uz compinit && compinit
 
-# Completion styling
-# Show colours in preview when using tab-completion
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-# Make completion case insensitive
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-# force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
-zstyle ':completion:*' menu no
-# preview directory's content with eza when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 
 # disable official git completion in favour of zsh git completion
 # see https://bit.ly/3QXliO8 for details
