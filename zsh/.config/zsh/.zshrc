@@ -29,7 +29,7 @@ bindkey "^x^e" edit-command-line
 
 ###########  Config zsh completions ############################
 
-# Completion styling (configurations should precede compinit)
+# Completion styling
 # Show colours in preview when using tab-completion
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # Make completion case insensitive
@@ -110,7 +110,7 @@ source ~/.config/fzf/.fzfrc
 # enable antidote plugin manager
 # NB: source the fzf-tab antidote plugin after fzf to avoid problems with ** tab-completion
 source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
-# NB: load directly from within $DOTFILES as the fzf-tab plugin does not work with symlinks
+# NB: load directly from $DOTFILES as the fzf-tab plugin does not work with symlinks
 antidote load ${DOTFILES}/zsh/.config/zsh/.zsh_plugins.txt
 
 # source script which runs 'brew which-formula' on unknown command
