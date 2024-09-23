@@ -109,7 +109,7 @@ source ~/.config/fzf/.fzfrc
 
 # enable antidote plugin manager
 # NB: source the fzf-tab antidote plugin after fzf to avoid problems with ** tab-completion
-source /usr/local/opt/antidote/share/antidote/antidote.zsh
+source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
 antidote load ${ZDOTDIR:-$HOME}/.zsh_plugins.txt
 
 # source script which runs 'brew which-formula' on unknown command
