@@ -1,2 +1,3 @@
 .DS_Store
 bash/.config/bash/.bash_history
+zsh/.config/zsh/.zsh_plugins.zsh
