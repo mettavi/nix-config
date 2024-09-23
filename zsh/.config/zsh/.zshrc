@@ -38,6 +38,8 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' menu no
 # preview directory's content with eza when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+# enable fzf-tab for zoxide in case its alias is no longer cd
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $realpath'
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
 
