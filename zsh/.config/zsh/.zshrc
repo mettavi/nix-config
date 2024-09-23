@@ -104,10 +104,16 @@ eval "$(rbenv init - zsh)"
 eval "$(zoxide init --cmd cd zsh )"
 
 # enable and set custom alias
-eval $(thefuck --alias wtf)
+eval $(thefuck --alias oh)
 
 # source config for fzf
 source ~/.config/fzf/.fzfrc
+
+# source script which runs 'brew which-formula' on unknown command
+HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
+if [ -f "$HB_CNF_HANDLER" ]; then
+source "$HB_CNF_HANDLER";
+fi
 
 # Set up wrapper for brew-file package
 if [ -f $(brew --prefix)/etc/brew-wrap ];then

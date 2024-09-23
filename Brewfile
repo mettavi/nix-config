@@ -68,6 +68,8 @@ cask 'xcodes'
 
 tap 'homebrew/bundle'
 
+tap 'homebrew/command-not-found'
+
 tap 'homebrew/services'
 
 tap 'bell-sw/liberica'
@@ -112,7 +114,7 @@ mas 'Pages (14.2)', id: 409201541
 mas 'PastePal (2.16.3)', id: 1503446680
 mas 'Patterns (1.3)', id: 429449079
 mas 'PDF Squeezer (4.5.3)', id: 1502111349
-mas 'PDFgear (2.7)', id: 6469021132
+mas 'PDFgear (2.8)', id: 6469021132
 mas 'Snip (1.7)', id: 1527428847
 mas 'Sync Folders Pro (4.7.5)', id: 522706442
 mas 'tipitaka_pali_reader (2.6.5)', id: 1541426949
