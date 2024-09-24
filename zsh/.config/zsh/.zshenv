@@ -44,8 +44,5 @@ export EDITOR="nvim"
 # open man pages from terminal with neovim
 export MANPAGER="nvim +Man!"
 
-# enable colorful ls output by default
-export CLICOLOR=1
-
 # point to custom terminfo path
 export TERMINFO_DIRS=$TERMINFO_DIRS:$HOME/.local/share/terminfo
