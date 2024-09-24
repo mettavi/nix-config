@@ -45,10 +45,10 @@ _comp_options+=(globdots)		# Include hidden files.
 # and generate the $LS_COLORS variable
 if whence dircolors >/dev/null; then  # Linux
   eval "$(dircolors -b)"
-  alias ls='ls --color' # sets GNU ls default to color
+  alias ls='ls --color' # sets GNU ls default to show color
 elif whence gdircolors >/dev/null; then  # macOS
   eval "$(gdircolors -b)"  # requires the coreutils package to be installed (eg homebrew)
-  export CLICOLOR=1 # sets macOS ls default to color
+  export CLICOLOR=1 # sets macOS ls default to show color
 else
   echo "No (g)dircolors command found!"
 fi
