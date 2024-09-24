@@ -27,8 +27,7 @@ autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^x^e" edit-command-line
 
-###########  Config zsh completions ############################
-
+####################  Config zsh completions ############################
 
 # Update fpath, enable and initialise zsh extensions
 if type brew &>/dev/null; then
@@ -42,6 +41,17 @@ _comp_options+=(globdots)		# Include hidden files.
 
 # Completion styling
 # Show colours in preview when using tab-completion
+# First check whether OS is Linux or macOS (GNU vs FreeBSD ls commands)
+# and generate the $LS_COLORS variable
+if whence dircolors >/dev/null; then  # Linux
+  eval "$(dircolors -b)"
+  alias ls='ls --color' # sets GNU ls default to color
+elif whence gdircolors >/dev/null; then  # macOS
+  eval "$(gdircolors -b)"  # requires the coreutils package to be installed (eg homebrew)
+  export CLICOLOR=1 # sets macOS ls default to color
+else
+  echo "No (g)dircolors command found!"
+fi
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # Make completion case insensitive
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
@@ -153,3 +163,4 @@ export PATH="/usr/local/opt/mongodb-community@5.0/bin:$PATH"
 # Created by `pipx` on 2023-10-06 14:39:03
 export PATH="$PATH:/Users/timotheos/.local/bin"
 export PATH="/usr/local/opt/libarchive/bin:$PATH"
+
