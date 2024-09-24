@@ -18,7 +18,7 @@ alias gca='git commit -am'
 alias gcam='git commit --amend'
 alias gps="git push"
 alias gpl="git pull"
-alias gls="git log --stat" # generate a diffstat history (insertions/deletions/modifications) per file 
+alias gld="git log --stat" # generate a diffstat history (insertions/deletions/modifications) per file 
 alias glp="git log -p --" # generate a patch history per file
 alias gr="git reset HEAD~"  # undo the most recent commit (or ~1 for most recent plus one etc.)
 alias gd="git diff"
@@ -26,6 +26,7 @@ alias gdc="git diff --cached"
 alias gb="git branch"
 
 # shell aliases
+alias ls='gls --color' # use gnu ls for nicer default colors
 alias l="eza --color=always --long --git --git-ignore --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias ll="eza --color=always --long --all --group --git --icons=always"
 alias lt="eza --color --tree --level=3 --long --icons --git"
@@ -34,7 +35,6 @@ alias tr="trash"
 alias rm="echo 'Use trash instead'"
 
 # launch aliases
-
 alias bash="bash --rcfile $HOME/.config/bash/.bashrc" # Load .bashrc from $XDG_CONFIG_HOME
 # prevent brew forumulae accidentally linking against a pyenv-provided python
 # alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew' 
