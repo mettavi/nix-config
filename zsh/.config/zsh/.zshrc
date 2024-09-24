@@ -51,7 +51,7 @@ if type brew &>/dev/null; then
 fi
 fpath+=$ZDOTDIR/.zfunc
 autoload -Uz compinit && compinit
-
+_comp_options+=(globdots)		# Include hidden files.
 
 # disable official git completion in favour of zsh git completion
 # see https://bit.ly/3QXliO8 for details
