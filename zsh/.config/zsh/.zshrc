@@ -29,6 +29,17 @@ bindkey "^x^e" edit-command-line
 
 ###########  Config zsh completions ############################
 
+
+# Update fpath, enable and initialise zsh extensions
+if type brew &>/dev/null; then
+  # Additional completion definitions for zsh
+  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+  FPATH=$(brew --prefix)/share/zsh-abbr:$FPATH
+fi
+fpath+=$ZDOTDIR/.zfunc
+autoload -Uz compinit && compinit
+_comp_options+=(globdots)		# Include hidden files.
+
 # Completion styling
 # Show colours in preview when using tab-completion
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
@@ -42,16 +53,6 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $realpath'
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
-
-# Update fpath, enable and initialise zsh extensions
-if type brew &>/dev/null; then
-  # Additional completion definitions for zsh
-  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-  FPATH=$(brew --prefix)/share/zsh-abbr:$FPATH
-fi
-fpath+=$ZDOTDIR/.zfunc
-autoload -Uz compinit && compinit
-_comp_options+=(globdots)		# Include hidden files.
 
 # disable official git completion in favour of zsh git completion
 # see https://bit.ly/3QXliO8 for details
