@@ -63,12 +63,11 @@ zstyle ':completion:*:descriptions' format '[%d]'
 # switch group using `<` and `>`
 zstyle ':fzf-tab:*' switch-group '<' '>'
 # preview directory's content with eza when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 # enable fzf-tab for zoxide in case its alias is no longer cd
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $realpath'
 # set different preview windows for files and directories
 # limit this to commands which take file/folder arguments
-cmd_preview=(gls trash rmdir mv cp file cat)
+cmd_preview=(cd gls trash rmdir mv cp file cat)
 for cmd in ${cmd_preview[@]}
 do
   zstyle ":fzf-tab:complete:$cmd:*" fzf-preview 'bat --color=always --style=numbers --line-range=:500 $realpath 2>/dev/null || eza -la --color=always $realpath'
