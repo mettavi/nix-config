@@ -71,6 +71,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
+-- NB: Function uncommented to test staging hunks with gitsigns
 -- Autosave buffer when leaving or losing focus
 -- vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
 --   callback = function()
