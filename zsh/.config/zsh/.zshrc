@@ -67,9 +67,12 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 # enable fzf-tab for zoxide in case its alias is no longer cd
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $realpath'
 # set different preview windows for files and directories
-zstyle ':fzf-tab:complete:*:*' fzf-preview 'zsh -c "if [ -e $realpath -a -d $realpath ]; then ls --color -a $realpath ; fi; \
-  if [ -e $realpath -a -f $realpath ]; then bat --color=always --style=header,grid --line-range :300 $realpath; fi"'
-# zstyle ':fzf-tab:complete:*:*' fzf-preview 'bat --color=always --style=numbers --line-range=:500 $realpath 2>/dev/null || eza -la --color=always $realpath'
+# limit this to commands which take file/folder arguments
+cmd_preview=(gls trash rmdir mv cp file)
+for cmd in ${cmd_preview[@]}
+do
+  zstyle ":fzf-tab:complete:$cmd:*" fzf-preview 'bat --color=always --style=numbers --line-range=:500 $realpath 2>/dev/null || eza -la --color=always $realpath'
+done
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
 
