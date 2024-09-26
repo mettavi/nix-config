@@ -70,7 +70,7 @@ eval "$(pyenv init -)"
 # load rbenv for managing ruby versions
 eval "$(rbenv init - zsh)"
 
-# ---- Zoxide (better cd) ----
+# load zoxide and set its alias
 eval "$(zoxide init --cmd cd zsh )"
 
 # enable and set custom alias
