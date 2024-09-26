@@ -82,7 +82,7 @@ source ~/.config/fzf/.fzfrc
 # enable antidote plugin manager
 # NB: source the fzf-tab antidote plugin after fzf to avoid problems with ** tab-completion
 source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
-# NB: load directly from $DOTFILES as the fzf-tab plugin does not work with symlinks
+# NB: load directly from $DOTFILES as antidote overwrites symlinks
 antidote load ${DOTFILES}/zsh/.config/zsh/.zsh_plugins.txt
 
 # source script which runs 'brew which-formula' on unknown command
