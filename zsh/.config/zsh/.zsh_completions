@@ -47,7 +47,7 @@ done
 zstyle ':completion:*:git-checkout:*' sort false
 # custom fzf flags
 # NB: fzf-tab does not follow FZF_DEFAULT_OPTS
-zstyle ':fzf-tab:*' fzf-flags --color=fg:1,fg+:2 --bind=tab:accept,ctrl-y:preview-up,ctrl-e:preview-down,\
+zstyle ':fzf-tab:*' fzf-flags --border --bind=tab:accept,ctrl-y:preview-up,ctrl-e:preview-down,\
 ctrl-b:preview-page-up,ctrl-f:preview-page-down,\
 ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down,\
 shift-up:preview-top,shift-down:preview-bottom,\
