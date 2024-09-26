@@ -27,61 +27,6 @@ autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^x^e" edit-command-line
 
-####################  Config zsh completions ############################
-
-# Update fpath, enable and initialise zsh extensions
-if type brew &>/dev/null; then
-  # Additional completion definitions for zsh
-  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-  FPATH=$(brew --prefix)/share/zsh-abbr:$FPATH
-fi
-fpath+=$ZDOTDIR/.zfunc
-autoload -Uz compinit && compinit
-_comp_options+=(globdots)		# Include hidden files.
-
-# Completion styling
-# Show colours in preview when using tab-completion
-# First check whether OS is Linux or macOS (GNU vs FreeBSD ls commands)
-# and generate the $LS_COLORS variable
-if whence dircolors >/dev/null; then  # Linux
-  eval "$(dircolors -b)"
-  alias ls='ls --color' # sets GNU ls default to show color
-elif whence gdircolors >/dev/null; then  # macOS
-  eval "$(gdircolors -b)"  # requires the coreutils package to be installed (eg homebrew)
-  export CLICOLOR=1 # sets macOS ls default to show color
-else
-  echo "No (g)dircolors command found!"
-fi
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-# Make completion case insensitive
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-# force zsh not to show completion menu, which allows fzf-tab to capture the unambiguous prefix
-zstyle ':completion:*' menu no
-# set descriptions format to enable group support
-# NB: don't use escape sequences here, fzf-tab will ignore them
-zstyle ':completion:*:descriptions' format '[%d]'
-# switch group using `<` and `>`
-zstyle ':fzf-tab:*' switch-group '<' '>'
-# preview directory's content with eza when completing cd
-# enable fzf-tab for zoxide in case its alias is no longer cd
-zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza -1 --color=always $realpath'
-# set different preview windows for files and directories
-# limit this to commands which take file/folder arguments
-cmd_preview=(cd gls trash rmdir mv cp file cat)
-for cmd in ${cmd_preview[@]}
-do
-  zstyle ":fzf-tab:complete:$cmd:*" fzf-preview 'bat --color=always --style=numbers --line-range=:500 $realpath 2>/dev/null || eza -la --color=always $realpath'
-done
-# disable sort when completing `git checkout`
-zstyle ':completion:*:git-checkout:*' sort false
-
-# disable official git completion in favour of zsh git completion
-# see https://bit.ly/3QXliO8 for details
-\rm -f $HOMEBREW_PREFIX/share/zsh/site-functions/_git
-
-################################################################
-
-
 #### history config #### 
 
 export HISTFILE=$ZDOTDIR/.zsh_history
@@ -114,9 +59,10 @@ source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/share/zsh-abbr/zsh-abbr.zsh # for expanding abbreviations in zsh
 
-# source aliases and functions
+# source additional zsh configurations
 [[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
 [[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
+[[ -f $ZDOTDIR/.zsh_completions ]] && source $ZDOTDIR/.zsh_completions
 
 # load pyenv for managing python versions
 eval "$(pyenv init -)"
