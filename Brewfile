@@ -9,6 +9,7 @@ brew 'bash-completion@2'
 brew 'bat'
 brew 'bats-core'
 brew 'bento4'
+brew 'chafa'
 brew 'cmake'
 brew 'exercism'
 brew 'eza'
@@ -103,7 +104,7 @@ tap 'sandreas/tap'
 # App Store applications
 mas 'Bitwarden (2024.8.2)', id: 1352778147
 mas 'Contacts Sync for Google Gmail (8.3.3)', id: 451691288
-mas 'CotEditor (5.0.0)', id: 1024640650
+mas 'CotEditor (5.0.1)', id: 1024640650
 mas 'Foldor (1.3.1)', id: 1559426624
 mas 'GarageBand (10.4.11)', id: 682658836
 mas 'iMovie (10.4.2)', id: 408981434
@@ -117,4 +118,4 @@ mas 'PDFgear (2.8)', id: 6469021132
 mas 'Snip (1.7)', id: 1527428847
 mas 'Sync Folders Pro (4.7.5)', id: 522706442
 mas 'tipitaka_pali_reader (2.6.5)', id: 1541426949
-mas 'Tomito (2.1.2)', id: 1526042938
+mas 'Tomito (2.1.5)', id: 1526042938
