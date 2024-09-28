@@ -1093,6 +1093,8 @@
 				<key>Red Component</key>
 				<real>0.54852491617202759</real>
 			</dict>
+			<key>Load Shell Integration Automatically</key>
+			<false/>
 			<key>Minimum Contrast</key>
 			<real>0.0</real>
 			<key>Mouse Reporting</key>
