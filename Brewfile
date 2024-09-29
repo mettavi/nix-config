@@ -11,6 +11,7 @@ brew 'bats-core'
 brew 'bento4'
 brew 'chafa'
 brew 'cmake'
+brew 'cmatrix'
 brew 'exercism'
 brew 'eza'
 brew 'fd'
@@ -104,7 +105,7 @@ brew 'brew-file'
 tap 'sandreas/tap'
 
 # App Store applications
-mas 'Bitwarden (2024.8.2)', id: 1352778147
+mas 'Bitwarden (2024.9.0)', id: 1352778147
 mas 'Contacts Sync for Google Gmail (8.3.3)', id: 451691288
 mas 'CotEditor (5.0.1)', id: 1024640650
 mas 'Foldor (1.3.1)', id: 1559426624
