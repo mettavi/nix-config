@@ -46,7 +46,8 @@ setopt HIST_IGNORE_ALL_DUPS
 # History won't show duplicates on search.
 setopt HIST_FIND_NO_DUPS
 
-# Read and write $HISTFILE for each command
+# Read and write $HISTFILE for each command 
+# (implies INC_APPEND_HISTORY and incompatible with EXTENDED_HISTORY)
 setopt SHARE_HISTORY
 
 
