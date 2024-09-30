@@ -77,6 +77,9 @@ eval "$(zoxide init --cmd cd zsh )"
 # enable and set custom alias
 eval $(thefuck --alias oh)
 
+# install the shell plugin for atuin
+eval "$(atuin init zsh)"
+
 # source config for fzf
 source ~/.config/fzf/.fzfrc
 
