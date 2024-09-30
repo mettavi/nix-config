@@ -5,3 +5,6 @@ wulfgarpro/history-sync
 
 # Replace zsh's default completion selection menu with fzf
 Aloxaf/fzf-tab
+
+# Reminds you to use existing aliases for commands you just typed
+MichaelAquilina/zsh-you-should-use
