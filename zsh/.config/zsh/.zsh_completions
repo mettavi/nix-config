@@ -47,7 +47,7 @@ done
 zstyle ':completion:*:git-checkout:*' sort false
 # custom fzf flags
 # NB: fzf-tab does not follow FZF_DEFAULT_OPTS
-# NH: The bindings on the first list follow the fzf defaults
+# NB: The bindings on the first line follow the fzf defaults
 zstyle ':fzf-tab:*' fzf-flags --border --bind=tab:toggle-out,btab:toggle-in,ctrl-space:ignore,\
 ctrl-y:preview-up,ctrl-e:preview-down,\
 ctrl-b:preview-page-up,ctrl-f:preview-page-down,\
