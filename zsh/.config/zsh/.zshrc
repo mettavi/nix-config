@@ -15,7 +15,10 @@ fi
 # use emacs mode despite setting EDITOR to vim
 bindkey -e
 
-# emulate ctrl-u in bash (ALT-k)
+# define duplicate binding (ctrl-alt-k) for kill-line (ctrl-k) for use in tmux
+# which overwrites the default for navigating to pane above
+bindkey "^[^k" kill-line
+# emulate ctrl-u in bash (ALT-k) with alt-k
 bindkey "^[k" backward-kill-line
 
 # only match lines from command history with characters already typed
