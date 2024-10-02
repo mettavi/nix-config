@@ -27,7 +27,7 @@ zshaddhistory() {
 # ------------------------------------------------------------
 atuin-setup() {
   if ! which atuin &> /dev/null; then return 1; fi
-  # bindkey '^[e' _atuin_search_widget
+  bindkey '^[e' atuin-search
 
   export ATUIN_NOBIND="true"
   eval "$(atuin init zsh)"
