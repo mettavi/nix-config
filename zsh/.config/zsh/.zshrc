@@ -63,10 +63,6 @@ source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/share/zsh-abbr/zsh-abbr.zsh # for expanding abbreviations in zsh
 
-# source additional zsh configurations
-[[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
-[[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
-[[ -f $ZDOTDIR/.zsh_completions ]] && source $ZDOTDIR/.zsh_completions
 
 # load pyenv for managing python versions
 eval "$(pyenv init -)"
@@ -107,6 +103,10 @@ if [ -f $(brew --prefix)/etc/brew-wrap ];then
   }
 fi
  
+# source additional zsh configurations
+[[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
+[[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
+[[ -f $ZDOTDIR/.zsh_completions ]] && source $ZDOTDIR/.zsh_completions
 
 # -------- custom PATH entries --------------------------------------
 
