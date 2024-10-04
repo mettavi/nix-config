@@ -11,7 +11,7 @@ alias -g dt="cd ~/.dotfiles"
 alias -g cf="cd ~/.config"
 
 # git aliases
-alias gst="git status"
+# alias gst="git status" # this alias has been converted into an abbreviation with zsh-abbrev plugin
 alias ga="git add"
 alias gc="git commit -m"
 alias gca='git commit -am'
