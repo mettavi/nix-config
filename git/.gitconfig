@@ -40,3 +40,5 @@
 
 [diff]
   colorMoved = default
+[maintenance]
+	repo = /Users/timotheos/.dotfiles
