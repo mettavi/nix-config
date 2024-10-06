@@ -124,3 +124,5 @@ export PATH="/usr/local/opt/mongodb-community@5.0/bin:$PATH"
 export PATH="$PATH:/Users/timotheos/.local/bin"
 export PATH="/usr/local/opt/libarchive/bin:$PATH"
 
+# TODO: Delete this once https://github.com/microsoft/vscode/issues/204085 is fixed
+export PATH="$HOME/.local/bin:$PATH"
