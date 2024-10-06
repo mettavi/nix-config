@@ -63,6 +63,9 @@ source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/local/share/zsh-abbr/zsh-abbr.zsh # for expanding abbreviations in zsh
 
+# source additional zsh configurations
+[[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
+[[ -f $ZDOTDIR/.zsh_completions ]] && source $ZDOTDIR/.zsh_completions # this must be loaded before fzf-tab (via antidote)
 
 # load pyenv for managing python versions
 eval "$(pyenv init -)"
@@ -76,8 +79,8 @@ eval "$(zoxide init --cmd cd zsh )"
 # enable and set custom alias
 eval $(thefuck --alias oh)
 
-# install the shell plugin for atuin
-eval "$(atuin init zsh)"
+# source the config for loading and configuring atuin
+source ~/.config/atuin/.atuinrc
 
 # source config for fzf
 source ~/.config/fzf/.fzfrc
@@ -103,10 +106,8 @@ if [ -f $(brew --prefix)/etc/brew-wrap ];then
   }
 fi
  
-# source additional zsh configurations
-[[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
+# make sure these custom functions are sourced last
 [[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
-[[ -f $ZDOTDIR/.zsh_completions ]] && source $ZDOTDIR/.zsh_completions
 
 # -------- custom PATH entries --------------------------------------
 
