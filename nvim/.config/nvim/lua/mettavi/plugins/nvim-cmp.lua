@@ -23,9 +23,15 @@ return {
     -- friendly-snippets - enable standardized comments snippets
     require("luasnip").filetype_extend("sh", { "shelldoc" })
 
+    -- add vim style up and down navigation to cmp-cmdline with ctrl-k and ctrl-j
+    local cmdline_mappings = cmp.mapping.preset.cmdline({
+      ["<C-j>"] = { c = cmp.mapping.select_next_item() },
+      ["<C-k>"] = { c = cmp.mapping.select_prev_item() },
+    })
+
     -- `/` cmdline setup.
     cmp.setup.cmdline("/", {
-      mapping = cmp.mapping.preset.cmdline(),
+      mapping = cmdline_mappings,
       sources = {
         { name = "buffer" },
       },
@@ -33,10 +39,7 @@ return {
 
     -- `:` cmdline setup.
     cmp.setup.cmdline(":", {
-      mapping = cmp.mapping.preset.cmdline({
-        ["<C-j>"] = { c = cmp.mapping.select_next_item() },
-        ["<C-k>"] = { c = cmp.mapping.select_prev_item() },
-      }),
+      mapping = cmdline_mappings,
       sources = cmp.config.sources({
         { name = "path" },
       }, {
