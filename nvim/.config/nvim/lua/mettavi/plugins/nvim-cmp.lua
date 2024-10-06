@@ -23,27 +23,30 @@ return {
     -- friendly-snippets - enable standardized comments snippets
     require("luasnip").filetype_extend("sh", { "shelldoc" })
 
-        -- `/` cmdline setup.
-    cmp.setup.cmdline('/', {
+    -- `/` cmdline setup.
+    cmp.setup.cmdline("/", {
       mapping = cmp.mapping.preset.cmdline(),
       sources = {
-        { name = 'buffer' }
-      }
+        { name = "buffer" },
+      },
     })
 
-        -- `:` cmdline setup.
-    cmp.setup.cmdline(':', {
-      mapping = cmp.mapping.preset.cmdline(),
+    -- `:` cmdline setup.
+    cmp.setup.cmdline(":", {
+      mapping = cmp.mapping.preset.cmdline({
+        ["<C-j>"] = { c = cmp.mapping.select_next_item() },
+        ["<C-k>"] = { c = cmp.mapping.select_prev_item() },
+      }),
       sources = cmp.config.sources({
-        { name = 'path' }
+        { name = "path" },
       }, {
         {
-          name = 'cmdline',
+          name = "cmdline",
           option = {
-            ignore_cmds = { 'Man', '!' }
-          }
-        }
-      })
+            ignore_cmds = { "Man", "!" },
+          },
+        },
+      }),
     })
 
     cmp.setup({
