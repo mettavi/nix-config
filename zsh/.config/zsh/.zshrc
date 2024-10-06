@@ -79,11 +79,11 @@ eval "$(zoxide init --cmd cd zsh )"
 # enable and set custom alias
 eval $(thefuck --alias oh)
 
-# source the script for loading and configuring atuin
-source ~/.config/atuin/.atuinrc
-
 # source the script for loading and configuring fzf
 source ~/.config/fzf/.fzfrc
+
+# source the script for loading and configuring atuin
+source ~/.config/atuin/.atuinrc
 
 # enable antidote plugin manager
 # NB: source the fzf-tab antidote plugin after fzf to avoid problems with ** tab-completion
