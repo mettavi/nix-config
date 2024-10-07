@@ -1,4 +1,7 @@
 #!/usr/bin/env zsh
+
+# Ref: https://github.com/atuinsh/atuin/issues/68
+
 atuin-setup() {
   if ! which atuin &> /dev/null; then return 1; fi
   bindkey '^[e' atuin-search
