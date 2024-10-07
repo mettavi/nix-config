@@ -1,9 +1,11 @@
 #!/usr/bin/env zsh
 
+# Search shell history with fzf and atuin
 # Ref: https://github.com/atuinsh/atuin/issues/68
 
 atuin-setup() {
   if ! which atuin &> /dev/null; then return 1; fi
+  # bind default atuin to opt-e
   bindkey '^[e' atuin-search
 
   eval "$(atuin init zsh --disable-ctrl-r)"
@@ -12,6 +14,7 @@ atuin-setup() {
     local selected num
     setopt localoptions noglobsubst noposixbuiltins pipefail no_aliases 2>/dev/null
 
+    # Searches max of 5000 commands by default; set ATUIN_LIMIT to change
     # local atuin_opts="--cmd-only --limit ${ATUIN_LIMIT:-5000}"
     local atuin_opts="--cmd-only"
     local fzf_opts=(
@@ -21,6 +24,7 @@ atuin-setup() {
       --tiebreak=index
       "--query=${LBUFFER}"
       "+m"
+      "--bind=alt-up:half-page-up,alt-down:half-page-down"
       '--preview=echo {}'
       "--preview-window=down:3:hidden:wrap"
       "--bind=?:toggle-preview"
@@ -38,6 +42,7 @@ atuin-setup() {
     zle reset-prompt
     return $ret
   }
+  # load and bind widget to ctrl-r
   zle -N fzf-atuin-history-widget
   bindkey '^R' fzf-atuin-history-widget
 }
