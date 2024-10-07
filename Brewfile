@@ -125,7 +125,7 @@ mas 'tipitaka_pali_reader (2.6.5)', id: 1541426949
 mas 'Tomito (2.1.5)', id: 1526042938
 
 # VSCode extensions
-vscode '[1006/181931.119470:ERROR:codesign_util.cc(109)] SecCodeCheckValidity: Error Domain=NSOSStatusErrorDomain Code=-67062 "(null)" (-67062)'
+vscode '[1007/122619.312439:ERROR:codesign_util.cc(109)] SecCodeCheckValidity: Error Domain=NSOSStatusErrorDomain Code=-67062 "(null)" (-67062)'
 vscode 'chrmarti.regex'
 vscode 'dbaeumer.vscode-eslint'
 vscode 'formulahendry.code-runner'
