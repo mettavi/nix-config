@@ -43,3 +43,6 @@ alias nv="nvim"
 alias pip="pip3"
 alias tm="tmux"
 alias tkw="tmux kill-window"
+# search brew for a formula to install a missing package
+# (replaces handler.sh script which runs on every command-not-found)
+alias brew-which="brew which-formula --explain" 

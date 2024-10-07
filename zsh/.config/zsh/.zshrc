@@ -91,12 +91,6 @@ source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
 # NB: load directly from $DOTFILES as antidote overwrites symlinks
 antidote load ${DOTFILES}/zsh/.config/zsh/.zsh_plugins.txt
 
-# source script which runs 'brew which-formula' on unknown command
-HB_CNF_HANDLER="$(brew --repository)/Library/Taps/homebrew/homebrew-command-not-found/handler.sh"
-if [ -f "$HB_CNF_HANDLER" ]; then
-source "$HB_CNF_HANDLER";
-fi
-
 # Set up wrapper for brew-file package
 if [ -f $(brew --prefix)/etc/brew-wrap ];then
   source $(brew --prefix)/etc/brew-wrap
