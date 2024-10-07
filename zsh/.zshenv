@@ -1,3 +1,3 @@
 # Minimal .zshenv to set ZDOTDIR
-ZDOTDIR=~/.config/zsh
+export ZDOTDIR=~/.config/zsh
 source -- "$ZDOTDIR"/.zshenv
