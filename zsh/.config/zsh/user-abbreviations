@@ -1,4 +1,4 @@
 abbr -g "lyb"="learnyoubash"
 abbr "gst"="git status"
 abbr "hw"="echo hello world"
-abbr "drs"="darwin-rebuild switch --flake ~/.config/nix-darwin"
+abbr "drs"="darwin-rebuild switch --flake ~/.dotfiles/nix-darwin"
