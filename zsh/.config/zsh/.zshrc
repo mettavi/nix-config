@@ -92,13 +92,13 @@ source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
 antidote load ${DOTFILES}/zsh/.config/zsh/.zsh_plugins.txt
 
 # Set up wrapper for brew-file package
-if [ -f $(brew --prefix)/etc/brew-wrap ];then
-  source $(brew --prefix)/etc/brew-wrap
-
-  _post_brewfile_update () {
-    echo "Brewfile was updated!"
-  }
-fi
+# if [ -f $(brew --prefix)/etc/brew-wrap ];then
+#   source $(brew --prefix)/etc/brew-wrap
+#
+#   _post_brewfile_update () {
+#     echo "Brewfile was updated!"
+#   }
+# fi
  
 # make sure these custom functions are sourced last
 [[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
