@@ -53,6 +53,11 @@
             ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
           done
               '';
+        
+      system.defaults = {
+        dock.autohide = true;
+      };
+        
       # Auto upgrade nix package and the daemon service.
       services.nix-daemon.enable = true;
       # nix.package = pkgs.nix;
