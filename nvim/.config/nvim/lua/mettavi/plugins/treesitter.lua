@@ -45,6 +45,7 @@ return {
           "c",
           "toml",
           "regex",
+          "nix",
         },
         incremental_selection = {
           enable = true,
