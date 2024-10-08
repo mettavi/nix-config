@@ -30,6 +30,8 @@
         masApps = {
         "Snip" = 1527428847;
         };
+        onActivation.autoUpdate = true;
+        onActivation.upgrade = true;
       };
 
       system.activationScripts.applications.text = let
