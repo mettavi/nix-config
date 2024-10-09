@@ -21,6 +21,9 @@
           pkgs.fastfetch
         ];
 
+      packages.fonts =
+        [];
+        
       homebrew = {
         enable = true; 
         brews = [
