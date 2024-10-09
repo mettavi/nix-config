@@ -35,6 +35,8 @@
         };
         onActivation.autoUpdate = true;
         onActivation.upgrade = true;
+        # zap removes all preferences as well as the program
+        # onActivation.cleanup = "zap";
       };
 
       system.activationScripts.applications.text = let
