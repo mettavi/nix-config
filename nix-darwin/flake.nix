@@ -61,6 +61,7 @@
         
       system.defaults = {
         dock.autohide = true;
+        NSGlobalDomain.KeyRepeat = 2;
       };
         
       # Auto upgrade nix package and the daemon service.
