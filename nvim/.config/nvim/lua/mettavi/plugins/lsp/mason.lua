@@ -58,23 +58,24 @@ return {
 
     mason_tool_installer.setup({
       ensure_installed = {
-        "ts_ls",
-        "html",
-        "cssls",
-        "tailwindcss",
-        "svelte",
-        "lua_ls",
-        "emmet_ls",
-        "pyright",
-        "bashls", -- uses shellcheck linter installed with brew
-        "taplo", -- toml ls and formatter
-        "prettier", -- prettier formatter
-        "stylua", -- lua formatter
+        "ts_ls", -- typescript language server
+        "eslint_d", -- js linter
+        "html", -- HTML language server
+        "cssls", -- CSS language server
+        "tailwindcss", -- tailwind CSS language server
+        "emmet_ls", -- emmet language server (HTML/XML/CSS...)
+        "svelte", -- svelte language server (HTML/CSS/JS)
+        "pyright", -- python language server
+        "pylint", -- python linter
         "isort", -- python formatter
         "black", -- python formatter
-        "pylint", -- python linter
-        "eslint_d", -- js linter
+        "lua_ls", -- lua language server
+        "stylua", -- lua formatter
+        "bashls", -- bash language server, uses shellcheck linter installed with brew
         "shfmt", -- bash formatter
+        "nil_ls", -- nix language server
+        "taplo", -- toml ls and formatter
+        "prettier", -- multi-purpose formatter
       },
       -- if set to true this will check each tool for updates. If updates
       -- are available the tool will be updated. This setting does not
