@@ -104,6 +104,11 @@
 
           # use touchid instead of password
           security.pam.enableSudoTouchIdAuth = true;
+
+          users.users.timotheos = {
+            name = "timotheos";
+            home = "/Users/timotheos";
+          };
         };
     in
     {
