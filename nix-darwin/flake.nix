@@ -22,7 +22,7 @@
           pkgs.nixfmt-rfc-style
         ];
 
-      packages.fonts =
+      fonts.packages =
         [];
         
       homebrew = {
