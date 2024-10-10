@@ -19,6 +19,7 @@
         [ pkgs.cowsay
           pkgs.mkalias
           pkgs.fastfetch
+          pkgs.nixfmt-rfc-style
         ];
 
       packages.fonts =
