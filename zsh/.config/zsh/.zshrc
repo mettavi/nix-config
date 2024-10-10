@@ -35,19 +35,16 @@ bindkey "^x^e" edit-command-line
 export HISTFILE=$ZDOTDIR/.zsh_history
 
 # How many commands zsh will load to memory.
-export HISTSIZE=10000
+export HISTSIZE=100000
 
 # How many commands history will save on file.
-export SAVEHIST=10000
+export SAVEHIST=100000
 
 # Remove command from history if prepended with a space
 setopt HIST_IGNORE_SPACE
 
-# History won't save duplicates.
-setopt HIST_IGNORE_ALL_DUPS
-
-# History won't show duplicates on search.
-setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_ALL_DUPS  # Delete old event if new is dup
+setopt HIST_FIND_NO_DUPS  # Do not display previously found event
 
 # Read and write $HISTFILE for each command 
 # (implies INC_APPEND_HISTORY and incompatible with EXTENDED_HISTORY)
