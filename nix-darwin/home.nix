@@ -1,14 +1,10 @@
-{
-  config,
-  pkgs,
-  ...
-}:
+{ config, pkgs, ... }:
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
 in
 {
   programs.home-manager.enable = true;
-
+  manual.html.enable = true;
   home.username = "timotheos";
   home.homeDirectory = "/Users/timotheos";
   xdg.enable = true;
