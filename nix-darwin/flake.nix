@@ -29,11 +29,13 @@
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
           environment.systemPackages = with pkgs; [
-            cowsay
-            mkalias
-            fastfetch
-            nixfmt-rfc-style
             cargo
+            cowsay
+            fastfetch
+            mkalias
+            nixfmt-rfc-style
+            # for touchid support in tmux (binary is called reattach-to-session-namespace)
+            pam-reattach
           ];
 
           fonts.packages = [ ];
