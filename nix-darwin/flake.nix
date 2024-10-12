@@ -38,9 +38,16 @@
             pam-reattach
           ];
 
+          environment.variables.HOMEBREW_NO_ANALYTICS = "1";
+
+          environment.etc."pam.d/sudo_local".text = ''
+            # Managed by Nix Darwin
+            auth       optional       ${pkgs.pam-reattach}/lib/pam/pam_reattach.so ignore_ssh
+            auth       sufficient     pam_tid.so
+          '';
+
           fonts.packages = [ ];
 
-          environment.variables.HOMEBREW_NO_ANALYTICS = "1";
           homebrew = {
             enable = true;
             brews = [ ];
@@ -100,9 +107,6 @@
 
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = "x86_64-darwin";
-
-          # use touchid instead of password
-          security.pam.enableSudoTouchIdAuth = true;
 
           users.users.timotheos = {
             name = "timotheos";
