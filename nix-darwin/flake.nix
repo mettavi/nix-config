@@ -29,13 +29,24 @@
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
           environment.systemPackages = with pkgs; [
+            atomicparsley
+            bats
             cargo
+            chafa
+            cmatrix
             cowsay
+            exercism
             fastfetch
+            gitleaks
+            mas
             mkalias
             nixfmt-rfc-style
+            ocrmypdf
             # for touchid support in tmux (binary is called reattach-to-session-namespace)
             pam-reattach
+            pipx
+            pnpm
+            zsh-powerlevel10k
           ];
 
           environment.variables.HOMEBREW_NO_ANALYTICS = "1";
