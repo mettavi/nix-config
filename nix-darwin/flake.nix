@@ -118,6 +118,8 @@
           programs.zsh.enable = true; # default shell on catalina
           # programs.fish.enable = true;
 
+          # programs.zsh.promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+
           # The platform the configuration will be used on.
           nixpkgs.hostPlatform = "x86_64-darwin";
 

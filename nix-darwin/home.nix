@@ -31,7 +31,6 @@ in
     qt.enable = true;
     rbenv.enable = true;
     zsh.antidote.enable = true;
-    # programs.zsh.promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
     # tmux = import ../home/tmux.nix { inherit pkgs; };
     # zsh = import ../home/zsh.nix { inherit config pkgs; };
     # #zoxide = (import ../home/zoxide.nix { inherit config pkgs; });
