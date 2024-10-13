@@ -49,6 +49,8 @@
             zsh-powerlevel10k
           ];
 
+          # programs.thefuck.alias = "oh";
+
           environment.variables.HOMEBREW_NO_ANALYTICS = "1";
 
           environment.etc."pam.d/sudo_local".text = ''
