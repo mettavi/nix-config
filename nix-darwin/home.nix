@@ -13,6 +13,8 @@ in
 
   home.stateVersion = "23.11";
 
+  # home.packages = with pkgs; [ ];
+
   programs = {
     aria2.enable = true;
     atuin.enable = true;
