@@ -35,6 +35,10 @@ in
     tmux.tmuxp.enable = true;
     vscode = {
       enable = true;
+      # disallow extensions being installed or updated manually by vscode
+      mutableExtensionsDir = false;
+      enableUpdateCheck = false;
+      enableExtensionUpdateCheck = false;
       extensions = with pkgs.vscode-marketplace; [
         # https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/master/data/cache/vscode-marketplace-latest.json
         dbaeumer.vscode-eslint
