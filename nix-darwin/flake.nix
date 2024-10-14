@@ -82,10 +82,50 @@
 
           homebrew = {
             enable = true;
-            brews = [ ];
-            casks = [ ];
+            taps = [
+              "bell-sw/liberica" # jdk
+              "buo/cask-upgrade" # brew-cask-upgrade
+              "gcenx/wine" # kegworks
+              "gromgit/fuse" # ntfs-3g-mac
+              "homebrew/bundle"
+              "jorgelbg/tap" # pinentry-touchid
+              "rcmdnk/file" # brew-file
+            ];
+            brews = [
+              "brew-file"
+              "ntfs-3g-mac"
+              "pinentry-touchid"
+            ];
+            casks = [
+              "google-drive"
+              {
+                name = "kegworks";
+                args = "no-quarantine";
+              }
+              "liberica-jdk21"
+              "mounty"
+              "masscode"
+              "pdf-expert"
+              "protonvpn"
+              "qlmarkdown"
+              "xcodes"
+            ];
             masApps = {
+              "Contacts Sync for Google Gmail" = 451691288;
+              "CotEditor" = 1024640650;
+              "Foldor" = 1559426624;
+              "GarageBand" = 682658836;
+              "iMovie" = 408981434;
+              "Keynote" = 409183694;
+              "Numbers" = 409203825;
+              "Pages" = 409201541;
+              "PastePal" = 1503446680;
+              "Patterns" = 429449079;
+              "PDF Squeezer" = 1502111349;
+              "PDFgear" = 6469021132;
               "Snip" = 1527428847;
+              "Sync Folders Pro" = 522706442;
+              "tipitaka_pali_reader" = 1541426949;
             };
             onActivation.autoUpdate = true;
             onActivation.upgrade = true;
