@@ -18,7 +18,7 @@
     inputs@{
       self,
       nix-darwin,
-      nixpkgs,
+      # nixpkgs,
       nixpkgs-unstable,
       nix-homebrew,
       home-manager,
