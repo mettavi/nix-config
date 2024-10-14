@@ -166,6 +166,13 @@
           # $ darwin-rebuild changelog
           system.stateVersion = 5;
 
+          services.mongodb = {
+            package = "mongodb-ce";
+            enable = true;
+          };
+
+          services.redis.enable = true;
+
           # Auto upgrade nix package and the daemon service.
           services.nix-daemon.enable = true;
           # nix.package = pkgs.nix;
