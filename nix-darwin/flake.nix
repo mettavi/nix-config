@@ -225,6 +225,8 @@
             home-manager.useUserPackages = true;
             home-manager.users.timotheos = import ./home.nix;
           }
+          # enable the default overlay from nix-vscode-extensions
+          # to make more vscode extensions available
           { nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ]; }
         ];
       };
