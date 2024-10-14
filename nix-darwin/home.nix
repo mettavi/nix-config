@@ -33,6 +33,17 @@ in
     thefuck.enable = true;
     tmux.enable = true;
     tmux.tmuxp.enable = true;
+    vscode = {
+      enable = true;
+      extensions = with pkgs.vscode-marketplace; [
+        # https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/master/data/cache/vscode-marketplace-latest.json
+        dbaeumer.vscode-eslint
+        formulahendry.code-runner
+        ms-vscode-remote.remote-containers
+        ritwickdey.liveserver
+      ] ++ (with pkgs.open-vsx; [
+        # https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/master/data/cache/open-vsx-latest.json
+        ]);
     yt-dlp.enable = true;
     zsh.antidote.enable = true;
     zsh.zsh-abbr.enable = true;
