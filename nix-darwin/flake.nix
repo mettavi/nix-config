@@ -36,14 +36,21 @@
           environment.systemPackages = with pkgs; [
             atomicparsley
             bats
+            bitwarden-desktop
+            brave
             cargo
             chafa
             cmatrix
             cowsay
+            darwin.trash
             exercism
             fastfetch
+            ffmpeg
             gitleaks
+            iterm2
+            macfuse-stubs
             mas
+            meslo-lgs-nf
             mkalias
             nixfmt-rfc-style
             ocrmypdf
@@ -51,7 +58,14 @@
             pam-reattach
             pipx
             pnpm
+            shellcheck
+            texinfo # to read info files
+            tldr
+            tree
+            wget
+            xcodes
             zsh-powerlevel10k
+            zsh-completions
           ];
 
           # programs.thefuck.alias = "oh";
