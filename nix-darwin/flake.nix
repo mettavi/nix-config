@@ -163,6 +163,7 @@
             home-manager.useUserPackages = true;
             home-manager.users.timotheos = import ./home.nix;
           }
+          { nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ]; }
         ];
       };
 
