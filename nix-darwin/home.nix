@@ -30,7 +30,14 @@ in
     pyenv.enable = true;
     qt.enable = true;
     rbenv.enable = true;
+    thefuck.enable = true;
+    tmux.enable = true;
+    tmux.tmuxp.enable = true;
+    yt-dlp.enable = true;
     zsh.antidote.enable = true;
+    zsh.zsh-abbr.enable = true;
+    zoxide.enable = true;
+    zsh-syntax-highlighting = true;
     # tmux = import ../home/tmux.nix { inherit pkgs; };
     # zsh = import ../home/zsh.nix { inherit config pkgs; };
     # #zoxide = (import ../home/zoxide.nix { inherit config pkgs; });
