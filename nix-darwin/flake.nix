@@ -9,6 +9,10 @@
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     home-manager.url = "github:nix-community/home-manager/release-24.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
   outputs =
     inputs@{
@@ -18,6 +22,7 @@
       nixpkgs-unstable,
       nix-homebrew,
       home-manager,
+      nix-vscode-extensions,
     }:
     let
       configuration =
