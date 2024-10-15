@@ -34,10 +34,9 @@
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
           environment.systemPackages = with pkgs; [
+            # packages
             atomicparsley
             bats
-            bitwarden-desktop
-            brave
             cargo
             chafa
             cmatrix
@@ -47,15 +46,13 @@
             fastfetch
             ffmpeg
             gitleaks
-            iterm2
             macfuse-stubs
             mas
             meslo-lgs-nf
             mkalias
             nixfmt-rfc-style
             ocrmypdf
-            # for touchid support in tmux (binary is called reattach-to-session-namespace)
-            pam-reattach
+            pam-reattach # for touchid support in tmux (binary is called reattach-to-session-namespace)
             pipx
             pnpm
             shellcheck
@@ -66,6 +63,26 @@
             xcodes
             zsh-powerlevel10k
             zsh-completions
+
+            # GUI apps
+            anki
+            appcleaner
+            bitwarden-desktop
+            brave
+            calibre
+            djview
+            google-chrome
+            grandperspective
+            iina
+            iterm2
+            karabiner-elements
+            keka
+            obsidian
+            picard
+            transmission_4
+            vlc-bin-universal
+            zeal-qt6
+            zoom-us
           ];
 
           # programs.thefuck.alias = "oh";
@@ -97,22 +114,37 @@
               "pinentry-touchid"
             ];
             casks = [
+              "abbyy-finereader-pdf"
+              "adobe-digital-editions"
+              "carbon-copy-cloner"
+              "coteditor"
               "google-drive"
               {
                 name = "kegworks";
                 args = "no-quarantine";
               }
+              "isyncr"
+              "kid3"
               "liberica-jdk21"
               "mounty"
               "masscode"
+              "microsoft-excel"
+              "microsoft-onenote"
+              "microsoft-powerpoint"
+              "microsoft-word"
               "pdf-expert"
+              "plex-media-server"
               "protonvpn"
               "qlmarkdown"
+              "syncmate"
+              "tor-browser"
+              "typora"
+              "vmware-fusion"
               "xcodes"
+              "zotero"
             ];
             masApps = {
               "Contacts Sync for Google Gmail" = 451691288;
-              "CotEditor" = 1024640650;
               "Foldor" = 1559426624;
               "GarageBand" = 682658836;
               "iMovie" = 408981434;
