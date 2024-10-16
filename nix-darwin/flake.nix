@@ -220,14 +220,18 @@
             # onActivation.cleanup = "zap";
           };
 
-          services.mongodb = {
-            package = "mongodb-ce";
-            enable = true;
-          };
-
-          services.postgresql = {
-            enable = true;
-            dataDir = /usr/local/var/postgres;
+          services = {
+            mongodb = {
+              enable = true;
+              package = "mongodb-ce-6_0";
+            };
+            postgresql = {
+              enable = true;
+              dataDir = /usr/local/var/postgres;
+            };
+            redis = {
+              enable = true;
+            };
           };
 
           launchd.user.agents = {
@@ -239,8 +243,6 @@
               };
             };
           };
-
-          services.redis.enable = true;
 
           # Create /etc/zshrc that loads the nix-darwin environment.
           programs.zsh.enable = true; # default shell on catalina
