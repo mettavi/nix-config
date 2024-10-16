@@ -29,6 +29,19 @@
         { pkgs, config, ... }:
         {
 
+          nix = {
+            package = pkgs.nix;
+            gc.automatic = true;
+            optimise.automatic = true;
+            settings = {
+              auto-optimise-store = true;
+              experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
+            };
+          };
+
           nixpkgs.config.allowUnfree = true;
 
           # List packages installed in system profile. To search by name, run:
@@ -207,20 +220,6 @@
 
           # Auto upgrade nix package and the daemon service.
           services.nix-daemon.enable = true;
-          # nix.package = pkgs.nix;
-
-          nix = {
-            package = pkgs.nix;
-            gc.automatic = true;
-            optimise.automatic = true;
-            settings = {
-              auto-optimise-store = true;
-              experimental-features = [
-                "nix-command"
-                "flakes"
-              ];
-            };
-          };
 
           # Create /etc/zshrc that loads the nix-darwin environment.
           programs.zsh.enable = true; # default shell on catalina
