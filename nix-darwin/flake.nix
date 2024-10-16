@@ -45,7 +45,15 @@
           # Auto upgrade the nix daemon service.
           services.nix-daemon.enable = true;
 
+          # The platform the configuration will be used on.
+          nixpkgs.hostPlatform = "x86_64-darwin";
+
           nixpkgs.config.allowUnfree = true;
+
+          users.users.timotheos = {
+            name = "timotheos";
+            home = "/Users/timotheos";
+          };
 
           # Set Git commit hash for darwin-version.
           system.configurationRevision = self.rev or self.dirtyRev or null;
@@ -228,13 +236,6 @@
           # programs.zsh.promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
           programs.zsh.autosuggestions.enable = true;
 
-          # The platform the configuration will be used on.
-          nixpkgs.hostPlatform = "x86_64-darwin";
-
-          users.users.timotheos = {
-            name = "timotheos";
-            home = "/Users/timotheos";
-          };
         };
     in
     {
