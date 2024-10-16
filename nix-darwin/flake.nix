@@ -150,8 +150,6 @@
             zoom-us
           ];
 
-          # programs.thefuck.alias = "oh";
-
           fonts.packages = [ ];
 
           homebrew = {
@@ -235,6 +233,8 @@
 
           # programs.zsh.promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
           programs.zsh.autosuggestions.enable = true;
+
+          # programs.thefuck.alias = "oh";
 
         };
     in
