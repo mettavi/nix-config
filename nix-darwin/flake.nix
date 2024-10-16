@@ -225,6 +225,21 @@
             enable = true;
           };
 
+          services.postgresql = {
+            enable = true;
+            dataDir = /usr/local/var/postgres;
+          };
+
+          launchd.user.agents = {
+            postgresql = {
+              serviceConfig = {
+                # only start the service on demand
+                KeepAlive = false;
+                RunAtLoad = false;
+              };
+            };
+          };
+
           services.redis.enable = true;
 
           # Create /etc/zshrc that loads the nix-darwin environment.
