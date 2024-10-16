@@ -47,6 +47,14 @@
 
           nixpkgs.config.allowUnfree = true;
 
+          environment.variables.HOMEBREW_NO_ANALYTICS = "1";
+
+          environment.etc."pam.d/sudo_local".text = ''
+            # Managed by Nix Darwin
+            auth       optional       ${pkgs.pam-reattach}/lib/pam/pam_reattach.so ignore_ssh
+            auth       sufficient     pam_tid.so
+          '';
+
           # List packages installed in system profile. To search by name, run:
           # $ nix-env -qaP | grep wget
           environment.systemPackages = with pkgs; [
@@ -102,14 +110,6 @@
           ];
 
           # programs.thefuck.alias = "oh";
-
-          environment.variables.HOMEBREW_NO_ANALYTICS = "1";
-
-          environment.etc."pam.d/sudo_local".text = ''
-            # Managed by Nix Darwin
-            auth       optional       ${pkgs.pam-reattach}/lib/pam/pam_reattach.so ignore_ssh
-            auth       sufficient     pam_tid.so
-          '';
 
           fonts.packages = [ ];
 
