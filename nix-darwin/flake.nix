@@ -42,10 +42,17 @@
             };
           };
 
-          # Auto upgrade the daemon service.
+          # Auto upgrade the nix daemon service.
           services.nix-daemon.enable = true;
 
           nixpkgs.config.allowUnfree = true;
+
+          # Set Git commit hash for darwin-version.
+          system.configurationRevision = self.rev or self.dirtyRev or null;
+
+          # Used for backwards compatibility, please read the changelog before changing.
+          # $ darwin-rebuild changelog
+          system.stateVersion = 5;
 
           environment.variables.HOMEBREW_NO_ANALYTICS = "1";
 
@@ -206,13 +213,6 @@
             dock.autohide = true;
             NSGlobalDomain.KeyRepeat = 2;
           };
-
-          # Set Git commit hash for darwin-version.
-          system.configurationRevision = self.rev or self.dirtyRev or null;
-
-          # Used for backwards compatibility, please read the changelog before changing.
-          # $ darwin-rebuild changelog
-          system.stateVersion = 5;
 
           services.mongodb = {
             package = "mongodb-ce";
