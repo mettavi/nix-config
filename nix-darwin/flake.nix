@@ -242,6 +242,13 @@
                 RunAtLoad = false;
               };
             };
+            mongodb = {
+              serviceConfig = {
+                # only start the service on demand
+                KeepAlive = false;
+                RunAtLoad = false;
+              };
+            };
           };
 
           # Create /etc/zshrc that loads the nix-darwin environment.
