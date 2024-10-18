@@ -116,6 +116,7 @@
             # meslo-lgs-nf
             mkalias
             nixfmt-rfc-style
+            node2nix
             # ocrmypdf
             pam-reattach # for touchid support in tmux (binary is called reattach-to-session-namespace)
             # pipx
