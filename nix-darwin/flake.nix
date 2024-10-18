@@ -100,54 +100,54 @@
           # $ nix-env -qaP | grep wget
           environment.systemPackages = with pkgs; [
             # packages
-            atomicparsley
-            bats
+            # atomicparsley
+            # bats
             cargo
-            chafa
-            cmatrix
+            # chafa
+            # cmatrix
             cowsay
-            darwin.trash
-            exercism
+            # darwin.trash
+            # exercism
             fastfetch
-            ffmpeg
-            gitleaks
-            macfuse-stubs
-            mas
-            meslo-lgs-nf
+            # ffmpeg
+            # gitleaks
+            # macfuse-stubs
+            # mas
+            # meslo-lgs-nf
             mkalias
             nixfmt-rfc-style
-            ocrmypdf
+            # ocrmypdf
             pam-reattach # for touchid support in tmux (binary is called reattach-to-session-namespace)
-            pipx
-            pnpm
-            shellcheck
-            texinfo # to read info files
-            tldr
-            tree
-            wget
-            xcodes
-            zsh-powerlevel10k
-            zsh-completions
+            # pipx
+            # pnpm
+            # shellcheck
+            # texinfo # to read info files
+            # tldr
+            # tree
+            # wget
+            # xcodes
+            # zsh-powerlevel10k
+            # zsh-completions
 
             # GUI apps
-            anki
-            appcleaner
-            bitwarden-desktop
-            brave
-            calibre
-            djview
-            google-chrome
-            grandperspective
-            iina
-            iterm2
-            karabiner-elements
-            keka
-            obsidian
-            picard
-            transmission_4
-            vlc-bin-universal
-            zeal-qt6
-            zoom-us
+            # anki
+            # appcleaner
+            # bitwarden-desktop
+            # brave
+            # calibre
+            # djview
+            # google-chrome
+            # grandperspective
+            # iina
+            # iterm2
+            # karabiner-elements
+            # keka
+            # obsidian
+            # picard
+            # transmission_4
+            # vlc-bin-universal
+            # zeal-qt6
+            # zoom-us
           ];
 
           fonts.packages = [ ];
@@ -155,64 +155,64 @@
           homebrew = {
             enable = true;
             taps = [
-              "bell-sw/liberica" # jdk
-              "buo/cask-upgrade" # brew-cask-upgrade
-              "gcenx/wine" # kegworks
-              "gromgit/fuse" # ntfs-3g-mac
-              "homebrew/bundle"
-              "jorgelbg/tap" # pinentry-touchid
-              "rcmdnk/file" # brew-file
+              # "bell-sw/liberica" # jdk
+              # "buo/cask-upgrade" # brew-cask-upgrade
+              # "gcenx/wine" # kegworks
+              # "gromgit/fuse" # ntfs-3g-mac
+              # "homebrew/bundle"
+              # "jorgelbg/tap" # pinentry-touchid
+              # "rcmdnk/file" # brew-file
             ];
             brews = [
-              "brew-file"
-              "ntfs-3g-mac"
-              "pinentry-touchid"
+              # "brew-file"
+              # "ntfs-3g-mac"
+              # "pinentry-touchid"
             ];
             casks = [
-              "abbyy-finereader-pdf"
-              "adobe-digital-editions"
-              "carbon-copy-cloner"
-              "coteditor"
-              "google-drive"
-              {
-                name = "kegworks";
-                args = "no-quarantine";
-              }
-              "isyncr"
-              "kid3"
-              "liberica-jdk21"
-              "mounty"
-              "masscode"
-              "microsoft-excel"
-              "microsoft-onenote"
-              "microsoft-powerpoint"
-              "microsoft-word"
-              "pdf-expert"
-              "plex-media-server"
-              "protonvpn"
-              "qlmarkdown"
-              "syncmate"
-              "tor-browser"
-              "typora"
-              "vmware-fusion"
-              "xcodes"
-              "zotero"
+              # "abbyy-finereader-pdf"
+              # "adobe-digital-editions"
+              # "carbon-copy-cloner"
+              # "coteditor"
+              # "google-drive"
+              # {
+              #   name = "kegworks";
+              #   args = "no-quarantine";
+              # }
+              # "isyncr"
+              # "kid3"
+              # "liberica-jdk21"
+              # "mounty"
+              # "masscode"
+              # "microsoft-excel"
+              # "microsoft-onenote"
+              # "microsoft-powerpoint"
+              # "microsoft-word"
+              # "pdf-expert"
+              # "plex-media-server"
+              # "protonvpn"
+              # "qlmarkdown"
+              # "syncmate"
+              # "tor-browser"
+              # "typora"
+              # "vmware-fusion"
+              # "xcodes"
+              # "zotero"
             ];
             masApps = {
-              "Contacts Sync for Google Gmail" = 451691288;
-              "Foldor" = 1559426624;
-              "GarageBand" = 682658836;
-              "iMovie" = 408981434;
-              "Keynote" = 409183694;
-              "Numbers" = 409203825;
-              "Pages" = 409201541;
-              "PastePal" = 1503446680;
-              "Patterns" = 429449079;
-              "PDF Squeezer" = 1502111349;
-              "PDFgear" = 6469021132;
+              # "Contacts Sync for Google Gmail" = 451691288;
+              # "Foldor" = 1559426624;
+              # "GarageBand" = 682658836;
+              # "iMovie" = 408981434;
+              # "Keynote" = 409183694;
+              # "Numbers" = 409203825;
+              # "Pages" = 409201541;
+              # "PastePal" = 1503446680;
+              # "Patterns" = 429449079;
+              # "PDF Squeezer" = 1502111349;
+              # "PDFgear" = 6469021132;
               "Snip" = 1527428847;
-              "Sync Folders Pro" = 522706442;
-              "tipitaka_pali_reader" = 1541426949;
+              # "Sync Folders Pro" = 522706442;
+              # "tipitaka_pali_reader" = 1541426949;
             };
             onActivation.autoUpdate = true;
             onActivation.upgrade = true;
@@ -221,42 +221,42 @@
           };
 
           services = {
-            mongodb = {
-              enable = true;
-              package = "mongodb-ce-6_0";
-            };
-            postgresql = {
-              enable = true;
-              dataDir = /usr/local/var/postgres;
-            };
-            redis = {
-              enable = true;
-            };
+            #   mongodb = {
+            #     enable = true;
+            #     package = "mongodb-ce-6_0";
+            #   };
+            #   postgresql = {
+            #     enable = true;
+            #     dataDir = /usr/local/var/postgres;
+            #   };
+            #   redis = {
+            #     enable = true;
+            #   };
           };
 
           launchd.user.agents = {
-            postgresql = {
-              serviceConfig = {
-                # only start the service on demand
-                KeepAlive = false;
-                RunAtLoad = false;
-              };
-            };
-            mongodb = {
-              serviceConfig = {
-                # only start the service on demand
-                KeepAlive = false;
-                RunAtLoad = false;
-              };
-            };
+            #   postgresql = {
+            #     serviceConfig = {
+            #       # only start the service on demand
+            #       KeepAlive = false;
+            #       RunAtLoad = false;
+            #     };
+            # };
+            # mongodb = {
+            #   serviceConfig = {
+            #     # only start the service on demand
+            #     KeepAlive = false;
+            #     RunAtLoad = false;
+            #   };
+            # };
           };
 
           # Create /etc/zshrc that loads the nix-darwin environment.
-          programs.zsh.enable = true; # default shell on catalina
+          # programs.zsh.enable = true; # default shell on catalina
           # programs.fish.enable = true;
 
           # programs.zsh.promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-          programs.zsh.autosuggestions.enable = true;
+          # programs.zsh.autosuggestions.enable = true;
 
           # programs.thefuck.alias = "oh";
 
