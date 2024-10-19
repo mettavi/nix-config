@@ -138,6 +138,7 @@
             # calibre
             # djview
             # google-chrome
+            # goldendict-ng is currently only available for linux
             # grandperspective
             # iina
             # iterm2
