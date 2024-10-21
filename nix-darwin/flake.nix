@@ -57,6 +57,8 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.timotheos = import ./home.nix;
+            # Optionally, use home-manager.extraSpecialArgs to pass
+            # arguments to home.nix
           }
           # enable the default overlay from nix-vscode-extensions
           # to make more vscode extensions available
