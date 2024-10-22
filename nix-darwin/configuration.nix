@@ -81,7 +81,7 @@
     # bats
     cargo
     # chafa
-    # cmatrix
+    cmatrix
     cowsay
     # darwin.trash
     # exercism
