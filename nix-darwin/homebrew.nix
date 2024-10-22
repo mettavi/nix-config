@@ -11,10 +11,11 @@
     user = "timotheos";
 
     # Optional: Declarative tap management
+    # You only need to add taps as Flake inputs if you set nix-homebrew.mutableTaps = false.
     taps = {
       # the repo part of all taps should have "homebrew-" prepended
-      "homebrew/homebrew-core" = inputs.homebrew-core;
-      "homebrew/homebrew-cask" = inputs.homebrew-cask;
+      # "homebrew/homebrew-core" = inputs.homebrew-core;
+      # "homebrew/homebrew-cask" = inputs.homebrew-cask;
       # "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
     };
 
