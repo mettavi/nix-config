@@ -95,7 +95,7 @@
     nixfmt-rfc-style
     node2nix
     # ocrmypdf
-    pam-reattach # for touchid support in tmux (binary is called reattach-to-session-namespace)
+    pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
     # pipx
     # pnpm
     # shellcheck
