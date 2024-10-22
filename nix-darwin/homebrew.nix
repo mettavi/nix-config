@@ -12,6 +12,7 @@
 
     # Optional: Declarative tap management
     taps = {
+      # the repo part of all taps should have "homebrew-" prepended
       "homebrew/homebrew-core" = inputs.homebrew-core;
       "homebrew/homebrew-cask" = inputs.homebrew-cask;
       # "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
