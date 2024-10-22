@@ -76,7 +76,7 @@
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [
-    # packages
+    # PACKAGES
     # atomicparsley
     # bats
     cargo
@@ -107,7 +107,7 @@
     # zsh-powerlevel10k
     # zsh-completions
 
-    # GUI apps
+    # GUI APPS
     # anki
     # appcleaner
     # bitwarden-desktop
