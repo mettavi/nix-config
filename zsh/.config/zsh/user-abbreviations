@@ -1,5 +1,5 @@
 abbr -g "lyb"="learnyoubash"
 abbr "gst"="git status"
 abbr "hw"="echo hello world"
-abbr -g "sw"="darwin-rebuild switch --flake ~/.dotfiles/nix-darwin"
+abbr -g "sw"="darwin-rebuild switch --flake ~/.dotfiles/nix-darwin &| nom"
 abbr "flup"="nix flake update --flake ~/.dotfiles/nix-darwin"
