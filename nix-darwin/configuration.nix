@@ -93,6 +93,7 @@
     # meslo-lgs-nf
     mkalias
     nixfmt-rfc-style
+    nix-output-monitor
     node2nix
     # ocrmypdf
     pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
