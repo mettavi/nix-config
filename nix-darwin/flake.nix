@@ -26,6 +26,7 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    nh_darwin.url = "github:ToyVo/nh_darwin";
   };
   outputs =
     inputs@{
@@ -39,6 +40,7 @@
       # homebrew-bundle,
       home-manager,
       nix-vscode-extensions,
+      nh_darwin,
     }:
     {
       # Build darwin flake using:
@@ -64,6 +66,7 @@
           # enable the default overlay from nix-vscode-extensions
           # to make more vscode extensions available
           { nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ]; }
+          nh_darwin.nixDarwinModules.prebuiltin
         ];
       };
 
