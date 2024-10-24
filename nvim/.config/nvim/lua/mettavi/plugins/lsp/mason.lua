@@ -73,7 +73,6 @@ return {
         "stylua", -- lua formatter
         "bashls", -- bash language server, uses shellcheck linter installed with brew
         "shfmt", -- bash formatter
-        "nil_ls", -- nix language server
         "taplo", -- toml ls and formatter
         "prettier", -- multi-purpose formatter
       },
