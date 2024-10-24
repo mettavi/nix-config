@@ -94,7 +94,7 @@
     # meslo-lgs-nf
     mkalias
     nixfmt-rfc-style
-    nixd #nix language server
+    nixd # nix language server
     node2nix
     # ocrmypdf
     pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
