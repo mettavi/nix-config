@@ -9,15 +9,6 @@ return {
   config = function()
     local keymap = vim.keymap -- for conciseness
 
-    -- -- import lspconfig plugin
-    -- require("lspconfig")
-    --
-    -- -- import cmp-nvim-lsp plugin
-    -- local cmp_nvim_lsp = require("cmp_nvim_lsp")
-    --
-    -- -- used to enable autocompletion (assign to every lsp server config)
-    -- local capabilities = cmp_nvim_lsp.default_capabilities()
-
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("UserLspConfig", {}),
       callback = function(ev)
@@ -74,31 +65,5 @@ return {
       local hl = "DiagnosticSign" .. type
       vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
     end
-
-    -- -- nixd language server configuration (not installed with mason)
-    -- local nvim_lsp = require("lspconfig")
-    -- nvim_lsp.nixd.setup({
-    --   capabilities = capabilities,
-    --   cmd = { "nixd" },
-    --   settings = {
-    --     nixd = {
-    --       nixpkgs = {
-    --         expr = "import <nixpkgs> { }",
-    --       },
-    --       formatting = {
-    --         command = { "nixfmt" },
-    --       },
-    --       options = {
-    --         darwin = {
-    --           expr = '(builtins.getFlake "/Users/timotheos/.dotfiles/nix-darwin").darwinConfigurations.MVs-MBP.options',
-    --         },
-    --         -- nixd cannot get home-manager options when installed as a nix-darwin module
-    --         -- home_manager = {
-    --         --   expr = '(builtins.getFlake  "/Users/timotheos/.dotfiles/nix-darwin").homeConfigurations."timotheos@MVs-MBP".options',
-    --         -- },
-    --       },
-    --     },
-    --   },
-    -- })
   end,
 }
