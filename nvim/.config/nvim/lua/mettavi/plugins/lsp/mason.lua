@@ -157,6 +157,29 @@ return {
           --  },
         })
       end,
+      lspconfig.nixd.setup({
+        capabilities = capabilities,
+        cmd = { "nixd" },
+        settings = {
+          nixd = {
+            nixpkgs = {
+              expr = "import <nixpkgs> { }",
+            },
+            formatting = {
+              command = { "nixfmt" },
+            },
+            options = {
+              darwin = {
+                expr = '(builtins.getFlake "/Users/timotheos/.dotfiles/nix-darwin").darwinConfigurations.MVs-MBP.options',
+              },
+              -- nixd cannot get home-manager options when installed as a nix-darwin module
+              -- home_manager = {
+              --   expr = '(builtins.getFlake  "/Users/timotheos/.dotfiles/nix-darwin").homeConfigurations."timotheos@MVs-MBP".options',
+              -- },
+            },
+          },
+        },
+      }),
     })
   end,
 }
