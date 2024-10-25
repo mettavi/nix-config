@@ -15,7 +15,8 @@ return {
     -- import lspconfig plugin
     local lspconfig = require("lspconfig")
 
-    -- used to enable autocompletion (assign to every lsp server config)
+    -- enable autocompletion via nvim-cmp (assign to every lsp server config)
+    -- by extending the cpabilities of lsp/neovim with nvim-cmp
     local capabilities = cmp_nvim_lsp.default_capabilities()
 
     -- import mason
