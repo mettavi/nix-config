@@ -9,7 +9,7 @@
   nix = {
     package = pkgs.nix;
     gc.automatic = true;
-    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+    nixPath = [ "nixpkgs=${inputs.nixpkgs-unstable}" ];
     optimise.automatic = true;
     settings = {
       auto-optimise-store = true;
