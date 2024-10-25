@@ -1,5 +1,5 @@
 return {
-  "hrsh7th/nvim-cmp",
+  "hrsh7th/nvim-cmp", -- provides autocompletion (default omnifunc is not automatic)
   event = "InsertEnter",
   dependencies = {
     "hrsh7th/cmp-buffer", -- source for text in buffer
