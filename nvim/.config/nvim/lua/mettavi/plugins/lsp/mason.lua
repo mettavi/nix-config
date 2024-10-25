@@ -190,6 +190,7 @@ return {
                 expr = '(builtins.getFlake "/Users/timotheos/.dotfiles/nix-darwin").darwinConfigurations.MVs-MBP.options',
               },
               -- nixd cannot get home-manager options when installed as a nix-darwin module
+              -- ( See https://github.com/nix-community/nixd/issues/608 )
               -- home_manager = {
               --   expr = '(builtins.getFlake  "/Users/timotheos/.dotfiles/nix-darwin").homeConfigurations."timotheos@MVs-MBP".options',
               -- },
