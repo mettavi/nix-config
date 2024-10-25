@@ -19,6 +19,31 @@ return {
     -- by extending the cpabilities of lsp/neovim with nvim-cmp
     local capabilities = cmp_nvim_lsp.default_capabilities()
 
+    -- code to run when lsp attaches to buffer (assign to everyl lsp server config)
+    local on_attach = function(client, bufnr)
+      -- inlay hints (experimental), need to turn it on manually
+      local function buf_command(...)
+        vim.api.nvim_buf_create_user_command(bufnr, ...)
+      end
+      if client.server_capabilities.inlayHintProvider and vim.fn.has("nvim-0.10") > 0 then
+        local inlay = function(enable)
+          if enable == "toggle" then
+            enable = not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
+          end
+          vim.lsp.inlay_hint.enable(enable, { bufnr = bufnr })
+        end
+        vim.api.nvim_create_user_command("ToggleInlayHints", "InlayHintsToggle", {})
+        buf_command("InlayHintsToggle", function(_)
+          inlay("toggle")
+        end, { nargs = 0, desc = "Toggle inlay hints." })
+        buf_command("ToggleInlayHints", "InlayHintsToggle", {})
+        -- Toggling inlay hints: gh
+        vim.keymap.set("n", "gh", "<cmd>InlayHintsToggle<CR>", { buffer = true })
+      else
+        print("no inlay hints available")
+      end
+    end
+
     -- import mason
     local mason = require("mason")
 
@@ -126,6 +151,7 @@ return {
         -- configure bash language server
         lspconfig["bashls"].setup({
           capabilities = capabilities,
+          on_attach = on_attach,
           filetypes = { "sh", "bash" },
         })
       end,
@@ -133,6 +159,7 @@ return {
         -- configure graphql language server
         lspconfig["graphql"].setup({
           capabilities = capabilities,
+          on_attach = on_attach,
           filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
         })
       end,
@@ -140,6 +167,7 @@ return {
         -- configure emmet language server
         lspconfig["emmet_ls"].setup({
           capabilities = capabilities,
+          on_attach = on_attach,
           filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
         })
       end,
@@ -147,6 +175,7 @@ return {
         -- configure lua server (with special settings)
         lspconfig["lua_ls"].setup({
           capabilities = capabilities,
+          on_attach = on_attach,
           settings = {
             Lua = {
               -- make the language server recognize "vim" global
@@ -167,6 +196,7 @@ return {
         -- configure typescript server with plugin
         lspconfig["ts_ls"].setup({
           capabilities = capabilities,
+          on_attach = on_attach,
           settings = {
             typescript = {
               inlayHints = {
@@ -202,6 +232,7 @@ return {
       end,
       lspconfig.nixd.setup({
         capabilities = capabilities,
+        on_attach = on_attach,
         cmd = { "nixd" },
         settings = {
           nixd = {
