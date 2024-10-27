@@ -11,7 +11,11 @@ in
 
   home.stateVersion = "23.11";
 
+  ######## INSTALL PACKAGES #########
+
   # home.packages = with pkgs; [ ];
+
+  ######## CONFIGURE (AND INSTALL) PACKAGES USING NATIVE NIX OPTIONS ########
 
   programs = {
     # aria2.enable = true;
@@ -59,7 +63,7 @@ in
     # fzf = import ../home/fzf.nix { inherit pkgs; };
   };
 
-  ####### CONFIGURE PROGRAMS USING DOTFILES ########
+  ####### CONFIGURE PACKAGES USING DOTFILES ########
 
   # home.file."foo".source = ./bar;
 
