@@ -9,8 +9,6 @@ in
   home.homeDirectory = "/Users/timotheos";
   xdg.enable = true;
 
-  # xdg.configFile.nvim.source = mkOutOfStoreSymlink "/Users/timotheos/.dotfiles/.config/nvim";
-
   home.stateVersion = "23.11";
 
   # home.packages = with pkgs; [ ];
@@ -60,4 +58,6 @@ in
     # #zoxide = (import ../home/zoxide.nix { inherit config pkgs; });
     # fzf = import ../home/fzf.nix { inherit pkgs; };
   };
+
+  # xdg.configFile.nvim.source = mkOutOfStoreSymlink "/Users/timotheos/.dotfiles/.config/nvim";
 }
