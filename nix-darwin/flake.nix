@@ -41,6 +41,7 @@
       home-manager,
       nix-vscode-extensions,
       nh_darwin,
+      ...
     }:
     {
       # Build darwin flake using:
