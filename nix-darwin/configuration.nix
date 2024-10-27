@@ -195,7 +195,7 @@
       # "Sync Folders Pro" = 522706442;
       # "tipitaka_pali_reader" = 1541426949;
     };
-    # unnecessary as the brew version is pinned by the nix-homebrew package
+    # autoupdate unnecessary as the brew version is pinned by the nix-homebrew package
     # onActivation.autoUpdate = true;
     onActivation.upgrade = true;
     # zap removes all preferences as well as the program
