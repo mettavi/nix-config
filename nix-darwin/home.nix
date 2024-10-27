@@ -65,10 +65,20 @@ in
 
   ####### CONFIGURE PACKAGES USING DOTFILES ########
 
+  # link config file or whole directory to ~
   # home.file."foo".source = ./bar;
 
+  # link the contents of a directory to ~
+  # home.file."bin" = {
+  #   source = ./bin;
+  #   recursive = true;
+  #   executable = true;
+  # };
+
+  # link config file/directory to ~/.config
   # xdg.configFile."foo".source = ./bar;
 
+  # link without copying to nix store (manage externally)
   # xdg.configFile.nvim.source = mkOutOfStoreSymlink "/Users/timotheos/.dotfiles/.config/nvim";
 
 }
