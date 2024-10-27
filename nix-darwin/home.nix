@@ -7,7 +7,6 @@ in
   manual.html.enable = true;
   home.username = "timotheos";
   home.homeDirectory = "/Users/timotheos";
-  xdg.enable = true;
 
   home.stateVersion = "23.11";
 
@@ -76,7 +75,12 @@ in
   # };
 
   # link config file/directory to ~/.config
-  # xdg.configFile."foo".source = ./bar;
+  # xdg = {
+  #   enable = true;
+  #   configFile."foo" = {
+  #     source = ./bar;
+  #   };
+  # };
 
   # link without copying to nix store (manage externally)
   # xdg.configFile.nvim.source = mkOutOfStoreSymlink "/Users/timotheos/.dotfiles/.config/nvim";
