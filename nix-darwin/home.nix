@@ -82,7 +82,7 @@ in
   #   };
   # };
 
-  # link without copying to nix store (manage externally)
+  # link without copying to nix store (manage externally) - must use absolute paths
   # xdg.configFile.nvim.source = mkOutOfStoreSymlink "/Users/timotheos/.dotfiles/.config/nvim";
 
 }
