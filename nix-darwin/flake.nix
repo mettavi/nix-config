@@ -26,6 +26,7 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    # patched version of nh (nix helper) for macOS
     nh_darwin.url = "github:ToyVo/nh_darwin";
   };
   outputs =
