@@ -59,5 +59,12 @@ in
     # fzf = import ../home/fzf.nix { inherit pkgs; };
   };
 
+  ####### CONFIGURE PROGRAMS USING DOTFILES ########
+
+  # home.file."foo".source = ./bar;
+
+  # xdg.configFile."foo".source = ./bar;
+
   # xdg.configFile.nvim.source = mkOutOfStoreSymlink "/Users/timotheos/.dotfiles/.config/nvim";
+
 }
