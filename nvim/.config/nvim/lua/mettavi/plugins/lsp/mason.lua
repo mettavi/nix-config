@@ -242,6 +242,7 @@ return {
             formatting = {
               command = { "nixfmt" },
             },
+            -- diagnostic = { suppress = { "sema-unused-def-lambda-witharg-formal" } },
             options = {
               darwin = {
                 expr = '(builtins.getFlake "/Users/timotheos/.dotfiles/nix-darwin").darwinConfigurations.MVs-MBP.options',
