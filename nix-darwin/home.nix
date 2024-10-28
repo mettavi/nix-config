@@ -14,16 +14,28 @@ in
 
   # home.packages = with pkgs; [ ];
 
+  # services = {
+  #   gpg-agent = {
+  #     enable = true;
+  #     extraConfig = ''
+  #       pinentry-program /usr/local/bin/pinentry-touchid
+  #     '';
+  #   };
+  # };
+
   ######## CONFIGURE (AND INSTALL) PACKAGES USING NATIVE NIX OPTIONS ########
 
   programs = {
     # aria2.enable = true;
     # atuin.enable = true;
     # bat.enable = true;
+    # eza.enable = true;
     # fd.enable = true;
     # fzf.enable = true;
-    # git.enable = true;
-    # git.delta.enable = true;
+    # git = {
+    #   enable = true;
+    #   delta.enable = true;
+    # };
     # java = {
     #   enable = true;
     #   package = pkgs.zulu; # Certified builds of OpenJDK
@@ -59,10 +71,13 @@ in
     #     # ]);
     # };
     # yt-dlp.enable = true;
-    zsh.antidote.enable = true;
-    # zsh.zsh-abbr.enable = true;
     # zoxide.enable = true;
-    # zsh-syntax-highlighting = true;
+    zsh = {
+      enable = true;
+      antidote.enable = true;
+      # zsh-abbr.enable = true;
+      # zsh-syntax-highlighting.enable = true;
+    };
     # tmux = import ../home/tmux.nix { inherit pkgs; };
     # zsh = import ../home/zsh.nix { inherit config pkgs; };
     # #zoxide = (import ../home/zoxide.nix { inherit config pkgs; });

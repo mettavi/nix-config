@@ -79,9 +79,12 @@
   environment.systemPackages = with pkgs; [
     # PACKAGES
     # atomicparsley
+    # bash-completion
     # bats
+    # bento4
     cargo
     # chafa
+    # cmake
     cmatrix
     cowsay
     # darwin.trash
@@ -91,7 +94,6 @@
     # gitleaks
     # macfuse-stubs # Build time stubs for FUSE on macOS
     # mas
-    # meslo-lgs-nf
     mkalias
     nixfmt-rfc-style
     nixd # nix language server
@@ -99,12 +101,18 @@
     # ntfs3g # Read-write NTFS driver for FUSE
     # ocrmypdf
     pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
+    # pinentry_mac
     # pipx
     # pnpm
+    # poppler
+    # python312Packages.pygobject3
+    # python-launcher
     # shellcheck
+    # stow
     # texinfo # to read info files
     # tldr
     # tree
+    # vulkan-headers
     # wget
     # xcodes
     # zsh-powerlevel10k
@@ -133,7 +141,14 @@
     # zoom-us
   ];
 
-  fonts.packages = [ ];
+  # fonts.packages = with pkgs; [
+  #   meslo-lgs-nf
+  #   (nerdfonts.override {
+  #     fonts = [
+  #       "Meslo"
+  #     ];
+  #   })
+  # ];
 
   homebrew = {
     enable = true;
@@ -146,7 +161,6 @@
     ];
     brews = [
       # "brew-file"
-      # "ntfs-3g-mac" # Read-write NTFS driver for FUSE
       # "pinentry-touchid"
     ];
     casks = [
@@ -233,13 +247,18 @@
     # };
   };
 
-  # Create /etc/zshrc that loads the nix-darwin environment.
-  programs.zsh.enable = true; # default shell on catalina
-  # programs.fish.enable = true;
-
-  # programs.zsh.promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-  # programs.zsh.autosuggestions.enable = true;
-
-  # programs.thefuck.alias = "oh";
-
+  programs = {
+    #   bash = {
+    #     # this will install bash-completion package
+    #     completion.enable = true;
+    #   };
+    #   fish.enable = true;
+    #   thefuck.alias = "oh";
+    #   # Create /etc/zshrc that loads the nix-darwin environment.
+    zsh = {
+      enable = true;
+      # autosuggestions.enable = true;
+      # promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+    };
+  };
 }
