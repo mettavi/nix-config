@@ -167,7 +167,9 @@
       # "abbyy-finereader-pdf"
       # "adobe-digital-editions"
       # "carbon-copy-cloner"
+      # "cheatsheet"
       # "coteditor"
+      # "discord"
       # "google-drive"
       # {
       #   name = "kegworks";
@@ -176,6 +178,7 @@
       # "isyncr"
       # key-codes
       # "kid3"
+      # "mamp"
       # "masscode"
       # "mounty"
       # "microsoft-excel"
