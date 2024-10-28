@@ -89,13 +89,14 @@
     fastfetch
     # ffmpeg
     # gitleaks
-    # macfuse-stubs
+    # macfuse-stubs # Build time stubs for FUSE on macOS
     # mas
     # meslo-lgs-nf
     mkalias
     nixfmt-rfc-style
     nixd # nix language server
     node2nix
+    # ntfs3g # Read-write NTFS driver for FUSE
     # ocrmypdf
     pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
     # pipx
@@ -115,6 +116,7 @@
     # bitwarden-desktop
     # brave
     # calibre
+    # dbeaver-bin
     # djview
     # google-chrome
     # goldendict-ng is currently only available for linux
@@ -136,17 +138,15 @@
   homebrew = {
     enable = true;
     taps = [
-      # "bell-sw/liberica" # jdk
       # "buo/cask-upgrade" # brew-cask-upgrade
       # "gcenx/wine" # kegworks
-      # "gromgit/fuse" # ntfs-3g-mac
       # "homebrew/bundle"
       # "jorgelbg/tap" # pinentry-touchid
       # "rcmdnk/file" # brew-file
     ];
     brews = [
       # "brew-file"
-      # "ntfs-3g-mac"
+      # "ntfs-3g-mac" # Read-write NTFS driver for FUSE
       # "pinentry-touchid"
     ];
     casks = [
@@ -160,10 +160,10 @@
       #   args = "no-quarantine";
       # }
       # "isyncr"
+      # key-codes
       # "kid3"
-      # "liberica-jdk21"
-      # "mounty"
       # "masscode"
+      # "mounty"
       # "microsoft-excel"
       # "microsoft-onenote"
       # "microsoft-powerpoint"

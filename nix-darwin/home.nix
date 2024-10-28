@@ -24,6 +24,10 @@ in
     # fzf.enable = true;
     # git.enable = true;
     # git.delta.enable = true;
+    # java = {
+    #   enable = true;
+    #   package = pkgs.zulu; # Certified builds of OpenJDK
+    # };
     # jq.enable = true;
     # keychain.enable = true;
     # lazygit.enable = true;
@@ -31,9 +35,12 @@ in
     # pyenv.enable = true;
     # qt.enable = true;
     # rbenv.enable = true;
+    # ripgrep = enable;
     # thefuck.enable = true;
-    # tmux.enable = true;
-    # tmux.tmuxp.enable = true;
+    # tmux = {
+    #   enable = true;
+    #   tmuxp.enable = true;
+    # };
     # vscode = {
     #   enable = true;
     #   # disallow extensions being installed or updated manually by vscode
