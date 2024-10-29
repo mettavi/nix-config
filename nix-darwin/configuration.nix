@@ -215,8 +215,8 @@
     # autoupdate unnecessary as the brew version is pinned by the nix-homebrew package
     # onActivation.autoUpdate = true;
     onActivation.upgrade = true;
-    # zap removes all preferences as well as the program
-    # onActivation.cleanup = "zap";
+    # uninstall removes formulae, zap removes formulae and casks
+    # onActivation.cleanup = "uninstall";
   };
 
   services = {
