@@ -77,6 +77,7 @@ in
       antidote.enable = true;
       # zsh-abbr.enable = true;
       # zsh-syntax-highlighting.enable = true;
+      syntaxHighlighting.enable = true;
     };
     # tmux = import ../home/tmux.nix { inherit pkgs; };
     # zsh = import ../home/zsh.nix { inherit config pkgs; };
