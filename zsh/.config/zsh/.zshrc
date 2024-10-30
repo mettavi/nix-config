@@ -84,7 +84,7 @@ source ~/.config/atuin/.atuinrc
 
 # enable antidote plugin manager
 # NB: source the fzf-tab antidote plugin after fzf to avoid problems with ** tab-completion
-source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
+source /nix/store/k3ia5k7s2zzqz39660cbz289c3yn850h-antidote-1.9.6/share/antidote/antidote.zsh
 # NB: load directly from $DOTFILES as antidote overwrites symlinks
 antidote load ${DOTFILES}/zsh/.config/zsh/.zsh_plugins.txt
 
