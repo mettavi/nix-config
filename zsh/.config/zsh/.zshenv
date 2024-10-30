@@ -16,7 +16,7 @@ export DOTFILES="$HOME/.dotfiles"
 
 ##### Installed binaries - HOME DIRECTORIES #####
 
-export JAVA_HOME=$(/usr/libexec/java_home) 
+export JAVA_HOME="/nix/store/1g2llprn5x6hxy85q5jwdh7r3z3xq4ws-zulu-ca-jdk-21.0.2"
 export PYENV_ROOT="$HOME/.pyenv"
 
 
