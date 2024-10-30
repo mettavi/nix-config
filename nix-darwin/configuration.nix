@@ -87,6 +87,7 @@
     chafa
     # cmake
     cmatrix
+    coreutils-prefixed
     cowsay
     darwin.trash
     exercism
