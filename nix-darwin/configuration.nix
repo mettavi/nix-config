@@ -7,6 +7,7 @@
 {
 
   nix = {
+    # auto upgrade nix package
     package = pkgs.nix;
     gc.automatic = true;
     nixPath = [ "nixpkgs=${inputs.nixpkgs-unstable}" ];
@@ -80,43 +81,43 @@
     # PACKAGES
     # atomicparsley
     # bash-completion
-    # bats
+    bats
     # bento4
     cargo
-    # chafa
+    chafa
     # cmake
     cmatrix
     cowsay
-    # darwin.trash
-    # exercism
+    darwin.trash
+    exercism
     fastfetch
-    # ffmpeg
-    # gitleaks
-    # macfuse-stubs # Build time stubs for FUSE on macOS
-    # mas
+    ffmpeg
+    gitleaks
+    macfuse-stubs # Build time stubs for FUSE on macOS
+    mas
     mkalias
     nixfmt-rfc-style
     nixd # nix language server
     node2nix
-    # ntfs3g # Read-write NTFS driver for FUSE
-    # ocrmypdf
+    ntfs3g # Read-write NTFS driver for FUSE
+    ocrmypdf
     pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
-    # pinentry_mac
+    pinentry_mac
     # pipx
     # pnpm
     # poppler
     # python312Packages.pygobject3
     # python-launcher
-    # shellcheck
+    shellcheck
     # stow
     # texinfo # to read info files
-    # tldr
-    # tree
+    tldr
+    tree
     # vulkan-headers
-    # wget
+    wget
     # xcodes
     # zsh-powerlevel10k
-    # zsh-completions
+    zsh-completions
 
     # GUI APPS
     # anki
@@ -141,14 +142,14 @@
     # zoom-us
   ];
 
-  # fonts.packages = with pkgs; [
-  #   meslo-lgs-nf
-  #   (nerdfonts.override {
-  #     fonts = [
-  #       "Meslo"
-  #     ];
-  #   })
-  # ];
+  fonts.packages = with pkgs; [
+    meslo-lgs-nf
+    (nerdfonts.override {
+      fonts = [
+        "Meslo"
+      ];
+    })
+  ];
 
   homebrew = {
     enable = true;
@@ -156,12 +157,12 @@
       # "buo/cask-upgrade" # brew-cask-upgrade
       # "gcenx/wine" # kegworks
       # "homebrew/bundle"
-      # "jorgelbg/tap" # pinentry-touchid
+      "jorgelbg/tap" # pinentry-touchid
       # "rcmdnk/file" # brew-file
     ];
     brews = [
       # "brew-file"
-      # "pinentry-touchid"
+      "pinentry-touchid"
     ];
     casks = [
       # "abbyy-finereader-pdf"
@@ -208,7 +209,7 @@
       # "Patterns" = 429449079;
       # "PDF Squeezer" = 1502111349;
       # "PDFgear" = 6469021132;
-      "Snip" = 1527428847;
+      # "Snip" = 1527428847;
       # "Sync Folders Pro" = 522706442;
       # "tipitaka_pali_reader" = 1541426949;
     };
@@ -251,10 +252,10 @@
   };
 
   programs = {
-    #   bash = {
-    #     # this will install bash-completion package
-    #     completion.enable = true;
-    #   };
+    bash = {
+      # this will install bash-completion package
+      completion.enable = true;
+    };
     #   fish.enable = true;
     #   thefuck.alias = "oh";
     #   # Create /etc/zshrc that loads the nix-darwin environment.

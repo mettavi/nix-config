@@ -26,33 +26,33 @@ in
   ######## CONFIGURE (AND INSTALL) PACKAGES USING NATIVE NIX OPTIONS ########
 
   programs = {
-    # aria2.enable = true;
-    # atuin.enable = true;
-    # bat.enable = true;
-    # eza.enable = true;
-    # fd.enable = true;
-    # fzf.enable = true;
-    # git = {
-    #   enable = true;
-    #   delta.enable = true;
-    # };
-    # java = {
-    #   enable = true;
-    #   package = pkgs.zulu; # Certified builds of OpenJDK
-    # };
-    # jq.enable = true;
-    # keychain.enable = true;
-    # lazygit.enable = true;
-    # neovim.enable = true;
+    aria2.enable = true;
+    atuin.enable = true;
+    bat.enable = true;
+    eza.enable = true;
+    fd.enable = true;
+    fzf.enable = true;
+    git = {
+      enable = true;
+      delta.enable = true;
+    };
+    java = {
+      enable = true;
+      package = pkgs.zulu; # Certified builds of OpenJDK
+    };
+    jq.enable = true;
+    keychain.enable = true;
+    lazygit.enable = true;
+    neovim.enable = true;
     # pyenv.enable = true;
     # qt.enable = true;
     # rbenv.enable = true;
-    # ripgrep = enable;
-    # thefuck.enable = true;
-    # tmux = {
-    #   enable = true;
-    #   tmuxp.enable = true;
-    # };
+    ripgrep.enable = true;
+    thefuck.enable = true;
+    tmux = {
+      enable = true;
+      tmuxp.enable = true;
+    };
     # vscode = {
     #   enable = true;
     #   # disallow extensions being installed or updated manually by vscode
@@ -70,13 +70,12 @@ in
     #     # https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/master/data/cache/open-vsx-latest.json
     #     # ]);
     # };
-    # yt-dlp.enable = true;
-    # zoxide.enable = true;
+    yt-dlp.enable = true;
+    zoxide.enable = true;
     zsh = {
       enable = true;
       antidote.enable = true;
-      # zsh-abbr.enable = true;
-      # zsh-syntax-highlighting.enable = true;
+      zsh-abbr.enable = true;
       syntaxHighlighting.enable = true;
     };
     # tmux = import ../home/tmux.nix { inherit pkgs; };
