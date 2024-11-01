@@ -51,6 +51,7 @@ in
     thefuck.enable = true;
     tmux = {
       enable = true;
+      extraConfig = (builtins.readFile ../tmux/.config/tmux/tmux.conf);
       tmuxp.enable = true;
     };
     # vscode = {
@@ -74,9 +75,12 @@ in
     zoxide.enable = true;
     zsh = {
       enable = true;
+      dotDir = ".config/zsh";
+      envExtra = (builtins.readFile ../zsh/.config/zsh/.zshenv);
+      initExtra = (builtins.readFile ../zsh/.config/zsh/.zshrc);
       antidote.enable = true;
-      zsh-abbr.enable = true;
       syntaxHighlighting.enable = true;
+      zsh-abbr.enable = true;
     };
     # tmux = import ../home/tmux.nix { inherit pkgs; };
     # zsh = import ../home/zsh.nix { inherit config pkgs; };
