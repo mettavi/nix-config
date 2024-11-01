@@ -4,6 +4,9 @@
   inputs,
   ...
 }:
+let
+  nixpkgs = inputs.nixpkgs.legacyPackages.${pkgs.system};
+in
 {
 
   nix = {
@@ -225,13 +228,6 @@
   };
 
   services = {
-    kanata = {
-      enable = true;
-    };
-    #   mongodb = {
-    #     enable = true;
-    #     package = "mongodb-ce-6_0";
-    #   };
     #   postgresql = {
     #     enable = true;
     #     dataDir = /usr/local/var/postgres;
