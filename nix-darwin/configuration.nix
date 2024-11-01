@@ -225,6 +225,9 @@
   };
 
   services = {
+    kanata = {
+      enable = true;
+    };
     #   mongodb = {
     #     enable = true;
     #     package = "mongodb-ce-6_0";
