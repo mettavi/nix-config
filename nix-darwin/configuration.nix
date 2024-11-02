@@ -239,19 +239,19 @@ in
   };
 
   launchd.user.agents = {
-    #   postgresql = {
-    #     serviceConfig = {
-    #       # only start the service on demand
-    #       KeepAlive = false;
-    #       RunAtLoad = false;
-    #     };
-    # };
     # mongodb = {
     #   serviceConfig = {
     #     # only start the service on demand
     #     KeepAlive = false;
     #     RunAtLoad = false;
     #   };
+    # };
+    #   postgresql = {
+    #     serviceConfig = {
+    #       # only start the service on demand
+    #       KeepAlive = false;
+    #       RunAtLoad = false;
+    #     };
     # };
   };
 
