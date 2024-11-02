@@ -100,6 +100,7 @@ in
     fastfetch
     ffmpeg
     gitleaks
+    # nixpkgs.kanata
     macfuse-stubs # Build time stubs for FUSE on macOS
     mas
     mkalias
