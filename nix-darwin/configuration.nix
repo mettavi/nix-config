@@ -5,6 +5,7 @@
   ...
 }:
 let
+  user="timotheos";
   nixpkgs = inputs.nixpkgs.legacyPackages.${pkgs.system};
 in
 {
