@@ -36,9 +36,9 @@ in
 
   nixpkgs.config.allowUnfree = true;
 
-  users.users.timotheos = {
-    name = "timotheos";
-    home = "/Users/timotheos";
+  users.users.${user} = {
+    name = "${user}";
+    home = "/Users/${user}";
   };
 
   # Set Git commit hash for darwin-version.
