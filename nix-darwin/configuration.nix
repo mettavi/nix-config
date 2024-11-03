@@ -257,6 +257,22 @@ in
     # };
   };
 
+  # launchd.daemons = {
+  #   kanata = {
+  #     serviceConfig = {
+  #       Label = "com.example.kanata";
+  #       ProgramArguments = [
+  #         "${pkgs.kanata}"
+  #         "-c"
+  #         "${user}/.dotfiles/kanata/kanata.kdb"
+  #       ];
+  #       RunAtLoad = true;
+  #       KeepAlive = true;
+  #       StandardOutPath = "/Library/Logs/Kanata/kanata.out.log";
+  #       StandardErrorPath = "/Library/Logs/Kanata/kanata.err.log";
+  #     };
+  #   };
+  # };
   programs = {
     bash = {
       # this will install bash-completion package
