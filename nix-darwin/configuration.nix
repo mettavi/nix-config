@@ -287,7 +287,7 @@ in
       # Installation option once https://github.com/LnL7/nix-darwin/pull/942 is merged:
       # package = nh_darwin.packages.${pkgs.stdenv.hostPlatform.system}.default;
     };
-    #   # Create /etc/zshrc that loads the nix-darwin environment.
+    # Create /etc/zshrc that loads the nix-darwin environment.
     zsh = {
       enable = true;
       # autosuggestions.enable = true;
