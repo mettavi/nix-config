@@ -61,6 +61,9 @@
       nh_darwin,
       ...
     }:
+    let
+      system = "x86_64-darwin";
+    in
     {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#MVs-MBP
