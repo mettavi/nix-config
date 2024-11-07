@@ -1,6 +1,7 @@
 {
   pkgs,
   config,
+  lib,
   inputs,
   ...
 }:
@@ -9,6 +10,7 @@ let
   # this will point to the stable nixpkgs channel rather than the default one
   # use "nixpkgs.package_name" to install a non-default package
   # nixpkgs = inputs.nixpkgs.legacyPackages.${pkgs.system};
+  kanata = (pkgs.callPackage ../kanata/kbin.nix { });
 in
 {
 
@@ -76,6 +78,7 @@ in
   system.defaults = {
     dock.autohide = true;
     NSGlobalDomain.KeyRepeat = 2;
+    # NSGlobalDomain.InitialKeyRepeat = 
   };
 
   environment.variables.HOMEBREW_NO_ANALYTICS = "1";
@@ -89,7 +92,8 @@ in
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
-  environment.systemPackages = with pkgs; [
+  config = lib.mkMerge [{
+      environment.systemPackages = with pkgs; [
     # PACKAGES
     # atomicparsley
     # bash-completion
@@ -106,9 +110,7 @@ in
     fastfetch
     ffmpeg
     gitleaks
-    # nixpkgs.kanata
     keycastr # keystroke visualiser
-    (callPackage ../kanata/kbin.nix { }) # install binary from GH repo
     macfuse-stubs # Build time stubs for FUSE on macOS
     mas
     mkalias
@@ -158,7 +160,15 @@ in
     # zeal-qt6
     # zoom-us
   ];
+  }
 
+  # install custom packages
+  {
+  environment.systemPackages = [
+    kanata # install binary directly from GH repo
+  ];
+}
+]
   fonts.packages = with pkgs; [
     meslo-lgs-nf
     (nerdfonts.override {
@@ -264,22 +274,23 @@ in
     # };
   };
 
-  # launchd.daemons = {
-  #   kanata = {
-  #     serviceConfig = {
-  #       Label = "com.example.kanata";
-  #       ProgramArguments = [
-  #         "${pkgs.kanata}"
-  #         "-c"
-  #         "${user}/.dotfiles/kanata/kanata.kdb"
-  #       ];
-  #       RunAtLoad = true;
-  #       KeepAlive = true;
-  #       StandardOutPath = "/Library/Logs/Kanata/kanata.out.log";
-  #       StandardErrorPath = "/Library/Logs/Kanata/kanata.err.log";
-  #     };
-  #   };
-  # };
+  launchd.daemons = {
+    kanata = {
+      serviceConfig = {
+        Label = "com.mettavihari.kanata";
+        ProgramArguments = [
+          "/run/current-system/sw/bin/kanata"
+          "-c"
+          "/Users/${user}/.dotfiles/kanata/kanata.kdb"
+        ];
+        RunAtLoad = true;
+        KeepAlive = true;
+        StandardOutPath = "/Library/Logs/Kanata/kanata.out.log";
+        StandardErrorPath = "/Library/Logs/Kanata/kanata.err.log";
+      };
+    };
+  };
+
   programs = {
     bash = {
       # this will install bash-completion package
@@ -289,6 +300,7 @@ in
     #   thefuck.alias = "oh";
     nh = {
       enable = true;
+      flake = "$HOME/.dotfiles/nix-darwin";
       # clean.enable = true;
       # Installation option once https://github.com/LnL7/nix-darwin/pull/942 is merged:
       # package = nh_darwin.packages.${pkgs.stdenv.hostPlatform.system}.default;
