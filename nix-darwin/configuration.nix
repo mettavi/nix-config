@@ -5,8 +5,10 @@
   ...
 }:
 let
-  user="timotheos";
-  nixpkgs = inputs.nixpkgs.legacyPackages.${pkgs.system};
+  user = "timotheos";
+  # this will point to the stable nixpkgs channel rather than the default one
+  # use "nixpkgs.package_name" to install a non-defaulstable
+  # nixpkgs = inputs.nixpkgs.legacyPackages.${pkgs.system};
 in
 {
 
