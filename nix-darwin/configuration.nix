@@ -108,6 +108,7 @@ in
     gitleaks
     # nixpkgs.kanata
     keycastr # keystroke visualiser
+    (callPackage ../kanata/kbin.nix { }) # install binary from GH repo
     macfuse-stubs # Build time stubs for FUSE on macOS
     mas
     mkalias
