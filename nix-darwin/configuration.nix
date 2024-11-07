@@ -51,6 +51,7 @@ in
   # $ darwin-rebuild changelog
   system.stateVersion = 5;
 
+  # install GUI apps with alias instead of symlink to show up in spotlight search
   system.activationScripts.applications.text =
     let
       env = pkgs.buildEnv {
