@@ -106,6 +106,7 @@ in
     ffmpeg
     gitleaks
     # nixpkgs.kanata
+    keycastr # keystroke visualiser
     macfuse-stubs # Build time stubs for FUSE on macOS
     mas
     mkalias
