@@ -6,6 +6,8 @@
     "Apple Internal Keyboard / Trackpad"
     "TouchBarUserDevice"
     )
+  ;; also manage keys not in defsrc list
+  process-unmapped-keys yes
   )
   
 (defsrc
