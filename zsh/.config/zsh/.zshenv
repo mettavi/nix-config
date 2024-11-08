@@ -26,6 +26,8 @@ export BAT_THEME=tokyonight_night
 
 export ABBR_USER_ABBREVIATIONS_FILE="$DOTFILES/zsh/.config/zsh/user-abbreviations"
 
+export FLAKE="$DOTFILES/nix-darwin/"
+
 # (homebrew-file package)
 export HOMEBREW_BREWFILE_LEAVES=1
 export HOMEBREW_BREWFILE_ON_REQUEST=1
