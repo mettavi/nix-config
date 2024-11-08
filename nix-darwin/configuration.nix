@@ -13,7 +13,17 @@ let
   kanata = (pkgs.callPackage ../kanata/kbin.nix { });
 in
 {
-
+  imports = [
+    # install custom packages
+    (
+      { pkgs, ... }:
+      {
+        environment.systemPackages = [
+          kanata # install binary directly from GH repo
+        ];
+      }
+    )
+  ];
   nix = {
     # auto upgrade nix package
     package = pkgs.nix;
