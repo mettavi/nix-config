@@ -52,6 +52,8 @@ in
     tmux = {
       enable = true;
       extraConfig = (builtins.readFile ../tmux/.config/tmux/tmux.conf);
+      # tmux sensible plugin already included
+      sensibleOnTop = false;
       tmuxp.enable = true;
     };
     # vscode = {
