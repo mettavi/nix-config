@@ -80,7 +80,12 @@ in
       dotDir = ".config/zsh";
       envExtra = (builtins.readFile ../zsh/.config/zsh/.zshenv);
       initExtra = (builtins.readFile ../zsh/.config/zsh/.zshrc);
-      antidote.enable = true;
+      antidote = {
+        enable = true;
+        plugins = [
+          "Aloxaf/fzf-tab"
+          "MichaelAquilina/zsh-you-should-use"
+        ];
       syntaxHighlighting.enable = true;
       zsh-abbr.enable = true;
     };
