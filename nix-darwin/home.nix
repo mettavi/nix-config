@@ -67,7 +67,7 @@ in
       enable = true;
       escapeTime = 10;
       extraConfig = (builtins.readFile ../tmux/.config/tmux/tmux.conf);
-      # tmux sensible plugin already included
+      historyLimit = 50000;
       keyMode = "vi";
       mouse = true;
       sensibleOnTop = false;
