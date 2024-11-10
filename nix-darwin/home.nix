@@ -65,6 +65,7 @@ in
     tmux = {
       baseIndex = 1;
       enable = true;
+      escapeTime = 10;
       extraConfig = (builtins.readFile ../tmux/.config/tmux/tmux.conf);
       # tmux sensible plugin already included
       keyMode = "vi";
