@@ -51,7 +51,11 @@ in
       package = pkgs.zulu; # Certified builds of OpenJDK
     };
     jq.enable = true;
-    keychain.enable = true;
+    keychain = {
+      enable = true;
+      enableZshIntegration = true;
+      keys = [ "id_ed25519" ];
+    };
     lazygit.enable = true;
     neovim.enable = true;
     # pyenv.enable = true;
