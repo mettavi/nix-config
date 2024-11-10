@@ -55,7 +55,7 @@ setopt SHARE_HISTORY
 
 
 # Load zsh plugins
-source /nix/store/f5dmn5rkcwghvb1v4g062j38js5h3qwr-zsh-syntax-highlighting-0.8.0/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source /nix/store/f5dmn5rkcwghvb1v4g062j38js5h3qwr-zsh-syntax-highlighting-0.8.0/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # source /nix/store/31c64327figpjpxhb3r3liwd872hf64n-zsh-abbr-5.6.0/share/zsh/zsh-abbr/abbr.plugin.zsh
