@@ -13,6 +13,7 @@ in
   ######## INSTALL PACKAGES #########
 
   home.packages = with pkgs; [
+    atuin
     fzf
     thefuck
   ];
@@ -30,7 +31,7 @@ in
 
   programs = {
     aria2.enable = true;
-    atuin.enable = true;
+    # atuin.enable = true;
     bat.enable = true;
     eza.enable = true;
     fd.enable = true;
