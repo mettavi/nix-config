@@ -77,7 +77,13 @@ in
     #     # ]);
     # };
     yt-dlp.enable = true;
-    zoxide.enable = true;
+    zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+      options = [
+        "--cmd cd"
+      ];
+    };
     zsh = {
       enable = true;
       dotDir = ".config/zsh";

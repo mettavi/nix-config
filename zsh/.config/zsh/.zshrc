@@ -71,7 +71,7 @@ eval "$(pyenv init -)"
 eval "$(rbenv init - zsh)"
 
 # load zoxide and set its alias
-eval "$(zoxide init --cmd cd zsh )"
+# eval "$(zoxide init --cmd cd zsh )"
 
 # enable and set custom alias
 eval $(thefuck --alias oh)
