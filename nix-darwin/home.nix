@@ -33,7 +33,10 @@ in
     aria2.enable = true;
     # atuin.enable = true;
     bat.enable = true;
-    eza.enable = true;
+    eza = {
+      enable = true;
+      enableZshIntegration = false;
+    };
     fd.enable = true;
     # fzf = {
     #   enable = true;
