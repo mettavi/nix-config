@@ -82,6 +82,11 @@ in
       enable = true;
       dotDir = ".config/zsh";
       envExtra = (builtins.readFile ../zsh/.config/zsh/.zshenv);
+      history = {
+        path = "$ZDOTDIR/.zsh_history";
+        save = 100000;
+        size = 100000;
+      };
       initExtra = (builtins.readFile ../zsh/.config/zsh/.zshrc);
       antidote = {
         enable = true;
