@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  lib,
   inputs,
   ...
 }:
@@ -100,8 +99,15 @@ in
   system.defaults = {
     dock.autohide = true;
     NSGlobalDomain.KeyRepeat = 2;
-    # NSGlobalDomain.InitialKeyRepeat = 
   };
+
+  # List of directories to be symlinked in /run/current-system/sw
+  environment.pathsToLink = [
+     "/libexec"
+    "/share/doc"
+    "/share/zsh"
+    "/share/man"
+  ];
 
   environment.variables.HOMEBREW_NO_ANALYTICS = "1";
 
@@ -114,8 +120,8 @@ in
 
   # List packages installed in system profile. To search by name, run:
   # $ nix-env -qaP | grep wget
-  config = lib.mkMerge [{
-      environment.systemPackages = with pkgs; [
+  # install standard packages
+  environment.systemPackages = with pkgs; [
     # PACKAGES
     # atomicparsley
     # bash-completion
@@ -155,7 +161,7 @@ in
     tldr
     tree
     # vulkan-headers
-    wget 
+    wget
     # xcodes
     # zsh-powerlevel10k
     zsh-completions
@@ -182,15 +188,7 @@ in
     # zeal-qt6
     # zoom-us
   ];
-  }
 
-  # install custom packages
-  {
-  environment.systemPackages = [
-    kanata # install binary directly from GH repo
-  ];
-}
-]
   fonts.packages = with pkgs; [
     meslo-lgs-nf
     (nerdfonts.override {
@@ -322,7 +320,6 @@ in
     #   thefuck.alias = "oh";
     nh = {
       enable = true;
-      flake = "$HOME/.dotfiles/nix-darwin";
       # clean.enable = true;
       # Installation option once https://github.com/LnL7/nix-darwin/pull/942 is merged:
       # package = nh_darwin.packages.${pkgs.stdenv.hostPlatform.system}.default;
