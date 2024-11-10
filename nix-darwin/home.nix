@@ -67,6 +67,7 @@ in
       extraConfig = (builtins.readFile ../tmux/.config/tmux/tmux.conf);
       # tmux sensible plugin already included
       sensibleOnTop = false;
+      terminal = "tmux-256color";
       tmuxp.enable = true;
     };
     # vscode = {
