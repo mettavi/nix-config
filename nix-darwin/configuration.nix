@@ -92,7 +92,7 @@ in
         done
       '';
     postUserActivation.text = ''
-      # avoid a login/reboot to apply new settings after system activation
+      # avoid a login/reboot to apply new settings after system activation (macOS)
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
     '';
   };
