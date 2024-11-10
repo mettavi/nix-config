@@ -63,6 +63,7 @@ in
     #   enableZshIntegration = true;
     # };
     tmux = {
+      baseIndex = 1;
       enable = true;
       extraConfig = (builtins.readFile ../tmux/.config/tmux/tmux.conf);
       # tmux sensible plugin already included
