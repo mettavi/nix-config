@@ -70,26 +70,32 @@ in
   system.stateVersion = 5;
 
   # install GUI apps with alias instead of symlink to show up in spotlight search
-  system.activationScripts.applications.text =
-    let
-      env = pkgs.buildEnv {
-        name = "system-applications";
-        paths = config.environment.systemPackages;
-        pathsToLink = "/Applications";
-      };
-    in
-    pkgs.lib.mkForce ''
-      # Set up applications.
-      echo "setting up /Applications..." >&2
-      rm -rf /Applications/Nix\ Apps
-      mkdir -p /Applications/Nix\ Apps
-      find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
-      while read src; do
-        app_name=$(basename "$src")
-        echo "copying $src" >&2
-        ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
-      done
+  system.activationScripts = {
+    applications.text =
+      let
+        env = pkgs.buildEnv {
+          name = "system-applications";
+          paths = config.environment.systemPackages;
+          pathsToLink = "/Applications";
+        };
+      in
+      pkgs.lib.mkForce ''
+        # Set up applications.
+        echo "setting up /Applications..." >&2
+        rm -rf /Applications/Nix\ Apps
+        mkdir -p /Applications/Nix\ Apps
+        find ${env}/Applications -maxdepth 1 -type l -exec readlink '{}' + |
+        while read src; do
+          app_name=$(basename "$src")
+          echo "copying $src" >&2
+          ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
+        done
+      '';
+    postUserActivation.text = ''
+      # avoid a login/reboot to apply new settings after system activation
+      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
     '';
+  };
 
   system.defaults = {
     dock.autohide = true;
@@ -149,7 +155,7 @@ in
     tldr
     tree
     # vulkan-headers
-    wget
+    wget 
     # xcodes
     # zsh-powerlevel10k
     zsh-completions
