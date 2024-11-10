@@ -111,7 +111,6 @@ in
         size = 100000;
       };
       initExtra = (builtins.readFile ../zsh/.config/zsh/.zshrc);
-      shellAliases = ( builtins.readFile ../zsh/.config/zsh/.zsh_aliases );
       syntaxHighlighting.enable = true;
       zsh-abbr.enable = true;
       # tmux = import ../home/tmux.nix { inherit pkgs; };
