@@ -32,13 +32,13 @@ bindkey "^x^e" edit-command-line
 
 #### history config #### 
 
-export HISTFILE=$ZDOTDIR/.zsh_history
+# export HISTFILE=$ZDOTDIR/.zsh_history
 
 # How many commands zsh will load to memory.
-export HISTSIZE=100000
+# export HISTSIZE=100000
 
 # How many commands history will save on file.
-export SAVEHIST=100000
+# export SAVEHIST=100000
 
 # Remove command from history if prepended with a space
 setopt HIST_IGNORE_SPACE

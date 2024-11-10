@@ -35,10 +35,10 @@ in
     bat.enable = true;
     eza.enable = true;
     fd.enable = true;
-  #   fzf = {
-  #     enable = true;
-  #   enableZshIntegration = true;
-  # };
+    # fzf = {
+    #   enable = true;
+    #   enableZshIntegration = true;
+    # };
     git = {
       enable = true;
       delta.enable = true;
