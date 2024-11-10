@@ -86,36 +86,37 @@ in
           "Aloxaf/fzf-tab"
           "MichaelAquilina/zsh-you-should-use"
         ];
-      syntaxHighlighting.enable = true;
-      zsh-abbr.enable = true;
+        syntaxHighlighting.enable = true;
+        zsh-abbr.enable = true;
+      };
+      # tmux = import ../home/tmux.nix { inherit pkgs; };
+      # zsh = import ../home/zsh.nix { inherit config pkgs; };
+      # #zoxide = (import ../home/zoxide.nix { inherit config pkgs; });
+      # fzf = import ../home/fzf.nix { inherit pkgs; };
     };
-    # tmux = import ../home/tmux.nix { inherit pkgs; };
-    # zsh = import ../home/zsh.nix { inherit config pkgs; };
-    # #zoxide = (import ../home/zoxide.nix { inherit config pkgs; });
-    # fzf = import ../home/fzf.nix { inherit pkgs; };
+
+    ####### CONFIGURE PACKAGES USING DOTFILES ########
+
+    # link config file or whole directory to ~
+    # home.file."foo".source = ./bar;
+
+    # link the contents of a directory to ~
+    # home.file."bin" = {
+    #   source = ./bin;
+    #   recursive = true;
+    #   executable = true;
+    # };
+
+    # link config file/directory to ~/.config
+    # xdg = {
+    #   enable = true;
+    #   configFile."foo" = {
+    #     source = ./bar;
+    #   };
+    # };
+
+    # link without copying to nix store (manage externally) - must use absolute paths
+    # xdg.configFile.nvim.source = mkOutOfStoreSymlink "/Users/timotheos/.dotfiles/.config/nvim";
+
   };
-
-  ####### CONFIGURE PACKAGES USING DOTFILES ########
-
-  # link config file or whole directory to ~
-  # home.file."foo".source = ./bar;
-
-  # link the contents of a directory to ~
-  # home.file."bin" = {
-  #   source = ./bin;
-  #   recursive = true;
-  #   executable = true;
-  # };
-
-  # link config file/directory to ~/.config
-  # xdg = {
-  #   enable = true;
-  #   configFile."foo" = {
-  #     source = ./bar;
-  #   };
-  # };
-
-  # link without copying to nix store (manage externally) - must use absolute paths
-  # xdg.configFile.nvim.source = mkOutOfStoreSymlink "/Users/timotheos/.dotfiles/.config/nvim";
-
 }
