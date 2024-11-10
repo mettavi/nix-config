@@ -12,7 +12,10 @@ in
 
   ######## INSTALL PACKAGES #########
 
-  home.packages = with pkgs; [ fzf ];
+  home.packages = with pkgs; [
+    fzf
+    thefuck
+  ];
 
   # services = {
   #   gpg-agent = {
@@ -51,7 +54,10 @@ in
     # qt.enable = true;
     # rbenv.enable = true;
     ripgrep.enable = true;
-    thefuck.enable = true;
+    # thefuck = {
+    #   enable = true;
+    #   enableZshIntegration = true;
+    # };
     tmux = {
       enable = true;
       extraConfig = (builtins.readFile ../tmux/.config/tmux/tmux.conf);
