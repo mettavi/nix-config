@@ -107,9 +107,9 @@ in
           "Aloxaf/fzf-tab"
           "MichaelAquilina/zsh-you-should-use"
         ];
-        syntaxHighlighting.enable = true;
-        zsh-abbr.enable = true;
       };
+      syntaxHighlighting.enable = true;
+      zsh-abbr.enable = true;
       # tmux = import ../home/tmux.nix { inherit pkgs; };
       # zsh = import ../home/zsh.nix { inherit config pkgs; };
       # #zoxide = (import ../home/zoxide.nix { inherit config pkgs; });
