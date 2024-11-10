@@ -92,6 +92,13 @@ in
       ];
     };
     zsh = {
+      antidote = {
+        enable = true;
+        plugins = [
+          "Aloxaf/fzf-tab"
+          "MichaelAquilina/zsh-you-should-use"
+        ];
+      };
       enable = true;
       dotDir = ".config/zsh";
       envExtra = (builtins.readFile ../zsh/.config/zsh/.zshenv);
@@ -101,13 +108,6 @@ in
         size = 100000;
       };
       initExtra = (builtins.readFile ../zsh/.config/zsh/.zshrc);
-      antidote = {
-        enable = true;
-        plugins = [
-          "Aloxaf/fzf-tab"
-          "MichaelAquilina/zsh-you-should-use"
-        ];
-      };
       shellAliases = ( builtins.readFile ../zsh/.config/zsh/.zsh_aliases );
       syntaxHighlighting.enable = true;
       zsh-abbr.enable = true;
