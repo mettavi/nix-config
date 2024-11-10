@@ -108,6 +108,7 @@ in
           "MichaelAquilina/zsh-you-should-use"
         ];
       };
+      shellAliases = ( builtins.readFile ../zsh/.config/zsh/.zsh_aliases );
       syntaxHighlighting.enable = true;
       zsh-abbr.enable = true;
       # tmux = import ../home/tmux.nix { inherit pkgs; };
