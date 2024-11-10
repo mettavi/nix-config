@@ -67,6 +67,7 @@ in
       enable = true;
       extraConfig = (builtins.readFile ../tmux/.config/tmux/tmux.conf);
       # tmux sensible plugin already included
+      keyMode = "vi";
       sensibleOnTop = false;
       terminal = "tmux-256color";
       tmuxp.enable = true;
