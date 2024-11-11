@@ -180,6 +180,7 @@ in
     # iina
     # iterm2
     # karabiner-elements
+    keycastr # keystroke visualiser
     # keka
     # obsidian
     # picard
