@@ -128,6 +128,7 @@ in
         "telemetry.telemetryLevel" = "off";
         "files.autoSave" = "afterDelay";
         "terminal.integrated.macOptionIsMeta" = true;
+        "application.shellEnvironmentResolutionTimeout" = 30;
       };
     };
     yt-dlp.enable = true;
