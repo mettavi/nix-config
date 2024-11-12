@@ -24,14 +24,14 @@
 (defalias
   cw (caps-word 3000)
   escctrl (tap-hold 100 100 esc lctl)
-  a (tap-hold-release $tap-time $hold-time a lalt (q w e r t a s d f g z x c v b))
+  a (tap-hold-release-keys $tap-time $hold-time a lalt (q w e r t a s d f g z x c v b))
   s (tap-hold-release-keys $tap-time $hold-time s lctl (q w e r t a s d f g z x c v b))
   d (tap-hold-release-keys $tap-time $hold-time d lmet (q w e r t a s d f g z x c v b))
-  f (tap-hold-release-keys $tap-time $hold-time f lsft )
-  j (tap-hold-release-keys $tap-time $hold-time j rsft )
+  f (tap-hold-release $tap-time $hold-time f lsft )
+  j (tap-hold-release $tap-time $hold-time j rsft )
   k (tap-hold-release-keys $tap-time $hold-time k rmet (y u i o p h j k l ; n m , . /))
   l (tap-hold-release-keys $tap-time $hold-time l rctl (y u i o p h j k l ; n m , . /))
-  ; (tap-hold-release $tap-time $hold-time ; ralt (y u i o p h j k l ; n m , . /))
+  ; (tap-hold-release-keys $tap-time $hold-time ; ralt (y u i o p h j k l ; n m , . /))
 )
 
 (deflayer base
