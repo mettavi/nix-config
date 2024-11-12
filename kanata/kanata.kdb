@@ -22,7 +22,7 @@
 
 ;; Definine two aliases, one for esc/control to other for function key
 (defalias
-  cw (caps-word 3000)
+  cw (caps-word 5000)
   escctrl (tap-hold 100 100 esc lctl)
   a (tap-hold-release-keys $tap-time $hold-time a lalt (q w e r t a s d f g z x c v b))
   s (tap-hold-release-keys $tap-time $hold-time s lctl (q w e r t a s d f g z x c v b))
