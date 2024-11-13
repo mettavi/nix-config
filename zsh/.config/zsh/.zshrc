@@ -74,7 +74,7 @@ eval "$(rbenv init - zsh)"
 # eval "$(zoxide init --cmd cd zsh )"
 
 # enable and set custom alias
-eval $(thefuck --alias oh)
+eval $(thefuck --alias)
 
 # source the script for loading and configuring fzf
 source ~/.config/fzf/.fzfrc

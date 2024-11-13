@@ -318,7 +318,6 @@ in
       completion.enable = true;
     };
     #   fish.enable = true;
-    #   thefuck.alias = "oh";
     nh = {
       enable = true;
       # clean.enable = true;

@@ -156,6 +156,10 @@ in
         size = 100000;
       };
       initExtra = (builtins.readFile ../zsh/.config/zsh/.zshrc);
+      sessionVariables = {
+        # alias for thefuck command
+        TF_ALIAS = "oh";
+      };
       syntaxHighlighting.enable = true;
       zsh-abbr.enable = true;
       # tmux = import ../home/tmux.nix { inherit pkgs; };
