@@ -144,6 +144,7 @@ in
           "MichaelAquilina/zsh-you-should-use"
         ];
       };
+      autosuggestion.enable = true;
       dotDir = ".config/zsh";
       envExtra = (builtins.readFile ../zsh/.config/zsh/.zshenv);
       history = {
