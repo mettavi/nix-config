@@ -34,9 +34,11 @@ bindkey "^x^e" edit-command-line
 
 # export HISTFILE=$ZDOTDIR/.zsh_history
 
+# This option is now set by nix
 # How many commands zsh will load to memory.
 # export HISTSIZE=100000
 
+# This option is now set by nix
 # How many commands history will save on file.
 # export SAVEHIST=100000
 
@@ -55,10 +57,8 @@ setopt SHARE_HISTORY
 
 
 # Load zsh plugins
-# source /nix/store/f5dmn5rkcwghvb1v4g062j38js5h3qwr-zsh-syntax-highlighting-0.8.0/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-# source /nix/store/31c64327figpjpxhb3r3liwd872hf64n-zsh-abbr-5.6.0/share/zsh/zsh-abbr/abbr.plugin.zsh
 
 # source additional zsh configurations
 [[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
@@ -70,20 +70,11 @@ eval "$(pyenv init -)"
 # load rbenv for managing ruby versions
 eval "$(rbenv init - zsh)"
 
-# load zoxide and set its alias
-# eval "$(zoxide init --cmd cd zsh )"
-
 # source the script for loading and configuring fzf
 source ~/.config/fzf/.fzfrc
 
 # source the script for loading and configuring atuin
 source ~/.config/atuin/.atuinrc
-
-# enable antidote plugin manager
-# NB: source the fzf-tab antidote plugin after fzf to avoid problems with ** tab-completion
-# source /nix/store/k3ia5k7s2zzqz39660cbz289c3yn850h-antidote-1.9.6/share/antidote/antidote.zsh
-# NB: load directly from $DOTFILES as antidote overwrites symlinks
-# antidote load ${DOTFILES}/zsh/.config/zsh/.zsh_plugins.txt
 
 # Set up wrapper for brew-file package
 # if [ -f $(brew --prefix)/etc/brew-wrap ];then
