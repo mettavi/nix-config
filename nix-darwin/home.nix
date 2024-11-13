@@ -136,6 +136,7 @@ in
       ];
     };
     zsh = {
+      enable = true;
       antidote = {
         enable = true;
         plugins = [
@@ -143,7 +144,6 @@ in
           "MichaelAquilina/zsh-you-should-use"
         ];
       };
-      enable = true;
       dotDir = ".config/zsh";
       envExtra = (builtins.readFile ../zsh/.config/zsh/.zshenv);
       history = {
