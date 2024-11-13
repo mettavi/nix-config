@@ -15,7 +15,7 @@ in
   home.packages = with pkgs; [
     atuin
     fzf
-    thefuck
+    # thefuck
   ];
 
   # services = {
@@ -62,10 +62,7 @@ in
     # qt.enable = true;
     # rbenv.enable = true;
     ripgrep.enable = true;
-    # thefuck = {
-    #   enable = true;
-    #   enableZshIntegration = true;
-    # };
+    thefuck.enable = true;
     tmux = {
       baseIndex = 1;
       enable = true;
