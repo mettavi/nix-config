@@ -103,7 +103,7 @@ in
 
   # List of directories to be symlinked in /run/current-system/sw
   environment.pathsToLink = [
-     "/libexec"
+    "/libexec"
     "/share/doc"
     "/share/zsh"
     "/share/man"
