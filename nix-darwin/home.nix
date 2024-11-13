@@ -15,7 +15,6 @@ in
   home.packages = with pkgs; [
     atuin
     fzf
-    # thefuck
   ];
 
   # services = {
