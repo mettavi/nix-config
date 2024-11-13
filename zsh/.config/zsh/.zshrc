@@ -59,7 +59,6 @@ setopt SHARE_HISTORY
 
 # Load zsh plugins
 # source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
-# source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # source additional zsh configurations
 [[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
