@@ -46,7 +46,9 @@ setopt SHARE_HISTORY
 # source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Load zsh plugins
-# source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
+if [[ -f "$HOME/.config/zsh/plugins/zsh-abbr/share/zsh/zsh-abbr/zsh-abbr.plugin.zsh" ]]; then
+ source "$HOME/.config/zsh/plugins/zsh-abbr/share/zsh/zsh-abbr/zsh-abbr.plugin.zsh"
+fi
 
 # source additional zsh configurations
 [[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
