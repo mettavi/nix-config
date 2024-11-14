@@ -154,6 +154,7 @@ in
         save = 100000;
         size = 100000;
       };
+      initExtraFirst = (builtins.readFile ../zsh/.config/zsh/.zshrc_top);
       initExtra = (builtins.readFile ../zsh/.config/zsh/.zshrc);
       sessionVariables = {
         # alias for thefuck command
