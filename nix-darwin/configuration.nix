@@ -146,7 +146,7 @@ in
     mkalias
     nixfmt-rfc-style
     nixd # nix language server
-    nix-init
+    nix-init # Generate Nix packages from URLs
     node2nix
     ntfs3g # Read-write NTFS driver for FUSE
     ocrmypdf
