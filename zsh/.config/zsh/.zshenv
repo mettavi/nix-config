@@ -27,14 +27,6 @@ export ABBR_USER_ABBREVIATIONS_FILE="$DOTFILES/zsh/.config/zsh/user-abbreviation
 
 export FLAKE="$DOTFILES/nix-darwin/"
 
-# (homebrew-file package)
-export HOMEBREW_BREWFILE_LEAVES=1
-export HOMEBREW_BREWFILE_ON_REQUEST=1
-export HOMEBREW_BREWFILE=$DOTFILES/Brewfile
-export HOMEBREW_BREWFILE_VSCODE=1 # enable vscode functionality in brew-file
-# add comma separated list of packages which have no requirements but are required by others (eg. go, coreutilsj)
-# export HOMEBREW_BREWFILE_TOP_PACKAGES=
-
 ########## SHELL CONFIG ###########
 
 export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
