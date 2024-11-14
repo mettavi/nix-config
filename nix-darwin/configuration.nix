@@ -9,6 +9,8 @@ let
   # this will point to the stable nixpkgs channel rather than the default one
   # use "nixpkgs.package_name" to install a non-default package
   # nixpkgs = inputs.nixpkgs.legacyPackages.${pkgs.system};
+
+  # define kanata as a custom local derivation
   kanata = (pkgs.callPackage ../kanata/kbin.nix { });
 in
 {
