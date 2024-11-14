@@ -14,7 +14,6 @@ in
 
   home.packages = with pkgs; [
     atuin
-    fzf
   ];
 
   # services = {
@@ -37,10 +36,9 @@ in
       enableZshIntegration = false;
     };
     fd.enable = true;
-    # fzf = {
-    #   enable = true;
-    #   enableZshIntegration = true;
-    # };
+    fzf = {
+      enable = true;
+    };
     git = {
       enable = true;
       delta.enable = true;
