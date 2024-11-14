@@ -135,7 +135,6 @@ in
   environment.systemPackages = with pkgs; [
     # PACKAGES
     # atomicparsley
-    # bash-completion
     bats
     # bento4
     cargo
