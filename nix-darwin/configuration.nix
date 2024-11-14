@@ -164,7 +164,7 @@ in
     # vulkan-headers
     wget
     # xcodes
-    # zsh-powerlevel10k
+    zsh-powerlevel10k
     zsh-completions
 
     # GUI APPS
