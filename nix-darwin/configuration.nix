@@ -172,7 +172,7 @@ in
     tree
     # vulkan-headers
     wget
-    # xcodes
+    xcodes
     zsh-powerlevel10k
     zsh-completions
 
