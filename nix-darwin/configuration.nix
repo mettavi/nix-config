@@ -33,7 +33,8 @@ in
     nixPath = [ "nixpkgs=${inputs.nixpkgs-unstable}" ];
     optimise.automatic = true;
     settings = {
-      auto-optimise-store = true;
+      # this setting is deprected, see https://bit.ly/3Cp2vYB
+      # auto-optimise-store = true;
       experimental-features = [
         "nix-command"
         "flakes"
