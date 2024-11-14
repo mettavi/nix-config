@@ -6,6 +6,7 @@
 }:
 let
   user = "timotheos";
+
   # this will point to the stable nixpkgs channel rather than the default one
   # use "nixpkgs.package_name" to install a non-default package
   # nixpkgs = inputs.nixpkgs.legacyPackages.${pkgs.system};
@@ -328,7 +329,6 @@ in
     # Create /etc/zshrc that loads the nix-darwin environment.
     zsh = {
       enable = true;
-      # autosuggestions.enable = true;
       promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
     };
   };
