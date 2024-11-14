@@ -30,6 +30,9 @@ in
   programs = {
     aria2.enable = true;
     # atuin.enable = true;
+    bash = {
+      enable = true;
+    };
     bat.enable = true;
     eza = {
       enable = true;
