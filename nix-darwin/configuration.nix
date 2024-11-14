@@ -232,6 +232,7 @@ in
       #   args = "no-quarantine";
       # }
       # "isyncr"
+      # brew updates are more recent compared to the nix package
       "iTerm2"
       # key-codes
       # "kid3"
