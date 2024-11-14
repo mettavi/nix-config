@@ -254,7 +254,7 @@ in
       # "tor-browser"
       # "typora"
       # "vmware-fusion"
-      # "xcodes"
+      "xcodes"
       # "zotero"
     ];
     masApps = {
