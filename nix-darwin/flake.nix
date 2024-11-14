@@ -42,6 +42,10 @@
     };
     # patched version of nh (nix helper) for macOS
     nh_darwin.url = "github:ToyVo/nh_darwin";
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     # install a pinned version of a nix package with:
     # specific_package.url = "github:nixos/nixpkgs/specific_commit_hash_from_nixhub.io";
     # inputs.specific_package.legacyPackages.${system}.package_name_from_nixhub.io
