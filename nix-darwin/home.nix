@@ -16,14 +16,14 @@ in
     atuin
   ];
 
-  # services = {
-  #   gpg-agent = {
-  #     enable = true;
-  #     extraConfig = ''
-  #       pinentry-program /usr/local/bin/pinentry-touchid
-  #     '';
-  #   };
-  # };
+  services = {
+    gpg-agent = {
+      enable = true;
+      extraConfig = ''
+        pinentry-program /usr/local/bin/pinentry-touchid
+      '';
+    };
+  };
 
   ######## CONFIGURE (AND INSTALL) PACKAGES USING NATIVE NIX OPTIONS ########
 
