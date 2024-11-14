@@ -232,6 +232,7 @@ in
       #   args = "no-quarantine";
       # }
       # "isyncr"
+      "iTerm2"
       # key-codes
       # "kid3"
       # "mamp"
