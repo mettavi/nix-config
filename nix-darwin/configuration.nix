@@ -208,10 +208,8 @@ in
       # "gcenx/wine" # kegworks
       # "homebrew/bundle"
       "jorgelbg/tap" # pinentry-touchid
-      # "rcmdnk/file" # brew-file
     ];
     brews = [
-      # "brew-file"
       "pinentry-touchid"
     ];
     casks = [
