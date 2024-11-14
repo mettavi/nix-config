@@ -76,15 +76,6 @@ source ~/.config/fzf/.fzfrc
 # source the script for loading and configuring atuin
 source ~/.config/atuin/.atuinrc
 
-# Set up wrapper for brew-file package
-# if [ -f $(brew --prefix)/etc/brew-wrap ];then
-#   source $(brew --prefix)/etc/brew-wrap
-#
-#   _post_brewfile_update () {
-#     echo "Brewfile was updated!"
-#   }
-# fi
- 
 # make sure these custom functions are sourced last
 [[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
 
