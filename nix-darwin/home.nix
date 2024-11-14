@@ -32,6 +32,7 @@ in
     # atuin.enable = true;
     bash = {
       enable = true;
+      historyFile = "$HOME/.config/bash/.bash_history";
     };
     bat.enable = true;
     eza = {
