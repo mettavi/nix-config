@@ -169,7 +169,6 @@ in
     # texinfo # to read info files
     tldr
     tree
-    # vulkan-headers
     wget
     xcodes
     zsh-powerlevel10k
