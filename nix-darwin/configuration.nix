@@ -162,7 +162,6 @@ in
     # pipx
     # pnpm
     # poppler
-    # python312Packages.pygobject3
     # python-launcher
     shellcheck
     # stow
