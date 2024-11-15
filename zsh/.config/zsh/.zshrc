@@ -43,8 +43,6 @@ setopt SHARE_HISTORY
 
 #################### LOAD PLUGINS & CONFIGS #################### 
 
-# source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
 # Load zsh plugins
 if [[ -f "$HOME/.config/zsh/plugins/zsh-abbr/share/zsh/zsh-abbr/zsh-abbr.plugin.zsh" ]]; then
  source "$HOME/.config/zsh/plugins/zsh-abbr/share/zsh/zsh-abbr/zsh-abbr.plugin.zsh"
