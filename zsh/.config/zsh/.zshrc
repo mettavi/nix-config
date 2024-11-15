@@ -43,7 +43,7 @@ setopt SHARE_HISTORY
 
 #################### LOAD PLUGINS & CONFIGS #################### 
 
-# Load zsh plugins
+# Fix the hook installed by the nix home-manager module for zsh-abbr
 if [[ -f "$HOME/.config/zsh/plugins/zsh-abbr/share/zsh/zsh-abbr/zsh-abbr.plugin.zsh" ]]; then
  source "$HOME/.config/zsh/plugins/zsh-abbr/share/zsh/zsh-abbr/zsh-abbr.plugin.zsh"
 fi
