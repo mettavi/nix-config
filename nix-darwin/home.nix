@@ -143,6 +143,7 @@ in
         enable = true;
         plugins = [
           "Aloxaf/fzf-tab"
+          "olets/zsh-autosuggestions-abbreviations-strategy"
           "MichaelAquilina/zsh-you-should-use"
         ];
       };
