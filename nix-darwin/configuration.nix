@@ -311,7 +311,7 @@ in
         ProgramArguments = [
           "/run/current-system/sw/bin/kanata"
           "-c"
-          "/Users/${user}/.dotfiles/kanata/kanata.kdb"
+          "/Users/${user}/.dotfiles/kanata/kanata.lsp"
         ];
         RunAtLoad = true;
         KeepAlive = true;
