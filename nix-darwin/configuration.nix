@@ -194,7 +194,7 @@ in
     # picard
     # transmission_4
     # vlc-bin-universal
-    # zeal-qt6
+    # nixpkgs.zeal
     # zoom-us
   ];
 
