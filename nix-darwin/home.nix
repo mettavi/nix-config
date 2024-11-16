@@ -60,7 +60,6 @@ in
     lazygit.enable = true;
     neovim.enable = true;
     # pyenv.enable = true;
-    # qt.enable = true;
     # rbenv.enable = true;
     ripgrep.enable = true;
     thefuck.enable = true;
