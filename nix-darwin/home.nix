@@ -10,6 +10,9 @@ in
 
   home.stateVersion = "23.11";
 
+  # make programs use XDG directories whenever supported
+  home.preferXdgDirectories = true;
+
   ######## INSTALL PACKAGES #########
 
   home.packages = with pkgs; [
