@@ -184,7 +184,7 @@ in
     #   executable = true;
     # };
 
-    # link config file/directory to ~/.config
+    # link config file/directory to ~/.config (use "recursive" for dir contents)
     # xdg = {
     #   enable = true;
     #   configFile."foo" = {
