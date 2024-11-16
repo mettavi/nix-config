@@ -324,7 +324,7 @@ in
 
   programs = {
     bash = {
-      # this will install bash-completion package
+      # this will enable and install bash-completion package (bash.enableCompletion is deprecated)
       completion.enable = true;
     };
     #   fish.enable = true;
