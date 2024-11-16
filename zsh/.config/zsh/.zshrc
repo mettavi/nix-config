@@ -50,7 +50,7 @@ fi
 
 # source additional zsh configurations
 [[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
-[[ -f $ZDOTDIR/.zsh_completions ]] && source $ZDOTDIR/.zsh_completions # this must be loaded before fzf-tab (via antidote)
+# [[ -f $ZDOTDIR/.zsh_completions ]] && source $ZDOTDIR/.zsh_completions # this must be loaded before fzf-tab (via antidote)
 
 # load pyenv for managing python versions
 eval "$(pyenv init -)"
