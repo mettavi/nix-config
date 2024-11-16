@@ -147,6 +147,7 @@ in
         ];
       };
       autosuggestion.enable = true;
+      completionInit = (builtins.readFile ../zsh/.config/zsh/.zsh_completions);
       dotDir = ".config/zsh";
       envExtra = (builtins.readFile ../zsh/.config/zsh/.zshenv);
       history = {
