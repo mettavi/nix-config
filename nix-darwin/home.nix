@@ -172,6 +172,7 @@ in
     # #zoxide = (import ../home/zoxide.nix { inherit config pkgs; });
     # fzf = import ../home/fzf.nix { inherit pkgs; };
 
+  };
     ####### CONFIGURE PACKAGES USING DOTFILES ########
 
     # link config file or whole directory to ~
@@ -192,8 +193,13 @@ in
     #   };
     # };
 
+    xdg = {
+      # enable management of xdg base directories
+      enable = true;
+      configFile."zsh/.zsh_aliases".source = ../zsh/.config/zsh/.zsh_aliases;
+    };
+
     # link without copying to nix store (manage externally) - must use absolute paths
     # xdg.configFile.nvim.source = mkOutOfStoreSymlink "/Users/timotheos/.dotfiles/.config/nvim";
 
-  };
 }
