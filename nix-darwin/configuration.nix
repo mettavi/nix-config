@@ -155,7 +155,7 @@ in
     nixfmt-rfc-style
     nixd # nix language server
     nix-init # Generate Nix packages from URLs
-    node2nix
+    node2nix # Generate Nix expressions to build NPM packages
     ntfs3g # Read-write NTFS driver for FUSE
     ocrmypdf
     pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
