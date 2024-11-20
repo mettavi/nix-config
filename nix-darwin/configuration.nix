@@ -179,7 +179,7 @@ in
     # appcleaner
     # bitwarden-desktop
     # brave
-    # calibre
+    calibre
     # dbeaver-bin
     # djview
     # google-chrome
