@@ -15,6 +15,7 @@ let
   kanata = (pkgs.callPackage ../kanata/kbin.nix { });
 in
 {
+  # use imports block to prevent error caused by duplicated environment.systemPackages variables
   imports = [
     # install custom packages
     (
