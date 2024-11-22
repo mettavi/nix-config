@@ -41,7 +41,7 @@
             paths.projectRoot = ./.;
             # can be changed to ".git" or "flake.nix" to get rid of .project-root
             paths.projectRootFile = "flake.nix";
-            paths.package = ./.;
+            paths.package = ./packages;
           }
         ];
       };

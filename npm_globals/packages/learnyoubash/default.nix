@@ -31,9 +31,4 @@
       rev = "496d6c628d15d2164ce80fd2c4198f162ffa6291";
     };
   };
-
-  # nodejs-package-lock-v3 = {
-  #   packageFile = "${config.mkDerivation.src}/package.json";
-  # };
-
 }
