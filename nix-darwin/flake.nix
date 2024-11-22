@@ -72,8 +72,7 @@
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#MVs-MBP
       darwinConfigurations."MVs-MBP" = nix-darwin.lib.darwinSystem {
-        # Set all inputs parameters as special arguments for all submodules,
-        # so you can directly use all dependencies in inputs in submodules
+        # Use specialArgs to pass through inputs to configuration.nix
         specialArgs = {
           inherit inputs;
         };
