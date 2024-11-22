@@ -1,7 +1,7 @@
 {
   # This example flake.nix is pretty generic and the same for all
   # examples, except when they define devShells or extra packages.
-  description = "Dream2nix example flake";
+  description = "Install npm global packages using dream2nix module";
 
   # We import the latest commit of dream2nix main branch and instruct nix to
   # re-use the nixpkgs revision referenced by dream2nix.
