@@ -61,6 +61,8 @@ in
       keys = [ "id_ed25519" ];
     };
     lazygit.enable = true;
+    # provides nix-locate and command-not-found commands
+    nix-index.enable = true;
     neovim.enable = true;
     # pyenv.enable = true;
     # rbenv.enable = true;
