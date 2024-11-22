@@ -10,8 +10,8 @@
     dream2nix.modules.dream2nix.nodejs-granular-v3
   ];
 
-  name = "learnyoubash";
-  version = "1.1.0";
+  name = "regex-adventure";
+  version = "1.1.2";
 
   deps =
     { nixpkgs, ... }:
@@ -25,9 +25,9 @@
   mkDerivation = {
     src = builtins.fetchGit {
       shallow = true;
-      url = "https://github.com/denysdovhan/learnyoubash";
-      ref = "1.1.0";
-      rev = "496d6c628d15d2164ce80fd2c4198f162ffa6291";
+      url = "https://github.com/workshopper/regex-adventure";
+      ref = "1.1.2";
+      rev = "03bc334616d7b1a45af746a2155ac3a81dd4a8c7";
     };
   };
 }
