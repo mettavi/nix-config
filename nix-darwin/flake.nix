@@ -88,6 +88,9 @@
             home-manager.users.timotheos = import ./home.nix;
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home.nix
+            home-manager.extraSpecialArgs = {
+              inherit inputs outputs;
+            };
           }
           # enable the default overlay from nix-vscode-extensions
           # to make more vscode extensions available
