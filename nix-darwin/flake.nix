@@ -46,6 +46,7 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    npmGlobals.url = "../npm_globals";
     # install a pinned version of a nix package with:
     # specific_package.url = "github:nixos/nixpkgs/specific_commit_hash_from_nixhub.io";
     # inputs.specific_package.legacyPackages.${system}.package_name_from_nixhub.io
