@@ -2,6 +2,7 @@
   lib,
   config,
   dream2nix,
+  self,
   ...
 }:
 {
@@ -26,7 +27,7 @@
     src = builtins.fetchGit {
       shallow = true;
       url = "https://github.com/denysdovhan/learnyoubash";
-      ref = "package-json-v3";
+      ref = "1.1.0";
       rev = "496d6c628d15d2164ce80fd2c4198f162ffa6291";
     };
   };
