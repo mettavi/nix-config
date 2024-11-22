@@ -2,7 +2,6 @@
   lib,
   config,
   dream2nix,
-  self,
   ...
 }:
 {
