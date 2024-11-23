@@ -26,7 +26,7 @@
     src = builtins.fetchGit {
       shallow = true;
       url = "https://github.com/workshopper/regex-adventure";
-      ref = "1.1.2";
+      ref = "package-json-v3";
       rev = "03bc334616d7b1a45af746a2155ac3a81dd4a8c7";
     };
   };
