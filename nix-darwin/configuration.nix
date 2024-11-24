@@ -23,6 +23,7 @@ in
       {
         environment.systemPackages = [
           kanata # install binary directly from GH repo
+          pkgs.npmGlobals.learnyoubash # see nixpkgs.overlay below for the npmGlobals definition
         ];
       }
     )
