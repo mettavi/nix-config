@@ -130,7 +130,7 @@ in
     "/share/doc"
     "/share/zsh"
     "/share/man"
-   "/share/bash-completion"
+    "/share/bash-completion"
   ];
 
   environment.variables.HOMEBREW_NO_ANALYTICS = "1";
