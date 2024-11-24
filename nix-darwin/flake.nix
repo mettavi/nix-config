@@ -55,8 +55,6 @@
     inputs@{
       self,
       nix-darwin,
-      # nixpkgs,
-      nixpkgs-unstable,
       nix-homebrew,
       # homebrew-core,
       # homebrew-cask,
