@@ -61,6 +61,16 @@ in
   nixpkgs.config.allowUnfree = true;
   # nixpkgs.config.allowBroken = true;
 
+  nixpkgs.overlays = [
+    (final: prev: {
+      npmGlobals = final.callPackage ../npm_globals/node-packages-v18.nix {
+        nodeEnv = final.callPackage ../npm_globals/node-env.nix {
+          libtool = if final.stdenv.isDarwin then final.darwin.cctools else null;
+        };
+      };
+    })
+  ];
+
   users.users.${user} = {
     name = "${user}";
     home = "/Users/${user}";
