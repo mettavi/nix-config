@@ -12,7 +12,7 @@ let
   # nixpkgs = inputs.nixpkgs.legacyPackages.${pkgs.system};
 
   # place custom packages in one directory for ease of reference
-  # each individual package is further defined in ../myPkgs/default.nix
+  # each individual package is further defined in ../myPkgs/default.nx
   myPkgs = (pkgs.callPackage ../myPkgs { });
 
 in
