@@ -49,6 +49,7 @@ in
   nixpkgs.config.allowUnfree = true;
   # nixpkgs.config.allowBroken = true;
 
+  # install global npm packages that are not available in nixpkgs repo
   nixpkgs.overlays = [
     (final: prev: {
       npmGlobals = final.callPackage ../npm_globals/node-packages-v18.nix {
