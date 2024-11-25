@@ -11,7 +11,8 @@ let
   # use "nixpkgs.package_name" to install a non-default package
   # nixpkgs = inputs.nixpkgs.legacyPackages.${pkgs.system};
 
-  # define kanata as a custom local derivation
+  # place custom packages in one directory for ease of reference
+  # each individual package is further defined in ../myPkgs/default.nix
   myPkgs = (pkgs.callPackage ../myPkgs { });
 
 in
