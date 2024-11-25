@@ -15,19 +15,6 @@ let
   kanata = (pkgs.callPackage ../kanata/kbin.nix { });
 in
 {
-  # use imports block to prevent error caused by duplicated environment.systemPackages variables
-  imports = [
-    # install custom packages
-    (
-      { pkgs, ... }:
-      {
-        environment.systemPackages = [
-          kanata # install binary directly from GH repo
-          pkgs.npmGlobals.learnyoubash # see nixpkgs.overlay below for the npmGlobals definition
-        ];
-      }
-    )
-  ];
   nix = {
     # auto upgrade nix package
     package = pkgs.nix;
@@ -185,6 +172,10 @@ in
     xcodes
     zsh-powerlevel10k
     zsh-completions
+
+    # CUSTOM APPS
+    kanata # install binary directly from GH repo
+    npmGlobals.learnyoubash # see nixpkgs.overlay below for the npmGlobals definition
 
     # GUI APPS
     # anki
