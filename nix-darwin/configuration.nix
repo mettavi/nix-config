@@ -12,7 +12,8 @@ let
   # nixpkgs = inputs.nixpkgs.legacyPackages.${pkgs.system};
 
   # define kanata as a custom local derivation
-  kanata = (pkgs.callPackage ../kanata/kbin.nix { });
+  myPkgs = (pkgs.callPackage ../myPkgs { });
+
 in
 {
   nix = {
@@ -175,9 +176,9 @@ in
     zsh-completions
 
     # CUSTOM APPS
-    kanata # install binary directly from GH repo
+    myPkgs.kanata # install binary directly from GH repo
 
-    # install global npm packages not available in nixpkgs repo
+    # Install global npm packages not available in nixpkgs repo
     # using node2nix and overlay (see above)
     # npmGlobals.functional-javascript-workshop 
     # npmGlobals.how-to-markdown
