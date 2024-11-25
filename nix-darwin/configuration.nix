@@ -175,7 +175,7 @@ in
 
     # CUSTOM APPS
     kanata # install binary directly from GH repo
-    npmGlobals.learnyoubash # see nixpkgs.overlay below for the npmGlobals definition
+    npmGlobals.learnyoubash # see nixpkgs.overlay above for the npmGlobals definition
 
     # GUI APPS
     # anki
