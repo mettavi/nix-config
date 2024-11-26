@@ -4,7 +4,6 @@
   fetchurl,
   xar,
   cpio,
-  makeWrapper,
 }:
 
 let
