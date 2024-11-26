@@ -9,10 +9,10 @@
 let
   pname = "karabiner-driverkit";
   versions = {
-    darwin = "3.1.0";
+    darwin = "5.0.0";
   };
   hashes = {
-    darwin = "replace_me";
+    darwin = "sha256-sOnPB832RNPS5jhLZ0FmqYA+tsO44Rg0lEcyCsw/tok=";
   };
   meta = with lib; {
     description = "This project implements a virtual keyboard and virtual mouse using DriverKit on macOS.";
@@ -32,7 +32,7 @@ stdenv.mkDerivation {
   version = versions.darwin;
 
   src = fetchurl {
-    url = "https://github.com/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases/download/v3.1.0/Karabiner-DriverKit-VirtualHIDDevice-3.1.0.pkg";
+    url = "https://github.com/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases/download/v${versions.darwin}/Karabiner-DriverKit-VirtualHIDDevice-${versions.darwin}.pkg";
     hash = hashes.darwin;
   };
 
