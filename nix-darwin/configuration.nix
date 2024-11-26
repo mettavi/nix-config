@@ -233,7 +233,7 @@ in
     onActivation.upgrade = true;
 
     # installed formulae will only be upgraded after running "brew update" (and "darwin-rebuild"), 
-    # but not other brew commands
+    # but not other brew commands (NB: this is not strictly declarative as there is no lock file for versioning)
     global.autoUpdate = false;
 
     # uninstall removes formulae, zap removes formulae and casks
