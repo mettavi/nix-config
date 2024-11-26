@@ -288,7 +288,8 @@ in
     };
     # autoupdate unnecessary as the brew version is pinned by the nix-homebrew package
     # onActivation.autoUpdate = true;
-    onActivation.upgrade = true;
+    # ensure repeated invocations of darwin-rebuild switch are idempotent
+    # onActivation.upgrade = true;
     # uninstall removes formulae, zap removes formulae and casks
     # onActivation.cleanup = "uninstall";
   };
