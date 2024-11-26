@@ -1,9 +1,10 @@
-{ lib
-, stdenv
-, fetchurl
-, xar
-, cpio
-, makeWrapper
+{
+  lib,
+  stdenv,
+  fetchurl,
+  xar,
+  cpio,
+  makeWrapper,
 }:
 
 let
@@ -34,7 +35,11 @@ stdenv.mkDerivation {
     hash = hashes.darwin;
   };
 
-  nativeBuildInputs = [ xar cpio makeWrapper ];
+  nativeBuildInputs = [
+    xar
+    cpio
+    makeWrapper
+  ];
 
   unpackPhase = ''
     xar -xf $src
