@@ -40,7 +40,7 @@ stdenv.mkDerivation {
 
   unpackPhase = ''
     xar -xf $src
-    zcat < Teams_osx_app.pkg/Payload | cpio -i
+    zcat < Payload | cpio -i
   '';
 
   sourceRoot = "Microsoft\ Teams.app";
