@@ -22,7 +22,6 @@ let
     license = licenses.publicDomain;
     maintainers = with maintainers; [ tekezo ];
     platforms = [ "x86_64-darwin" ];
-    mainProgram = ".Karabiner-VirtualHIDDevice-Manager.app";
   };
 
 in
