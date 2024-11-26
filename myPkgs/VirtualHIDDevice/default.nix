@@ -51,9 +51,9 @@ stdenv.mkDerivation {
 
   installPhase = ''
     runHook preInstall
-    mkdir -p $out/{Applications/${appName},bin}
-    cp -R . $out/Applications/${appName}
-    makeWrapper $out/Applications/${appName}/Contents/MacOS/Teams $out/bin/teams
+    mkdir -p $out/Applications/${appName}
+    mkdir -p "$out/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/{Applications,scripts/uninstall}"
+    cp -R . $out
     runHook postInstall
   '';
 }
