@@ -224,6 +224,21 @@ in
 
   homebrew = {
     enable = true;
+
+    # autoupdate unnecessary as the brew version is pinned by the nix-homebrew package
+    # onActivation.autoUpdate = true;
+
+    # allow upgrading outdated formulae during system activation 
+    # (after running "brew update", see global.autoupdate below)
+    onActivation.upgrade = true;
+
+    # installed formulae will only be upgraded after running "brew update" (and "darwin-rebuild"), 
+    # but not other brew commands
+    global.autoUpdate = false;
+
+    # uninstall removes formulae, zap removes formulae and casks
+    # onActivation.cleanup = "uninstall";
+
     taps = [
       # "buo/cask-upgrade" # brew-cask-upgrade
       # "gcenx/wine" # kegworks
@@ -286,12 +301,6 @@ in
       # "Sync Folders Pro" = 522706442;
       # "tipitaka_pali_reader" = 1541426949;
     };
-    # autoupdate unnecessary as the brew version is pinned by the nix-homebrew package
-    # onActivation.autoUpdate = true;
-    # ensure repeated invocations of darwin-rebuild switch are idempotent
-    # onActivation.upgrade = true;
-    # uninstall removes formulae, zap removes formulae and casks
-    # onActivation.cleanup = "uninstall";
   };
 
   services = {
