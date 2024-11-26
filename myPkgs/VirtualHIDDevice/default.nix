@@ -25,7 +25,7 @@ let
     mainProgram = ".Karabiner-VirtualHIDDevice-Manager.app";
   };
 
-  appName = "Teams.app";
+  appName = ".Karabiner-VirtualHIDDevice-Manager.app";
 in
 stdenv.mkDerivation {
   inherit pname meta;
