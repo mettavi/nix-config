@@ -43,7 +43,8 @@ stdenv.mkDerivation {
     zcat < Payload | cpio -i
   '';
 
-  sourceRoot = "Microsoft\ Teams.app";
+  # unpack does not create a folder, so start from the current directory
+  sourceRoot = ".";
   dontPatch = true;
   dontConfigure = true;
   dontBuild = true;
