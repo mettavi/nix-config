@@ -37,7 +37,6 @@ stdenv.mkDerivation {
   nativeBuildInputs = [
     xar
     cpio
-    makeWrapper
   ];
 
   unpackPhase = ''

@@ -1,22 +1,33 @@
 {
-  pkgs ? import <nixpkgs> { },
+  lib,
+  rustPlatform,
+  fetchFromGitHub,
+  stdenv,
+  darwin,
 }:
-pkgs.stdenv.mkDerivation {
-  name = "kanata";
-  src = pkgs.fetchurl {
-    url = "https://github.com/jtroo/kanata/releases/download/v1.7.0/kanata_macos_x86_64";
-    sha256 = "e3f0d99e512a84c5cae1f63e71c07ecdbff66dc89b053aba0abb4f9dee0cadc0";
+
+rustPlatform.buildRustPackage rec {
+  pname = "kanata";
+  version = "unstable-2024-11-25";
+
+  src = fetchFromGitHub {
+    owner = "jtroo";
+    repo = "kanata";
+    rev = "89235ac";
+    hash = "sha256-fDB6Vrgr+nk+4gvuvqUP2ODQgsZVkmoDetbU9+Y654g=";
   };
-  phases = [
-    "installPhase"
-    "patchPhase"
+
+  cargoHash = "sha256-Zra41zL/Awjd7H2tEJZa8tJ4r3EZYYD+DOhH+Lehlrw=";
+
+  buildInputs = lib.optionals stdenv.isDarwin [
+    darwin.apple_sdk.frameworks.CoreGraphics
   ];
-  installPhase = ''
-    mkdir -p $out/bin
-    cp $src $out/bin/kanata
-    chmod +x $out/bin/kanata
-  '';
-  postInstall = ''
-    ln -s $out/bin/kanata /usr/local/bin/kanata
-  '';
+
+  meta = {
+    description = "Improve keyboard comfort and usability with advanced customization";
+    homepage = "https://github.com/jtroo/kanata";
+    license = lib.licenses.unfree; # FIXME: nix-init did not find a license
+    maintainers = with lib.maintainers; [ ];
+    mainProgram = "kanata";
+  };
 }
