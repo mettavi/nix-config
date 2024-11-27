@@ -239,7 +239,7 @@ in
     global.autoUpdate = false;
 
     # uninstall removes formulae, zap removes formulae and casks
-    # onActivation.cleanup = "uninstall";
+    onActivation.cleanup = "zap";
 
     brews = [
       "pinentry-touchid"
