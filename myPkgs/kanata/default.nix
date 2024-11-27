@@ -26,8 +26,8 @@ rustPlatform.buildRustPackage rec {
   meta = {
     description = "Improve keyboard comfort and usability with advanced customization";
     homepage = "https://github.com/jtroo/kanata";
-    license = lib.licenses.unfree; # FIXME: nix-init did not find a license
-    maintainers = with lib.maintainers; [ ];
+    license = lib.licenses.lgpl3Only;
+    maintainers = with lib.maintainers; [ jtroo ];
     mainProgram = "kanata";
   };
 }
