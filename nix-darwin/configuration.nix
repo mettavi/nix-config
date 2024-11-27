@@ -241,12 +241,6 @@ in
     # uninstall removes formulae, zap removes formulae and casks
     # onActivation.cleanup = "uninstall";
 
-    taps = [
-      # "buo/cask-upgrade" # brew-cask-upgrade
-      # "gcenx/wine" # kegworks
-      # "homebrew/bundle"
-      "jorgelbg/tap" # pinentry-touchid
-    ];
     brews = [
       "pinentry-touchid"
     ];
