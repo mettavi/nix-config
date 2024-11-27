@@ -188,7 +188,7 @@ in
     # npmGlobals.how-to-markdown
     # npmGlobals.javascripting
     # npmGlobals.js-best-practices
-    npmGlobals.learnyoubash 
+    npmGlobals.learnyoubash
     # npmGlobals.regex-adventure
     # npmGlobals.zeal-user-contrib
 

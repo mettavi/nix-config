@@ -54,9 +54,6 @@ fi
 # load pyenv for managing python versions
 eval "$(pyenv init -)"
 
-# load rbenv for managing ruby versions
-eval "$(rbenv init - zsh)"
-
 # source the script for loading and configuring fzf
 source ~/.config/fzf/.fzfrc
 
