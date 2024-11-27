@@ -167,6 +167,7 @@ in
     # pnpm
     # poppler
     # python-launcher
+    ruby
     shellcheck
     # stow
     # texinfo # to read info files
