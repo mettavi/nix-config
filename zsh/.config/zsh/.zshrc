@@ -51,9 +51,6 @@ fi
 # source additional zsh configurations
 [[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
 
-# load pyenv for managing python versions
-eval "$(pyenv init -)"
-
 # source the script for loading and configuring fzf
 source ~/.config/fzf/.fzfrc
 
