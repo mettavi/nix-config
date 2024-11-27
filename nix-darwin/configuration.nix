@@ -174,7 +174,8 @@ in
     tree
     wget
     xcodes
-    zsh-powerlevel10k
+    # TODO: Re-enable when bug with statusd dependency is fixed
+    # zsh-powerlevel10k
     zsh-completions
 
     # CUSTOM APPS
@@ -362,7 +363,9 @@ in
     # Create /etc/zshrc that loads the nix-darwin environment.
     zsh = {
       enable = true;
-      promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      # TODO: Re-enable when issue 358116 is resolved
+      # See https://github.com/NixOS/nixpkgs/issues/358116
+      # promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
     };
   };
 }
