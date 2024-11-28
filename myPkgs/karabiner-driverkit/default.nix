@@ -12,7 +12,7 @@ let
     darwin = "5.0.0";
   };
   hashes = {
-    darwin = "sha256-sOnPB832RNPS5jhLZ0FmqYA+tsO44Rg0lEcyCsw/tok=";
+    darwin = "sha256-hKi2gmIdtjl/ZaS7RPpkpSjb+7eT0259sbUUbrn5mMc=";
   };
   meta = with lib; {
     description = "This project implements a virtual keyboard and virtual mouse using DriverKit on macOS.";
@@ -24,6 +24,8 @@ let
     platforms = [ "x86_64-darwin" ];
   };
 
+  appName = ".Karabiner-VirtualHIDDevice-Manager.app";
+  libRoot = "Library/Application\ Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice";
 in
 stdenv.mkDerivation {
   inherit pname meta;
