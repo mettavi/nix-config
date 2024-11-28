@@ -24,7 +24,6 @@ let
     platforms = [ "x86_64-darwin" ];
   };
 
-  appName = ".Karabiner-VirtualHIDDevice-Manager.app";
   libRoot = "Library/Application\ Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice";
 in
 stdenv.mkDerivation {
