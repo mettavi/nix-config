@@ -240,7 +240,11 @@ in
 
     # uninstall removes formulae, zap removes formulae and casks
     onActivation.cleanup = "zap";
-
+    # explicitly list taps to prevent "zap" option from attempting to untap them
+    taps = [
+      "homebrew/cask"
+      "gcenx/wine"
+    ];
     brews = [
       "pinentry-touchid"
     ];
