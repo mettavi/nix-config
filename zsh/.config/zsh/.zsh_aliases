@@ -31,7 +31,7 @@ alias l="eza --color=always --long --git --git-ignore --no-filesize --icons=alwa
 alias ll="eza --color=always --long --all --group --git --icons=always"
 alias lt="eza --color --tree --level=3 --long --icons --git"
 alias cl="clear"
-alias ts="trash"
+alias -g ts="trash"
 alias rm="echo 'Use trash instead'"
 
 # program aliases
