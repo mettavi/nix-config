@@ -3,3 +3,4 @@ abbr "gst"="git status"
 abbr "hw"="echo hello world"
 abbr -g "sw"="darwin-rebuild switch --flake ~/.dotfiles/nix-darwin"
 abbr "flup"="nix flake update --flake ~/.dotfiles/nix-darwin"
+abbr -g "rtsh"="/private/var/root/.Trash" # location of bin for root user
