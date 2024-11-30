@@ -63,4 +63,9 @@ stdenv.mkDerivation {
     cp -R "./${libRoot}/scripts/uninstall" "$out/${libRoot}/scripts"
     runHook postInstall
   '';
+
+  # postInstall = ''
+    # "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate"
+    # sudo '/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon'
+  # '';
 }
