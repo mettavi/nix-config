@@ -21,19 +21,30 @@
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+
     # the homebrew taps below are only required if mutableTaps is disabled
-    # homebrew-core = {
-    #   url = "github:homebrew/homebrew-core";
-    #   flake = false;
-    # };
-    # homebrew-cask = {
-    #   url = "github:homebrew/homebrew-cask";
-    #   flake = false;
-    # };
-    # homebrew-bundle = {
-    #   url = "github:homebrew/homebrew-bundle";
-    #   flake = false;
-    # };
+    # NB: do not use the brew "shorthand" which excludes the "homebrew-" part of the GH url
+    homebrew-core = {
+      url = "github:homebrew/homebrew-core";
+      flake = false;
+    };
+    homebrew-cask = {
+      url = "github:homebrew/homebrew-cask";
+      flake = false;
+    };
+    homebrew-bundle = {
+      url = "github:homebrew/homebrew-bundle";
+      flake = false;
+    };
+    pinentry-touchid = {
+      url = "github:jorgelbg/homebrew-tap";
+      flake = false;
+    };
+    kegworks = {
+      url = "github:gcenx/homebrew-wine";
+      flake = false;
+    };
+
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
     nix-vscode-extensions = {
