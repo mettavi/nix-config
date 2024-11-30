@@ -331,22 +331,22 @@ in
     # };
   };
 
-  launchd.daemons = {
-    kanata = {
-      serviceConfig = {
-        Label = "com.mettavihari.kanata";
-        ProgramArguments = [
-          "/run/current-system/sw/bin/kanata"
-          "-c"
-          "/Users/${user}/.dotfiles/kanata/kanata.lsp"
-        ];
-        RunAtLoad = true;
-        KeepAlive = true;
-        StandardOutPath = "/Library/Logs/Kanata/kanata.out.log";
-        StandardErrorPath = "/Library/Logs/Kanata/kanata.err.log";
-      };
-    };
-  };
+  # launchd.daemons = {
+  #   kanata = {
+  #     serviceConfig = {
+  #       Label = "com.mettavihari.kanata";
+  #       ProgramArguments = [
+  #         "/run/current-system/sw/bin/kanata"
+  #         "-c"
+  #         "/Users/${user}/.dotfiles/kanata/kanata.lsp"
+  #       ];
+  #       RunAtLoad = true;
+  #       KeepAlive = true;
+  #       StandardOutPath = "/Library/Logs/Kanata/kanata.out.log";
+  #       StandardErrorPath = "/Library/Logs/Kanata/kanata.err.log";
+  #     };
+  #   };
+  # };
 
   programs = {
     bash = {
