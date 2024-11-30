@@ -180,7 +180,8 @@ in
     zsh-completions
 
     # CUSTOM APPS
-    myPkgs.kanata # install binary directly from GH repo
+    # myPkgs.kanata # install binary directly from GH repo
+    myPkgs.karabiner-driverkit
 
     # Install global npm packages not available in nixpkgs repo
     # using node2nix and overlay (see above)
