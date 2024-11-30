@@ -91,7 +91,8 @@
         };
         modules = [
           ./configuration.nix
-          nix-homebrew.darwinModules.nix-homebrew
+          # nix-homebrew.darwinModules.nix-homebrew
+          ./homebrew.nix
           home-manager.darwinModules.home-manager
           {
             # `home-manager` config
