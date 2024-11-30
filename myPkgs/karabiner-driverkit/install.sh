@@ -4,7 +4,7 @@ NIXPATH=${karabiner-driver}
 NIXLIB="$NIXPATH/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice" 
 LIBPATH="/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice"
 
-if [[ ! -e /Applications/.Karabiner-VirtualHIDDevice-Manager.app ]]; then
+if [[ ! -e "/Applications/.Karabiner-VirtualHIDDevice-Manager.app" ]]; then
   cp -r "$NIXPATH/Apps/.Karabiner-VirtualHIDDevice-Manager.app" /Applications
 fi
 
