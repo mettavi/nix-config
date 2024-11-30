@@ -24,7 +24,8 @@ let
     platforms = [ "x86_64-darwin" ];
   };
 
-  libRoot = "Library/Application\ Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice";
+  libRoot = "Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice";
+  libLink = "Library/Application Support";
 in
 stdenv.mkDerivation {
   inherit pname meta;
