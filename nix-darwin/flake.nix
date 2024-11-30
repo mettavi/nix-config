@@ -87,7 +87,7 @@
       darwinConfigurations."MVs-MBP" = nix-darwin.lib.darwinSystem {
         # Use specialArgs to pass through inputs to configuration.nix
         specialArgs = {
-          inherit inputs;
+          inherit inputs outputs;
         };
         modules = [
           ./configuration.nix
