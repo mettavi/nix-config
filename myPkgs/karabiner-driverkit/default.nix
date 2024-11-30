@@ -54,11 +54,13 @@ stdenv.mkDerivation {
 
   installPhase = ''
     runHook preInstall
+    # mkdir -p $out/Library/Application\ Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/{Applications,scripts/uninstall}
     mkdir -p $out/Applications
-    mkdir -p "$out/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/{Applications,scripts/uninstall}"
-    cp -R . $out
+    cp -R ./Applications/.Karabiner-VirtualHIDDevice-Manager.app $out/Applications
+    mkdir -p "$out/${libRoot}/Applications"
+    mkdir -p "$out/${libRoot}/scripts/uninstall"
+    cp -R "./${libRoot}/Applications/Karabiner-VirtualHIDDevice-Daemon.app" "$out/${libRoot}/Applications"
+    cp -R "./${libRoot}/scripts/uninstall" "$out/${libRoot}/scripts"
     runHook postInstall
-    "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager activate"
-    sudo '/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon'
   '';
 }
