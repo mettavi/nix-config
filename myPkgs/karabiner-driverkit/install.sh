@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-#
 # Finish installing Karabiner Driver Kit from nix-store
 
 NIXPATH=${karabiner-driver}
