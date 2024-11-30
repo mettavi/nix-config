@@ -96,6 +96,9 @@ in
           ${pkgs.mkalias}/bin/mkalias "$src" "/Applications/Nix Apps/$app_name"
         done
       '';
+
+    karabiner-driver.source = ../myPkgs/karabiner-driverkit/install.sh;
+
     postUserActivation.text = ''
       # avoid a login/reboot to apply new settings after system activation (macOS)
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
