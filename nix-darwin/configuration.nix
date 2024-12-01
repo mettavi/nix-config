@@ -115,12 +115,12 @@ in
         mkdir -p "$LIBPATH/scripts/uninstall"
         cp -r "$NIXLIB/scripts" "$LIBPATH"
       fi
-      chown -R timotheos:staff "/Applications/.Karabiner-VirtualHIDDevice-Manager.app" \
-                               "$LIBPATH/Applications/Karabiner-VirtualHIDDevice-Daemon.app" \
-                               "$NIXLIB/scripts"
-      chmod -R 755 "/Applications/.Karabiner-VirtualHIDDevice-Manager.app" \
-                   "$LIBPATH/Applications/Karabiner-VirtualHIDDevice-Daemon.app" \
-                   "$NIXLIB/scripts"
+      # chown -R timotheos:staff "/Applications/.Karabiner-VirtualHIDDevice-Manager.app" \
+      #                          "$LIBPATH/Applications/Karabiner-VirtualHIDDevice-Daemon.app" \
+      #                          "$NIXLIB/scripts"
+      # chmod -R 755 "/Applications/.Karabiner-VirtualHIDDevice-Manager.app" \
+      #              "$LIBPATH/Applications/Karabiner-VirtualHIDDevice-Daemon.app" \
+      #              "$NIXLIB/scripts"
       # "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate
     '';
 
