@@ -97,7 +97,32 @@ in
         done
       '';
 
-    karabiner-driver.source = ../myPkgs/karabiner-driverkit/install.sh;
+    extraActivation.text = ''
+      NIXPATH="${myPkgs.karabiner-driverkit}"
+      NIXLIB="$NIXPATH/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice" 
+      LIBPATH="/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice"
+
+      if [[ ! -e "/Applications/.Karabiner-VirtualHIDDevice-Manager.app" ]]; then
+        cp -r "$NIXPATH/Apps/.Karabiner-VirtualHIDDevice-Manager.app" /Applications
+      fi
+
+      if [[ ! -e "$LIBPATH/Applications/Karabiner-VirtualHIDDevice-Daemon.app" ]]; then
+        mkdir -p "$LIBPATH/Applications" 
+        cp -r "$NIXLIB/Applications/Karabiner-VirtualHIDDevice-Daemon.app" "$LIBPATH/Applications/"
+      fi
+
+      if [[ ! -d "$LIBPATH/scripts" ]]; then
+        mkdir -p "$LIBPATH/scripts/uninstall"
+        cp -r "$NIXLIB/scripts" "$LIBPATH"
+      fi
+      chown -R timotheos:staff "/Applications/.Karabiner-VirtualHIDDevice-Manager.app" \
+                               "$LIBPATH/Applications/Karabiner-VirtualHIDDevice-Daemon.app" \
+                               "$NIXLIB/scripts"
+      chmod -R 755 "/Applications/.Karabiner-VirtualHIDDevice-Manager.app" \
+                   "$LIBPATH/Applications/Karabiner-VirtualHIDDevice-Daemon.app" \
+                   "$NIXLIB/scripts"
+      # "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate
+    '';
 
     postUserActivation.text = ''
       # avoid a login/reboot to apply new settings after system activation (macOS)
