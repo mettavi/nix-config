@@ -1,4 +1,5 @@
 # Finish installing Karabiner Driver Kit from nix-store
+# NB: This is a shell fragment, so do not include a shebang
 
 NIXPATH=${myPkgs.karabiner-driver}
 NIXLIB="$NIXPATH/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice" 
