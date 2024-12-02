@@ -98,36 +98,7 @@ in
       '';
 
     extraActivation.text = ''
-      sudo installer -pkg "$NIXPATH/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
-      # NIXPATH="${myPkgs.karabiner-driverkit}"
-      # NIXLIB="$NIXPATH/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice" 
-      # LIBPATH="/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice"
       sudo installer -pkg "${myPkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
-            # if [[ ! -e "/Applications/.Karabiner-VirtualHIDDevice-Manager.app" ]]; then
-            #   gcp --preserve=ownership -R "$NIXPATH/Apps/.Karabiner-VirtualHIDDevice-Manager.app" /Applications
-            #   chmod -R u+x "/Applications/.Karabiner-VirtualHIDDevice-Manager.app" 
-            # fi
-            #
-            # if [[ ! -e "$LIBPATH/Applications/Karabiner-VirtualHIDDevice-Daemon.app" ]]; then
-            #   install -o root -g wheel -d "/Library/Application Support/org.pqrs" 
-            #   install -o root -g wheel -d "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice" 
-            #   install -o root -g wheel -d "$LIBPATH/Applications" 
-            #   gcp --preserve=ownership -R "$NIXLIB/Applications/Karabiner-VirtualHIDDevice-Daemon.app" "$LIBPATH/Applications/"
-            #   chmod -R u+x "$LIBPATH/Applications/Karabiner-VirtualHIDDevice-Daemon.app"
-            # fi
-            #
-            # if [[ ! -d "$LIBPATH/scripts" ]]; then
-            #   mkdir -p "$LIBPATH/scripts/uninstall"
-            #   gcp --preserve=ownership -R "$NIXLIB/scripts" "$LIBPATH"
-            #   chmod -R u+x "$LIBPATH/scripts"
-            # fi
-            # chown -R timotheos:staff "/Applications/.Karabiner-VirtualHIDDevice-Manager.app" \
-            #                          "$LIBPATH/Applications/Karabiner-VirtualHIDDevice-Daemon.app" \
-            #                          "$LIBPATH/scripts"
-            # chmod -R 755 "/Applications/.Karabiner-VirtualHIDDevice-Manager.app" \
-            #              "$LIBPATH/Applications/Karabiner-VirtualHIDDevice-Daemon.app" \
-            #              "$LIBPATH/scripts"
-            # "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate
     '';
 
     postUserActivation.text = ''
