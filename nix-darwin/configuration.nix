@@ -98,7 +98,10 @@ in
       '';
 
     extraActivation.text = ''
-      sudo installer -pkg "${myPkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
+      if [[ ! -d /Applications/.Karabiner-VirtualHIDDevice-Manager.app ]]; then
+        sudo installer -pkg "${myPkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
+        "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate
+      fi
     '';
 
     postUserActivation.text = ''
