@@ -25,7 +25,6 @@ let
   };
 
   version = versions.darwin;
-  libRoot = "Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice";
 in
 stdenv.mkDerivation {
   inherit pname meta;
