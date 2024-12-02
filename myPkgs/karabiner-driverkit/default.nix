@@ -2,8 +2,8 @@
   lib,
   stdenv,
   fetchurl,
-  xar,
-  cpio,
+  # xar,
+  # cpio,
 }:
 
 let
@@ -35,18 +35,19 @@ stdenv.mkDerivation {
     hash = hashes.darwin;
   };
 
-  nativeBuildInputs = [
-    xar
-    cpio
-  ];
+  # nativeBuildInputs = [
+  #   xar
+  #   cpio
+  # ];
 
-  unpackPhase = ''
-    xar -xf $src
-    zcat < Payload | cpio -i
-  '';
+  # unpackPhase = ''
+  #   xar -xf $src
+  #   zcat < Payload | cpio -i
+  # '';
 
   # unpack does not create a folder, so start from the current directory
   sourceRoot = ".";
+  dontUnpack = true;
   dontPatch = true;
   dontConfigure = true;
   dontBuild = true;
