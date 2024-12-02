@@ -102,6 +102,7 @@ in
       # NIXPATH="${myPkgs.karabiner-driverkit}"
       # NIXLIB="$NIXPATH/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice" 
       # LIBPATH="/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice"
+      sudo installer -pkg "${myPkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
             # if [[ ! -e "/Applications/.Karabiner-VirtualHIDDevice-Manager.app" ]]; then
             #   gcp --preserve=ownership -R "$NIXPATH/Apps/.Karabiner-VirtualHIDDevice-Manager.app" /Applications
             #   chmod -R u+x "/Applications/.Karabiner-VirtualHIDDevice-Manager.app" 
