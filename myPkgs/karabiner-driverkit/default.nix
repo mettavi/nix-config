@@ -24,13 +24,13 @@ let
     platforms = [ "x86_64-darwin" ];
   };
 
-  version = versions.darwin;
 in
 stdenv.mkDerivation {
   inherit pname meta;
+  version = versions.darwin;
 
   src = fetchurl {
-    url = "https://github.com/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases/download/v${version}/Karabiner-DriverKit-VirtualHIDDevice-${version}.pkg";
+    url = "https://github.com/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases/download/v${versions.darwin}/Karabiner-DriverKit-VirtualHIDDevice-${versions.darwin}.pkg";
     hash = hashes.darwin;
   };
 
@@ -55,12 +55,12 @@ stdenv.mkDerivation {
     runHook preInstall
     # mkdir -p $out/Library/Application\ Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/{Applications,scripts/uninstall}
     mkdir $out
-    cp $src $out/Karabiner-DriverKit-VirtualHIDDevice-${version}.pkg
     # cp -R "./Applications/.Karabiner-VirtualHIDDevice-Manager.app" "$out/Apps"
     # mkdir -p "$out/${libRoot}/Applications"
     # mkdir -p "$out/${libRoot}/scripts/uninstall"
     # cp -R "./${libRoot}/Applications/Karabiner-VirtualHIDDevice-Daemon.app" "$out/${libRoot}/Applications"
     # cp -R "./${libRoot}/scripts" "$out/${libRoot}"
+    cp $src $out/Karabiner-DriverKit-VirtualHIDDevice-${versions.darwin}.pkg
     runHook postInstall
   '';
 
