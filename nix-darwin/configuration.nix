@@ -13,7 +13,7 @@ let
 
   # place custom packages in one directory for ease of reference
   # each individual package is further defined in ../myPkgs/default.nx
-  myPkgs = (pkgs.callPackage ../myPkgs { });
+  mypkgs = (pkgs.callPackage ../mypkgs { });
 
 in
 {
@@ -99,7 +99,7 @@ in
 
     extraActivation.text = ''
       if [[ ! -d /Applications/.Karabiner-VirtualHIDDevice-Manager.app ]]; then
-        sudo installer -pkg "${myPkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
+        sudo installer -pkg "${mypkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
         "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate
       fi
     '';
@@ -188,8 +188,8 @@ in
     zsh-completions
 
     # CUSTOM APPS
-    # myPkgs.kanata # install binary directly from GH repo
-    myPkgs.karabiner-driverkit
+    # mypkgs.kanata # install binary directly from GH repo
+    mypkgs.karabiner-driverkit
 
     # Install global npm packages not available in nixpkgs repo
     # using node2nix and overlay (see above)
