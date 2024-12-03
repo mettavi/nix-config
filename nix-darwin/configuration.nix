@@ -176,6 +176,7 @@ in
     # poppler
     # python-launcher
     ruby
+    rustc
     shellcheck
     # stow
     # texinfo # to read info files
