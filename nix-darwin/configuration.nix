@@ -184,7 +184,7 @@ in
     tree
     wget
     xcodes
-    # TODO: Re-enable when bug with statusd dependency is fixed
+    # TODO: Bug with statusd dependency is fixed, switch branches when merge to master on 3/12/2024 hits nixpkgs-unstable
     # zsh-powerlevel10k
     zsh-completions
 
@@ -386,7 +386,7 @@ in
     # Create /etc/zshrc that loads the nix-darwin environment.
     zsh = {
       enable = true;
-      # TODO: Re-enable when issue 358116 is resolved
+      # TODO: Issue 358116 is resolved, switch branches when merge into master on 3/12/2024 hits nixpkgs-unstable
       # See https://github.com/NixOS/nixpkgs/issues/358116
       # promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
     };
