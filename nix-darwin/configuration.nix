@@ -342,7 +342,7 @@ in
   launchd.daemons = { 
     karabiner-daemon = {
       serviceConfig = {
-        Label = "com.mettavihari.kdaemon";
+        Label = "com.mettavihari.karabiner-daemon";
         ProcessType = "Interactive";
         Program = 
           "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon"
