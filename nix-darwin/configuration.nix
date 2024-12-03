@@ -360,7 +360,7 @@ in
   #     serviceConfig = {
   #       Label = "com.mettavihari.kanata";
   #       ProgramArguments = [
-  #         "/run/current-system/sw/bin/kanata"
+  #         "/usr/local/bin/kanata"
   #         "-c"
   #         "/Users/${user}/.dotfiles/kanata/kanata.lsp"
   #       ];
