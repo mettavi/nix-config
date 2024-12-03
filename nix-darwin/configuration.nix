@@ -189,7 +189,6 @@ in
     zsh-completions
 
     # CUSTOM APPS
-    # mypkgs.kanata # install binary directly from GH repo
     mypkgs.karabiner-driverkit
 
     # Install global npm packages not available in nixpkgs repo
@@ -256,6 +255,7 @@ in
       "gcenx/wine"
     ];
     brews = [
+      "kanata"
       "pinentry-touchid"
     ];
     casks = [
