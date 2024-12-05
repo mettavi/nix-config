@@ -99,7 +99,7 @@ in
 
     extraActivation.text = ''
       if [[ ! -d /Applications/.Karabiner-VirtualHIDDevice-Manager.app ]]; then
-        sudo installer -pkg "${mypkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
+        sudo installer -pkg "${mypkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-3.1.0.pkg" -target /
         "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate
       fi
     '';
