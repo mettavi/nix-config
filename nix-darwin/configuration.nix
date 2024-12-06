@@ -226,7 +226,6 @@ in
     # picard
     # transmission_4
     # vlc-bin-universal
-    # nixpkgs.zeal
     # zoom-us
   ];
 
