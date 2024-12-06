@@ -392,7 +392,7 @@ in
       enable = true;
       # TODO: Issue 358116 is resolved, switch branches when merge into master on 3/12/2024 hits nixpkgs-unstable
       # See https://github.com/NixOS/nixpkgs/issues/358116
-      # promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      promptInit = "source ${nixpkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
     };
   };
 }
