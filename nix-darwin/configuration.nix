@@ -186,7 +186,7 @@ in
     xcodes
     zsh-completions
 
-    # PATCHED APPS
+    # "PINNED" APPS
     # TODO: Bug with statusd dependency is fixed, switch branches when merge to master on 3/12/2024 hits nixpkgs-unstable
     # current workaround is to install packages from stable
     nixpkgs.libgit2
