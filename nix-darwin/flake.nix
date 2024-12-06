@@ -103,7 +103,7 @@
           }
           # enable the default overlay from nix-vscode-extensions
           # to make more vscode extensions available
-          { nixpkgs.overlays = [ inputs.nix-vscode-extensions.overlays.default ]; }
+          { nixpkgs.overlays = [ nix-vscode-extensions.overlays.default ]; }
           nh_darwin.nixDarwinModules.prebuiltin
           nix-index-database.darwinModules.nix-index
         ];
