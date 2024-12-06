@@ -10,6 +10,7 @@ let
   # this will point to the stable nixpkgs channel rather than the default one
   # use "nixpkgs.package_name" to install a non-default package
   nixpkgs = inputs.nixpkgs-24_11.legacyPackages.${pkgs.system};
+  nixpkgs-24_05 = inputs.nixpkgs-24_05.legacyPackages.${pkgs.system};
 
   # place custom packages in one directory for ease of reference
   # each individual package is further defined in ../myPkgs/default.nx
