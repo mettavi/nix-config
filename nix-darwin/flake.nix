@@ -67,7 +67,6 @@
     inputs@{
       self,
       nix-darwin,
-      nix-homebrew,
       home-manager,
       nix-vscode-extensions,
       nh_darwin,
