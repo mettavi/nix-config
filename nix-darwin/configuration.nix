@@ -329,7 +329,7 @@ in
     #   };
   };
 
-  launchd.user.agents = {
+  # launchd.user.agents = {
     # mongodb = {
     #   serviceConfig = {
     #     # only start the service on demand
@@ -344,7 +344,8 @@ in
     #       RunAtLoad = false;
     #     };
     # };
-  };
+  # };
+
   # NB: The daemon is not used in version 3.1.0 of karabiner-driverkit
   # launchd.daemons = {
   #   karabiner-daemon = {
