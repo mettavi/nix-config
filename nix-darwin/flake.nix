@@ -17,6 +17,7 @@
   inputs = {
     # Official NixOS package source, using nixos's unstable branch by default
     nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
+    nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -62,6 +63,7 @@
     # install a pinned version of a nix package with:
     # specific_package.url = "github:nixos/nixpkgs/specific_commit_hash_from_nixhub.io";
     # inputs.specific_package.legacyPackages.${system}.package_name_from_nixhub.io
+    qtwebengine-6_7_0.url = "github:NixOS/nixpkgs/3281bec7174f679eabf584591e75979a258d8c40";
   };
   outputs =
     inputs@{
