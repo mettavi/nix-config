@@ -285,6 +285,7 @@ in
       "iTerm2"
       # key-codes
       # "kid3"
+      # "lingon-x"
       # "mamp"
       # "masscode"
       # "mounty"
