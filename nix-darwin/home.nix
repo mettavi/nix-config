@@ -121,6 +121,7 @@ in
           "diffEditor.ignoreTrimWhitespace" = false;
           "terminal.integrated.fontFamily" = "MesloLGS NF";
         };
+        "extensions.autoUpdate" = false;
         "window.zoomLevel" = 1;
         "eslint.codeActionsOnSave.rules" = null;
         "editor.fontLigatures" = false;
