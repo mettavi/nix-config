@@ -255,6 +255,7 @@ in
     # uninstall removes formulae, zap removes formulae and casks
     onActivation.cleanup = "zap";
     # explicitly list taps to prevent "zap" option from attempting to untap them
+    # taps cannot be uninstalled here, they are managed by homebrew.nix
     taps = [
       "homebrew/cask"
       "gcenx/wine"
