@@ -119,7 +119,6 @@ in
           "editor.tabSize" = 2;
           "editor.autoIndent" = "advanced";
           "diffEditor.ignoreTrimWhitespace" = false;
-          "terminal.integrated.fontFamily" = "MesloLGS NF";
         };
         "extensions.autoUpdate" = false;
         "window.zoomLevel" = 1;
