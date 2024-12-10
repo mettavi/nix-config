@@ -114,12 +114,11 @@ in
         }
       ];
       userSettings = {
-        "[yaml]" = {
-          "editor.insertSpaces" = true;
-          "editor.tabSize" = 2;
-          "editor.autoIndent" = "advanced";
-          "diffEditor.ignoreTrimWhitespace" = false;
-        };
+        "editor.insertSpaces" = true;
+        "editor.tabSize" = 2;
+        "editor.autoIndent" = "advanced";
+        "diffEditor.ignoreTrimWhitespace" = false;
+        "editor.detectIndentation" = false;
         "extensions.autoUpdate" = false;
         "window.zoomLevel" = 1;
         "eslint.codeActionsOnSave.rules" = null;
