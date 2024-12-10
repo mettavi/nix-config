@@ -230,7 +230,7 @@ in
   ];
 
   fonts.packages = with pkgs; [
-    meslo-lgs-nf
+    # meslo-lgs-nf
     (nerdfonts.override {
       fonts = [
         "Meslo"
