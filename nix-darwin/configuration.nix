@@ -259,6 +259,7 @@ in
     taps = [
       "homebrew/cask"
       "gcenx/wine"
+      "jorgelbg/tap"
     ];
     brews = [
       # install with brew as the build is currently broken on nix-darwin
