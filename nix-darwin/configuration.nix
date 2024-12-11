@@ -2,11 +2,11 @@
   pkgs,
   config,
   inputs,
+  system,
+  user,
   ...
 }:
 let
-  user = "timotheos";
-
   # this will point to the stable nixpkgs channel rather than the default one
   # use "nixpkgs.package_name" to install a non-default package
   nixpkgs = inputs.nixpkgs-24_11.legacyPackages.${system};
