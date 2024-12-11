@@ -77,6 +77,7 @@
     }:
     let
       system = "x86_64-darwin";
+      user = "timotheos";
     in
     {
       # Build darwin flake using:
@@ -84,7 +85,7 @@
       darwinConfigurations."MVs-MBP" = nix-darwin.lib.darwinSystem {
         # Use specialArgs to pass through inputs to nix-darwin modules
         specialArgs = {
-          inherit inputs;
+          inherit inputs system user;
         };
         modules = [
           ./configuration.nix
