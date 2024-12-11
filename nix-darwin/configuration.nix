@@ -226,12 +226,7 @@ in
   ];
 
   fonts.packages = with pkgs; [
-    # meslo-lgs-nf
-    (nerdfonts.override {
-      fonts = [
-        "Meslo"
-      ];
-    })
+    nerd-fonts.meslo-lg
   ];
 
   homebrew = {
