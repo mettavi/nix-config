@@ -76,7 +76,6 @@
       ...
     }:
     let
-      inherit (self) outputs;
       system = "x86_64-darwin";
     in
     {
@@ -85,7 +84,7 @@
       darwinConfigurations."MVs-MBP" = nix-darwin.lib.darwinSystem {
         # Use specialArgs to pass through inputs to nix-darwin modules
         specialArgs = {
-          inherit inputs outputs;
+          inherit inputs;
         };
         modules = [
           ./configuration.nix
@@ -100,7 +99,7 @@
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home-manager modules
             home-manager.extraSpecialArgs = {
-              inherit inputs outputs;
+              inherit inputs;
             };
           }
           # enable the default overlay from nix-vscode-extensions
