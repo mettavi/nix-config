@@ -83,7 +83,7 @@
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#MVs-MBP
       darwinConfigurations."MVs-MBP" = nix-darwin.lib.darwinSystem {
-        # Use specialArgs to pass through inputs to configuration.nix
+        # Use specialArgs to pass through inputs to nix-darwin modules
         specialArgs = {
           inherit inputs outputs;
         };
@@ -98,7 +98,7 @@
             home-manager.useUserPackages = true;
             home-manager.users.timotheos = import ./home.nix;
             # Optionally, use home-manager.extraSpecialArgs to pass
-            # arguments to home.nix
+            # arguments to home-manager modules
             home-manager.extraSpecialArgs = {
               inherit inputs outputs;
             };
