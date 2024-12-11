@@ -186,13 +186,9 @@ in
     wget
     xcodes
     zsh-completions
+    zsh-powerlevel10k
 
     # "PINNED" APPS
-    # TODO: Bug with statusd dependency is fixed, switch branches when merge to master on 3/12/2024 hits nixpkgs-unstable
-    # current workaround is to install packages from stable
-    nixpkgs.libgit2
-    nixpkgs.gitstatus
-    nixpkgs.zsh-powerlevel10k
 
     # CUSTOM APPS
     mypkgs.karabiner-driverkit
