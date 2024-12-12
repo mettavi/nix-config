@@ -174,6 +174,7 @@ in
     ocrmypdf
     pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
     pinentry_mac
+    pinentry-tty
     # pipx
     # pnpm
     # poppler
