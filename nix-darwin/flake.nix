@@ -53,8 +53,10 @@
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    # patched version of nh (nix helper) for macOS
-    nh_darwin.url = "github:ToyVo/nh_darwin";
+    nh = {
+      url = "github:viperML/nh";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -105,7 +107,6 @@
           # enable the default overlay from nix-vscode-extensions
           # to make more vscode extensions available
           { nixpkgs.overlays = [ nix-vscode-extensions.overlays.default ]; }
-          nh_darwin.nixDarwinModules.prebuiltin
           nix-index-database.darwinModules.nix-index
         ];
       };
