@@ -12,6 +12,8 @@ let
   nixpkgs = inputs.nixpkgs-24_11.legacyPackages.${system};
   # nixpkgs-24_05 = inputs.nixpkgs-24_05.legacyPackages.${system};
 
+  nh_beta = inputs.nh.packages.${system}.nh;
+
   # place custom packages in one directory for ease of reference
   # each individual package is further defined in ../myPkgs/default.nx
   mypkgs = (pkgs.callPackage ../mypkgs { });
@@ -190,6 +192,7 @@ in
 
     # "PINNED" APPS
 
+    nh_beta
     # CUSTOM APPS
     mypkgs.karabiner-driverkit
 
