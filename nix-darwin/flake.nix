@@ -71,7 +71,6 @@
       nix-darwin,
       home-manager,
       nix-vscode-extensions,
-      nh_darwin,
       nix-index-database,
       ...
     }:
