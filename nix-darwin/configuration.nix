@@ -174,7 +174,7 @@ in
     ocrmypdf
     pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
     pinentry_mac
-    pinentry-tty
+    pinentry-tty # Passphrase entry dialog utilizing the Assuan protocol
     # pipx
     # pnpm
     # poppler
