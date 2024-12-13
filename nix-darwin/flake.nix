@@ -16,12 +16,17 @@
 
   inputs = {
     # Official NixOS package source, using nixos's unstable branch by default
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
     nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-darwin.url = "github:LnL7/nix-darwin";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nix-homebrew = {
+      url = "github:zhaofengli-wip/nix-homebrew";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # the homebrew taps below are only required if mutableTaps is disabled in homebrew.nix
     # NB: do not use the brew "shorthand" which excludes the "homebrew-" part of the GH url
@@ -47,8 +52,10 @@
       flake = false;
     };
 
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-vscode-extensions = {
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
