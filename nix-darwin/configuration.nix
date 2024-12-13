@@ -24,7 +24,7 @@ in
     # auto upgrade nix package
     package = pkgs.nix;
     gc.automatic = true;
-    nixPath = [ "nixpkgs=${inputs.nixpkgs-unstable}" ];
+    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
     optimise.automatic = true;
     settings = {
       # this setting is deprected, see https://bit.ly/3Cp2vYB
@@ -384,8 +384,6 @@ in
     # Create /etc/zshrc that loads the nix-darwin environment.
     zsh = {
       enable = true;
-      # TODO: Issue 358116 is resolved, switch branches when merge into master on 3/12/2024 hits nixpkgs-unstable
-      # See https://github.com/NixOS/nixpkgs/issues/358116
       promptInit = "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
     };
   };
