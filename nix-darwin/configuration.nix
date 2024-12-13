@@ -24,7 +24,12 @@ in
     # auto upgrade nix package
     package = pkgs.nix;
     gc.automatic = true;
-    nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
+    # this ensures $NIX_PATH is set to an immutable location in the nix-store
+    nixPath = [
+      "nixpkgs=${inputs.nixpkgs}"
+      "darwin=${inputs.nix-darwin}"
+      "home-manager=${inputs.home-manager}"
+    ];
     optimise.automatic = true;
     settings = {
       # this setting is deprected, see https://bit.ly/3Cp2vYB
