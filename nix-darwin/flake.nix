@@ -28,9 +28,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # the homebrew taps below are only required if mutableTaps is disabled in homebrew.nix
+    # if mutableTaps is disabled in homebrew.nix, these taps must be declared here AND in homebrew.nix
     # NB: do not use the brew "shorthand" which excludes the "homebrew-" part of the GH url
-    # these taps must also be declared in homebrew.nix
     homebrew-core = {
       url = "github:homebrew/homebrew-core";
       flake = false;
