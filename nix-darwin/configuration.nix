@@ -7,10 +7,10 @@
   ...
 }:
 let
-  # this will point to the stable nixpkgs channel rather than the default one
-  # use "nixpkgs.package_name" to install a non-default package
-  nixpkgs-24_11 = inputs.nixpkgs-24_11.legacyPackages.${system};
-  nixpkgs-24_05 = inputs.nixpkgs-24_05.legacyPackages.${system};
+  # this will point to a stable nixpkgs input rather than the default one
+  # use "nixpkgs_name.package_name" to install a non-default package
+  # nixpkgs-24_11 = inputs.nixpkgs-24_11.legacyPackages.${system};
+  # nixpkgs-24_05 = inputs.nixpkgs-24_05.legacyPackages.${system};
 
   nh_beta = inputs.nh.packages.${system}.nh;
 
