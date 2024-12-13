@@ -192,14 +192,13 @@ in
     zsh-powerlevel10k
 
     # "PINNED" APPS
-
     nh_beta
     # CUSTOM APPS
     mypkgs.karabiner-driverkit
 
     # Install global npm packages not available in nixpkgs repo
     # using node2nix and overlay (see above)
-    # npmGlobals.functional-javascript-workshop 
+    # npmGlobals.functional-javascript-workshop
     # npmGlobals.how-to-markdown
     # npmGlobals.javascripting
     # npmGlobals.js-best-practices
@@ -239,11 +238,11 @@ in
     # autoupdate unnecessary as the brew version is pinned by the nix-homebrew package
     # onActivation.autoUpdate = true;
 
-    # allow upgrading outdated formulae during system activation 
+    # allow upgrading outdated formulae during system activation
     # (after running "brew update", see global.autoupdate below)
     onActivation.upgrade = true;
 
-    # installed formulae will only be upgraded after running "brew update" (and then "darwin-rebuild"), 
+    # installed formulae will only be upgraded after running "brew update" (and then "darwin-rebuild"),
     # but not other brew commands
     global.autoUpdate = false;
 
