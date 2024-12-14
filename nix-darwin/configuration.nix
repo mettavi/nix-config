@@ -230,6 +230,10 @@ in
     # picard
     # transmission_4
     # vlc-bin-universal
+
+    # getting error "cannot download WhatsApp.app from any mirror"
+    # whatsapp-for-mac
+
     # zoom-us
   ];
 
