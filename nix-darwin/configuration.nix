@@ -63,6 +63,7 @@ in
   nixpkgs.config.allowUnfree = true;
   # nixpkgs.config.allowBroken = true;
 
+  # there is also a overlays submodule included in the imports list
   nixpkgs.overlays = [
     (final: prev: {
       # install global npm packages that are not available in nixpkgs repo
@@ -72,7 +73,6 @@ in
         };
       };
     })
-    (import ./overlays)
   ];
 
   users.users.${user} = {
