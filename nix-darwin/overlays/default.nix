@@ -5,7 +5,5 @@
   ...
 }:
 {
-  nixpkgs.overlays = [
-    (import ./overlay-qtwebengine.nix)
-  ];
+  imports = [ ./overlay-qtwebengine.nix ];
 }
