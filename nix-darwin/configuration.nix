@@ -191,6 +191,7 @@ in
 
     # "PINNED" APPS
     nh_beta
+
     # CUSTOM APPS
     mypkgs.karabiner-driverkit
 
