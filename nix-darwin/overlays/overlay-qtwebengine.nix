@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  llvmPackages_17,
   ...
 }:
 {
@@ -16,6 +15,7 @@
         #           ~~~~~~~~~ ^   ~~~~~~~~~
         stdenv' = if stdenv.cc.isClang then llvmPackages_17.stdenv else stdenv;
         inherit (pkgs)
+          llvmPackages_17
           buildPackages
           systemd
           stdenv
