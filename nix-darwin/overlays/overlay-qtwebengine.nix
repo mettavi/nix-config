@@ -8,12 +8,6 @@
     (
       final: prev:
       let
-        # Error when using clang 16:
-        # .../src/3rdparty/chromium/base/containers/flat_tree.h:354:22:
-        # error: invalid operands to binary expression ('const container_type' (aka 'const std::vector<device::BluetoothUUID>') and 'const container_type')
-        #    return lhs.body_ <=> rhs.body_;
-        #           ~~~~~~~~~ ^   ~~~~~~~~~
-        stdenv' = if stdenv.cc.isClang then llvmPackages_17.stdenv else stdenv;
         inherit (pkgs)
           llvmPackages_17
           buildPackages
@@ -22,6 +16,12 @@
           pciutils
           xcbuild
           ;
+        # Error when using clang 16:
+        # .../src/3rdparty/chromium/base/containers/flat_tree.h:354:22:
+        # error: invalid operands to binary expression ('const container_type' (aka 'const std::vector<device::BluetoothUUID>') and 'const container_type')
+        #    return lhs.body_ <=> rhs.body_;
+        #           ~~~~~~~~~ ^   ~~~~~~~~~
+        stdenv' = if stdenv.cc.isClang then llvmPackages_17.stdenv else stdenv;
       in
       {
         qt6 = prev.qt6.overrideScope (
