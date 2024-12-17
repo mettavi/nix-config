@@ -76,6 +76,7 @@
   outputs =
     inputs@{
       self,
+      nixpkgs,
       nix-darwin,
       home-manager,
       nix-vscode-extensions,
