@@ -238,6 +238,7 @@ in
     # vlc-bin-universal
 
     # getting error "cannot download WhatsApp.app from any mirror"
+    # fix was committed to master on Wed 18 Dec, see https://github.com/NixOS/nixpkgs/pull/365792/commits
     # whatsapp-for-mac
 
     # zoom-us
