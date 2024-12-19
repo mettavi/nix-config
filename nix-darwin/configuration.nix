@@ -50,6 +50,7 @@ in
         "nix-command"
         "flakes"
       ];
+      # substituters are always enabled, trusted-substituters can be enabled on demand by untrusted users
       substituters = [
         "https://nix-community.cachix.org"
         "https://cachix.cachix.org"
