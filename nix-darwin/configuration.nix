@@ -14,8 +14,20 @@ let
 
   nh_beta = inputs.nh.packages.${system}.nh;
 
+  # to prevent "make: *** No rule to make target 'install'.  Stop." error (missing install phase)
+  zeal_mac = pkgs.zeal-qt6.overrideAttrs (oldAttrs: {
+    installPhase = ''
+      runHook preInstall
+
+      mkdir -p "$out/Applications"
+      cp -r *.app "$out/Applications"
+
+      runHook postInstall
+    '';
+  });
+
   # place custom packages in one directory for ease of reference
-  # each individual package is further defined in ../myPkgs/default.nx
+  # each individual package is further defined in ../mypkgs/default.nx
   mypkgs = (pkgs.callPackage ../mypkgs { });
 
 in
@@ -242,7 +254,7 @@ in
     # getting error "cannot download WhatsApp.app from any mirror"
     # fix was committed to master on Wed 18 Dec, see https://github.com/NixOS/nixpkgs/pull/365792/commits
     # whatsapp-for-mac
-
+    zeal_mac
     # zoom-us
   ];
 
