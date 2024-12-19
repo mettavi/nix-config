@@ -68,7 +68,6 @@
     # install a pinned version of a nix package with:
     # specific_package.url = "github:nixos/nixpkgs/specific_commit_hash_from_nixhub.io";
     # inputs.specific_package.legacyPackages.${system}.package_name_from_nixhub.io
-    qtwebengine-6_7_0.url = "github:NixOS/nixpkgs/3281bec7174f679eabf584591e75979a258d8c40";
   };
   outputs =
     inputs@{
