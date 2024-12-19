@@ -2,14 +2,16 @@
   description = "Metta's Darwin system flake";
 
   # Binary cache
-  nixConfig = {
+  # this setting allows untrusted users of this flake to approve substituters interactively
+  # it is only useful in a multi-user system
+  # nixConfig = {
     # will be appended to the system-level substituters
-    extra-substituters = [
-    ];
+    # extra-substituters = [
+    # ];
     # will be appended to the system-level trusted-public-keys
-    extra-trusted-public-keys = [
-    ];
-  };
+  #   extra-trusted-public-keys = [
+  #   ];
+  # };
 
   inputs = {
     # Official NixOS package source, using nixos's unstable branch by default
