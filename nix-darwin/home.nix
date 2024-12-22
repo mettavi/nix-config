@@ -31,6 +31,8 @@ in
 
   ######## CONFIGURE (AND INSTALL) PACKAGES USING NATIVE NIX OPTIONS ########
 
+  imports = [ ./packages/yazi.nix ];
+
   programs = {
     aria2.enable = true;
     # atuin.enable = true;
