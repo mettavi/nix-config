@@ -289,22 +289,6 @@
         "type": "indirect"
       }
     },
-    "nixpkgs-24_05": {
-      "locked": {
-        "lastModified": 1733776571,
-        "narHash": "sha256-mD1NyWpiHz9siylwga4oGZcdQWxxSEVJTWyLMltJMfw=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "976c39e1457c7c9f193b32d5dbe85da2ae608d03",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-24.05-darwin",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-24_11": {
       "locked": {
         "lastModified": 1733874782,
@@ -366,7 +350,6 @@
         "nix-index-database": "nix-index-database",
         "nix-vscode-extensions": "nix-vscode-extensions",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-24_05": "nixpkgs-24_05",
         "nixpkgs-24_11": "nixpkgs-24_11",
         "pinentry-touchid": "pinentry-touchid"
       }
