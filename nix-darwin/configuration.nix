@@ -193,7 +193,6 @@ in
     nixfmt-rfc-style
     nixd # nix language server
     nix-init # Generate Nix packages from URLs
-    nix-prefetch # Prefetch any fetcher function call, e.g. package sources
     node2nix # Generate Nix expressions to build NPM packages
     ntfs3g # Read-write NTFS driver for FUSE
     ocrmypdf
