@@ -17,7 +17,7 @@
     # Official NixOS package source, using nixos's unstable branch by default
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
-    nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
+    # nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
