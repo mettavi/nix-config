@@ -48,6 +48,7 @@ jobs:
       - name: "nix build"
         run: |
           cd ./nix-darwin
+          # nix-fast-build --cachix-cache mettavi -- --skip-cached --no-nom --flake ".#checks.$(nix eval --raw --impure --expr builtins.currentSystem)"
           nix build -Lvvv --no-update-lock-file --show-trace --print-build-logs .#darwinConfigurations."MVs-MBP".system
   # nix-develop:
   #   name: "nix develop"
