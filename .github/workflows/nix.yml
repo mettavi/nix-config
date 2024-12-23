@@ -47,7 +47,7 @@ jobs:
       - name: "nix build"
         run: |
           cd ./nix-darwin
-          nix build -Lvvv --no-update-lock-file --show-trace --print-build-logs
+          nix build -Lvvv --no-update-lock-file --show-trace --print-build-logs .#darwinConfigurations."MVs-MBP".system
   # nix-develop:
   #   name: "nix develop"
   #   runs-on: macos-13
