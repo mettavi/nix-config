@@ -194,6 +194,7 @@ in
     macfuse-stubs # Build time stubs for FUSE on macOS
     mas
     mkalias
+    nix-fast-build # speed-up your evaluation and building process
     nixfmt-rfc-style
     nixd # nix language server
     nix-init # Generate Nix packages from URLs
