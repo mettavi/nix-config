@@ -6,27 +6,28 @@ on:
     branches: [main]
 
 jobs:
-  check:
-    name: "nix flake check"
-    runs-on: macos-13
-    steps:
-      - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v30
-        with:
-          extra_nix_config: |
-            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-      - uses: DeterminateSystems/magic-nix-cache-action@v8
-        with:
-          diagnostic-endpoint: ""
-      - uses: cachix/cachix-action@v15
-        with:
-          name: mettavi
-          # If you chose API tokens for write access OR if you have a private cache
-          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-      - name: "nix flake check"
-        run: |
-          cd ./nix-darwin
-          nix flake check -Lvv
+  # NB: this command does not recognise nix-darwin "warning: unknown flake output 'darwinPackages'"
+  # check:
+  #   name: "nix flake check"
+  #   runs-on: macos-13
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: cachix/install-nix-action@v30
+  #       with:
+  #         extra_nix_config: |
+  #           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+  #     - uses: DeterminateSystems/magic-nix-cache-action@v8
+  #       with:
+  #         diagnostic-endpoint: ""
+  #     - uses: cachix/cachix-action@v15
+  #       with:
+  #         name: mettavi
+  #         # If you chose API tokens for write access OR if you have a private cache
+  #         authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+  #     - name: "nix flake check"
+  #       run: |
+  #         cd ./nix-darwin
+  #         nix flake check -Lvv
   build:
     name: "nix build"
     runs-on: macos-13
