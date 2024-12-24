@@ -177,6 +177,7 @@ in
   # install standard packages
   environment.systemPackages = with pkgs; [
     # PACKAGES
+    age # Modern encryption tool with small explicit keys
     # atomicparsley
     bats
     # bento4
@@ -212,6 +213,7 @@ in
     ruby
     rustc
     shellcheck
+    sops # Simple and flexible tool for managing secrets
     # stow
     # texinfo # to read info files
     tldr
