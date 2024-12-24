@@ -180,6 +180,7 @@ in
     # atomicparsley
     bats
     # bento4
+    cachix
     cargo
     chafa
     # cmake
