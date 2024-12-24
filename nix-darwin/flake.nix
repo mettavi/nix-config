@@ -66,6 +66,10 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # install a pinned version of a nix package with:
     # specific_package.url = "github:nixos/nixpkgs/specific_commit_hash_from_nixhub.io";
@@ -79,6 +83,7 @@
       home-manager,
       nix-vscode-extensions,
       nix-index-database,
+      sops-nix,
       ...
     }:
     let
@@ -97,6 +102,7 @@
           ./configuration.nix
           # nix-homebrew.darwinModules.nix-homebrew
           ./homebrew.nix
+          sops-nix.darwinModules.sops
           home-manager.darwinModules.home-manager
           {
             # `home-manager` config
