@@ -1,4 +1,4 @@
-extends: default
+extends: default  # yamllint disable-line rule:document-start
 
 rules:
   document-start:
