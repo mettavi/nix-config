@@ -70,8 +70,20 @@ in
   };
 
   imports = [
+    inputs.sops-nix.darwinModules.sops
     ./overlays
   ];
+
+  sops = {
+    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age.keyFile = "/Users/timotheos/.config/sops/age/keys.txt";
+    gnupg.sshKeyPaths = [];
+    age.sshKeyPaths = [];
+    secrets.example-key = { 
+      owner = config.users.users.timotheos.name;
+    };
+  };
 
   # Auto upgrade the nix daemon service.
   services.nix-daemon.enable = true;

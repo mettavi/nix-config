@@ -83,7 +83,6 @@
       home-manager,
       nix-vscode-extensions,
       nix-index-database,
-      sops-nix,
       ...
     }:
     let
@@ -102,7 +101,6 @@
           ./configuration.nix
           # nix-homebrew.darwinModules.nix-homebrew
           ./homebrew.nix
-          sops-nix.darwinModules.sops
           home-manager.darwinModules.home-manager
           {
             # `home-manager` config
