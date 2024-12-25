@@ -27,8 +27,6 @@ export ABBR_USER_ABBREVIATIONS_FILE="$DOTFILES/zsh/.config/zsh/user-abbreviation
 
 export NH_FLAKE="$DOTFILES/nix-darwin/"
 
-export SOPS_AGE_KEY_FILE="$XDG_CONFIG_HOME/sops/age/keys.txt"
-
 ########## SHELL CONFIG ###########
 
 export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
