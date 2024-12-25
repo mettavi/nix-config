@@ -214,6 +214,7 @@ in
     nix-init # Generate Nix packages from URLs
     node2nix # Generate Nix expressions to build NPM packages
     ntfs3g # Read-write NTFS driver for FUSE
+    nurl # generate Nix fetcher calls from repository URLs
     ocrmypdf
     pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
     pinentry_mac
