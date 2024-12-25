@@ -100,6 +100,8 @@ return {
         "bashls", -- bash language server, uses shellcheck linter installed with brew
         "shfmt", -- bash formatter
         "taplo", -- toml ls and formatter
+        "yamlls", -- Language Server for YAML Files
+        "yamllint", -- Linter for YAML files
         "prettier", -- multi-purpose formatter
       },
       -- if set to true this will check each tool for updates. If updates
@@ -255,6 +257,10 @@ return {
             },
           },
         },
+      }),
+     lspconfig.yamlls.setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
       }),
     })
   end,
