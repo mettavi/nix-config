@@ -80,7 +80,7 @@ in
     age.keyFile = "/Users/timotheos/.config/sops/age/keys.txt";
     gnupg.sshKeyPaths = [];
     age.sshKeyPaths = [];
-    secrets.example-key = { 
+    secrets.CACHIX_AUTH_TOKEN = { 
       owner = config.users.users.timotheos.name;
     };
   };
