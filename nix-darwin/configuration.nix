@@ -76,12 +76,30 @@ in
 
   sops = {
     defaultSopsFile = ./secrets/secrets.yaml;
-    defaultSopsFormat = "yaml";
-    age.keyFile = "/Users/timotheos/.config/sops/age/keys.txt";
+    # If you use something different from YAML, you can also specify it here:
+    #sops.defaultSopsFormat = "yaml";
+    age = {
+      keyFile = "/Users/timotheos/.config/sops/age/keys.txt";
+      # automatically import host SSH keys as age keys
+      # NB: currently there are no host SSH keys
+      sshKeyPaths = [];
+      # This will generate a new key if the key specified above does not exist
+      generateKey = true;
+    };
     gnupg.sshKeyPaths = [];
-    age.sshKeyPaths = [];
-    secrets.CACHIX_AUTH_TOKEN = { 
-      owner = config.users.users.timotheos.name;
+    # secrets will be output to /run/secrets
+    # e.g. /run/secrets/msmtp-password
+    # secrets required for user creation are handled in respective ./users/<username>.nix files
+    # because they will be output to /run/secrets-for-users and only when the user is assigned to a host.
+    secrets = {
+      github_token = {
+        owner = "${user}";
+      };
+      CACHIX_AUTH_TOKEN = {
+      owner = "${user}";
+    };
+      "private-keys/timotheos" = {
+      owner = "${user}";
     };
   };
 
