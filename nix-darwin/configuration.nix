@@ -79,9 +79,9 @@ in
     # If you use something different from YAML, you can also specify it here:
     #sops.defaultSopsFormat = "yaml";
     age = {
-      keyFile = "/Users/timotheos/.config/sops/age/keys.txt";
       # automatically import host SSH keys as age keys
       sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
+      keyFile = "/var/lib/sops-nix/key.txt";
       # This will generate a new key if the key specified above does not exist
       generateKey = true;
     };
