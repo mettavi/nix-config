@@ -102,6 +102,7 @@ return {
         "taplo", -- toml ls and formatter
         "yamlls", -- Language Server for YAML Files
         "yamllint", -- Linter for YAML files
+        "yamlfmt", -- tool or library to format yaml files
         "prettier", -- multi-purpose formatter
       },
       -- if set to true this will check each tool for updates. If updates
