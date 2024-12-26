@@ -80,6 +80,7 @@ in
     #sops.defaultSopsFormat = "yaml";
     age = {
       # automatically import host SSH keys as age keys
+      # NB: ssh host keys can be generated with the "ssh-keygen -A" command
       sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
       keyFile = "/var/lib/sops-nix/key.txt";
       # This will generate a new key if the key specified above does not exist
