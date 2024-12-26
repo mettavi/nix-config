@@ -1,4 +1,9 @@
-{ inputs, config, pkgs, ... }:
+{
+  inputs,
+  config,
+  pkgs,
+  ...
+}:
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
 in
@@ -12,6 +17,11 @@ in
 
   # make programs use XDG directories whenever supported
   home.preferXdgDirectories = true;
+
+  # NixOS system-wide home-manager configuration
+  home-manager.sharedModules = [
+    inputs.sops-nix.homeManagerModules.sops
+  ];
 
   ######## INSTALL PACKAGES #########
 
