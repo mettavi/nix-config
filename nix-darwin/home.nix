@@ -1,12 +1,11 @@
-{ config, pkgs, ... }:
+{ inputs, config, pkgs, ... }:
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
-  user = "timotheos";
 in
 {
   programs.home-manager.enable = true;
   manual.html.enable = true;
-  home.username = "timotheos";
+  home.username = "${inputs.user}";
   home.homeDirectory = "/Users/timotheos";
 
   home.stateVersion = "23.11";
