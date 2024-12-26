@@ -1,16 +1,19 @@
 # yamllint disable-file
 # .sops.yaml
 keys:
-  - &primary age1mhy95hjcr3l73fl39ufefmkdt6grqatw7pctjw0ntw7cr7tugslsl5k4tx
+      - &admin_timotheos age1mhy95hjcr3l73fl39ufefmkdt6grqatw7pctjw0ntw7cr7tugslsl5k4tx
+      - &host_mbp age1yqk69cngaueuzap9pcv20z8h3lneaw7f79pmgpje08v44vfcesfq8we323
 creation_rules:
   - path_regex: nix-darwin/secrets\.yaml$
     key_groups:
       - age:
-          - *primary
+          - *admin_timotheos
+          - *host_mbp
   - path_regex: nix-darwin/secrets_home\.yaml$
     key_groups:
       - age:
-          - *primary
+          - *admin_timotheos
+          - *host_mbp
 stores:
   yaml:
     indent: 2
