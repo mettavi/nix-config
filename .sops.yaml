@@ -1,5 +1,5 @@
+# yamllint disable-file
 # .sops.yaml
-# yamllint disable-line rule:document-start
 keys:
   - &primary age1mhy95hjcr3l73fl39ufefmkdt6grqatw7pctjw0ntw7cr7tugslsl5k4tx
 creation_rules:
