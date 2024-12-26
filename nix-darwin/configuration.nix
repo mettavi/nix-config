@@ -81,8 +81,7 @@ in
     age = {
       keyFile = "/Users/timotheos/.config/sops/age/keys.txt";
       # automatically import host SSH keys as age keys
-      # NB: currently there are no host SSH keys
-      sshKeyPaths = [];
+      sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
       # This will generate a new key if the key specified above does not exist
       generateKey = true;
     };
