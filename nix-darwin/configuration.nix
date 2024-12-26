@@ -75,7 +75,7 @@ in
   ];
 
   sops = {
-    defaultSopsFile = ./secrets/secrets.yaml;
+    defaultSopsFile = ./secrets.yaml;
     # If you use something different from YAML, you can also specify it here:
     #sops.defaultSopsFormat = "yaml";
     age = {
