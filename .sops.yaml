@@ -3,7 +3,7 @@
 keys:
   - &primary age1mhy95hjcr3l73fl39ufefmkdt6grqatw7pctjw0ntw7cr7tugslsl5k4tx
 creation_rules:
-  - path_regex: nix-darwin/secrets.yaml$
+  - path_regex: nix-darwin/secrets\.yaml$
     key_groups:
       - age:
           - *primary
