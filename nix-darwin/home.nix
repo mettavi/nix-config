@@ -23,6 +23,28 @@ in
     inputs.sops-nix.homeManagerModules.sops
   ];
 
+  sops = {
+    defaultSopsFile = ./secrets_home.yaml; # must have no password!
+    age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
+    # It's also possible to use a ssh key, but only when it has no password:
+    #age.sshKeyPaths = [ "/home/user/path-to-ssh-key" ];
+
+    # For home-manager a separate age key is used to decrypt secrets and must be placed onto the host. This is because
+    # the user doesn't have read permission for the ssh service private key. However, we can bootstrap the age key from
+    # the secrets decrypted by the host key, which allows home-manager secrets to work without manually copying over
+    # the age key.
+    # These age keys are are unique for the user on each host and are generated on their own (i.e. they are not derived
+    # from an ssh key).
+
+    # secrets.test = {
+    #   # sopsFile = ./secrets.yml.enc; # optionally define per-secret files
+    #
+    #   # %r gets replaced with a runtime directory, use %% to specify a '%'
+    #   # sign. Runtime dir is $XDG_RUNTIME_DIR on linux and $(getconf
+    #   # DARWIN_USER_TEMP_DIR) on darwin.
+    #   path = "%r/test.txt";
+    # };
+  };
   ######## INSTALL PACKAGES #########
 
   home.packages = with pkgs; [
