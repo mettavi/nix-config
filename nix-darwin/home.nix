@@ -2,6 +2,7 @@
   inputs,
   config,
   pkgs,
+  user,
   ...
 }:
 let
@@ -10,13 +11,14 @@ in
 {
   programs.home-manager.enable = true;
   manual.html.enable = true;
-  home.username = "${inputs.user}";
-  home.homeDirectory = "/Users/timotheos";
+  home.username = "${user}";
+  home.homeDirectory = "/Users/${user}";
 
   home.stateVersion = "23.11";
 
   # make programs use XDG directories whenever supported
   home.preferXdgDirectories = true;
+
   imports = [
     # sops config  for home
     ./sops-home.nix
