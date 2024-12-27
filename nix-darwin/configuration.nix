@@ -101,11 +101,12 @@ in
       github_token = {
         owner = "${user}";
       };
-      CACHIX_AUTH_TOKEN = {
-      owner = "${user}";
-    };
-      "private-keys/timotheos" = {
-      owner = "${user}";
+      cachix_auth_token = {
+        owner = "${user}";
+      };
+      "private_keys/timotheos" = {
+        owner = "${user}";
+      };
     };
   };
 
