@@ -109,7 +109,6 @@ in
       };
     };
   };
-
   # Auto upgrade the nix daemon service.
   services.nix-daemon.enable = true;
 
@@ -134,6 +133,8 @@ in
   users.users.${user} = {
     name = "${user}";
     home = "/Users/${user}";
+    # authorize remote login to host using personal ssh key
+    openssh.authorizedKeys.keys = [ (builtins.readFile ./timotheos/keys/id_ed25519.pub) ];
   };
 
   # Set Git commit hash for darwin-version.
