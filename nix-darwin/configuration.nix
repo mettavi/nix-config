@@ -165,9 +165,16 @@ in
       '';
 
     extraActivation.text = ''
+      # install the Karabiner Driver Kit .pkg from the nix store
       if [[ ! -d /Applications/.Karabiner-VirtualHIDDevice-Manager.app ]]; then
         sudo installer -pkg "${mypkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-3.1.0.pkg" -target /
         "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate
+      fi
+      # Enable remote login for the host (macos ssh server)
+      # WORKAROUND: `systemsetup -f -setremotelogin on` requires `Full Disk Access`
+      # permission for the Application calling it
+      if [[ "$(systemsetup -getremotelogin | sed 's/Remote Login: //')" == "Off" ]]; then
+        launchctl load -w /System/Library/LaunchDaemons/ssh.plist
       fi
     '';
 
