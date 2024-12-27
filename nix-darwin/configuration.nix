@@ -104,9 +104,6 @@ in
       cachix_auth_token = {
         owner = "${user}";
       };
-      "private_keys/timotheos" = {
-        owner = "${user}";
-      };
     };
   };
   # Auto upgrade the nix daemon service.
