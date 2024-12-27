@@ -110,7 +110,7 @@
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home-manager modules
             home-manager.extraSpecialArgs = {
-              inherit inputs;
+              inherit inputs system user;
             };
           }
           # enable the default overlay from nix-vscode-extensions
