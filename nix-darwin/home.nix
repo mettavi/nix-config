@@ -17,7 +17,33 @@ in
 
   # make programs use XDG directories whenever supported
   home.preferXdgDirectories = true;
+  imports = [
+    # sops config  for home
+    ./sops-home.nix
+    # packages
+    ./packages/yazi.nix
+  ];
 
+  ######## INSTALL PACKAGES #########
+
+  home.packages = with pkgs; [
+    atuin
+  ];
+
+  services = {
+    gpg-agent = {
+      enable = true;
+      extraConfig = ''
+        pinentry-program /usr/local/bin/pinentry-touchid
+      '';
+    };
+  };
+
+  ######## CONFIGURE (AND INSTALL) PACKAGES USING NATIVE NIX OPTIONS ########
+
+  programs = {
+    aria2.enable = true;
+    # atuin.enable = true;
     bash = {
       enable = true;
       historyFile = "$HOME/.config/bash/.bash_history";
