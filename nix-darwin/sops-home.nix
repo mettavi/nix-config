@@ -17,6 +17,10 @@
       "private_keys/id_ed25519" = {
         path = "/Users/${user}/.ssh/id_ed25519";
       };
+      "private_keys/id_ed25519.pub" = {
+        path = "/Users/${user}/.ssh/id_ed25519.pub";
+        mode = "0644";
+      };
     };
     # secrets.test = {
     #   # sopsFile = ./secrets.yml.enc; # optionally define per-secret files
