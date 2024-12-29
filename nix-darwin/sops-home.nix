@@ -14,8 +14,8 @@
     #age.sshKeyPaths = [ "/home/user/path-to-ssh-key" ];
 
     secrets = {
-      "private_keys/timotheos" = {
-        path = "/Users/timotheos/.ssh/id_ed25519";
+      "private_keys/id_ed25519" = {
+        path = "/Users/${user}/.ssh/id_ed25519";
       };
     };
     # secrets.test = {
