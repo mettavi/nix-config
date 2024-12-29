@@ -98,6 +98,11 @@ in
       # the age key.
       # These age keys are unique for the user on each host and are generated on their own (i.e. they are not derived
       # from an ssh key).
+      encryption_key = {
+        owner = "${user}";
+        # We need to ensure the entire directory structure is that of the user...
+        path = "${config.hostSpec.home}/.config/sops/age/keys.txt";
+      };
       github_token = {
         owner = "${user}";
       };
