@@ -44,4 +44,17 @@
       };
     };
   };
+  # The containing folders are created as root and if this is the first ~/.config/ entry,
+  # the ownership is busted and home-manager can't target because it can't write into .config...
+  # FIXME:(sops) We might not need this depending on how https://github.com/Mic92/sops-nix/issues/381 is fixed
+  system.activationScripts.sopsSetAgeKeyOwnership =
+    let
+      ageFolder = "${config.hostSpec.home}/.config/sops/age";
+      user = config.users.users.${config.hostSpec.username}.name;
+      group = config.users.users.${config.hostSpec.username}.group;
+    in
+    ''
+      mkdir -p ${ageFolder} || true
+      chown -R ${user}:${group} ${config.hostSpec.home}/.config
+    '';
 }
