@@ -70,7 +70,7 @@ in
   };
 
   imports = [
-    inputs.sops-nix.darwinModules.sops
+    ./sops-system.nix
     ./overlays
   ];
 
