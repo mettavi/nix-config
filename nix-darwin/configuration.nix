@@ -95,6 +95,8 @@ in
     })
   ];
 
+  ########### CONFIGURE SYSTEM USERS ############
+
   users.users.${user} = {
     name = "${user}";
     home = "/Users/${user}";
