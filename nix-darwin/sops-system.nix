@@ -1,12 +1,13 @@
 {
   config,
   inputs,
-  user,
+  ...
 }:
 {
   imports = [
     inputs.sops-nix.darwinModules.sops
   ];
+
   sops = {
     defaultSopsFile = ./secrets.yaml;
     # If you use something different from YAML, you can also specify it here:
@@ -32,15 +33,16 @@
       # These age keys are unique for the user on each host and are generated on their own (i.e. they are not derived
       # from an ssh key).
       encryption_key = {
-        owner = "${user}";
+        # owner = "${config.users.users.ta.name}";
+        mode = "0644";
         # We need to ensure the entire directory structure is that of the user...
-        path = "${config.hostSpec.home}/.config/sops/age/keys.txt";
+        path = "${config.users.users.ta.home}/.config/sops/age/keys.txt";
       };
       github_token = {
-        owner = "${user}";
+        owner = "${config.users.users.ta.name}";
       };
       cachix_auth_token = {
-        owner = "${user}";
+        owner = "${config.users.users.ta.name}";
       };
     };
   };
