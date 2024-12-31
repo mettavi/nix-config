@@ -105,6 +105,8 @@
             # `home-manager` config
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            # a user home directory needs to be explicitly set in home-manager
+            # See https://github.com/nix-community/home-manager/issues/6036 for details
             users.users.timotheos.home = "/Users/timotheos";
             home-manager.users.timotheos = import ./home.nix;
             # Optionally, use home-manager.extraSpecialArgs to pass
