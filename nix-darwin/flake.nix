@@ -87,7 +87,6 @@
     }:
     let
       system = "x86_64-darwin";
-      user = "timotheos";
     in
     {
       # Build darwin flake using:
@@ -95,7 +94,7 @@
       darwinConfigurations."MVs-MBP" = nix-darwin.lib.darwinSystem {
         # Use specialArgs to pass through inputs to nix-darwin modules
         specialArgs = {
-          inherit inputs system user nixpkgs;
+          inherit inputs system nixpkgs;
         };
         modules = [
           ./configuration.nix
@@ -110,7 +109,7 @@
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home-manager modules
             home-manager.extraSpecialArgs = {
-              inherit inputs system user;
+              inherit inputs system;
             };
           }
           # enable the default overlay from nix-vscode-extensions
