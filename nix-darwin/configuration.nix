@@ -3,7 +3,6 @@
   config,
   inputs,
   system,
-  user,
   ...
 }:
 let
@@ -97,9 +96,9 @@ in
 
   ########### CONFIGURE SYSTEM USERS ############
 
-  users.users.${user} = {
-    name = "${user}";
-    home = "/Users/${user}";
+  users.users.ta = rec {
+    name = "timotheos";
+    home = "/Users/${name}";
     # authorize remote login to host using personal ssh key
     openssh.authorizedKeys.keys = [ (builtins.readFile ./timotheos/keys/id_ed25519.pub) ];
   };
@@ -416,7 +415,7 @@ in
         ProgramArguments = [
           "/usr/local/bin/kanata"
           "-c"
-          "/Users/${user}/.dotfiles/kanata/kanata.lsp"
+          "${config.users.users.ta.home}/.dotfiles/kanata/kanata.lsp"
         ];
         RunAtLoad = true;
         KeepAlive = true;
