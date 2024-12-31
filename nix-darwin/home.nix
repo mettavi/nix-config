@@ -9,7 +9,6 @@ let
   inherit (config.lib.file) mkOutOfStoreSymlink;
 in
 {
-  programs.home-manager.enable = true;
   manual.html.enable = true;
 
   home = {
@@ -47,6 +46,8 @@ in
   ######## CONFIGURE (AND INSTALL) PACKAGES USING NATIVE NIX OPTIONS ########
 
   programs = {
+    # ensure home-manager itself is installed
+    home-manager.enable = true;
     aria2.enable = true;
     # atuin.enable = true;
     bash = {
