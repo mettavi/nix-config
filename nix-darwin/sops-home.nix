@@ -3,9 +3,6 @@
   config,
   ...
 }:
-let
-  homeDir = "/Users/timotheos";
-in
 {
   imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
@@ -17,10 +14,10 @@ in
 
     secrets = {
       "private_keys/id_ed25519" = {
-        path = "${homeDir}/.ssh/id_ed25519";
+        path = "${config.home.homeDirectory}/.ssh/id_ed25519";
       };
       "private_keys/id_ed25519.pub" = {
-        path = "${homeDir}/.ssh/id_ed25519.pub";
+        path = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
         mode = "0644";
       };
     };
