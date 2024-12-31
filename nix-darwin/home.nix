@@ -2,7 +2,6 @@
   inputs,
   config,
   pkgs,
-  user,
   ...
 }:
 let
@@ -13,8 +12,8 @@ in
   manual.html.enable = true;
 
   home = {
-    username = "${user}";
-    homeDirectory = "/Users/${user}";
+    username = "config.users.users.ta.name";
+    homeDirectory = "config.users.users.ta.home";
     stateVersion = "23.11";
     # make programs use XDG directories whenever supported
     home.preferXdgDirectories = true;
@@ -220,6 +219,6 @@ in
     };
   };
   # link without copying to nix store (manage externally) - must use absolute paths
-  # xdg.configFile.nvim.source = mkOutOfStoreSymlink "/Users/timotheos/.dotfiles/.config/nvim";
+  # xdg.configFile.nvim.source = mkOutOfStoreSymlink "${config.users.users.ta.home}.dotfiles/.config/nvim";
 
 }
