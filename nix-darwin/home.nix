@@ -12,11 +12,11 @@ in
   manual.html.enable = true;
 
   home = {
-    username = "config.users.users.ta.name";
-    homeDirectory = "config.users.users.ta.home";
+    username = "timotheos";
+    homeDirectory = "/Users/timotheos";
     stateVersion = "23.11";
     # make programs use XDG directories whenever supported
-    home.preferXdgDirectories = true;
+    preferXdgDirectories = true;
   };
 
   imports = [
