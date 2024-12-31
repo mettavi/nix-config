@@ -105,6 +105,7 @@
             # `home-manager` config
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            users.users.timotheos.home = "/Users/timotheos";
             home-manager.users.timotheos = import ./home.nix;
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home-manager modules
