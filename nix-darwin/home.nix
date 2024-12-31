@@ -11,13 +11,13 @@ in
 {
   programs.home-manager.enable = true;
   manual.html.enable = true;
-  home.username = "${user}";
-  home.homeDirectory = "/Users/${user}";
-
-  home.stateVersion = "23.11";
-
-  # make programs use XDG directories whenever supported
-  home.preferXdgDirectories = true;
+  home = {
+    username = "${user}";
+    homeDirectory = "/Users/${user}";
+    stateVersion = "23.11";
+    # make programs use XDG directories whenever supported
+    home.preferXdgDirectories = true;
+  };
 
   imports = [
     # sops config  for home
