@@ -11,6 +11,7 @@ in
 {
   programs.home-manager.enable = true;
   manual.html.enable = true;
+
   home = {
     username = "${user}";
     homeDirectory = "/Users/${user}";
@@ -26,11 +27,7 @@ in
     ./packages/yazi.nix
   ];
 
-  ######## INSTALL PACKAGES #########
-
-  home.packages = with pkgs; [
-    atuin
-  ];
+  ######## INSTALL SERVICES #########
 
   services = {
     gpg-agent = {
@@ -40,6 +37,12 @@ in
       '';
     };
   };
+
+  ######## INSTALL PACKAGES #########
+
+  home.packages = with pkgs; [
+    atuin
+  ];
 
   ######## CONFIGURE (AND INSTALL) PACKAGES USING NATIVE NIX OPTIONS ########
 
