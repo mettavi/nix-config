@@ -18,7 +18,10 @@
       sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
       keyFile = "/var/lib/sops-nix/key.txt";
       # This will generate a new key if the key specified above does not exist
-      generateKey = true;
+      # BUG: setting this to true will break mounting of secrets on startup
+      # see https://github.com/Mic92/sops-nix/issues/700 for details
+      # workaround: run once and then set to false
+      generateKey = false;
     };
     gnupg.sshKeyPaths = [ ];
     # secrets will be output to /run/secrets
