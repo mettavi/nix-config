@@ -252,7 +252,7 @@ in
     # npmGlobals.zeal-user-contrib
 
     # GUI APPS
-    # anki
+    # anki # this is currently marked as broken in all nix branches (as at 2025/01/01)
     # appcleaner
     # bitwarden-desktop
     # brave
