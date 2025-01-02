@@ -313,6 +313,7 @@ in
     casks = [
       # "abbyy-finereader-pdf"
       # "adobe-digital-editions"
+      "anki"
       # "carbon-copy-cloner"
       # "cheatsheet"
       # "coteditor"
