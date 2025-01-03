@@ -272,6 +272,7 @@ return {
               url = "",
             },
             schemas = require("schemastore").yaml.schemas(),
+            -- using yamlfmt for formatting
             format = {
               enable = false,
             },
