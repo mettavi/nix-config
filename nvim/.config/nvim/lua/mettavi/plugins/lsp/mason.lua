@@ -66,20 +66,20 @@ return {
     })
 
     -- mason_lspconfig.setup({ -- use mason_tool_installer instead to also autoupdate
-      -- list of servers for mason to install
-      -- ensure_installed = {
-      --   "ts_ls",
-      --   "html",
-      --   "cssls",
-      --   "tailwindcss",
-      --   "svelte",
-      --   "lua_ls",
-      --   "emmet_ls",
-      --   "pyright",
-      --   "bashls", -- uses shellcheck linter installed with brew
-      -- },
-      -- auto-install configured servers (with lspconfig)
-      -- automatic_installation = true, -- not the same as ensure_installed
+    -- list of servers for mason to install
+    -- ensure_installed = {
+    --   "ts_ls",
+    --   "html",
+    --   "cssls",
+    --   "tailwindcss",
+    --   "svelte",
+    --   "lua_ls",
+    --   "emmet_ls",
+    --   "pyright",
+    --   "bashls", -- uses shellcheck linter installed with brew
+    -- },
+    -- auto-install configured servers (with lspconfig)
+    -- automatic_installation = true, -- not the same as ensure_installed
     -- })
 
     mason_tool_installer.setup({
@@ -259,9 +259,24 @@ return {
           },
         },
       }),
-     lspconfig.yamlls.setup({
+      lspconfig.yamlls.setup({
         capabilities = capabilities,
         on_attach = on_attach,
+        settings = {
+          yaml = {
+            schemaStore = {
+              -- must disable built-in schemaStore support if you want to use
+              -- the neovim schemastore plugin and its advanced options like `ignore`.
+              enable = false,
+              -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+              url = "",
+            },
+            schemas = require("schemastore").yaml.schemas(),
+            format = {
+              enable = false,
+            },
+          },
+        },
       }),
     })
   end,
