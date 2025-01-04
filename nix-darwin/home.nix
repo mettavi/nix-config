@@ -89,7 +89,7 @@ in
       baseIndex = 1;
       enable = true;
       escapeTime = 10;
-      extraConfig = (builtins.readFile ../tmux/.config/tmux/tmux.conf);
+      extraConfig = (builtins.readFile ../modules/tmux/.config/tmux/tmux.conf);
       historyLimit = 50000;
       keyMode = "vi";
       mouse = true;
