@@ -25,7 +25,7 @@ export BAT_THEME=tokyonight_night
 
 export ABBR_USER_ABBREVIATIONS_FILE="$DOTFILES/modules/zsh/.config/zsh/user-abbreviations"
 
-export NH_FLAKE="$DOTFILES/nix-darwin/"
+export NH_FLAKE="$DOTFILES"
 
 ########## SHELL CONFIG ###########
 
