@@ -37,6 +37,3 @@ export EDITOR="nvim"
 
 # open man pages from terminal with neovim
 export MANPAGER="nvim +Man!"
-
-# point to custom terminfo path
-export TERMINFO_DIRS=$TERMINFO_DIRS:$HOME/.local/share/terminfo
