@@ -416,7 +416,7 @@ in
         ProgramArguments = [
           "/usr/local/bin/kanata"
           "-c"
-          "${config.users.users.ta.home}/.dotfiles/kanata/kanata.lsp"
+          "${config.users.users.ta.home}/.dotfiles/modules/kanata/kanata.lsp"
         ];
         RunAtLoad = true;
         KeepAlive = true;
