@@ -100,7 +100,7 @@ in
     name = "timotheos";
     home = "/Users/${name}";
     # authorize remote login to host using personal ssh key
-    openssh.authorizedKeys.keys = [ (builtins.readFile ./timotheos/keys/id_ed25519.pub) ];
+    openssh.authorizedKeys.keys = [ (builtins.readFile ../modules/secrets/timotheos/keys/id_ed25519.pub) ];
   };
 
   # Set Git commit hash for darwin-version.
