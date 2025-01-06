@@ -189,6 +189,7 @@ in
   environment.systemPackages = with pkgs; [
     # PACKAGES
     age # Modern encryption tool with small explicit keys
+    asciiquarium-transparent # Aquarium/sea animation in ASCII art
     # atomicparsley
     bats
     # bento4
