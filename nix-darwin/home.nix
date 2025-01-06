@@ -23,7 +23,7 @@ in
     # sops config  for home
     ./sops-home.nix
     # packages
-    ./modules/yazi.nix
+    ../modules/yazi.nix
   ];
 
   ######## INSTALL SERVICES #########
