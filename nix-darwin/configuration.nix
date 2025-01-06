@@ -69,7 +69,7 @@ in
   };
 
   imports = [
-    ./sops-system.nix
+    ../modules/sops/sops-system.nix
     ./overlays
   ];
 
