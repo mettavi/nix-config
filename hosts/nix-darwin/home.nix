@@ -21,9 +21,9 @@ in
 
   imports = [
     # sops config  for home
-    ../modules/sops/sops-home.nix
+    ../../modules/sops/sops-home.nix
     # packages
-    ../modules/yazi.nix
+    ../../modules/yazi.nix
   ];
 
   ######## INSTALL SERVICES #########
@@ -89,7 +89,7 @@ in
       baseIndex = 1;
       enable = true;
       escapeTime = 10;
-      extraConfig = (builtins.readFile ../modules/tmux/.config/tmux/tmux.conf);
+      extraConfig = (builtins.readFile ../../modules/tmux/.config/tmux/tmux.conf);
       historyLimit = 50000;
       keyMode = "vi";
       mouse = true;
@@ -168,16 +168,16 @@ in
         ];
       };
       autosuggestion.enable = true;
-      completionInit = (builtins.readFile ../modules/zsh/.config/zsh/.zsh_completions);
+      completionInit = (builtins.readFile ../../modules/zsh/.config/zsh/.zsh_completions);
       dotDir = ".config/zsh";
-      envExtra = (builtins.readFile ../modules/zsh/.config/zsh/.zshenv);
+      envExtra = (builtins.readFile ../../modules/zsh/.config/zsh/.zshenv);
       history = {
         path = "$ZDOTDIR/.zsh_history";
         save = 100000;
         size = 100000;
       };
-      initExtraFirst = (builtins.readFile ../modules/zsh/.config/zsh/.zshrc_top);
-      initExtra = (builtins.readFile ../modules/zsh/.config/zsh/.zshrc);
+      initExtraFirst = (builtins.readFile ../../modules/zsh/.config/zsh/.zshrc_top);
+      initExtra = (builtins.readFile ../../modules/zsh/.config/zsh/.zshrc);
       sessionVariables = {
         # alias for thefuck command
         TF_ALIAS = "oh";
@@ -215,7 +215,7 @@ in
     # enable management of xdg base directories
     enable = true;
     configFile = {
-      "zsh/.zsh_aliases".source = ../modules/zsh/.config/zsh/.zsh_aliases;
+      "zsh/.zsh_aliases".source = ../../modules/zsh/.config/zsh/.zsh_aliases;
     };
   };
   # link without copying to nix store (manage externally) - must use absolute paths

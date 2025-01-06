@@ -27,7 +27,7 @@ let
 
   # place custom packages in one directory for ease of reference
   # each individual package is further defined in ../mypkgs/default.nx
-  mypkgs = (pkgs.callPackage ../mypkgs { });
+  mypkgs = (pkgs.callPackage ../../mypkgs { });
 
 in
 {
@@ -69,8 +69,8 @@ in
   };
 
   imports = [
-    ../modules/sops/sops-system.nix
-    ../overlays
+    ../../modules/sops/sops-system.nix
+    ../../overlays
   ];
 
   # Auto upgrade the nix daemon service.
@@ -86,8 +86,8 @@ in
   nixpkgs.overlays = [
     (final: prev: {
       # install global npm packages that are not available in nixpkgs repo
-      npmGlobals = final.callPackage ../modules/npm_globals/node-packages-v18.nix {
-        nodeEnv = final.callPackage ../modules/npm_globals/node-env.nix {
+      npmGlobals = final.callPackage ../../modules/npm_globals/node-packages-v18.nix {
+        nodeEnv = final.callPackage ../../modules/npm_globals/node-env.nix {
           libtool = if final.stdenv.isDarwin then final.darwin.cctools else null;
         };
       };
@@ -100,7 +100,9 @@ in
     name = "timotheos";
     home = "/Users/${name}";
     # authorize remote login to host using personal ssh key
-    openssh.authorizedKeys.keys = [ (builtins.readFile ../modules/secrets/timotheos/keys/id_ed25519.pub) ];
+    openssh.authorizedKeys.keys = [
+      (builtins.readFile ../../modules/secrets/timotheos/keys/id_ed25519.pub)
+    ];
   };
 
   # Set Git commit hash for darwin-version.
