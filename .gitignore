@@ -1,5 +1,5 @@
 .DS_Store
 modules/stow/bash/.config/bash/.bash_history
 zsh/.config/zsh/.zsh_plugins.zsh
-nix-darwin/examples
+hosts/nix-darwin/examples
 result
