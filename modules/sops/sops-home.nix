@@ -7,7 +7,7 @@
   imports = [ inputs.sops-nix.homeManagerModules.sops ];
 
   sops = {
-    defaultSopsFile = ./secrets.yaml; # must have no password!
+    defaultSopsFile = ../secrets/secrets.yaml; # must have no password!
     age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
     # It's also possible to use a ssh key, but only when it has no password:
     #age.sshKeyPaths = [ "/home/user/path-to-ssh-key" ];
