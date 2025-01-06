@@ -70,7 +70,7 @@ in
 
   imports = [
     ../modules/sops/sops-system.nix
-    ./overlays
+    ../overlays
   ];
 
   # Auto upgrade the nix daemon service.
