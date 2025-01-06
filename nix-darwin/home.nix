@@ -21,7 +21,7 @@ in
 
   imports = [
     # sops config  for home
-    ./sops-home.nix
+    ../modules/sops/sops-home.nix
     # packages
     ../modules/yazi.nix
   ];
