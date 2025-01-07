@@ -58,6 +58,12 @@ vim.api.nvim_create_user_command(
 
 opt.timeoutlen = 500 -- shorten delay when pressing first key of a mapping (default 1000)
 
+-- assign filetypes not based on extension
+vim.filetype.add({
+  filename = {
+    ["my.code-snippets"] = "jsonc",
+  },
+})
 --------------- AUTOCOMMANDS ---------------------
 
 -- Highlight when yanking (copying) text (config from kickstart.nvim)
