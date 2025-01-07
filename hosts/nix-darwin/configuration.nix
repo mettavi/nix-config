@@ -288,8 +288,8 @@ in
   homebrew = {
     enable = true;
 
-    # autoupdate unnecessary as the brew version is pinned by the nix-homebrew package
-    # onActivation.autoUpdate = true;
+    # the brew version is pinned by the nix-homebrew package, but allow updating of package versions
+    onActivation.autoUpdate = true;
 
     # allow upgrading outdated formulae during system activation
     # (after running "brew update", see global.autoupdate below)
