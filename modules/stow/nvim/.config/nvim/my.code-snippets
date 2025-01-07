@@ -1,0 +1,23 @@
+{
+    // From https://discourse.nixos.org/t/optimize-flake-nix-code/29687
+    "nix mkSystem snippet": {
+      "prefix": "mkSystem",
+      "body": [ 
+        "mkSystem = entrypoint: nixpkgs.lib.nixosSystem {",
+          "system = \"x86_64-linux\";",
+          "modules = [",
+            "entrypoint",
+            "home-manager.nixosModules.home-manager",
+            "{",
+              "home-manager = {",
+                "useGlobalPkgs = true;",
+                "useUserPackages = true;",
+              "};",
+            "}",
+          "];",
+        "};"
+      ],
+      "description": "A helper to wrap the nixosSystem call",
+      "scope": "nix"
+    }
+}

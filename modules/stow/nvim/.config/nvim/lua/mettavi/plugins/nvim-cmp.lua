@@ -20,6 +20,9 @@ return {
     -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
     require("luasnip.loaders.from_vscode").lazy_load()
 
+    -- user-defined snippets
+    require("luasnip.loaders.from_vscode").load_standalone({ path = "./my.code-snippets" })
+
     -- friendly-snippets - enable standardized comments snippets
     require("luasnip").filetype_extend("sh", { "shelldoc" })
 
