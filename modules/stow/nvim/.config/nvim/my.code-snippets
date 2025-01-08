@@ -1,6 +1,6 @@
 {
     // From https://discourse.nixos.org/t/optimize-flake-nix-code/29687
-    "nix mkSystem snippet": {
+    "mkSystem function": {
       "prefix": "mkSystem",
       "body": [ 
         "mkSystem =", 
@@ -21,6 +21,14 @@
         "\t};"
       ],
       "description": "A helper to wrap the nixosSystem call",
+      "scope": "nix"
+    },
+    "mkSystem call": {
+      "prefix": "mkSystem",
+      "body": [ 
+          "${1:hostname} = mkSystem ${2:file_path};"
+      ],
+      "description": "Call the mkSystem helper funtion",
       "scope": "nix"
     }
 }
