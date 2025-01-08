@@ -4,11 +4,12 @@
       "prefix": "mkSystem",
       "body": [ 
         "mkSystem =", 
+          // use tab instead of enter to replace multiple instances of same tabstop
           "\t${1:entrypoint}:", 
           "\tnixpkgs.lib.nixosSystem {",
           "\t\tsystem = \"x86_64-linux\";",
           "\t\tmodules = [",
-            "\t\t\t${2:entrypoint}",
+            "\t\t\t${1:entrypoint}",
             "\t\t\thome-manager.nixosModules.home-manager",
             "\t\t\t{",
               "\t\t\t\thome-manager = {",
