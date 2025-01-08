@@ -26,6 +26,22 @@ return {
     -- friendly-snippets - enable standardized comments snippets
     require("luasnip").filetype_extend("sh", { "shelldoc" })
 
+    -- luasnip keybinds to interact with snippet nodes
+    -- jump to next node
+    vim.keymap.set({ "i", "s" }, "<Tab>", function()
+      luasnip.jump(1)
+    end, { silent = true })
+    -- jump back to previous node
+    vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
+      luasnip.jump(-1)
+    end, { silent = true })
+    -- choose option at node
+    vim.keymap.set({ "i", "s" }, "<C-E>", function()
+      if luasnip.choice_active() then
+        luasnip.change_choice(1)
+      end
+    end, { silent = true })
+
     -- add vim style up and down navigation to cmp-cmdline with ctrl-k and ctrl-j
     local cmdline_mappings = cmp.mapping.preset.cmdline({
       ["<C-j>"] = { c = cmp.mapping.select_next_item() },
