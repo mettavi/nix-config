@@ -6,11 +6,11 @@
         "mkSystem =", 
           // use tab instead of enter to replace multiple instances of same tabstop
           "\tfile_path:",
-          "\tnixpkgs.lib.nixosSystem {",
+          "\t${1|nixpkgs.lib.nixosSystem,nix-darwin.lib.darwinSystem|} {",
           "\t\tsystem = \"x86_64-linux\";",
           "\t\tmodules = [",
             "\t\t\tfile_path",
-            "\t\t\thome-manager.nixosModules.home-manager",
+            "\t\t\t${2|home-manager.nixosModules.home-manager,home-manager.darwinModules.home-manager|}",
             "\t\t\t{",
               "\t\t\t\thome-manager = {",
                 "\t\t\t\t\tuseGlobalPkgs = true;",
