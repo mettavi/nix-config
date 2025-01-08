@@ -97,6 +97,8 @@ return {
         { name = "path" }, -- file system paths
       }),
       -- configure lspkind for vs-code like pictograms in completion menu
+      -- Suppress the warning: "Missing required fields in type `cmp.FormattingConfig`: `fields`, `expandable_indicator`"
+      ---@diagnostic disable: missing-fields
       formatting = {
         format = lspkind.cmp_format({
           maxwidth = 50,
