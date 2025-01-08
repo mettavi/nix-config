@@ -4,11 +4,11 @@
       "prefix": "mkSystem",
       "body": [ 
         "mkSystem =", 
-          "\tentrypoint:", 
+          "\t${1:entrypoint}:", 
           "\tnixpkgs.lib.nixosSystem {",
           "\t\tsystem = \"x86_64-linux\";",
           "\t\tmodules = [",
-            "\t\t\tentrypoint",
+            "\t\t\t${2:entrypoint}",
             "\t\t\thome-manager.nixosModules.home-manager",
             "\t\t\t{",
               "\t\t\t\thome-manager = {",
