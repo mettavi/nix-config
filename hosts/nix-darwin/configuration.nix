@@ -330,7 +330,10 @@ in
       }
       # "isyncr"
       # iterm2 brew updates are more recent compared to the nix package
-      "iTerm2"
+      {
+        name = "iTerm2";
+        greedy = true;
+      }
       # key-codes
       # "kid3"
       # "lingon-x"
