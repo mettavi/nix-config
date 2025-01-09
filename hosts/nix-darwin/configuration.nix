@@ -313,6 +313,7 @@ in
       "kanata"
       "pinentry-touchid"
     ];
+    # use the "greedy" option to automatically upgrade homebrew casks during system activation
     casks = [
       # "abbyy-finereader-pdf"
       # "adobe-digital-editions"
