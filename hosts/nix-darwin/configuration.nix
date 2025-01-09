@@ -288,15 +288,14 @@ in
   homebrew = {
     enable = true;
 
-    # the brew version is pinned by the nix-homebrew package, but allow updating of package versions
-    onActivation.autoUpdate = true;
+    # set to false as the brew version is pinned by the nix-homebrew package
+    onActivation.autoUpdate = false;
 
     # allow upgrading outdated formulae during system activation
-    # (after running "brew update", see global.autoupdate below)
+    # (after updating taps with "flake update")
     onActivation.upgrade = true;
 
-    # installed formulae will only be upgraded after running "brew update" (and then "darwin-rebuild"),
-    # but not other brew commands
+    # don't attempt to autoUpdate when running brew commands manually
     global.autoUpdate = false;
 
     # uninstall removes formulae, zap removes formulae and casks
