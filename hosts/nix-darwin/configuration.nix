@@ -323,17 +323,17 @@ in
       # "coteditor"
       # "discord"
       # "google-drive"
-      {
-        name = "kegworks";
-        args = {
-          no_quarantine = true;
-        };
-      }
       # "isyncr"
       # iterm2 brew updates are more recent compared to the nix package
       {
         name = "iTerm2";
         greedy = true;
+      }
+      {
+        name = "kegworks";
+        args = {
+          no_quarantine = true;
+        };
       }
       # key-codes
       # "kid3"
