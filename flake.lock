@@ -137,22 +137,6 @@
         "type": "github"
       }
     },
-    "iterm2_3_5_11": {
-      "locked": {
-        "lastModified": 1736010017,
-        "narHash": "sha256-pMttboU4LraZezi3tc7NiHODd4eKziFRb2a4s4WO8Ms=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "a1945f760a8fe019a4d753808de424dcd4e5b3cf",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "a1945f760a8fe019a4d753808de424dcd4e5b3cf",
-        "type": "github"
-      }
-    },
     "kegworks": {
       "flake": false,
       "locked": {
@@ -359,7 +343,6 @@
         "homebrew-bundle": "homebrew-bundle",
         "homebrew-cask": "homebrew-cask",
         "homebrew-core": "homebrew-core",
-        "iterm2_3_5_11": "iterm2_3_5_11",
         "kegworks": "kegworks",
         "nh": "nh",
         "nix-darwin": "nix-darwin",
