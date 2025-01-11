@@ -321,6 +321,7 @@ in
       # "carbon-copy-cloner"
       # "cheatsheet"
       # "coteditor"
+      "customshortcuts" # Customise menu item keyboard shortcuts, integrates with keyclu
       # "discord"
       # "google-drive"
       # "isyncr"
