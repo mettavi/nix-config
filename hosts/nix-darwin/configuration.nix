@@ -354,7 +354,7 @@ in
       # "syncmate"
       # "tor-browser"
       # "typora"
-      # "vmware-fusion"
+      "vmware-fusion" # Create, manage, and run virtual machines
       "xcodes"
       # "zotero"
     ];
