@@ -149,8 +149,6 @@
     "/share/bash-completion"
   ];
 
-  environment.variables.HOMEBREW_NO_ANALYTICS = "1";
-
   # pam_reattach.so re-enables pam_tid.so in tmux
   environment.etc."pam.d/sudo_local".text = ''
     # Managed by Nix Darwin
