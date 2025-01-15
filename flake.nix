@@ -92,6 +92,7 @@
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#MVs-MBP
       darwinConfigurations."MVs-MBP" = nix-darwin.lib.darwinSystem {
+        system = "x86_64-darwin";
         # Use specialArgs to pass through inputs to nix-darwin modules
         specialArgs = {
           inherit inputs system nixpkgs;
