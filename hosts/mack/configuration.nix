@@ -48,7 +48,7 @@
     ../../common/shared/default.nix
     ../../common/darwin/default.nix
     ../../modules/sops/sops-system.nix
-    ../../overlays
+    # ../../overlays
   ];
 
   # Auto upgrade the nix daemon service.
