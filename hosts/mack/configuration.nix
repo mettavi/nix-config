@@ -185,8 +185,6 @@ in
     auth       sufficient     pam_tid.so
   '';
 
-  # List packages installed in system profile. To search by name, run:
-  # $ nix-env -qaP | grep wget
   # install standard packages
   environment.systemPackages = with pkgs; [
     # PACKAGES
