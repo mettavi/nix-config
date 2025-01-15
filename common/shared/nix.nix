@@ -22,6 +22,7 @@
         "nix-command"
         "flakes"
       ];
+      warn-dirty = false;
       # substituters are always enabled, trusted-substituters can be enabled on demand by untrusted users
       substituters = [
         "https://nixpkgs.cachix.org"
@@ -40,7 +41,7 @@
       trusted-users = [ "root" ];
     };
   };
-    # Auto upgrade the nix daemon service.
+  # Auto upgrade the nix daemon service.
   services.nix-daemon.enable = true;
 
   nixpkgs.config.allowUnfree = true;
