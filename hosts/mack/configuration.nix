@@ -5,6 +5,8 @@
   ...
 }:
 {
+  networking.hostName = "mack";
+
   nix = {
     # auto upgrade nix package
     package = pkgs.nix;
