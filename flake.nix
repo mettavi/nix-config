@@ -97,9 +97,9 @@
           inherit inputs system nixpkgs;
         };
         modules = [
-          ./hosts/nix-darwin/configuration.nix
+          ./hosts/mack/configuration.nix
           # nix-homebrew.darwinModules.nix-homebrew
-          ./hosts/nix-darwin/homebrew.nix
+          ./hosts/mack/homebrew.nix
           home-manager.darwinModules.home-manager
           {
             # `home-manager` config
@@ -108,7 +108,7 @@
             # a user home directory needs to be explicitly set in home-manager
             # See https://github.com/nix-community/home-manager/issues/6036 for details
             users.users.timotheos.home = "/Users/timotheos";
-            home-manager.users.timotheos = import ./hosts/nix-darwin/home.nix;
+            home-manager.users.timotheos = import ./hosts/mack/home.nix;
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home-manager modules
             home-manager.extraSpecialArgs = {
