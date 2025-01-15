@@ -34,18 +34,6 @@
   # $ darwin-rebuild changelog
   system.stateVersion = 5;
 
-  system.defaults = {
-    dock.autohide = true;
-    NSGlobalDomain.KeyRepeat = 2;
-    CustomUserPreferences = {
-      # set iterm2 to write user prefs to custom file
-      "com.googlecode.iterm2" = {
-        "com.googlecode.iterm2.PrefsCustomFolder" = "$DOTFILES/modules/iterm2";
-        "com.googlecode.iterm2.LoadPrefsFromCustomFolder" = true;
-      };
-    };
-  };
-
   # List of directories to be symlinked in /run/current-system/sw
   environment.pathsToLink = [
     "/libexec"

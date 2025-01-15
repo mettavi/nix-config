@@ -1,6 +1,16 @@
 {
   environment.variables.HOMEBREW_NO_ANALYTICS = "1";
 
+  system.defaults = {
+    CustomUserPreferences = {
+      # set iterm2 to write user prefs to custom file
+      "com.googlecode.iterm2" = {
+        "com.googlecode.iterm2.PrefsCustomFolder" = "$DOTFILES/modules/iterm2";
+        "com.googlecode.iterm2.LoadPrefsFromCustomFolder" = true;
+      };
+    };
+  };
+
   homebrew = {
     enable = true;
 

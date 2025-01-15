@@ -3,5 +3,6 @@
     ./packages.nix
     ./activation.nix
     ./brew.nix
+    ./macos.nix
   ];
 }
