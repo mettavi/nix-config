@@ -100,7 +100,7 @@
         modules = [
           ./hosts/mack/configuration.nix
           # nix-homebrew.darwinModules.nix-homebrew
-          ./hosts/mack/homebrew.nix
+          ./common/darwin/nix-homebrew.nix
           home-manager.darwinModules.home-manager
           {
             # `home-manager` config
