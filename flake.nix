@@ -124,6 +124,6 @@
       };
 
       # Expose the package set, including overlays, for convenience.
-      darwinPackages = self.darwinConfigurations."MVs-MBP".pkgs;
+      darwinPackages = self.darwinConfigurations."mack".pkgs;
     };
 }
