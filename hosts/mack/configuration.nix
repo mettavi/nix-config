@@ -13,14 +13,8 @@
     ../../modules/sops/sops-system.nix
   ];
 
-  # Auto upgrade the nix daemon service.
-  services.nix-daemon.enable = true;
-
   # The platform the configuration will be used on.
   nixpkgs.hostPlatform = "x86_64-darwin";
-
-  nixpkgs.config.allowUnfree = true;
-  # nixpkgs.config.allowBroken = true;
 
   ########### CONFIGURE SYSTEM USERS ############
 
