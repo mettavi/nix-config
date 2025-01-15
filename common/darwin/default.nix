@@ -2,6 +2,8 @@
   ...
 }:
 {
-  imports = [ ./packages.nix ];
+  imports = [
+    ./packages.nix
+    ./brew.nix
+  ];
 }
-
