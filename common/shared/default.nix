@@ -1,3 +1,7 @@
 {
-  imports = [ ./packages.nix ./nix.nix ];
+  imports = [
+    ./packages.nix
+    ./nix.nix
+    ./overlays.nix
+  ];
 }

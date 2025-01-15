@@ -11,7 +11,6 @@
     ../../common/shared/default.nix
     ../../common/darwin/default.nix
     ../../modules/sops/sops-system.nix
-    # ../../overlays
   ];
 
   # Auto upgrade the nix daemon service.
@@ -22,18 +21,6 @@
 
   nixpkgs.config.allowUnfree = true;
   # nixpkgs.config.allowBroken = true;
-
-  # there is also a overlays submodule included in the imports list
-  nixpkgs.overlays = [
-    (final: prev: {
-      # install global npm packages that are not available in nixpkgs repo
-      npmGlobals = final.callPackage ../../modules/npm_globals/node-packages-v18.nix {
-        nodeEnv = final.callPackage ../../modules/npm_globals/node-env.nix {
-          libtool = if final.stdenv.isDarwin then final.darwin.cctools else null;
-        };
-      };
-    })
-  ];
 
   ########### CONFIGURE SYSTEM USERS ############
 
