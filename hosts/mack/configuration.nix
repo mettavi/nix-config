@@ -46,6 +46,7 @@
 
   imports = [
     ../../common/shared/default.nix
+    ../../common/darwin/default.nix
     ../../modules/sops/sops-system.nix
     ../../overlays
   ];
