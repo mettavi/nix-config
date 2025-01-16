@@ -1,4 +1,5 @@
 {
+  inputs,
   config,
   pkgs,
   ...
@@ -17,8 +18,8 @@ in
     # make programs use XDG directories whenever supported
     preferXdgDirectories = true;
   };
-
   imports = [
+    inputs.sops-nix.homeManagerModules.sops
     # sops config  for home
     ../../modules/sops/sops-home.nix
     # packages

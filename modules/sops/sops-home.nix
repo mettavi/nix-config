@@ -4,8 +4,6 @@
   ...
 }:
 {
-  imports = [ inputs.sops-nix.homeManagerModules.sops ];
-
   sops = {
     defaultSopsFile = ../secrets/secrets.yaml; # must have no password!
     age.keyFile = "${config.xdg.configHome}/sops/age/keys.txt";
