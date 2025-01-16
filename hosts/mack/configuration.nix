@@ -5,10 +5,11 @@
 {
   networking.hostName = "mack";
 
+  nixpkgs.hostPlatform = "x86_64-darwin";
+
   imports = [
     ../../common/shared/default.nix
     ../../common/darwin/default.nix
-    ../../common/darwin/x86_64-darwin.nix
     ../../modules/sops/sops-system.nix
   ];
 
