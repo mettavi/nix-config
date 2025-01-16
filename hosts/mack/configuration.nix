@@ -8,11 +8,9 @@
   imports = [
     ../../common/shared/default.nix
     ../../common/darwin/default.nix
+    ../../common/darwin/x86_64-darwin.nix
     ../../modules/sops/sops-system.nix
   ];
-
-  # The platform the configuration will be used on.
-  nixpkgs.hostPlatform = "x86_64-darwin";
 
   ########### CONFIGURE SYSTEM USERS ############
 
@@ -31,5 +29,4 @@
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
   system.stateVersion = 5;
-
 }
