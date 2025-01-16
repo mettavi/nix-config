@@ -8,21 +8,11 @@
   nixpkgs.hostPlatform = "x86_64-darwin";
 
   imports = [
-    ../../common/shared/default.nix
-    ../../common/darwin/default.nix
+    ../../common/users/timotheos/darwin.nix
+    ../../common/shared
+    ../../common/darwin
     ../../modules/sops/sops-system.nix
   ];
-
-  ########### CONFIGURE SYSTEM USERS ############
-
-  users.users.ta = rec {
-    name = "timotheos";
-    home = "/Users/${name}";
-    # authorize remote login to host using personal ssh key
-    openssh.authorizedKeys.keys = [
-      (builtins.readFile ../../modules/secrets/timotheos/keys/id_ed25519.pub)
-    ];
-  };
 
   # Set Git commit hash for darwin-version.
   system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
