@@ -7,6 +7,9 @@
     preferXdgDirectories = true;
   };
 
+  # install the HTML manual and "home-manager-help" command
+  manual.html.enable = true;
+
   imports = [
     ./dots.nix
     ./programs.nix
