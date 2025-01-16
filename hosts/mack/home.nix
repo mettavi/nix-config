@@ -22,15 +22,4 @@ in
     inputs.sops-nix.homeManagerModules.sops
     ../../common/users/timotheos
   ];
-
-  ######## INSTALL SERVICES #########
-
-  services = {
-    gpg-agent = {
-      enable = true;
-      extraConfig = ''
-        pinentry-program /usr/local/bin/pinentry-touchid
-      '';
-    };
-  };
 }
