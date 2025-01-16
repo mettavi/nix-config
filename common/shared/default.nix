@@ -1,5 +1,6 @@
 {
   imports = [
+    ./generic.nix
     ./nix.nix
     ./overlays.nix
     ./packages.nix
