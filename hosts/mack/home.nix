@@ -35,10 +35,4 @@ in
       '';
     };
   };
-
-  ######## INSTALL PACKAGES #########
-
-  home.packages = with pkgs; [
-    atuin
-  ];
 }

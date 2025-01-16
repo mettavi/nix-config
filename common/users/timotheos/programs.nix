@@ -1,5 +1,10 @@
 { pkgs, ... }:
 {
+
+  home.packages = with pkgs; [
+    atuin
+  ];
+
   programs = {
     # ensure home-manager itself is installed
     home-manager.enable = true;
