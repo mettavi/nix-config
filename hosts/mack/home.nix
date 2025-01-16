@@ -22,7 +22,7 @@ in
     # sops config  for home
     ../../modules/sops/sops-home.nix
     # packages
-    ../../common/users/timotheos/vscode.nix
+    ../../common/users/timotheos
     ../../modules/yazi.nix
   ];
 
@@ -105,34 +105,6 @@ in
       options = [
         "--cmd cd"
       ];
-    };
-    zsh = {
-      enable = true;
-      antidote = {
-        enable = true;
-        plugins = [
-          "Aloxaf/fzf-tab"
-          "olets/zsh-autosuggestions-abbreviations-strategy"
-          "MichaelAquilina/zsh-you-should-use"
-        ];
-      };
-      autosuggestion.enable = true;
-      completionInit = (builtins.readFile ../../modules/zsh/.config/zsh/.zsh_completions);
-      dotDir = ".config/zsh";
-      envExtra = (builtins.readFile ../../modules/zsh/.config/zsh/.zshenv);
-      history = {
-        path = "$ZDOTDIR/.zsh_history";
-        save = 100000;
-        size = 100000;
-      };
-      initExtraFirst = (builtins.readFile ../../modules/zsh/.config/zsh/.zshrc_top);
-      initExtra = (builtins.readFile ../../modules/zsh/.config/zsh/.zshrc);
-      sessionVariables = {
-        # alias for thefuck command
-        TF_ALIAS = "oh";
-      };
-      syntaxHighlighting.enable = true;
-      zsh-abbr.enable = true;
     };
     # tmux = import ../home/tmux.nix { inherit pkgs; };
     # zsh = import ../home/zsh.nix { inherit config pkgs; };
