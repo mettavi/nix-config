@@ -1,9 +1,9 @@
 {
   imports = [
-    ./packages.nix
     ./activation.nix
     ./brew.nix
     ./macos.nix
+    ./packages.nix
     ./services.nix
   ];
 }
