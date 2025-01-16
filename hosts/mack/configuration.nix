@@ -54,16 +54,6 @@
     nerd-fonts.meslo-lg
   ];
 
-  services = {
-    #   postgresql = {
-    #     enable = true;
-    #     dataDir = /usr/local/var/postgres;
-    #   };
-    #   redis = {
-    #     enable = true;
-    #   };
-  };
-
   programs = {
     bash = {
       # this will enable and install bash-completion package (bash.enableCompletion is deprecated)

@@ -1,5 +1,11 @@
 { config, ... }:
 {
+    # services = {
+    #   redis = {
+    #     enable = true;
+    #   };
+  # };
+
   # launchd.user.agents = {
   # mongodb = {
   #   serviceConfig = {
