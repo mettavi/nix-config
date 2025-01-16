@@ -50,8 +50,4 @@
     auth       sufficient     pam_tid.so
   '';
 
-  fonts.packages = with pkgs; [
-    nerd-fonts.meslo-lg
-  ];
-
 }

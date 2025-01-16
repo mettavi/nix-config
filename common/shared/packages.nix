@@ -12,10 +12,6 @@ let
 
   nh_beta = inputs.nh.packages.${system}.nh;
 
-  # place custom packages in one directory for ease of reference
-  # each individual package is further defined in ../mypkgs/default.nx
-  mypkgs = (pkgs.callPackage ../../mypkgs { });
-
 in
 {
   system.activationScripts = {
@@ -29,6 +25,10 @@ in
       fi
     '';
   };
+
+    fonts.packages = with pkgs; [
+    nerd-fonts.meslo-lg
+  ];
 
   # install standard packages
   environment.systemPackages = with pkgs; [
