@@ -23,7 +23,6 @@ in
     ../../modules/sops/sops-home.nix
     # packages
     ../../common/users/timotheos
-    ../../modules/yazi.nix
   ];
 
   ######## INSTALL SERVICES #########
