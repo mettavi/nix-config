@@ -1,7 +1,10 @@
 {
   system.defaults = {
     dock.autohide = true;
-    NSGlobalDomain.KeyRepeat = 2;
+    NSGlobalDomain = {
+      KeyRepeat = 2;
+      ApplePressAndHoldEnabled = false;
+    };
     CustomUserPreferences = {
       # set iterm2 to write user prefs to custom file
       "com.googlecode.iterm2" = {
