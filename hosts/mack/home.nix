@@ -1,7 +1,6 @@
 {
   inputs,
   config,
-  pkgs,
   ...
 }:
 let
@@ -11,13 +10,6 @@ in
   # install the HTML manual and "home-manager-help" command
   manual.html.enable = true;
 
-  home = {
-    username = "timotheos";
-    homeDirectory = "/Users/timotheos";
-    stateVersion = "23.11";
-    # make programs use XDG directories whenever supported
-    preferXdgDirectories = true;
-  };
   imports = [
     inputs.sops-nix.homeManagerModules.sops
     ../../common/users/timotheos

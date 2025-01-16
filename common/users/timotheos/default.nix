@@ -1,4 +1,12 @@
 {
+  home = {
+    username = "timotheos";
+    homeDirectory = "/Users/timotheos";
+    stateVersion = "23.11";
+    # make programs use XDG directories whenever supported
+    preferXdgDirectories = true;
+  };
+
   imports = [
     ./dots.nix
     ./programs.nix
