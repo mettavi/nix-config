@@ -1,11 +1,7 @@
 {
   inputs,
-  config,
   ...
 }:
-let
-  inherit (config.lib.file) mkOutOfStoreSymlink;
-in
 {
 
   imports = [
