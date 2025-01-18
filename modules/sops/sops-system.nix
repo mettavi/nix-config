@@ -1,13 +1,8 @@
 {
   config,
-  inputs,
   ...
 }:
 {
-  imports = [
-    inputs.sops-nix.darwinModules.sops
-  ];
-
   sops = {
     defaultSopsFile = ../secrets/secrets.yaml;
     # If you use something different from YAML, you can also specify it here:

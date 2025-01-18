@@ -120,6 +120,7 @@
               sops-nix.homeManagerModules.sops
             ];
           }
+          sops-nix.darwinModules.sops
           # enable the default overlay from nix-vscode-extensions
           # to make more vscode extensions available
           { nixpkgs.overlays = [ nix-vscode-extensions.overlays.default ]; }
