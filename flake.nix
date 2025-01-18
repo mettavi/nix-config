@@ -97,28 +97,34 @@
         system = "x86_64-darwin";
         # Use specialArgs to pass through inputs to nix-darwin modules
         specialArgs = {
-          inherit inputs nixpkgs system user1;
+          inherit
+            inputs
+            nixpkgs
+            system
+            user1
+            ;
         };
         modules = [
           ./hosts/mack/configuration.nix
           ./common/darwin/nix-homebrew.nix
           home-manager.darwinModules.home-manager
           {
-            # `home-manager` config
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.${user1} = import ./hosts/mack/home.nix;
+              # Optionally, use home-manager.extraSpecialArgs to pass
+              # arguments to home-manager modules
+              extraSpecialArgs = {
+                inherit inputs system user1;
+              };
+              sharedModules = [
+                sops-nix.homeManagerModules.sops
+              ];
+            };
             # a user home directory needs to be explicitly set in home-manager
             # See https://github.com/nix-community/home-manager/issues/6036 for details
             users.users.${user1}.home = "/Users/${user1}";
-            home-manager.users.${user1} = import ./hosts/mack/home.nix;
-            # Optionally, use home-manager.extraSpecialArgs to pass
-            # arguments to home-manager modules
-            home-manager.extraSpecialArgs = {
-              inherit inputs system user1;
-            };
-            home-manager.sharedModules = [
-              sops-nix.homeManagerModules.sops
-            ];
           }
           sops-nix.darwinModules.sops
           # enable the default overlay from nix-vscode-extensions
