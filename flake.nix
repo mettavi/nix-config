@@ -80,7 +80,7 @@
       self,
       nixpkgs,
       nix-darwin,
-      home-manager,
+      # home-manager,
       nix-vscode-extensions,
       nix-index-database,
       sops-nix,
@@ -107,25 +107,7 @@
         modules = [
           ./hosts/mack/configuration.nix
           ./common/darwin/nix-homebrew.nix
-          home-manager.darwinModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.${user1} = import ./hosts/mack/home.nix;
-              # Optionally, use home-manager.extraSpecialArgs to pass
-              # arguments to home-manager modules
-              extraSpecialArgs = {
-                inherit inputs system user1;
-              };
-              sharedModules = [
-                sops-nix.homeManagerModules.sops
-              ];
-            };
-            # a user home directory needs to be explicitly set in home-manager
-            # See https://github.com/nix-community/home-manager/issues/6036 for details
-            users.users.${user1}.home = "/Users/${user1}";
-          }
+          ./hosts/mack/home.nix
           sops-nix.darwinModules.sops
           # enable the default overlay from nix-vscode-extensions
           # to make more vscode extensions available
