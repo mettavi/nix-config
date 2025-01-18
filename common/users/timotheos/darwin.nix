@@ -1,4 +1,4 @@
-  { users.users.ta = rec {
+  { users.users.timotheos = rec {
     name = "timotheos";
     home = "/Users/${name}";
     # authorize remote login to host using personal ssh key

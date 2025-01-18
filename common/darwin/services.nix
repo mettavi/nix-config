@@ -45,7 +45,7 @@
         ProgramArguments = [
           "/usr/local/bin/kanata"
           "-c"
-          "${config.users.users.ta.home}/.dotfiles/modules/kanata/kanata.lsp"
+          "${config.users.users.timotheos.home}/.dotfiles/modules/kanata/kanata.lsp"
         ];
         RunAtLoad = true;
         KeepAlive = true;
