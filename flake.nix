@@ -88,6 +88,7 @@
     }:
     let
       system = "x86_64-darwin";
+      user1 = "timotheos";
     in
     {
       # Build darwin flake using:
@@ -96,7 +97,7 @@
         system = "x86_64-darwin";
         # Use specialArgs to pass through inputs to nix-darwin modules
         specialArgs = {
-          inherit inputs system nixpkgs;
+          inherit inputs nixpkgs system user1;
         };
         modules = [
           ./hosts/mack/configuration.nix
@@ -108,12 +109,12 @@
             home-manager.useUserPackages = true;
             # a user home directory needs to be explicitly set in home-manager
             # See https://github.com/nix-community/home-manager/issues/6036 for details
-            users.users.timotheos.home = "/Users/timotheos";
-            home-manager.users.timotheos = import ./hosts/mack/home.nix;
+            users.users.${user1}.home = "/Users/${user1}";
+            home-manager.users.${user1} = import ./hosts/mack/home.nix;
             # Optionally, use home-manager.extraSpecialArgs to pass
             # arguments to home-manager modules
             home-manager.extraSpecialArgs = {
-              inherit inputs system;
+              inherit inputs system user1;
             };
             home-manager.sharedModules = [
               sops-nix.homeManagerModules.sops

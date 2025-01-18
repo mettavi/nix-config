@@ -1,7 +1,8 @@
+{ user1, ...}:
 {
   home = {
-    username = "timotheos";
-    homeDirectory = "/Users/timotheos";
+    username = "${user1}";
+    homeDirectory = "/Users/${user1}";
     stateVersion = "23.11";
     # make programs use XDG directories whenever supported
     preferXdgDirectories = true;
