@@ -10,10 +10,10 @@
     #age.sshKeyPaths = [ "/home/user/path-to-ssh-key" ];
 
     secrets = {
-      "private_keys/id_ed25519" = {
+      "users/timotheos/private_keys/id_ed25519" = {
         path = "${config.home.homeDirectory}/.ssh/id_ed25519";
       };
-      "private_keys/id_ed25519.pub" = {
+      "users/timotheos/private_keys/id_ed25519.pub" = {
         path = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
         mode = "0644";
       };
