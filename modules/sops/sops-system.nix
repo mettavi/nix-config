@@ -17,7 +17,7 @@
       # NB: ssh host keys can be generated with the "ssh-keygen -A" command
       sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
       keyFile = "/var/lib/sops-nix/key.txt";
-      # This will generate a new key if the key specified above does not exist
+      # This will generate a key from the host ssh key if one does not exist
       generateKey = true;
     };
     gnupg.sshKeyPaths = [ ];
@@ -29,8 +29,7 @@
       # For home-manager a separate age key is used to decrypt secrets and must be placed onto the host. This is because
       # the user doesn't have read permission for the ssh service private key. However, we can bootstrap the age key from
       # the secrets decrypted by the host key, which allows home-manager secrets to work without manually copying over
-      # the age key.
-      # These age keys are unique for the user on each host and are generated on their own (i.e. they are not derived
+      # the age key. These age keys are unique for the user on each host and are generated on their own (i.e. they are not derived
       # from an ssh key).
       encryption_key = {
         # owner = "${config.users.users.ta.name}";
