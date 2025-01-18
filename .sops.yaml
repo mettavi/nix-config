@@ -9,11 +9,6 @@ creation_rules:
       - age:
           - *admin_timotheos
           - *host_mbp
-  # - path_regex: nix-darwin/secrets_home\.yaml$
-  #   key_groups:
-  #     - age:
-  #         - *admin_timotheos
-  #         - *host_mbp
 stores:
   yaml:
     indent: 2
