@@ -11,7 +11,6 @@
     ../../hosts/mack/users.nix
     ../../common/shared
     ../../common/darwin
-    ../../modules/sops/sops-system.nix
   ];
 
   # Set Git commit hash for darwin-version.
