@@ -1,4 +1,5 @@
 {
+  user1,
   config,
   ...
 }:
@@ -10,16 +11,16 @@
     #age.sshKeyPaths = [ "/home/user/path-to-ssh-key" ];
 
     secrets = {
-      "users/timotheos/private_keys/id_ed25519" = {
+      "users/${user1}/private_keys/id_ed25519" = {
         path = "${config.home.homeDirectory}/.ssh/id_ed25519";
       };
-      "users/timotheos/private_keys/id_ed25519.pub" = {
+      "users/${user1}/private_keys/id_ed25519.pub" = {
         path = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
         mode = "0644";
       };
-      "users/timotheos/github_token" = {
+      "users/${user1}/github_token" = {
       };
-      "users/timotheos/cachix_auth_token" = {
+      "users/${user1}/cachix_auth_token" = {
       };
     };
     # secrets.test = {

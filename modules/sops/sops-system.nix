@@ -1,4 +1,5 @@
 {
+  user1,
   config,
   ...
 }:
@@ -26,11 +27,11 @@
       # the secrets decrypted by the host key, which allows home-manager secrets to work without manually copying over
       # the age key. These age keys are unique for the user on each host and are generated on their own (i.e. they are not derived
       # from an ssh key).
-      "users/timotheos/encryption_key" = {
+      "users/${user1}/encryption_key" = {
         # owner = "${config.users.users.timotheos.name}";
         mode = "0644";
         # We need to ensure the entire directory structure is that of the user...
-        path = "${config.users.users.timotheos.home}/.config/sops/age/keys.txt";
+        path = "${config.users.users.${user1}.home}/.config/sops/age/keys.txt";
       };
     };
   };
