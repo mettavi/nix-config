@@ -37,12 +37,6 @@
         # We need to ensure the entire directory structure is that of the user...
         path = "${config.users.users.timotheos.home}/.config/sops/age/keys.txt";
       };
-      "users/timotheos/github_token" = {
-        owner = "${config.users.users.timotheos.name}";
-      };
-      "users/timotheos/cachix_auth_token" = {
-        owner = "${config.users.users.timotheos.name}";
-      };
     };
   };
   # The containing folders are created as root and if this is the first ~/.config/ entry,

@@ -17,6 +17,10 @@
         path = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
         mode = "0644";
       };
+      "users/timotheos/github_token" = {
+      };
+      "users/timotheos/cachix_auth_token" = {
+      };
     };
     # secrets.test = {
     #   # sopsFile = ./secrets.yml.enc; # optionally define per-secret files
