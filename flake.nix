@@ -100,7 +100,6 @@
         };
         modules = [
           ./hosts/mack/configuration.nix
-          # nix-homebrew.darwinModules.nix-homebrew
           ./common/darwin/nix-homebrew.nix
           home-manager.darwinModules.home-manager
           {
