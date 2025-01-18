@@ -5,10 +5,10 @@
   # this setting allows untrusted users of this flake to approve substituters interactively
   # it is only useful in a multi-user system
   # nixConfig = {
-    # will be appended to the system-level substituters
-    # extra-substituters = [
-    # ];
-    # will be appended to the system-level trusted-public-keys
+  # will be appended to the system-level substituters
+  # extra-substituters = [
+  # ];
+  # will be appended to the system-level trusted-public-keys
   #   extra-trusted-public-keys = [
   #   ];
   # };
@@ -83,6 +83,7 @@
       home-manager,
       nix-vscode-extensions,
       nix-index-database,
+      sops-nix,
       ...
     }:
     let
@@ -115,6 +116,9 @@
             home-manager.extraSpecialArgs = {
               inherit inputs system;
             };
+            home-manager.sharedModules = [
+              sops-nix.homeManagerModules.sops
+            ];
           }
           # enable the default overlay from nix-vscode-extensions
           # to make more vscode extensions available
