@@ -8,7 +8,7 @@
   nixpkgs.hostPlatform = "x86_64-darwin";
 
   imports = [
-    ../../common/users/timotheos/darwin.nix
+    ../../hosts/mack/users.nix
     ../../common/shared
     ../../common/darwin
     ../../modules/sops/sops-system.nix
