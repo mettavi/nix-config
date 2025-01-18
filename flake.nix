@@ -92,7 +92,7 @@
     in
     {
       # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#MVs-MBP
+      # $ darwin-rebuild build --flake .#mack
       darwinConfigurations."mack" = nix-darwin.lib.darwinSystem {
         system = "x86_64-darwin";
         # Use specialArgs to pass through inputs to nix-darwin modules
