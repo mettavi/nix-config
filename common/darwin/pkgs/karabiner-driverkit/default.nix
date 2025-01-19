@@ -10,7 +10,7 @@ let
     darwin = "5.0.0";
   };
   hashes = {
-    darwin = "sha256-IAj/60exLcdvFWsSW1TU9EmWiwzB7/tunzVXz+A+H50=";
+    darwin = "sha256-hKi2gmIdtjl/ZaS7RPpkpSjb+7eT0259sbUUbrn5mMc=";
   };
   meta = with lib; {
     description = "This project implements a virtual keyboard and virtual mouse using DriverKit on macOS.";

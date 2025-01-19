@@ -1,1 +1,4 @@
-{ imports = [ ./karabiner-driverkit ]; }
+{ pkgs, ... }:
+{
+  karabiner-driverkit = ( pkgs.callPackage ./karabiner-driverkit { } );
+}
