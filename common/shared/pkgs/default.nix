@@ -1,1 +1,4 @@
-{ imports = [ ./kanata ]; }
+{ pkgs, ... }:
+{
+  kanata = ( pkgs.callPackage ./kanata { } );
+}
