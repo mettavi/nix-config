@@ -36,7 +36,7 @@
     ];
     brews = [
       # install with brew as the build is currently broken on nix-darwin
-      "kanata"
+      # "kanata"
       "pinentry-touchid"
     ];
     # use the "greedy" option to automatically upgrade homebrew casks during system activation
