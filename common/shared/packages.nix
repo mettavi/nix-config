@@ -78,6 +78,7 @@ in
     nh_beta
 
     # CUSTOM APPS
+    # mypkgs.kanata
 
     # Install global npm packages not available in nixpkgs repo
     # using node2nix and overlay (see above)
