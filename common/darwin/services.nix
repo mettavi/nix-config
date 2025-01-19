@@ -49,6 +49,7 @@
         ];
         RunAtLoad = false;
         KeepAlive = {
+          # this keeps the kanata daemon alive when the karabiner daemon is alive
           OtherJobEnabled = {
             "com.github.pqrs-org-Karabiner-DriverKit-VirtualHIDDevice" = true;
           };
