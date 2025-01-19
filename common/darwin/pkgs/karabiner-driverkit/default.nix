@@ -7,7 +7,7 @@
 let
   pname = "karabiner-driverkit";
   versions = {
-    darwin = "3.1.0";
+    darwin = "5.0.0";
   };
   hashes = {
     darwin = "sha256-IAj/60exLcdvFWsSW1TU9EmWiwzB7/tunzVXz+A+H50=";
