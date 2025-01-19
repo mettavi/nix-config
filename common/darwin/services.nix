@@ -1,9 +1,9 @@
 { config, ... }:
 {
-    # services = {
-    #   redis = {
-    #     enable = true;
-    #   };
+  # services = {
+  #   redis = {
+  #     enable = true;
+  #   };
   # };
 
   # launchd.user.agents = {
@@ -24,33 +24,37 @@
   # };
 
   # NB: The daemon is not used in version 3.1.0 of karabiner-driverkit
-  # launchd.daemons = {
-  #   karabiner-daemon = {
-  #     serviceConfig = {
-  #       Label = "com.mettavihari.karabiner-daemon";
-  #       ProcessType = "Interactive";
-  #       Program = "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
-  #       RunAtLoad = true;
-  #       KeepAlive = true;
-  #       StandardOutPath = "/Library/Logs/karabiner-driverkit/driverkit.out.log";
-  #       StandardErrorPath = "/Library/Logs/karabiner-driverkit/driverkit.err.log";
-  #     };
-  #   };
-  # };
+  launchd.daemons = {
+    karabiner-daemon = {
+      serviceConfig = {
+        Label = "com.github.pqrs-org-Karabiner-DriverKit-VirtualHIDDevice";
+        # ProcessType = "Interactive";
+        Program = "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
+        RunAtLoad = true;
+        # KeepAlive = true;
+        StandardOutPath = "/var/log/karabiner.log";
+        StandardErrorPath = "/var/log/karabiner.log";
+      };
+    };
+  };
 
   launchd.daemons = {
     kanata = {
       serviceConfig = {
-        Label = "com.mettavihari.kanata";
+        Label = "com.github.jtroo-kanata";
         ProgramArguments = [
           "/usr/local/bin/kanata"
           "-c"
           "${config.users.users.timotheos.home}/.dotfiles/modules/kanata/kanata.lsp"
         ];
-        RunAtLoad = true;
-        KeepAlive = true;
-        StandardOutPath = "/Library/Logs/Kanata/kanata.out.log";
-        StandardErrorPath = "/Library/Logs/Kanata/kanata.err.log";
+        RunAtLoad = false;
+        KeepAlive = {
+          OtherJobEnabled = {
+            "com.github.pqrs-org-Karabiner-DriverKit-VirtualHIDDevice" = true;
+          };
+        };
+        StandardOutPath = "/var/log/kanata.log";
+        StandardErrorPath = "/var/log/kanata.log";
       };
     };
   };
