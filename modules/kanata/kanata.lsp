@@ -12,7 +12,7 @@
   
 (defsrc
   esc f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
-  caps a s d f j k l ;
+  caps a s d f h j k l ;
 )
 
 (defvar
@@ -38,7 +38,7 @@
 
 (deflayer base
   @cw brdn  brup  _    _    _    _   prev  pp  next  mute  vold  volu
-  @escctrl @a @s @d @f @j @k @l @;
+  @escnav @a @s @d @f _ @j @k @l @;
 )
 
 (deflayer fn
