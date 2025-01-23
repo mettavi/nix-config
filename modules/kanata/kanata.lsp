@@ -21,6 +21,7 @@
 )
 
 (defalias
+  nav (layer-while-held navigation)
   cw (caps-word 5000)
   escctrl (tap-hold 100 100 esc lctl)
   ;; trigger a tap when rolling within the timeout (unless second key is released first)
@@ -41,7 +42,7 @@
   @escnav @a @s @d @f _ @j @k @l @;
 )
 
-(deflayer fn
+(deflayer navigation
   @cw f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
-  @escctrl _ _ _ _ _ _ _ _
+  _ _ _ _ _ left down up rght _
 )
