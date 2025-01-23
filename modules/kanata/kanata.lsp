@@ -23,7 +23,7 @@
 (defalias
   nav (layer-while-held navigation)
   cw (caps-word 5000)
-  escctrl (tap-hold 100 100 esc lctl)
+  escnav (tap-hold 100 100 esc @nav)
   ;; trigger a tap when rolling within the timeout (unless second key is released first)
   ;; don't trigger hold for keys from same side ("bilateral combinations")
   a (tap-hold-except-keys $tap-time $hold-time a lalt (q w e r t a s d f g z x c v b))
