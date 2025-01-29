@@ -14,18 +14,6 @@ let
 
 in
 {
-  system.activationScripts = {
-
-    extraActivation.text = ''
-      # Enable remote login for the host (macos ssh server)
-      # WORKAROUND: `systemsetup -f -setremotelogin on` requires `Full Disk Access`
-      # permission for the Application calling it
-      if [[ "$(systemsetup -getremotelogin | sed 's/Remote Login: //')" == "Off" ]]; then
-        launchctl load -w /System/Library/LaunchDaemons/ssh.plist
-      fi
-    '';
-  };
-
     fonts.packages = with pkgs; [
     nerd-fonts.meslo-lg
   ];
