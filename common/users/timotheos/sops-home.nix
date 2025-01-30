@@ -22,6 +22,8 @@
       };
       "users/${user1}/cachix_auth_token" = {
       };
+      "users/${user1}/rclone_1d_token" = {
+      };
     };
     # secrets.test = {
     #   # sopsFile = ./secrets.yml.enc; # optionally define per-secret files
