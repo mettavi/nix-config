@@ -50,6 +50,7 @@ in
     # pnpm
     # poppler
     # python-launcher
+    rclone
     ruby
     rustc
     shellcheck
