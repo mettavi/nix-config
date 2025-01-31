@@ -44,6 +44,7 @@
       # "abbyy-finereader-pdf"
       # "adobe-digital-editions"
       "anki"
+      "calibre" # Comprehensive e-book software
       # "carbon-copy-cloner"
       # "cheatsheet"
       # "coteditor"
