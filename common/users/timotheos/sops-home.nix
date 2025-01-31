@@ -22,7 +22,21 @@
       };
       "users/${user1}/cachix_auth_token" = {
       };
+      # rclone auth token for onedrive service
       "users/${user1}/rclone_1d_token" = {
+      };
+    };
+    templates = {
+      # rclone config file with secret
+      "rclone.conf" = {
+        content = ''
+          [onedrive]
+          type = onedrive
+          token = ${config.sops.placeholder."users/${user1}/rclone_1d_token"}
+          drive_id = 0F811515C935D85C
+          drive_type = personal
+        '';
+        path = "${config.xdg.configHome}/rclone/rclone.conf";
       };
     };
     # secrets.test = {
