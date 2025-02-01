@@ -8,4 +8,6 @@
     ];
   };
 
+  imports = [ ../../common/users/${user1}/darwin.nix];
+
  }
