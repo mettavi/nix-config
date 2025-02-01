@@ -25,6 +25,8 @@
       # rclone auth token for onedrive service
       "users/${user1}/rclone_1d_token" = {
       };
+      "users/${user1}/restic_key" = {
+      };
     };
     templates = {
       # rclone config file with secret
