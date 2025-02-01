@@ -6,5 +6,7 @@
 calibre
 wait $! # optional really, but a bit safer
 
-# backup calibre library to the rclone onedrive backend using restic
-restic -r rclone:onedrive:calibre backup "${HOME}/Documents/calibre"
+# Setup and run sync
+rclone --log-level NOTICE --log-file="${XDG_CONFIG_HOME}/rclone/log.txt" \
+  --stats 2s --progress --check-first --retries 1 --max-backlog 999999 --buffer-size 256M \
+  sync ~/Documents/calibre/ --filter-from ~/.config/rclone/filter.txt onedrive:calibre/
