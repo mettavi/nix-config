@@ -50,6 +50,7 @@ in
     # pnpm
     # poppler
     # python-launcher
+    restic # Backup with delta transfers to cloud storage via rclone
     rclone # sync files and directories to and from major cloud storage
     ruby
     rustc
