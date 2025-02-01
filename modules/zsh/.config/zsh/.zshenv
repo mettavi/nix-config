@@ -27,6 +27,8 @@ export ABBR_USER_ABBREVIATIONS_FILE="$DOTFILES/modules/zsh/.config/zsh/user-abbr
 
 export NH_FLAKE="$DOTFILES"
 
+export RESTIC_PASSWORD_FILE="$XDG_CONFIG_HOME/sops-nix/secrets/users/timotheos/restic_key"
+
 ########## SHELL CONFIG ###########
 
 export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
