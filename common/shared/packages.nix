@@ -14,7 +14,7 @@ let
 
 in
 {
-    fonts.packages = with pkgs; [
+  fonts.packages = with pkgs; [
     nerd-fonts.meslo-lg
   ];
 
