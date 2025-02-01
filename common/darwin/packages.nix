@@ -56,7 +56,6 @@ in
     keycastr # keystroke visualiser
     macfuse-stubs # Build time stubs for FUSE on macOS
     mas
-    mypkgs.karabiner-driverkit
     pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
     pinentry_mac
     # getting error "cannot download WhatsApp.app from any mirror"
