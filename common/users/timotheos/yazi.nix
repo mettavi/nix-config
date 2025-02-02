@@ -37,7 +37,7 @@ in
           4
           3
         ];
-        show_hiden = true;
+        show_hidden = true;
       };
     };
     theme = {
