@@ -31,7 +31,13 @@ in
     };
     settings = {
       manager = {
-        show_hidden = true;
+        # increase width of parent from default
+        ratio = [
+          2
+          4
+          3
+        ];
+        show_hiden = true;
       };
     };
     theme = {
