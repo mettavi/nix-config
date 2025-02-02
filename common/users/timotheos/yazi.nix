@@ -39,6 +39,10 @@ in
         ];
         show_hidden = true;
       };
+      preview = {
+        max_width = 1200;
+        max_height = 1000;
+      };
     };
     theme = {
       flavor = {
