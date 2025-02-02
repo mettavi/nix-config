@@ -34,8 +34,8 @@ in
         # increase width of parent from default
         ratio = [
           2
-          4
           3
+          4
         ];
         show_hidden = true;
       };
