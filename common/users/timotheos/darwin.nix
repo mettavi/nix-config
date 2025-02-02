@@ -2,6 +2,7 @@
 {
   system.defaults.dock = {
     persistent-apps = [
+      "/System/Applications/System Settings.app"
       "/System/Applications/Calendar.app"
       "/System/Applications/App Store.app"
       "/Applications/Bitwarden.app"
