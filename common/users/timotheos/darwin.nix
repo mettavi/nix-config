@@ -5,7 +5,6 @@
       "/System/Applications/System Settings.app"
       "/System/Applications/Calendar.app"
       "/System/Applications/App Store.app"
-      "/Applications/Bitwarden.app"
       "/Applications/Google Chrome.app"
       "/Applications/iTerm.app"
       "/Applications/Microsoft Word.app"
