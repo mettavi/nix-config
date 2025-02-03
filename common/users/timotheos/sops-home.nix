@@ -25,6 +25,9 @@
       # rclone auth token for onedrive service
       "users/${user1}/rclone_1d_token" = {
       };
+      # rclone application key for backblaze b2 service
+      "users/${user1}/rclone_b2_appkey" = {
+      };
     };
     templates = {
       # rclone config file with secret
@@ -35,6 +38,11 @@
           token = ${config.sops.placeholder."users/${user1}/rclone_1d_token"}
           drive_id = 0F811515C935D85C
           drive_type = personal
+          
+          [b2]
+          type = b2
+          account = 004471da6ad00020000000001
+          key = ${config.sops.placeholder."users/${user1}/rclone_b2_appkey"}
         '';
         path = "${config.xdg.configHome}/rclone/rclone.conf";
       };
