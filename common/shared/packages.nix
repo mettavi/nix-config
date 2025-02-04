@@ -14,6 +14,9 @@ let
 
 in
 {
+  
+  imports = [ ./restic.nix ];
+
   fonts.packages = with pkgs; [
     nerd-fonts.meslo-lg
   ];
