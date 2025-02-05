@@ -13,5 +13,6 @@
 
   environment.systemPackages = with pkgs; [
     restic # Backup with delta transfers (eg. to cloud storage via rclone)
+    resticprofile # Configuration manager for restic
   ];
 }
