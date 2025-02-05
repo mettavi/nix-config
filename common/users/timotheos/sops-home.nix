@@ -38,6 +38,7 @@
           token = ${config.sops.placeholder."users/${user1}/rclone_1d_token"}
           drive_id = 0F811515C935D85C
           drive_type = personal
+          hard_delete = true
           
           [b2]
           type = b2
