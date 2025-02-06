@@ -47,6 +47,7 @@
       "calibre" # Comprehensive e-book software
       # "carbon-copy-cloner"
       # "cheatsheet"
+      "cirrus" # Inspector for iCloud Drive folders
       # "coteditor"
       "customshortcuts" # Customise menu item keyboard shortcuts, integrates with keyclu
       # "discord"
