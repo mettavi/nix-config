@@ -28,6 +28,9 @@
       # rclone application key for backblaze b2 service
       "users/${user1}/rclone_b2_appkey" = {
       };
+      # restic key for encryption of backblaze b2 repo (mbp_timotheos)
+      "users/${user1}/restic_b2_mbp-timotheos" = {
+      };
     };
     templates = {
       # rclone config file with secret
