@@ -50,6 +50,8 @@
       "cirrus" # Inspector for iCloud Drive folders
       # "coteditor"
       "customshortcuts" # Customise menu item keyboard shortcuts, integrates with keyclu
+      "daisydisk" # Disk space visualiser
+
       # "discord"
       # "google-drive"
       # "isyncr"
