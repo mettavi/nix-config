@@ -11,11 +11,11 @@
     #age.sshKeyPaths = [ "/home/user/path-to-ssh-key" ];
 
     secrets = {
-      "users/${user1}/private_keys/id_ed25519" = {
-        path = "${config.home.homeDirectory}/.ssh/id_ed25519";
+      "users/${user1}/ssh_keys/timotheos_ed25519" = {
+        path = "${config.home.homeDirectory}/.ssh/timotheos_ed25519";
       };
-      "users/${user1}/private_keys/id_ed25519.pub" = {
-        path = "${config.home.homeDirectory}/.ssh/id_ed25519.pub";
+      "users/${user1}/ssh_keys/timotheos_ed25519.pub" = {
+        path = "${config.home.homeDirectory}/.ssh/timotheos_ed25519.pub";
         mode = "0644";
       };
       "users/${user1}/github_token" = {
