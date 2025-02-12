@@ -18,6 +18,8 @@
         path = "${config.home.homeDirectory}/.ssh/timotheos_ed25519.pub";
         mode = "0644";
       };
+      "users/${user1}/ssh_keys/ssh-nixos-ocloud.key" = {
+      };
       "users/${user1}/github_token" = {
       };
       "users/${user1}/cachix_auth_token" = {
