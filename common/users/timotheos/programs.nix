@@ -35,7 +35,7 @@
     keychain = {
       enable = true;
       enableZshIntegration = true;
-      keys = [ "id_ed25519" ];
+      keys = [ "timotheos_ed25519" ];
     };
     lazygit.enable = true;
     # provides nix-locate and command-not-found commands
