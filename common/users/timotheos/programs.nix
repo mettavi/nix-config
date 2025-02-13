@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{
+  user1,
+  pkgs,
+  ...
+}:
 {
 
   home.packages = with pkgs; [
@@ -44,6 +48,25 @@
     # pyenv.enable = true;
     # rbenv.enable = true;
     ripgrep.enable = true;
+
+    ssh = {
+      enable = true;
+      matchBlocks = {
+        "github.com" = {
+          identityFile = "/Users/${user1}/.config/sops-nix/secrets/users/${user1}/ssh_keys/${user1}_ed25519";
+          extraOptions = {
+            IgnoreUnknown = "UseKeyChain";
+            UseKeyChain = "yes";
+          };
+        };
+        "nixos-ocloud" = {
+          hostname = "207.211.153.68";
+          user = "ubuntu";
+          identityFile = "/Users/${user1}/.config/sops-nix/secrets/users/${user1}/ssh_keys/ssh-nixos-ocloud.key";
+        };
+      };
+    };
+
     thefuck.enable = true;
     tmux = {
       baseIndex = 1;
