@@ -103,6 +103,7 @@
       # "Snip" = 1527428847;
       # "Sync Folders Pro" = 522706442;
       # "tipitaka_pali_reader" = 1541426949;
+      "WhatsApp Messenger" = 310633997;
     };
   };
 }
