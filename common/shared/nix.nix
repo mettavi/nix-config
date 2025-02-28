@@ -41,9 +41,6 @@
       trusted-users = [ "root" ];
     };
   };
-  # Auto upgrade the nix daemon service.
-  services.nix-daemon.enable = true;
-
   nixpkgs.config.allowUnfree = true;
   # nixpkgs.config.allowBroken = true;
 }
