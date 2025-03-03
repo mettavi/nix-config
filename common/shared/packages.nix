@@ -12,9 +12,13 @@ let
 
   nh_beta = inputs.nh.packages.${system}.nh;
 
+  # place custom packages in one directory for ease of reference
+  # each individual package is further defined in ./pkgs/default.nx
+  # mypkgs = (pkgs.callPackage ./pkgs { });
+
 in
 {
-  
+
   imports = [ ./restic.nix ];
 
   fonts.packages = with pkgs; [
