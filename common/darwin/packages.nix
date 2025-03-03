@@ -66,5 +66,6 @@ in
 
     # CUSTOM APPS
     mypkgs.karabiner-driverkit
+    mypkgs.libation # Audible audiobook manager
   ];
 }
