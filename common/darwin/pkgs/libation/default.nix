@@ -7,10 +7,9 @@
 let
   pname = "libation";
   versions = {
-    darwin = "12.0.0";
+    darwin = "12.0.2";
   };
   hashes = {
-    # darwin = "0npcz15vf8rx3fbjamcixqrdmk5324f34wbgj8mzbb0yf6x97zfp";
     darwin = "sha256-0qUOISz+oMyz0jgJU7E+8GaNtwUSAi7hb8SeXRj7H0o=";
   };
   meta = with lib; {
@@ -45,7 +44,6 @@ stdenvNoCC.mkDerivation {
   installPhase = ''
     runHook preInstall
     mkdir -p $out/Applications
-    # install -Dm 644 $src/Libation.app $out/Applications
     cp -pR $src/Libation.app $out/Applications
     runHook postInstall
   '';
