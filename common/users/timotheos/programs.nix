@@ -60,7 +60,7 @@
           };
         };
         "nixos-ocloud" = {
-          hostname = "207.211.153.68";
+          hostname = "207.211.158.25";
           user = "ubuntu";
           identityFile = "/Users/${user1}/.config/sops-nix/secrets/users/${user1}/ssh_keys/ssh-nixos-ocloud.key";
         };
