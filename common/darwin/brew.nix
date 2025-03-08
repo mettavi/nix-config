@@ -79,7 +79,7 @@
       # "microsoft-word"
       # "pdf-expert"
       # "plex-media-server"
-      # "protonvpn"
+      "private-internet-access"
       # "qlmarkdown"
       # "syncmate"
       # "tor-browser"
