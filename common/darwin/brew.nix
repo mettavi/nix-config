@@ -68,7 +68,7 @@
       }
       "keyclu" # popup window showing application's shortcuts
       # key-codes
-      # "kid3"
+      "kid3"
       # "lingon-x"
       # "mamp"
       # "masscode"
