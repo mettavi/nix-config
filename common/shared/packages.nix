@@ -95,7 +95,6 @@ in
     # google-chrome
     # goldendict-ng is currently only available for linux
     # obsidian
-    # picard
     # transmission_4
     # vlc-bin-universal
     # zoom-us
