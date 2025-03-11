@@ -37,6 +37,7 @@
     brews = [
       # install with brew as the build is currently broken on nix-darwin
       # "kanata"
+      # "m4b-tool"
       "pinentry-touchid"
     ];
     # use the "greedy" option to automatically upgrade homebrew casks during system activation
@@ -77,6 +78,7 @@
       # "microsoft-onenote"
       # "microsoft-powerpoint"
       # "microsoft-word"
+      "musicbrainz-picard"
       # "pdf-expert"
       # "plex-media-server"
       "private-internet-access"
