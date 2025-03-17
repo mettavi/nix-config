@@ -67,6 +67,7 @@ in
     tldr
     tree
     wget
+    zoom-us # video conferencing application
     zsh-completions
     zsh-powerlevel10k
 
