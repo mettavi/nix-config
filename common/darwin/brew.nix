@@ -83,6 +83,7 @@
       # "plex-media-server"
       "private-internet-access"
       # "qlmarkdown"
+      "subler" # Mux and tag mp4 files
       # "syncmate"
       # "tor-browser"
       # "typora"
