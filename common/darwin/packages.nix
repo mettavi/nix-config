@@ -65,6 +65,7 @@ in
     zeal_mac
 
     # CUSTOM APPS
+    mypkgs.goldendict-ng # Advanced multi-dictionary lookup program
     mypkgs.karabiner-driverkit
     mypkgs.libation # Audible audiobook manager
   ];
