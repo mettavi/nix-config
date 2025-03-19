@@ -32,8 +32,6 @@ stdenvNoCC.mkDerivation rec {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { };
-
   meta = {
     description = "The Next Generation GoldenDict";
     homepage = "https://xiaoyifang.github.io/goldendict-ng/";
