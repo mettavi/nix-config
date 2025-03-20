@@ -7,7 +7,7 @@
 let
   pname = "libation-gh";
   versions = {
-    darwin = "12.0.2";
+    darwin = "12.0.4";
   };
   hashes = {
     darwin = "sha256-JVuvkos4V2hr4Yd05zVv7NsKvgAp2jaWMVFDBiuCB+U=";
