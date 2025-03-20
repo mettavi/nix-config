@@ -10,7 +10,7 @@ let
     darwin = "12.0.2";
   };
   hashes = {
-    darwin = "sha256-0qUOISz+oMyz0jgJU7E+8GaNtwUSAi7hb8SeXRj7H0o=";
+    darwin = "sha256-JVuvkos4V2hr4Yd05zVv7NsKvgAp2jaWMVFDBiuCB+U=";
   };
   meta = with lib; {
     description = "Audible audiobook manager";
