@@ -67,6 +67,6 @@ in
     # CUSTOM APPS
     mypkgs.goldendictng-gh # Advanced multi-dictionary lookup program
     mypkgs.karabiner-driverkit
-    mypkgs.libation # Audible audiobook manager
+    mypkgs.libation-gh # Audible audiobook manager
   ];
 }

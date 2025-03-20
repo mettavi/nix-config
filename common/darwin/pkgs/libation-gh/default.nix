@@ -5,7 +5,7 @@
 }:
 
 let
-  pname = "libation";
+  pname = "libation-gh";
   versions = {
     darwin = "12.0.2";
   };
