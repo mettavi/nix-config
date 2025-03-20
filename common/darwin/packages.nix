@@ -8,10 +8,6 @@ let
   # nixpkgs-24_11 = inputs.nixpkgs-24_11.legacyPackages.${system};
   # nixpkgs-24_05 = inputs.nixpkgs-24_05.legacyPackages.${system};
 
-  # place custom packages in one directory for ease of reference
-  # each individual package is further defined in ./pkgs/default.nx
-  mypkgs = (pkgs.callPackage ./pkgs { });
-
   # to prevent "make: *** No rule to make target 'install'.  Stop." error (missing install phase)
   zeal_mac = pkgs.zeal-qt6.overrideAttrs (oldAttrs: {
     installPhase = ''
@@ -26,12 +22,14 @@ let
 
 in
 {
+  imports = [ ./pkgs/my-overlays.nix ];
+
   system.activationScripts = {
 
     extraActivation.text = ''
       # install the Karabiner Driver Kit .pkg from the nix store
       if [[ ! -d /Applications/.Karabiner-VirtualHIDDevice-Manager.app ]]; then
-        sudo installer -pkg "${mypkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
+        sudo installer -pkg "${pkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
         "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate
       fi
       # Enable remote login for the host (macos ssh server)
@@ -65,8 +63,8 @@ in
     zeal_mac
 
     # CUSTOM APPS
-    mypkgs.goldendictng-gh # Advanced multi-dictionary lookup program
-    mypkgs.karabiner-driverkit
-    mypkgs.libation-gh # Audible audiobook manager
+    pkgs.goldendictng-gh # Advanced multi-dictionary lookup program
+    pkgs.karabiner-driverkit
+    pkgs.libation-gh # Audible audiobook manager
   ];
 }
