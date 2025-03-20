@@ -7,7 +7,7 @@
 }:
 
 stdenvNoCC.mkDerivation rec {
-  pname = "goldendict-ng";
+  pname = "goldendictng-gh";
   version = "25.02.0-Release.e895b18c";
 
   src = fetchurl {
