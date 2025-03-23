@@ -1,5 +1,6 @@
 {
   lib,
+  nix-update-script,
   stdenvNoCC,
   fetchzip,
 }:
@@ -47,4 +48,6 @@ stdenvNoCC.mkDerivation {
     cp -pR $src/Libation.app $out/Applications
     runHook postInstall
   '';
+
+  passthru.updateScript = nix-update-script { };
 }
