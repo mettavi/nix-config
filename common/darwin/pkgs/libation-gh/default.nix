@@ -8,10 +8,10 @@
 let
   pname = "libation-gh";
   versions = {
-    darwin = "12.0.4";
+    darwin = "12.2.0";
   };
   hashes = {
-    darwin = "sha256-JVuvkos4V2hr4Yd05zVv7NsKvgAp2jaWMVFDBiuCB+U=";
+    darwin = "sha256-GqpoHuOPS35RhKFTbJVM1zb0+aoD23uS88Z9pBZ844o=";
   };
   meta = with lib; {
     description = "Audible audiobook manager";
