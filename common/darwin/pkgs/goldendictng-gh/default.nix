@@ -39,7 +39,7 @@ stdenvNoCC.mkDerivation rec {
     homepage = "https://xiaoyifang.github.io/goldendict-ng/";
     changelog = "https://github.com/xiaoyifang/goldendict-ng/releases/tag/v${version}";
     license = lib.licenses.gpl3Only;
-    maintainers = with lib.maintainers; [ xiaoyifang ];
+    maintainers = with lib.maintainers; [ slbtty michojel ];
     mainProgram = "goldendict-ng";
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
     platforms = lib.platforms.darwin;
