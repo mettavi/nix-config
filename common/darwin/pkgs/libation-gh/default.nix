@@ -18,7 +18,7 @@ let
     downloadPage = "https://github.com/rmcrackan/Libation/releases";
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
     license = licenses.publicDomain;
-    maintainers = with maintainers; [ rmcrackan ];
+    maintainers = with maintainers; [ tomasajt ];
     platforms = [ "x86_64-darwin" ];
   };
 
