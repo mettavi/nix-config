@@ -87,14 +87,19 @@
       ...
     }:
     let
-      system = "x86_64-darwin";
+      systems = {
+        xd = "x86_64-darwin";
+        ad = "aarch64-darwin";
+        xl = "x86_64-linux";
+        al = "aarch64-linux";
+      };
       user1 = "timotheos";
     in
     {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#mack
-      darwinConfigurations."mack" = nix-darwin.lib.darwinSystem {
-        system = "x86_64-darwin";
+      darwinConfigurations."mack" = nix-darwin.lib.darwinSystem rec {
+        system = "${systems.xd}";
         # Use specialArgs to pass through inputs to nix-darwin modules
         specialArgs = {
           inherit
