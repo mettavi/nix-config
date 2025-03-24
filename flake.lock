@@ -106,16 +106,16 @@
     "kegworks": {
       "flake": false,
       "locked": {
-        "lastModified": 1742567822,
-        "narHash": "sha256-8I76HwfAtqrdYoFfCkcwAjpIV8j5d4PS0fPopstFKWk=",
-        "owner": "gcenx",
-        "repo": "homebrew-wine",
-        "rev": "538541bf52097910344ebfa682124c365cca6500",
+        "lastModified": 1742606348,
+        "narHash": "sha256-O26E+B4nadjos7GocxKbDJlMKGiWSbdpt0cfa55oSNw=",
+        "owner": "Kegworks-App",
+        "repo": "Kegworks",
+        "rev": "a0395b6b755b1a82c4e2cee16fb99bb35eaf1b31",
         "type": "github"
       },
       "original": {
-        "owner": "gcenx",
-        "repo": "homebrew-wine",
+        "owner": "Kegworks-App",
+        "repo": "Kegworks",
         "type": "github"
       }
     },
