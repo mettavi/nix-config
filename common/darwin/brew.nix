@@ -31,7 +31,7 @@
     # taps cannot be uninstalled here, they are managed by homebrew.nix
     taps = [
       "homebrew/cask"
-      "gcenx/wine"
+      "Kegworks-App/Kegworks"
       "jorgelbg/tap"
     ];
     brews = [

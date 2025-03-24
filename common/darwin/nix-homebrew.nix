@@ -22,7 +22,7 @@
       "homebrew/homebrew-cask" = inputs.homebrew-cask;
       "homebrew/homebrew-bundle" = inputs.homebrew-bundle;
       "jorgelbg/homebrew-tap" = inputs.pinentry-touchid;
-      "gcenx/homebrew-wine" = inputs.kegworks;
+      "Kegworks-App/homebrew-Kegworks" = inputs.kegworks;
     };
 
     # Optional: Enable fully-declarative tap management

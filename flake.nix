@@ -46,7 +46,7 @@
       flake = false;
     };
     kegworks = {
-      url = "github:gcenx/homebrew-wine";
+      url = "github:Kegworks-App/Kegworks";
       flake = false;
     };
 
