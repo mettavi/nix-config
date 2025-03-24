@@ -10,4 +10,7 @@
       "darwin=${inputs.nix-darwin}"
     ];
   };
+  nixpkgs = {
+    overlays = [ (import ./pkgs/my-overlays.nix) ];
+  };
 }
