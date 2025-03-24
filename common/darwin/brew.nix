@@ -27,8 +27,8 @@
     # uninstall removes formulae, zap removes formulae and casks
     onActivation.cleanup = "zap";
     # explicitly list taps to prevent "zap" option from attempting to untap them
-    # NB: this is not necessary for homebrew-core and homebrew-bundle
-    # taps cannot be uninstalled here, they are managed by homebrew.nix
+    # NB: this is not necessary for homebrew-core
+    # taps cannot be uninstalled here, they are managed by nix-homebrew.nix
     taps = [
       "homebrew/cask"
       "Kegworks-App/Kegworks"

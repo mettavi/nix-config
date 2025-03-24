@@ -37,10 +37,6 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    homebrew-bundle = {
-      url = "github:homebrew/homebrew-bundle";
-      flake = false;
-    };
     pinentry-touchid = {
       url = "github:jorgelbg/homebrew-tap";
       flake = false;
