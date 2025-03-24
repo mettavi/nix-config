@@ -22,8 +22,6 @@ let
 
 in
 {
-  # import local packages into nixpkgs set using overlays
-  imports = [ ./pkgs/my-overlays.nix ];
 
   system.activationScripts = {
 
