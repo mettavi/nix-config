@@ -16,7 +16,6 @@
       };
       "users/${user1}/ssh_keys/timotheos_ed25519.pub" = {
         path = "${config.home.homeDirectory}/.ssh/timotheos_ed25519.pub";
-        mode = "0644";
       };
       "users/${user1}/ssh_keys/ssh-nixos-ocloud.key" = {
       };
