@@ -43,7 +43,7 @@
       serviceConfig = {
         Label = "com.github.jtroo-kanata";
         ProgramArguments = [
-          "/usr/local/bin/kanata"
+          "/run/current-system/sw/bin/kanata"
           "-c"
           "${config.users.users.timotheos.home}/.dotfiles/modules/kanata/kanata.lsp"
         ];

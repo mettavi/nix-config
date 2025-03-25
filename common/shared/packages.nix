@@ -43,6 +43,7 @@ in
     fastfetch
     ffmpeg
     gitleaks
+    kanata # Cross-platform software keyboard remapper
     mkalias
     nix-fast-build # speed-up your evaluation and building process
     nixfmt-rfc-style
