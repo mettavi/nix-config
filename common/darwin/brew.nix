@@ -35,8 +35,6 @@
       "jorgelbg/tap"
     ];
     brews = [
-      # install with brew as the build is currently broken on nix-darwin
-      # "kanata"
       # "m4b-tool"
       "pinentry-touchid"
     ];
