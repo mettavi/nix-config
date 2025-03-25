@@ -1,4 +1,3 @@
-{ pkgs, ... }:
-{
-  kanata = ( pkgs.callPackage ./kanata { } );
-}
+(final: prev: {
+  kanata = final.callPackage ./kanata { };
+})
