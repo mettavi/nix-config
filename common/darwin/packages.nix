@@ -28,7 +28,7 @@ in
     extraActivation.text = ''
       # install the Karabiner Driver Kit .pkg from the nix store
       if [[ ! -d /Applications/.Karabiner-VirtualHIDDevice-Manager.app ]]; then
-        sudo installer -pkg "${pkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
+        sudo installer -pkg "${pkgs.mettavi.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
         "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate
       fi
       # Enable remote login for the host (macos ssh server)
@@ -62,8 +62,8 @@ in
     zeal_mac
 
     # CUSTOM APPS
-    pkgs.goldendictng-gh # Advanced multi-dictionary lookup program
-    pkgs.karabiner-driverkit
-    pkgs.libation-gh # Audible audiobook manager
+    mettavi.goldendictng-gh # Advanced multi-dictionary lookup program
+    mettavi.karabiner-driverkit
+    mettavi.libation-gh # Audible audiobook manager
   ];
 }

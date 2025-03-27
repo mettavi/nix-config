@@ -11,6 +11,6 @@
     ];
   };
   nixpkgs = {
-    overlays = [ (import ./pkgs/my-overlays.nix) ];
+    overlays = [ (import ./overlays.nix) ];
   };
 }
