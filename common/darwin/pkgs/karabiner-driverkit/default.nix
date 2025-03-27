@@ -1,5 +1,6 @@
 {
   lib,
+  nix-update-script,
   stdenv,
   fetchurl,
 }:
@@ -18,7 +19,7 @@ let
     downloadPage = "https://github.com/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases";
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
     license = licenses.publicDomain;
-    maintainers = with maintainers; [ tekezo ];
+    maintainers = with maintainers; [ ];
     platforms = [ "x86_64-darwin" ];
   };
 
@@ -45,4 +46,5 @@ stdenv.mkDerivation {
     cp $src $out/Karabiner-DriverKit-VirtualHIDDevice-${versions.darwin}.pkg
     runHook postInstall
   '';
+  passthru.updateScript = nix-update-script { };
 }
