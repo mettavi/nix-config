@@ -1,3 +1,3 @@
 final: prev: {
-  mettavi = final.callPackage ./pkgs { };
+  macpkgs = final.callPackage ./pkgs { };
 }
