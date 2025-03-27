@@ -40,6 +40,10 @@
       trusted-users = [ "root" ];
     };
   };
-  nixpkgs.config.allowUnfree = true;
-  # nixpkgs.config.allowBroken = true;
+
+  nixpkgs = {
+    config.allowUnfree = true;
+    overlays = [ (import ./overlays.nix) ];
+    # nixpkgs.config.allowBroken = true;
+  };
 }
