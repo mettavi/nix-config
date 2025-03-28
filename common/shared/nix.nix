@@ -43,7 +43,7 @@
 
   nixpkgs = {
     config.allowUnfree = true;
-    overlays = [ (import ./overlays.nix) ];
+    overlays = [ (import ../overlays/shared/overlays.nix) ];
     # nixpkgs.config.allowBroken = true;
   };
 }

@@ -11,6 +11,6 @@
     ];
   };
   nixpkgs = {
-    overlays = [ (import ./overlays.nix) ];
+    overlays = [ (import ../overlays/darwin/overlays.nix) ];
   };
 }
