@@ -4,9 +4,6 @@
     enable = true;
     # disallow extensions being installed or updated by vscode
     mutableExtensionsDir = false;
-    # ++ (with pkgs.open-vsx; [
-    # https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/master/data/cache/open-vsx-latest.json
-    # ]);
     profiles.default = {
       userSettings = {
         "editor.insertSpaces" = true;
@@ -26,6 +23,9 @@
         "terminal.integrated.macOptionIsMeta" = true;
         "application.shellEnvironmentResolutionTimeout" = 30;
       };
+      # ++ (with pkgs.open-vsx; [
+      # https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/master/data/cache/open-vsx-latest.json
+      # ]);
       extensions = with pkgs.vscode-marketplace; [
         # https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/master/data/cache/vscode-marketplace-latest.json
         dbaeumer.vscode-eslint
