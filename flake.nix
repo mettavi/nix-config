@@ -110,9 +110,6 @@
           ./common/darwin/nix-homebrew.nix
           ./hosts/mack/home.nix
           sops-nix.darwinModules.sops
-          # enable the default overlay from nix-vscode-extensions
-          # to make more vscode extensions available
-          { nixpkgs.overlays = [ nix-vscode-extensions.overlays.default ]; }
           nix-index-database.darwinModules.nix-index
         ];
       };
