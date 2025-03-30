@@ -23,15 +23,15 @@
         "terminal.integrated.macOptionIsMeta" = true;
         "application.shellEnvironmentResolutionTimeout" = 30;
       };
-      # ++ (with pkgs.open-vsx; [
-      # https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/master/data/cache/open-vsx-latest.json
-      # ]);
       extensions = with pkgs.vscode-marketplace; [
         # https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/master/data/cache/vscode-marketplace-latest.json
         dbaeumer.vscode-eslint
         formulahendry.code-runner
         ritwickdey.liveserver
       ];
+        # ++ (with pkgs.open-vsx; [
+        # https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/master/data/cache/open-vsx-latest.json
+        # ]);
       keybindings = [
         {
           "key" = "ctrl+`";
