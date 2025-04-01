@@ -248,12 +248,12 @@ return {
             -- diagnostic = { suppress = { "sema-unused-def-lambda-witharg-formal" } },
             options = {
               darwin = {
-                expr = '(builtins.getFlake "/Users/timotheos/.dotfiles/nix-darwin").darwinConfigurations.MVs-MBP.options',
+                expr = '(builtins.getFlake ("git+file://" + toString ./.)).darwinConfigurations.mack.options',
               },
               -- nixd cannot get home-manager options when installed as a nix-darwin module
               -- ( See https://github.com/nix-community/nixd/issues/608 )
               -- home_manager = {
-              --   expr = '(builtins.getFlake  "/Users/timotheos/.dotfiles/nix-darwin").homeConfigurations."timotheos@MVs-MBP".options',
+              --   expr = '(builtins.getFlake  "/Users/timotheos/.dotfiles").homeConfigurations."timotheos@mack".options',
               -- },
             },
           },
