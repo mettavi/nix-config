@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, user1, ... }:
 {
   imports = [
     inputs.nix-homebrew.darwinModules.nix-homebrew
@@ -11,7 +11,7 @@
     # enableRosetta = true;
 
     # User owning the Homebrew prefix
-    user = "timotheos";
+    user = "${user1}";
 
     # Optional: Declarative tap management
     # You only need to add taps as Flake inputs if you set nix-homebrew.mutableTaps = false.
