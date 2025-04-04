@@ -38,7 +38,7 @@
       # "m4b-tool"
       "pinentry-touchid"
     ];
-    # use the "greedy" option to automatically upgrade homebrew casks during system activation
+    # use the "greedy" option to always upgrade auto-updated or unversioned cask to latest version
     casks = [
       # "abbyy-finereader-pdf"
       # "adobe-digital-editions"
@@ -81,7 +81,11 @@
       # "plex-media-server"
       "private-internet-access"
       # "qlmarkdown"
-      "subler" # Mux and tag mp4 files
+      # Mux and tag mp4 files
+      {
+        name = "subler";
+        greedy = true;
+      }
       # "syncmate"
       # "tor-browser"
       # "typora"
