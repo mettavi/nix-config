@@ -32,7 +32,8 @@ stdenvNoCC.mkDerivation rec {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { };
+  # update scripts do not work for this non-repo based package
+  # passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "A modern GUI for yt-dlp";
