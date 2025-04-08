@@ -77,7 +77,11 @@
       # "microsoft-powerpoint"
       # "microsoft-word"
       "musicbrainz-picard"
-      # "pdf-expert"
+      # PDF reader, editor and annotator
+      {
+        name = "pdf-expert";
+        greedy = true;
+      }
       # "plex-media-server"
       "private-internet-access"
       # "qlmarkdown"
