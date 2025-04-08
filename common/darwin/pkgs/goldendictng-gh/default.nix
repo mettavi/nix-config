@@ -4,15 +4,22 @@
   stdenvNoCC,
   undmg,
 }:
-
-stdenvNoCC.mkDerivation rec {
+let
   pname = "goldendictng-gh";
-  version = "25.02.0-Release.e895b18c";
-
+  version = "25.02.0";
+  rev = "v${version}-Release.e895b18c";
   src = fetchurl {
-    url = "https://github.com/xiaoyifang/goldendict-ng/releases/download/v${version}/GoldenDict-ng-25.02.0-Qt6.7.2-macOS-x86_64.dmg";
+    url = "https://github.com/xiaoyifang/goldendict-ng/releases/download/${rev}/GoldenDict-ng-${version}-Qt6.7.2-macOS-x86_64.dmg";
     hash = "sha256-gnu6HBbJk7UujJpHrHbZGLrTmXZenSEGR6nqoT5Iie8=";
   };
+in
+stdenvNoCC.mkDerivation rec {
+  inherit
+    pname
+    rev
+    src
+    version
+    ;
 
   nativeBuildInputs = [
     undmg
@@ -39,7 +46,10 @@ stdenvNoCC.mkDerivation rec {
     homepage = "https://xiaoyifang.github.io/goldendict-ng/";
     changelog = "https://github.com/xiaoyifang/goldendict-ng/releases/tag/v${version}";
     license = lib.licenses.gpl3Only;
-    maintainers = with lib.maintainers; [ slbtty michojel ];
+    maintainers = with lib.maintainers; [
+      slbtty
+      michojel
+    ];
     mainProgram = "goldendict-ng";
     sourceProvenance = with lib.sourceTypes; [ binaryNativeCode ];
     platforms = lib.platforms.darwin;
