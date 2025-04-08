@@ -3,7 +3,6 @@
   fetchurl,
   stdenvNoCC,
   undmg,
-  nix-update-script,
 }:
 
 stdenvNoCC.mkDerivation rec {

@@ -3,7 +3,6 @@
   fetchurl,
   stdenvNoCC,
   undmg,
-  nix-update-script,
 }:
 
 stdenvNoCC.mkDerivation rec {
@@ -32,7 +31,8 @@ stdenvNoCC.mkDerivation rec {
     runHook postInstall
   '';
 
-  passthru.updateScript = nix-update-script { };
+  # update script does not work on this src.url format
+  # passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "The Next Generation GoldenDict";
