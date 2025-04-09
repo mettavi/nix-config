@@ -1,5 +1,6 @@
 {
   lib,
+  nix-update-script,
   fetchurl,
   stdenvNoCC,
   undmg,
@@ -7,16 +8,15 @@
 let
   pname = "goldendictng-gh";
   version = "25.02.0";
-  rev = "v${version}-Release.e895b18c";
+  shortver = builtins.substring 0 7 version;
   src = fetchurl {
-    url = "https://github.com/xiaoyifang/goldendict-ng/releases/download/${rev}/GoldenDict-ng-${version}-Qt6.7.2-macOS-x86_64.dmg";
+    url = "https://github.com/xiaoyifang/goldendict-ng/releases/download/v${version}/GoldenDict-ng-${shortver}-Qt6.7.2-macOS-x86_64.dmg";
     hash = "sha256-gnu6HBbJk7UujJpHrHbZGLrTmXZenSEGR6nqoT5Iie8=";
   };
 in
 stdenvNoCC.mkDerivation rec {
   inherit
     pname
-    rev
     src
     version
     ;
@@ -39,7 +39,7 @@ stdenvNoCC.mkDerivation rec {
   '';
 
   # update script does not work on this src.url format
-  # passthru.updateScript = nix-update-script { };
+  passthru.updateScript = nix-update-script { };
 
   meta = {
     description = "The Next Generation GoldenDict";
