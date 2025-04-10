@@ -68,7 +68,10 @@
       "keyclu" # popup window showing application's shortcuts
       # key-codes
       "kid3"
-      # "lingon-x"
+      {
+        name = "lingon-x";
+        greedy = true;
+      }
       # "mamp"
       # "masscode"
       # "mounty"
