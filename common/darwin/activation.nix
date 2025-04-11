@@ -2,6 +2,12 @@
 {
   # check nix-darwin/modules/system/activation-scripts.nix for allowed values for activationScripts.<name>
   system.activationScripts = {
+    # "activationScripts.userScript" 
+    # nix-darwin runs this first to ensure /run/current-system exists before the main script is executed
+    postUserActivation.text = ''
+      # avoid a login/reboot to apply new settings after system activation (macOS)
+      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+    # "activationScripts.script" (this is run after "userScript")
     applications.text =
       # install GUI apps with alias instead of symlink to show up in spotlight search
       let
@@ -31,11 +37,6 @@
       if [[ "$(systemsetup -getremotelogin | sed 's/Remote Login: //')" == "Off" ]]; then
         launchctl load -w /System/Library/LaunchDaemons/ssh.plist
       fi
-    '';
-
-    postUserActivation.text = ''
-      # avoid a login/reboot to apply new settings after system activation (macOS)
-      /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
     '';
   };
 }
