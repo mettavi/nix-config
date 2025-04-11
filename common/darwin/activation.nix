@@ -1,8 +1,8 @@
 { pkgs, config, ... }:
 {
-  # install GUI apps with alias instead of symlink to show up in spotlight search
   system.activationScripts = {
     applications.text =
+      # install GUI apps with alias instead of symlink to show up in spotlight search
       let
         env = pkgs.buildEnv {
           name = "system-applications";
