@@ -1,5 +1,6 @@
 { pkgs, config, ... }:
 {
+  # check nix-darwin/modules/system/activation-scripts.nix for allowed values for activationScripts.<name>
   system.activationScripts = {
     applications.text =
       # install GUI apps with alias instead of symlink to show up in spotlight search
