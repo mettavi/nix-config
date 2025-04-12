@@ -14,6 +14,13 @@
       InitialKeyRepeat = 35; # default 25
       KeyRepeat = 6; # default 6
     };
+    CustomUserPreferences = {
+      NSGlobalDomain = {
+        # Set keyboard navigation manually due to nix-darwin bug in system.defaults setting
+        # See https://github.com/nix-darwin/nix-darwin/issues/1378
+        AppleKeyboardUIMode = 2;
+      };
+    };
   };
 
   # pam_reattach.so re-enables pam_tid.so in tmux

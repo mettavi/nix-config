@@ -7,10 +7,6 @@
     postUserActivation.text = ''
       # avoid a login/reboot to apply new settings after system activation (macOS)
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
-      # Set keyboard navigation manually due to nix-darwin bug in system.defaults setting
-      # See https://github.com/nix-darwin/nix-darwin/issues/1378
-      # NB: This didn't work in keyboard.text or extraActivation.text
-      defaults write NSGlobalDomain AppleKeyboardUIMode -int "2"
     '';
     # "activationScripts.script" (this is run after "userScript")
     applications.text =
