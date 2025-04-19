@@ -80,6 +80,10 @@
       # "microsoft-powerpoint"
       # "microsoft-word"
       "musicbrainz-picard"
+      {
+        name = "onedrive"; # Cloud storage client
+        greedy = true;
+      }
       # PDF reader, editor and annotator
       {
         name = "pdf-expert";
