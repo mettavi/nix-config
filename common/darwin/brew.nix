@@ -104,8 +104,6 @@
       "xcodes"
       # "zotero"
     ];
-    # BUG: Don't use until mas version 2.0 is released with a bug fix (see https://github.com/mas-cli/mas/issues/724)
-    # WhatsApp is currently installed via mas, manage it via AppStore GUI for now
     masApps = {
       # "Contacts Sync for Google Gmail" = 451691288;
       # "Foldor" = 1559426624;
@@ -121,7 +119,7 @@
       # "Snip" = 1527428847;
       # "Sync Folders Pro" = 522706442;
       # "tipitaka_pali_reader" = 1541426949;
-      # "WhatsApp Messenger" = 310633997;
+      "WhatsApp Messenger" = 310633997;
     };
   };
 }
