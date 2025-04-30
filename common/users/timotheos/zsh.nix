@@ -1,3 +1,4 @@
+{ lib, ... }:
 {
   programs.zsh = {
     enable = true;
@@ -18,8 +19,11 @@
       save = 100000;
       size = 100000;
     };
-    initExtraFirst = (builtins.readFile ../../../modules/zsh/.config/zsh/.zshrc_top);
-    initExtra = (builtins.readFile ../../../modules/zsh/.config/zsh/.zshrc);
+    initContent = lib.mkMerge [
+      (lib.mkBefore (builtins.readFile ../../../modules/zsh/.config/zsh/.zshrc_top))
+      (builtins.readFile ../../../modules/zsh/.config/zsh/.zshrc)
+    ];
+    # initContent = lib.mkBefore (builtins.readFile ../../../modules/zsh/.config/zsh/.zshrc_top);
     sessionVariables = {
       # alias for thefuck command
       TF_ALIAS = "oh";
