@@ -69,7 +69,6 @@ in
     tldr
     tree
     wget
-    zoom-us # video conferencing application
     zsh-completions
     zsh-powerlevel10k
 
@@ -99,6 +98,6 @@ in
     # obsidian
     # transmission_4
     # vlc-bin-universal
-    # zoom-us
+    zoom-us # video conferencing application
   ];
 }
