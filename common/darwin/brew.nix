@@ -80,6 +80,11 @@
         name = "lingon-x";
         greedy = true;
       }
+      # File system integration
+      {
+        name = "macfuse";
+        greedy = true;
+      }
       # "mamp"
       # "masscode"
       # "mounty"
