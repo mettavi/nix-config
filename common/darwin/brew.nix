@@ -65,7 +65,11 @@
           no_quarantine = true;
         };
       }
-      "keyclu" # popup window showing application's shortcuts
+      # popup window showing application's shortcuts
+      {
+        name = "keyclu";
+        greedy = true;
+      }
       # key-codes
       "kid3"
       {
