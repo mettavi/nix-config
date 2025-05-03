@@ -51,7 +51,8 @@ in
     # karabiner-elements
     # keka
     keycastr # keystroke visualiser
-    macfuse-stubs # Build time stubs for FUSE on macOS
+    # Build time stubs for FUSE on macOS NB: this requires the full macFUSE package
+    macfuse-stubs 
     mas
     pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
     pinentry_mac
