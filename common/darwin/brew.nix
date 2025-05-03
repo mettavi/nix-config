@@ -44,7 +44,11 @@
       # "adobe-digital-editions"
       "anki"
       "calibre" # Comprehensive e-book software
-      # "carbon-copy-cloner"
+      # Hard disk backup and cloning utility
+      {
+        name = "carbon-copy-cloner";
+        greedy = true;
+      }
       # "cheatsheet"
       "cirrus" # Inspector for iCloud Drive folders
       # "coteditor"
