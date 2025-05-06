@@ -8,17 +8,6 @@ let
   # nixpkgs-24_11 = inputs.nixpkgs-24_11.legacyPackages.${system};
   # nixpkgs-24_05 = inputs.nixpkgs-24_05.legacyPackages.${system};
 
-  # to prevent "make: *** No rule to make target 'install'.  Stop." error (missing install phase)
-  zeal_mac = pkgs.zeal-qt6.overrideAttrs (oldAttrs: {
-    installPhase = ''
-      runHook preInstall
-
-      mkdir -p "$out/Applications"
-      cp -r *.app "$out/Applications"
-
-      runHook postInstall
-    '';
-  });
 
 in
 {
@@ -60,7 +49,6 @@ in
     # fix was committed to master on Wed 18 Dec, see https://github.com/NixOS/nixpkgs/pull/365792/commits
     # whatsapp-for-mac
     xcodes
-    zeal_mac
 
     # CUSTOM APPS
     macpkgs.goldendictng-gh # Advanced multi-dictionary lookup program
