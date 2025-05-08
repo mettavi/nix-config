@@ -29,12 +29,15 @@
       # rclone application key for backblaze b2 service
       "users/${user1}/rclone_b2_appkey" = {
       };
+      # rclone secret access key for AWS S3 Glacier Deep Archive bucket
+      "users/${user1}/rclone_aws_gda_key" = {
+      };
       # restic key for encryption of backblaze b2 repo (mbp_timotheos)
       "users/${user1}/restic_b2_mack-timotheos" = {
       };
     };
     templates = {
-      # rclone config file with secret
+      # rclone config file with secrets
       "rclone.conf" = {
         content = ''
           [onedrive]
@@ -48,6 +51,16 @@
           type = b2
           account = 004471da6ad00020000000001
           key = ${config.sops.placeholder."users/${user1}/rclone_b2_appkey"}
+
+          [aws_gda]
+          type = s3
+          provider = AWS
+          access_key_id = AKIASR23L52NR2GRLUZ6
+          secret_access_key = ${config.sops.placeholder."users/${user1}/rclone_aws_gda_key"}
+          region = us-east-1
+          acl = private
+          storage_class = DEEP_ARCHIVE
+          env_auth = true
         '';
         path = "${config.xdg.configHome}/rclone/rclone.conf";
       };
