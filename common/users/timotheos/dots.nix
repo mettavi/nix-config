@@ -27,7 +27,7 @@ in
     # enable management of xdg base directories
     enable = true;
     configFile = {
-      "rclone/filter.txt".source = ./conf/rclone/filter.txt;
+      "rclone/filter-calibre.txt".source = ./conf/rclone/filter-calibre.txt;
       "zsh/.zsh_aliases".source = ../../../modules/zsh/.config/zsh/.zsh_aliases;
     };
   };
