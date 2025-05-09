@@ -49,6 +49,8 @@
           drive_id = 0F811515C935D85C
           drive_type = personal
           hard_delete = true
+          # improves performance, except when used from the root (root/directory in onedrive:root/directory)
+          delta = true
           
           [b2]
           type = b2
