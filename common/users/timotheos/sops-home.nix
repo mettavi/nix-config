@@ -32,6 +32,9 @@
       # rclone secret access key for AWS S3 Glacier Deep Archive bucket
       "users/${user1}/rclone_aws_gda_key" = {
       };
+      # rclone obfuscated encryption password
+      "users/${user1}/rclone_aws_gda_crypt" = {
+      };
       # restic key for encryption of backblaze b2 repo (mbp_timotheos)
       "users/${user1}/restic_b2_mack-timotheos" = {
       };
@@ -61,6 +64,13 @@
           acl = private
           storage_class = DEEP_ARCHIVE
           env_auth = true
+          
+          [aws_gda-crypt]
+          type = crypt
+          remote = aws_gda:mettavi-archive-useast1
+          # rclone obfuscated encryption password
+          password = ${config.sops.placeholder."users/${user1}/rclone_aws_gda_crypt"}
+          directory_name_encryption = false
         '';
         path = "${config.xdg.configHome}/rclone/rclone.conf";
       };
