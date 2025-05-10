@@ -47,7 +47,7 @@ return {
     local mason = require("mason")
 
     -- import mason-lspconfig
-    local mason_lspconfig = require("mason-lspconfig")
+    local mason_lspconfig = require("mason-lspconfig").setup()
 
     local mason_tool_installer = require("mason-tool-installer")
 
@@ -114,170 +114,109 @@ return {
     mason_nvim_dap.setup()
 
     -- language servers not installed with mason are configured in nvim-lspconfig
-    mason_lspconfig.setup_handlers({
-      -- default handler for installed servers
-      function(server_name)
-        lspconfig[server_name].setup({
-          on_attach = on_attach,
-          capabilities = capabilities,
-        })
-      end,
-      ["svelte"] = function()
-        -- configure svelte server
-        lspconfig["svelte"].setup({
-          capabilities = capabilities,
-          on_attach = function(client, bufnr)
-            vim.api.nvim_create_autocmd("BufWritePost", {
-              pattern = { "*.js", "*.ts" },
-              callback = function(ctx)
-                -- Here use ctx.match instead of ctx.file
-                client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-              end,
-            })
-          end,
-          settings = {
-            typescript = {
-              inlayHints = {
-                parameterNames = { enabled = "all" },
-                parameterTypes = { enabled = true },
-                variableTypes = { enabled = true },
-                propertyDeclarationTypes = { enabled = true },
-                functionLikeReturnTypes = { enabled = true },
-                enumMemberValues = { enabled = true },
-              },
-            },
+    lspconfig["bashls"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      filetypes = { "sh", "bash" },
+    })
+    lspconfig["lua_ls"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {
+        Lua = {
+          -- make the language server recognize "vim" global
+          diagnostics = {
+            globals = { "vim" },
           },
-        })
-      end,
-      ["bashls"] = function()
-        -- configure bash language server
-        lspconfig["bashls"].setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-          filetypes = { "sh", "bash" },
-        })
-      end,
-      ["graphql"] = function()
-        -- configure graphql language server
-        lspconfig["graphql"].setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-          filetypes = { "graphql", "gql", "svelte", "typescriptreact", "javascriptreact" },
-        })
-      end,
-      ["emmet_ls"] = function()
-        -- configure emmet language server
-        lspconfig["emmet_ls"].setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-          filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
-        })
-      end,
-      ["lua_ls"] = function()
-        -- configure lua server (with special settings)
-        lspconfig["lua_ls"].setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-          settings = {
-            Lua = {
-              -- make the language server recognize "vim" global
-              diagnostics = {
-                globals = { "vim" },
-              },
-              completion = {
-                callSnippet = "Replace",
-              },
-              hint = {
-                enable = true,
-              },
-            },
+          completion = {
+            callSnippet = "Replace",
           },
-        })
-      end,
-      ["ts_ls"] = function()
-        -- configure typescript server with plugin
-        lspconfig["ts_ls"].setup({
-          capabilities = capabilities,
-          on_attach = on_attach,
-          settings = {
-            typescript = {
-              inlayHints = {
-                includeInlayParameterNameHints = "all",
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
-            },
-            javascript = {
-              inlayHints = {
-                includeInlayParameterNameHints = "all",
-                includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-                includeInlayFunctionParameterTypeHints = true,
-                includeInlayVariableTypeHints = true,
-                includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-                includeInlayPropertyDeclarationTypeHints = true,
-                includeInlayFunctionLikeReturnTypeHints = true,
-                includeInlayEnumMemberValueHints = true,
-              },
-            },
-          },
-          --  settings = {
-          --  implicitProjectConfiguration = {
-          --  checkJs = true,
-          --    },
-          --  },
-        })
-      end,
-      lspconfig.nixd.setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-        cmd = { "nixd" },
-        settings = {
-          nixd = {
-            nixpkgs = {
-              expr = "import <nixpkgs> { }",
-            },
-            formatting = {
-              command = { "nixfmt" },
-            },
-            -- diagnostic = { suppress = { "sema-unused-def-lambda-witharg-formal" } },
-            options = {
-              darwin = {
-                expr = '(builtins.getFlake ("git+file://" + toString ./.)).darwinConfigurations.mack.options',
-              },
-              -- nixd cannot get home-manager options when installed as a nix-darwin module
-              -- ( See https://github.com/nix-community/nixd/issues/608 )
-              -- home_manager = {
-              --   expr = '(builtins.getFlake  "/Users/timotheos/.dotfiles").homeConfigurations."timotheos@mack".options',
-              -- },
-            },
+          hint = {
+            enable = true,
           },
         },
-      }),
-      lspconfig.yamlls.setup({
-        capabilities = capabilities,
-        on_attach = on_attach,
-        settings = {
-          yaml = {
-            schemaStore = {
-              -- must disable built-in schemaStore support if you want to use
-              -- the neovim schemastore plugin and its advanced options like `ignore`.
-              enable = false,
-              -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
-              url = "",
-            },
-            schemas = require("schemastore").yaml.schemas(),
-            -- using yamlfmt for formatting
-            format = {
-              enable = false,
-            },
+      },
+    })
+    lspconfig["ts_ls"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {
+        typescript = {
+          inlayHints = {
+            includeInlayParameterNameHints = "all",
+            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+            includeInlayFunctionParameterTypeHints = true,
+            includeInlayVariableTypeHints = true,
+            includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+            includeInlayPropertyDeclarationTypeHints = true,
+            includeInlayFunctionLikeReturnTypeHints = true,
+            includeInlayEnumMemberValueHints = true,
           },
         },
-      }),
+        javascript = {
+          inlayHints = {
+            includeInlayParameterNameHints = "all",
+            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+            includeInlayFunctionParameterTypeHints = true,
+            includeInlayVariableTypeHints = true,
+            includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+            includeInlayPropertyDeclarationTypeHints = true,
+            includeInlayFunctionLikeReturnTypeHints = true,
+            includeInlayEnumMemberValueHints = true,
+          },
+        },
+      },
+      settings = {
+        implicitProjectConfiguration = {
+          checkJs = true,
+        },
+      },
+    })
+    lspconfig.nixd.setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      cmd = { "nixd" },
+      settings = {
+        nixd = {
+          nixpkgs = {
+            expr = "import <nixpkgs> { }",
+          },
+          formatting = {
+            command = { "nixfmt" },
+          },
+          -- diagnostic = { suppress = { "sema-unused-def-lambda-witharg-formal" } },
+          options = {
+            darwin = {
+              expr = '(builtins.getFlake ("git+file://" + toString ./.)).darwinConfigurations.mack.options',
+            },
+            -- nixd cannot get home-manager options when installed as a nix-darwin module
+            -- ( See https://github.com/nix-community/nixd/issues/608 )
+            -- home_manager = {
+            --   expr = '(builtins.getFlake  "/Users/timotheos/.dotfiles").homeConfigurations."timotheos@mack".options',
+            -- },
+          },
+        },
+      },
+    })
+    lspconfig.yamlls.setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {
+        yaml = {
+          schemaStore = {
+            -- must disable built-in schemaStore support if you want to use
+            -- the neovim schemastore plugin and its advanced options like `ignore`.
+            enable = false,
+            -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+            url = "",
+          },
+          schemas = require("schemastore").yaml.schemas(),
+          -- using yamlfmt for formatting
+          format = {
+            enable = false,
+          },
+        },
+      },
     })
   end,
 }
