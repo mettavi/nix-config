@@ -16,7 +16,7 @@ return {
     local lspconfig = require("lspconfig")
 
     -- enable autocompletion via nvim-cmp (assign to every lsp server config)
-    -- by extending the cpabilities of lsp/neovim with nvim-cmp
+    -- by extending the capabilities of lsp/neovim with nvim-cmp
     local capabilities = cmp_nvim_lsp.default_capabilities()
 
     -- code to run when lsp attaches to buffer (assign to everyl lsp server config)
