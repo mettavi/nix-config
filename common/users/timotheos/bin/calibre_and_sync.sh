@@ -11,4 +11,4 @@ wait $! # optional really, but a bit safer
 # as it can cause performance degradation
 rclone --log-level NOTICE --log-file="${XDG_CONFIG_HOME}/rclone/log.txt" \
   --stats 2s --progress --check-first --retries 1 --max-backlog 999999 --buffer-size 256M --fast-list \
-  sync ~/Documents/calibre/ --filter-from ~/.config/rclone/filter.txt onedrive:calibre/
+  sync ~/Documents/calibre/ --filter-from ~/.config/rclone/filter-calibre.txt onedrive:calibre/
