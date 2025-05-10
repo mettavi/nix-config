@@ -160,10 +160,8 @@ return {
           },
         },
       },
-      settings = {
-        implicitProjectConfiguration = {
-          checkJs = true,
-        },
+      implicitProjectConfiguration = {
+        checkJs = true,
       },
     })
     lspconfig.nixd.setup({
