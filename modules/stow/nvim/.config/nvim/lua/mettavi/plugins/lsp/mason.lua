@@ -70,10 +70,7 @@ return {
     --   "ts_ls",
     --   "html",
     --   "cssls",
-    --   "tailwindcss",
-    --   "svelte",
     --   "lua_ls",
-    --   "emmet_ls",
     --   "pyright",
     --   "bashls", -- uses shellcheck linter installed with brew
     -- },
@@ -87,9 +84,6 @@ return {
         "eslint_d", -- js linter
         "html", -- HTML language server
         "cssls", -- CSS language server
-        "tailwindcss", -- tailwind CSS language server
-        "emmet_ls", -- emmet language server (HTML/XML/CSS...)
-        "svelte", -- svelte language server (HTML/CSS/JS)
         "pyright", -- python language server
         "pylint", -- python linter
         "isort", -- python formatter
