@@ -66,7 +66,6 @@
           region = us-east-1
           acl = private
           storage_class = DEEP_ARCHIVE
-          env_auth = true
           
           [aws_gda-crypt]
           type = crypt
