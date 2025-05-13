@@ -113,6 +113,7 @@
       "xcodes"
       # "zotero"
     ];
+    # setting this option will add the mas package to homebrew.brews
     masApps = {
       # "Contacts Sync for Google Gmail" = 451691288;
       # "Foldor" = 1559426624;
