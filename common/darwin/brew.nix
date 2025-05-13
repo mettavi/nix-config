@@ -1,3 +1,4 @@
+{ config, ... }:
 {
   environment.variables.HOMEBREW_NO_ANALYTICS = "1";
 
@@ -24,16 +25,11 @@
     # don't attempt to autoUpdate when running brew commands manually
     global.autoUpdate = false;
 
-    # uninstall removes formulae, zap removes formulae and casks
-    onActivation.cleanup = "zap";
-    # explicitly list taps to prevent "zap" option from attempting to untap them
-    # NB: this is not necessary for homebrew-core
-    # taps cannot be uninstalled here, they are managed by nix-homebrew.nix
-    taps = [
-      "homebrew/cask"
-      "Kegworks-App/Kegworks"
-      "jorgelbg/tap"
-    ];
+    # uninstall removes all unlisted packages, zap does a "deep uninstall", deleting all associated files including preferences
+    onActivation.cleanup = "uninstall";
+    # prevent onActivation.cleanup option from removing taps listed in nix-homebrew module
+    taps = builtins.attrNames config.nix-homebrew.taps;
+
     brews = [
       # "m4b-tool"
       "pinentry-touchid"
