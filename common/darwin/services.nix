@@ -32,8 +32,6 @@
         Program = "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
         RunAtLoad = true;
         # KeepAlive = true;
-        StandardOutPath = "/var/log/karabiner.log";
-        StandardErrorPath = "/var/log/karabiner.log";
       };
     };
   };
