@@ -11,4 +11,4 @@ wait $! # optional really, but a bit safer
 # as otherwise it can cause performance degradation
 rclone --log-level INFO --log-file="$HOME/Library/Logs/rclone.log" \
   --stats 2s --progress --retries 1 --max-backlog 999999 --fast-list \
-  sync ~/Documents/calibre/ --filter-from ~/.config/rclone/filter-calibre.txt onedrive:calibre/
+  sync ~/Documents/calibre/ --filter-from "$DOTFILES/common/users/timotheos/conf/rclone/filter-calibre.txt" onedrive:calibre/
