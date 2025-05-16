@@ -1,0 +1,88 @@
+# exclusions for rclone copy of ibrianallen home directory
+
+# patterns to exclude
+# from https://www.reddit.com/r/BorgBackup/comments/sitr82/suggested_folders_to_ignore_for_home_folder/
+.DS_Store
+.build/**
+.git/**
+vendor/**
+node_modules/**
+.npm/**
+Cache/**
+Caches/**
+cache/**
+caches/**
+.DocumentRevisions-V100/**
+.MobileBackups/**
+.MobileBackups.trash/**
+.Spotlight-V100/**
+.TemporaryItems/**
+.Trash/**
+.Trashes/**
+DerivedData/**
+Logs/**
+iTunes/iTunes Media/Downloads/**
+iTunes/iTunes Media/Podcasts/**
+iTunes/Album Artwork/**
+iTunes/Previous iTunes Libraries/**
+CrashReporter/**
+MobileSync/Backup/**
+tmp/**
+.fseventsd/**
+
+# Additional patterns
+.cache/**
+
+# paths to exclude (from command: sudo mdfind "com_apple_backup_excludeItem = 'com.apple.backupd'")
+/Library/Application Support/Google/Chrome/Default/Favicons
+/Library/Application Support/Google/Chrome/Default/Favicons-journal
+/Library/Application Support/Google/Chrome/Default/History
+/Library/Application Support/Google/Chrome/Default/History-journal
+/Library/Calendars/Calendar Cache
+/Library/Application Support/Google/Chrome/Safe Browsing UwS List
+/Library/Application Support/Google/Chrome/Safe Browsing UwS List Prefix Set
+/Library/Application Support/Google/Chrome/Profile 1/Favicons
+/Library/Application Support/Google/Chrome/Profile 1/Favicons-journal
+/Library/Application Support/Google/Chrome/Profile 1/History
+/Library/Application Support/Google/Chrome/Profile 1/History-journal
+/Library/Application Support/Google/Chrome/Guest Profile/Favicons
+/Library/Application Support/Google/Chrome/Guest Profile/Favicons-journal
+/Library/Application Support/Google/Chrome/Guest Profile/History
+/Library/Application Support/Google/Chrome/Guest Profile/History-journal
+/Library/Application Support/Google/Chrome/System Profile/Favicons
+/Library/Application Support/Google/Chrome/System Profile/Favicons-journal
+/Library/Application Support/Google/Chrome/System Profile/History
+/Library/Application Support/Google/Chrome/System Profile/History-journal
+/Library/Application Support/Librarian/FB2013DB-2D5B-55D8-A75B-FB454EC1C67E.txt
+/Library/Containers/com.apple.Maps/Data/Library/Maps/Bookmarks.synced
+/Library/Containers/com.apple.cloudphotosd/Data/Library/Application Support/com.apple.cloudphotosd/services/com.apple.photo.icloud.sharedstreams/com.apple.photo.icloud.sharedstreams-110861823.cloudphotoservicelibrary/database
+/Library/Icons/WebpageIcons.db
+/Library/LanguageModeling/da-dynamic.lm
+/Library/LanguageModeling/de-dynamic.lm
+/Library/LanguageModeling/en-dynamic.lm
+/Library/LanguageModeling/es-dynamic.lm
+/Library/LanguageModeling/fi-dynamic.lm
+/Library/LanguageModeling/fr-dynamic.lm
+/Library/LanguageModeling/it-dynamic.lm
+/Library/LanguageModeling/nb-dynamic.lm
+/Library/LanguageModeling/nl-dynamic.lm
+/Library/LanguageModeling/pl-dynamic.lm
+/Library/LanguageModeling/pt-dynamic.lm
+/Library/LanguageModeling/sv-dynamic.lm
+/Library/LanguageModeling/tr-dynamic.lm
+/Music/iTunes/Album Artwork/Cache
+/Music/iTunes/Album Artwork/Generated
+/Music/iTunes/Album Artwork/Store
+/Library/iTunes/iPad Software Updates
+/Library/iTunes/iPod Software Updates
+/Music/iTunes/iTunes Music Library.xml
+/Pictures/Photos Library.photoslibrary/Database
+/Library/Application Support/Google/Chrome/Safe Browsing Bloom
+/Library/Application Support/Google/Chrome/Safe Browsing Bloom Prefix Set
+/Library/Application Support/Google/Chrome/Safe Browsing Csd Whitelist
+/Library/Application Support/Google/Chrome/Safe Browsing Download
+/Library/Application Support/Google/Chrome/Safe Browsing Download Whitelist
+/Library/Application Support/Google/Chrome/Safe Browsing Extension Blacklist
+/Library/Application Support/Google/Chrome/Safe Browsing IP Blacklist
+/Library/Application Support/Google/Chrome/Safe Browsing Module Whitelist
+/Library/Application Support/Google/Chrome/Safe Browsing Resource Blacklist
