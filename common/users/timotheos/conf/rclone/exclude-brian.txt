@@ -1,4 +1,5 @@
 # exclusions for rclone copy of ibrianallen home directory
+# NB: Folder names MUST end with a slash (plus a glob like * or **), otherwise they are interpreted as files
 
 # patterns to exclude
 # from https://www.reddit.com/r/BorgBackup/comments/sitr82/suggested_folders_to_ignore_for_home_folder/
