@@ -76,7 +76,7 @@ tmp/**
 /Music/iTunes/iTunes Music Library.xml
 # Ignore this TM exclusion rule: Do not exclude the Database folder which has metadata for the photos, see https://bit.ly/43kCDGX
 # /Pictures/Photos Library.photoslibrary/Database/**
-/Pictures/iPhotos Library.photolibrary/**
+/Pictures/iPhoto Library.photolibrary/**
 /Library/Application Support/Google/Chrome/Safe Browsing Bloom
 /Library/Application Support/Google/Chrome/Safe Browsing Bloom Prefix Set
 /Library/Application Support/Google/Chrome/Safe Browsing Csd Whitelist
