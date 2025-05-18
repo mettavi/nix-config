@@ -2,7 +2,6 @@
 
 # patterns to exclude
 # from https://www.reddit.com/r/BorgBackup/comments/sitr82/suggested_folders_to_ignore_for_home_folder/
-.DS_Store
 .build/**
 .git/**
 vendor/**
