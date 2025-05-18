@@ -68,9 +68,7 @@ tmp/**
 /Library/LanguageModeling/pt-dynamic.lm
 /Library/LanguageModeling/sv-dynamic.lm
 /Library/LanguageModeling/tr-dynamic.lm
-/Music/iTunes/Album Artwork/Cache/**
-/Music/iTunes/Album Artwork/Generated/**
-/Music/iTunes/Album Artwork/Store/**
+/Music/iTunes/**
 /Library/iTunes/iPad Software Updates/**
 /Library/iTunes/iPod Software Updates/**
 /Music/iTunes/iTunes Music Library.xml
