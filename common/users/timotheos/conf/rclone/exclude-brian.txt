@@ -53,7 +53,7 @@ tmp/**
 /Library/Application Support/Google/Chrome/System Profile/History-journal
 /Library/Application Support/Librarian/FB2013DB-2D5B-55D8-A75B-FB454EC1C67E.txt
 /Library/Containers/com.apple.Maps/Data/Library/Maps/Bookmarks.synced
-/Library/Containers/com.apple.cloudphotosd/Data/Library/Application Support/com.apple.cloudphotosd/services/com.apple.photo.icloud.sharedstreams/com.apple.photo.icloud.sharedstreams-110861823.cloudphotoservicelibrary/database
+/Library/Containers/com.apple.cloudphotosd/Data/Library/Application Support/com.apple.cloudphotosd/services/com.apple.photo.icloud.sharedstreams/com.apple.photo.icloud.sharedstreams-110861823.cloudphotoservicelibrary/database/**
 /Library/Icons/WebpageIcons.db
 /Library/LanguageModeling/da-dynamic.lm
 /Library/LanguageModeling/de-dynamic.lm
@@ -68,13 +68,13 @@ tmp/**
 /Library/LanguageModeling/pt-dynamic.lm
 /Library/LanguageModeling/sv-dynamic.lm
 /Library/LanguageModeling/tr-dynamic.lm
-/Music/iTunes/Album Artwork/Cache
-/Music/iTunes/Album Artwork/Generated
-/Music/iTunes/Album Artwork/Store
-/Library/iTunes/iPad Software Updates
-/Library/iTunes/iPod Software Updates
+/Music/iTunes/Album Artwork/Cache/**
+/Music/iTunes/Album Artwork/Generated/**
+/Music/iTunes/Album Artwork/Store/**
+/Library/iTunes/iPad Software Updates/**
+/Library/iTunes/iPod Software Updates/**
 /Music/iTunes/iTunes Music Library.xml
-/Pictures/Photos Library.photoslibrary/Database
+/Pictures/Photos Library.photoslibrary/Database/**
 /Library/Application Support/Google/Chrome/Safe Browsing Bloom
 /Library/Application Support/Google/Chrome/Safe Browsing Bloom Prefix Set
 /Library/Application Support/Google/Chrome/Safe Browsing Csd Whitelist
