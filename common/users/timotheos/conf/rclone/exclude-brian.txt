@@ -75,6 +75,7 @@ tmp/**
 /Library/iTunes/iPod Software Updates/**
 /Music/iTunes/iTunes Music Library.xml
 /Pictures/Photos Library.photoslibrary/Database/**
+/Pictures/iPhotos Library.photolibrary/**
 /Library/Application Support/Google/Chrome/Safe Browsing Bloom
 /Library/Application Support/Google/Chrome/Safe Browsing Bloom Prefix Set
 /Library/Application Support/Google/Chrome/Safe Browsing Csd Whitelist
