@@ -31,6 +31,7 @@ tmp/**
 # Additional exclusions
 .cache/**
 /Applications/**
+# most of the iTunes library is DRM-protected to Brian's Apple ID
 /Music/iTunes/**
 /Pictures/Photos Library.photoslibrary/Thumbnails/**
 /Pictures/iPhoto Library.photolibrary/**
@@ -75,7 +76,6 @@ tmp/**
 /Library/LanguageModeling/tr-dynamic.lm
 /Library/iTunes/iPad Software Updates/**
 /Library/iTunes/iPod Software Updates/**
-# most of the iTunes library is DRM-protected to Brian's Apple ID
 /Library/Application Support/Google/Chrome/Safe Browsing Bloom
 /Library/Application Support/Google/Chrome/Safe Browsing Bloom Prefix Set
 /Library/Application Support/Google/Chrome/Safe Browsing Csd Whitelist
