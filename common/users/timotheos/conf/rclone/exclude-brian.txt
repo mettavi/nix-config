@@ -71,11 +71,6 @@ tmp/**
 /Library/iTunes/iPad Software Updates/**
 /Library/iTunes/iPod Software Updates/**
 # most of the iTunes library is DRM-protected to Brian's Apple ID
-/Music/iTunes/**
-# Ignore this TM exclusion rule: Do not exclude the Database folder which has metadata for the photos, see https://bit.ly/43kCDGX
-# /Pictures/Photos Library.photoslibrary/Database/**
-/Pictures/Photos Library.photoslibrary/Thumbnails/**
-/Pictures/iPhoto Library.photolibrary/**
 /Library/Application Support/Google/Chrome/Safe Browsing Bloom
 /Library/Application Support/Google/Chrome/Safe Browsing Bloom Prefix Set
 /Library/Application Support/Google/Chrome/Safe Browsing Csd Whitelist
@@ -85,3 +80,8 @@ tmp/**
 /Library/Application Support/Google/Chrome/Safe Browsing IP Blacklist
 /Library/Application Support/Google/Chrome/Safe Browsing Module Whitelist
 /Library/Application Support/Google/Chrome/Safe Browsing Resource Blacklist
+/Music/iTunes/**
+# Ignore this TM exclusion rule: Do not exclude the Database folder which has metadata for the photos, see https://bit.ly/43kCDGX
+# /Pictures/Photos Library.photoslibrary/Database/**
+/Pictures/Photos Library.photoslibrary/Thumbnails/**
+/Pictures/iPhoto Library.photolibrary/**
