@@ -68,11 +68,10 @@ tmp/**
 /Library/LanguageModeling/pt-dynamic.lm
 /Library/LanguageModeling/sv-dynamic.lm
 /Library/LanguageModeling/tr-dynamic.lm
-# most of the iTunes library is DRM-protected to Brian's Apple ID
-/Music/iTunes/**
 /Library/iTunes/iPad Software Updates/**
 /Library/iTunes/iPod Software Updates/**
-/Music/iTunes/iTunes Music Library.xml
+# most of the iTunes library is DRM-protected to Brian's Apple ID
+/Music/iTunes/**
 # Ignore this TM exclusion rule: Do not exclude the Database folder which has metadata for the photos, see https://bit.ly/43kCDGX
 # /Pictures/Photos Library.photoslibrary/Database/**
 /Pictures/Photos Library.photoslibrary/Thumbnails/**
