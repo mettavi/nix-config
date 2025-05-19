@@ -36,6 +36,7 @@ tmp/**
 /Pictures/iPhoto Library.photolibrary/**
 
 # paths to exclude (from command: sudo mdfind "com_apple_backup_excludeItem = 'com.apple.backupd'")
+# NB: Must add "/**" to folder paths to conform to rclone exclusions syntax
 /Library/Application Support/Google/Chrome/Default/Favicons
 /Library/Application Support/Google/Chrome/Default/Favicons-journal
 /Library/Application Support/Google/Chrome/Default/History
