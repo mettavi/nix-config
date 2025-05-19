@@ -28,8 +28,12 @@ MobileSync/Backup/**
 tmp/**
 .fseventsd/**
 
-# Additional patterns
+# Additional exclusions
 .cache/**
+/Applications/**
+/Music/iTunes/**
+/Pictures/Photos Library.photoslibrary/Thumbnails/**
+/Pictures/iPhoto Library.photolibrary/**
 
 # paths to exclude (from command: sudo mdfind "com_apple_backup_excludeItem = 'com.apple.backupd'")
 /Library/Application Support/Google/Chrome/Default/Favicons
@@ -80,8 +84,5 @@ tmp/**
 /Library/Application Support/Google/Chrome/Safe Browsing IP Blacklist
 /Library/Application Support/Google/Chrome/Safe Browsing Module Whitelist
 /Library/Application Support/Google/Chrome/Safe Browsing Resource Blacklist
-/Music/iTunes/**
 # Ignore this TM exclusion rule: Do not exclude the Database folder which has metadata for the photos, see https://bit.ly/43kCDGX
 # /Pictures/Photos Library.photoslibrary/Database/**
-/Pictures/Photos Library.photoslibrary/Thumbnails/**
-/Pictures/iPhoto Library.photolibrary/**
