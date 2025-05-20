@@ -31,6 +31,7 @@ tmp/**
 # Additional exclusions
 .cache/**
 /Applications/**
+/Library/Mail/V3/IMAP-ibrianallen@imap.gmail.com/**
 # most of the iTunes library is DRM-protected to Brian's Apple ID
 /Music/iTunes/**
 /Pictures/Photos Library.photoslibrary/Thumbnails/**
