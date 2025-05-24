@@ -12,7 +12,7 @@
         content = ''
           [onedrive]
           type = onedrive
-          token = ${config.sops.placeholder."users/${user1}/rclone_1d_token"}
+          token = ${config.sops.placeholder."users/${user1}/rclone_keys/rclone_1d_token"}
           drive_id = 0F811515C935D85C
           drive_type = personal
           hard_delete = true
@@ -22,13 +22,13 @@
           [b2]
           type = b2
           account = 004471da6ad00020000000001
-          key = ${config.sops.placeholder."users/${user1}/rclone_b2_appkey"}
+          key = ${config.sops.placeholder."users/${user1}/rclone_keys/rclone_b2_appkey"}
 
           [aws_gda]
           type = s3
           provider = AWS
           access_key_id = AKIASR23L52NR2GRLUZ6
-          secret_access_key = ${config.sops.placeholder."users/${user1}/rclone_aws_gda_key"}
+          secret_access_key = ${config.sops.placeholder."users/${user1}/rclone_keys/rclone_aws_gda_key"}
           region = us-east-1
           acl = private
           storage_class = DEEP_ARCHIVE
@@ -37,7 +37,7 @@
           type = crypt
           remote = aws_gda:mettavi-archive-useast1
           # rclone obfuscated encryption password
-          password = ${config.sops.placeholder."users/${user1}/rclone_aws_gda_crypt"}
+          password = ${config.sops.placeholder."users/${user1}/rclone_keys/rclone_aws_gda_crypt"}
           directory_name_encryption = false
         '';
         path = "${config.xdg.configHome}/rclone/rclone.conf";

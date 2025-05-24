@@ -24,21 +24,22 @@
       # oracle cloud
       "users/${user1}/ssh_keys/ssh-nixos-ocloud.key" = {
       };
-      "users/${user1}/github_token" = {
-      };
       "users/${user1}/cachix_auth_token" = {
       };
+      "users/${user1}/github_token" = {
+      };
+      };
       # rclone auth token for onedrive service
-      "users/${user1}/rclone_1d_token" = {
+      "users/${user1}/rclone_keys/rclone_1d_token" = {
       };
       # rclone application key for backblaze b2 service
-      "users/${user1}/rclone_b2_appkey" = {
+      "users/${user1}/rclone_keys/rclone_b2_appkey" = {
       };
       # rclone secret access key for AWS S3 Glacier Deep Archive bucket
-      "users/${user1}/rclone_aws_gda_key" = {
+      "users/${user1}/rclone_keys/rclone_aws_gda_key" = {
       };
       # rclone obfuscated encryption password
-      "users/${user1}/rclone_aws_gda_crypt" = {
+      "users/${user1}/rclone_keys/rclone_aws_gda_crypt" = {
       };
       # restic key for encryption of backblaze b2 repo (mbp_timotheos)
       "users/${user1}/restic_b2_mack-timotheos" = {
