@@ -28,7 +28,6 @@
       };
       "users/${user1}/github_token" = {
       };
-      };
       # rclone auth token for onedrive service
       "users/${user1}/rclone_keys/rclone_1d_token" = {
       };
