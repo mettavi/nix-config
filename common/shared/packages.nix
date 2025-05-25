@@ -32,6 +32,7 @@ in
     asciiquarium-transparent # Aquarium/sea animation in ASCII art
     # atomicparsley
     bats
+    bfg-repo-cleaner # Removes large or troublesome blobs like git-filter-branch does, but faster
     # bento4
     cachix
     cargo
