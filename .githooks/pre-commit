@@ -4,3 +4,8 @@
 echo "Checking for changes to lazy-lock.json..."
 echo
 git add modules/stow/nvim/.config/nvim/lazy-lock.json
+
+# check staged files for secrets
+echo "Checking for secrets..."
+echo
+exec gitleaks protect --staged -v
