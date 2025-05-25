@@ -7,11 +7,11 @@
 
 stdenvNoCC.mkDerivation rec {
   pname = "stacher";
-  version = "7.0.16";
+  version = "7.0.18";
 
   src = fetchurl {
     url = "https://s7-releases.stacher-cloud.com/s7-releases/Stacher_Setup_${version}_x64.dmg";
-    hash = "sha256-EUKZeq8YH7w4nBfTq9RABhfZMlUUQMDVvmE8fb9Q5rE=";
+    hash = "sha256-ypequSQCsu1WupeLozIpDWeyYvvQ52BaPgifuiI6cAw=";
   };
 
   nativeBuildInputs = [
