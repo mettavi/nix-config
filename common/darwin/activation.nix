@@ -2,9 +2,9 @@
 {
   # check nix-darwin/modules/system/activation-scripts.nix for allowed values for activationScripts.<name>
   system.activationScripts = {
-    # "activationScripts.userScript" 
+    # "activationScripts.userScript"
     # nix-darwin runs this first to ensure /run/current-system exists before the main script is executed
-    postUserActivation.text = ''
+    postActivation.text = ''
       # avoid a login/reboot to apply new settings after system activation (macOS)
       /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
     '';
