@@ -7,7 +7,7 @@ calibre
 wait $! # optional really, but a bit safer
 
 # Setup and run sync
-# The --fast-list flag must be used with the --onedrive-delta flag (or delta = true in the config file)
+# The --fast-list flag must be combined with the --onedrive-delta flag (or delta = true in the config file)
 # as otherwise it can cause performance degradation
 rclone --log-level INFO --log-file="$HOME/Library/Logs/rclone.log" \
   --stats 2s --progress --retries 1 --max-backlog 999999 --fast-list \
