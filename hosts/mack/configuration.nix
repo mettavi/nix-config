@@ -8,7 +8,7 @@
   nixpkgs.hostPlatform = "x86_64-darwin";
 
   imports = [
-    ../../hosts/mack/users.nix
+    ./users.nix
     ../../common/shared
     ../../common/darwin
   ];
