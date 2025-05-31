@@ -31,6 +31,8 @@
     taps = builtins.attrNames config.nix-homebrew.taps;
 
     brews = [
+      # encountering build error with nixpkgs version
+      "bitwarden-cli"
       # "m4b-tool"
       "pinentry-touchid"
     ];
