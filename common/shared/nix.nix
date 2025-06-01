@@ -9,7 +9,6 @@
   nix = {
     # auto upgrade nix package
     package = pkgs.nix;
-    gc.automatic = true;
     # this ensures $NIX_PATH is set to an immutable location in the nix-store
     nixPath = [
       "nixpkgs=${inputs.nixpkgs}"
