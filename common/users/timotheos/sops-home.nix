@@ -41,8 +41,8 @@
       # restic key for encryption of backblaze b2 repo (mbp_timotheos)
       "users/${user1}/restic_b2_mack-timotheos" = {
       };
-      # bitwarden client secret for use with cli
-      "users/${user1}/bitwarden" = { };
+      # bitwarden .env file for use with cli
+      "users/${user1}/bitwarden.env" = { };
       "users/${user1}/cachix_auth_token" = {
       };
       "users/${user1}/github_token" = {
