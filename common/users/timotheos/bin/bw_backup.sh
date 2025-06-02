@@ -37,10 +37,10 @@ fi
 
 # Encrypted export using openssl
 echo "Export encrypted json using openssl..."
-bw --raw --session "$BW_SESSION" export --format json | openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -k "$OPENSSL_ENC_PASS" -out $EXPORT_PATH/"$EXPORT_OPENSSL_FILE"
+bw --raw --session "$BW_SESSION" export --format json | openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -k "$OPENSSL_ENC_PASS" -out "$EXPORT_PATH"/"$EXPORT_OPENSSL_FILE"
 
 # ORGANIZATION
-if [[ ! -z "$BW_ORG_ID" ]]; then
+if [[ -n "$BW_ORG_ID" ]]; then
   # Unencrypted export (not recommended)
   #bw --raw --session $BW_SESSION export --organizationid $BW_ORG_ID --format json --output $EXPORT_PATH/$EXPORT_ORG_PLAIN_FILE
 
@@ -51,7 +51,7 @@ if [[ ! -z "$BW_ORG_ID" ]]; then
 
   # Encrypted export using openssl
   echo "Export encrypted json using openssl..."
-  bw --raw --session "$BW_SESSION" export --organizationid "$BW_ORG_ID" --format json | openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -k "$OPENSSL_ENC_PASS" -out $EXPORT_PATH/"$EXPORT_ORG_OPENSSL_FILE"
+  bw --raw --session "$BW_SESSION" export --organizationid "$BW_ORG_ID" --format json | openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -k "$OPENSSL_ENC_PASS" -out "$EXPORT_PATH"/"$EXPORT_ORG_OPENSSL_FILE"
 else
   echo
   echo "No organizational vault defined."
