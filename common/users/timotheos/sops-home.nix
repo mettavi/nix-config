@@ -24,10 +24,6 @@
       # oracle cloud
       "users/${user1}/ssh_keys/ssh-nixos-ocloud.key" = {
       };
-      "users/${user1}/cachix_auth_token" = {
-      };
-      "users/${user1}/github_token" = {
-      };
       # rclone auth token for onedrive service
       "users/${user1}/rclone_keys/rclone_1d_token" = {
       };
@@ -42,6 +38,10 @@
       };
       # restic key for encryption of backblaze b2 repo (mbp_timotheos)
       "users/${user1}/restic_b2_mack-timotheos" = {
+      };
+      "users/${user1}/cachix_auth_token" = {
+      };
+      "users/${user1}/github_token" = {
       };
     };
     # secrets.test = {
