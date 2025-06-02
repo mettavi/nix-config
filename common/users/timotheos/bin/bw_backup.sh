@@ -3,10 +3,10 @@
 # Adapted from https://gitlab.com/tmllull/bitwarden-automated-backup
 # and https://github.com/binarypatrick/BitwardenBackup
 
-source "$HOME/.config/sops-nix/secrets/users/timotheos/bitwarden.env"
+source /Users/timotheos/.config/sops-nix/secrets/users/timotheos/bitwarden.env
 
 TIMESTAMP=$(date "+%Y%m%d")
-EXPORT_PATH="$DEVFILES/projects/bitwarden_backups/"
+EXPORT_PATH="$DEVFILES/projects/bitwarden_backups"
 EXPORT_PLAIN_FILE=bw_$TIMESTAMP.json
 EXPORT_ENCRYPTED_FILE=bw_enc_$TIMESTAMP.json
 EXPORT_OPENSSL_FILE=bw_$TIMESTAMP.enc
@@ -14,7 +14,7 @@ EXPORT_ORG_PLAIN_FILE=bw_org_$TIMESTAMP.json
 EXPORT_ORG_ENCRYPTED_FILE=bw_org_enc_$TIMESTAMP.json
 EXPORT_ORG_OPENSSL_FILE=bw_org_$TIMESTAMP.enc
 
-BW_NOTIFICATION_EMAIL=timotheos.allen@gmail.com # Email address used for notification if job fails
+NOTIFICATION_EMAIL="timotheos.allen@gmail.com" # Email address used for notification if job fails
 NOTIFICATION_EMAIL_SUBJECT="Bitwarden Backup Failed"
 NOTIFICATION_EMAIL_BODY="The automated Bitwarden backup failed when trying to unlock the vault"
 
@@ -22,7 +22,7 @@ bw login --apikey
 BW_SESSION=$(bw unlock --passwordenv BW_PASSWORD --raw)
 
 if [ "$BW_SESSION" == "" ]; then
-  echo "$NOTIFICATION_EMAIL_BODY" | mail -s "$NOTIFICATION_EMAIL_SUBJECT" "$BW_NOTIFICATION_EMAIL"
+  echo "$NOTIFICATION_EMAIL_BODY" | mail -s "$NOTIFICATION_EMAIL_SUBJECT" "$NOTIFICATION_EMAIL"
   bw logout
   exit 1
 fi
