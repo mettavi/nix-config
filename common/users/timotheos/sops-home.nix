@@ -15,6 +15,7 @@
     #age.sshKeyPaths = [ "/home/user/path-to-ssh-key" ];
 
     secrets = {
+      # SSH KEYS
       "users/${user1}/ssh_keys/timotheos_ed25519" = {
         path = "${config.home.homeDirectory}/.ssh/timotheos_ed25519";
       };
@@ -24,6 +25,7 @@
       # oracle cloud
       "users/${user1}/ssh_keys/ssh-nixos-ocloud.key" = {
       };
+      # RCLONE KEYS
       # rclone auth token for onedrive service
       "users/${user1}/rclone_keys/rclone_1d_token" = {
       };
