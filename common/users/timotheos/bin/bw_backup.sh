@@ -3,6 +3,7 @@
 # Adapted from https://gitlab.com/tmllull/bitwarden-automated-backup
 # and https://github.com/binarypatrick/BitwardenBackup
 
+# load env vars required by script and bw binary
 source /Users/timotheos/.config/sops-nix/secrets/users/timotheos/bitwarden.env
 
 TIMESTAMP=$(date "+%Y%m%d")
