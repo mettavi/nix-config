@@ -74,4 +74,3 @@ fi
 
 echo "Export completed!"
 bw logout
-unset "$BW_SESSION"
