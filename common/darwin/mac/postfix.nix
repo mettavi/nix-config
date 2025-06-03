@@ -694,7 +694,7 @@
       # Postfix as relay
       #
       #Gmail SMTP
-      relayhost = smtp.gmail.com:587
+      relayhost = [smtp.gmail.com]:587
       #Hotmail SMTP
       #relayhost=smtp.live.com:587
       #Yahoo SMTP
