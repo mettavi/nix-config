@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+  imports = [ ./mac ];
+
   system.defaults = {
     dock.autohide = true;
     # check current setting with "defaults read NSGlobalDomain '<insert setting here>'"
