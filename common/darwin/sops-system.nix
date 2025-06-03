@@ -32,6 +32,17 @@
         # We need to ensure the entire directory structure is that of the user...
         path = "${config.users.users.${user1}.home}/.config/sops/age/keys.txt";
       };
+      "users/${user1}/gmail_timotheos_pw" = {
+      };
+    };
+    templates = {
+      "sasl_passwd" = {
+        content = # bash
+          ''
+            smtp.gmail.com:587 timotheos.allen@gmail.com:${config.sops.placeholder."users/${user1}/gmail_timotheos_pw"} 
+          '';
+        path = "/etc/postfix/sasl_passwd";
+      };
     };
   };
   # The containing folders are created as root and if this is the first ~/.config/ entry,
