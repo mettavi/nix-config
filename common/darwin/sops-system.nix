@@ -32,14 +32,14 @@
         # We need to ensure the entire directory structure is that of the user...
         path = "${config.users.users.${user1}.home}/.config/sops/age/keys.txt";
       };
-      "users/${user1}/gmail_timotheos_pw" = {
+      "users/${user1}/google_timotheos_app_pw" = {
       };
     };
     templates = {
       "sasl_passwd" = {
         content = # bash
           ''
-            [smtp.gmail.com]:587 timotheos.allen@gmail.com:${config.sops.placeholder."users/${user1}/gmail_timotheos_pw"}
+            [smtp.gmail.com]:587 timotheos.allen@gmail.com:${config.sops.placeholder."users/${user1}/google_timotheos_app_pw"}
           '';
         path = "/etc/postfix/sasl_passwd";
       };
