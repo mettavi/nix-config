@@ -708,5 +708,10 @@
       smtp_use_tls = yes
       smtp_tls_security_level = encrypt
       tls_random_source = dev:/dev/urandom
+      smtp_generic_maps = hash:/etc/postfix/generic
+    '';
+  environment.etc."postfix/generic".text = # bash
+    ''
+      @mack.local mettavihari2021@gmail.com
     '';
 }
