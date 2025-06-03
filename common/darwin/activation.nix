@@ -18,7 +18,7 @@
           pathsToLink = "/Applications";
         };
       in
-      pkgs.lib.mkForce ''
+      pkgs.lib.mkForce /* bash */ ''
         # Set up applications.
         echo "setting up /Applications..." >&2
         rm -rf /Applications/Nix\ Apps
@@ -31,7 +31,7 @@
         done
       '';
 
-    extraActivation.text = ''
+    extraActivation.text = /* bash */ ''
       # Enable remote login for the host (macos ssh server)
       # WORKAROUND: `systemsetup -f -setremotelogin on` requires `Full Disk Access`
       # permission for the Application calling it

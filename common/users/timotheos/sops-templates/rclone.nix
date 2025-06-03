@@ -9,7 +9,7 @@
       # rclone config file with secrets
       # only "backend flags" can be added to the rclone.conf
       "rclone.conf" = {
-        content = ''
+        content = /* bash */ ''
           [onedrive]
           type = onedrive
           token = ${config.sops.placeholder."users/${user1}/rclone_keys/rclone_1d_token"}

@@ -14,7 +14,7 @@ in
 
   system.activationScripts = {
 
-    extraActivation.text = ''
+    extraActivation.text = /* bash */ ''
       # install the Karabiner Driver Kit .pkg from the nix store
       if [[ ! -d /Applications/.Karabiner-VirtualHIDDevice-Manager.app ]]; then
         sudo installer -pkg "${pkgs.macpkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
