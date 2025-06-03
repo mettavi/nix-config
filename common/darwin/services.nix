@@ -25,7 +25,7 @@
 
   # NB: The daemon is not used in version 3.1.0 of karabiner-driverkit
   launchd.daemons = {
-    karabiner-daemon = {
+    karabiner = {
       serviceConfig = {
         Label = "com.github.pqrs-org-Karabiner-DriverKit-VirtualHIDDevice";
         # ProcessType = "Interactive";
