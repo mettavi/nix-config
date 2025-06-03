@@ -23,10 +23,6 @@
       (lib.mkBefore (builtins.readFile ../../../modules/zsh/.config/zsh/.zshrc_top))
       (builtins.readFile ../../../modules/zsh/.config/zsh/.zshrc)
     ];
-    sessionVariables = {
-      # alias for thefuck command
-      TF_ALIAS = "oh";
-    };
     syntaxHighlighting.enable = true;
     zsh-abbr.enable = true;
   };
