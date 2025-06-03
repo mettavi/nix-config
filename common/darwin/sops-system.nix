@@ -13,7 +13,7 @@
       # NB: ssh host keys can be generated with the "ssh-keygen -A" command
       sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
       keyFile = "/var/lib/sops-nix/key.txt";
-      # This will generate a key from the host ssh key if one does not exist
+      # This will generate an age format key from the host ssh key if one does not exist
       generateKey = true;
     };
     gnupg.sshKeyPaths = [ ];
