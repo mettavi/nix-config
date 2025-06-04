@@ -42,7 +42,7 @@ in
     # keka
     keycastr # keystroke visualiser
     # Build time stubs for FUSE on macOS NB: this requires the full macFUSE package (see brew.nix)
-    macfuse-stubs 
+    macfuse-stubs
     pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
     pinentry_mac
     # getting error "cannot download WhatsApp.app from any mirror"
