@@ -14,19 +14,20 @@ in
 
   system.activationScripts = {
 
-    extraActivation.text = /* bash */ ''
-      # install the Karabiner Driver Kit .pkg from the nix store
-      if [[ ! -d /Applications/.Karabiner-VirtualHIDDevice-Manager.app ]]; then
-        sudo installer -pkg "${pkgs.macpkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
-        "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate
-      fi
-      # Enable remote login for the host (macos ssh server)
-      # WORKAROUND: `systemsetup -f -setremotelogin on` requires `Full Disk Access`
-      # permission for the Application calling it
-      if [[ "$(systemsetup -getremotelogin | sed 's/Remote Login: //')" == "Off" ]]; then
-        launchctl load -w /System/Library/LaunchDaemons/ssh.plist
-      fi
-    '';
+    extraActivation.text = # bash
+      ''
+        # install the Karabiner Driver Kit .pkg from the nix store
+        if [[ ! -d /Applications/.Karabiner-VirtualHIDDevice-Manager.app ]]; then
+          sudo installer -pkg "${pkgs.macpkgs.karabiner-driverkit}/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
+          "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate
+        fi
+        # Enable remote login for the host (macos ssh server)
+        # WORKAROUND: `systemsetup -f -setremotelogin on` requires `Full Disk Access`
+        # permission for the Application calling it
+        if [[ "$(systemsetup -getremotelogin | sed 's/Remote Login: //')" == "Off" ]]; then
+          launchctl load -w /System/Library/LaunchDaemons/ssh.plist
+        fi
+      '';
   };
 
   # install standard packages
