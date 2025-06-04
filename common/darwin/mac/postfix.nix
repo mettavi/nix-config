@@ -1,4 +1,9 @@
 {
+  # References: 
+  # 1. https://gist.github.com/loziju/66d3f024e102704ff5222e54a4bfd50e
+  # 2. https://apple.stackexchange.com/questions/444382/send-email-from-command-line-macos-monterey-12-3
+  # 3. https://binarypatrick.dev/posts/configuring-postfix-with-gmail/
+
   environment.etc."postfix/main.cf".text = # bash
     ''
       # Global Postfix configuration file. This file lists only a subset
