@@ -8,11 +8,11 @@ source /Users/timotheos/.config/sops-nix/secrets/users/timotheos/bitwarden.env
 
 TIMESTAMP=$(date "+%Y%m%d")
 EXPORT_PATH="$DEVFILES/projects/bitwarden_backups"
-EXPORT_PLAIN_FILE=bw_$TIMESTAMP.json
-EXPORT_ENCRYPTED_FILE=bw_enc_$TIMESTAMP.json
+# EXPORT_PLAIN_FILE=bw_$TIMESTAMP.json
+# EXPORT_ENCRYPTED_FILE=bw_enc_$TIMESTAMP.json
 EXPORT_OPENSSL_FILE=bw_$TIMESTAMP.enc
-EXPORT_ORG_PLAIN_FILE=bw_org_$TIMESTAMP.json
-EXPORT_ORG_ENCRYPTED_FILE=bw_org_enc_$TIMESTAMP.json
+# EXPORT_ORG_PLAIN_FILE=bw_org_$TIMESTAMP.json
+# EXPORT_ORG_ENCRYPTED_FILE=bw_org_enc_$TIMESTAMP.json
 EXPORT_ORG_OPENSSL_FILE=bw_org_$TIMESTAMP.enc
 
 NOTIFICATION_EMAIL="timotheos.allen@gmail.com" # Email address used for notification if job fails
