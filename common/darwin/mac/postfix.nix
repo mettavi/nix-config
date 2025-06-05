@@ -696,7 +696,7 @@
 
       inet_interfaces = loopback-only
 
-      # Postfix as relay
+      # POSTFIX AS RELAY
       #
       #Gmail SMTP
       relayhost = [smtp.gmail.com]:587
