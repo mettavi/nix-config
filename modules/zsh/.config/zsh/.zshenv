@@ -37,3 +37,6 @@ export EDITOR="nvim"
 
 # open man pages from terminal with neovim
 export MANPAGER="nvim +Man!"
+
+# notify about new mail from postfix MTA (eg. for mail bounces from bitwarden backup script)
+export MAIL="/var/mail/timotheos"
