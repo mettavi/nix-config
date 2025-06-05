@@ -19,7 +19,7 @@ NOTIFICATION_EMAIL="timotheos.allen@gmail.com" # Email address used for notifica
 NOTIFICATION_EMAIL_SUBJECT="Bitwarden Backup Failed"
 NOTIFICATION_EMAIL_BODY="The automated Bitwarden backup failed when trying to unlock the vault"
 
-if [ ! -d "DEVFILES/projects/bitwarden_backups" ]; then
+if [ ! -d "$DEVFILES/projects/bitwarden_backups" ]; then
   echo "Folder 'bitwarden_backups' does not exist. Creating it..."
   mkdir -p "$DEVFILES/projects/bitwarden_backups"
 else
