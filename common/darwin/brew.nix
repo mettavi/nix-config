@@ -74,6 +74,11 @@
       }
       # key-codes
       "kid3"
+      # Create, manage and debug system and user services
+      {
+        name = "launchcontrol";
+        greedy = true;
+      }
       {
         name = "lingon-x";
         greedy = true;
