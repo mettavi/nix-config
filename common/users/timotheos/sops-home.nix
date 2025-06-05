@@ -32,8 +32,11 @@
       # rclone application key for backblaze b2 service
       "users/${user1}/rclone_keys/rclone_b2_appkey" = {
       };
-      # rclone secret access key for AWS S3 Glacier Deep Archive bucket
-      "users/${user1}/rclone_keys/rclone_aws_gda_key" = {
+      # rclone access key id for AWS S3 Glacier Deep Archive bucket
+      "users/${user1}/rclone_keys/rclone_aws_gda_keyid" = {
+      };
+      # rclone access key secret for AWS S3 Glacier Deep Archive bucket
+      "users/${user1}/rclone_keys/rclone_aws_gda_keysecret" = {
       };
       # rclone obfuscated encryption password
       "users/${user1}/rclone_keys/rclone_aws_gda_crypt" = {
