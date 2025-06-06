@@ -1,4 +1,5 @@
 {
+  config,
   user1,
   pkgs,
   ...
@@ -30,6 +31,16 @@
     git = {
       enable = true;
       delta.enable = true;
+      # enable automatic maintenance of git repos using launchd/systemd
+      maintenance = {
+        enable = true;
+        repositories = [ "${config.home.homeDirectory}/.dotfiles" ];
+        timers = {
+          daily = "Tue..Sun *-*-* 0:53:00";
+          hourly = "*-*-* 1..23:53:00";
+          weekly = "Mon 0:53:00";
+        };
+      };
     };
     java = {
       enable = true;
@@ -71,7 +82,7 @@
       enable = true;
       enableZshIntegration = true;
       # this feature is experimental and did not work with powerlevel 10k prompt
-      # Error was: "[WARN] PS1 doesn't contain user command mark, 
+      # Error was: "[WARN] PS1 doesn't contain user command mark,
       # please ensure that PS1 is not changed after The Fuck alias initialization"
       # enableInstantMode = true;
       alias = "oh";
