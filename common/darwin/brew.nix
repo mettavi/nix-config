@@ -122,6 +122,8 @@
     ];
     # setting this option will add the mas package to homebrew.brews
     masApps = {
+      # Desktop password and login vault
+      "Bitwarden" = 1352778147;
       # "Contacts Sync for Google Gmail" = 451691288;
       # "Foldor" = 1559426624;
       # "GarageBand" = 682658836;
