@@ -10,7 +10,7 @@ fpath+=$ZDOTDIR/.zfunc
 autoload -Uz compinit && compinit
 _comp_options+=(globdots)		# Include hidden files.
 
-# Completion styling
+# COMPLETION STYLING
 # Show colours in preview when using tab-completion
 # First check whether OS is Linux or macOS (GNU vs FreeBSD ls commands)
 # and generate the $LS_COLORS variable
