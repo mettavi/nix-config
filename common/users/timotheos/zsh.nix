@@ -1,5 +1,6 @@
 { lib, ... }:
 {
+  # NB: Completions are enabled by default
   programs.zsh = {
     enable = true;
     antidote = {
