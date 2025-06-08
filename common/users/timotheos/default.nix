@@ -14,6 +14,9 @@
       automatic = true;
       options = "--delete-older-than 30d";
     };
+  home.sessionVariables = {
+    # prevent nh from checking for flakes "experimental features" (which it can't read from determinate nix.custom.conf)
+    NH_NO_CHECKS = "1";
   };
 
   # install the HTML manual and "home-manager-help" command
