@@ -22,7 +22,7 @@
   };
 
   home.sessionVariables = {
-    # prevent nh from checking for flakes "experimental features" (which it can't read from determinate nix.custom.conf)
+    # prevent nh from checking for flakes "experimental features" (which it can't read from determinate nix.conf)
     NH_NO_CHECKS = "1";
   };
 
