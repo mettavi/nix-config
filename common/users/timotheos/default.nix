@@ -1,4 +1,9 @@
-{ user1, ... }:
+{
+  config,
+  user1,
+  inputs,
+  ...
+}:
 {
   home = {
     username = "${user1}";
@@ -14,6 +19,13 @@
       automatic = true;
       options = "--delete-older-than 30d";
     };
+    nixPath = [
+      "nixpkgs=${inputs.nixpkgs}"
+      "nixpkgs-overlays=${config.home.homeDirectory}/.dotfiles/common/overlays"
+      "home-manager=${inputs.home-manager}"
+    ];
+  };
+
   home.sessionVariables = {
     # prevent nh from checking for flakes "experimental features" (which it can't read from determinate nix.custom.conf)
     NH_NO_CHECKS = "1";
