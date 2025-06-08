@@ -1,4 +1,4 @@
-#### keybind config ####
+#### KEYBIND CONFIG ####
 
 # use emacs mode despite setting EDITOR to vim
 bindkey -e
@@ -18,7 +18,7 @@ autoload -z edit-command-line
 zle -N edit-command-line
 bindkey "^x^e" edit-command-line
 
-#### history config #### 
+#### HISTORY CONFIG #### 
 
 # export HISTFILE=$ZDOTDIR/.zsh_history
 
