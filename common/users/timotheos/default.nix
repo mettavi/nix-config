@@ -14,11 +14,6 @@
   };
 
   nix = {
-    # by default this will run at midnight on Mondays (as per systemd.time(7))
-    gc = {
-      automatic = true;
-      options = "--delete-older-than 30d";
-    };
     nixPath = [
       "nixpkgs=${inputs.nixpkgs}"
       "nixpkgs-overlays=${config.home.homeDirectory}/.dotfiles/common/overlays"
