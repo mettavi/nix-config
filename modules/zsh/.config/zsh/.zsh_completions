@@ -53,3 +53,6 @@ alt-up:half-page-up,alt-down:half-page-down
 # disable official git completion in favour of zsh git completion
 # see https://bit.ly/3QXliO8 for details
 \rm -f $HOMEBREW_PREFIX/share/zsh/site-functions/_git
+
+# enable auto-completion for determinate nixd
+eval "$(determinate-nixd completion zsh)"
