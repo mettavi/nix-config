@@ -78,16 +78,12 @@
       };
     };
 
-    thefuck = {
+    # Terminal command correction, alternative to thefuck, written in Rust
+    pay-respects = {
       enable = true;
       enableZshIntegration = true;
-      # this feature is experimental and did not work with powerlevel 10k prompt
-      # Error was: "[WARN] PS1 doesn't contain user command mark,
-      # please ensure that PS1 is not changed after The Fuck alias initialization"
-      # enableInstantMode = true;
-      alias = "oh";
     };
-
+    
     tmux = {
       baseIndex = 1;
       enable = true;
