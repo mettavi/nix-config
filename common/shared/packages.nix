@@ -40,7 +40,6 @@ in
     # cmake
     cmatrix
     cowsay
-    exercism
     fastfetch
     ffmpeg
     gitleaks
