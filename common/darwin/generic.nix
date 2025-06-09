@@ -1,5 +1,6 @@
 {
   nix = {
+    # nix is now managed by the determinate nixd
     enable = false;
   };
   nixpkgs = {
