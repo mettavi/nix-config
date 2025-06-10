@@ -11,7 +11,6 @@ let
   # nixpkgs-24_05 = inputs.nixpkgs-24_05.legacyPackages.${system};
 
   kanata-tray = inputs.kanata-tray.packages.${system}.kanata-tray;
-  nh_beta = inputs.nh.packages.${system}.nh;
 
   # place custom packages in one directory for ease of reference
   # each individual package is further defined in ./pkgs/default.nx
@@ -48,6 +47,7 @@ in
     kanata # Cross-platform software keyboard remapper
     localsend # Open source cross-platform alternative to AirDrop
     mkalias
+    nh # Yet another nix cli helper
     nix-fast-build # speed-up your evaluation and building process
     nixfmt-rfc-style
     nixd # nix language server
@@ -78,7 +78,6 @@ in
     # "PINNED" APPS
     # Tray Icon for Kanata
     kanata-tray
-    nh_beta
 
     # CUSTOM APPS
 
