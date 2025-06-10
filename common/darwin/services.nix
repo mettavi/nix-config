@@ -53,7 +53,10 @@
         ProcessType = "Interactive";
         Program = "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
         RunAtLoad = true;
-        # KeepAlive = true;
+        KeepAlive = {
+          SuccessfulExit = false;
+          Crashed = true;
+        };
         Nice = -30;
       };
     };
