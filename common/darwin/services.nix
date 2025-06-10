@@ -37,7 +37,7 @@
         KeepAlive = {
           # this keeps the kanata daemon alive when the karabiner daemon is alive
           OtherJobEnabled = {
-            "com.github.pqrs-org-Karabiner-DriverKit-VirtualHIDDevice" = true;
+            "org.pqrs.service.daemon.Karabiner-VirtualHIDDevice-Daemon" = true;
           };
         };
         StandardOutPath = "/var/log/kanata.log";
@@ -46,8 +46,8 @@
     };
     karabiner = {
       serviceConfig = {
-        Label = "com.github.pqrs-org-Karabiner-DriverKit-VirtualHIDDevice";
         # ProcessType = "Interactive";
+        Label = "org.pqrs.service.daemon.Karabiner-VirtualHIDDevice-Daemon";
         Program = "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
         RunAtLoad = true;
         # KeepAlive = true;
