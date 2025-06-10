@@ -41,6 +41,7 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+
     # OTHER APPS (alphabetical)
     kanata-tray = {
       url = "github:rszyma/kanata-tray";
