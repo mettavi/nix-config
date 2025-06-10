@@ -33,6 +33,7 @@
           "-c"
           "${config.users.users.timotheos.home}/.dotfiles/modules/kanata/kanata.lsp"
         ];
+        ProcessType = "Interactive";
         RunAtLoad = false;
         KeepAlive = {
           # this keeps the kanata daemon alive when the karabiner daemon is alive
