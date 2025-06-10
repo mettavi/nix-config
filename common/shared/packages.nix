@@ -10,6 +10,7 @@ let
   # nixpkgs-24_11 = inputs.nixpkgs-24_11.legacyPackages.${system};
   # nixpkgs-24_05 = inputs.nixpkgs-24_05.legacyPackages.${system};
 
+  kanata-tray = inputs.kanata-tray.packages.${system}.kanata-tray;
   nh_beta = inputs.nh.packages.${system}.nh;
 
   # place custom packages in one directory for ease of reference
@@ -75,6 +76,8 @@ in
     zsh-powerlevel10k
 
     # "PINNED" APPS
+    # Tray Icon for Kanata
+    kanata-tray
     nh_beta
 
     # CUSTOM APPS
