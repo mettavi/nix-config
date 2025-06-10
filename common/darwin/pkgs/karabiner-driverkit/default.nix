@@ -26,6 +26,7 @@ let
 in
 stdenv.mkDerivation {
   inherit pname meta;
+  # this is a required field (along with "pname") if not using the "name" field
   version = versions.darwin;
 
   src = fetchurl {
