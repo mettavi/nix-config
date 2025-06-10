@@ -14,6 +14,7 @@
     };
     sharedModules = [
       inputs.sops-nix.homeManagerModules.sops
+      inputs.mac-app-util.homeManagerModules.default
     ];
   };
 }
