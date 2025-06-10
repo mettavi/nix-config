@@ -46,6 +46,7 @@
       };
     };
     karabiner = {
+      # logs are automatically saved to /var/log/karabiner/
       serviceConfig = {
         Label = "org.pqrs.service.daemon.Karabiner-VirtualHIDDevice-Daemon";
         ProcessType = "Interactive";
