@@ -46,8 +46,8 @@
     };
     karabiner = {
       serviceConfig = {
-        # ProcessType = "Interactive";
         Label = "org.pqrs.service.daemon.Karabiner-VirtualHIDDevice-Daemon";
+        ProcessType = "Interactive";
         Program = "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
         RunAtLoad = true;
         # KeepAlive = true;
