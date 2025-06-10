@@ -14,6 +14,7 @@
   # };
 
   inputs = {
+    # MAIN INPUTS
     # Official NixOS package source, using nixos's unstable branch by default
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
@@ -22,11 +23,14 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-homebrew = {
       url = "github:zhaofengli/nix-homebrew";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     # if mutableTaps is disabled in homebrew.nix, these taps must be declared here AND in homebrew.nix
     # NB: do not use the brew "shorthand" which excludes the "homebrew-" part of the GH url
     homebrew-core = {
@@ -37,17 +41,17 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
-    pinentry-touchid = {
-      url = "github:jorgelbg/homebrew-tap";
-      flake = false;
+    # OTHER APPS (alphabetical)
+    kanata-tray = {
+      url = "github:rszyma/kanata-tray";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     kegworks = {
       url = "github:Kegworks-App/Kegworks";
       flake = false;
     };
-
-    home-manager = {
-      url = "github:nix-community/home-manager";
+    mac-app-util = {
+      url = "github:hraban/mac-app-util";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-vscode-extensions = {
@@ -62,11 +66,14 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    pinentry-touchid = {
+      url = "github:jorgelbg/homebrew-tap";
+      flake = false;
+    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     # install a pinned version of a nix package with:
     # specific_package.url = "github:nixos/nixpkgs/specific_commit_hash_from_nixhub.io";
     # inputs.specific_package.legacyPackages.${system}.package_name_from_nixhub.io
@@ -80,6 +87,7 @@
       nix-vscode-extensions,
       nix-index-database,
       sops-nix,
+      mac-app-util,
       ...
     }:
     let
@@ -111,6 +119,7 @@
           ./hosts/mack/home.nix
           sops-nix.darwinModules.sops
           nix-index-database.darwinModules.nix-index
+          mac-app-util.darwinModules.default
         ];
       };
 
