@@ -1,7 +1,5 @@
 {
-  config,
   user1,
-  inputs,
   ...
 }:
 {
@@ -11,14 +9,6 @@
     stateVersion = "23.11";
     # make programs use XDG directories whenever supported
     preferXdgDirectories = true;
-  };
-
-  nix = {
-    nixPath = [
-      "nixpkgs=${inputs.nixpkgs}"
-      "nixpkgs-overlays=${config.home.homeDirectory}/.dotfiles/common/overlays"
-      "home-manager=${inputs.home-manager}"
-    ];
   };
 
   home.sessionVariables = {
