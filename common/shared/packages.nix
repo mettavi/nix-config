@@ -1,7 +1,5 @@
 {
-  inputs,
   pkgs,
-  system,
   ...
 }:
 let
@@ -9,8 +7,6 @@ let
   # use "nixpkgs_name.package_name" to install a non-default package
   # nixpkgs-24_11 = inputs.nixpkgs-24_11.legacyPackages.${system};
   # nixpkgs-24_05 = inputs.nixpkgs-24_05.legacyPackages.${system};
-
-  kanata-tray = inputs.kanata-tray.packages.${system}.kanata-tray;
 
   # place custom packages in one directory for ease of reference
   # each individual package is further defined in ./pkgs/default.nx
@@ -76,10 +72,6 @@ in
     zsh-powerlevel10k
 
     # "PINNED" APPS
-    # Tray Icon for Kanata
-    kanata-tray
-
-    # CUSTOM APPS
 
     # Install global npm packages not available in nixpkgs repo
     # using node2nix and overlay (see above)

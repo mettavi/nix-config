@@ -43,10 +43,6 @@
     };
 
     # OTHER APPS (alphabetical)
-    kanata-tray = {
-      url = "github:rszyma/kanata-tray";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     kegworks = {
       url = "github:Kegworks-App/Kegworks";
       flake = false;
