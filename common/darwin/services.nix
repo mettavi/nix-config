@@ -17,13 +17,16 @@
           "${config.users.users.timotheos.home}/.dotfiles/modules/kanata/kanata.lsp"
         ];
         ProcessType = "Interactive";
-        RunAtLoad = false;
-        KeepAlive = {
-          # this keeps the kanata daemon alive when the karabiner daemon is alive
-          OtherJobEnabled = {
-            "org.pqrs.service.daemon.Karabiner-VirtualHIDDevice-Daemon" = true;
-          };
-        };
+        RunAtLoad = true;
+        # kanata loses connection to virtual keyboard after computer goes to sleeep, see https://github.com/jtroo/kanata/issues/1357
+        # change KeepAlive to true as potential workaround
+        KeepAlive = true;
+        # KeepAlive = {
+        #   # this keeps the kanata daemon alive when the karabiner daemon is alive
+        #   OtherJobEnabled = {
+        #     "org.pqrs.service.daemon.Karabiner-VirtualHIDDevice-Daemon" = true;
+        #   };
+        # };
         Nice = -30;
         StandardOutPath = "/var/log/kanata.log";
         StandardErrorPath = "/var/log/kanata.log";
