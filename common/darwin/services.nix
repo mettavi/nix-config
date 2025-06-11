@@ -6,23 +6,6 @@
   #   };
   # };
 
-  # launchd.user.agents = {
-  # mongodb = {
-  #   serviceConfig = {
-  #     # only start the service on demand
-  #     KeepAlive = false;
-  #     RunAtLoad = false;
-  #   };
-  # };
-  #   postgresql = {
-  #     serviceConfig = {
-  #       # only start the service on demand
-  #       KeepAlive = false;
-  #       RunAtLoad = false;
-  #     };
-  # };
-  # };
-
   # NB: The daemon is not used in version 3.1.0 of karabiner-driverkit
   launchd.daemons = {
     kanata = {
