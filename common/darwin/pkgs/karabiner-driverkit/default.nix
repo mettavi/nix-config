@@ -1,5 +1,6 @@
 {
   lib,
+  pkgs,
   nix-update-script,
   stdenv,
   fetchurl,
@@ -45,7 +46,14 @@ stdenv.mkDerivation {
     runHook preInstall
     mkdir $out
     cp $src $out/Karabiner-DriverKit-VirtualHIDDevice-${versions.darwin}.pkg
-    runHook postInstall
   '';
+
+  # check driver version and activation status: "systemextensionsctl list | rg Karabiner"
+  # check package version: "defaults read /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/Info.plist CFBundleVersion"
+  postInstall = ''
+    /usr/bin/installer -pkg "$out/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
+    "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate 
+  '';
+
   passthru.updateScript = nix-update-script { };
 }
