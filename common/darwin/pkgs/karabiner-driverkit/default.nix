@@ -50,6 +50,7 @@ stdenv.mkDerivation {
 
   # check driver version and activation status: "systemextensionsctl list | rg Karabiner"
   # check package version: "defaults read /Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/Info.plist CFBundleVersion"
+  # logs are available in /Library/Application Support/org.pqrs/tmp/rootonly/ and /var/log/karabiner/
   postInstall = ''
     /usr/bin/installer -pkg "$out/Karabiner-DriverKit-VirtualHIDDevice-5.0.0.pkg" -target /
     "/Applications/.Karabiner-VirtualHIDDevice-Manager.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Manager" activate 
