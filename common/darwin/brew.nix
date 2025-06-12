@@ -115,8 +115,11 @@
       }
       # "syncmate"
       # "tor-browser"
-      # "typora"
-      "vmware-fusion" # Create, manage, and run virtual machines
+      # Create, manage, and run virtual machines"typora"
+      {
+        name = "vmware-fusion";
+        greedy = true;
+      }
       "xcodes"
       # "zotero"
     ];
