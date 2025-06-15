@@ -16,7 +16,8 @@
   inputs = {
     # MAIN INPUTS
     # Official NixOS package source, using nixos's unstable branch by default
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable"; # for nix-darwin
+    nixos-pkgs.url = "github:NixOS/nixpkgs/nixos-unstable"; # for nixOS
     nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
     # nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
     nix-darwin = {
@@ -76,6 +77,7 @@
       self,
       nixpkgs,
       nix-darwin,
+      nixos-pkgs,
       # home-manager,
       nix-vscode-extensions,
       nix-index-database,
@@ -91,6 +93,7 @@
         al = "aarch64-linux";
       };
       user1 = "timotheos";
+      user2= "timotheos";
     in
     {
       # Build darwin flake using:
@@ -118,5 +121,16 @@
 
       # Expose the package set, including overlays, for convenience.
       darwinPackages = self.darwinConfigurations."mack".pkgs;
-    };
-}
+ 
+     # Build nixos flake using:
+     # nixos-rebuild build --flake .#oona
+     nixosConfigurations."oona" = nixpkgs.lib.nixosSystem {
+       system = "${systems.xl}";
+       specialArgs = { inherit inputs nixos-pkgs system user2;
+       };
+       modules = [
+         .hosts/oona/configuration.nix
+         ./hosts/oona/home.nix
+       ];
+     };
+   }
