@@ -1,4 +1,4 @@
-{ inputs, user1, system, ... }:
+{ inputs, system, user1, ... }:
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
