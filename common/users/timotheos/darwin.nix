@@ -15,6 +15,11 @@
     ];
   };
 
+  home.sessionVariables = {
+    # prevent nh from checking for flakes "experimental features" (which it can't read from determinate nix.conf)
+    NH_NO_CHECKS = "1";
+  };
+
   # HOME_MANAGER OPTIONS
   home-manager.users.${user1} = {
     launchd.agents = {

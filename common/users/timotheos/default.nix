@@ -11,10 +11,6 @@
     preferXdgDirectories = true;
   };
 
-  home.sessionVariables = {
-    # prevent nh from checking for flakes "experimental features" (which it can't read from determinate nix.conf)
-    NH_NO_CHECKS = "1";
-  };
 
   # install the HTML manual and "home-manager-help" command
   manual.html.enable = true;
