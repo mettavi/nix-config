@@ -12,7 +12,6 @@ export XDG_BIN_HOME="$HOME/.local/bin" # Not in the official XDG specification
 #### Custom script variables  ####
 
 export DEVFILES="$HOME/Developer"
-export DOTFILES="$HOME/.nix-config"
 export NIXFILES="$HOME/.nix-config"
 
 ##### Installed binaries - HOME DIRECTORIES #####
@@ -24,9 +23,9 @@ export PYENV_ROOT="$HOME/.pyenv"
 
 export BAT_THEME=tokyonight_night
 
-export ABBR_USER_ABBREVIATIONS_FILE="$DOTFILES/modules/zsh/.config/zsh/user-abbreviations"
+export ABBR_USER_ABBREVIATIONS_FILE="$NIXFILES/modules/zsh/.config/zsh/user-abbreviations"
 
-export NH_FLAKE="$DOTFILES"
+export NH_FLAKE="$NIXFILES"
 
 ########## SHELL CONFIG ###########
 
