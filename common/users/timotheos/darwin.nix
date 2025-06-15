@@ -1,4 +1,9 @@
-{ config, user1, ... }:
+{
+  config,
+  repo_home,
+  user1,
+  ...
+}:
 {
   # SYSTEM PREFERENCES FOR USER1 ON HOST "MACK" (DARWIN)
 
@@ -11,7 +16,7 @@
       "/Applications/Google Chrome.app"
       "/Applications/iTerm.app"
       "/Applications/Microsoft Word.app"
-      "/Users/${user1}/.dotfiles/common/users/${user1}/bin/CaliSync.app"
+      "/Users/${user1}/${repo_home}/common/users/${user1}/bin/CaliSync.app"
     ];
   };
 
@@ -32,7 +37,7 @@
             "/usr/bin/env"
             "zsh"
             "-c"
-            "${config.users.users.${user1}.home}/.dotfiles/common/users/${user1}/bin/bw_backup.sh"
+            "${config.users.users.${user1}.home}/${repo_home}/common/users/${user1}/bin/bw_backup.sh"
           ];
           # Run at midnight each Monday (will catch up if system is sleeping)
           StartCalendarInterval = [

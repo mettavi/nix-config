@@ -93,6 +93,8 @@
         al = "aarch64-linux";
       };
       user1 = "timotheos";
+      repo_home = ".nix-config";
+      
     in
     {
       # Build darwin flake using:
@@ -104,6 +106,7 @@
           inherit
             inputs
             nixpkgs
+            repo_home
             system
             user1
             ;
@@ -129,6 +132,7 @@
           inherit
             inputs
             nixos-pkgs
+            repo_home
             system
             user1
             ;

@@ -32,5 +32,5 @@ in
     };
   };
   # link without copying to nix store (manage externally) - must use absolute paths
-  # xdg.configFile.nvim.source = mkOutOfStoreSymlink "${config.users.users.ta.home}.${nix_home}/.config/nvim";
+  # xdg.configFile.nvim.source = mkOutOfStoreSymlink "${config.users.users.ta.home}.${repo_home}/.config/nvim";
 }

@@ -1,4 +1,4 @@
-{ inputs, user1, system, ... }:
+{ inputs, user1, repo_home, system, ... }:
 {
   imports = [
     inputs.home-manager.darwinModules.home-manager
@@ -10,7 +10,7 @@
     # Optionally, use home-manager.extraSpecialArgs to pass
     # arguments to home-manager modules
     extraSpecialArgs = {
-      inherit inputs system user1;
+      inherit inputs repo_home system user1;
     };
     sharedModules = [
       inputs.sops-nix.homeManagerModules.sops

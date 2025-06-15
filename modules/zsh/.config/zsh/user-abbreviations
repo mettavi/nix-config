@@ -1,8 +1,8 @@
 abbr -g "lyb"="learnyoubash"
 abbr "gst"="git status"
 abbr "hw"="echo hello world"
-abbr -g "sw"="darwin-rebuild switch --flake ~/.dotfiles"
-abbr "flup"="nix flake update --flake ~/.dotfiles"
+abbr -g "sw"="darwin-rebuild switch --flake ~/.nix-config"
+abbr "flup"="nix flake update --flake ~/.nix-config"
 abbr -g "rtsh"="/private/var/root/.Trash" # location of bin for root user
 # run m4b-tool using docker
 abbr m4b-tool='docker run -it --rm -u $(id -u):$(id -g) -v "$(pwd)":/mnt sandreas/m4b-tool:latest'
