@@ -93,7 +93,7 @@
         al = "aarch64-linux";
       };
       user1 = "timotheos";
-      user2= "timotheos";
+      user2 = "timotheos";
     in
     {
       # Build darwin flake using:
@@ -121,16 +121,23 @@
 
       # Expose the package set, including overlays, for convenience.
       darwinPackages = self.darwinConfigurations."mack".pkgs;
- 
-     # Build nixos flake using:
-     # nixos-rebuild build --flake .#oona
-     nixosConfigurations."oona" = nixpkgs.lib.nixosSystem {
-       system = "${systems.xl}";
-       specialArgs = { inherit inputs nixos-pkgs system user2;
-       };
-       modules = [
-         .hosts/oona/configuration.nix
-         ./hosts/oona/home.nix
-       ];
-     };
-   }
+
+      # Build nixos flake using:
+      # nixos-rebuild build --flake .#oona
+      nixosConfigurations."oona" = nixpkgs.lib.nixosSystem rec {
+        system = "${systems.xl}";
+        specialArgs = {
+          inherit
+            inputs
+            nixos-pkgs
+            system
+            user2
+            ;
+        };
+        modules = [
+          .hosts/oona/configuration.nix
+          ./hosts/oona/home.nix
+        ];
+      };
+    };
+}
