@@ -93,7 +93,6 @@
         al = "aarch64-linux";
       };
       user1 = "timotheos";
-      user2 = "timotheos";
     in
     {
       # Build darwin flake using:
@@ -131,7 +130,7 @@
             inputs
             nixos-pkgs
             system
-            user2
+            user1
             ;
         };
         modules = [
