@@ -13,6 +13,7 @@ export XDG_BIN_HOME="$HOME/.local/bin" # Not in the official XDG specification
 
 export DEVFILES="$HOME/Developer"
 export DOTFILES="$HOME/.dotfiles"
+export NIXFILES="$HOME/.nix-config"
 
 ##### Installed binaries - HOME DIRECTORIES #####
 
