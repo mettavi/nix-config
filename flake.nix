@@ -94,53 +94,72 @@
       };
       user1 = "timotheos";
       repo_home = ".nix-config";
-      
+
+      # Function for nix-darwin system configuration
+      mkDarwinConfiguration =
+        hostname: system: username:
+        nix-darwin.lib.darwinSystem {
+          # Use specialArgs to pass through inputs to nix-darwin modules
+          specialArgs = {
+            inherit
+              hostname
+              inputs
+              nixpkgs
+              self
+              system
+              username
+              user1
+              repo_home
+              ;
+          };
+          modules = [
+            ./hosts/${hostname}/configuration.nix
+            ./common/darwin/nix-homebrew.nix
+            mac-app-util.darwinModules.default
+            nix-index-database.darwinModules.nix-index
+            sops-nix.darwinModules.sops
+            ./hosts/${hostname}/home.nix
+          ];
+        };
+
+      # Function for NixOS system configuration
+      mkNixosConfiguration =
+        hostname: system: username:
+        nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit
+              hostname
+              inputs
+              nixos-pkgs
+              self
+              system
+              username
+              ;
+            nixosModules = "${self}/modules/nixos";
+          };
+          modules = [
+            ./hosts/${hostname}/configuration.nix
+            ./hosts/${hostname}/home.nix
+          ];
+        };
+
     in
     {
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#mack
-      darwinConfigurations."mack" = nix-darwin.lib.darwinSystem rec {
-        system = "${systems.xd}";
-        # Use specialArgs to pass through inputs to nix-darwin modules
-        specialArgs = {
-          inherit
-            inputs
-            nixpkgs
-            repo_home
-            system
-            user1
-            ;
-        };
-        modules = [
-          ./hosts/mack/configuration.nix
-          ./common/darwin/nix-homebrew.nix
-          ./hosts/mack/home.nix
-          sops-nix.darwinModules.sops
-          nix-index-database.darwinModules.nix-index
-          mac-app-util.darwinModules.default
-        ];
+      darwinConfigurations = {
+        "mack" = mkDarwinConfiguration "mack" "x86_64-darwin" "timotheos";
       };
+
+      # Build nixos flake using:
+      # nixos-rebuild build --flake .#oona
+      nixosConfigurations = {
+        "oona" = mkDarwinConfiguration "oona" "x86_64-linux" "timotheos";
+      };
+
 
       # Expose the package set, including overlays, for convenience.
       darwinPackages = self.darwinConfigurations."mack".pkgs;
 
-      # Build nixos flake using:
-      # nixos-rebuild build --flake .#oona
-      nixosConfigurations."oona" = nixpkgs.lib.nixosSystem rec {
-        system = "${systems.xl}";
-        specialArgs = {
-          inherit
-            inputs
-            nixos-pkgs
-            repo_home
-            system
-            user1
-            ;
-        };
-        modules = [
-          .hosts/oona/configuration.nix
-          ./hosts/oona/home.nix
-        ];
-      };
     };
 }
