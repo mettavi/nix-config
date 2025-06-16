@@ -86,13 +86,6 @@
       ...
     }:
     let
-      systems = {
-        xd = "x86_64-darwin";
-        ad = "aarch64-darwin";
-        xl = "x86_64-linux";
-        al = "aarch64-linux";
-      };
-
       # Function for nix-darwin system configuration
       mkDarwinConfiguration =
         hostname: system: username:
