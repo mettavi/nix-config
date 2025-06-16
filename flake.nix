@@ -121,7 +121,7 @@
         };
 
       # Function for NixOS system configuration
-      mkNixosConfiguration =
+     mkNixosConfiguration =
         hostname: system: username:
         nixpkgs.lib.nixosSystem {
           specialArgs = {
@@ -152,7 +152,7 @@
       # Build nixos flake using:
       # nixos-rebuild build --flake .#oona
       nixosConfigurations = {
-        "oona" = mkDarwinConfiguration "oona" "x86_64-linux" "timotheos";
+        "oona" = mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
       };
 
 
