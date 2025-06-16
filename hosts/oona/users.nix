@@ -1,6 +1,6 @@
 { user1, ... }:
 {
-    # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${user1} = {
     isNormalUser = true;
     home = "/home/${user1}";
@@ -9,9 +9,10 @@
       "networkmanager"
       "wheel"
     ];
-    # authorize remote login to host using personal ssh key
+    # authorize remote login using ssh key
     openssh.authorizedKeys.keys = [
-      (builtins.readFile ../../common/users/${user1}/keys/timotheos_ed25519.pub)
+      # authorize login to ${user1} from host mack
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos.allen@gmail.com"
     ];
     # packages = with pkgs; [
     #   #  thunderbird

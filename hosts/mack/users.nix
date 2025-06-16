@@ -3,9 +3,10 @@
   users.users.${user1} = {
     name = "${user1}";
     home = "/Users/${user1}";
-    # authorize remote login to host using personal ssh key
+    # authorize remote login using ssh key
     openssh.authorizedKeys.keys = [
-      (builtins.readFile ../../common/users/${user1}/keys/timotheos_ed25519.pub)
+      # authorize login to ${user1} from host oona
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos.allen@gmail.com"
     ];
   };
 
