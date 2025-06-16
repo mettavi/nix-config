@@ -1,5 +1,5 @@
 {
-  description = "Metta's Darwin system flake";
+  description = "Metta's Nix system flake";
 
   # Binary cache
   # this setting allows untrusted users of this flake to approve substituters interactively
