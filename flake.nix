@@ -93,7 +93,6 @@
         al = "aarch64-linux";
       };
       user1 = "timotheos";
-      repo_home = ".nix-config";
 
       # Function for nix-darwin system configuration
       mkDarwinConfiguration =
@@ -109,7 +108,6 @@
               system
               username
               user1
-              repo_home
               ;
           };
           modules = [

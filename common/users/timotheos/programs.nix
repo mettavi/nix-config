@@ -1,7 +1,6 @@
 {
-  config,
-  repo_home,
   pkgs,
+  self,
   user1,
   ...
 }:
@@ -35,7 +34,7 @@
       # enable automatic maintenance of git repos using launchd/systemd
       maintenance = {
         enable = true;
-        repositories = [ "${config.home.homeDirectory}/${repo_home}" ];
+        repositories = [ "${self}" ];
         timers = {
           daily = "Tue..Sun *-*-* 0:53:00";
           hourly = "*-*-* 1..23:53:00";

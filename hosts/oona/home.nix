@@ -1,4 +1,4 @@
-{ inputs, repo_home, system, user1, ... }:
+{ inputs, self, system, user1, ... }:
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
@@ -10,7 +10,7 @@
     # Optionally, use home-manager.extraSpecialArgs to pass
     # arguments to home-manager modules
     extraSpecialArgs = {
-      inherit inputs repo_home system user1;
+      inherit inputs self system user1;
     };
     # sharedModules = [
     #   inputs.sops-nix.homeManagerModules.sops
