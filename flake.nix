@@ -78,8 +78,6 @@
       nixpkgs,
       nix-darwin,
       nixos-pkgs,
-      # home-manager,
-      nix-vscode-extensions,
       nix-index-database,
       sops-nix,
       mac-app-util,
