@@ -1,4 +1,4 @@
-{ pkgs, self, user1, ... }:
+{ pkgs, self, ... }:
 {
   imports = [ ./mac ];
 

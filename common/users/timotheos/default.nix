@@ -1,11 +1,11 @@
 {
-  user1,
+  username,
   ...
 }:
 {
   home = {
-    username = "${user1}";
-    homeDirectory = "/Users/${user1}";
+    username = "${username}";
+    homeDirectory = "/Users/${username}";
     # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     stateVersion = "23.11";
     # make programs use XDG directories whenever supported

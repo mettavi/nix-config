@@ -1,10 +1,10 @@
 {
   self,
-  user1,
+  username,
   ...
 }:
 {
-  # SYSTEM PREFERENCES FOR USER1 ON HOST "MACK" (DARWIN)
+  # SYSTEM PREFERENCES FOR USERNAME ON HOST "MACK" (DARWIN)
 
   # NIX-DARWIN OPTIONS
   system.defaults.dock = {
@@ -15,17 +15,12 @@
       "/Applications/Google Chrome.app"
       "/Applications/iTerm.app"
       "/Applications/Microsoft Word.app"
-      "${self}/common/users/${user1}/bin/CaliSync.app"
+      "${self}/common/users/${username}/bin/CaliSync.app"
     ];
   };
 
-  home.sessionVariables = {
-    # prevent nh from checking for flakes "experimental features" (which it can't read from determinate nix.conf)
-    NH_NO_CHECKS = "1";
-  };
-
   # HOME_MANAGER OPTIONS
-  home-manager.users.${user1} = {
+  home-manager.users.${username} = {
     launchd.agents = {
       # make an encrypted backup weekly
       "org.bitwarden.backup" = {
@@ -36,7 +31,7 @@
             "/usr/bin/env"
             "zsh"
             "-c"
-            "${self}/common/users/${user1}/bin/bw_backup.sh"
+            "${self}/common/users/${username}/bin/bw_backup.sh"
           ];
           # Run at midnight each Monday (will catch up if system is sleeping)
           StartCalendarInterval = [
@@ -50,6 +45,10 @@
           StandardOutPath = /tmp/org.bitwarden.backup.out;
         };
       };
+    };
+    home.sessionVariables = {
+      # prevent nh from checking for flakes "experimental features" (which it can't read from determinate nix.conf)
+      NH_NO_CHECKS = "1";
     };
   };
 }

@@ -1,11 +1,11 @@
-{ user1, ... }:
+{ username, ... }:
 {
-  users.users.${user1} = {
-    name = "${user1}";
-    home = "/Users/${user1}";
+  users.users.${username} = {
+    name = "${username}";
+    home = "/Users/${username}";
     # authorize remote login using ssh key
     openssh.authorizedKeys.keys = [
-      # authorize login to ${user1} from host oona
+      # authorize login to ${username} from host oona
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos.allen@gmail.com"
     ];
   };
@@ -21,8 +21,8 @@
         specifying the relevant user separately, moved under the
         `users.users.*` namespace, or migrated to Home Manager.
   */
-  system.primaryUser = "${user1}";
+  system.primaryUser = "${username}";
 
-  imports = [ ../../common/users/${user1}/darwin.nix ];
+  imports = [ ../../common/users/${username}/darwin.nix ];
 
 }

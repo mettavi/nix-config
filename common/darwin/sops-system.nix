@@ -1,5 +1,5 @@
 {
-  user1,
+  username,
   config,
   ...
 }:
@@ -27,19 +27,19 @@
       # the secrets decrypted by the host key, which allows home-manager secrets to work without manually copying over
       # the age key. These age keys are unique for the user on each host and are generated on their own (i.e. they are not derived
       # from an ssh key).
-      "users/${user1}/encryption_key" = {
-        owner = "${config.users.users.${user1}.name}";
+      "users/${username}/encryption_key" = {
+        owner = "${config.users.users.${username}.name}";
         # We need to ensure the entire directory structure is that of the user...
-        path = "${config.users.users.${user1}.home}/.config/sops/age/keys.txt";
+        path = "${config.users.users.${username}.home}/.config/sops/age/keys.txt";
       };
-      "users/${user1}/google_timotheos_app_pw" = {
+      "users/${username}/google_timotheos_app_pw" = {
       };
     };
     templates = {
       "sasl_passwd" = {
         content = # bash
           ''
-            [smtp.gmail.com]:587 timotheos.allen@gmail.com:${config.sops.placeholder."users/${user1}/google_timotheos_app_pw"}
+            [smtp.gmail.com]:587 timotheos.allen@gmail.com:${config.sops.placeholder."users/${username}/google_timotheos_app_pw"}
           '';
         path = "/etc/postfix/sasl_passwd";
       };

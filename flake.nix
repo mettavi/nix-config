@@ -92,7 +92,6 @@
         xl = "x86_64-linux";
         al = "aarch64-linux";
       };
-      user1 = "timotheos";
 
       # Function for nix-darwin system configuration
       mkDarwinConfiguration =
@@ -107,7 +106,6 @@
               self
               system
               username
-              user1
               ;
           };
           modules = [

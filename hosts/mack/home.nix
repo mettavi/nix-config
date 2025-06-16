@@ -1,4 +1,4 @@
-{ inputs, user1, self, system, ... }:
+{ inputs, username, self, system, ... }:
 {
   imports = [
     inputs.home-manager.darwinModules.home-manager
@@ -6,11 +6,11 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.${user1} = import ../../common/users/${user1};
+    users.${username} = import ../../common/users/${username};
     # Optionally, use home-manager.extraSpecialArgs to pass
     # arguments to home-manager modules
     extraSpecialArgs = {
-      inherit inputs self system user1;
+      inherit inputs self system username;
     };
     sharedModules = [
       inputs.sops-nix.homeManagerModules.sops

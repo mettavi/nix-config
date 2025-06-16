@@ -1,7 +1,7 @@
 {
   inputs,
   pkgs,
-  user1,
+  username,
   ...
 }:
 {
@@ -19,8 +19,8 @@
 
   virtualisation.vmware.guest.enable = true;
 
-  fileSystems."/mnt/mack/${user1}" = {
-    device = ".host:/${user1}";
+  fileSystems."/mnt/mack/${username}" = {
+    device = ".host:/${username}";
     fsType = "fuse./run/current-system/sw/bin/vmhgfs-fuse";
     options = [
       "umask=22"
@@ -102,7 +102,7 @@
 
   # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "${user1}";
+  services.displayManager.autoLogin.user = "${username}";
 
   # Install firefox.
   programs.firefox = {
