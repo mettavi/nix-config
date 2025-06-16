@@ -6,6 +6,7 @@
   home = {
     username = "${user1}";
     homeDirectory = "/Users/${user1}";
+    # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
     stateVersion = "23.11";
     # make programs use XDG directories whenever supported
     preferXdgDirectories = true;

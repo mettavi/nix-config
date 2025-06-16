@@ -17,6 +17,6 @@
   system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
 
   # Used for backwards compatibility, please read the changelog before changing.
-  # $ darwin-rebuild changelog
+  # $ darwin-rebuild changelog and https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
   system.stateVersion = 5;
 }
