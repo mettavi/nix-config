@@ -110,7 +110,7 @@
         };
 
       # Function for NixOS system configuration
-     mkNixosConfiguration =
+      mkNixosConfiguration =
         hostname: system: username:
         nixpkgs.lib.nixosSystem {
           specialArgs = {
@@ -143,7 +143,6 @@
       nixosConfigurations = {
         "oona" = mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
       };
-
 
       # Expose the package set, including overlays, for convenience.
       darwinPackages = self.darwinConfigurations."mack".pkgs;
