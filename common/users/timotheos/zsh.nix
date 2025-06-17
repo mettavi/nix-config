@@ -12,17 +12,17 @@
       ];
     };
     autosuggestion.enable = true;
-    completionInit = (builtins.readFile ../../../modules/zsh/.config/zsh/.zsh_completions);
+    completionInit = (builtins.readFile ../../../modules/zsh/.zsh_completions);
     dotDir = ".config/zsh";
-    envExtra = (builtins.readFile ../../../modules/zsh/.config/zsh/.zshenv);
+    envExtra = (builtins.readFile ../../../modules/zsh/.zshenv);
     history = {
       path = "$ZDOTDIR/.zsh_history";
       save = 100000;
       size = 100000;
     };
     initContent = lib.mkMerge [
-      (lib.mkBefore (builtins.readFile ../../../modules/zsh/.config/zsh/.zshrc_top))
-      (builtins.readFile ../../../modules/zsh/.config/zsh/.zshrc)
+      (lib.mkBefore (builtins.readFile ../../../modules/zsh/.zshrc_top))
+      (builtins.readFile ../../../modules/zsh/.zshrc)
     ];
     syntaxHighlighting.enable = true;
     zsh-abbr.enable = true;
