@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   self,
   username,
@@ -64,7 +65,7 @@
       enable = true;
       matchBlocks = {
         "github.com" = {
-          identityFile = "/Users/${username}/.config/sops-nix/secrets/users/${username}/ssh_keys/${username}_ed25519";
+          identityFile = "${config.xdg.configHome}/sops-nix/secrets/users/${username}/ssh_keys/${username}_ed25519";
           extraOptions = {
             IgnoreUnknown = "UseKeyChain";
             UseKeyChain = "yes";
@@ -73,7 +74,7 @@
         "nixos-ocloud" = {
           hostname = "207.211.158.25";
           user = "ubuntu";
-          identityFile = "/Users/${username}/.config/sops-nix/secrets/users/${username}/ssh_keys/ssh-nixos-ocloud.key";
+          identityFile = "${config.xdg.configHome}/sops-nix/secrets/users/${username}/ssh_keys/ssh-nixos-ocloud.key";
         };
       };
     };
