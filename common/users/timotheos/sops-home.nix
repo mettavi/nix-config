@@ -1,6 +1,7 @@
 {
-  username,
   config,
+  hostname,
+  username,
   ...
 }:
 {
@@ -16,11 +17,11 @@
 
     secrets = {
       # SSH KEYS
-      "users/${username}/ssh_keys/timotheos_ed25519" = {
-        path = "${config.home.homeDirectory}/.ssh/timotheos_ed25519";
+      "users/${username}/ssh_keys/${username}-${hostname}_ed25519" = {
+        path = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519";
       };
-      "users/${username}/ssh_keys/timotheos_ed25519.pub" = {
-        path = "${config.home.homeDirectory}/.ssh/timotheos_ed25519.pub";
+      "users/${username}/ssh_keys/${username}-${hostname}_ed25519.pub" = {
+        path = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519.pub";
       };
       # oracle cloud
       "users/${username}/ssh_keys/ssh-nixos-ocloud.key" = {

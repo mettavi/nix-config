@@ -1,6 +1,7 @@
 {
-  username,
   config,
+  hostname,
+  username,
   ...
 }:
 {
@@ -27,7 +28,7 @@
       # the secrets decrypted by the host key, which allows home-manager secrets to work without manually copying over
       # the age key. These age keys are unique for the user on each host and are generated on their own (i.e. they are not derived
       # from an ssh key).
-      "users/${username}/encryption_key" = {
+      "users/${username}/encryption_key-${hostname}" = {
         owner = "${config.users.users.${username}.name}";
         # We need to ensure the entire directory structure is that of the user...
         path = "${config.users.users.${username}.home}/.config/sops/age/keys.txt";
@@ -36,6 +37,7 @@
       };
     };
     templates = {
+      # config file to allow postfix to use my personal gmail account automatically
       "sasl_passwd" = {
         content = # bash
           ''
