@@ -1,7 +1,8 @@
 {
   config,
+  hostname,
+  nix_repo,
   pkgs,
-  self,
   username,
   ...
 }:
@@ -35,7 +36,7 @@
       # enable automatic maintenance of git repos using launchd/systemd
       maintenance = {
         enable = true;
-        repositories = [ "${self}" ];
+        repositories = [ "${config.home.homeDirectory}/${nix_repo}" ];
         timers = {
           daily = "Tue..Sun *-*-* 0:53:00";
           hourly = "*-*-* 1..23:53:00";
