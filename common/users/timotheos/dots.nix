@@ -26,6 +26,10 @@ in
   home.file = {
     ".gitconfig".source = ../../../modules/git/.gitconfig;
     ".gitignore_global".source = ../../../modules/git/.gitignore_global;
+    ".npmrc".source = ../../../modules/node/.npmrc;
+    "Library/Preferences/com.plexapp.plexmediaserver.plist".source = ../../../modules/plex/com.plexapp.plexmediaserver.plist;
+    ".vim/vimrc".source = ../../../modules/vim/.vim/vimrc;
+    ".vim/colors/molokai.vim".source = ../../../modules/vim/.vim/colors/molokai.vim;
   };
 
   xdg = {
@@ -36,6 +40,7 @@ in
       "fzf/.fzfrc".source = ../../../modules/fzf/.fzfrc;
       # link the whole nvim directory
       "nvim".source = ../../../modules/nvim;
+      "tmuxp/nvim-zsh.yaml".source = ../../../modules/tmuxp/nvim-zsh.yaml;
       # "rclone/filter-calibre.txt".source = ./conf/rclone/filter-calibre.txt;
       "zsh/.zsh_aliases".source = ../../../modules/zsh/.zsh_aliases;
       "zsh/.zsh_functions".source = ../../../modules/zsh/.zsh_functions;
