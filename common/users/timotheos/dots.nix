@@ -39,6 +39,7 @@ in
     enable = true;
     configFile = {
       "atuin".source = ../../../modules/atuin;
+      "bat/themes/tokyonight_night.tmTheme".source = ../../../modules/bat/themes/tokyonight_night.tmTheme;
       "fzf/.fzfrc".source = ../../../modules/fzf/.fzfrc;
       # link the whole nvim directory
       "nvim".source = ../../../modules/nvim;
