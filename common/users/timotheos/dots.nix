@@ -1,4 +1,4 @@
-{ config, self, ... }:
+{ config, ... }:
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
 in
@@ -27,10 +27,10 @@ in
     # enable management of xdg base directories
     enable = true;
     configFile = {
-      "atuin".source = "${self}/modules/atuin";
-      "fzf/.fzfrc".source = "${self}/modules/fzf/.fzfrc";
+      "atuin".source = ../../../modules/atuin;
+      "fzf/.fzfrc".source = ../../../modules/fzf/.fzfrc;
       # link the whole nvim directory
-      "nvim".source = "${self}/modules/nvim";
+      "nvim".source = ../../../modules/nvim;
       # "rclone/filter-calibre.txt".source = ./conf/rclone/filter-calibre.txt;
       "zsh/.zsh_aliases".source = ../../../modules/zsh/.config/zsh/.zsh_aliases;
     };
