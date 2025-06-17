@@ -32,7 +32,8 @@ in
       # link the whole nvim directory
       "nvim".source = ../../../modules/nvim;
       # "rclone/filter-calibre.txt".source = ./conf/rclone/filter-calibre.txt;
-      "zsh/.zsh_aliases".source = ../../../modules/zsh/.config/zsh/.zsh_aliases;
+      "zsh/.zsh_aliases".source = ../../../modules/zsh/.zsh_aliases;
+      "zsh/.zsh_functions".source = ../../../modules/zsh/.zsh_functions;
     };
   };
   # link without copying to nix store (manage externally) - must use absolute paths
