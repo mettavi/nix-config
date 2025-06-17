@@ -27,6 +27,8 @@ in
     # enable management of xdg base directories
     enable = true;
     configFile = {
+      # link the whole nvim directory
+      "nvim".source = ../../../modules/stow/nvim/.config/nvim;
       # "rclone/filter-calibre.txt".source = ./conf/rclone/filter-calibre.txt;
       "zsh/.zsh_aliases".source = ../../../modules/zsh/.config/zsh/.zsh_aliases;
     };
