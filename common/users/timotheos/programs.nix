@@ -65,7 +65,7 @@
       enable = true;
       matchBlocks = {
         "github.com" = {
-          identityFile = "${config.xdg.configHome}/sops-nix/secrets/users/${username}/ssh_keys/${username}_ed25519";
+          identityFile = "${config.xdg.configHome}/sops-nix/secrets/users/${username}/ssh_keys/${username}-${hostname}_ed25519";
           extraOptions = {
             IgnoreUnknown = "UseKeyChain";
             UseKeyChain = "yes";
