@@ -1,4 +1,4 @@
-{ self, ... }:
+{ config, nix_repo, ... }:
 {
   # services = {
   #   redis = {
@@ -14,7 +14,7 @@
         ProgramArguments = [
           "/run/current-system/sw/bin/kanata"
           "-c"
-          "${self}/modules/kanata/kanata.lsp"
+          "${config.users.users.timotheos.home}/${nix_repo}/modules/kanata/kanata.lsp"
         ];
         ProcessType = "Interactive";
         RunAtLoad = true;
