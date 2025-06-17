@@ -84,6 +84,9 @@
       ...
     }:
     let
+
+      nix_repo = ".nix-config";
+
       # Function for nix-darwin system configuration
       mkDarwinConfiguration =
         hostname: system: username:
@@ -94,6 +97,7 @@
               hostname
               inputs
               nixpkgs
+              nix_repo
               self
               system
               username
@@ -118,6 +122,7 @@
               hostname
               inputs
               nixos-pkgs
+              nix_repo
               self
               system
               username
