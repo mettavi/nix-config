@@ -23,6 +23,11 @@ in
   #   };
   # };
 
+  home.file = {
+    ".gitconfig".source = ../../../modules/git/.gitconfig;
+    ".gitignore_global".source = ../../../modules/git/.gitignore_global;
+  };
+
   xdg = {
     # enable management of xdg base directories
     enable = true;
