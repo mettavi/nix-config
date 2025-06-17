@@ -126,6 +126,7 @@
           };
           modules = [
             ./hosts/${hostname}/configuration.nix
+            sops-nix.nixosModules.sops
             ./hosts/${hostname}/home.nix
           ];
         };
