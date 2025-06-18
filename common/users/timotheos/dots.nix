@@ -1,7 +1,7 @@
-{ pkgs, ... }:
-# let
-#   inherit (config.lib.file) mkOutOfStoreSymlink;
-# in
+{ config, nix_repo, pkgs, ... }:
+let
+  inherit (config.lib.file) mkOutOfStoreSymlink;
+in
 {
   ####### CONFIGURE PACKAGES USING DOTFILES ########
 
@@ -40,14 +40,13 @@
       "atuin".source = ../../../modules/atuin;
       "bat/themes/tokyonight_night.tmTheme".source = ../../../modules/bat/themes/tokyonight_night.tmTheme;
       "fzf/.fzfrc".source = ../../../modules/fzf/.fzfrc;
-      # link the whole nvim directory
-      "nvim".source = ../../../modules/nvim;
+      # link without copying to nix store (manage externally) - must use absolute paths
+      # mkOutOfStoreSymlink is required to allow the lazy-lock.json file to be writable
+      "nvim".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/modules/nvim"; 
       "tmuxp/nvim-zsh.yaml".source = ../../../modules/tmuxp/nvim-zsh.yaml;
       # "rclone/filter-calibre.txt".source = ./conf/rclone/filter-calibre.txt;
       "zsh/.zsh_aliases".source = ../../../modules/zsh/.zsh_aliases;
       "zsh/.zsh_functions".source = ../../../modules/zsh/.zsh_functions;
     };
   };
-  # link without copying to nix store (manage externally) - must use absolute paths
-  # xdg.configFile.nvim.source = mkOutOfStoreSymlink "${self}/.config/nvim";
 }
