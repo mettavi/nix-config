@@ -1,10 +1,15 @@
+{ pkgs, ... }:
 {
   services = {
     gpg-agent = {
       enable = true;
-      extraConfig = ''
-        pinentry-program /usr/local/bin/pinentry-touchid
-      '';
+      extraConfig =
+        if pkgs.stdenv.isDarwin then
+          ''
+            pinentry-program /usr/local/bin/pinentry-touchid
+          ''
+        else
+          null;
     };
   };
 }
