@@ -1,0 +1,65 @@
+# Refer to https://www.reddit.com/r/NixOS/comments/1k48yqr/shared_home_manager_between_nixos_and_nixdarwin/ 
+# and see https://github.com/AlexNabokikh/nix-config for more examples
+# Ensure common packages are installed
+# use lib.optionals for lists
+
+  home.packages = with pkgs;
+    [
+      anki-bin
+      awscli2
+      dig
+      du-dust
+      ...
+    ]
+    ++ lib.optionals stdenv.isDarwin [
+      colima
+      docker
+      hidden-bar
+      raycast
+    ]
+    ++ lib.optionals (!stdenv.isDarwin) [
+      pavucontrol
+      pulseaudio
+      tesseract
+      unzip
+      wl-clipboard
+    ];
+
+###################################################
+# use lib.mkIf for attribute sets
+
+{
+  lib,
+  pkgs,
+  ...
+}: {
+  config = lib.mkIf (!pkgs.stdenv.isDarwin) {
+    # Install OBS Studio via home-manager module
+    programs.obs-studio.enable = true;
+
+    # Enable catppuccin theming for OBS.
+    catppuccin.obs.enable = true;
+  };
+}
+
+###################################################
+# use if/then/else for values of options
+
+{pkgs, ...}: {
+  # Install alacritty via home-manager module
+  programs.alacritty = {
+    enable = true;
+      window = {
+        decorations =
+          if pkgs.stdenv.isDarwin
+          then "buttonless"
+          else "none";
+      };
+      font = {
+        size =
+          if pkgs.stdenv.isDarwin
+          then 15
+          else 12;
+      };
+    };
+  };
