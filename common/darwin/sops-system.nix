@@ -1,6 +1,7 @@
 {
   config,
   hostname,
+  pkgs,
   username,
   ...
 }:
@@ -49,15 +50,15 @@
   };
   # The containing folders are created as root and if this is the first ~/.config/ entry,
   # the ownership is busted and home-manager can't target because it can't write into .config...
-  # FIXME:(sops) We might not need this depending on how https://github.com/Mic92/sops-nix/issues/381 is fixed
-  # system.activationScripts.sopsSetAgeKeyOwnership =
-  #   let
-  #     ageFolder = "${config.users.users.ta.home}/.config/sops/age";
-  #     user = config.users.users.ta.name;
-  #     group = "staff";
-  #   in
-  #   ''
-  #     mkdir -p ${ageFolder} || true
-  #     chown -R ${config.users.users.ta.name}:${group} "${config.users.users.ta.home}/.config";
-  #   '';
+  # See: https://github.com/Mic92/sops-nix/issues/381
+  system.activationScripts.sopsSetAgeKeyOwnership =
+    let
+      ageFolder = "${config.users.users.${username}.home}/.config/sops/age";
+      user = config.users.users.${username}.name;
+      group =  if pkgs.stdenv.isDarwin then "staff" else "users";
+    in
+    ''
+      mkdir -p ${ageFolder} || true
+      chown -R ${user}:${group} "${config.users.users.${username}.home}/.config";
+    '';
 }
