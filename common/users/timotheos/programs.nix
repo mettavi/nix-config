@@ -52,7 +52,7 @@
     keychain = {
       enable = true;
       enableZshIntegration = true;
-      keys = [ "timotheos_ed25519" ];
+      keys = [ "${username}-${hostname}_ed25519" ];
     };
     lazygit.enable = true;
     # provides nix-locate and command-not-found commands
