@@ -27,8 +27,8 @@ in
     ".gitconfig".source = ../../../modules/git/.gitconfig;
     ".gitignore_global".source = ../../../modules/git/.gitignore_global;
     ".npmrc".source = ../../../modules/node/.npmrc;
-    "Library/Preferences/com.plexapp.plexmediaserver.plist".source =
-      if pkgs.stdenv.isDarwin then ../../../modules/plex/com.plexapp.plexmediaserver.plist else null;
+    # "Library/Preferences/com.plexapp.plexmediaserver.plist".source =
+    #  if pkgs.stdenv.isDarwin then ../../../modules/plex/com.plexapp.plexmediaserver.plist else "";
     ".vim/vimrc".source = ../../../modules/vim/.vim/vimrc;
     ".vim/colors/molokai.vim".source = ../../../modules/vim/.vim/colors/molokai.vim;
   };
