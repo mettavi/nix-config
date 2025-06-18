@@ -10,7 +10,8 @@ let
     owner = "yazi-rs";
     repo = "flavors";
     rev = "main";
-    hash = "sha256-Zi+54ZwoXDKKeUHSTYkif8m0FKx6V8nA6mByaVyBrks=";
+#   hash = "sha256-Zi+54ZwoXDKKeUHSTYkif8m0FKx6V8nA6mByaVyBrks=";
+    hash = "sha256-m3yk6OcJ9vbCwtxkMRVUDhMMTOwaBFlqWDxGqX2Kyvc=";
   };
 in
 {
