@@ -1,6 +1,7 @@
 {
   config,
   hostname,
+  lib,
   nix_repo,
   pkgs,
   username,
@@ -28,6 +29,10 @@
     };
     fd.enable = true;
     fzf = {
+      enable = true;
+    };
+    # install ghostty on nixOS only
+    ghostty = lib.mkIf (!pkgs.stdenv.isDarwin) {
       enable = true;
     };
     git = {
@@ -85,7 +90,7 @@
       enable = true;
       enableZshIntegration = true;
     };
-    
+
     tmux = {
       baseIndex = 1;
       enable = true;
