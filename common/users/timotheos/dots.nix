@@ -1,7 +1,7 @@
-{ config, ... }:
-let
-  inherit (config.lib.file) mkOutOfStoreSymlink;
-in
+{ pkgs, ... }:
+# let
+#   inherit (config.lib.file) mkOutOfStoreSymlink;
+# in
 {
   ####### CONFIGURE PACKAGES USING DOTFILES ########
 
