@@ -107,10 +107,6 @@
         "--cmd cd"
       ];
     };
-    # tmux = import ../home/tmux.nix { inherit pkgs; };
-    # zsh = import ../home/zsh.nix { inherit config pkgs; };
-    # #zoxide = (import ../home/zoxide.nix { inherit config pkgs; });
-    # fzf = import ../home/fzf.nix { inherit pkgs; };
 
   };
 }
