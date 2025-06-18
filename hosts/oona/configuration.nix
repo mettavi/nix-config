@@ -1,4 +1,5 @@
 {
+  hostname,
   inputs,
   pkgs,
   username,
@@ -64,6 +65,24 @@
     LC_TIME = "en_AU.UTF-8";
   };
 
+  # List services that you want to enable:
+
+  # Enable the OpenSSH daemon.
+  services = {
+    openssh = {
+      enable = true;
+      # create a host key
+      hostKeys = [
+        {
+          comment = "root@${hostname}";
+          path = "/etc/ssh/ssh_${hostname}_ed25519_key";
+          rounds = 100;
+          type = "ed25519";
+        }
+      ];
+    };
+  };
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
@@ -98,7 +117,6 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-
 
   # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = true;
@@ -146,10 +164,6 @@
   #   enableSSHSupport = true;
   # };
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
