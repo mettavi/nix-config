@@ -20,6 +20,9 @@
     # atuin.enable = true;
     bash = {
       enable = true;
+      completion = {
+        enable = true;
+      };
       historyFile = "${config.xdg.configHome}/bash/.bash_history";
     };
     bat.enable = true;

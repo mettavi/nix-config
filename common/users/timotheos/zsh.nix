@@ -14,6 +14,7 @@
     autosuggestion.enable = true;
     completionInit = (builtins.readFile ../../../modules/zsh/.zsh_completions);
     dotDir = ".config/zsh";
+    enableCompletion = true;
     envExtra = (builtins.readFile ../../../modules/zsh/.zshenv);
     history = {
       path = "$ZDOTDIR/.zsh_history";
