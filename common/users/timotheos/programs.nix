@@ -19,7 +19,7 @@
     # atuin.enable = true;
     bash = {
       enable = true;
-      historyFile = "$HOME/.config/bash/.bash_history";
+      historyFile = "${config.xdg.configHome}/bash/.bash_history";
     };
     bat.enable = true;
     eza = {
