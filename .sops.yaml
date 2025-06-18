@@ -1,14 +1,16 @@
 # yamllint disable-file
 # .sops.yaml
 keys:
-  - &admin_timotheos-mack age1mhy95hjcr3l73fl39ufefmkdt6grqatw7pctjw0ntw7cr7tugslsl5k4tx
+  - &admin_timotheos-home age1mhy95hjcr3l73fl39ufefmkdt6grqatw7pctjw0ntw7cr7tugslsl5k4tx
   - &host_mack age1yqk69cngaueuzap9pcv20z8h3lneaw7f79pmgpje08v44vfcesfq8we323
+  - &host_oona age1s34d7n6mkjvrl8m92utxj0dy28jv0sv20yaq9fj52takczyl2svs87rlq2
 creation_rules:
   - path_regex: modules/secrets/secrets\.yaml$
     key_groups:
       - age:
-          - *admin_timotheos-mack
+          - *admin_timotheos-home
           - *host_mack
+          - *host_oona
 stores:
   yaml:
     indent: 2
