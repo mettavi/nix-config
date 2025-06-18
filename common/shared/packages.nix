@@ -63,7 +63,6 @@ in
     rustc
     shellcheck
     sops # Simple and flexible tool for managing secrets
-    stow
     # texinfo # to read info files
     tldr
     tree

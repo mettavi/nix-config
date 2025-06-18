@@ -28,8 +28,6 @@ in
     ".gitignore_global".source = ../../../modules/git/.gitignore_global;
     ".npmrc".source = ../../../modules/node/.npmrc;
     "Library/Preferences/com.plexapp.plexmediaserver.plist".source = ../../../modules/plex/com.plexapp.plexmediaserver.plist;
-    ".stow-global-ignore".source = ../../../modules/stow/.stow-global-ignore;
-    ".stowrc".source = ../../../modules/stow/.stowrc;
     ".vim/vimrc".source = ../../../modules/vim/.vim/vimrc;
     ".vim/colors/molokai.vim".source = ../../../modules/vim/.vim/colors/molokai.vim;
   };
