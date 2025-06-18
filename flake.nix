@@ -109,6 +109,7 @@
             mac-app-util.darwinModules.default
             nix-index-database.darwinModules.nix-index
             sops-nix.darwinModules.sops
+            inputs.home-manager.darwinModules.home-manager
             ./hosts/${hostname}/home.nix
           ];
         };
@@ -132,6 +133,7 @@
           modules = [
             ./hosts/${hostname}/configuration.nix
             sops-nix.nixosModules.sops
+            inputs.home-manager.nixosModules.home-manager
             ./hosts/${hostname}/home.nix
           ];
         };

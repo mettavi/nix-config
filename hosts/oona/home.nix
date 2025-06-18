@@ -1,8 +1,11 @@
-{ inputs, self, system, username, ... }:
 {
-  imports = [
-    inputs.home-manager.nixosModules.home-manager
-  ];
+  inputs,
+  self,
+  system,
+  username,
+  ...
+}:
+{
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
@@ -10,7 +13,12 @@
     # Optionally, use home-manager.extraSpecialArgs to pass
     # arguments to home-manager modules
     extraSpecialArgs = {
-      inherit inputs self system username;
+      inherit
+        inputs
+        self
+        system
+        username
+        ;
     };
     # sharedModules = [
     #   inputs.sops-nix.homeManagerModules.sops
