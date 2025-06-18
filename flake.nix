@@ -30,7 +30,7 @@
     };
     nix-homebrew = {
       url = "github:zhaofengli/nix-homebrew";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
     # if mutableTaps is disabled in homebrew.nix, these taps must be declared here AND in homebrew.nix
     # NB: do not use the brew "shorthand" which excludes the "homebrew-" part of the GH url
