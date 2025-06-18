@@ -90,7 +90,7 @@
       # Function for nix-darwin system configuration
       mkDarwinConfiguration =
         hostname: system: username:
-        nix-darwin.lib.darwinSystem {
+        nix-darwin.lib.darwinSystem rec {
           # Use specialArgs to pass through inputs to nix-darwin modules
           specialArgs = {
             inherit
@@ -110,14 +110,25 @@
             nix-index-database.darwinModules.nix-index
             sops-nix.darwinModules.sops
             inputs.home-manager.darwinModules.home-manager
-            ./hosts/${hostname}/home.nix
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.${username} = ./common/users/${username};
+                extraSpecialArgs = specialArgs;
+                sharedModules = [
+                  mac-app-util.homeManagerModules.default
+                  sops-nix.homeManagerModules.sops
+                ];
+              };
+            }
           ];
         };
 
       # Function for NixOS system configuration
       mkNixosConfiguration =
         hostname: system: username:
-        nixpkgs.lib.nixosSystem {
+        nixpkgs.lib.nixosSystem rec {
           specialArgs = {
             inherit
               hostname
@@ -134,7 +145,15 @@
             ./hosts/${hostname}/configuration.nix
             sops-nix.nixosModules.sops
             inputs.home-manager.nixosModules.home-manager
-            ./hosts/${hostname}/home.nix
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.${username} = ./common/users/${username};
+                extraSpecialArgs = specialArgs;
+                sharedModules = [ sops-nix.homeManagerModules.sops ];
+              };
+            }
           ];
         };
 
