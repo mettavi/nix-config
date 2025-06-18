@@ -9,7 +9,7 @@
             pinentry-program /usr/local/bin/pinentry-touchid
           ''
         else
-          null;
+          "";
     };
   };
 }
