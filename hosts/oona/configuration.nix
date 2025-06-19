@@ -164,6 +164,7 @@
     programs = {
       vim = {
         enable = true;
+        extraConfig = builtins.readfile ../../modules/vim/.vim/vimrc;
         plugins = [ pkgs.vimPlugins.vim-plug ];
       };
     };
