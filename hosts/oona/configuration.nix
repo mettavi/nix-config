@@ -12,7 +12,7 @@
     ./hardware-configuration.nix
     ./users.nix
     ../../common/shared
-    # ../../common/linux
+    ../../common/linux
   ];
 
   # Set Git commit hash for darwin-version.
