@@ -106,6 +106,7 @@
           modules = [
             ./hosts/${hostname}/configuration.nix
             ./common/darwin/nix-homebrew.nix
+            ./common/shared
             mac-app-util.darwinModules.default
             nix-index-database.darwinModules.nix-index
             sops-nix.darwinModules.sops
@@ -140,10 +141,10 @@
               system
               username
               ;
-            nixosModules = "${self}/modules/nixos";
           };
           modules = [
             ./hosts/${hostname}/configuration.nix
+            ./common/shared
             sops-nix.nixosModules.sops
             inputs.home-manager.nixosModules.home-manager
             {
