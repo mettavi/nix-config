@@ -11,7 +11,6 @@
   imports = [
     ./hardware-configuration.nix
     ./users.nix
-    ../../common/shared
     ../../common/linux
   ];
 

@@ -19,7 +19,6 @@
 
   imports = [
     ./users.nix
-    ../../common/shared
     ../../common/darwin
   ];
 
