@@ -152,7 +152,7 @@
     google-chrome
   ];
 
-  # Install firefox.
+  # Install and configure packages.
   programs = {
     firefox = {
       enable = true;
