@@ -1,5 +1,6 @@
 {
   inputs,
+  username,
   ...
 }:
 {
@@ -8,7 +9,7 @@
   # the determinate insaller was used, so nix settings are managed in /etc/nix/nix.conf and nix.custom.conf
   nix.enable = false;
 
-  programs.zsh = {
+  home-manager.users.${username}.programs.zsh = {
     completionInit = ''
       # enable auto-completion for determinate nixd
       eval "$(determinate-nixd completion zsh)"
