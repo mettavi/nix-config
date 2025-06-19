@@ -5,6 +5,9 @@
 {
   networking.hostName = "mack";
 
+  # the determinate insaller was used, so nix settings are managed in /etc/nix/nix.conf and nix.custom.conf
+  nix.enable = false;
+
   nixpkgs.hostPlatform = "x86_64-darwin";
 
   imports = [
