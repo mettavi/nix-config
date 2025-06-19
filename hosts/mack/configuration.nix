@@ -8,6 +8,12 @@
   # the determinate insaller was used, so nix settings are managed in /etc/nix/nix.conf and nix.custom.conf
   nix.enable = false;
 
+  programs.zsh = {
+    completionInit = ''
+      # enable auto-completion for determinate nixd
+      eval "$(determinate-nixd completion zsh)"
+    '';
+  };
   nixpkgs.hostPlatform = "x86_64-darwin";
 
   imports = [

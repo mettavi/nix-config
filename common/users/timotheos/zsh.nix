@@ -26,7 +26,7 @@
       (builtins.readFile ../../../modules/zsh/.zshrc)
     ];
     # Only use the aliases on darwin (trash is a mac only package)
-    shellAliases =  lib.mkIf (pkgs.stdenv.isDarwin) {
+    shellAliases = lib.mkIf (pkgs.stdenv.isDarwin) {
       ts = "trash";
       rm = "echo 'Use trash instead'";
     };

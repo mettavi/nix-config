@@ -50,5 +50,3 @@ ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down,\
 shift-up:preview-top,shift-down:preview-bottom,\
 alt-up:half-page-up,alt-down:half-page-down
 
-# enable auto-completion for determinate nixd
-eval "$(determinate-nixd completion zsh)"
