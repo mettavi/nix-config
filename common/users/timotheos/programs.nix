@@ -11,6 +11,8 @@
 
   home.packages = with pkgs; [
     atuin
+    # Bash and zsh key bindings for Git objects, powered by fzf
+    fzf-git-sh
   ];
 
   programs = {
