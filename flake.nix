@@ -114,6 +114,7 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
+                backupFileExtension = "nix-backup";
                 users.${username} = ./common/users/${username};
                 extraSpecialArgs = specialArgs;
                 sharedModules = [
@@ -149,6 +150,7 @@
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
+                backupFileExtension = "nix-backup";
                 users.${username} = ./common/users/${username};
                 extraSpecialArgs = specialArgs;
                 sharedModules = [ sops-nix.homeManagerModules.sops ];
