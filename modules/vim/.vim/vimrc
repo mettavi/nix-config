@@ -131,7 +131,7 @@ set hidden
 " PLUGINS ---------------------------------------------------------------- {{{
 
 " Plugin code goes here.
-call plug#begin('~/.vim/plugged')
+call plug#begin()
 
 " status/tabline for vim
 Plug 'vim-airline/vim-airline'
