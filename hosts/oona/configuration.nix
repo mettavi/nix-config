@@ -151,6 +151,7 @@
   environment.systemPackages = with pkgs; [
     google-chrome
     vim
+    vimPlugins.vim-plug
   ];
 
   # Install firefox.
