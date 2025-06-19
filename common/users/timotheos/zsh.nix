@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
   # NB: Completions are enabled by default
   programs.zsh = {
@@ -25,6 +25,11 @@
       (lib.mkBefore (builtins.readFile ../../../modules/zsh/.zshrc_top))
       (builtins.readFile ../../../modules/zsh/.zshrc)
     ];
+    # Only use the aliases on darwin (trash is a mac only package)
+    shellAliases =  lib.mkIf (pkgs.stdenv.isDarwin) {
+      ts = "trash";
+      rm = "echo 'Use trash instead'";
+    };
     syntaxHighlighting.enable = true;
     zsh-abbr.enable = true;
   };
