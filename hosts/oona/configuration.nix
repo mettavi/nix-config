@@ -150,13 +150,17 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     google-chrome
-    vim
-    vimPlugins.vim-plug
   ];
 
   # Install firefox.
-  programs.firefox = {
-    enable = true;
+  programs = {
+    firefox = {
+      enable = true;
+    };
+    vim = {
+      enable = true;
+      plugins = [ pkgs.vimPlugins.vim-plug ];
+    };
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -166,7 +170,6 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
