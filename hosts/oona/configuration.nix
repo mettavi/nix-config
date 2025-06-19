@@ -157,9 +157,15 @@
     firefox = {
       enable = true;
     };
-    vim = {
-      enable = true;
-      plugins = [ pkgs.vimPlugins.vim-plug ];
+  };
+
+  # HOME MANAGER OPTIONS
+  home-manager.users.${username} = {
+    programs = {
+      vim = {
+        enable = true;
+        plugins = [ pkgs.vimPlugins.vim-plug ];
+      };
     };
   };
 
