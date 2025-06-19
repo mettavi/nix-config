@@ -6,6 +6,8 @@
     gcc
     # Tool to control the generation of non-source files from sources
     gnumake
+    nodejs
+    python3
     # Extraction utility
     unzip
   ];
