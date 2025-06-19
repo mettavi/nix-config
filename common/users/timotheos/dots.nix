@@ -1,4 +1,4 @@
-{ config, nix_repo, pkgs, ... }:
+{ config, nix_repo, ... }:
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
 in
