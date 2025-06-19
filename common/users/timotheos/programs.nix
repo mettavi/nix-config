@@ -37,6 +37,8 @@
     # install ghostty on nixOS only
     ghostty = lib.mkIf (!pkgs.stdenv.isDarwin) {
       enable = true;
+      # settings will be written to $XDG_CONFIG_HOME/ghostty/config
+      settings = { }; 
     };
     git = {
       enable = true;
