@@ -29,6 +29,7 @@ in
     ".npmrc".source = ../../../modules/node/.npmrc;
     # "Library/Preferences/com.plexapp.plexmediaserver.plist".source =
     #  if pkgs.stdenv.isDarwin then ../../../modules/plex/com.plexapp.plexmediaserver.plist else "";
+    ".p10k.zsh".source = ../../../modules/zsh/.p10k.zsh;
     ".vim/vimrc".source = ../../../modules/vim/.vim/vimrc;
     ".vim/colors/molokai.vim".source = ../../../modules/vim/.vim/colors/molokai.vim;
   };
