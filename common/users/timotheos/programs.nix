@@ -38,7 +38,7 @@
     ghostty = lib.mkIf (!pkgs.stdenv.isDarwin) {
       enable = true;
       # settings will be written to $XDG_CONFIG_HOME/ghostty/config
-      settings = { }; 
+      settings = { font-family = "MesloLGS Nerd Font Mono Regular"; theme = "catppuccin-mocha"; }; 
     };
     git = {
       enable = true;
