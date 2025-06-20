@@ -113,6 +113,11 @@
         name = "subler";
         greedy = true;
       }
+      # Open-source BitTorrent client
+      {
+        name = "transmission";
+        greedy = true;
+      }
       # "syncmate"
       # "tor-browser"
       # Create, manage, and run virtual machines"typora"

@@ -8,6 +8,7 @@
     gnumake
     nodejs
     python3
+    transmission_4-gtk
     # Extraction utility
     unzip
   ];
