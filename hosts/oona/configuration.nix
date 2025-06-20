@@ -163,7 +163,46 @@
     programs = {
       vim = {
         enable = true;
-        plugins = [ pkgs.vimPlugins.vim-plug ];
+        extraConfig = # vim
+          ''
+            let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+            if empty(glob(data_dir . '/autoload/plug.vim'))
+            silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+            autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+            endif
+            call plug#begin()
+
+            " status/tabline for vim
+            Plug 'vim-airline/vim-airline'
+
+            " Maximizes and restores the current window
+            Plug 'szw/vim-maximizer'
+
+            " Asynchronous Lint Engine (linting/lsp)
+            " Plug 'dense-analysis/ale'
+
+            " Nerdtree file browser
+            Plug 'preservim/nerdtree'
+
+            " Enable core fzf installed by homebrew and vim-plug 
+              Plug '/usr/local/opt/fzf' 
+              Plug 'junegunn/fzf.vim'
+
+            " language aware (un)commenting
+              Plug 'tpope/vim-commentary'
+
+            " sensible vim defaults
+              Plug 'tpope/vim-sensible'
+
+            " Plugins for LSP functionality 
+              Plug 'prabirshrestha/vim-lsp'
+              Plug 'mattn/vim-lsp-settings'
+              Plug 'prabirshrestha/asyncomplete.vim'
+              Plug 'prabirshrestha/asyncomplete-lsp.vim'
+              
+            call plug#end()
+          '';
+        # plugins = [ pkgs.vimPlugins.vim-plug ];
       };
     };
   };
