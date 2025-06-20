@@ -33,6 +33,8 @@
     brews = [
       # encountering build error with nixpkgs version
       "bitwarden-cli"
+      # Command-line fuzzy finder written in Go
+      "fzf"
       # "m4b-tool"
       "pinentry-touchid"
     ];
