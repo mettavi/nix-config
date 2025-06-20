@@ -939,7 +939,7 @@
 	<key>com.googlecode.iterm2.LoadPrefsFromCustomFolder</key>
 	<true/>
 	<key>com.googlecode.iterm2.PrefsCustomFolder</key>
-	<string>$DOTFILES/modules/iterm2</string>
+	<string>$NIXFILES/modules/iterm2</string>
 	<key>findMode_iTerm</key>
 	<integer>0</integer>
 </dict>
