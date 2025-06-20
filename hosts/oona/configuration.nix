@@ -140,9 +140,8 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    google-chrome
-  ];
+  # environment.systemPackages = with pkgs; [
+  # ];
 
   # Install and configure packages.
   programs = {
