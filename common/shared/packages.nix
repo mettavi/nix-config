@@ -93,7 +93,6 @@ in
     # google-chrome
     # goldendict-ng is currently only available for linux
     # obsidian
-    transmission_4 # BitTorrent client
     # vlc-bin-universal
     zoom-us # video conferencing application
   ];
