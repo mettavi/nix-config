@@ -114,6 +114,7 @@
         greedy = true;
       }
       # Open-source BitTorrent client
+      # NB: The GUI versions on nixpkgs do not work on mac
       {
         name = "transmission";
         greedy = true;
