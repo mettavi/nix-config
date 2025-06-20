@@ -21,19 +21,10 @@
       save = 100000;
       size = 100000;
     };
-    initContent =
-      lib.mkMerge [
-        (lib.mkBefore (builtins.readFile ../../../modules/zsh/.zshrc_top))
-        (lib.mkAfter builtins.readFile ../../../modules/zsh/.zshrc)
-      ]
-      # only add this for ghostty on nixOS (this should come immediately after .zshrc_top)
-      ++ lib.optionals (!pkgs.stdenv.isDarwin) [
-        ''
-          if [[ -n $GHOSTTY_RESOURCES_DIR ]]; then
-            source "$GHOSTTY_RESOURCES_DIR"/shell-integration/zsh/ghostty-integration
-          fi  
-        ''
-      ];
+    initContent = lib.mkMerge [
+      (lib.mkBefore (builtins.readFile ../../../modules/zsh/.zshrc_top))
+      (lib.mkAfter builtins.readFile ../../../modules/zsh/.zshrc)
+    ];
     # Only use the aliases on darwin (trash is a mac only package)
     shellAliases = lib.mkIf (pkgs.stdenv.isDarwin) {
       ts = "trash";

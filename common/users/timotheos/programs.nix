@@ -37,6 +37,8 @@
     # install ghostty on nixOS only
     ghostty = lib.mkIf (!pkgs.stdenv.isDarwin) {
       enable = true;
+      # integration will work in more scenarios, such as switching shells
+      enableZshIntegration = true;
       # settings will be written to $XDG_CONFIG_HOME/ghostty/config
       settings = {
         font-family = "MesloLGS Nerd Font Mono Regular";
