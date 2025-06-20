@@ -101,6 +101,7 @@
     neovim = {
       enable = true;
       plugins = with pkgs.vimPlugins; [ noice-nvim ];
+    };
     # pyenv.enable = true;
     # rbenv.enable = true;
     ripgrep.enable = true;
