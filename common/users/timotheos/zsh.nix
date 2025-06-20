@@ -23,7 +23,7 @@
     };
     initContent = lib.mkMerge [
       (lib.mkBefore (builtins.readFile ../../../modules/zsh/.zshrc_top))
-      (lib.mkAfter builtins.readFile ../../../modules/zsh/.zshrc)
+      (builtins.readFile ../../../modules/zsh/.zshrc)
     ];
     # Only use the aliases on darwin (trash is a mac only package)
     shellAliases = lib.mkIf (pkgs.stdenv.isDarwin) {
