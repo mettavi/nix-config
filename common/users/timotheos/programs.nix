@@ -100,7 +100,10 @@
     nix-index.enable = true;
     neovim = {
       enable = true;
-      plugins = with pkgs.vimPlugins; [ noice-nvim ];
+      plugins = with pkgs.vimPlugins; [
+        noice-nvim
+        telescope-fzf-native-nvim
+      ];
     };
     # pyenv.enable = true;
     # rbenv.enable = true;
