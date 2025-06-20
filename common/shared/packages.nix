@@ -15,7 +15,10 @@ let
 in
 {
 
-  imports = [ ./restic.nix ];
+  imports = [
+    ./restic.nix
+    ./vim.nix
+  ];
 
   fonts.packages = with pkgs; [
     nerd-fonts.meslo-lg
