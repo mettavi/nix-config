@@ -98,7 +98,9 @@
     lazygit.enable = true;
     # provides nix-locate and command-not-found commands
     nix-index.enable = true;
-    neovim.enable = true;
+    neovim = {
+      enable = true;
+      plugins = with pkgs.vimPlugins; [ noice-nvim ];
     # pyenv.enable = true;
     # rbenv.enable = true;
     ripgrep.enable = true;
