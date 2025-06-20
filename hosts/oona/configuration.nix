@@ -124,13 +124,6 @@
   nixpkgs = {
     # Allow unfree packages
     config.allowUnfree = true;
-    overlays = [
-      (final: prev: {
-        google-chrome = prev.google-chrome.override {
-          commandLineArgs = "--proxy-server='https=127.0.0.1:3128;http=127.0.0.1:3128'";
-        };
-      })
-    ];
   };
 
   nix = {
