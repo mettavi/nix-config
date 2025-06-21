@@ -42,6 +42,7 @@
       # settings will be written to $XDG_CONFIG_HOME/ghostty/config
       settings = {
         font-family = "MesloLGS Nerd Font Mono Regular";
+        font-size = "20";
       };
       themes = {
         catppuccin-mocha = {
