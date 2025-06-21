@@ -29,7 +29,8 @@ in
     ".npmrc".source = ../../../modules/node/.npmrc;
     # "Library/Preferences/com.plexapp.plexmediaserver.plist".source =
     #  if pkgs.stdenv.isDarwin then ../../../modules/plex/com.plexapp.plexmediaserver.plist else "";
-    ".p10k.zsh".source = ../../../modules/zsh/.p10k.zsh;
+    ".p10k.zsh".source =
+      mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/modules/zsh/.p10k.zsh";
   };
 
   xdg = {
@@ -41,7 +42,7 @@ in
       "fzf/.fzfrc".source = ../../../modules/fzf/.fzfrc;
       # link without copying to nix store (manage externally) - must use absolute paths
       # mkOutOfStoreSymlink is required to allow the lazy-lock.json file to be writable
-      "nvim".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/modules/nvim"; 
+      "nvim".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/modules/nvim";
       "tmuxp/nvim-zsh.yaml".source = ../../../modules/tmuxp/nvim-zsh.yaml;
       # "rclone/filter-calibre.txt".source = ./conf/rclone/filter-calibre.txt;
       "zsh/.zsh_aliases".source = ../../../modules/zsh/.zsh_aliases;
