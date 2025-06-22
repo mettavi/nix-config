@@ -103,7 +103,7 @@ return {
       -- affect :MasonToolsUpdate or :MasonToolsInstall.
       -- Default: false
       -- auto_update = true,
-    })
+    -- })
 
     -- mason_nvim_dap.setup()
 
