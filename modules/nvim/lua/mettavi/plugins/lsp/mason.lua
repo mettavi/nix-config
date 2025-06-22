@@ -78,34 +78,34 @@ return {
     -- automatic_installation = true, -- not the same as ensure_installed
     -- })
 
-    mason_tool_installer.setup({
-      ensure_installed = {
-        "ts_ls", -- typescript language server
-        "eslint_d", -- js linter
-        "html", -- HTML language server
-        "cssls", -- CSS language server
-        "pyright", -- python language server
-        "pylint", -- python linter
-        "isort", -- python formatter
-        "black", -- python formatter
-        "lua_ls", -- lua language server
-        "stylua", -- lua formatter
-        "bashls", -- bash language server, uses shellcheck linter installed with brew
-        "shfmt", -- bash formatter
-        "taplo", -- toml ls and formatter
-        "yamlls", -- Language Server for YAML Files
-        "yamllint", -- Linter for YAML files
-        "yamlfmt", -- tool or library to format yaml files
-        "prettier", -- multi-purpose formatter
-      },
+    -- mason_tool_installer.setup({
+    --   ensure_installed = {
+    --     "ts_ls", -- typescript language server
+    --     "eslint_d", -- js linter
+    --     "html", -- HTML language server
+    --     "cssls", -- CSS language server
+    --     "pyright", -- python language server
+    --     "pylint", -- python linter
+    --     "isort", -- python formatter
+    --     "black", -- python formatter
+    --     "lua_ls", -- lua language server
+    --     "stylua", -- lua formatter
+    --     "bashls", -- bash language server, uses shellcheck linter installed with brew
+    --     "shfmt", -- bash formatter
+    --     "taplo", -- toml ls and formatter
+    --     "yamlls", -- Language Server for YAML Files
+    --     "yamllint", -- Linter for YAML files
+    --     "yamlfmt", -- tool or library to format yaml files
+    --     "prettier", -- multi-purpose formatter
+    --   },
       -- if set to true this will check each tool for updates. If updates
       -- are available the tool will be updated. This setting does not
       -- affect :MasonToolsUpdate or :MasonToolsInstall.
       -- Default: false
-      auto_update = true,
+      -- auto_update = true,
     })
 
-    mason_nvim_dap.setup()
+    -- mason_nvim_dap.setup()
 
     -- language servers not installed with mason are configured in nvim-lspconfig
     lspconfig["bashls"].setup({

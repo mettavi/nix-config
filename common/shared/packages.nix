@@ -47,8 +47,6 @@ in
     localsend # Open source cross-platform alternative to AirDrop
     nh # Yet another nix cli helper
     nix-fast-build # speed-up your evaluation and building process
-    nixfmt-rfc-style
-    nixd # nix language server
     nix-init # Generate Nix packages from URLs
     nix-update # Swiss-knife for updating nix packages
     node2nix # Generate Nix expressions to build NPM packages
