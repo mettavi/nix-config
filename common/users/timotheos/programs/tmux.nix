@@ -7,9 +7,11 @@
     enable = true;
     baseIndex = 1;
     customPaneNavigationAndResize = true;
-    escapeTime = 10;
+    # escapeTime = 10;
     extraConfig = # sh
       ''
+        # Allow Ctrl+a to be passed to the terminal
+        bind a send-prefix
         # Allow programs to bypass tmux using a terminal escape sequence (eg for image rendering)
         set -g allow-passthrough on
         # recommended by yazi to enable proper image rendering
