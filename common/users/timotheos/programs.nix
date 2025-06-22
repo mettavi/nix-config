@@ -43,7 +43,6 @@
       enableZshIntegration = true;
       # settings will be written to $XDG_CONFIG_HOME/ghostty/config
       settings = {
-        font-family = "MesloLGS Nerd Font Mono Regular";
         font-size = "18";
         theme = "iTerm2 Pastel Dark Background";
       };
