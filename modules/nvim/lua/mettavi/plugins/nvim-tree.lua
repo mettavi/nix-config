@@ -5,6 +5,7 @@ return {
     local nvimtree = require("nvim-tree")
 
     -- recommended settings from nvim-tree documentation
+    -- -- disable netrw builtin file manager
     vim.g.loaded_netrw = 1
     vim.g.loaded_netrwPlugin = 1
 
@@ -14,6 +15,8 @@ return {
 
     -- configure nvim-tree
     nvimtree.setup({
+      -- updates the tree on `DirChanged` (:cd)
+      sync_root_with_cwd = true,
       view = {
         width = 35,
         relativenumber = true,
