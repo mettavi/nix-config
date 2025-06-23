@@ -35,6 +35,12 @@
     fd.enable = true;
     fzf = {
       enable = true;
+      tmux = {
+        # Sets FZF_TMUX=1, enabling fzf in tmux popups
+        enableShellIntegration = true;
+        # open in popup windows in 80% width, 60% height
+        shellIntegrationOptions = [ "-p 80%,60%" ];
+      };
     };
     # install ghostty on nixOS only
     ghostty = lib.mkIf (!pkgs.stdenv.isDarwin) {
