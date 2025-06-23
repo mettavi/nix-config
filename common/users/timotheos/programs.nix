@@ -44,6 +44,12 @@
       # settings will be written to $XDG_CONFIG_HOME/ghostty/config
       settings = {
         font-size = "18";
+        # make right_alt send an escape sequence in ghostty
+        keybind = [
+          "unconsumed:alt+b=esc:b"
+          "unconsumed:alt+f=esc:f"
+        ];
+        macos-option-as-alt = true;
         theme = "iTerm2 Pastel Dark Background";
       };
     };
