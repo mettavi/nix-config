@@ -151,7 +151,19 @@
   };
 
   # HOME MANAGER OPTIONS
+  # BUG: this is currently giving an error: error: key "Terminal" is present in group "Desktop Entry", but the type is "Directory" while this key is only valid for type "Application"
+  # https://github.com/nix-community/home-manager/issues/4987
   # home-manager.users.${username} = {
+  #   xdg.desktopEntries = {
+  #     mack-timotheos = {
+  #       name = "mack-timotheos";
+  #       comment = "Home directory for timeotheos on host mack";
+  #       genericName = "File Share";
+  #       icon = ../../modules/icons/org.xfce.thunar.png;
+  #       type = "Directory";
+  #     };
+  #   };
+  # };
   #   programs = {
   #     vim = {
   #       enable = true;
