@@ -3,10 +3,11 @@
   environment = {
     pathsToLink = [
       "/libexec"
-      "/share/doc"
-      "/share/zsh"
-      "/share/man"
       "/share/bash-completion"
+      "/share/doc"
+      "/share/icons"
+      "/share/man"
+      "/share/zsh"
     ];
   };
 }
