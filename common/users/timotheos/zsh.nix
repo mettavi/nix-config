@@ -25,10 +25,10 @@
       (lib.mkBefore (builtins.readFile ../../../modules/zsh/.zshrc_top))
       (builtins.readFile ../../../modules/zsh/.zshrc)
     ];
-    # Only use the aliases on darwin (trash is a mac only package)
-    shellAliases = lib.mkIf (pkgs.stdenv.isDarwin) {
-      ts = "trash";
-      rm = "echo 'Use trash instead'";
+    # Assign the alias to different binaries depending on host OS
+    shellAliases = {
+      ts = if pkgs.stdenv.isDarwin then "trash" else "trash-put";
+      rm = "echo 'Please use ts instead.'; false";
     };
     syntaxHighlighting.enable = true;
     zsh-abbr.enable = true;
