@@ -4,6 +4,8 @@
 <dict>
 	<key>AllowClipboardAccess</key>
 	<true/>
+	<key>BracketedPasteMode</key>
+	<true/>
 	<key>Default Bookmark Guid</key>
 	<string>7043B895-32C9-4862-BA05-1C4483E30976</string>
 	<key>HapticFeedbackForEsc</key>
@@ -974,6 +976,16 @@
 			<string>/Users/timotheos</string>
 		</dict>
 	</array>
+	<key>PasteSpecialChunkDelay</key>
+	<real>0.01</real>
+	<key>PasteSpecialChunkSize</key>
+	<integer>1024</integer>
+	<key>PasteSpecialRegex</key>
+	<string></string>
+	<key>PasteSpecialSubstitution</key>
+	<string></string>
+	<key>PasteSpecialUseRegexSubstitution</key>
+	<false/>
 	<key>PointerActions</key>
 	<dict>
 		<key>Button,1,1,,</key>
