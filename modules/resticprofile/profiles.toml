@@ -19,3 +19,11 @@ verbose = true
 source = ["/Users/timotheos"]
 exclude-file = "./exclude_home.txt"
 exclude-caches = true
+# SCHEDULING
+# run the backup on Mondays at 12:30 am
+schedule = "Mon *.*.* *:00,30"
+schedule-permission = "system"
+schedule-priority = "background"
+schedule-log = "mack-timotheos-b2backup_{{ .Now.DateOnly }}.log"
+schedule-lock-mode = "default"
+schedule-lock-wait = "5m"
