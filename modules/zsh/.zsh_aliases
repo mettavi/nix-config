@@ -33,9 +33,11 @@ alias -g lt="eza --color --tree --level=3 --long --icons --git"
 alias cl="clear"
 
 # program aliases
-# use a trailing space to try to expand the following word as an alias
+# NOTE: ghostty terminal zsh shell integration doesn't like an alias on sudo
+# See https://github.com/ghostty-org/ghostty/discussions/5709 for details 
+# (use a trailing space to try to expand the following word as an alias)
 # (external binaries do not recognise the zsh -g global flag)
-alias sudo="sudo "
+# alias sudo="sudo "
 alias lg="lazygit"
 alias nv="nvim"
 alias pip="pip3"
