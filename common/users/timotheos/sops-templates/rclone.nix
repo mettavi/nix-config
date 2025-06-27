@@ -29,7 +29,9 @@
             type = s3
             provider = AWS
             access_key_id = ${config.sops.placeholder."users/${username}/rclone_keys/rclone_aws_gda_keyid"}
-            secret_access_key = ${config.sops.placeholder."users/${username}/rclone_keys/rclone_aws_gda_keysecret"}
+            secret_access_key = ${
+              config.sops.placeholder."users/${username}/rclone_keys/rclone_aws_gda_keysecret"
+            }
             region = us-east-1
             acl = private
             storage_class = DEEP_ARCHIVE
