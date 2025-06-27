@@ -1,0 +1,21 @@
+#:schema https://creativeprojects.github.io/resticprofile/jsonschema/config-1.json
+#
+# indentation is not needed but it makes it easier to read ;)
+#
+version = "1"
+
+[global]
+initialize = true
+
+[default]
+repository = "rclone:b2:mack-timotheos"
+option = [
+  "rclone.args=serve restic --stdio --b2-hard-delete --fast-list --verbose",
+]
+password-file = "../sops-nix/secrets/users/timotheos/restic_b2_mack-timotheos"
+
+[default.backup]
+verbose = true
+source = ["/Users/timotheos"]
+exclude-file = "./exclude_home.txt"
+exclude-caches = true

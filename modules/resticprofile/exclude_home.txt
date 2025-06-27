@@ -1,0 +1,477 @@
+# exclusions for restic backup
+# NB: a trailing / is ignored and end-of-line comments are not valid
+
+# patterns to exclude in $HOME
+# from https://www.reddit.com/r/BorgBackup/comments/sitr82/suggested_folders_to_ignore_for_home_folder/
+**/.DS_Store
+**/.build/
+**/.git/
+**/vendor/
+**/node_modules/
+**/.npm
+**/Cache/
+**/Caches/
+**/cache/
+**/caches/
+**/.DocumentRevisions-V100/
+**/.MobileBackups/
+**/.MobileBackups.trash/
+**/.Spotlight-V100/
+**/.TemporaryItems/
+**/.Trash/
+**/.Trashes/
+**/DerivedData/
+**/Logs/
+**/CrashReporter/
+**/MobileSync/Backup/
+**/tmp/
+**/.fseventsd/
+
+# Additional patterns
+# vmware
+**/Virtual Machines.localized
+**/.cache
+**/logs
+# eg. Google Drive
+**/CloudStorage 
+
+# specific items to exclude in $HOME (from command: sudo mdfind "com_apple_backup_excludeItem = 'com.apple.backupd'")
+$HOME/Library/Group Containers/group.com.apple.PegasusConfiguration/local
+$HOME/Library/Application Support/Google/Chrome/Default/History-journal
+$HOME/Library/Application Support/Google/Chrome/Default/Favicons-journal
+$HOME/Library/Application Support/Google/Chrome/Profile 4/History-journal
+$HOME/Library/Application Support/Google/Chrome/Profile 4/Favicons-journal
+$HOME/Library/Assistant/SiriAnalytics.db
+$HOME/Library/Group Containers/group.com.apple.tips/Library/Spotlight
+$HOME/Library/Biome/sets/Default/Sets.db
+$HOME/Library/HTTPStorages/com.apple.AddressBookSourceSync
+$HOME/Library/HTTPStorages/com.microsoft.autoupdate.fba
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/gkboaolpopklhgplhaaiboijnklogmbc/1.0.69
+$HOME/Library/Passes/PeerPaymentWebServiceContext.archive
+$HOME/Library/Group Containers/group.com.apple.accessibility.voicebanking/TTSVoiceBanking/TTSVoiceBanking_ckAssets
+$HOME/Library/Containers/com.docker.docker/Data/vms/0/data
+$HOME/Library/Group Containers/UBF8T346G9.com.microsoft.oneauth/BlobStore/9188040d-6c67-4c5b-b112-36a304b66dad_hrd_metadata
+$HOME/Library/Group Containers/UBF8T346G9.com.microsoft.oneauth/BlobStore/9188040d-6c67-4c5b-b112-36a304b66dad_hrd
+$HOME/Library/Group Containers/UBF8T346G9.Office/FontCache
+$HOME/Library/Group Containers/UBF8T346G9.com.microsoft.oneauth/BlobStore/0f811515c935d85c_avatar_metadata
+$HOME/Library/Group Containers/UBF8T346G9.com.microsoft.oneauth/BlobStore/0f811515c935d85c_avatar
+$HOME/Library/Group Containers/UBF8T346G9.com.microsoft.oneauth/BlobStore/0f811515c935d85c_substrate_profile_metadata
+$HOME/Library/Group Containers/UBF8T346G9.com.microsoft.oneauth/BlobStore/0f811515c935d85c_substrate_profile
+$HOME/Library/Group Containers/UBF8T346G9.com.microsoft.oneauth/BlobStore/e8ef11a3-0ad9-413f-97aa-ea65017c2470_hrd_metadata
+$HOME/Library/Group Containers/UBF8T346G9.com.microsoft.oneauth/BlobStore/e8ef11a3-0ad9-413f-97aa-ea65017c2470_hrd
+$HOME/Library/Group Containers/UBF8T346G9.com.microsoft.oneauth/BlobStore/dfa41041-cac2-4a52-9e68-e2e7961f6daa_graph_organization_metadata
+$HOME/Library/Group Containers/UBF8T346G9.com.microsoft.oneauth/BlobStore/dfa41041-cac2-4a52-9e68-e2e7961f6daa_graph_organization
+$HOME/Library/Group Containers/UBF8T346G9.com.microsoft.oneauth/BlobStore/dfa41041-cac2-4a52-9e68-e2e7961f6daa_avatar_metadata
+$HOME/Library/Containers/com.apple.Maps/Data/Maps/MapsSync_0.0_ckAssets
+$HOME/Library/Group Containers/group.com.apple.transparency/StaticKey/CloudStore_ckAssets
+$HOME/Library/Group Containers/group.com.apple.shortcuts/Temporary/com.apple.siriactionsd
+$HOME/Library/Group Containers/group.com.apple.accessibility.voicebanking/TTSVoiceBanking
+$HOME/Library/Group Containers/group.com.apple.shortcuts/Temporary/com.apple.shortcuts.ShortcutsWidget
+$HOME/Developer/projects/kanata-repo/target
+$HOME/Library/Group Containers/group.com.apple.newsd/Library/Caches/com.apple.news.public-production-143460/remote-configuration
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/hlcinbnbfgoealjpgmoacabdkapmjjfj/1.0.1821
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/bfpgedeaaibpoidldhjcknekahbikncb/1.0.11024
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/cdbbhgbmjhfnhnmgeddbliobbofkgdhe/1.0.12265
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/iodkpdagapdfkphljnddpjlldadblomo/1.0.10412
+$HOME/Library/Containers/ContactsSyncWithGroups/Data/Library/Application Support/ContactsSyncWithGroups/com.microsoft.appcenter
+$HOME/Library/Containers/ContactsSyncWithGroups/Data/Library/Application Support/ContactsSyncWithGroups/com.microsoft.appcenter/crashes
+$HOME/Library/Containers/ContactsSyncWithGroups/Data/Library/Application Support/ContactsSyncWithGroups/com.microsoft.appcenter/crasheslogbuffer
+$HOME/Library/Application Support/Google/Chrome/Subresource Filter/Unindexed Rules/9.54.0
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/adcocjohghhfpidemphmcmlmhnfgikei/1.0.297
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/afalakplffnnnlkncjhbmahjfjhmlkal/1.0.1050
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/CertificateRevocation/9537
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/TpcdMetadata/2025.1.31.1
+$HOME/Library/Application Support/Google/Chrome/PrivacySandboxAttestationsPreloaded/2025.1.31.0
+$HOME/Library/Application Support/Google/Chrome/OnDeviceHeadSuggestModel/20250114.719039431.14
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/Crowd Deny/2024.12.19.1218
+$HOME/Library/Application Support/Google/Chrome/Crowd Deny/2024.12.19.1218
+$HOME/Library/LanguageModeling/es-dynamic.lm/dynamic-lexicon.dat
+$HOME/Library/LanguageModeling/ro-dynamic.lm
+$HOME/Library/LanguageModeling/el-dynamic.lm
+$HOME/Library/Containers/ContactsSyncWithGroups/Data/Library/Application Support/Google/RemoteConfig/RemoteConfig.sqlite3
+$HOME/Library/HTTPStorages/io.github.keycastr
+$HOME/Library/Containers/com.apple.AppleMediaServicesUI.UtilityExtension/Data/Library/HTTPStorages/com.apple.AppleMediaServicesUI.UtilityExtension
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/OnDeviceHeadSuggestModel/20250114.719039431.14
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/CertificateRevocation/9538
+$HOME/Library/Containers/com.apple.family.FAFollowupExtension/Data/Library/HTTPStorages/com.apple.family.FAFollowupExtension
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/PKIMetadata/1209
+$HOME/Library/Application Support/Google/Chrome/SafetyTips/3059
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/SafetyTips/3059
+$HOME/Library/HTTPStorages/LogiPluginServiceNative
+$HOME/Library/Application Support/Google/Chrome/TrustTokenKeyCommitments/2025.1.17.1
+$HOME/Library/Containers/ContactsSyncWithGroups/Data/Library/Application Support/Google/Measurement
+$HOME/Library/Containers/ContactsSyncWithGroups/Data/Library/Application Support/Google/Measurement/google_experimentation_database.sql
+$HOME/Library/Containers/ContactsSyncWithGroups/Data/Library/Application Support/Google/Measurement/google-app-measurement.sql
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/hlcinbnbfgoealjpgmoacabdkapmjjfj/1.0.1820
+$HOME/Library/com.apple.bluetoothuser/Production/001014-05-5b5cb2e6-9c5e-4da6-ae56-78a65329e75d/CKTokens/Zone/Private/__defaultOwner__/CloudPairedDevicesZone.token
+$HOME/Library/com.apple.bluetooth.services.cloud/CachedRecords/MasterKey/00000000-0000-0000-0000-000000000001
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/mfddibmblmbccpadfndgakiopmmhebop/1.0.105
+$HOME/Library/Containers/com.apple.StorageManagement.CloudStorageHelper/Data/Library/HTTPStorages/com.apple.StorageManagement.CloudStorageHelper
+$HOME/Library/Passes/RemoteDevices.archive
+$HOME/Library/Application Support/Google/Chrome/OptimizationHints/484
+$HOME/Library/studentd/Events
+$HOME/Library/LanguageModeling/en-dynamic.lm
+$HOME/Library/Keyboard/en-dynamic.lm
+$HOME/Library/Containers/com.apple.news/Data/Library/WebKit/WebsiteData/LocalStorage
+$HOME/Library/Suggestions
+$HOME/Library/PersonalizationPortrait
+$HOME/Library/Sharing/AirDropHashDB
+$HOME/Library/Containers/com.apple.contacts.donation-agent/Data/Library/Contacts/Donations
+$HOME/Library/LanguageModeling/tr-dynamic.lm
+$HOME/Library/Passes/UserNotifications.archive
+$HOME/Pictures/Photos Library.photoslibrary/resources/derivatives/thumbs
+$HOME/Pictures/Photos Library.photoslibrary/scopes/cloudsharing
+$HOME/Pictures/Photos Library.photoslibrary/external
+$HOME/Pictures/Photos Library.photoslibrary/resources/cpl
+$HOME/Pictures/Photos Library.photoslibrary/private/com.apple.photoanalysisd/caches
+$HOME/Pictures/Photos Library.photoslibrary/private/com.apple.photolibraryd/caches
+$HOME/Pictures/Photos Library.photoslibrary/private/com.apple.photoanalysisd/caches/graph/PhotosGraph/construction-photosgraph.kgdb
+$HOME/Pictures/Photos Library.photoslibrary/private/com.apple.photoanalysisd/caches/graph/PhotosGraph/photosgraph.kgdb
+$HOME/Library/LanguageModeling/      1064-dynamic.lm
+$HOME/Library/LanguageModeling/hi-dynamic.lm
+$HOME/Library/HTTPStorages/com.apple.Family-Settings.extension
+$HOME/Library/Finance/finance_cloud_ckAssets
+$HOME/Library/Containers/com.apple.freeform/Data/Library/HTTPStorages/com.apple.freeform
+$HOME/Library/Containers/com.apple.photoanalysisd/Data/Library/HTTPStorages/com.apple.photoanalysisd
+$HOME/Library/HTTPStorages/com.apple.WalletSettingsExtension
+$HOME/Library/HTTPStorages/com.electron.stacher
+$HOME/Library/HTTPStorages/com.docker.docker
+$HOME/Library/HTTPStorages/com.colliderli.iina
+$HOME/Library/Containers/com.aone.keka/Data/Library/HTTPStorages/com.aone.keka
+/Users/Shared/adi
+$HOME/Library/Containers/com.apple.TextEdit/Data/Library/HTTPStorages/com.apple.TextEdit
+$HOME/Library/HTTPStorages/org.galad.Subler
+$HOME/Library/HTTPStorages/org.maven-group.MetaZ
+$HOME/Library/HTTPStorages/com.oracle.java.8u301.java
+$HOME/Library/LanguageModeling/sv-dynamic.lm
+$HOME/Library/LanguageModeling/fi-dynamic.lm
+$HOME/Library/LanguageModeling/fr-dynamic.lm
+$HOME/Library/LanguageModeling/it-dynamic.lm
+$HOME/Library/LanguageModeling/es-dynamic.lm
+$HOME/Library/LanguageModeling/cs-dynamic.lm
+$HOME/Library/LanguageModeling/pt-dynamic.lm
+$HOME/Library/Application Support/com.microsoft.SharePoint-mac/com.microsoft.appcenter
+$HOME/Library/Application Support/com.microsoft.SharePoint-mac/com.microsoft.appcenter/crashes
+$HOME/Library/Application Support/com.microsoft.SharePoint-mac/com.microsoft.appcenter/crasheslogbuffer
+$HOME/Library/HTTPStorages/com.microsoft.SharePoint-mac
+$HOME/Library/Application Support/Google/Chrome/ZxcvbnData/3
+$HOME/Library/HTTPStorages/com.unofficial.wineskin
+$HOME/Library/Application Support/com.microsoft.SharePoint-mac/com.microsoft.appcenter/crasheswrapperexceptions
+$HOME/Library/HTTPStorages/us.zoom.xos
+$HOME/Library/Containers/com.apple.iBooksX/Data/Library/WebKit/WebsiteData/Default/2iU03JDgU5BDPj8sB7q7tZCEn96fYsySMyJqLNWXsp0/2iU03JDgU5BDPj8sB7q7tZCEn96fYsySMyJqLNWXsp0
+$HOME/Library/Passes/passes23.sqlite
+$HOME/Library/LanguageModeling/da-dynamic.lm
+$HOME/Library/Assistant/SiriSyncItems.db
+$HOME/Library/Containers/com.apple.AMPArtworkAgent/Data/Library/HTTPStorages/com.apple.AMPArtworkAgent
+$HOME/Library/Biome/sync
+$HOME/Library/HTTPStorages/com.apple.assistant_service
+$HOME/Library/HTTPStorages/walletAvailabilityCheckTool
+$HOME/Library/HTTPStorages/crashpad_handler
+$HOME/Library/HTTPStorages/com.bombich.cccdashboard
+$HOME/Library/HTTPStorages/familycircled
+$HOME/Library/HTTPStorages/com.apple.helpd
+$HOME/Library/HTTPStorages/com.apple.nbagent
+$HOME/Library/HTTPStorages/com.apple.assistantd
+$HOME/Library/Containers/com.apple.helpviewer/Data/Library/HTTPStorages/com.apple.helpviewer
+$HOME/Library/Containers/com.apple.Notes/Data/Library/HTTPStorages/com.apple.Notes
+$HOME/Library/Containers/com.apple.LookupViewService/Data/Library/HTTPStorages/com.apple.LookupViewService
+$HOME/Library/HTTPStorages/com.bombich.ccc
+$HOME/Library/HTTPStorages/org.videolan.vlc
+$HOME/Library/HTTPStorages/com.apple.translationd
+$HOME/Library/Containers/com.apple.Safari/Data/Library/HTTPStorages/com.apple.Safari
+$HOME/Library/HTTPStorages/ksfetch
+$HOME/Library/Containers/com.apple.AppStore/Data/Library/HTTPStorages/com.apple.AppStore
+$HOME/Library/HTTPStorages/com.apple.accountsd
+$HOME/Library/HTTPStorages/com.apple.systempreferences
+$HOME/Library/Containers/com.apple.AppleMediaServicesUI.SpyglassPurchases/Data/Library/HTTPStorages/com.apple.AppleMediaServicesUI.SpyglassPurchases
+$HOME/Library/Containers/com.apple.mediastream.mstreamd/Data/Library/HTTPStorages/com.apple.mediastream.mstreamd
+$HOME/Library/Containers/com.apple.news.widget/Data/Library/HTTPStorages/com.apple.news.widget
+$HOME/Library/Containers/com.apple.news.tag/Data/Library/HTTPStorages/com.apple.news.tag
+$HOME/Library/Containers/com.apple.CalendarAgent/Data/Library/HTTPStorages/com.apple.CalendarAgent
+$HOME/Library/HTTPStorages/com.apple.iCloudHelper
+$HOME/Library/HTTPStorages/mbuseragent
+$HOME/Library/Containers/com.apple.news.widgetintents/Data/Library/HTTPStorages/com.apple.news.widgetintents
+$HOME/Library/Containers/com.apple.stocks.detailintents/Data/Library/HTTPStorages/com.apple.stocks.detailintents
+$HOME/Library/Containers/com.apple.weather.widget/Data/Library/HTTPStorages/com.apple.weather.widget
+$HOME/Library/Containers/com.apple.findmy.FindMyWidgetIntentsPeople/Data/Library/HTTPStorages/com.apple.findmy.FindMyWidgetIntentsPeople
+$HOME/Library/Suggestions/Harvesting
+$HOME/Library/HTTPStorages/com.apple.Spotlight
+$HOME/Library/Photos/Libraries/Syndication.photoslibrary
+$HOME/Library/Photos/Libraries/Syndication.photoslibrary/private/com.apple.photolibraryd/caches
+$HOME/Library/HTTPStorages/com.unofficial.wineskinwinery
+$HOME/Library/Shortcuts/Temporary/com.apple.siriactionsd
+$HOME/Library/Finance
+$HOME/Library/Biome/tmp
+$HOME/Library/HTTPStorages/com.adobe.adobedigitaleditions.app
+$HOME/Library/ResponseKit/en-dynamic.lm
+$HOME/Library/Containers/me.onekerato.pdfoutlinerPaddle/Data/Library/HTTPStorages/me.onekerato.pdfoutlinerPaddle
+$HOME/Library/HTTPStorages/com.leisterpro.reunion13
+$HOME/Library/HTTPStorages/com.microsoft.VSCode
+$HOME/Library/HTTPStorages/Apple Docs Helper
+$HOME/Library/HTTPStorages/com.microsoft.SyncReporter
+$HOME/Library/HTTPStorages/com.postgresapp.Postgres2
+$HOME/Library/Containers/com.apple.shortcuts/Data/Library/HTTPStorages/com.apple.shortcuts
+$HOME/Library/Shortcuts/Temporary/com.apple.WorkflowKit.BackgroundShortcutRunner
+$HOME/Library/HTTPStorages/de.appsolute.MAMP
+$HOME/Library/Application Support/de.appsolute.MAMP/com.microsoft.appcenter
+$HOME/Library/Application Support/de.appsolute.MAMP/com.microsoft.appcenter/crashes
+$HOME/Library/Application Support/de.appsolute.MAMP/com.microsoft.appcenter/crasheslogbuffer
+$HOME/Library/HTTPStorages/chrome_crashpad_handler
+$HOME/Library/Containers/com.onmyway133.PastePal/Data/Library/HTTPStorages/com.onmyway133.PastePal
+$HOME/Library/HTTPStorages/com.hnc.Discord
+$HOME/Library/LanguageModeling/ru-dynamic.lm
+$HOME/Library/LanguageModeling/ar-dynamic.lm
+$HOME/Library/HTTPStorages/com.google.GoogleUpdater
+$HOME/Library/HTTPStorages/org.pqrs.Karabiner-Elements.Settings
+$HOME/Library/HTTPStorages/com.apple.AOSPushRelay
+$HOME/Library/Containers/com.apple.garageband10/Data/Library/HTTPStorages/com.apple.garageband10
+$HOME/Library/Containers/com.apple.stocks.widget/Data/Library/HTTPStorages/com.apple.stocks.widget
+$HOME/Library/HTTPStorages/com.JRTStudio.iSyncrWiFi
+$HOME/Library/Containers/org.sbarex.QLMarkdown/Data/Library/HTTPStorages/org.sbarex.QLMarkdown
+$HOME/Library/Application Support/Google/DriveFS/116574950641794954238
+$HOME/Library/Containers/com.greenworldsoft.syncfolderspro/Data/Library/HTTPStorages/com.greenworldsoft.syncfolderspro
+$HOME/Library/Containers/com.microsoft.Word/Data/Library/HTTPStorages/com.microsoft.Word
+$HOME/Library/Containers/com.microsoft.Word/Data/Library/Application Support/Microsoft/FontPreviewCache/en-GB
+$HOME/Library/Containers/com.microsoft.Word/Data/Library/Application Support/Microsoft/AppData
+$HOME/Library/Containers/com.microsoft.Word/Data/Library/Application Support/Microsoft/AppData/Microsoft
+$HOME/Library/Containers/com.microsoft.Word/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office
+$HOME/Library/Containers/com.microsoft.Word/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0
+$HOME/Library/Containers/com.microsoft.Word/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0/OfficeFileCache
+$HOME/Library/Containers/com.microsoft.Word/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0/OfficeFileCache/0
+$HOME/Library/Containers/com.microsoft.Word/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0/OfficeFileCache/0/0
+$HOME/Library/Containers/com.microsoft.Word/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0/OfficeFileCache/0/0/BFBTH7CEHDFEFDEMBFCLBYAIA3C6CQE7
+$HOME/Library/Containers/com.apple.CalendarWeatherKitService/Data/Library/HTTPStorages/com.apple.CalendarWeatherKitService
+$HOME/Library/HTTPStorages/com.samsung.Uninstall
+$HOME/Library/Containers/com.microsoft.Excel/Data/Library/HTTPStorages/com.microsoft.Excel
+$HOME/Library/Containers/com.microsoft.Excel/Data/Library/Application Support/Microsoft/FontPreviewCache/en-GB
+$HOME/Library/Containers/com.microsoft.Excel/Data/Library/Application Support/Microsoft/AppData
+$HOME/Library/Containers/com.microsoft.Excel/Data/Library/Application Support/Microsoft/AppData/Microsoft
+$HOME/Library/HTTPStorages/com.skype.skype
+$HOME/Library/LanguageModeling/it-dynamic.lm/dynamic-lexicon.dat
+$HOME/Library/LanguageModeling/nl-dynamic.lm/dynamic-lexicon.dat
+$HOME/Library/HTTPStorages/abnerworks.Typora
+$HOME/Library/Containers/com.aone.Keka-Sparkle.Downloader/Data/Library/HTTPStorages/com.aone.Keka-Sparkle.Downloader
+$HOME/Library/Containers/com.microsoft.Powerpoint/Data/Library/HTTPStorages/com.microsoft.Powerpoint
+$HOME/Library/Application Support/Google/Measurement
+$HOME/Library/Application Support/Google/Measurement/google_experimentation_database.sql
+$HOME/Library/Application Support/Google/Measurement/google-app-measurement.sql
+$HOME/Library/Application Support/Google/RemoteConfig/RemoteConfig.sqlite3
+$HOME/Library/Containers/com.apple.Home/Data/Library/HTTPStorages/com.apple.Home
+$HOME/Library/HomeKit/core-cloudkit_ckAssets
+$HOME/Library/HomeKit/core-cloudkit-shared_ckAssets
+$HOME/Pictures/Photos Library.photoslibrary/resources/streams
+$HOME/Library/HTTPStorages/com.apple.accounts.dom
+$HOME/Library/HTTPStorages/com.robotsandpencils.XcodesApp
+$HOME/Library/HTTPStorages/com.apple.dt.Xcode
+$HOME/Library/HTTPStorages/com.apple.AirScanScanner
+$HOME/Library/Containers/com.apple.podcasts/Data/Library/HTTPStorages/com.apple.podcasts
+$HOME/Library/HTTPStorages/org.m0k.transmission
+$HOME/Library/Application Support/Google/Chrome/AutofillStates/2024.7.12.235938
+$HOME/Library/Application Support/Google/Chrome/OriginTrials/1.0.0.17
+$HOME/Library/Containers/com.apple.mail/Data/Library/HTTPStorages/com.apple.mail
+$HOME/Library/Containers/com.apple.mail/Data/Library/Application Support/CloudKitMailConversationsFlags/CloudKitMirroringDataModel_ckAssets
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/SSLErrorAssistant/7
+$HOME/Library/Containers/net.whatsapp.WhatsApp/Data/Library/contacts_download
+$HOME/Library/Containers/net.whatsapp.WhatsApp/Data/Library/Application Support/net.whatsapp.WhatsApp/analytics
+$HOME/Library/Containers/net.whatsapp.WhatsApp/Data/Library/Application Support/lifecycle
+$HOME/Library/Containers/net.whatsapp.WhatsApp/Data/Library/Application Support/AppExit/TerminationInfo
+$HOME/Library/Containers/net.whatsapp.WhatsApp/Data/Library/HTTPStorages/net.whatsapp.WhatsApp
+$HOME/Library/Application Support/Google/Chrome/Profile 3/History
+$HOME/Library/Application Support/Google/Chrome/ClientSidePhishing/30.2
+$HOME/Library/Containers/com.apple.Internet-Accounts-Settings.extension/Data/Library/HTTPStorages/com.apple.Internet-Accounts-Settings.extension
+$HOME/Library/com.apple.bluetooth.services.cloud/00000000-0000-0000-0000-00000000000C
+$HOME/Library/AppleMediaServices/CachedServerData/AccountData/df1b0cf17dce0d242fc6482b36eda019bf968e7a616fe7b19a1020b886fba7ee674a03a857ff66da46aaabab7c422ecc6f5eb5e6d3491ab457be2d2d92a706cb
+$HOME/Library/Assistant/SiriVocabulary/Modules/SEM/Default/SEM_FTS
+$HOME/Library/HTTPStorages/com.apple.siriknowledged
+$HOME/Library/Containers/com.apple.voicebankingd/Data/Library/HTTPStorages/com.apple.voicebankingd
+/Library/Trial
+$HOME/Library/com.apple.bluetooth.services.cloud/CKTokens/Zone/Private/__defaultOwner__/BluetoothDeviceInformationZone.token
+$HOME/Library/Reminders/Container_v1/Stores-StagedMigration
+$HOME/Pictures/Photos Library.photoslibrary/scopes/locked
+$HOME/Library/Trial
+$HOME/Library/Biome/FlexibleStorage
+$HOME/Library/HTTPStorages/com.apple.itunescloudd
+$HOME/Library/HTTPStorages/com.apple.storekitagent
+$HOME/Library/Containers/com.apple.systempreferences.AppleIDSettings/Data/Library/HTTPStorages/com.apple.systempreferences.AppleIDSettings
+$HOME/Library/HTTPStorages/com.apple.CommerceKit.TransactionService
+$HOME/Library/HTTPStorages/storedownloadd
+$HOME/Library/HTTPStorages/xcodes
+$HOME/Library/Containers/com.pdfeditor.pdfeditormac/Data/Library/Application Support/Google/Measurement
+$HOME/Library/Containers/com.pdfeditor.pdfeditormac/Data/Library/Application Support/Google/Measurement/google_experimentation_database.sql
+$HOME/Library/Containers/com.pdfeditor.pdfeditormac/Data/Library/Application Support/Google/Measurement/google-app-measurement.sql
+$HOME/Library/Containers/com.pdfeditor.pdfeditormac/Data/Library/HTTPStorages/com.pdfeditor.pdfeditormac
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/Default/History
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/Safe Browsing
+$HOME/Library/Application Support/Google/Chrome/FileTypePolicies/67
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/FileTypePolicies/67
+$HOME/Library/Application Support/Google/Chrome/Default/History
+$HOME/Library/Application Support/Google/Chrome/Safe Browsing
+$HOME/Library/Application Support/Google/Chrome/Default/Favicons
+$HOME/Library/Containers/com.witt-software.PDF-Squeezer/Data/Library/Application Support/com.witt-software.PDF-Squeezer/com.microsoft.appcenter
+$HOME/Library/Containers/com.witt-software.PDF-Squeezer/Data/Library/Application Support/com.witt-software.PDF-Squeezer/com.microsoft.appcenter/crashes
+$HOME/Library/Containers/com.witt-software.PDF-Squeezer/Data/Library/Application Support/com.witt-software.PDF-Squeezer/com.microsoft.appcenter/crasheslogbuffer
+$HOME/Library/HTTPStorages/com.unofficial.winery
+$HOME/Library/Containers/com.peterborgapps.LingonX9/Data/Library/HTTPStorages/com.peterborgapps.LingonX9
+$HOME/Library/Containers/com.mothersruin.MRSFoundation.UpdateCheckingService/Data/Library/HTTPStorages/com.mothersruin.MRSFoundation.UpdateCheckingService
+$HOME/Library/Application Support/Google/Chrome/FirstPartySetsPreloaded/2024.11.8.0
+$HOME/Library/Application Support/PDF Expert/support.logs/rd2supportlog.txt
+$HOME/Library/Application Support/Google/Chrome/Profile 4/History
+$HOME/Library/HTTPStorages/com.googlecode.iterm2
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/mhccgcegedfkhdbfbgllfkkcjhgkoinc/1.0.1
+$HOME/Library/Containers/com.pictarine.Snip/Data/Library/HTTPStorages/com.pictarine.Snip
+$HOME/Library/Application Support/discord/WidevineCdm/4.10.2830.0
+$HOME/Library/Application Support/com.apple.RemoteManagementAgent
+$HOME/Library/HTTPStorages/com.apple.weatherd
+$HOME/Library/HTTPStorages/co.eclecticlight.TheTimeMachineMechanic
+$HOME/Library/Application Support/Google/Chrome/Profile 4/Favicons
+$HOME/Library/HTTPStorages/com.apple.SoftwareUpdateNotificationManager
+$HOME/Library/Containers/com.apple.tips/Data/Library/HTTPStorages/com.apple.tips
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/Default/History-journal
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/Default/Favicons
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/Default/Favicons-journal
+$HOME/Library/HTTPStorages/com.brave.Browser
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/kklfafolbojbonkjgifmmkdmaaimminj/1.0.83
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/aoojcmojmmcbpfgoecoadbdpnagfchel/1.0.15
+$HOME/Library/Containers/com.apple.dt.IDECacheDeleteAppExtension/Data/Library/HTTPStorages/com.apple.dt.IDECacheDeleteAppExtension
+$HOME/Library/Biome/streams
+$HOME/Library/HTTPStorages/com.apple.iCloudNotificationAgent
+$HOME/Library/HTTPStorages/com.apple.ctcategories.service
+$HOME/Library/com.apple.bluetooth.services.cloud/CKTokens/Zone/Private/__defaultOwner__/SoundProfileZone.token
+$HOME/Library/Stickers/stickers_ckAssets
+$HOME/Pictures/Photos Library.photoslibrary/resources/caches
+$HOME/Library/Containers/com.apple.AuthKitUI.AKFollowUpServerUIExtension/Data/Library/HTTPStorages/com.apple.AuthKitUI.AKFollowUpServerUIExtension
+$HOME/Library/Containers/org.sparkle-project.Downloader/Data/Library/HTTPStorages/org.sparkle-project.Downloader
+$HOME/Library/Containers/com.witt-software.PDF-Squeezer/Data/Library/HTTPStorages/com.witt-software.PDF-Squeezer
+$HOME/Library/Containers/com.apple.MobileSMS/Data/Library/ResponseKit/en-dynamic.lm
+$HOME/Library/Application Support/Microsoft/Teams/media-stack/rtmcontrol.msrtc-0-4127867718.blog
+$HOME/Library/HTTPStorages/com.uranusjr.macdown
+$HOME/Library/Containers/com.microsoft.Excel/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office
+$HOME/Library/Containers/com.microsoft.Excel/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0
+$HOME/Library/Containers/com.microsoft.Excel/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0/OfficeFileCache
+$HOME/Library/Containers/com.microsoft.Excel/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0/OfficeFileCache/0
+$HOME/Library/Containers/com.microsoft.Excel/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0/OfficeFileCache/0/0
+$HOME/Library/Containers/com.microsoft.Excel/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0/OfficeFileCache/0/0/BFBTH7CEHDFEFDEMBFCLBYAIA3C6CQE7
+$HOME/Library/Biome/compute
+$HOME/Library/Shortcuts/Temporary/com.apple.shortcuts
+$HOME/Library/Application Support/PDF Expert/support.logs/rd2supportlog.1.txt
+$HOME/Library/Containers/com.apple.Passwords-Settings.extension/Data/Library/HTTPStorages/com.apple.Passwords-Settings.extension
+$HOME/Library/Application Support/Google/Chrome/Profile 3/History-journal
+$HOME/Library/Application Support/Google/Chrome/Profile 3/Favicons
+$HOME/Library/Application Support/Google/Chrome/Profile 3/Favicons-journal
+$HOME/Library/Containers/com.apple.SiriNCService/Data/Library/Assistant/PreviousConversation
+$HOME/Library/HTTPStorages/com.apple.Software-Update-Settings.extension
+$HOME/Library/HTTPStorages/com.oracle.java.Java-Updater
+$HOME/Library/HTTPStorages/Oracle.MacJREInstaller
+$HOME/Library/HTTPStorages/com.manytricks.KeyCodes
+$HOME/Library/HTTPStorages/com.apple.AMPLibraryAgent
+$HOME/Library/HTTPStorages/com.apple.appstoreagent
+$HOME/Library/Biome/streams/restricted
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/WidevineCdm/4.10.2830.0
+$HOME/Library/Containers/com.microsoft.errorreporting/Data/Library/HTTPStorages/com.microsoft.errorreporting
+$HOME/Library/Application Support/PDF Expert/support.logs/rd2supportlog.2.txt
+$HOME/Library/Application Support/com.readdle.PDFExpert-Mac/com.microsoft.appcenter
+$HOME/Library/Application Support/com.readdle.PDFExpert-Mac/com.microsoft.appcenter/crashes
+$HOME/Library/Application Support/com.readdle.PDFExpert-Mac/com.microsoft.appcenter/crasheslogbuffer
+$HOME/Library/HTTPStorages/com.readdle.PDFExpert-Mac
+/Library/Application Support/Apple/AssetCache/Data
+$HOME/Library/LanguageModeling/pt-dynamic.lm/dynamic-lexicon.dat
+$HOME/Library/Application Support/Google/DriveFS/110565197184784111903
+$HOME/Library/Containers/com.apple.news/Data/Library/HTTPStorages/com.apple.news
+$HOME/Library/HTTPStorages/com.apple.newsd
+$HOME/Library/HTTPStorages/com.apple.TV
+$HOME/Library/HTTPStorages/com.apple.NewDeviceOutreach
+$HOME/Library/HTTPStorages/com.apple.Music
+$HOME/Library/Containers/com.apple.Dictionary/Data/Library/HTTPStorages/com.apple.Dictionary
+$HOME/Library/Containers/com.microsoft.Powerpoint/Data/Library/Application Support/Microsoft/AppData
+$HOME/Library/Containers/com.microsoft.Powerpoint/Data/Library/Application Support/Microsoft/AppData/Microsoft
+$HOME/Library/Containers/com.microsoft.Powerpoint/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office
+$HOME/Library/Containers/com.microsoft.Powerpoint/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0
+$HOME/Library/Containers/com.microsoft.Powerpoint/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0/OfficeFileCache
+$HOME/Library/Containers/com.microsoft.Powerpoint/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0/OfficeFileCache/0
+$HOME/Library/Containers/com.microsoft.Powerpoint/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0/OfficeFileCache/0/0
+$HOME/Library/Containers/com.microsoft.Powerpoint/Data/Library/Application Support/Microsoft/AppData/Microsoft/Office/16.0/OfficeFileCache/0/0/BFBTH7CEHDFEFDEMBFCLBYAIA3C6CQE7
+$HOME/Library/Containers/com.microsoft.Powerpoint/Data/Library/Application Support/Microsoft/FontPreviewCache/en-GB
+$HOME/Library/LanguageModeling/ko-dynamic.lm
+$HOME/Library/LanguageModeling/en-dynamic.lm/dynamic-lexicon.dat
+/Library/Developer/CoreSimulator/Images
+/Library/Developer/CoreSimulator/Caches
+/Library/Developer/CoreSimulator/Volumes
+/Library/Developer/CoreSimulator/Cryptex/Images
+/Library/Developer/CoreSimulator/Cryptex/Caches
+$HOME/Pictures/Photos Library.photoslibrary/database
+$HOME/Pictures/Photos Library.photoslibrary/private/com.apple.mediaanalysisd/caches
+$HOME/Library/Containers/com.amvidia.Tag-Editor-FS/Data/Library/HTTPStorages/com.amvidia.Tag-Editor-FS
+$HOME/Library/HTTPStorages/com.eltima.SyncMate
+$HOME/Library/HTTPStorages/com.eltima.SyncMate.com.eltima.SyncMateService
+$HOME/Library/HTTPStorages/net.freemacsoft.AppCleaner
+$HOME/Library/Application Support/calibre-ebook.com/calibre/QtWebEngine/viewer-lookup/History
+$HOME/Library/Application Support/calibre-ebook.com/calibre/QtWebEngine/viewer-lookup/History-journal
+$HOME/Library/Application Support/calibre-ebook.com/calibre/QtWebEngine/viewer-lookup/Favicons
+$HOME/Library/Application Support/calibre-ebook.com/calibre/QtWebEngine/viewer-lookup/Favicons-journal
+$HOME/Library/HTTPStorages/com.oracle.java.8u351.java
+$HOME/Library/Containers/ch.protonvpn.mac/Data/Library/HTTPStorages/ch.protonvpn.mac
+/Library/OSAnalytics/Diagnostics
+/Library/OSAnalytics/Preferences
+$HOME/Library/Containers/com.apple.iBooksX/Data/Library/WebKit/WebsiteData/LocalStorage
+$HOME/Library/LanguageModeling/hu-dynamic.lm
+$HOME/Library/LanguageModeling/de-dynamic.lm
+$HOME/Library/LanguageModeling/       799-dynamic.lm
+$HOME/Library/Keyboard/fr-dynamic.lm
+$HOME/Library/LanguageModeling/pl-dynamic.lm
+$HOME/Library/Keyboard/it-dynamic.lm
+$HOME/Library/Keyboard/es-dynamic.lm
+$HOME/Library/LanguageModeling/vi-dynamic.lm
+$HOME/Library/HTTPStorages/com.apple.betaenrollmentd
+$HOME/Library/HTTPStorages/MiniLauncher
+$HOME/Library/StatusKit/database/statuskit-cloud_ckAssets
+$HOME/Library/Application Support/Animoji/CoreDataBackend/avatars_ckAssets
+$HOME/Library/Containers/com.apple.iBooksX/Data/Library/HTTPStorages/com.apple.iBooksX
+$HOME/Library/Containers/com.apple.iBooksX/Data/Library/Application Support/CRDTModelContext
+$HOME/Library/HTTPStorages/com.samsung.SmartSwitch
+$HOME/Library/HTTPStorages/com.apple.installer.osinstallersetupd
+$HOME/Library/LanguageModeling/nl-dynamic.lm
+$HOME/Library/Containers/com.apple.iWork.Keynote/Data/Library/Application Support/DocumentData
+$HOME/Library/HTTPStorages/com.microsoft.autoupdate2
+$HOME/Library/HTTPStorages/com.apple.amsengagementd
+$HOME/Library/LanguageModeling/nb-dynamic.lm
+$HOME/Library/HTTPStorages/crashpad-handler
+$HOME/Library/Application Support/com.houdah.CustomShortcuts/com.microsoft.appcenter
+$HOME/Library/Application Support/com.houdah.CustomShortcuts/com.microsoft.appcenter/crashes
+$HOME/Library/Application Support/com.houdah.CustomShortcuts/com.microsoft.appcenter/crasheslogbuffer
+$HOME/Library/HTTPStorages/com.houdah.CustomShortcuts
+$HOME/Library/Application Support/Google/DriveFS/cef_cache/WidevineCdm/4.10.2830.0
+$HOME/Pictures/Photos Library.photoslibrary/scopes/momentshared
+$HOME/Pictures/Photos Library.photoslibrary/scopes/syndication
+$HOME/Library/HTTPStorages/askpermissiond
+$HOME/Library/HTTPStorages/com.apple.amsaccountsd
+$HOME/Library/HTTPStorages/com.apple.tipsd
+$HOME/Library/HTTPStorages/com.apple.AppleMediaServicesUI
+$HOME/Library/Containers/ContactsSyncWithGroups/Data/Library/HTTPStorages/ContactsSyncWithGroups
+$HOME/Library/HTTPStorages/com.google.Keystone
+$HOME/Library/HTTPStorages/io.macfuse.preferencepanes.macfuse
+$HOME/Library/Passes/AuxiliaryCapabilityTasks_v6.archive
+$HOME/Library/Passes/WebServiceTasks_v6.archive
+$HOME/Library/Passes/NotificationServiceTasks_v6.archive
+$HOME/Library/Passes/PaymentWebServiceContext.archive
+$HOME/Library/Passes/ScheduledActivities.archive
+$HOME/Library/Application Support/Google/Chrome/TpcdMetadata/2025.2.1.1
+$HOME/Library/Application Support/Google/Chrome/CertificateRevocation/9539
+$HOME/Library/Application Support/Google/Chrome/PKIMetadata/1214
+$HOME/Library/com.apple.bluetoothuser/Production/001014-05-5b5cb2e6-9c5e-4da6-ae56-78a65329e75d/CKTokens/Database/Private.token
+$HOME/Library/com.apple.bluetooth.services.cloud/CachedRecords/00000000-0000-0000-0000-00000000000C
+$HOME/Library/com.apple.bluetooth.services.cloud/CKTokens/Database/Private.token
+$HOME/Library/com.apple.appleaccountd/CKTokens/Database/Private/com.apple.appleaccount.custodian.token
+$HOME/Library/com.apple.appleaccountd/CKTokens/Database/Private/com.apple.appleaccount.beneficiary.token
+$HOME/Library/com.apple.appleaccountd/CKTokens/Database/Private/com.apple.appleaccount.beneficiary.private.token
+$HOME/Library/com.apple.appleaccountd/CKTokens/Database/Private/com.apple.appleaccount.custodian.private.token
+$HOME/Library/Application Support/Google/Chrome/CertificateRevocation/9540
+$HOME/Library/Application Support/Google/Chrome/TpcdMetadata/2025.2.2.1
+
+# Other paths to exclude
+$HOME/Metadata/CoreSpotlight
+$HOME/.rbenv
+$HOME/.pyenv
+$HOME/.gem
+$HOME/.cargo
+$HOME/Documents/calibre
+$HOME/Samsung/SmartSwitch
