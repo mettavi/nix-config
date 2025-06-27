@@ -6,6 +6,8 @@ version = "1"
 
 [global]
 initialize = true
+# prevent idle sleeping
+prevent-sleep = true
 
 [default]
 repository = "rclone:b2:mack-timotheos"
