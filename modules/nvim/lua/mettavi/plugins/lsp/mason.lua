@@ -98,11 +98,11 @@ return {
     --     "yamlfmt", -- tool or library to format yaml files
     --     "prettier", -- multi-purpose formatter
     --   },
-      -- if set to true this will check each tool for updates. If updates
-      -- are available the tool will be updated. This setting does not
-      -- affect :MasonToolsUpdate or :MasonToolsInstall.
-      -- Default: false
-      -- auto_update = true,
+    -- if set to true this will check each tool for updates. If updates
+    -- are available the tool will be updated. This setting does not
+    -- affect :MasonToolsUpdate or :MasonToolsInstall.
+    -- Default: false
+    -- auto_update = true,
     -- })
 
     -- mason_nvim_dap.setup()
@@ -131,6 +131,7 @@ return {
         },
       },
     })
+    lspconfig["taplo"].setup({})
     lspconfig["ts_ls"].setup({
       capabilities = capabilities,
       on_attach = on_attach,
