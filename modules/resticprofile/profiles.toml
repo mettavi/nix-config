@@ -10,7 +10,7 @@ version = "1"
   prevent-sleep = true
 
 [default]
-  description = "Restic backup of user timotheos  on host mack"
+  description = "Restic backup of user timotheos on host mack"
   repository = "rclone:b2:mack-timotheos"
   option = [
     "rclone.args=serve restic --stdio --b2-hard-delete --fast-list --verbose",
@@ -32,7 +32,7 @@ version = "1"
     schedule = "*.*.* 00:30"
     schedule-permission = "system"
     schedule-priority = "background"
-    schedule-log = "mack-timotheos-b2backup_{{ .Now.DateOnly }}.log"
+    schedule-log = 'mack-timotheos-b2backup_{{ .Now.Format "2006-01-02" }}.log'
     schedule-lock-wait = "5m"
 
     # send monitoring info to healthchecks.io
@@ -68,7 +68,7 @@ version = "1"
     schedule = "Mon *.*.* 01:30"
     schedule-permission = "system"
     schedule-priority = "background"
-    schedule-log = "mack-timotheos-b2prune_{{ .Now.DateOnly }}.log"
+    schedule-log = 'mack-timotheos-b2prune_{{ .Now.Format "2006-01-02" }}.log'
     schedule-lock-wait = "5m"
 
     # send monitoring info to healthchecks.io
@@ -94,7 +94,7 @@ version = "1"
     schedule = "*.*.1 02:00"
     schedule-permission = "system"
     schedule-priority = "background"
-    schedule-log = "mack-timotheos-b2check_{{ .Now.DateOnly }}.log"
+    schedule-log = 'mack-timotheos-b2check_{{ .Now.Format "2006-01-02" }}.log'
     schedule-lock-wait = "5m"
 
     # send monitoring info to healthchecks.io

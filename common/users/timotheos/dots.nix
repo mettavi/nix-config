@@ -43,8 +43,7 @@ in
       # link without copying to nix store (manage externally) - must use absolute paths
       # mkOutOfStoreSymlink is required to allow the lazy-lock.json file to be writable
       "nvim".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/modules/nvim";
-      "resticprofile/profiles.toml".source = ../../../modules/resticprofile/profiles.toml;
-      "resticprofile/exclude_home.txt".source = ../../../modules/resticprofile/exclude_home.txt;
+      "resticprofile".source = ../../../modules/resticprofile;
       "tmuxp/nvim-zsh.yaml".source = ../../../modules/tmuxp/nvim-zsh.yaml;
       "zsh/.zsh_aliases".source = ../../../modules/zsh/.zsh_aliases;
       "zsh/.zsh_functions".source = ../../../modules/zsh/.zsh_functions;
