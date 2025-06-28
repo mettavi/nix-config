@@ -18,7 +18,6 @@ return {
         yaml = { "yamlfmt" },
         markdown = { "prettier" },
         lua = { "stylua" },
-        python = { "isort", "black" },
         sh = { "shfmt" },
         toml = { "taplo" },
         nix = { "nixfmt" },
