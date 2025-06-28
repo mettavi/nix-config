@@ -10,6 +10,7 @@ version = "1"
   prevent-sleep = true
 
 [default]
+  description = "Restic backup of user timotheos  on host mack"
   repository = "rclone:b2:mack-timotheos"
   option = [
     "rclone.args=serve restic --stdio --b2-hard-delete --fast-list --verbose",
