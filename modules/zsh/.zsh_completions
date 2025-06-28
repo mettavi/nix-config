@@ -40,6 +40,7 @@ do
 done
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
+
 # CUSTOM FZF FLAGS
 # NB: fzf-tab does not follow FZF_DEFAULT_OPTS
 # NB: The bindings on the first line follow the fzf defaults
@@ -49,4 +50,3 @@ ctrl-b:preview-page-up,ctrl-f:preview-page-down,\
 ctrl-u:preview-half-page-up,ctrl-d:preview-half-page-down,\
 shift-up:preview-top,shift-down:preview-bottom,\
 alt-up:half-page-up,alt-down:half-page-down
-
