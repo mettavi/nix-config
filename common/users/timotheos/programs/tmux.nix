@@ -7,7 +7,8 @@
     enable = true;
     baseIndex = 1;
     customPaneNavigationAndResize = true;
-    # escapeTime = 10;
+    # override default (500) with a better value, see https://github.com/tmux/tmux/issues/3844 for a discussion
+    escapeTime = 10;
     extraConfig = # sh
       ''
         # Allow Ctrl+a to be passed to the terminal
@@ -45,6 +46,8 @@
         set -g status-left-length 100
         set -g status-left ""
       '';
+    # allow nvim to intercept focus events from the terminal emulator (enables autoread to reload changed files)
+    focusEvents = true;
     historyLimit = 50000;
     keyMode = "vi";
     mouse = true;
