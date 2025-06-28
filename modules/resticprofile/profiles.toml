@@ -10,7 +10,7 @@ version = "1"
   prevent-sleep = true
 
 [default]
-  description = "Restic backup of user timotheos  on host mack"
+  description = "Restic backup of user timotheos on host mack"
   repository = "rclone:b2:mack-timotheos"
   option = [
     "rclone.args=serve restic --stdio --b2-hard-delete --fast-list --verbose",
@@ -20,7 +20,8 @@ version = "1"
 
   [default.backup]
     source = ["/Users/timotheos"]
-    check-before = true
+    # set to false as "restic check" is a data intensive operation
+    check-before = false
     exclude-file = "./exclude_home.txt"
     exclude-caches = true
     # SCHEDULING
@@ -31,8 +32,8 @@ version = "1"
     schedule-log = "mack-timotheos-b2backup_{{ .Now.DateOnly }}.log"
     schedule-lock-wait = "5m"
 
-  [default.retention]
-    after-backup = true
+
+  [default.forget]
     host = "mack"
     prune = true
     keep-last = 10
@@ -40,3 +41,18 @@ version = "1"
     keep-weekly = 12
     keep-monthly = 24
     keep-yearly = 25
+    # SCHEDULING
+    # run a forget and prune operation on Mondays at 1:30 am
+    schedule = "Mon *.*.* 01:30"
+    schedule-permission = "system"
+    schedule-priority = "background"
+    schedule-log = "mack-timotheos-b2prune_{{ .Now.DateOnly }}.log"
+    schedule-lock-wait = "5m"
+
+  [default.check]
+    # run an integrity check on the 1st of each month at 2 am
+    schedule = "*.*.1 02:00"
+    schedule-permission = "system"
+    schedule-priority = "background"
+    schedule-log = "mack-timotheos-b2check_{{ .Now.DateOnly }}.log"
+    schedule-lock-wait = "5m"
