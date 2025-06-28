@@ -29,3 +29,13 @@ version = "1"
     schedule-log = "mack-timotheos-b2backup_{{ .Now.DateOnly }}.log"
     schedule-lock-mode = "default"
     schedule-lock-wait = "5m"
+
+  [default.retention]
+    after-backup = true
+    host = "mack"
+    prune = true
+    keep-last = 10
+    keep-daily = 7
+    keep-weekly = 12
+    keep-monthly = 24
+    keep-yearly = 25
