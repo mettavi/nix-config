@@ -20,6 +20,7 @@ version = "1"
   [default.backup]
     verbose = true
     source = ["/Users/timotheos"]
+    check-before = true
     exclude-file = "./exclude_home.txt"
     exclude-caches = true
     # SCHEDULING
