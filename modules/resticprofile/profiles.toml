@@ -19,6 +19,8 @@ version = "1"
   verbose = true
 
   [default.backup]
+    # set to true for first run
+    dry-run = true
     source = ["/Users/timotheos"]
     # set to false as "restic check" is a data intensive operation
     check-before = false
@@ -51,6 +53,8 @@ version = "1"
         value = "text/plain; charset=UTF-8"
 
   [default.forget]
+    # set to true for first run
+    dry-run = true
     host = "mack"
     prune = true
     keep-last = 10
