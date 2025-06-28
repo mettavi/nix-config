@@ -70,6 +70,7 @@ version = "1"
     schedule-log = "mack-timotheos-b2prune_{{ .Now.DateOnly }}.log"
     schedule-lock-wait = "5m"
 
+    # send monitoring info to healthchecks.io
     [default.forget.send-before]
       method = "HEAD"
       url = "https://hc-ping.com/b14dac3a-79ae-4bac-89aa-4751c7603b50/start"
