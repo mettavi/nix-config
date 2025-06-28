@@ -56,6 +56,8 @@
           "unconsumed:alt+f=esc:f"
         ];
         macos-option-as-alt = true;
+        # start windows maximized
+        maximize = true;
         theme = "iTerm2 Pastel Dark Background";
       };
     };
