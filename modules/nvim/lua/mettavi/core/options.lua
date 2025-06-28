@@ -47,6 +47,9 @@ opt.swapfile = false
 -- enable undofile
 opt.undofile = true
 
+-- recommended for the auto-session plugin (especially add "localoptions")
+opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
 -------------- CUSTOM OPTIONS -------------------
 
 -- open terminal in a split window
