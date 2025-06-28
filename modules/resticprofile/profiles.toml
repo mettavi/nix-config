@@ -32,6 +32,7 @@ version = "1"
     schedule-log = "mack-timotheos-b2backup_{{ .Now.DateOnly }}.log"
     schedule-lock-wait = "5m"
 
+    # send monitoring info to healthchecks.io
     [[default.backup.send-before]]
       method = "HEAD"
       url = "https://hc-ping.com/42a6053f-8428-43a2-bf57-5394990b3e38/start"
@@ -65,6 +66,23 @@ version = "1"
     schedule-log = "mack-timotheos-b2prune_{{ .Now.DateOnly }}.log"
     schedule-lock-wait = "5m"
 
+    [default.forget.send-before]
+      method = "HEAD"
+      url = "https://hc-ping.com/b14dac3a-79ae-4bac-89aa-4751c7603b50/start"
+
+    [default.forget.send-after]
+      method = "HEAD"
+      url = "https://hc-ping.com/b14dac3a-79ae-4bac-89aa-4751c7603b50"
+
+    [default.forget.send-after-fail]
+      method = "POST"
+      url = "https://hc-ping.com/b14dac3a-79ae-4bac-89aa-4751c7603b50/fail"
+      body-template = "body-template.json"
+
+      [[default.forget.send-after-fail.headers]]
+        name = "Content-Type"
+        value = "text/plain; charset=UTF-8"
+
   [default.check]
     # run an integrity check on the 1st of each month at 2 am
     schedule = "*.*.1 02:00"
@@ -73,10 +91,20 @@ version = "1"
     schedule-log = "mack-timotheos-b2check_{{ .Now.DateOnly }}.log"
     schedule-lock-wait = "5m"
 
+    # send monitoring info to healthchecks.io
     [default.check.send-before]
       method = "HEAD"
-      url = "https://hc-ping.com/42a6053f-8428-43a2-bf57-5394990b3e38/start"
+      url = "https://hc-ping.com/4b6b82d9-1088-4763-8129-2ce1f996b682/start"
 
     [default.check.send-after]
       method = "HEAD"
-      url = "https://hc-ping.com/42a6053f-8428-43a2-bf57-5394990b3e38"
+      url = "https://hc-ping.com/4b6b82d9-1088-4763-8129-2ce1f996b682"
+
+    [default.check.send-after-fail]
+      method = "POST"
+      url = "https://hc-ping.com/4b6b82d9-1088-4763-8129-2ce1f996b682/start"
+      body-template = "body-template.json"
+
+      [[default.check.send-after-fail.headers]]
+        name = "Content-Type"
+        value = "text/plain; charset=UTF-8"
