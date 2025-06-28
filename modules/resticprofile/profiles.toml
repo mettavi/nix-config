@@ -23,6 +23,7 @@ version = "1"
     dry-run = true
     source = ["/Users/timotheos"]
     # set to false as "restic check" is a data intensive operation
+    # see the discussion at https://forum.restic.net/t/unexpected-costs-with-backblaze-b2-backend/4176/5
     check-before = false
     exclude-file = "./exclude_home.txt"
     exclude-caches = true
