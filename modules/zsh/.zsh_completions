@@ -40,7 +40,7 @@ do
 done
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
-# custom fzf flags
+# CUSTOM FZF FLAGS
 # NB: fzf-tab does not follow FZF_DEFAULT_OPTS
 # NB: The bindings on the first line follow the fzf defaults
 zstyle ':fzf-tab:*' fzf-flags --border --bind=tab:toggle-out,btab:toggle-in,ctrl-space:ignore,\
