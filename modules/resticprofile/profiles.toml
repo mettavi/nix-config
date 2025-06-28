@@ -10,7 +10,7 @@ version = "1"
   prevent-sleep = true
 
 [default]
-  description = "Restic backup of user timotheos on host mack"
+  description = "Restic backup of user timotheos  on host mack"
   repository = "rclone:b2:mack-timotheos"
   option = [
     "rclone.args=serve restic --stdio --b2-hard-delete --fast-list --verbose",
@@ -32,6 +32,22 @@ version = "1"
     schedule-log = "mack-timotheos-b2backup_{{ .Now.DateOnly }}.log"
     schedule-lock-wait = "5m"
 
+    [[default.backup.send-before]]
+      method = "HEAD"
+      url = "https://hc-ping.com/42a6053f-8428-43a2-bf57-5394990b3e38/start"
+
+    [[default.backup.send-after]]
+      method = "HEAD"
+      url = "https://hc-ping.com/42a6053f-8428-43a2-bf57-5394990b3e38"
+
+    [default.backup.send-after-fail]
+      method = "POST"
+      url = "https://hc-ping.com/42a6053f-8428-43a2-bf57-5394990b3e38/fail"
+      body-template = "body-template.json"
+
+      [[default.backup.send-after-fail.headers]]
+        name = "Content-Type"
+        value = "text/plain; charset=UTF-8"
 
   [default.forget]
     host = "mack"
@@ -56,3 +72,11 @@ version = "1"
     schedule-priority = "background"
     schedule-log = "mack-timotheos-b2check_{{ .Now.DateOnly }}.log"
     schedule-lock-wait = "5m"
+
+    [default.check.send-before]
+      method = "HEAD"
+      url = "https://hc-ping.com/42a6053f-8428-43a2-bf57-5394990b3e38/start"
+
+    [default.check.send-after]
+      method = "HEAD"
+      url = "https://hc-ping.com/42a6053f-8428-43a2-bf57-5394990b3e38"

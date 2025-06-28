@@ -1,0 +1,7 @@
+{
+  "profileName": "{{ .ProfileName }}",
+  "profileCommand": "{{ .ProfileCommand }}",
+  "errorMessage": "{{ .Error.Message }}",
+  "stdErr": "{{ .Error.Stderr }}",
+  "exitCode": "{{ .Error.ExitCode }}"
+}
