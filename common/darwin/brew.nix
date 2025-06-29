@@ -123,7 +123,12 @@
       }
       # "syncmate"
       # "tor-browser"
-      # Create, manage, and run virtual machines"typora"
+      # editor that supports Markdown
+      {
+        name = "typora";
+        greedy = true;
+      }
+      # Create, manage, and run virtual machines
       {
         name = "vmware-fusion";
         greedy = true;
