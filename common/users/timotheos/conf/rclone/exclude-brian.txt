@@ -32,6 +32,8 @@ tmp/**
 
 # paths to exclude (from command: sudo mdfind "com_apple_backup_excludeItem = 'com.apple.backupd'")
 # NB: Must add "/**" to folder paths to conform to rclone exclusions syntax
+iMovie Thumbnails/**
+iMovie Movie Cache/**
 /Library/Calendars/Calendar Cache
 /Library/Application Support/Librarian/FB2013DB-2D5B-55D8-A75B-FB454EC1C67E.txt
 /Library/Containers/com.apple.Maps/Data/Library/Maps/Bookmarks.synced
