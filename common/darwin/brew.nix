@@ -63,6 +63,7 @@
         name = "iTerm2";
         greedy = true;
       }
+      # wine wrapped ports of Windows software for macOS (previously "wineskin")
       {
         name = "kegworks";
         args = {
