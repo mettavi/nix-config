@@ -24,6 +24,11 @@ tmp/**
 /Music/iTunes/**
 /Pictures/Photos Library.photoslibrary/Thumbnails/**
 /Pictures/iPhoto Library.photolibrary/**
+/Movies/iMovie Events.localized/**
+/Movies/iMovie Camera Archives.localized/**
+/Movies/iMovie Original Movies.localized/**
+/Movies/iMovie Projects.localized/**
+/Movies/iMovie Theater.theater/**
 
 # paths to exclude (from command: sudo mdfind "com_apple_backup_excludeItem = 'com.apple.backupd'")
 # NB: Must add "/**" to folder paths to conform to rclone exclusions syntax
