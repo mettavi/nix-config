@@ -134,7 +134,11 @@
         greedy = true;
       }
       "xcodes"
-      # "zotero"
+      # Collect, organise, cite, and share research sources
+      {
+        name = "zotero";
+        greedy = true;
+      }
     ];
     # setting this option will add the mas cli binary to homebrew.brews
     masApps = {

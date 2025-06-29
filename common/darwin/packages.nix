@@ -31,7 +31,8 @@ in
     # fix was committed to master on Wed 18 Dec, see https://github.com/NixOS/nixpkgs/pull/365792/commits
     # whatsapp-for-mac
     xcodes
-    zotero # Collect, organize, cite, and share your research sources
+    # Move to homebrew modules as this package is unable to install the Word plugin
+    # zotero # Collect, organize, cite, and share your research sources
 
     # CUSTOM APPS
     macpkgs.goldendictng-gh # Advanced multi-dictionary lookup program
