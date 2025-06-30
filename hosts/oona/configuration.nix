@@ -7,18 +7,24 @@
 {
   nixpkgs.hostPlatform = "x86_64-linux";
 
-  imports = [
-    ./hardware-configuration.nix
-    ./users.nix
-    ../../common/linux
-  ];
+  # imports = [
+  # ];
+
+  users.users.${username} = {
+    # authorize remote login using ssh key
+    openssh.authorizedKeys.keys = [
+      # authorize login to ${username} from host mack
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos.allen@gmail.com"
+    ];
+  };
 
   # Set Git commit hash for darwin-version.
   system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
 
   virtualisation.vmware.guest.enable = true;
 
-  fileSystems."/mnt/mack/${username}" = {
+  # setup a file share from the host to the guest
+  fileSystems."/mnt/${hostname}/${username}" = {
     device = ".host:/${username}";
     fsType = "fuse./run/current-system/sw/bin/vmhgfs-fuse";
     options = [
@@ -151,16 +157,16 @@
 
   # HOME MANAGER OPTIONS
   # home-manager.users.${username} = {
-    # BUG: this is currently giving an error:
-    #   xdg.desktopEntries = {
-    #     mack-timotheos = {
-    #       name = "mack-timotheos";
-    #       comment = "Home directory for timeotheos on host mack";
-    #       genericName = "File Share";
-    #       icon = ../../modules/icons/org.xfce.thunar.png;
-    #       type = "Directory";
-    #     };
-    #   };
+  # BUG: this is currently giving an error:
+  #   xdg.desktopEntries = {
+  #     mack-timotheos = {
+  #       name = "mack-timotheos";
+  #       comment = "Home directory for timeotheos on host mack";
+  #       genericName = "File Share";
+  #       icon = ../../modules/icons/org.xfce.thunar.png;
+  #       type = "Directory";
+  #     };
+  #   };
   # };
 
   # Some programs need SUID wrappers, can be configured further or are

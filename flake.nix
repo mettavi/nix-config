@@ -154,8 +154,19 @@
               username
               ;
           };
+          users.users.${username} = {
+            isNormalUser = true;
+            home = "/home/${username}";
+            description = "Mettavihari";
+            extraGroups = [
+              "networkmanager"
+              "wheel"
+            ];
+          };
           modules = [
             ./hosts/${hostname}/configuration.nix
+            ./hosts/${hostname}/hardware-configuration.nix
+            ./common/linux
             ./common/shared
             sops-nix.nixosModules.sops
             inputs.home-manager.nixosModules.home-manager
