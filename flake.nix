@@ -198,6 +198,21 @@
         "oona" = mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
       };
 
+      # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
+      # --flake <path to configuration>#<configuration name> --target-host username@<ip address>
+      # nixosConfigurations = {
+      #   "salina" = {
+      #     nixpkgs.lib.nixosSystem = {
+      #       system = "aarch64-linux";
+      #       modules = [
+      #         disko.nixosModules.disko
+      #         ./hosts/salina/configuration.nix
+      #         ./hosts/salina/hardware-configuration.nix
+      #       ];
+      #     };
+      #   };
+      # };
+
       # Expose the package set, including overlays, for convenience.
       darwinPackages = self.darwinConfigurations."mack".pkgs;
 
