@@ -1,6 +1,7 @@
 {
   hostname,
   inputs,
+  pkgs,
   username,
   ...
 }:
@@ -11,6 +12,8 @@
   # ];
 
   users.users.${username} = {
+    # set zsh as the user's default
+    shell = pkgs.zsh;
     # authorize remote login using ssh key
     openssh.authorizedKeys.keys = [
       # authorize login to ${username} from host mack
