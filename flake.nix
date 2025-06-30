@@ -83,6 +83,7 @@
       nix-darwin,
       nixos-pkgs,
       nix-index-database,
+      disko,
       sops-nix,
       mac-app-util,
       ...
