@@ -155,17 +155,18 @@
               username
               ;
           };
-          users.users.${username} = {
-            isNormalUser = true;
-            home = "/home/${username}";
-            description = "Mettavihari";
-            extraGroups = [
-              "networkmanager"
-              "wheel"
-            ];
-          };
           modules = [
             ./hosts/${hostname}/configuration.nix
+            {
+              users.users.${username} = {
+                isNormalUser = true;
+                home = "/home/${username}";
+                extraGroups = [
+                  "networkmanager"
+                  "wheel"
+                ];
+              };
+            }
             ./hosts/${hostname}/hardware-configuration.nix
             ./common/linux
             ./common/shared
