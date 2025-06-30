@@ -43,6 +43,7 @@
       # "abbyy-finereader-pdf"
       # "adobe-digital-editions"
       "anki"
+      # TODO: Decide whether to install appcleaner from nixpkgs or homebrew
       # Uninstall unwanted apps
       # {
       #   name = "appcleaner";
