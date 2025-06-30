@@ -79,124 +79,26 @@
   outputs =
     inputs@{
       self,
-      nixpkgs,
-      nix-darwin,
-      nixos-pkgs,
-      nix-index-database,
-      disko,
-      sops-nix,
-      mac-app-util,
       ...
     }:
     let
 
-      nix_repo = ".nix-config";
-
-      # Function for nix-darwin system configuration
-      mkDarwinConfiguration =
-        hostname: system: username:
-        nix-darwin.lib.darwinSystem rec {
-          # Use specialArgs to pass through inputs to nix-darwin modules
-          specialArgs = {
-            inherit
-              hostname
-              inputs
-              nixpkgs
-              nix_repo
-              self
-              system
-              username
-              ;
-          };
-
-          modules = [
-            ./hosts/${hostname}/configuration.nix
-            {
-              users.users.${username} = {
-                name = "${username}";
-                home = "/Users/${username}";
-              };
-            }
-            ./common/darwin
-            ./common/darwin/nix-homebrew.nix
-            ./common/shared
-            mac-app-util.darwinModules.default
-            nix-index-database.darwinModules.nix-index
-            sops-nix.darwinModules.sops
-            inputs.home-manager.darwinModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                backupFileExtension = "nix-backup";
-                users.${username} = ./common/users/${username};
-                extraSpecialArgs = specialArgs;
-                sharedModules = [
-                  mac-app-util.homeManagerModules.default
-                  sops-nix.homeManagerModules.sops
-                ];
-              };
-            }
-          ];
-        };
-
-      # Function for NixOS system configuration
-      mkNixosConfiguration =
-        hostname: system: username:
-        nixpkgs.lib.nixosSystem rec {
-          specialArgs = {
-            inherit
-              hostname
-              inputs
-              nixos-pkgs
-              nix_repo
-              self
-              system
-              username
-              ;
-          };
-          modules = [
-            ./hosts/${hostname}/configuration.nix
-            {
-              users.users.${username} = {
-                isNormalUser = true;
-                home = "/home/${username}";
-                extraGroups = [
-                  "networkmanager"
-                  "wheel"
-                ];
-              };
-            }
-            ./hosts/${hostname}/hardware-configuration.nix
-            ./common/linux
-            ./common/shared
-            sops-nix.nixosModules.sops
-            inputs.home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useGlobalPkgs = true;
-                useUserPackages = true;
-                backupFileExtension = "nix-backup";
-                users.${username} = ./common/users/${username};
-                extraSpecialArgs = specialArgs;
-                sharedModules = [ sops-nix.homeManagerModules.sops ];
-              };
-            }
-          ];
-        };
+      mkDarwin = import ./lib/mkDarwin.nix { inherit inputs; };
+      mkNixos = import ./lib/mkNixos.nix { inherit inputs; };
 
     in
     {
+
       # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#mack
+      # $ darwin-rebuild build --flake .#hostname
       darwinConfigurations = {
-        "mack" = mkDarwinConfiguration "mack" "x86_64-darwin" "timotheos";
+        "mack" = mkDarwin.mkDarwinConfiguration "mack" "x86_64-darwin" "timotheos";
       };
 
       # Build nixos flake using:
-      # nixos-rebuild build --flake .#oona
+      # nixos-rebuild build --flake .#hostname
       nixosConfigurations = {
-        "oona" = mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
+        "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
       };
 
       # Expose the package set, including overlays, for convenience.
