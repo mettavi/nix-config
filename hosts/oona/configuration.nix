@@ -8,8 +8,7 @@
 {
   nixpkgs.hostPlatform = "x86_64-linux";
 
-  # imports = [
-  # ];
+  # imports = [ ../../common/users/${username}/linux.nix ];
 
   users.users.${username} = {
     # set zsh as the user's default
