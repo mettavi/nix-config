@@ -43,6 +43,11 @@
       # "abbyy-finereader-pdf"
       # "adobe-digital-editions"
       "anki"
+      # Uninstall unwanted apps
+      # {
+      #   name = "appcleaner";
+      #   greedy = true;
+      # }
       "calibre" # Comprehensive e-book software
       # Hard disk backup and cloning utility
       {

@@ -8,13 +8,13 @@ let
   # nixpkgs-24_11 = inputs.nixpkgs-24_11.legacyPackages.${system};
   # nixpkgs-24_05 = inputs.nixpkgs-24_05.legacyPackages.${system};
 
-
 in
 {
 
   # install standard packages
   environment.systemPackages = with pkgs; [
-    # appcleaner
+    # Uninstall unwanted apps
+    appcleaner
     coreutils-prefixed
     darwin.trash
     # grandperspective
