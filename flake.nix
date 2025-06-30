@@ -44,6 +44,10 @@
     };
 
     # OTHER APPS (alphabetical)
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     kegworks = {
       url = "github:Kegworks-App/Kegworks";
       flake = false;
