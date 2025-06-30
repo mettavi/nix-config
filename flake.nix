@@ -107,8 +107,16 @@
               username
               ;
           };
+
           modules = [
             ./hosts/${hostname}/configuration.nix
+            {
+              users.users.${username} = {
+                name = "${username}";
+                home = "/Users/${username}";
+              };
+            }
+            ./common/darwin
             ./common/darwin/nix-homebrew.nix
             ./common/shared
             mac-app-util.darwinModules.default
