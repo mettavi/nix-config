@@ -19,16 +19,16 @@ in
       };
 
       modules = [
-        ./hosts/${hostname}/configuration.nix
+        ../hosts/${hostname}/configuration.nix
         {
           users.users.${username} = {
             name = "${username}";
             home = "/Users/${username}";
           };
         }
-        ./common/darwin
-        ./common/darwin/nix-homebrew.nix
-        ./common/shared
+        ../common/darwin
+        ../common/darwin/nix-homebrew.nix
+        ../common/shared
         inputs.mac-app-util.darwinModules.default
         inputs.nix-index-database.darwinModules.nix-index
         inputs.sops-nix.darwinModules.sops
@@ -38,7 +38,7 @@ in
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "nix-backup";
-            users.${username} = ./common/users/${username};
+            users.${username} = ../common/users/${username};
             extraSpecialArgs = specialArgs;
             sharedModules = [
               inputs.mac-app-util.homeManagerModules.default
