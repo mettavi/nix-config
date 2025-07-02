@@ -104,15 +104,17 @@
       matchBlocks = {
         "github.com" = {
           identityFile = "${config.xdg.configHome}/sops-nix/secrets/users/${username}/ssh_keys/${username}-${hostname}_ed25519";
-          extraOptions = {
-            IgnoreUnknown = "UseKeyChain";
-            UseKeyChain = "yes";
-          };
         };
         "nixos-ocloud" = {
           hostname = "207.211.158.25";
           user = "ubuntu";
           identityFile = "${config.xdg.configHome}/sops-nix/secrets/users/${username}/ssh_keys/${username}-${hostname}_ed25519";
+        };
+        "*" = {
+          extraOptions = {
+            IgnoreUnknown = "UseKeychain";
+            UseKeychain = "yes";
+          };
         };
       };
     };
