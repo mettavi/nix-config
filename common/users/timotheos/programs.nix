@@ -112,7 +112,7 @@
         "nixos-ocloud" = {
           hostname = "207.211.158.25";
           user = "ubuntu";
-          identityFile = "${config.xdg.configHome}/sops-nix/secrets/users/${username}/ssh_keys/ssh-nixos-ocloud.key";
+          identityFile = "${config.xdg.configHome}/sops-nix/secrets/users/${username}/ssh_keys/${username}-${hostname}_ed25519";
         };
       };
     };
