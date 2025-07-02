@@ -2,10 +2,10 @@
 
 (defcfg
   ;; list devices explicitly to prevent problems with bluetooth mouse
-  macos-dev-names-include (
-    "Apple Internal Keyboard / Trackpad"
-    "TouchBarUserDevice"
-    )
+  ;; macos-dev-names-include (
+  ;;   "Apple Internal Keyboard / Trackpad"
+  ;;   "TouchBarUserDevice"
+  ;;   )
   ;; also manage keys not in defsrc list
   process-unmapped-keys yes
   )
