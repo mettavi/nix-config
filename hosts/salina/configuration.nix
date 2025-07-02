@@ -1,10 +1,13 @@
 {
   modulesPath,
   lib,
-  username,
   pkgs,
   ...
 }@args:
+
+let
+  username = "timotheos";
+in
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
