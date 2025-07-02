@@ -79,6 +79,7 @@
   outputs =
     inputs@{
       self,
+      # disko,
       ...
     }:
     let
@@ -102,7 +103,7 @@
       };
 
       # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
-      # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on-remote \ 
+      # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on-remote \
       # --print-build-log --target-host username@<ip address>
       # nixosConfigurations = {
       #   "salina" = {
