@@ -33,8 +33,10 @@
       "wheel"
     ];
     openssh.authorizedKeys.keys = [
-      # change this to your ssh key
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCxVXQ5CuMcbFSw8o/Rm8QS2IYFeDSXMi+BsG+bnF++/PAGYpPLShzSgigEBsdzu8+YBXQsa4r0Aj2686YHAahCm+aNg9YDBN/bvsFMGqXT/N3ApMRzutEUUOESC45Bt9VAeBDYOU56ConW8NQLOFRLfsernv62y4KM5upcFpUhKpfi2AOXVU+Njc7cNXRYdoL8lwKxIBL3/IMAP1wr1rYQYkS7lRGvd6uhw/NGAFaXvsZ9IBQwkxJFFce6FiUO6Sm5sSpUcGYPPVMUugmoFvTH8QI+SVCPhC3VQj85/utAWzuQoSMoFf5tj89vml/KppdphAohKOIwK/VATdJ7WG7N ssh-key-2025-03-07"
+      # authorize login to user timotheos from host oona
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos.allen@gmail.com"
+      # authorize login to user timotheos from host mack
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos.allen@gmail.com"
     ] ++ (args.extraPublicKeys or [ ]); # this is used for unit-testing this module and can be removed if not needed
   };
 
