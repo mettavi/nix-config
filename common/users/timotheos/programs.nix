@@ -105,8 +105,8 @@
         "github.com" = {
           identityFile = "${config.xdg.configHome}/sops-nix/secrets/users/${username}/ssh_keys/${username}-${hostname}_ed25519";
         };
-        "nixos-ocloud" = {
-          hostname = "207.211.158.25";
+        "salina" = {
+          hostname = "169.224.231.109";
           user = "ubuntu";
           identityFile = "${config.xdg.configHome}/sops-nix/secrets/users/${username}/ssh_keys/${username}-${hostname}_ed25519";
         };
