@@ -79,7 +79,7 @@
   outputs =
     inputs@{
       self,
-      # disko,
+      disko,
       ...
     }:
     let
@@ -105,18 +105,18 @@
       # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
       # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on-remote \
       # --print-build-log --target-host username@<ip address>
-      # nixosConfigurations = {
-      #   "salina" = {
-      #     nixpkgs.lib.nixosSystem = {
-      #       system = "aarch64-linux";
-      #       modules = [
-      #         disko.nixosModules.disko
-      #         ./hosts/salina/configuration.nix
-      #         ./hosts/salina/hardware-configuration.nix
-      #       ];
-      #     };
-      #   };
-      # };
+      nixosConfigurations = {
+        "salina" = {
+          nixpkgs.lib.nixosSystem = {
+            system = "aarch64-linux";
+            modules = [
+              disko.nixosModules.disko
+              ./hosts/salina/configuration.nix
+              # ./hosts/salina/hardware-configuration.nix
+            ];
+          };
+        };
+      };
 
       # Expose the package set, including overlays, for convenience.
       darwinPackages = self.darwinConfigurations."mack".pkgs;
