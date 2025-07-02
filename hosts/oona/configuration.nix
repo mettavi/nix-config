@@ -15,7 +15,7 @@
     shell = pkgs.zsh;
     # authorize remote login using ssh key
     openssh.authorizedKeys.keys = [
-      # authorize login to ${username} from host mack
+      # authorize login to user timotheos from host mack
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos.allen@gmail.com"
     ];
   };

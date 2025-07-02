@@ -17,7 +17,7 @@
   users.users.${username} = {
     # authorize remote login using ssh key
     openssh.authorizedKeys.keys = [
-      # authorize login to ${username} from host oona
+      # authorize login to user timotheos from host oona
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos.allen@gmail.com"
     ];
   };
