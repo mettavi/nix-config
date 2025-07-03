@@ -79,43 +79,38 @@
   outputs =
     inputs@{
       self,
-      disko,
       ...
     }:
     let
 
       mkDarwin = import ./lib/mkDarwin.nix { inherit inputs; };
-      mkNixos = import ./lib/mkNixos.nix { inherit inputs; };
+      # mkNixos = import ./lib/mkNixos.nix { inherit inputs; };
+      initNixos = import ./lib/initNixos.nix;
 
     in
     {
 
+      # DARWIN-REBUILD BUILDS
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#hostname
       darwinConfigurations = {
         "mack" = mkDarwin.mkDarwinConfiguration "mack" "x86_64-darwin" "timotheos";
       };
 
+      # NIXOS-REBUILD BUILDS
       # Build nixos flake using:
       # nixos-rebuild build --flake .#hostname
-      nixosConfigurations = {
-        "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
-      };
+      # nixosConfigurations = {
+      #   "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
+      # };
+
+      ################################  NIXOS-ANYWHERE BUILDS  ############################################
 
       # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
-      # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on-remote \
+      # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on remote \
       # --print-build-log --target-host username@<ip address>
       nixosConfigurations = {
-        "salina" = {
-          nixpkgs.lib.nixosSystem = {
-            system = "aarch64-linux";
-            modules = [
-              disko.nixosModules.disko
-              ./hosts/salina/configuration.nix
-              # ./hosts/salina/hardware-configuration.nix
-            ];
-          };
-        };
+        "oona" = initNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
       };
 
       # Expose the package set, including overlays, for convenience.
