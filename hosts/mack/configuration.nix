@@ -19,6 +19,7 @@
     openssh.authorizedKeys.keys = [
       # authorize login to user timotheos from host oona
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos.allen@gmail.com"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1n+RR5GUcqjFh7ypsw5bVOszWnZUa4VltzgK6eYGUv timotheos@salina"
     ];
   };
 
@@ -41,7 +42,6 @@
         `users.users.*` namespace, or migrated to Home Manager.
   */
   system.primaryUser = "${username}";
-
 
   # Set Git commit hash for darwin-version.
   system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
