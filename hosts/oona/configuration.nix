@@ -21,7 +21,7 @@
     ];
   };
 
-  # Set Git commit hash for darwin-version.
+  # The Git revision of the top-level flake from which this configuration was built
   system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
 
   virtualisation.vmware.guest.enable = true;
