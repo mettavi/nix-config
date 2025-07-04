@@ -20,7 +20,7 @@
 
   users.users.${username} = {
     # set zsh as the user's default
-    shell = pkgs.zsh;
+    # shell = pkgs.zsh;
     # authorize remote login using ssh key
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
