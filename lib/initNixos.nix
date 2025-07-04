@@ -1,4 +1,4 @@
-{ inputs, modulesPath, ... }:
+{ inputs, ... }:
 {
   # Function for NixOS system configuration
   mkNixosConfiguration =
@@ -13,11 +13,9 @@
           ;
       };
       modules = [
-        (modulesPath + "/installer/scan/not-detected.nix")
-        (modulesPath + "/profiles/qemu-guest.nix")
         inputs.disko.nixosModules.disko
-        ../hosts/${hostname}/.disk-config.nix
         ../hosts/${hostname}/configuration.nix
+        # ../hosts/${hostname}/hardware-configuration.nix
         {
           users.users.${username} = {
             isNormalUser = true;

@@ -2,11 +2,18 @@
   hostname,
   inputs,
   pkgs,
+  modulesPath,
   system,
   username,
   ...
 }:
 {
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    (modulesPath + "/profiles/qemu-guest.nix")
+    ./disk-config.nix
+  ];
+
   nixpkgs.hostPlatform = "${system}";
 
   # imports = [ ../../common/users/${username}/linux.nix ];
