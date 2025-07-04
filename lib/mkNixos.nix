@@ -22,6 +22,7 @@ in
           users.users.${username} = {
             isNormalUser = true;
             home = "/home/${username}";
+            # allow user to configure networking and use sudo
             extraGroups = [
               "networkmanager"
               "wheel"
