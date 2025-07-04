@@ -2,11 +2,12 @@
   hostname,
   inputs,
   pkgs,
+  system,
   username,
   ...
 }:
 {
-  nixpkgs.hostPlatform = "x86_64-linux";
+  nixpkgs.hostPlatform = "${system}";
 
   # imports = [ ../../common/users/${username}/linux.nix ];
 
