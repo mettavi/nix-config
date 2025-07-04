@@ -43,7 +43,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "oona"; # Define your hostname.
+  networking.hostName = "${hostname}"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -151,11 +151,11 @@
   # ];
 
   # Install and configure packages.
-  programs = {
-    firefox = {
-      enable = true;
-    };
-  };
+  # programs = {
+  #   firefox = {
+  #     enable = true;
+  #   };
+  # };
 
   # HOME MANAGER OPTIONS
   # home-manager.users.${username} = {
