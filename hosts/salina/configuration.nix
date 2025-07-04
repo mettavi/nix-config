@@ -1,4 +1,5 @@
 {
+  hostname,
   lib,
   pkgs,
   username,
@@ -12,7 +13,19 @@
     efiSupport = true;
     efiInstallAsRemovable = true;
   };
-  services.openssh.enable = true;
+
+  services.openssh = {
+    enable = true;
+    # create a host key
+    hostKeys = [
+      {
+        comment = "root@${hostname}";
+        path = "/etc/ssh/ssh_${hostname}_ed25519_key";
+        rounds = 100;
+        type = "ed25519";
+      }
+    ];
+  };
 
   environment.systemPackages = map lib.lowPrio [
     pkgs.curl
