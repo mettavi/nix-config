@@ -42,8 +42,12 @@
   };
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader = {
+    # the installation process is allowed to modify EFI boot variables
+    efi.canTouchEfiVariables = true;
+    # enable the systemd-boot EFI boot manager
+    systemd-boot.enable = true;
+  };
 
   networking.hostName = "${hostname}"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -52,7 +56,7 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable networking
+  # Allow NetworkManager to obtain an IP address if necessary
   networking.networkmanager.enable = true;
 
   # Set your time zone.
