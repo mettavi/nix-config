@@ -37,7 +37,7 @@
       # authorize login to user timotheos from host oona
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos.allen@gmail.com"
       # authorize login to user timotheos from host mack
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos.allen@gmail.com"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
     ] ++ (args.extraPublicKeys or [ ]); # this is used for unit-testing this module and can be removed if not needed
   };
 
