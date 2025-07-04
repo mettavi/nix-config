@@ -28,13 +28,6 @@ in
   ];
 
   users.users.${username} = {
-    isNormalUser = true;
-    home = "/home/${username}";
-    description = "Mettavihari";
-    extraGroups = [
-      "networkmanager"
-      "wheel"
-    ];
     openssh.authorizedKeys.keys = [
       # authorize login to user timotheos from host oona
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos.allen@gmail.com"
