@@ -1,7 +1,7 @@
 {
   hostname,
   inputs,
-  pkgs,
+  # pkgs,
   modulesPath,
   system,
   username,
@@ -35,18 +35,18 @@
   virtualisation.vmware.guest.enable = true;
 
   # setup a file share from the host to the guest
-  fileSystems."/mnt/${hostname}/${username}" = {
-    device = ".host:/${username}";
-    fsType = "fuse./run/current-system/sw/bin/vmhgfs-fuse";
-    options = [
-      "umask=22"
-      "uid=1000"
-      "gid=100"
-      "allow_other"
-      "defaults"
-      "auto_unmount"
-    ];
-  };
+  # fileSystems."/mnt/${hostname}/${username}" = {
+  #   device = ".host:/${username}";
+  #   fsType = "fuse./run/current-system/sw/bin/vmhgfs-fuse";
+  #   options = [
+  #     "umask=22"
+  #     "uid=1000"
+  #     "gid=100"
+  #     "allow_other"
+  #     "defaults"
+  #     "auto_unmount"
+  #   ];
+  # };
 
   # Bootloader.
   boot.loader = {
