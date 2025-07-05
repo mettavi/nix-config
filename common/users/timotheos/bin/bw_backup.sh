@@ -8,7 +8,7 @@
 source /Users/timotheos/.config/sops-nix/secrets/users/timotheos/bitwarden.env
 
 TIMESTAMP=$(date "+%Y%m%d")
-EXPORT_PATH="$DEVFILES/projects/bitwarden_backups"
+EXPORT_PATH="/var/data/bitwarden"
 # EXPORT_PLAIN_FILE=bw_$TIMESTAMP.json
 # EXPORT_ENCRYPTED_FILE=bw_enc_$TIMESTAMP.json
 EXPORT_OPENSSL_FILE=bw_$TIMESTAMP.enc
@@ -20,9 +20,9 @@ NOTIFICATION_EMAIL="timotheos.allen@gmail.com" # Email address used for notifica
 NOTIFICATION_EMAIL_SUBJECT="Bitwarden Backup Failed"
 NOTIFICATION_EMAIL_BODY="The automated Bitwarden backup failed when trying to unlock the vault"
 
-if [ ! -d "$DEVFILES/projects/bitwarden_backups" ]; then
+if [ ! -d "$EXPORT_PATH" ]; then
   echo "Folder 'bitwarden_backups' does not exist. Creating it..."
-  mkdir -p "$DEVFILES/projects/bitwarden_backups"
+  mkdir -p "$EXPORT_PATH"
 else
   echo "Folder 'bitwarden_backups' already exists."
 fi
