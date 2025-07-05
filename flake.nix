@@ -85,7 +85,7 @@
 
       mkDarwin = import ./lib/mkDarwin.nix { inherit inputs; };
       # mkNixos = import ./lib/mkNixos.nix { inherit inputs; };
-      initNixos = import ./lib/initNixos.nix;
+      initNixos = import ./lib/initNixos.nix { inherit inputs; };
 
     in
     {
