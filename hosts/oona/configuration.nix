@@ -9,10 +9,56 @@
 }:
 {
   imports = [
+    # imports for initial install with nixos-anywhere and disko
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
   ];
+  # imports = [ ../../common/users/${username}/linux.nix ];
+
+  ########## IMPORTANT SETTINGS ###########
+
+  # PACKAGES REQUIRED FOR INITIAL SETUP
+
+  # programs = {
+  #   firefox = {
+  #     enable = true;
+  #   };
+  # };
+
+  # SETUP USER ACCOUNTS AND INITIAL ACCESS
+  users.users.${username} = {
+    # set zsh as the user's default
+    # shell = pkgs.zsh;
+    # authorize remote login using ssh key
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1n+RR5GUcqjFh7ypsw5bVOszWnZUa4VltzgK6eYGUv timotheos@salina"
+    ];
+  };
+
+  # Enable the OpenSSH daemon.
+  services = {
+    openssh = {
+      enable = true;
+      # create a host key
+      hostKeys = [
+        {
+          comment = "root@${hostname}";
+          path = "/etc/ssh/ssh_${hostname}_ed25519_key";
+          rounds = 100;
+          type = "ed25519";
+        }
+      ];
+    };
+  };
+
+  # Enable automatic login for the user.
+  services.displayManager.autoLogin.enable = true;
+  services.displayManager.autoLogin.user = "${username}";
+
+  # enable VMWare guest support
+  virtualisation.vmware.guest.enable = true;
 
   nixpkgs = {
     # Allow unfree packages
@@ -32,23 +78,41 @@
     };
   };
 
-  # imports = [ ../../common/users/${username}/linux.nix ];
-
-  users.users.${username} = {
-    # set zsh as the user's default
-    # shell = pkgs.zsh;
-    # authorize remote login using ssh key
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1n+RR5GUcqjFh7ypsw5bVOszWnZUa4VltzgK6eYGUv timotheos@salina"
-    ];
-  };
-
   # The Git revision of the top-level flake from which this configuration was built
   system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
 
-  # enable VMWare guest support
-  virtualisation.vmware.guest.enable = true;
+  ########## SYSTEM ARCHITECTURE ###########
+
+  #  Use systemd for the bootloader
+  boot.loader = {
+    # the installation process is allowed to modify EFI boot variables
+    efi.canTouchEfiVariables = true;
+    # enable the systemd-boot EFI boot manager
+    systemd-boot.enable = true;
+  };
+
+  services = {
+    xserver = {
+      # Enable the X11 windowing system.
+      enable = true;
+      # Enable the XFCE Desktop Environment.
+      displayManager = {
+        lightdm = {
+          enable = true;
+        };
+      };
+      desktopManager = {
+        xfce = {
+          enable = true;
+        };
+      };
+      # Configure keymap in X11
+      xkb = {
+        layout = "us";
+        variant = "us";
+      };
+    };
+  };
 
   # setup a file share from the host to the guest
   # fileSystems."/mnt/${hostname}/${username}" = {
@@ -63,24 +127,18 @@
   #     "auto_unmount"
   #   ];
   # };
+  ######### SYSTEM SETTINGS ##########
 
-  #  Use systemd for the bootloader
-  boot.loader = {
-    # the installation process is allowed to modify EFI boot variables
-    efi.canTouchEfiVariables = true;
-    # enable the systemd-boot EFI boot manager
-    systemd-boot.enable = true;
+  networking = {
+    hostName = "${hostname}";
+    networkmanager = {
+      enable = true; # Allow NetworkManager to obtain an IP address if necessary
+    };
   };
-
-  networking.hostName = "${hostname}"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Allow NetworkManager to obtain an IP address if necessary
-  networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "Australia/Melbourne";
@@ -100,36 +158,7 @@
     LC_TIME = "en_AU.UTF-8";
   };
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services = {
-    openssh = {
-      enable = true;
-      # create a host key
-      hostKeys = [
-        {
-          comment = "root@${hostname}";
-          path = "/etc/ssh/ssh_${hostname}_ed25519_key";
-          rounds = 100;
-          type = "ed25519";
-        }
-      ];
-    };
-  };
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the XFCE Desktop Environment.
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.xfce.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "mac";
-  };
+  ######## SYSTEM SERVICES ##########
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -153,21 +182,10 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Enable automatic login for the user.
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "${username}";
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   # environment.systemPackages = with pkgs; [
   # ];
-
-  # Install and configure packages.
-  # programs = {
-  #   firefox = {
-  #     enable = true;
-  #   };
-  # };
 
   # HOME MANAGER OPTIONS
   # home-manager.users.${username} = {
