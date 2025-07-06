@@ -63,6 +63,13 @@
 
   ########## SYSTEM ARCHITECTURE ###########
 
+  # enable in-memory compressed devices and swap space
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    priority = 100;
+  };
+
   #  Use systemd for the bootloader
   boot.loader = {
     # the installation process is allowed to modify EFI boot variables
