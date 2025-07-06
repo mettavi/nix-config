@@ -184,10 +184,10 @@
   #   xdg.desktopEntries = {
   #     mack-timotheos = {
   #       name = "mack-timotheos";
-  #       comment = "Home directory for timeotheos on host mack";
-  #       genericName = "File Share";
-  #       icon = ../../modules/icons/org.xfce.thunar.png;
-  #       type = "Directory";
+  #       comment = "Home directory for timotheos on host mack";
+  #       icon = "folder";
+  #       type = "Application";
+  #       exec="exo-open --working-directory /mnt/mack/timotheos --launch FileManager";
   #     };
   #   };
   # };
