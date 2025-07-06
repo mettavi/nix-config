@@ -29,6 +29,8 @@
     # set zsh as the user's default
     # shell = pkgs.zsh;
     # authorize remote login using ssh key
+    # this is required to enable password login (create hash with "mkpasswd -m sha-512")
+    hashedPassword = "$6$rUSbdgKUlWJIYQxD$iqjuw9vivLx8JJ7aX4XgGVDsnr3gxKqpNvHOIesQdFRHglWrnrsvoMTABnIWMzWe4L63IVXw2xZhmmhXbDrdw/";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1n+RR5GUcqjFh7ypsw5bVOszWnZUa4VltzgK6eYGUv timotheos@salina"
