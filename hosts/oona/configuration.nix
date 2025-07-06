@@ -1,9 +1,7 @@
 {
   hostname,
-  inputs,
-  # pkgs,
+  pkgs,
   modulesPath,
-  system,
   username,
   ...
 }:
@@ -18,25 +16,22 @@
 
   ########## IMPORTANT SETTINGS ###########
 
-  # PACKAGES REQUIRED FOR INITIAL SETUP
-
-
-  # SETUP USER ACCOUNTS AND INITIAL ACCESS
   programs = {
     zsh.enable = true;
   };
+
+  # SETUP INITIAL ACCESS
   users.users.${username} = {
-    # set zsh as the user's default
-    # shell = pkgs.zsh;
-    # authorize remote login using ssh key
     # this is required to enable password login (create hash with "mkpasswd -m sha-512")
     hashedPassword = "$6$rUSbdgKUlWJIYQxD$iqjuw9vivLx8JJ7aX4XgGVDsnr3gxKqpNvHOIesQdFRHglWrnrsvoMTABnIWMzWe4L63IVXw2xZhmmhXbDrdw/";
+    # set zsh as the user's default (requires shell integration via programs.zsh)
+    shell = pkgs.zsh;
+    # authorize remote login using ssh key(s)
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1n+RR5GUcqjFh7ypsw5bVOszWnZUa4VltzgK6eYGUv timotheos@salina"
     ];
   };
-
   # Enable the OpenSSH daemon.
   services = {
     openssh = {
@@ -53,13 +48,35 @@
     };
   };
 
-  # Enable automatic login for the user.
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "${username}";
-
+  # "oona" is a vmware guest running on darwin host "mack"
   # enable VMWare guest support
   virtualisation.vmware.guest.enable = true;
 
+  # setup a file share from the host to the guest
+  # NB: also requires manual set up on the darwin host
+  fileSystems."/mnt/mack/" = {
+    # this folder must be exported on the host beforehand
+    device = ".host:/${username}";
+    fsType = "fuse./run/current-system/sw/bin/vmhgfs-fuse";
+    options = [
+      "umask=22"
+      "uid=1000"
+      "gid=100"
+      "allow_other"
+      "defaults"
+      "auto_unmount"
+      # prevents emergency mode upon misconfiguration
+      "nofail"
+    ];
+  };
+
+  # enable automatic login for the user.
+  services.displayManager = {
+    autoLogin = {
+      enable = true;
+      user = "${username}";
+    };
+  };
 
   ########## SYSTEM ARCHITECTURE ###########
 
@@ -101,24 +118,6 @@
     };
   };
 
-  # setup a file share from the host to the guest
-  # NB: also requires manual set up on the darwin host
-  fileSystems."/mnt/mack/" = {
-    # this folder must be exported on the host beforehand
-    device = ".host:/${username}";
-    fsType = "fuse./run/current-system/sw/bin/vmhgfs-fuse";
-    options = [
-      "umask=22"
-      "uid=1000"
-      "gid=100"
-      "allow_other"
-      "defaults"
-      "auto_unmount"
-      # prevents emergency mode upon misconfiguration
-      "nofail"
-    ];
-  };
-
   ######### SYSTEM SETTINGS ##########
 
   networking = {
@@ -135,18 +134,19 @@
   time.timeZone = "Australia/Melbourne";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_GB.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_AU.UTF-8";
-    LC_IDENTIFICATION = "en_AU.UTF-8";
-    LC_MEASUREMENT = "en_AU.UTF-8";
-    LC_MONETARY = "en_AU.UTF-8";
-    LC_NAME = "en_AU.UTF-8";
-    LC_NUMERIC = "en_AU.UTF-8";
-    LC_PAPER = "en_AU.UTF-8";
-    LC_TELEPHONE = "en_AU.UTF-8";
-    LC_TIME = "en_AU.UTF-8";
+  i18n = {
+    defaultLocale = "en_GB.UTF-8";
+    extraLocaleSettings = {
+      LC_ADDRESS = "en_AU.UTF-8";
+      LC_IDENTIFICATION = "en_AU.UTF-8";
+      LC_MEASUREMENT = "en_AU.UTF-8";
+      LC_MONETARY = "en_AU.UTF-8";
+      LC_NAME = "en_AU.UTF-8";
+      LC_NUMERIC = "en_AU.UTF-8";
+      LC_PAPER = "en_AU.UTF-8";
+      LC_TELEPHONE = "en_AU.UTF-8";
+      LC_TIME = "en_AU.UTF-8";
+    };
   };
 
   ######## SYSTEM SERVICES ##########
