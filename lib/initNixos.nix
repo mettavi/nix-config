@@ -26,6 +26,25 @@
               "wheel"
             ];
           };
+          nixpkgs = {
+            # Allow unfree packages
+            config.allowUnfree = true;
+            hostPlatform = "${system}";
+          };
+          nix = {
+            extraOptions = ''
+              warn-dirty = false
+            '';
+            settings = {
+              # enable flakes
+              experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
+            };
+          };
+          # The Git revision of the top-level flake from which this configuration was built
+          system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
         }
       ];
     };
