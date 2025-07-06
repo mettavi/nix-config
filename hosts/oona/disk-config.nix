@@ -34,13 +34,13 @@
                   "/swap" = {
                     mountpoint = "/.swapvol";
                     swap = {
-                      swapfile.size = "2048";
+                      swapfile.size = "2048M";
                     };
                   };
                 };
                 swap = {
                   swapfile = {
-                    size = "2048";
+                    size = "2048M";
                   };
                 };
               };
