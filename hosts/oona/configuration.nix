@@ -193,6 +193,7 @@
   #       comment = "Home directory for timotheos on host mack";
   #       icon = "folder";
   #       type = "Application";
+  #       # this is an XFCE-specific command
   #       exec="exo-open --working-directory /mnt/mack/timotheos --launch FileManager";
   #     };
   #   };
