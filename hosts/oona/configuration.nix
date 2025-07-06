@@ -14,7 +14,23 @@
     ./disk-config.nix
   ];
 
-  nixpkgs.hostPlatform = "${system}";
+  nixpkgs = {
+    # Allow unfree packages
+    config.allowUnfree = true;
+    hostPlatform = "${system}";
+  };
+
+  nix = {
+    extraOptions = ''
+      warn-dirty = false
+    '';
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+    };
+  };
 
   # imports = [ ../../common/users/${username}/linux.nix ];
 
@@ -48,7 +64,7 @@
   #   ];
   # };
 
-  # Bootloader.
+  #  Use systemd for the bootloader
   boot.loader = {
     # the installation process is allowed to modify EFI boot variables
     efi.canTouchEfiVariables = true;
@@ -140,23 +156,6 @@
   # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = true;
   services.displayManager.autoLogin.user = "${username}";
-
-  nixpkgs = {
-    # Allow unfree packages
-    config.allowUnfree = true;
-  };
-
-  nix = {
-    extraOptions = ''
-      warn-dirty = false
-    '';
-    settings = {
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-    };
-  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
