@@ -26,11 +26,7 @@
               "wheel"
             ];
           };
-          nixpkgs = {
-            # Allow unfree packages
-            config.allowUnfree = true;
-            hostPlatform = "${system}";
-          };
+          networking.hostName = "${hostname}";
           nix = {
             extraOptions = ''
               warn-dirty = false
@@ -42,6 +38,11 @@
                 "flakes"
               ];
             };
+          };
+          nixpkgs = {
+            # Allow unfree packages
+            config.allowUnfree = true;
+            hostPlatform = "${system}";
           };
           # The Git revision of the top-level flake from which this configuration was built
           system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;

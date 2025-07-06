@@ -110,7 +110,6 @@
   ######### SYSTEM SETTINGS ##########
 
   networking = {
-    hostName = "${hostname}";
     networkmanager = {
       enable = true; # Allow NetworkManager to obtain an IP address if necessary
     };
