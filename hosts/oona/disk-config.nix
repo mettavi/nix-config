@@ -30,6 +30,19 @@
                   "compress-force=zstd"
                   "noatime"
                 ];
+                subvolumes = {
+                  "/swap" = {
+                    mountpoint = "/.swapvol";
+                    swap = {
+                      swapfile.size = "2048";
+                    };
+                  };
+                };
+                swap = {
+                  swapfile = {
+                    size = "2048";
+                  };
+                };
               };
             };
           };
