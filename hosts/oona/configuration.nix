@@ -20,13 +20,11 @@
 
   # PACKAGES REQUIRED FOR INITIAL SETUP
 
-  # programs = {
-  #   firefox = {
-  #     enable = true;
-  #   };
-  # };
 
   # SETUP USER ACCOUNTS AND INITIAL ACCESS
+  programs = {
+    zsh.enable = true;
+  };
   users.users.${username} = {
     # set zsh as the user's default
     # shell = pkgs.zsh;
