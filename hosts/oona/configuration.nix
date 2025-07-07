@@ -54,11 +54,11 @@
 
   # setup a file share from the host to the guest
   # NB: also requires manual set up on the darwin host
-  fileSystems."/mnt/mack/timotheos" = {
+  fileSystems."/mnt/mack/${username}" = {
     # this folder must be exported on the host beforehand
     device = ".host:/${username}";
     fsType = "fuse./run/current-system/sw/bin/vmhgfs-fuse";
-    mountPoint = "/mnt/mack/timotheos";
+    mountPoint = "/mnt/mack/${username}";
     options = [
       "umask=22"
       "uid=1000"
