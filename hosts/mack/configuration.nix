@@ -22,11 +22,19 @@
     ];
   };
 
-  home-manager.users.${username}.programs.zsh = {
-    completionInit = ''
-      # enable auto-completion for determinate nixd
-      eval "$(determinate-nixd completion zsh)"
-    '';
+  home-manager = {
+    users.${username} = {
+      home = {
+        # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+        stateVersion = "23.11";
+      };
+      programs.zsh = {
+        completionInit = ''
+          # enable auto-completion for determinate nixd
+          eval "$(determinate-nixd completion zsh)"
+        '';
+      };
+    };
   };
 
   /*
