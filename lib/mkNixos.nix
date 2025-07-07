@@ -17,6 +17,7 @@ in
           ;
       };
       modules = [
+        inputs.disko.nixosModules.disko
         ../hosts/${hostname}/configuration.nix
         {
           users.users.${username} = {
