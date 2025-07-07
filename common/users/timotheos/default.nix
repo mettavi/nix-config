@@ -7,8 +7,6 @@
   home = {
     username = "${username}";
     homeDirectory = if pkgs.stdenv.isDarwin then "/Users/${username}" else "/home/${username}";
-    # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-    stateVersion = "23.11";
     # make programs use XDG directories whenever supported
     preferXdgDirectories = true;
   };

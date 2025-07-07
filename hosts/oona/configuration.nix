@@ -192,6 +192,10 @@
 
   # HOME MANAGER OPTIONS
   home-manager.users.${username} = {
+    home = {
+      # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+      stateVersion = "25.05";
+    };
     xdg.desktopEntries = {
       # add a desktop shortcut to the host share
       mack-timotheos = {
@@ -200,7 +204,7 @@
         icon = "folder";
         type = "Application";
         # this is an XFCE-specific command
-        exec="exo-open --working-directory /mnt/mack/timotheos --launch FileManager";
+        exec = "exo-open --working-directory /mnt/mack/timotheos --launch FileManager";
       };
     };
   };
