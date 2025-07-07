@@ -15,7 +15,6 @@
       modules = [
         inputs.disko.nixosModules.disko
         ../hosts/${hostname}/configuration.nix
-        # ../hosts/${hostname}/hardware-configuration.nix
         {
           users.users.${username} = {
             isNormalUser = true;
