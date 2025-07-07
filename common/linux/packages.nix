@@ -3,16 +3,16 @@
   environment.systemPackages = with pkgs; [
     # gcc, gnumake and unzip are required for nvim
     # GNU Compiler Collection
-    gcc
+    # gcc
     # Tool to control the generation of non-source files from sources
-    gnumake
-    nodejs
-    python3
+    # gnumake
+    # nodejs
+    # python3
     transmission_4-gtk
     # Command line interface to the freedesktop.org trashcan
     trash-cli
     # Extraction utility
-    unzip
+    # unzip
     # Tool to access the X clipboard from a console application
     # Required for clipboard integration with neovim
     xclip
