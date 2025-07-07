@@ -58,6 +58,7 @@
     # this folder must be exported on the host beforehand
     device = ".host:/${username}";
     fsType = "fuse./run/current-system/sw/bin/vmhgfs-fuse";
+    mountPoint = "/mnt/mack";
     options = [
       "umask=22"
       "uid=1000"
@@ -113,7 +114,7 @@
       # Configure keymap in X11
       xkb = {
         layout = "us";
-        variant = "us";
+        variant = "mac";
       };
     };
   };
