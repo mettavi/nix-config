@@ -108,11 +108,11 @@ return {
     -- mason_nvim_dap.setup()
 
     -- language servers not installed with mason are configured in nvim-lspconfig
-    lspconfig["bashls"].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      filetypes = { "sh", "bash" },
-    })
+    -- lspconfig["bashls"].setup({
+    --   capabilities = capabilities,
+    --   on_attach = on_attach,
+    --   filetypes = { "sh", "bash" },
+    -- })
     lspconfig["lua_ls"].setup({
       capabilities = capabilities,
       on_attach = on_attach,

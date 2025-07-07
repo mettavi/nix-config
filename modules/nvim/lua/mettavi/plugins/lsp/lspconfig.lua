@@ -9,6 +9,47 @@ return {
   config = function()
     local keymap = vim.keymap -- for conciseness
 
+    -- import lspconfig plugin
+    local lspconfig = vim.lsp.config
+
+    -- import cmp-nvim-lsp plugin
+    local cmp_nvim_lsp = require("cmp_nvim_lsp")
+
+    -- enable autocompletion via nvim-cmp (assign to every lsp server config)
+    -- by extending the capabilities of lsp/neovim with nvim-cmp
+    local capabilities = cmp_nvim_lsp.default_capabilities()
+
+    -- code to run when lsp attaches to buffer (assign to everyl lsp server config)
+    local on_attach = function(client, bufnr)
+      -- inlay hints (experimental), need to turn it on manually
+      local function buf_command(...)
+        vim.api.nvim_buf_create_user_command(bufnr, ...)
+      end
+      if client.server_capabilities.inlayHintProvider and vim.fn.has("nvim-0.10") > 0 then
+        local inlay = function(enable)
+          if enable == "toggle" then
+            enable = not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 })
+          end
+          vim.lsp.inlay_hint.enable(enable, { bufnr = bufnr })
+        end
+        vim.api.nvim_create_user_command("ToggleInlayHints", "InlayHintsToggle", {})
+        buf_command("InlayHintsToggle", function(_)
+          inlay("toggle")
+        end, { nargs = 0, desc = "Toggle inlay hints." })
+        buf_command("ToggleInlayHints", "InlayHintsToggle", {})
+        -- Toggling inlay hints: gh
+        vim.keymap.set("n", "gh", "<cmd>InlayHintsToggle<CR>", { buffer = true })
+      else
+        print("no inlay hints available")
+      end
+    end
+
+    lspconfig["bashls"].setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      filetypes = { "sh", "bash" },
+    })
+
     vim.api.nvim_create_autocmd("LspAttach", {
       group = vim.api.nvim_create_augroup("UserLspConfig", {}),
       callback = function(ev)
