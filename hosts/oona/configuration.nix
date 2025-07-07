@@ -191,19 +191,19 @@
   # ];
 
   # HOME MANAGER OPTIONS
-  # home-manager.users.${username} = {
-  # BUG: this is currently giving an error:
-  #   xdg.desktopEntries = {
-  #     mack-timotheos = {
-  #       name = "mack-timotheos";
-  #       comment = "Home directory for timotheos on host mack";
-  #       icon = "folder";
-  #       type = "Application";
-  #       # this is an XFCE-specific command
-  #       exec="exo-open --working-directory /mnt/mack/timotheos --launch FileManager";
-  #     };
-  #   };
-  # };
+  home-manager.users.${username} = {
+    xdg.desktopEntries = {
+      # add a desktop shortcut to the host share
+      mack-timotheos = {
+        name = "mack-timotheos";
+        comment = "Home directory for timotheos on host mack";
+        icon = "folder";
+        type = "Application";
+        # this is an XFCE-specific command
+        exec="exo-open --working-directory /mnt/mack/timotheos --launch FileManager";
+      };
+    };
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
