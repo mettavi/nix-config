@@ -88,6 +88,11 @@
     priority = 100;
   };
 
+  boot.kernel.sysctl = {
+    # default is 60
+    "vm.swappiness" = 90;
+  };
+
   #  Use systemd for the bootloader
   boot.loader = {
     # the installation process is allowed to modify EFI boot variables
