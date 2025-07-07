@@ -28,6 +28,31 @@ in
               "wheel"
             ];
           };
+          networking.hostName = "${hostname}";
+          nix = {
+            extraOptions = ''
+              warn-dirty = false
+            '';
+            settings = {
+              # enable flakes
+              experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
+            };
+          };
+          nixpkgs = {
+            # Allow unfree packages
+            config.allowUnfree = true;
+            hostPlatform = "${system}";
+          };
+          programs = {
+            firefox.enable = true;
+            git.enable = true;
+            vim.enable = true;
+          };
+          # The Git revision of the top-level flake from which this configuration was built
+          system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
         }
         ../hosts/${hostname}/hardware-configuration.nix
         ../common/linux
