@@ -8,6 +8,7 @@
 }:
 {
   nix = {
+    channel.enable = false;
     # enable automatic garbage collection and store optimisation
     gc = {
       automatic = true;
