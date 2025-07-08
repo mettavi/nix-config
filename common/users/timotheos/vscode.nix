@@ -29,12 +29,12 @@
         formulahendry.code-runner
         ritwickdey.liveserver
       ];
-        # ++ (with pkgs.open-vsx; [
-        # # https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/master/data/cache/open-vsx-latest.json
-        # ]);
-        # ++ (with pkgs.vscode-extensions; [
-        #       ms-azuretools.vscode-docker
-        #     ]);
+      # ++ (with pkgs.open-vsx; [
+      # # https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/master/data/cache/open-vsx-latest.json
+      # ]);
+      # ++ (with pkgs.vscode-extensions; [
+      #       ms-azuretools.vscode-docker
+      #     ]);
       keybindings = [
         {
           "key" = "ctrl+`";
