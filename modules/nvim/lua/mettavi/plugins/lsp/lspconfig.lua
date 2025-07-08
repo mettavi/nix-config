@@ -44,7 +44,9 @@ return {
       end
     end
 
-    lspconfig["bashls"].setup({
+    vim.lsp.enable("bashls")
+
+    lspconfig("bashls", {
       capabilities = capabilities,
       on_attach = on_attach,
       filetypes = { "sh", "bash" },
