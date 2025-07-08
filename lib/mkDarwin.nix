@@ -38,6 +38,10 @@ in
             # Allow unfree packages
             config.allowUnfree = true;
             hostPlatform = "${system}";
+            overlays = [
+              # make more vscode extensions available
+              (inputs.nix-vscode-extensions.overlays.default)
+            ];
           };
           users.users.${username} = {
             name = "${username}";
