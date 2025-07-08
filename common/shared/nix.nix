@@ -1,7 +1,7 @@
 {
   nixpkgs = {
     overlays = [
-      (import ../overlays/shared/default.nix)
+      (import ../overlays/shared/)
     ];
     # nixpkgs.config.allowBroken = true;
   };

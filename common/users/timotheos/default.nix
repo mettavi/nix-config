@@ -11,6 +11,12 @@
     preferXdgDirectories = true;
   };
 
+  nixpkgs = {
+    overlays = [
+      (import ../overlays/home/default.nix)
+    ];
+  };
+
   # install the HTML manual and "home-manager-help" command
   manual.html.enable = true;
 
