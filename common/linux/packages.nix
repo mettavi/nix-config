@@ -2,8 +2,8 @@
 {
   environment.systemPackages = with pkgs; [
     # gcc, gnumake and unzip are required for nvim
-    # GNU Compiler Collection
-    # gcc
+    # GNU Compiler Collection (required for nvim treesitter)
+    gcc
     # Tool to control the generation of non-source files from sources
     # gnumake
     # nodejs
