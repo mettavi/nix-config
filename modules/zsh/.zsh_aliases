@@ -26,7 +26,6 @@ alias gdc="git diff --cached"
 alias gb="git branch"
 
 # shell aliases
-alias -g ls='gls --color' # use gnu ls for nicer default colors
 alias -g l="eza --color=always --long --git --git-ignore --no-filesize --icons=always --no-time --no-user --no-permissions"
 alias -g ll="eza --color=always --long --all --group --git --icons=always"
 alias -g lt="eza --color --tree --level=3 --long --icons --git"
