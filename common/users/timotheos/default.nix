@@ -13,7 +13,7 @@
 
   nixpkgs = {
     overlays = [
-      (import ../overlays/home/default.nix)
+      (import ../overlays/home/)
     ];
   };
 
