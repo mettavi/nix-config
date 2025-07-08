@@ -64,6 +64,11 @@
     git = {
       enable = true;
       delta.enable = true;
+      extraConfig = {
+        credential = lib.mkIf pkgs.stdenv.isDarwin {
+          helper = "osxkeychain";
+        };
+      };
       # enable automatic maintenance of git repos using launchd/systemd
       maintenance = {
         enable = true;
