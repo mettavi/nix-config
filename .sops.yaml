@@ -1,16 +1,17 @@
 # yamllint disable-file
 # .sops.yaml
+# NB: Use the key fingeprints, not the public key
 keys:
   - &admin_timotheos-home age1mhy95hjcr3l73fl39ufefmkdt6grqatw7pctjw0ntw7cr7tugslsl5k4tx
   - &host_mack age1yqk69cngaueuzap9pcv20z8h3lneaw7f79pmgpje08v44vfcesfq8we323
-  - &host_oona age1s34d7n6mkjvrl8m92utxj0dy28jv0sv20yaq9fj52takczyl2svs87rlq2
+  - &host_oona age1ksqd9jmkdr7x3wu7ggl6vz24429ypqavyxckj8zzm7whuwyw734qena6ma
 creation_rules:
   - path_regex: modules/secrets/secrets\.yaml$
     key_groups:
       - age:
-          - *admin_timotheos-home
-          - *host_mack
-          - *host_oona
+          - *admin_timotheos-home 
+          - *host_mack 
+          - *host_oona 
 stores:
   yaml:
     indent: 2
