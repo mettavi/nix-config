@@ -21,6 +21,24 @@ in
       modules = [
         ../hosts/${hostname}/configuration.nix
         {
+          networking.hostName = "${hostname}";
+          nix = {
+            extraOptions = ''
+              warn-dirty = false
+            '';
+            settings = {
+              # enable flakes
+              experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
+            };
+          };
+          nixpkgs = {
+            # Allow unfree packages
+            config.allowUnfree = true;
+            hostPlatform = "${system}";
+          };
           users.users.${username} = {
             name = "${username}";
             home = "/Users/${username}";
