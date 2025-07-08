@@ -1,6 +1,7 @@
 # yamllint disable-file
 # .sops.yaml
-# NB: Use the key fingeprints, not the public key
+# NB: host keys (derived from ssh keys) are not identified below by the age public key
+# but by an age hash of the ssh key fingerprint (also shown in the encrypted secrets file)
 keys:
   - &admin_timotheos-home age1mhy95hjcr3l73fl39ufefmkdt6grqatw7pctjw0ntw7cr7tugslsl5k4tx
   - &host_mack age1yqk69cngaueuzap9pcv20z8h3lneaw7f79pmgpje08v44vfcesfq8we323
