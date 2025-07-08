@@ -21,7 +21,7 @@
   rebase = false
 
 [core]
-  excludesfile = /Users/timotheos/.gitignore_global
+  excludesfile = ~/.gitignore_global
   pager = delta
 
 [interactive]
