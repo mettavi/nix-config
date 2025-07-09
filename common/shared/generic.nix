@@ -4,6 +4,7 @@
     pathsToLink = [
       "/libexec"
       "/share/bash-completion"
+      "/share/applications"
       "/share/doc"
       "/share/icons"
       "/share/man"
