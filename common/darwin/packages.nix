@@ -14,7 +14,8 @@ in
   # install standard packages
   environment.systemPackages = with pkgs; [
     # Uninstall unwanted apps
-    appcleaner
+    # NB: Install with homebrew due to problem with app linking
+    # appcleaner
     coreutils-prefixed
     darwin.trash
     # grandperspective

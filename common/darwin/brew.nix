@@ -43,12 +43,11 @@
       # "abbyy-finereader-pdf"
       # "adobe-digital-editions"
       "anki"
-      # TODO: Decide whether to install appcleaner from nixpkgs or homebrew
-      # Uninstall unwanted apps
-      # {
-      #   name = "appcleaner";
-      #   greedy = true;
-      # }
+      # Application uninstaller
+      {
+        name = "appcleaner";
+        greedy = true;
+      }
       "calibre" # Comprehensive e-book software
       # Hard disk backup and cloning utility
       {
