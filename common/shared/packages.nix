@@ -90,7 +90,7 @@ in
     # djview
     # google-chrome
     # goldendict-ng is currently only available for linux
-    # obsidian
+    obsidian
     # vlc-bin-universal
     zoom-us # video conferencing application
   ];
