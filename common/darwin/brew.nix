@@ -27,6 +27,7 @@
 
     # uninstall removes all unlisted packages, zap does a "deep uninstall", deleting all associated files including preferences
     onActivation.cleanup = "uninstall";
+
     # prevent onActivation.cleanup option from removing taps listed in nix-homebrew module
     taps = builtins.attrNames config.nix-homebrew.taps;
 
@@ -139,7 +140,11 @@
         name = "vmware-fusion";
         greedy = true;
       }
-      "xcodes"
+      # Install and switch between multiple versions of Xcode
+      {
+        name = "xcodes-app";
+        greedy = true;
+      }
       # Collect, organise, cite, and share research sources
       {
         name = "zotero";
