@@ -2,8 +2,9 @@
   config,
   hostname,
   inputs,
-  username,
   nix_repo,
+  options,
+  username,
   ...
 }:
 {
@@ -17,7 +18,7 @@
       persistent = true;
     };
     # this ensures $NIX_PATH is set to an immutable location in the nix-store
-    nixPath = [
+    nixPath = options.nix.nixPath.default ++ [
       "nixpkgs=${inputs.nixos-pkgs}"
       "nixpkgs-overlays=${config.users.users.${username}.home}/${nix_repo}/common/overlays/shared"
       "nixos-config=${
@@ -44,6 +45,7 @@
         "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
         "mettavi.cachix.org-1:rYvLGZOMT4z4hK7u5pzrbt8svJ/2JcUA/PTa1bQx4FU="
       ];
+      nix-path = config.nix.nixPath;
       trusted-users = [
         "@staff"
         "root"
