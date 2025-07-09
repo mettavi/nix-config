@@ -45,7 +45,6 @@
         "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
         "mettavi.cachix.org-1:rYvLGZOMT4z4hK7u5pzrbt8svJ/2JcUA/PTa1bQx4FU="
       ];
-      nix-path = config.nix.nixPath;
       trusted-users = [
         "@staff"
         "root"
