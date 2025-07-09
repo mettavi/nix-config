@@ -1,4 +1,5 @@
 {
+  # config,
   hostname,
   pkgs,
   modulesPath,
@@ -218,6 +219,17 @@
       };
     };
   };
+
+  # system.activationScripts.copy-macktimotheos = {
+  #   text = # bash
+  #     ''
+  #       if [ ! -f "${config.users.users.${username}.home}/Desktop/mack-timotheos.desktop" ]; then
+  #         cp "${pkgs.mack-timotheos}/share/applications/mack-timotheos.desktop" "${
+  #           config.users.users.${username}.home
+  #         }/Desktop/mack-timotheos.desktop"
+  #       fi
+  #     '';
+  # };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
