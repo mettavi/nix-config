@@ -7,6 +7,7 @@ in
   mkDarwinConfiguration =
     hostname: system: username:
     inputs.nix-darwin.lib.darwinSystem rec {
+      system = "${system}";
       # Use specialArgs to pass through inputs to nix-darwin modules
       specialArgs = {
         inherit

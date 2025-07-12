@@ -7,6 +7,7 @@ in
   mkNixosConfiguration =
     hostname: system: username:
     inputs.nixos-pkgs.lib.nixosSystem rec {
+      system = "${system}";
       specialArgs = {
         inherit
           hostname

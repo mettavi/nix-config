@@ -4,6 +4,7 @@
   mkNixosConfiguration =
     hostname: system: username:
     inputs.nixos-pkgs.lib.nixosSystem {
+      system = "${system}";
       specialArgs = {
         inherit
           hostname
