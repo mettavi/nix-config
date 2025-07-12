@@ -4,7 +4,7 @@
     # gcc, gnumake and unzip are required for nvim
     # GNU Compiler Collection (required for nvim treesitter)
     gcc
-    # Tool to control the generation of non-source files from sources (required for telescope-fzf)
+    # Tool to control the generation of non-source files from sources (required for neovim telescope-fzf)
     gnumake
     # nodejs
     # python3
