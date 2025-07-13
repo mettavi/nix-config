@@ -25,7 +25,7 @@ let
       allowSubstitutes = true;
 
       buildCommand = ''
-        dst="$out/share/zotero/extensions/{ec8030f7-c20a-464f-9b0e-13a3a9e97384}"
+        dst="$out/share/zotero/extensions/m5ubajjp.default"
         mkdir -p "$dst"
         install -v -m644 "$src" "$dst/${addonId}.xpi"
       '';
@@ -39,7 +39,7 @@ in
     addonId = "better-bibtex@iris-advies.com";
 
     url = "https://github.com/retorquere/zotero-better-bibtex/releases/download/v${version}/zotero-better-bibtex-${version}.xpi";
-    hash = "";
+    hash = "sha256-vfHRrTfLxyT47tEvxCg/pxf8ixH+vx2EkkWzmzg89jo=";
 
     meta = with lib; {
       homepage = "https://github.com/retorquere/zotero-better-bibtex";
@@ -54,7 +54,7 @@ in
     addonId = "zoteroAddons@ytshen.com";
 
     url = "https://github.com/wileyyugioh/zotmoov/releases/download/V${version}/zotero-addons.xpi";
-    hash = "";
+    hash = "sha256-02KFyczIGzMRraLivUYu9HfgfuWMA7srwCj9AK/VB4Q=";
 
     meta = with lib; {
       homepage = "https://github.com/syt2/zotero-addons";
@@ -69,7 +69,7 @@ in
     addonId = "zotmoov@wileyy.com";
 
     url = "https://github.com/wileyyugioh/zotmoov/releases/download/${version}/zotmoov-${version}-fx.xpi";
-    hash = "sha256-Csp+cX7YouO8u7XZoY7gNnU5Z8V9dDe7+hxFKOqej3Q=";
+    hash = "sha256-r8QHan0+5qj+1f4SDTODKMqH1XHD2Z+Tp31TUVqrv1o=";
 
     meta = with lib; {
       homepage = "https://github.com/wileyyugioh/zotmoov";
