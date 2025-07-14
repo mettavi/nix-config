@@ -29,6 +29,7 @@ in
     ".npmrc".source = ../../../modules/node/.npmrc;
     # "Library/Preferences/com.plexapp.plexmediaserver.plist".source =
     #  if pkgs.stdenv.isDarwin then ../../../modules/plex/com.plexapp.plexmediaserver.plist else "";
+    # powerlevel10k prompt preferences
     ".p10k.zsh".source =
       mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/modules/zsh/.p10k.zsh";
   };
