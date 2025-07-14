@@ -1030,6 +1030,6 @@
 	<key>com.googlecode.iterm2.LoadPrefsFromCustomFolder</key>
 	<true/>
 	<key>com.googlecode.iterm2.PrefsCustomFolder</key>
-	<string>$NIXFILES/modules/iterm2</string>
+	<string>$NIXFILES/dots/iterm2</string>
 </dict>
 </plist>

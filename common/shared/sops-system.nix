@@ -7,7 +7,7 @@
 }:
 {
   sops = {
-    defaultSopsFile = ../../modules/secrets/secrets.yaml;
+    defaultSopsFile = ../../dots/secrets/secrets.yaml;
     # If you use something differentfrom YAML, you can also specify it here:
     #sops.defaultSopsFormat = "yaml";
     age = {
@@ -42,7 +42,9 @@
       "sasl_passwd" = {
         content = # bash
           ''
-            [smtp.gmail.com]:587 timotheos.allen@gmail.com:${config.sops.placeholder."users/${username}/google_timotheos_app_pw"}
+            [smtp.gmail.com]:587 timotheos.allen@gmail.com:${
+              config.sops.placeholder."users/${username}/google_timotheos_app_pw"
+            }
           '';
         path = "/etc/postfix/sasl_passwd";
       };
@@ -55,7 +57,7 @@
     let
       ageFolder = "${config.users.users.${username}.home}/.config/sops/age";
       user = config.users.users.${username}.name;
-      group =  if pkgs.stdenv.isDarwin then "staff" else "users";
+      group = if pkgs.stdenv.isDarwin then "staff" else "users";
     in
     ''
       mkdir -p ${ageFolder} || true

@@ -281,7 +281,7 @@ $HOME/Library/Application Support/Google/Chrome/ClientSidePhishing/30.2
 $HOME/Library/Containers/com.apple.Internet-Accounts-Settings.extension/Data/Library/HTTPStorages/com.apple.Internet-Accounts-Settings.extension
 $HOME/Library/com.apple.bluetooth.services.cloud/00000000-0000-0000-0000-00000000000C
 $HOME/Library/AppleMediaServices/CachedServerData/AccountData/df1b0cf17dce0d242fc6482b36eda019bf968e7a616fe7b19a1020b886fba7ee674a03a857ff66da46aaabab7c422ecc6f5eb5e6d3491ab457be2d2d92a706cb
-$HOME/Library/Assistant/SiriVocabulary/Modules/SEM/Default/SEM_FTS
+$HOME/Library/Assistant/SiriVocabularydotsSEM/Default/SEM_FTS
 $HOME/Library/HTTPStorages/com.apple.siriknowledged
 $HOME/Library/Containers/com.apple.voicebankingd/Data/Library/HTTPStorages/com.apple.voicebankingd
 /Library/Trial

@@ -1,5 +1,5 @@
 {
-  # check nix-darwin/modules/system/activation-scripts.nix for allowed values for activationScripts.<name>
+  # check nix-darwindotssystem/activation-scripts.nix for allowed values for activationScripts.<name>
   system.activationScripts = {
     postActivation.text = ''
       # Enable remote login for the host (macos ssh server)
