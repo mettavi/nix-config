@@ -16,7 +16,7 @@
       "/Applications/Google Chrome.app"
       "/Applications/iTerm.app"
       "/Applications/Microsoft Word.app"
-      "/Users/${username}/${nix_repo}/home/bin/CaliSync.app"
+      "/Users/${username}/${nix_repo}/home/shared/bin/CaliSync.app"
     ];
   };
 
