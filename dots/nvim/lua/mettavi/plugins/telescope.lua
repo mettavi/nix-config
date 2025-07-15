@@ -22,7 +22,8 @@ return {
           i = {
             ["<C-k>"] = actions.move_selection_previous, -- move to prev result
             ["<C-j>"] = actions.move_selection_next, -- move to next result
-            ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist, -- for items selected with tab key
+            ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist, -- for items selected with tab key
+            ["<C-q>"] = actions.send_to_qflist + actions.open_qflist, -- for all items found
             ["<C-t>"] = open_with_trouble,
           },
           n = { ["<c-t>"] = open_with_trouble },
