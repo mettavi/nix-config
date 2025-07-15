@@ -1,6 +1,7 @@
 {
   config,
   hostname,
+  inputs,
   lib,
   nix_repo,
   pkgs,
@@ -79,6 +80,8 @@
           weekly = "Mon 0:53:00";
         };
       };
+      userEmail = inputs.secrets.email.gitHub;
+      userName = inputs.secrets.name;
     };
     java = {
       enable = true;
