@@ -12,7 +12,7 @@
         ProgramArguments = [
           "/run/current-system/sw/bin/kanata"
           "-c"
-          "${config.users.users.timotheos.home}/${nix_repo}/dots/kanata/kanata.lsp"
+          "${config.users.users.timotheos.home}/${nix_repo}/home/shared/dots/kanata/kanata.lsp"
         ];
         ProcessType = "Interactive";
         RunAtLoad = true;

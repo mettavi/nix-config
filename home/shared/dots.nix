@@ -24,30 +24,30 @@ in
   # };
 
   home.file = {
-    ".gitconfig".source = ../../dots/git/.gitconfig;
-    ".gitignore_global".source = ../../dots/git/.gitignore_global;
-    ".npmrc".source = ../../dots/node/.npmrc;
+    ".gitconfig".source = ./dots/git/.gitconfig;
+    ".gitignore_global".source = ./dots/git/.gitignore_global;
+    ".npmrc".source = ./dots/node/.npmrc;
     # "Library/Preferences/com.plexapp.plexmediaserver.plist".source =
-    #  if pkgs.stdenv.isDarwin then ../../dots/plex/com.plexapp.plexmediaserver.plist else "";
+    #  if pkgs.stdenv.isDarwin then ./dots/plex/com.plexapp.plexmediaserver.plist else "";
     # powerlevel10k prompt preferences
     ".p10k.zsh".source =
-      mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/dots/zsh/.p10k.zsh";
+      mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/zsh/.p10k.zsh";
   };
 
   xdg = {
     # enable management of xdg base directories
     enable = true;
     configFile = {
-      "atuin".source = ../../dots/atuin;
-      "bat/themes/tokyonight_night.tmTheme".source = ../../dots/bat/themes/tokyonight_night.tmTheme;
-      "fzf/.fzfrc".source = ../../dots/fzf/.fzfrc;
+      "atuin".source = ./dots/atuin;
+      "bat/themes/tokyonight_night.tmTheme".source = ./dots/bat/themes/tokyonight_night.tmTheme;
+      "fzf/.fzfrc".source = ./dots/fzf/.fzfrc;
       # link without copying to nix store (manage externally) - must use absolute paths
       # mkOutOfStoreSymlink is required to allow the lazy-lock.json file to be writable
-      "nvim".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/dots/nvim";
-      "resticprofile".source = ../../dots/resticprofile;
-      "tmuxp/nvim-zsh.yaml".source = ../../dots/tmuxp/nvim-zsh.yaml;
-      "zsh/.zsh_aliases".source = ../../dots/zsh/.zsh_aliases;
-      "zsh/.zsh_functions".source = ../../dots/zsh/.zsh_functions;
+      "nvim".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/nvim";
+      "resticprofile".source = ./dots/resticprofile;
+      "tmuxp/nvim-zsh.yaml".source = ./dots/tmuxp/nvim-zsh.yaml;
+      "zsh/.zsh_aliases".source = ./dots/zsh/.zsh_aliases;
+      "zsh/.zsh_functions".source = ./dots/zsh/.zsh_functions;
     };
   };
 }

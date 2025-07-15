@@ -7,7 +7,7 @@
 }:
 {
   sops = {
-    defaultSopsFile = ../../dots/secrets/secrets.yaml;
+    defaultSopsFile = ../../home/shared/dots/secrets/secrets.yaml;
     # If you use something differentfrom YAML, you can also specify it here:
     #sops.defaultSopsFormat = "yaml";
     age = {
