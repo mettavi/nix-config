@@ -2,12 +2,13 @@
   config,
   hostname,
   pkgs,
+  secrets_path,
   username,
   ...
 }:
 {
   sops = {
-    defaultSopsFile = ../../home/shared/dots/secrets/secrets.yaml;
+    defaultSopsFile = "${secrets_path}/secrets.yaml";
     # If you use something differentfrom YAML, you can also specify it here:
     #sops.defaultSopsFormat = "yaml";
     age = {
