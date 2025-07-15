@@ -60,7 +60,7 @@ in
           system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
         }
         ../hosts/${hostname}/hardware-configuration.nix
-        ../system/linux
+        ../system/nixos
         ../system/shared
         inputs.sops-nix.nixosModules.sops
         inputs.home-manager.nixosModules.home-manager
