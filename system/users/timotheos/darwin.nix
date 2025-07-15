@@ -16,7 +16,7 @@
       "/Applications/Google Chrome.app"
       "/Applications/iTerm.app"
       "/Applications/Microsoft Word.app"
-      "/Users/${username}/${nix_repo}/common/users/${username}/bin/CaliSync.app"
+      "/Users/${username}/${nix_repo}/system/users/${username}/bin/CaliSync.app"
     ];
   };
 
@@ -32,7 +32,7 @@
             "/usr/bin/env"
             "zsh"
             "-c"
-            "${config.users.users.${username}.home}/${nix_repo}/common/users/${username}/bin/bw_backup.sh"
+            "${config.users.users.${username}.home}/${nix_repo}/system/users/${username}/bin/bw_backup.sh"
           ];
           # Run at midnight each Monday (will catch up if system is sleeping)
           StartCalendarInterval = [

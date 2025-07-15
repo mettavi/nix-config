@@ -13,9 +13,9 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
     # xfce settings from home-manager
-    ../../common/users/timotheos/xfce.nix
+    ../../system/users/timotheos/xfce.nix
   ];
-  # imports = [ ../../common/users/${username}/linux.nix ];
+  # imports = [ ../../system/users/${username}/linux.nix ];
 
   ########## IMPORTANT SETTINGS ###########
 

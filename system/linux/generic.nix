@@ -20,7 +20,7 @@
     # this ensures $NIX_PATH is set to an immutable location in the nix-store
     nixPath = options.nix.nixPath.default ++ [
       "nixpkgs=${inputs.nixos-pkgs}"
-      "nixpkgs-overlays=${config.users.users.${username}.home}/${nix_repo}/common/overlays/shared"
+      "nixpkgs-overlays=${config.users.users.${username}.home}/${nix_repo}/system/overlays/shared"
       "nixos-config=${
         config.users.users.${username}.home
       }/${nix_repo}/hosts/${hostname}/configuration.nix"

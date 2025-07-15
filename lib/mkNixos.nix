@@ -60,8 +60,8 @@ in
           system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
         }
         ../hosts/${hostname}/hardware-configuration.nix
-        ../common/linux
-        ../common/shared
+        ../system/linux
+        ../system/shared
         inputs.sops-nix.nixosModules.sops
         inputs.home-manager.nixosModules.home-manager
         {
@@ -69,7 +69,7 @@ in
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "nix-backup";
-            users.${username} = ../common/users/${username};
+            users.${username} = ../system/users/${username};
             extraSpecialArgs = specialArgs;
             sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
           };

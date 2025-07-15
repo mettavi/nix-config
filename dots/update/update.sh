@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # See https://discourse.nixos.org/t/25274
 
-prefix="$(greadlink --canonicalize -- "$(dirname -- "$0")/common/darwin/pkgs")"
+prefix="$(greadlink --canonicalize -- "$(dirname -- "$0")/system/darwin/pkgs")"
 nixpkgs="$(nix-instantiate --eval --expr '<nixpkgs>')"
 
 exec nix-shell -vvvv "$nixpkgs/maintainers/scripts/update.nix" \
