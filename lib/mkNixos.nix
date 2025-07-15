@@ -5,7 +5,7 @@
     hostname: system: username:
     inputs.nixos-pkgs.lib.nixosSystem rec {
       specialArgs = {
-        inherit (self)
+        inherit
           hostname
           inputs
           system
