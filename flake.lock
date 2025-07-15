@@ -358,7 +358,25 @@
         "nixpkgs": "nixpkgs",
         "nixpkgs-24_11": "nixpkgs-24_11",
         "pinentry-touchid": "pinentry-touchid",
+        "secrets": "secrets",
         "sops-nix": "sops-nix"
+      }
+    },
+    "secrets": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1752575696,
+        "narHash": "sha256-7QVFnWsCisPj3fHzjNQRY54qz7a9zvGvKgrBkg24SC8=",
+        "ref": "refs/heads/main",
+        "rev": "123eb80727e6fe14ce7990af91770841b159865b",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/mettavi/nix-secrets.git"
+      },
+      "original": {
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/mettavi/nix-secrets.git"
       }
     },
     "sops-nix": {
