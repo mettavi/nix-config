@@ -1,7 +1,4 @@
-{ inputs, ... }:
-let
-  nix_repo = ".nix-config";
-in
+{ inputs, self, ... }:
 {
   # Function for nix-darwin system configuration
   mkDarwinConfiguration =
@@ -12,9 +9,12 @@ in
         inherit
           hostname
           inputs
-          nix_repo
           system
           username
+          ;
+        inherit (self)
+          nix_repo
+          secrets_path
           ;
       };
 

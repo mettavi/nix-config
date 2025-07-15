@@ -89,12 +89,15 @@
     }:
     let
 
-      mkDarwin = import ./lib/mkDarwin.nix { inherit inputs; };
-      mkNixos = import ./lib/mkNixos.nix { inherit inputs; };
+      mkDarwin = import ./lib/mkDarwin.nix { inherit inputs self; };
+      mkNixos = import ./lib/mkNixos.nix { inherit inputs self; };
       # initNixos = import ./lib/initNixos.nix { inherit inputs; };
 
     in
     {
+
+      nix_repo = ".nix-config";
+      secrets_path = builtins.toString inputs.secrets;
 
       # DARWIN-REBUILD BUILDS
       # Build darwin flake using:
