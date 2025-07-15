@@ -60,7 +60,7 @@ in
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "nix-backup";
-            users.${username} = ../system/users/${username};
+            users.${username} = ../users/${username};
             extraSpecialArgs = specialArgs;
             sharedModules = [
               inputs.mac-app-util.homeManagerModules.default

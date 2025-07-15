@@ -15,9 +15,9 @@
   manual.html.enable = true;
 
   imports = [
-    ../../../home/dots.nix
-    ../../../home/programs.nix
-    ../../../home/services-home.nix
-    ../../../home/sops-home.nix
+    ../../home/dots.nix
+    ../../home/programs.nix
+    ../../home/services-home.nix
+    ../../home/sops-home.nix
   ];
 }

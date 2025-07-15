@@ -69,7 +69,7 @@ in
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "nix-backup";
-            users.${username} = ../system/users/${username};
+            users.${username} = ../users/${username};
             extraSpecialArgs = specialArgs;
             sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
           };

@@ -15,7 +15,7 @@
     # xfce settings from home-manager
     ../../home/xfce.nix
   ];
-  # imports = [ ../../system/users/${username}/linux.nix ];
+  # imports = [ ../../users/${username}/linux.nix ];
 
   ########## IMPORTANT SETTINGS ###########
 
