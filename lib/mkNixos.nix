@@ -1,19 +1,19 @@
-{ inputs, ... }:
-let
-  nix_repo = ".nix-config";
-in
+{ inputs, self, ... }:
 {
   # Function for NixOS system configuration
   mkNixosConfiguration =
     hostname: system: username:
     inputs.nixos-pkgs.lib.nixosSystem rec {
       specialArgs = {
-        inherit
+        inherit (self)
           hostname
           inputs
-          nix_repo
           system
           username
+          ;
+        inherit (self)
+          nix_repo
+          secrets_path
           ;
       };
       modules = [
