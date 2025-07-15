@@ -11,7 +11,7 @@
   nix.enable = false;
 
   imports = [
-    ../../home/darwin.nix
+    ../../home/darwin/darwin.nix
   ];
 
   users.users.${username} = {
