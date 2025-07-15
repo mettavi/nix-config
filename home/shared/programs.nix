@@ -5,7 +5,6 @@
   lib,
   nix_repo,
   pkgs,
-  secrets_path,
   username,
   ...
 }:
@@ -81,8 +80,8 @@
           weekly = "Mon 0:53:00";
         };
       };
-      userEmail = "${secrets_path}.email.gitHub";
-      userName = "${secrets_path}.name";
+      userEmail = inputs.secrets.email.gitHub;
+      userName = inputs.secrets.name;
     };
     java = {
       enable = true;
