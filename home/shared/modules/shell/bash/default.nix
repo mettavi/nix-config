@@ -1,0 +1,53 @@
+{
+  config,
+  lib,
+  ...
+}:
+
+with lib;
+let
+  cfg = config.nyx.modules.shell.bash;
+in
+{
+  options.nyx.modules.shell.bash = {
+    enable = mkEnableOption "bash configuration";
+
+    profileExtra = mkOption {
+      default = "";
+      type = types.lines;
+      description = ''
+        Extra commands that should be run when initializing a login
+        shell.
+      '';
+    };
+
+    initExtra = mkOption {
+      default = "";
+      type = types.lines;
+      description = ''
+        Extra commands that should be run when initializing an
+        interactive shell.
+      '';
+    };
+  };
+
+  config = mkIf cfg.enable {
+    programs.bash = {
+      enable = true;
+      enableCompletion = true;
+      historyFile = "${config.xdg.configHome}/bash/.bash_history";
+      initExtra.text = # bash
+        ''
+          # auto genreated by nyx
+
+          ${cfg.profileExtra}
+        '';
+      profileExtra.text = # bash
+        ''
+          # auto genreated by nyx
+
+          ${cfg.initExtra}
+        '';
+    };
+  };
+}
