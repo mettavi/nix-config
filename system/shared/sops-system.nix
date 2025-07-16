@@ -1,11 +1,15 @@
 {
   config,
   hostname,
+  inputs,
   pkgs,
   secrets_path,
   username,
   ...
 }:
+let
+  email = inputs.secrets.email.personal;
+in
 {
   sops = {
     defaultSopsFile = "${secrets_path}/secrets.yaml";
@@ -43,9 +47,7 @@
       "sasl_passwd" = {
         content = # bash
           ''
-            [smtp.gmail.com]:587 timotheos.allen@gmail.com:${
-              config.sops.placeholder."users/${username}/google_timotheos_app_pw"
-            }
+            [smtp.gmail.com]:587 ${email}:${config.sops.placeholder."users/${username}/google_timotheos_app_pw"}
           '';
         path = "/etc/postfix/sasl_passwd";
       };
