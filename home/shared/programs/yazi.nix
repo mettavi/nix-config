@@ -21,7 +21,7 @@ in
       catppuccin-mocha = "${yazi-flavors}/catppuccin-mocha.yazi";
     };
     keymap = {
-      manager.prepend_keymap = [
+      mgr.prepend_keymap = [
         {
           on = [ "<S-a>" ];
           run = "toggle_all --state=on";
@@ -30,7 +30,7 @@ in
       ];
     };
     settings = {
-      manager = {
+      mgr = {
         # increase width of parent from default
         ratio = [
           2
