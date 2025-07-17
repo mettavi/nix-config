@@ -10,10 +10,6 @@
   # the determinate insaller was used, so nix.* settings are managed in /etc/nix/nix.conf and nix.custom.conf
   nix.enable = false;
 
-  imports = [
-    ../../home/darwin/darwin.nix
-  ];
-
   users.users.${username} = {
     # authorize remote login using ssh key
     openssh.authorizedKeys.keys = [
@@ -27,6 +23,12 @@
       home = {
         # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
         stateVersion = "23.11";
+      };
+      nyx.modules = {
+        shell = {
+          # enable scheduled bitwarden backup task on this host
+          bw_backup.enable = true;
+        };
       };
       programs.zsh = {
         completionInit = ''
