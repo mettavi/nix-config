@@ -9,7 +9,18 @@
   imports = [ ./mac ];
 
   system.defaults = {
-    dock.autohide = true;
+    dock = {
+      autohide = true;
+      persistent-apps = [
+        "/System/Applications/System Settings.app"
+        "/System/Applications/Calendar.app"
+        "/System/Applications/App Store.app"
+        "/Applications/Google Chrome.app"
+        "/Applications/iTerm.app"
+        "/Applications/Microsoft Word.app"
+        "/Users/${username}/${nix_repo}/home/darwin/files/calibre/CaliSync.app"
+      ];
+    };
     # check current setting with "defaults read NSGlobalDomain '<insert setting here>'"
     NSGlobalDomain = {
       AppleKeyboardUIMode = 2;

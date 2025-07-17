@@ -5,21 +5,6 @@
   ...
 }:
 {
-  # SYSTEM PREFERENCES FOR USERNAME ON HOST "MACK" (DARWIN)
-
-  # NIX-DARWIN OPTIONS
-  system.defaults.dock = {
-    persistent-apps = [
-      "/System/Applications/System Settings.app"
-      "/System/Applications/Calendar.app"
-      "/System/Applications/App Store.app"
-      "/Applications/Google Chrome.app"
-      "/Applications/iTerm.app"
-      "/Applications/Microsoft Word.app"
-      "/Users/${username}/${nix_repo}/home/darwin/files/calibre/CaliSync.app"
-    ];
-  };
-
   # HOME_MANAGER OPTIONS
   home-manager.users.${username} = {
     launchd.agents = {
