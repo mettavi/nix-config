@@ -26,7 +26,7 @@
       };
       nyx.modules = {
         shell = {
-          # enable scheduled bitwarden backup task on this host
+          # enable scheduled bitwarden backup task
           bw_backup.enable = true;
         };
       };
