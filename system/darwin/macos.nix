@@ -18,7 +18,7 @@
         "/Applications/Google Chrome.app"
         "/Applications/iTerm.app"
         "/Applications/Microsoft Word.app"
-        "/Users/${username}/${nix_repo}/home/_files/calibre/CaliSync.app"
+        "/Users/${username}/${nix_repo}/home/darwin/_files/calibre/CaliSync.app"
       ];
     };
     # check current setting with "defaults read NSGlobalDomain '<insert setting here>'"
