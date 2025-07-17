@@ -23,11 +23,6 @@
     home-manager.enable = true;
     aria2.enable = true;
     # atuin.enable = true;
-    bash = {
-      enable = true;
-      enableCompletion = true;
-      historyFile = "${config.xdg.configHome}/bash/.bash_history";
-    };
     bat.enable = true;
     eza = {
       enable = true;
