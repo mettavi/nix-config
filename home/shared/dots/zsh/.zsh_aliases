@@ -40,8 +40,8 @@ alias cl="clear"
 alias lg="lazygit"
 alias nv="nvim"
 alias pip="pip3"
-alias tm="tmux"
-alias tkw="tmux kill-window"
+# alias tm="tmux"
+# alias tkw="tmux kill-window"
 # prevent brew forumulae accidentally linking against a pyenv-provided python
 # alias brew='env PATH="${PATH//$(pyenv root)\/shims:/}" brew' 
 # search brew for a formula to install a missing package

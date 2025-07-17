@@ -43,9 +43,9 @@ in
       "fzf/.fzfrc".source = ./dots/fzf/.fzfrc;
       # link without copying to nix store (manage externally) - must use absolute paths
       # mkOutOfStoreSymlink is required to allow the lazy-lock.json file to be writable
-      "nvim".source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/nvim";
+      "nvim".source =
+        mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/nvim";
       "resticprofile".source = ./dots/resticprofile;
-      "tmuxp/nvim-zsh.yaml".source = ./dots/tmuxp/nvim-zsh.yaml;
       "zsh/.zsh_aliases".source = ./dots/zsh/.zsh_aliases;
       "zsh/.zsh_functions".source = ./dots/zsh/.zsh_functions;
     };
