@@ -1,11 +1,13 @@
 {
+  config,
   lib,
   pkgs,
+  username,
   ...
 }:
 with lib;
 {
-  environment.etc = mkIf nyx.modules.shell.tmux.enable {
+  environment.etc = mkIf config.home-manager.users.${username}.nyx.modules.shell.tmux.enable {
     # pam_reattach.so re-enables pam_tid.so in tmux
     "pam.d/sudo_local".text = # bash
       ''
