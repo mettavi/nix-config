@@ -66,7 +66,7 @@ in
       shellWrapperName = "y";
     };
     nix.settings = {
-      extra-substiters = [ "https://yazi.cachix.org" ];
+      extra-substituters = [ "https://yazi.cachix.org" ];
       extra-trusted-public-keys = [ "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k=" ];
     };
   };
