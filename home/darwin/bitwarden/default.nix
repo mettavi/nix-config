@@ -1,12 +1,19 @@
 {
   config,
+  lib,
   nix_repo,
   username,
   ...
 }:
+let
+  cfg = config.nyx.modules.shell.bw_backup;
+in
 {
-  # HOME_MANAGER OPTIONS
-  home-manager.users.${username} = {
+  options.nyx.modules.shell.bw_backup = {
+    enable = lib.mkEnableOption "Bitwarden Launchd Backup Task";
+  };
+
+  config = lib.mkIf cfg.enable {
     launchd.agents = {
       # make an encrypted backup weekly
       "org.bitwarden.backup" = {
@@ -32,9 +39,10 @@
         };
       };
     };
-    home.sessionVariables = {
-      # prevent nh from checking for flakes "experimental features" (which it can't read from determinate nix.conf)
-      NH_NO_CHECKS = "1";
-    };
   };
+
+  # home.sessionVariables = {
+  #   # prevent nh from checking for flakes "experimental features" (which it can't read from determinate nix.conf)
+  #   NH_NO_CHECKS = "1";
+  # };
 }
