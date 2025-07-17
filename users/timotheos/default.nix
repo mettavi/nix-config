@@ -8,6 +8,7 @@
       shell = {
         bash.enable = true;
         nh.enable = true;
+        yazi.enable = true;
       };
     };
   };
