@@ -69,7 +69,7 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "nix-backup";
-            users.${username} = ../users/${username};
+            users.${username} = import ./mkUserHome.nix;
             extraSpecialArgs = specialArgs;
             sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
           };
