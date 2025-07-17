@@ -2,7 +2,6 @@
   config,
   lib,
   nix_repo,
-  username,
   ...
 }:
 let
@@ -24,7 +23,7 @@ in
             "/usr/bin/env"
             "zsh"
             "-c"
-            "${config.users.users.${username}.home}/${nix_repo}/home/shared/bin/bw_backup.sh"
+            "${config.home.homeDirectory}/${nix_repo}/home/shared/bin/bw_backup.sh"
           ];
           # Run at midnight each Monday (will catch up if system is sleeping)
           StartCalendarInterval = [
