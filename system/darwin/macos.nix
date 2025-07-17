@@ -1,7 +1,6 @@
 {
   config,
   nix_repo,
-  pkgs,
   username,
   ...
 }:
