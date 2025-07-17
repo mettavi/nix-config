@@ -13,7 +13,6 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
   ];
-  # imports = [ ../../users/${username}/linux.nix ];
 
   ########## IMPORTANT SETTINGS ###########
 
