@@ -85,13 +85,13 @@ in
         terminal = "tmux-256color";
         tmuxp.enable = true;
       };
-      xdg.configFile = {
-        "tmuxp/nvim-zsh.yaml".source = ./dots/tmuxp/nvim-zsh.yaml;
-      };
       zsh.shellAliases = {
         tm = "tmux";
         tkw = "tmux kill-window";
       };
+    };
+    xdg.configFile = {
+      "tmuxp/nvim-zsh.yaml".source = ../../../dots/tmuxp/nvim-zsh.yaml;
     };
   };
 }
