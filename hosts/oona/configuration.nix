@@ -12,7 +12,6 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
-    # xfce settings from home-manager
   ];
   # imports = [ ../../users/${username}/linux.nix ];
 
