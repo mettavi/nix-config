@@ -13,7 +13,6 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
     # xfce settings from home-manager
-    ../../home/nixos/xfce.nix
   ];
   # imports = [ ../../users/${username}/linux.nix ];
 
@@ -206,6 +205,12 @@
     home = {
       # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
       stateVersion = "25.05";
+    };
+    nyx.modules = {
+      desktop = {
+        # configure the XFCE desktop
+        xfce.enable = true;
+      };
     };
     xdg.desktopEntries = {
       # add a desktop shortcut to the host share
