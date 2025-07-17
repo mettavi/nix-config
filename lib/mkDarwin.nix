@@ -48,8 +48,14 @@
             home = "/Users/${username}";
           };
         }
-        ../system/darwin
+        ../system/darwin/activation.nix
+        ../system/darwin/brew.nix
+        ../system/darwin/generic.nix
+        ../system/darwin/macos.nix
+        ../system/darwin/packages.nix
+        ../system/darwin/services.nix
         ../system/darwin/nix-homebrew.nix
+        ../system/darwin/modules
         ../system/shared
         inputs.mac-app-util.darwinModules.default
         inputs.nix-index-database.darwinModules.nix-index
