@@ -25,7 +25,7 @@ in
     keycastr # keystroke visualiser
     # Build time stubs for FUSE on macOS NB: this requires the full macFUSE package (see brew.nix)
     macfuse-stubs
-    pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
+    # pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
     pinentry_mac
     # getting error "cannot download WhatsApp.app from any mirror"
     # fix was committed to master on Wed 18 Dec, see https://github.com/NixOS/nixpkgs/pull/365792/commits
