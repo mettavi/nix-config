@@ -16,7 +16,7 @@ in
       enable = true;
       settings = {
         displays = {
-          "Default/Virtual-1/Scale" = 0.571426;
+          "Default/Virtual-1/Scale" = 0.666656;
         };
         xsettings = {
           "Gtk/FontName" = "Sans 12";
