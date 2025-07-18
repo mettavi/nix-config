@@ -12,6 +12,9 @@ let
   # each individual package is further defined in ./pkgs/default.nx
   # mypkgs = (pkgs.callPackage ./pkgs { });
 
+  # OVERRIDES
+  # get bfg to use the already jdk already installed in environment.systemPackages instead of openjdk
+  bfg-repo-cleaner_zulu = pkgs.bfg-repo-cleaner.override { jre = pkgs.zulu; };
 in
 {
 
@@ -31,7 +34,7 @@ in
     asciiquarium-transparent # Aquarium/sea animation in ASCII art
     # atomicparsley
     bats
-    bfg-repo-cleaner # Removes large or troublesome blobs like git-filter-branch does, but faster
+    bfg-repo-cleaner_zulu # Removes large or troublesome blobs like git-filter-branch does, but faster
     # bento4
     cachix
     cargo
