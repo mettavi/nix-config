@@ -20,9 +20,11 @@
       # SSH KEYS
       "users/${username}/ssh_keys/${username}-${hostname}_ed25519" = {
         path = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519";
+        mode = "0600";
       };
       "users/${username}/ssh_keys/${username}-${hostname}_ed25519.pub" = {
         path = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519.pub";
+        mode = "0644";
       };
       # oracle cloud
       "users/${username}/ssh_keys/ssh-nixos-ocloud.key" = {
