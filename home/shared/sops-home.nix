@@ -24,6 +24,7 @@
       };
       "users/${username}/ssh_keys/${username}-${hostname}_ed25519.pub" = {
         path = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519.pub";
+        # ssh-agent on nixos would refuse to connect without changing the permissions from 0400
         mode = "0644";
       };
       # oracle cloud
