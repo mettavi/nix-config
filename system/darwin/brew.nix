@@ -157,7 +157,7 @@
       # "Keynote" = 409183694;
       # "Numbers" = 409203825;
       # "Pages" = 409201541;
-      # "PastePal" = 1503446680;
+      "PastePal" = 1503446680;
       # "Patterns" = 429449079;
       # "PDF Squeezer" = 1502111349;
       # "PDFgear" = 6469021132;
