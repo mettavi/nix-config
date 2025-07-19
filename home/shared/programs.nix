@@ -83,11 +83,11 @@
       package = pkgs.zulu; # Certified builds of OpenJDK
     };
     jq.enable = true;
-    keychain = {
-      enable = true;
-      enableZshIntegration = true;
-      keys = [ "${username}-${hostname}_ed25519" ];
-    };
+    # keychain = {
+    #   enable = true;
+    #   enableZshIntegration = true;
+    #   keys = [ "${username}-${hostname}_ed25519" ];
+    # };
     lazygit.enable = true;
     # provides nix-locate and command-not-found commands
     nix-index.enable = true;
