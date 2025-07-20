@@ -105,7 +105,7 @@
     xserver = {
       # Enable the X11 windowing system.
       enable = true;
-      # Enable the XFCE Desktop Environment.
+      # Select the login manager
       displayManager = {
         lightdm = {
           enable = true;
