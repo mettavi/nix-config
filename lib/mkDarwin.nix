@@ -1,4 +1,8 @@
-{ inputs, self, ... }:
+{
+  inputs,
+  self,
+  ...
+}:
 {
   # Function for nix-darwin system configuration
   mkDarwinConfiguration =
@@ -57,6 +61,7 @@
         ../system/darwin/nix-homebrew.nix
         ../system/darwin/modules
         ../system/shared
+        # ../system/shared/modules
         inputs.mac-app-util.darwinModules.default
         inputs.nix-index-database.darwinModules.nix-index
         inputs.sops-nix.darwinModules.sops
