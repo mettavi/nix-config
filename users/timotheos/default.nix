@@ -5,6 +5,11 @@
 
   nyx = {
     modules = {
+      apps = {
+        vscode = {
+          enable = true;
+        };
+      };
       shell = {
         bash.enable = true;
         nh.enable = true;
