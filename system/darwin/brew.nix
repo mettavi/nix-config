@@ -160,7 +160,7 @@
       "PastePal" = 1503446680;
       # "Patterns" = 429449079;
       # "PDF Squeezer" = 1502111349;
-      # "PDFgear" = 6469021132;
+      "PDFgear" = 6469021132;
       # "Snip" = 1527428847;
       # "Sync Folders Pro" = 522706442;
       "tipitaka_pali_reader" = 1541426949;
