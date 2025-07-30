@@ -1,6 +1,6 @@
 {
   imports = [
     ./lsp.nix
-    ./zsh.nix
+    # ./zsh.nix
   ];
 }

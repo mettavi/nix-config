@@ -15,6 +15,7 @@
         nh.enable = true;
         tmux.enable = true;
         yazi.enable = true;
+        zsh.enable = true;
       };
     };
   };
