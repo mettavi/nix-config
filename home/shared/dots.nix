@@ -29,9 +29,6 @@ in
     ".npmrc".source = ./dots/node/.npmrc;
     # "Library/Preferences/com.plexapp.plexmediaserver.plist".source =
     #  if pkgs.stdenv.isDarwin then ./dots/plex/com.plexapp.plexmediaserver.plist else "";
-    # powerlevel10k prompt preferences
-    ".p10k.zsh".source =
-      mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/zsh/.p10k.zsh";
   };
 
   xdg = {
@@ -46,8 +43,6 @@ in
       "nvim".source =
         mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/nvim";
       "resticprofile".source = ./dots/resticprofile;
-      "zsh/.zsh_aliases".source = ./dots/zsh/.zsh_aliases;
-      "zsh/.zsh_functions".source = ./dots/zsh/.zsh_functions;
     };
   };
 }

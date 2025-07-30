@@ -1,10 +1,12 @@
 {
   config,
   lib,
+  nix_repo,
   pkgs,
   ...
 }:
 let
+  inherit (config.lib.file) mkOutOfStoreSymlink;
   cfg = config.nyx.modules.shell.zsh;
 in
 {
@@ -13,7 +15,15 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # NB: Completions are enabled by default
+    home.file = {
+      # powerlevel10k prompt preferences
+      ".p10k.zsh".source =
+        mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/zsh/.p10k.zsh";
+    };
+    xdg.configFile = {
+      "zsh/.zsh_aliases".source = ../../../dots/zsh/.zsh_aliases;
+      "zsh/.zsh_functions".source = ../../../dots/zsh/.zsh_functions;
+    };
     programs.zsh = {
       enable = true;
       antidote = {
