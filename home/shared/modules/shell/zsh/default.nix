@@ -25,11 +25,9 @@ in
         ];
       };
       autosuggestion.enable = true;
-      # completionInit = (builtins.readFile ../dots/zsh/.zsh_completions);
       completionInit = (builtins.readFile ../../../dots/zsh/.zsh_completions);
       dotDir = ".config/zsh";
       enableCompletion = true;
-      # envExtra = (builtins.readFile ../dots/zsh/.zshenv);
       envExtra = (builtins.readFile ../../../dots/zsh/.zshenv);
       history = {
         path = "$ZDOTDIR/.zsh_history";
@@ -37,9 +35,7 @@ in
         size = 100000;
       };
       initContent = lib.mkMerge [
-        # (lib.mkBefore (builtins.readFile ../dots/zsh/.zshrc_top))
         (lib.mkBefore (builtins.readFile ../../../dots/zsh/.zshrc_top))
-        # (builtins.readFile ../dots/zsh/.zshrc)
         (builtins.readFile ../../../dots/zsh/.zshrc)
       ];
       # Assign the alias to different binaries depending on host OS
