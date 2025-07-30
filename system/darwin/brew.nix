@@ -159,7 +159,7 @@
       # "Pages" = 409201541;
       "PastePal" = 1503446680;
       # "Patterns" = 429449079;
-      # "PDF Squeezer" = 1502111349;
+      "PDF Squeezer" = 1502111349;
       "PDFgear" = 6469021132;
       # "Snip" = 1527428847;
       # "Sync Folders Pro" = 522706442;
