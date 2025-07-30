@@ -62,7 +62,7 @@
         ../hosts/${hostname}/hardware-configuration.nix
         ../system/nixos
         ../system/shared
-        # ../system/shared/modules
+        ../system/shared/modules
         inputs.sops-nix.nixosModules.sops
         inputs.home-manager.nixosModules.home-manager
         {

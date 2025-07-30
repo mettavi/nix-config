@@ -5,18 +5,31 @@
   pkgs,
   ...
 }:
+with lib;
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
   cfg = config.nyx.modules.shell.zsh;
 in
 {
   options.nyx.modules.shell.zsh = {
-    enable = lib.mkEnableOption "Install and configure zsh";
+    setup = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Fully configure zsh for the user";
+    };
+    prompt = mkOption {
+      type = types.enum [
+        "manual"
+        "p10k"
+      ];
+      default = "p10k";
+      description = "Set the shell prompt";
+    };
   };
 
-  config = lib.mkIf cfg.enable {
-    home.file = {
-      # powerlevel10k prompt preferences
+  config = mkIf cfg.setup {
+    home.file = mkIf (cfg.prompt == "p10k") {
+      # powerlevel10k prompt preferences (needs to be writeable, hence the use of mkOutOfStoreSymlink)
       ".p10k.zsh".source =
         mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/zsh/.p10k.zsh";
     };
@@ -44,8 +57,11 @@ in
         save = 100000;
         size = 100000;
       };
-      initContent = lib.mkMerge [
-        (lib.mkBefore (builtins.readFile ../../../dots/zsh/.zshrc_top))
+      initContent = mkMerge [
+        # load code to enable instant prompt in powerlevel10k
+        (optionalString (cfg.prompt == "p10k") (
+          lib.mkBefore (builtins.readFile ../../../dots/zsh/.zshrc_top)
+        ))
         (builtins.readFile ../../../dots/zsh/.zshrc)
       ];
       # Assign the alias to different binaries depending on host OS
