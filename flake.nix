@@ -88,11 +88,9 @@
       ...
     }:
     let
-
       mkDarwin = import ./lib/mkDarwin.nix { inherit inputs self; };
       mkNixos = import ./lib/mkNixos.nix { inherit inputs self; };
       # initNixos = import ./lib/initNixos.nix { inherit inputs; };
-
     in
     {
 

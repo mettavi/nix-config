@@ -1,9 +1,14 @@
 {
+  config,
   hostname,
   modulesPath,
+  pkgs,
   username,
   ...
 }:
+let
+  df_sh = config.home-manager.users.${username}.nyx.modules.shell.default;
+in
 {
   imports = [
     # imports for initial install with nixos-anywhere and disko
@@ -23,6 +28,8 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII1n+RR5GUcqjFh7ypsw5bVOszWnZUa4VltzgK6eYGUv timotheos@salina"
     ];
+    # assign the user's default shell (requires also setting "programs.${shell}.enable")
+    shell = pkgs.${df_sh};
   };
   # Enable the OpenSSH daemon.
   services = {
