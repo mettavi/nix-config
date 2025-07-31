@@ -47,6 +47,7 @@ in
           "MichaelAquilina/zsh-you-should-use"
         ];
       };
+      autocd = true;
       autosuggestion.enable = true;
       completionInit = (builtins.readFile ../../../dots/zsh/.zsh_completions);
       dotDir = ".config/zsh";
