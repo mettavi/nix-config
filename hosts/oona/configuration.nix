@@ -1,7 +1,5 @@
 {
-  # config,
   hostname,
-  pkgs,
   modulesPath,
   username,
   ...
@@ -16,16 +14,10 @@
 
   ########## IMPORTANT SETTINGS ###########
 
-  programs = {
-    zsh.enable = true;
-  };
-
   # SETUP INITIAL ACCESS
   users.users.${username} = {
     # this is required to enable password login (create hash with "mkpasswd -m sha-512")
     hashedPassword = "$6$rUSbdgKUlWJIYQxD$iqjuw9vivLx8JJ7aX4XgGVDsnr3gxKqpNvHOIesQdFRHglWrnrsvoMTABnIWMzWe4L63IVXw2xZhmmhXbDrdw/";
-    # set zsh as the user's default (requires shell integration via programs.zsh)
-    shell = pkgs.zsh;
     # authorize remote login using ssh key(s)
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"

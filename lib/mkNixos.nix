@@ -1,8 +1,17 @@
-{ inputs, self, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  self,
+  ...
+}:
 {
   # Function for NixOS system configuration
   mkNixosConfiguration =
     hostname: system: username:
+    let
+      df_sh = config.home-manager.users.${username}.nyx.modules.shell.default;
+    in
     inputs.nixos-pkgs.lib.nixosSystem rec {
       specialArgs = {
         inherit
@@ -28,6 +37,8 @@
               "networkmanager"
               "wheel"
             ];
+            # assign the user's default shell (requires also setting "programs.${shell}.enable")
+            shell = pkgs.${df_sh};
           };
           networking.hostName = "${hostname}";
           nix = {
