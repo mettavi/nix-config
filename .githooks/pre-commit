@@ -4,7 +4,7 @@
 echo
 echo "Checking for changes to lazy-lock.json..."
 echo
-git add modules/nvim/lazy-lock.json
+git add home/shared/dots/nvim/lazy-lock.json
 
 # check staged files for secrets
 echo "Checking for secrets..."
