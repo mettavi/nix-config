@@ -1,7 +1,7 @@
 # Refer to https://www.reddit.com/r/NixOS/comments/1k48yqr/shared_home_manager_between_nixos_and_nixdarwin/ 
 # and see https://github.com/AlexNabokikh/nix-config for more examples
 # Ensure common packages are installed
-# use lib.optionals for lists
+# USE LIB.OPTIONALS FOR LISTS
 
   home.packages = with pkgs;
     [
@@ -26,7 +26,7 @@
     ];
 
 ###################################################
-# use lib.mkIf for attribute sets
+# USE LIB.MKIF FOR ATTRIBUTE SETS
 
 {
   lib,
@@ -43,7 +43,20 @@
 }
 
 ###################################################
-# use if/then/else for values of options
+# USE LIB.OPTIONALSTRING FOR STRINGS
+
+let
+  lib = import <nixpkgs/lib>;
+  enableFeature = true;
+  message = "Hello" + lib.strings.optionalString enableFeature " world!";
+in
+  message
+
+# In this example, message would evaluate to "Hello world!" because enableFeature is true. 
+# If enableFeature were false, message would evaluate to "Hello".
+
+###################################################
+# USE IF/THEN/ELSE FOR VALUES OF OPTIONS
 
 {pkgs, ...}: {
   # Install alacritty via home-manager module
