@@ -7,6 +7,7 @@
 with lib;
 let
   cfg = config.nyx.modules.shell.tmux;
+  df_sh = config.nyx.modules.shell.default;
 in
 {
   options.nyx.modules.shell.tmux = {
@@ -80,7 +81,7 @@ in
           tmuxPlugins.cpu
           tmuxPlugins.battery
         ];
-        shell = "${pkgs.zsh}/bin/zsh";
+        shell = "${pkgs.${df_sh}}/bin/${df_sh}";
         shortcut = "a";
         terminal = "tmux-256color";
         tmuxp.enable = true;
