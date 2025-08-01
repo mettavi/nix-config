@@ -12,6 +12,7 @@ in
 {
   imports = [
     # imports for initial install with nixos-anywhere and disko
+    # subsequently the disko config will configure fstab
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
@@ -92,7 +93,7 @@ in
     "vm.swappiness" = 90;
   };
 
-  #  Use systemd for the bootloader
+  # Use systemd for the bootloader
   boot.loader = {
     # the installation process is allowed to modify EFI boot variables
     efi.canTouchEfiVariables = true;
@@ -221,17 +222,6 @@ in
       };
     };
   };
-
-  # system.activationScripts.copy-macktimotheos = {
-  #   text = # bash
-  #     ''
-  #       if [ ! -f "${config.users.users.${username}.home}/Desktop/mack-timotheos.desktop" ]; then
-  #         cp "${pkgs.mack-timotheos}/share/applications/mack-timotheos.desktop" "${
-  #           config.users.users.${username}.home
-  #         }/Desktop/mack-timotheos.desktop"
-  #       fi
-  #     '';
-  # };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
