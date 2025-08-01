@@ -24,10 +24,10 @@ in
       enable = true;
       # required for completion of system packages
       enableCompletion = true;
-      # initialise p10k prompt
-      promptInit = lib.optionalString (
-        zsh_cfg.prompt == "p10k"
-      ) "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+      # initialise p10k prompt if selected
+      promptInit =
+        (optionalString (zsh_cfg.prompt == "p10k"))
+          "source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
     };
   };
 }
