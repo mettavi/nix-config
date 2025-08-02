@@ -1,4 +1,5 @@
 {
+  config,
   hostname,
   lib,
   modulesPath,
@@ -16,11 +17,11 @@
     ./disk-config.nix
   ];
 
-  boot.loader.grub = {
-    # no need to set devices, disko will add all devices that have a EF02 partition to the list already
-    # devices = [ ];
-    efiSupport = true;
-    efiInstallAsRemovable = true;
+  boot.loader = {
+    # the installation process is allowed to modify EFI boot variables
+    efi.canTouchEfiVariables = true;
+    # enable the systemd-boot EFI boot manager
+    systemd-boot.enable = true;
   };
 
   services.openssh = {
