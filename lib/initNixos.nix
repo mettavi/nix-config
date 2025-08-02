@@ -17,6 +17,7 @@
         ../hosts/${hostname}/configuration.nix
         {
           users.users.${username} = {
+            initialHashedPassword = "$y$j9T$N.Uctp9LU4Z/B9k7ZMN0H1$VeMDInlMK/HHb27D1WtSAVLBktQsh2l9LdOLHKEm9p8";
             isNormalUser = true;
             home = "/home/${username}";
             # allow user to configure networking and use sudo
