@@ -24,14 +24,18 @@
         inputs.disko.nixosModules.disko
         ../hosts/${hostname}/configuration.nix
         {
-          users.users.${username} = {
-            isNormalUser = true;
-            home = "/home/${username}";
-            # allow user to configure networking and use sudo
-            extraGroups = [
-              "networkmanager"
-              "wheel"
-            ];
+          users = {
+            # existing passwords will not be overwritten unless this is set to false
+            mutableUsers = false;
+            users.${username} = {
+              isNormalUser = true;
+              home = "/home/${username}";
+              # allow user to configure networking and use sudo
+              extraGroups = [
+                "networkmanager"
+                "wheel"
+              ];
+            };
           };
           networking.hostName = "${hostname}";
           nix = {
