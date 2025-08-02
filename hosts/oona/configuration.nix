@@ -22,10 +22,6 @@ in
 
   # SETUP INITIAL ACCESS
   users.users.${username} = {
-    # this is required to enable password login
-    # (create hash with "mkpasswd -m sha-512", or "mkpasswd" to use the stronger default yes encryption)
-    hashedPasswordFile =
-      config.sops.secrets."users/${username}/nixos_users/${username}-${hostname}-hashpw".path;
     # authorize remote login using ssh key(s)
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
