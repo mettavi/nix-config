@@ -2,6 +2,7 @@
   config,
   hostname,
   inputs,
+  lib,
   pkgs,
   secrets_path,
   username,
@@ -17,7 +18,7 @@ in
     #sops.defaultSopsFormat = "yaml";
     age = {
       # automatically import host SSH keys as age keys
-      # NB: ssh host keys can be generated with the "ssh-keygen -A" command
+      # NB: ssh host keys can be generated with the "ssh-keygen -A" command (or automatically with nixos)
       sshKeyPaths = [ "/etc/ssh/ssh_${hostname}_ed25519_key" ];
       keyFile = "/var/lib/sops-nix/key.txt";
       # This will generate an age format key from the host ssh key if one does not exist
@@ -38,6 +39,10 @@ in
         owner = "${config.users.users.${username}.name}";
         # We need to ensure the entire directory structure is that of the user...
         path = "${config.users.users.${username}.home}/.config/sops/age/keys.txt";
+      };
+      # nixos hashed user passwords
+      "users/${username}/nixos_users/{username}-{hostname}-hashpw" = lib.mkIf pkgs.stdenv.isLinux {
+        neededforUsers = true;
       };
       "users/${username}/google_timotheos_app_pw" = {
       };
