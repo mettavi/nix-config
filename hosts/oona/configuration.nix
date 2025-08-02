@@ -1,6 +1,5 @@
 {
   config,
-  hostname,
   modulesPath,
   pkgs,
   username,
@@ -29,21 +28,6 @@ in
     ];
     # assign the user's default shell (requires also setting "programs.${shell}.enable")
     shell = pkgs.${df_sh};
-  };
-  # Enable the OpenSSH daemon.
-  services = {
-    openssh = {
-      enable = true;
-      # create a host key
-      hostKeys = [
-        {
-          comment = "root@${hostname}";
-          path = "/etc/ssh/ssh_${hostname}_ed25519_key";
-          rounds = 100;
-          type = "ed25519";
-        }
-      ];
-    };
   };
 
   # "oona" is a vmware guest running on darwin host "mack"
@@ -196,7 +180,17 @@ in
   # environment.systemPackages = with pkgs; [
   # ];
 
-  # HOME MANAGER OPTIONS
+  # NIXOS MODULE SETTINGS
+  services = {
+    openssh = {
+      # allow ssh passwords on this host
+      settings = {
+        PasswordAuthentication = true;
+      };
+    };
+  };
+
+  # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
   home-manager.users.${username} = {
     home = {
       # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
