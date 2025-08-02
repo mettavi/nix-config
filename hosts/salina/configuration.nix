@@ -43,8 +43,6 @@
   ];
 
   users.users.${username} = {
-    hashedPasswordFile =
-      config.sops.secrets."users/${username}/nixos_users/${username}-{hostname}-hashpw".path;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos@oona"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
