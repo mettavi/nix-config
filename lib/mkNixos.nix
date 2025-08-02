@@ -69,6 +69,7 @@
         }
         ../hosts/${hostname}/hardware-configuration.nix
         ../system/nixos
+        ../system/nixos/modules
         ../system/shared
         ../system/shared/modules
         inputs.sops-nix.nixosModules.sops
