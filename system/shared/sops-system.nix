@@ -41,8 +41,8 @@ in
         path = "${config.users.users.${username}.home}/.config/sops/age/keys.txt";
       };
       # nixos hashed user passwords
-      "users/${username}/nixos_users/{username}-{hostname}-hashpw" = lib.mkIf pkgs.stdenv.isLinux {
-        neededforUsers = true;
+      "users/${username}/nixos_users/${username}-${hostname}-hashpw" = lib.mkIf pkgs.stdenv.isLinux {
+        neededForUsers = true;
       };
       "users/${username}/google_timotheos_app_pw" = {
       };
