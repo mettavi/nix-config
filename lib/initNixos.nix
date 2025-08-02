@@ -17,6 +17,7 @@
         ../hosts/${hostname}/configuration.nix
         {
           users.users.${username} = {
+            # do not encrypt this as it is needed for password access prior to setup of sops-nix on a new system
             initialHashedPassword = "$y$j9T$N.Uctp9LU4Z/B9k7ZMN0H1$VeMDInlMK/HHb27D1WtSAVLBktQsh2l9LdOLHKEm9p8";
             isNormalUser = true;
             home = "/home/${username}";
