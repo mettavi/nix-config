@@ -49,6 +49,21 @@
             git.enable = true;
             vim.enable = true;
           };
+          # Enable the OpenSSH daemon.
+          services = {
+            openssh = {
+              enable = true;
+              # create a host key
+              hostKeys = [
+                {
+                  comment = "root@${hostname}";
+                  path = "/etc/ssh/ssh_${hostname}_ed25519_key";
+                  rounds = 100;
+                  type = "ed25519";
+                }
+              ];
+            };
+          };
           # The Git revision of the top-level flake from which this configuration was built
           system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
         }
