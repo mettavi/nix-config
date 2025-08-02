@@ -15,13 +15,6 @@
     ./disk-config.nix
   ];
 
-  boot.loader = {
-    # the installation process is allowed to modify EFI boot variables
-    efi.canTouchEfiVariables = true;
-    # enable the systemd-boot EFI boot manager
-    systemd-boot.enable = true;
-  };
-
   environment.systemPackages = map lib.lowPrio [
     pkgs.curl
     pkgs.gitMinimal
@@ -34,5 +27,33 @@
     ] ++ (args.extraPublicKeys or [ ]); # this is used for unit-testing this module and can be removed if not needed
   };
 
+  ########## SYSTEM ARCHITECTURE ###########
+
+  # enable in-memory compressed devices and swap space
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    priority = 100;
+  };
+
+  boot.kernel.sysctl = {
+    # default is 60
+    "vm.swappiness" = 90;
+  };
+
+  # Use systemd for the bootloader
+  boot.loader = {
+    # the installation process is allowed to modify EFI boot variables
+    efi.canTouchEfiVariables = true;
+    # enable the systemd-boot EFI boot manager
+    systemd-boot.enable = true;
+  };
+
+  # This value determines the NixOS release from which the default
+  # settings for stateful data, like file locations and database versions
+  # on your system were taken. It‘s perfectly fine and recommended to leave
+  # this value at the release version of the first install of this system.
+  # Before changing this value read the documentation for this option
+  # (e.g. man configuration.nix or on https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion).
   system.stateVersion = "25.05";
 }
