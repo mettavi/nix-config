@@ -1,3 +1,4 @@
-(final: prev: {
-  kanata = final.callPackage ./kanata { };
-})
+{ pkgs, ... }:
+{
+  tmux-weather = (pkgs.callPackage ./tmux-weather { });
+}
