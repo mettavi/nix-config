@@ -72,9 +72,9 @@ in
               set -g @catppuccin_flavor "mocha"
               set -g @catppuccin_window_status_style "rounded"
               set -g status-right "#{E:@catppuccin_status_application}"
-              set -agF status-right "#{E:@catppuccin_status_cpu}"
-              set -ag status-right "#{E:@catppuccin_status_session}"
+              set -ag status-right "#{E:@catppuccin_status_host}"
               set -ag status-right "#{E:@catppuccin_status_uptime}"
+              set -agF status-right "#{E:@catppuccin_status_cpu}"
               set -agF status-right "#{E:@catppuccin_status_battery}" 
             '';
           }
