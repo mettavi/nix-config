@@ -13,7 +13,7 @@ let
   # mypkgs = (pkgs.callPackage ./pkgs { });
 
   # OVERRIDES
-  # get bfg to use the already jdk already installed in environment.systemPackages instead of openjdk
+  # get bfg to use the jdk already installed in environment.systemPackages instead of openjdk
   bfg-repo-cleaner_zulu = pkgs.bfg-repo-cleaner.override { jre = pkgs.zulu; };
 in
 {
@@ -29,7 +29,7 @@ in
 
   # install standard packages
   environment.systemPackages = with pkgs; [
-    # PACKAGES
+    # CLI PACKAGES
     age # Modern encryption tool with small explicit keys
     asciiquarium-transparent # Aquarium/sea animation in ASCII art
     # atomicparsley
