@@ -20,6 +20,9 @@
     pkgs.gitMinimal
   ];
 
+  ########## IMPORTANT SETTINGS ###########
+
+  # SETUP INITIAL ACCESS
   users.users.${username} = {
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos@oona"
