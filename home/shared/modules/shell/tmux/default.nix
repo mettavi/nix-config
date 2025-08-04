@@ -8,6 +8,19 @@ with lib;
 let
   cfg = config.nyx.modules.shell.tmux;
   df_sh = config.nyx.modules.shell.default;
+
+  # EXAMPLE USE OF mkTmuxPlugin function to install plugins directly from GitHub
+  tpm = pkgs.tmuxPlugins.mkTmuxPlugin rec {
+    pluginName = "tpm";
+    version = "3.1.0";
+    rtpFilePath = "tpm";
+    src = pkgs.fetchFromGitHub {
+      owner = "tmux-plugins";
+      repo = "tpm";
+      rev = "v${version}";
+      hash = "sha256-CeI9Wq6tHqV68woE11lIY4cLoNY8XWyXyMHTDmFKJKI=";
+    };
+  };
 in
 {
   options.nyx.modules.shell.tmux = {
@@ -84,8 +97,15 @@ in
           }
           cpu
           battery
-            plugin = tmux-which-key;
+          {
             plugin = prefix-highlight;
+          {
+            plugin = tpm;
+            extraConfig = ''
+              set -g @plugin 'tmux-plugins/tpm'
+              set -g @plugin 'alexwforsythe/tmux-which-key'
+            '';
+          }
         ];
         shell = "${pkgs.${df_sh}}/bin/${df_sh}";
         shortcut = "a";
