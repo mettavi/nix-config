@@ -65,9 +65,9 @@ in
         historyLimit = 50000;
         keyMode = "vi";
         mouse = true;
-        plugins = with pkgs; [
+        plugins = with pkgs.tmuxPlugins; [
           {
-            plugin = tmuxPlugins.catppuccin;
+            plugin = catppuccin;
             extraConfig = ''
               set -g @catppuccin_flavor "mocha"
               set -g @catppuccin_window_status_style "rounded"
@@ -82,8 +82,10 @@ in
               set -agF status-right "#{E:@catppuccin_status_battery}" 
             '';
           }
-          tmuxPlugins.cpu
-          tmuxPlugins.battery
+          cpu
+          battery
+            plugin = tmux-which-key;
+            plugin = prefix-highlight;
         ];
         shell = "${pkgs.${df_sh}}/bin/${df_sh}";
         shortcut = "a";
