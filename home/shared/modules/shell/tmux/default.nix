@@ -112,7 +112,9 @@ in
             plugin = tpm;
             extraConfig = ''
               set -g @plugin 'tmux-plugins/tpm'
+              set-environment -g TMUX_PLUGIN_MANAGER_PATH '${config.xdg.dataHome}/tmux/plugins/tpm'
               set -g @plugin 'alexwforsythe/tmux-which-key'
+              set -g @tmux-which-key-xdg-enable=1
             '';
           }
         ];
