@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Adapted from https://gitlab.com/tmllull/bitwarden-automated-backup
+# Adapted from https://github.com/tmllull/BitwardenAutomatedBackup
 # and https://github.com/binarypatrick/BitwardenBackup
 # See https://github.com/dh024/Bitwarden_Export for a good interactive export script
 
@@ -69,9 +69,10 @@ fi
 # Cleanup old files.
 # Adjust the number of files to keep and days
 # depending on your use case.
+# NB: Once there are > 12 backups, "mtime +12w" will remove all backups older than 12 weeks
 NUM_FILES=$(find "$EXPORT_PATH" -type f | wc -l)
-if [ "$NUM_FILES" -gt 10 ]; then
-  find "$EXPORT_PATH" -type f -mtime +5 -exec rm {} \;
+if [ "$NUM_FILES" -gt 12 ]; then
+  find "$EXPORT_PATH" -type f -mtime +12w -exec rm {} \;
 fi
 
 echo "Export completed!"
