@@ -71,7 +71,6 @@ in
             unbind -T copy-mode-vi MouseDragEnd1Pane # don't exit copy mode when dragging with mouse
             set -g status-right-length 100
             set -g status-left-length 100
-            set -g status-left ""
           '';
         # allow nvim to intercept focus events from the terminal emulator (enables autoread to reload changed files)
         focusEvents = true;
@@ -99,6 +98,16 @@ in
           battery
           {
             plugin = prefix-highlight;
+            extraConfig = ''
+              set -g status-left "#{prefix_highlight}"
+              set -g @prefix_highlight_fg 'black'
+              set -g @prefix_highlight_bg 'yellow'
+              set -g @prefix_highlight_show_copy_mode 'on'
+              set -g @prefix_highlight_show_sync_mode 'on'
+              set -g @prefix_highlight_copy_mode_attr 'fg=black,bg=white'
+              set -g @prefix_highlight_sync_mode_attr 'fg=black,bg=green'
+            '';
+          }
           {
             plugin = tpm;
             extraConfig = ''
