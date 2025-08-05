@@ -148,6 +148,11 @@ in
         xfce.enable = true;
       };
     };
+    programs = {
+      firefox = {
+        enable = true;
+      };
+    };
     xdg.desktopEntries = {
       # add a desktop shortcut to the host share
       mack-timotheos = {
