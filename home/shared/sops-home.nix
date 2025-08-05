@@ -27,9 +27,6 @@
         # ssh-agent on nixos would refuse to connect without changing the permissions from 0400
         mode = "0644";
       };
-      # oracle cloud
-      "users/${username}/ssh_keys/ssh-nixos-ocloud.key" = {
-      };
       # RCLONE KEYS
       # rclone auth token for onedrive service
       "users/${username}/rclone_keys/rclone_1d_token" = {
