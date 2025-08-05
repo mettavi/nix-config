@@ -18,6 +18,7 @@
         {
           users.users.${username} = {
             isNormalUser = true;
+            hashedPassword = "$y$j9T$AO6jdJHZ7Ep7tR2s/it0X/$1tSMbRECa1oOl.tJOeT46iKaCR9Cc0M6YkQliKZ1zsB";
             home = "/home/${username}";
             # allow user to configure networking and use sudo
             extraGroups = [
