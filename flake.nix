@@ -90,7 +90,7 @@
     let
       mkDarwin = import ./lib/mkDarwin.nix { inherit inputs self; };
       mkNixos = import ./lib/mkNixos.nix { inherit inputs self; };
-      # initNixos = import ./lib/initNixos.nix { inherit inputs; };
+      initNixos = import ./lib/initNixos.nix { inherit inputs; };
     in
     {
 
@@ -116,10 +116,10 @@
       # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
       # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on remote \
       # --print-build-log --target-host username@<ip address>
-      # nixosConfigurations = {
-      #   "oona" = initNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
-      #   "salina" = initNixos.mkNixosConfiguration "salina" "aarch64-linux" "timotheos";
-      # };
+      nixosConfigurations = {
+        # "oona" = initNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
+        "salina" = initNixos.mkNixosConfiguration "salina" "aarch64-linux" "timotheos";
+      };
 
       # Expose the package set, including overlays, for convenience.
       darwinPackages = self.darwinConfigurations."mack".pkgs;
