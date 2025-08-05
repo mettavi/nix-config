@@ -4,8 +4,7 @@
   pkgs,
   username,
   ...
-}@args:
-
+}:
 {
   imports = [
     # imports for initial install with nixos-anywhere and disko
@@ -24,9 +23,9 @@
   ########## IMPORTANT SETTINGS ###########
 
   # SETUP INITIAL ACCESS
-
   # set up root access to prevent initial password problems for the primary user
   users.users.root = {
+    hashedPassword = "$y$j9T$kD6Saa3hxt3U5YCkHGtBp/$ybiLXiDq1f6EitKgQTPB8Nyw2BzvI2QOI0IlR.TKyf1";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos@oona"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
