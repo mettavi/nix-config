@@ -50,7 +50,7 @@ in
       autocd = true;
       autosuggestion.enable = true;
       completionInit = (builtins.readFile ../../../dots/zsh/.zsh_completions);
-      dotDir = ".config/zsh";
+      dotDir = "${config.xdg.configHome}/zsh";
       enableCompletion = true;
       envExtra = (builtins.readFile ../../../dots/zsh/.zshenv);
       history = {
