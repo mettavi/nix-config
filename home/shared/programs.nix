@@ -107,6 +107,9 @@
       # help ssh find keys with non-standard ssh key names when reconnecting, especially when using nixos-anywhere
       # NB: ssh-agent is started using nixos startAgent option
       addKeysToAgent = "yes";
+      controlMaster = "auto";
+      controlPath = "~/.ssh/master-%C";
+      controlPersist = "10m";
       matchBlocks = {
         "github.com" = {
           identityFile = "${config.xdg.configHome}/sops-nix/secrets/users/${username}/ssh_keys/${username}-${hostname}_ed25519";
