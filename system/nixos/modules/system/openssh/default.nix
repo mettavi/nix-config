@@ -29,13 +29,13 @@ in
           type = "ed25519";
         }
       ];
-      settings = {
-        # options to harden openssh, especially for servers
-        # forbid the use of ssh password authentication
-        PasswordAuthentication = mkDefault false;
-        # forbid root login through SSH
-        PermitRootLogin = "no";
-      };
+      # settings = {
+      # options to harden openssh, especially for servers
+      # forbid the use of ssh password authentication
+      # PasswordAuthentication = mkDefault false;
+      # forbid root login through SSH
+      # PermitRootLogin = "no";
+      # };
     };
   };
 }
