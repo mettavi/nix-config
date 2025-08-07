@@ -18,6 +18,10 @@
     ];
   };
 
+  nyx.modules = {
+    profiles.mbp = true;
+  };
+
   home-manager = {
     users.${username} = {
       home = {
