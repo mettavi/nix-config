@@ -18,11 +18,11 @@
     ];
   };
 
-  nyx.modules = {
-    apps = {
-      vscode = true;
+  # SYSTEM MODULES
+  nyx = {
+    profiles = {
+      mbp.enable = true;
     };
-    profiles.mbp = true;
   };
 
   home-manager = {
@@ -32,6 +32,9 @@
         stateVersion = "23.11";
       };
       nyx.modules = {
+        apps = {
+          vscode.enable = true;
+        };
         shell = {
           # enable scheduled bitwarden backup task
           bw_backup.enable = true;
