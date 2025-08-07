@@ -39,6 +39,8 @@
       dates = "02:15";
     };
     settings = {
+      # especially for host salina (oracle cloud)
+      download-buffer-size = 524288000;
       extra-substituters =
         [
           "https://nixpkgs.cachix.org"
