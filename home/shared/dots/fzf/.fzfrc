@@ -49,4 +49,4 @@ _fzf_comprun() {
 }
 
 # Script to use git with fzf
-source "$XDG_STATE_HOME/nix/profiles/home-manager/home-path/share/fzf-git-sh/fzf-git.sh"
+source "$XDG_STATE_HOME/home-manager/gcroots/current-home/home-path/share/fzf-git-sh/fzf-git.sh"
