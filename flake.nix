@@ -109,6 +109,7 @@
       # nixos-rebuild build --flake .#hostname
       nixosConfigurations = {
         "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
+        "salina" = mkNixos.mkNixosConfiguration "salina" "aarch64-linux" "timotheos";
       };
 
       ################################  NIXOS-ANYWHERE BUILDS  ######################################
@@ -118,7 +119,7 @@
       # --print-build-log --target-host username@<ip address>
       nixosConfigurations = {
         # "oona" = initNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
-        "salina" = initNixos.mkNixosConfiguration "salina" "aarch64-linux" "timotheos";
+        # "salina" = initNixos.mkNixosConfiguration "salina" "aarch64-linux" "timotheos";
       };
 
       # Expose the package set, including overlays, for convenience.
