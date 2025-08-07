@@ -10,7 +10,11 @@ let
 in
 {
   options.nyx.modules.apps.vscode = {
-    enable = mkEnableOption "Install and configure vscode";
+    enable = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Install and configure vscode";
+    };
   };
 
   config = mkIf cfg.enable {

@@ -19,6 +19,9 @@
   };
 
   nyx.modules = {
+    apps = {
+      vscode = true;
+    };
     profiles.mbp = true;
   };
 
