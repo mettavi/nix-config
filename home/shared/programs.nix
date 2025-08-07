@@ -107,20 +107,22 @@
       # help ssh find keys with non-standard ssh key names when reconnecting, especially when using nixos-anywhere
       # NB: ssh-agent is started using nixos startAgent option
       addKeysToAgent = "yes";
+      # more robust settings for control* options (especially a shorter controlPath value)
       controlMaster = "auto";
       controlPath = "~/.ssh/master-%C";
       controlPersist = "10m";
       matchBlocks = {
         "github.com" = {
-          identityFile = "${config.xdg.configHome}/sops-nix/secrets/users/${username}/ssh_keys/${username}-${hostname}_ed25519";
+          identityFile = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519";
         };
         "salina" = {
           hostname = "169.224.231.109";
-          user = "ubuntu";
-          identityFile = "${config.xdg.configHome}/sops-nix/secrets/users/${username}/ssh_keys/${username}-${hostname}_ed25519";
+          user = "timotheos";
+          identityFile = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519";
         };
         "*" = {
           extraOptions = {
+            # ignore macOS only option in linux
             IgnoreUnknown = "UseKeychain";
             UseKeychain = "yes";
           };
