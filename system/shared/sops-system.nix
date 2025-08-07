@@ -20,9 +20,10 @@ in
       # automatically import host SSH keys as age keys
       # NB: ssh host keys can be generated with the "ssh-keygen -A" command (or automatically with nixos)
       sshKeyPaths = [ "/etc/ssh/ssh_${hostname}_ed25519_key" ];
-      keyFile = "/var/lib/sops-nix/key.txt";
-      # This will generate an age format key from the host ssh key if one does not exist
+      # This will generate an age format private key from the host private ssh key if one does not exist
+      # WARNING: Let this create the key automatically from the host private key; do not replace with the PUBLIC key
       generateKey = true;
+      keyFile = "/var/lib/sops-nix/key.txt";
     };
     gnupg.sshKeyPaths = [ ];
     # secrets will be output to /run/secrets
