@@ -112,9 +112,12 @@ in
             plugin = tpm;
             extraConfig = ''
               set -g @plugin 'tmux-plugins/tpm'
+              # NB: tmux-which-key would only install to a subdirectory of tpm
               set-environment -g TMUX_PLUGIN_MANAGER_PATH '${config.xdg.dataHome}/tmux/plugins/tpm'
               set -g @plugin 'alexwforsythe/tmux-which-key'
-              set -g @tmux-which-key-xdg-enable=1
+              # there is a bug preventing this option from working, config will have to load from plugin directory
+              # see https://github.com/alexwforsythe/tmux-which-key/issues/15 for details
+              # set -g @tmux-which-key-xdg-enable=1
             '';
           }
         ];
@@ -128,8 +131,15 @@ in
         tkw = "tmux kill-window";
       };
     };
-    xdg.configFile = {
-      "tmuxp/nvim-zsh.yaml".source = ../../../dots/tmuxp/nvim-zsh.yaml;
+    # link config files for tmux plugins
+    xdg = {
+      configFile = {
+        "tmuxp/nvim-zsh.yaml".source = ../../../dots/tmuxp/nvim-zsh.yaml;
+      };
+      dataFile = {
+        "tmux/plugins/tpm/tmux-which-key/config.yaml".source =
+          ../../../dots/tmux/tmux-which-key/config.yaml;
+      };
     };
   };
 }
