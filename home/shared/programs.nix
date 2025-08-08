@@ -131,6 +131,7 @@
     };
 
     # Terminal command correction, alternative to thefuck, written in Rust
+    # default alias is "f"
     pay-respects = {
       enable = true;
       enableZshIntegration = true;
