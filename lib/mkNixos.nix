@@ -69,10 +69,6 @@
             # Allow unfree packages
             config.allowUnfree = true;
             hostPlatform = "${system}";
-            overlays = [
-              # make more vscode extensions available
-              (inputs.nix-vscode-extensions.overlays.default)
-            ];
           };
           # The Git revision of the top-level flake from which this configuration was built
           system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
