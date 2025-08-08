@@ -143,6 +143,9 @@ in
       stateVersion = "25.05";
     };
     nyx.modules = {
+      apps = {
+        ghostty.enable = true;
+      };
       desktop = {
         # configure the XFCE desktop
         xfce.enable = true;

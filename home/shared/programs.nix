@@ -38,25 +38,6 @@
         shellIntegrationOptions = [ "-p 80%,60%" ];
       };
     };
-    # install ghostty on nixOS only
-    ghostty = lib.mkIf (!pkgs.stdenv.isDarwin) {
-      enable = true;
-      # integration will work in more scenarios, such as switching shells
-      enableZshIntegration = true;
-      # settings will be written to $XDG_CONFIG_HOME/ghostty/config
-      settings = {
-        font-size = "18";
-        # make right_alt send an escape sequence in ghostty
-        keybind = [
-          "unconsumed:alt+b=esc:b"
-          "unconsumed:alt+f=esc:f"
-        ];
-        macos-option-as-alt = true;
-        # start windows maximized
-        maximize = true;
-        theme = "iTerm2 Pastel Dark Background";
-      };
-    };
     git = {
       enable = true;
       delta.enable = true;
