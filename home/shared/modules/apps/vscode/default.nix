@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -18,10 +19,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    nixpkgs.overlays = [
-      # make more vscode extensions available
-      (inputs.nix-vscode-extensions.overlays.default)
-    ];
     programs.vscode = {
       enable = true;
       # disallow extensions being installed or updated by vscode
