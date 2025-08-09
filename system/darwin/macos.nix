@@ -37,6 +37,9 @@
   environment.etc = {
     "nix/nix.custom.conf".text = # bash
       ''
+        # import this file into nix.conf (set "access-tokens" key to my GitHub token to get a higher API threshold for rate-limiting)
+        # see https://github.com/NixOS/nix/issues/6536 for more details
+        !include ${config.home-manager.users.${username}.sops.secrets."users/${username}/github_token".path}
         # automatically detects files in the store that have identical contents, and replaces them with hard links to a single copy
         auto-optimise-store = true
         warn-dirty = false
