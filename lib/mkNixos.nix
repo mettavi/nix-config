@@ -79,6 +79,8 @@
         ../system/shared
         ../system/shared/modules
         inputs.sops-nix.nixosModules.sops
+        # use a ready-made database for nix-index/nix-locate rather than building it locally
+        inputs.nix-index-database.nixosModules.nix-index
         inputs.home-manager.nixosModules.home-manager
         {
           home-manager = {
