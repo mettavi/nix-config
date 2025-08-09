@@ -53,18 +53,6 @@
             };
           };
           networking.hostName = "${hostname}";
-          nix = {
-            extraOptions = ''
-              warn-dirty = false
-            '';
-            settings = {
-              # enable flakes
-              experimental-features = [
-                "nix-command"
-                "flakes"
-              ];
-            };
-          };
           nixpkgs = {
             # Allow unfree packages
             config.allowUnfree = true;
