@@ -45,7 +45,7 @@
 
     # PERSONAL REPOS
     secrets = {
-      url = "git+ssh://git@github.com/mettavi/nix-secrets.git?shallow=1";
+      url = "git+ssh://git@github.com/mettavi/nix-secrets.git?ref=main&shallow=1";
       inputs = { };
     };
 
