@@ -37,7 +37,6 @@
       # Command-line fuzzy finder written in Go
       # "fzf"
       # "m4b-tool"
-      "pinentry-touchid"
     ];
     # use the "greedy" option to always upgrade auto-updated or unversioned cask to latest version
     casks = [

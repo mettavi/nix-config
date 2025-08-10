@@ -55,7 +55,6 @@ in
     ntfs3g # Read-write NTFS driver for FUSE
     nurl # generate Nix fetcher calls from repository URLs
     ocrmypdf
-    pinentry-tty # Passphrase entry dialog utilizing the Assuan protocol
     # pipx
     # pnpm
     # poppler

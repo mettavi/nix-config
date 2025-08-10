@@ -7,7 +7,6 @@
   imports = [
     ../home/shared/dots.nix
     ../home/shared/programs.nix
-    ../home/shared/services-home.nix
     ../home/shared/sops-home.nix
     ../home/shared/modules
     ../home/darwin

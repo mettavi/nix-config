@@ -326,22 +326,6 @@
         "type": "github"
       }
     },
-    "pinentry-touchid": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1659632777,
-        "narHash": "sha256-UYDGOSuC0myzp5jb03xCiqE+nMMMHIZ3eWiM83hVPKA=",
-        "owner": "jorgelbg",
-        "repo": "homebrew-tap",
-        "rev": "95c37690b5a0a97c290ccace9f35068e7a222da8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "jorgelbg",
-        "repo": "homebrew-tap",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "disko": "disko",
@@ -357,7 +341,6 @@
         "nixos-pkgs": "nixos-pkgs",
         "nixpkgs": "nixpkgs",
         "nixpkgs-24_11": "nixpkgs-24_11",
-        "pinentry-touchid": "pinentry-touchid",
         "secrets": "secrets",
         "sops-nix": "sops-nix"
       }
