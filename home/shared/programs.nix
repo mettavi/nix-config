@@ -100,6 +100,8 @@
           hostname = "169.224.231.109";
           user = "timotheos";
           identityFile = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519";
+          # temporary fix for "missing or unsuitable terminal: xterm-ghostty" problem
+          setEnv = "TERM=xterm-256color";
         };
         "*" = {
           extraOptions = {
