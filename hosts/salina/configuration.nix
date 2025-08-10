@@ -1,5 +1,4 @@
 {
-  lib,
   modulesPath,
   pkgs,
   username,
@@ -15,10 +14,8 @@
     ./hardware-configuration.nix
   ];
 
-  environment.systemPackages = map lib.lowPrio [
-    pkgs.curl
-    pkgs.gitMinimal
-  ];
+  # install the ghostty terminfo (which is missing from current versions of terminfo) for ssh sessions to host salina
+  environment.systemPackages = with pkgs; [ ghostty.terminfo ];
 
   ########## IMPORTANT SETTINGS ###########
 
@@ -70,10 +67,10 @@
   system.stateVersion = "25.05";
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
-   home-manager.users.${username} = {
-     home = {
-  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-     stateVersion = "25.05";
-   };
-   };
+  home-manager.users.${username} = {
+    home = {
+      # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+      stateVersion = "25.05";
+    };
+  };
 }
