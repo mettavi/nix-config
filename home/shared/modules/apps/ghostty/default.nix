@@ -25,13 +25,10 @@ in
       settings = {
         font-size = "18";
         # make right_alt send an escape sequence in ghostty
-        keybind = [
-          "unconsumed:alt+b=esc:b"
-          "unconsumed:alt+f=esc:f"
-        ];
         macos-option-as-alt = true;
         # start windows maximized
         maximize = true;
+        shell-integration-features = "sudo";
         theme = "iTerm2 Pastel Dark Background";
       };
     };

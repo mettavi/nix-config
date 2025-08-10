@@ -1,10 +1,13 @@
 {
-  lib,
+  config,
   modulesPath,
   pkgs,
   username,
   ...
 }:
+let
+  df_sh = config.home-manager.users.${username}.nyx.modules.shell.default;
+in
 {
   imports = [
     # imports for initial install with nixos-anywhere and disko
@@ -15,10 +18,8 @@
     ./hardware-configuration.nix
   ];
 
-  environment.systemPackages = map lib.lowPrio [
-    pkgs.curl
-    pkgs.gitMinimal
-  ];
+  # install the ghostty terminfo (which is missing from current versions of terminfo) for ssh sessions to host salina
+  environment.systemPackages = with pkgs; [ ghostty.terminfo ];
 
   ########## IMPORTANT SETTINGS ###########
 
@@ -37,6 +38,8 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos@oona"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
     ];
+    # assign the user's default shell (requires also setting "programs.${shell}.enable")
+    shell = pkgs.${df_sh};
   };
 
   ########## SYSTEM ARCHITECTURE ###########
@@ -70,10 +73,10 @@
   system.stateVersion = "25.05";
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
-   home-manager.users.${username} = {
-     home = {
-  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-     stateVersion = "25.05";
-   };
-   };
+  home-manager.users.${username} = {
+    home = {
+      # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+      stateVersion = "25.05";
+    };
+  };
 }
