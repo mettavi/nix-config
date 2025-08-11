@@ -38,7 +38,10 @@ in
         escapeTime = 10;
         extraConfig = # sh
           ''
-            # Allow Ctrl+a to be passed to the terminal
+            # Press ctrl-a again (after the prefix [=ctrl-a]) to go to the last window
+            bind-key C-a last-window
+            # Press a after the prefix to send the prefix itself (ctrl-a) to a terminal program 
+            # (eg. ctrl-a to go to the beginning of a line in the emacs-style shell)
             bind a send-prefix
             # Allow programs to bypass tmux using a terminal escape sequence (eg for image rendering)
             set -g allow-passthrough on
