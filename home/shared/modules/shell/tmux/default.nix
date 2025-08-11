@@ -94,6 +94,7 @@ in
               set -agF status-right "#{E:@catppuccin_status_battery}" 
             '';
           }
+          # load these two after catppuccin
           cpu
           battery
           {
