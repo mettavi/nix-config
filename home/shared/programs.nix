@@ -77,8 +77,9 @@
 
     ssh = {
       enable = true;
-      # help ssh find keys with non-standard ssh key names when reconnecting, especially when using nixos-anywhere
-      # NB: ssh-agent is started using nixos startAgent option
+      # add ssh keys to ssh-agent when making the first connection
+      # (helpful for caching passphrases and finding non-standard key names)
+      # NB: ssh-agent must be started, eg. using nixos startAgent option (enabled by default on darwin)
       addKeysToAgent = "yes";
       # more robust settings for control* options (especially a shorter controlPath value)
       controlMaster = "auto";
