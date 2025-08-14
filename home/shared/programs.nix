@@ -70,7 +70,6 @@
     #   keys = [ "${username}-${hostname}_ed25519" ];
     # };
     lazygit.enable = true;
-    # provides nix-locate and command-not-found commands
     neovim = {
       enable = true;
       plugins = with pkgs.vimPlugins; [
@@ -112,6 +111,9 @@
 
     # Terminal command correction, alternative to thefuck, written in Rust
     # default alias is "f"
+    # by default, links to command_not_found script from nix-index package if it is installed
+    # (no need to enable via programs.nix-index separately)
+    # --nocnf: Disables command_not_found handler (add via pay-respects.settings)
     pay-respects = {
       enable = true;
       enableZshIntegration = true;
