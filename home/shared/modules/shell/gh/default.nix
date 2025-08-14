@@ -27,11 +27,12 @@ in
 
   config = mkIf cfg.enable {
     programs = {
-      # cannot use programs.gh home-manager module due to use of secure
-      # "gh-wrapped" package (which conflicts with pkgs.gh PATH symlink)
+      # NB: cannot use programs.gh home-manager module due to use of secure
+      # "gh-wrapped" package (which conflicts with a pkgs.gh PATH symlink)
       git = {
         extraConfig = {
           credential = {
+            # NB: this is a cross platform solution that doesn't require the osxkeychain option on darwin
             helper = "!gh auth git-credential";
           };
         };
