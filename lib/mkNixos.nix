@@ -67,7 +67,7 @@
         ../system/shared
         ../system/shared/modules
         inputs.sops-nix.nixosModules.sops
-        # use a ready-made database for nix-index/nix-locate rather than building it locally
+        # this provides a wrapper for the nix-index package (no need to install separately)
         inputs.nix-index-database.nixosModules.nix-index
         inputs.home-manager.nixosModules.home-manager
         {

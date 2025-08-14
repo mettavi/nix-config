@@ -59,7 +59,7 @@
         ../system/shared
         ../system/shared/modules
         inputs.mac-app-util.darwinModules.default
-        # use a ready-made database for nix-index/nix-locate rather than building it locally
+        # this provides a wrapper for the nix-index package (no need to install separately)
         inputs.nix-index-database.darwinModules.nix-index
         inputs.sops-nix.darwinModules.sops
         inputs.home-manager.darwinModules.home-manager
