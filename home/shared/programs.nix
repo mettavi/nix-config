@@ -63,7 +63,8 @@
     keychain = {
       enable = true;
       # do not attempt to start gpg-agent, which is currently not installed
-      agents = [ "ssh" ];
+      # NB: This option is deprecated as of v 2.9.0, as gpg-agent is no longer started by default
+      # agents = [ "ssh" ];
       enableZshIntegration = true;
       keys = [ "${username}-${hostname}_ed25519" ];
     };
