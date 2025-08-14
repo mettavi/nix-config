@@ -58,11 +58,15 @@
       package = pkgs.zulu; # Certified builds of OpenJDK
     };
     jq.enable = true;
-    # keychain = {
-    #   enable = true;
-    #   enableZshIntegration = true;
-    #   keys = [ "${username}-${hostname}_ed25519" ];
-    # };
+    # manage ssh-agent and ssh-add automatically and extend caching to once per system login
+    # NB: this works cross-platform and doesn't depend on macOS-specific "UseKeyChain" option in ssh config
+    keychain = {
+      enable = true;
+      # do not attempt to start gpg-agent, which is currently not installed
+      agents = [ "ssh" ];
+      enableZshIntegration = true;
+      keys = [ "${username}-${hostname}_ed25519" ];
+    };
     lazygit.enable = true;
     neovim = {
       enable = true;
@@ -80,7 +84,8 @@
       # add ssh keys to ssh-agent when making the first connection
       # (helpful for caching passphrases and finding non-standard key names)
       # NB: ssh-agent must be started, eg. using nixos startAgent option (enabled by default on darwin)
-      addKeysToAgent = "yes";
+      # NB: this is not required if the kechain utility is installed
+      # addKeysToAgent = "yes";
       # more robust settings for control* options (especially a shorter controlPath value)
       controlMaster = "auto";
       controlPath = "~/.ssh/master-%C";
