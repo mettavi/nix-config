@@ -114,10 +114,11 @@
       # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
       # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on remote \
       # --print-build-log --target-host username@<ip address>
-      nixosConfigurations = {
-        # "oona" = initNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
-        # "salina" = initNixos.mkNixosConfiguration "salina" "aarch64-linux" "timotheos";
-      };
+      # nixosConfigurations = {
+      # "oona" = initNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
+      # "salina" = initNixos.mkNixosConfiguration "salina" "aarch64-linux" "timotheos";
+      # "remus" = initNixos.mkNixosConfiguration "remus" "x86_64-linux" "timotheos";
+      # };
 
       # Expose the package set, including overlays, for convenience.
       darwinPackages = self.darwinConfigurations."mack".pkgs;
