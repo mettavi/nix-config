@@ -2,7 +2,6 @@
   config,
   hostname,
   inputs,
-  lib,
   nix_repo,
   pkgs,
   username,
@@ -41,11 +40,6 @@
     git = {
       enable = true;
       delta.enable = true;
-      extraConfig = {
-        credential = lib.mkIf pkgs.stdenv.isDarwin {
-          helper = "osxkeychain";
-        };
-      };
       # enable automatic maintenance of git repos using launchd/systemd
       maintenance = {
         enable = true;
@@ -99,13 +93,6 @@
           hostname = "169.224.231.109";
           user = "timotheos";
           identityFile = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519";
-        };
-        "*" = {
-          extraOptions = {
-            # ignore macOS only option in linux
-            IgnoreUnknown = "UseKeychain";
-            UseKeychain = "yes";
-          };
         };
       };
     };
