@@ -2,7 +2,7 @@
 
 # Adapted from https://github.com/tmllull/BitwardenAutomatedBackup
 # and https://github.com/binarypatrick/BitwardenBackup
-# See https://github.com/dh024/Bitwarden_Export for a good interactive export script
+# See https://github.com/dh024/Bitwarden_Export for a good INTERACTIVE export script
 
 # load env vars required by script and bw binary
 source /Users/timotheos/.config/sops-nix/secrets/users/timotheos/bitwarden.env
