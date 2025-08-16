@@ -467,6 +467,28 @@ $HOME/Library/com.apple.appleaccountd/CKTokens/Database/Private/com.apple.applea
 $HOME/Library/Application Support/Google/Chrome/CertificateRevocation/9540
 $HOME/Library/Application Support/Google/Chrome/TpcdMetadata/2025.2.2.1
 $HOME/Library/pnpm
+$HOME/Library/Application Support/BraveSoftware/Brave-Browser/*
+# Do not exclude the following subdirectory containing user profile data
+!$HOME/Library/Application Support/BraveSoftware/Brave-Browser/Default
+$HOME/Library/Application Support/Code/*
+!$HOME/Library/Application Support/Code/User
+$HOME/Library/Application Support/Google/Chrome/*
+!$HOME/Library/Application Support/Google/Chrome/Default
+!$HOME/Library/Application Support/Google/Chrome/Profile 3
+!$HOME/Library/Application Support/Google/Chrome/Profile 4
+$HOME/Library/Application Support/Google/DriveFS
+$HOME/Library/Application Support/Kegworks
+$HOME/Library/Application Support/Logi
+$HOME/Library/Application Support/LogiOptionsPlus
+$HOME/Library/Application Support/Plex Media Server/*
+!$HOME/Library/Application Support/Plex Media Server/Media
+!$HOME/Library/Application Support/Plex Media Server/Metadata
+!$HOME/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.db
+!$HOME/Library/Application Support/Plex Media Server/Plug-in Support/Databases/com.plexapp.plugins.library.blobs.db
+$HOME/Library/Application Support/TorBrowser-Data/*
+!$HOME/Library/Application Support/TorBrowser-Data/Browser
+$HOME/Library/Application Support/discord
+
 
 # Other paths to exclude
 $HOME/Metadata/CoreSpotlight
