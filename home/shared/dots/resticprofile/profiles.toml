@@ -32,7 +32,9 @@ version = "1"
     schedule = "*.*.* 00:30"
     schedule-permission = "system"
     schedule-priority = "background"
-    schedule-log = 'mack-timotheos-b2backup_{{ .Now.Format "2006-01-02" }}.log'
+    # save the log to ~/Library/Logs/restic 
+    # NB: use single quotes as escaping with \ does not work
+    schedule-log = '{{ .Env.HOME }}/Library/Logs/restic/mack-timotheos-b2backup_{{ .Now.Format "2006-01-02" }}.log'
     schedule-lock-wait = "5m"
 
     # send monitoring info to healthchecks.io
