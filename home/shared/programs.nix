@@ -54,8 +54,9 @@
       userName = inputs.secrets.name;
     };
     java = {
+      # Certified builds of OpenJDK (with JavaFX included for Pali Platform app)
       enable = true;
-      package = pkgs.zulu; # Certified builds of OpenJDK
+      package = pkgs.zulu.override { enableJavaFX = true; };
     };
     jq.enable = true;
     # manage ssh-agent and ssh-add automatically and extend caching to once per system login
