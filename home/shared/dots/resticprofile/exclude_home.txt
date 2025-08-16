@@ -488,6 +488,10 @@ $HOME/Library/Application Support/Plex Media Server/*
 $HOME/Library/Application Support/TorBrowser-Data/*
 !$HOME/Library/Application Support/TorBrowser-Data/Browser
 $HOME/Library/Application Support/discord
+$HOME/Library/Application Support/obsidian
+$HOME/Library/Application Support/simsapa
+$HOME/Library/Biome
+$HOME/Applications/Kegworks/Teach Yourself Pali emulator.app
 
 
 # Other paths to exclude
