@@ -16,7 +16,8 @@ version = "1"
     "rclone.args=serve restic --stdio --b2-hard-delete --fast-list --verbose",
   ]
   password-file = "../sops-nix/secrets/users/timotheos/restic_b2_mack-timotheos"
-  verbose = true
+  # true=1, set to 2 for more detail
+  verbose = 1
 
   [default.backup]
     # set to true for first run
