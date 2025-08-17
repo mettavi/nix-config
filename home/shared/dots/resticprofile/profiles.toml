@@ -19,6 +19,10 @@ version = "1"
   # true=1, set to 2 for more detail
   verbose = 1
 
+  [default.env]
+    # keep one core free to prevent overloading the system
+    # GOMAXPROCS = 3
+
   [default.backup]
     # set to true for first run
     dry-run = false
