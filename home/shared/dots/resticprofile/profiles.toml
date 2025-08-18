@@ -42,7 +42,7 @@ version = "1"
     read-concurrency = 100
     # SCHEDULING
     # run the backup daily at 12:30 am
-    schedule = "*.*.* 00:30"
+    schedule = "*-*-* 00:30"
     schedule-permission = "system"
     schedule-priority = "standard"
     # save the log to ~/Library/Logs/restic 
@@ -80,7 +80,7 @@ version = "1"
     keep-yearly = 25
     # SCHEDULING
     # run a forget and prune operation on Mondays at 1:30 am
-    schedule = "Mon *.*.* 01:30"
+    schedule = "Mon *-*-* 01:30"
     schedule-permission = "system"
     schedule-priority = "background"
     schedule-log = 'mack-timotheos-b2prune_{{ .Now.Format "2006-01-02 15:04:05" }}.log'
@@ -106,7 +106,7 @@ version = "1"
 
   [default.check]
     # run an integrity check on the 1st of each month at 2 am
-    schedule = "*.*.1 02:00"
+    schedule = "*-*-1 02:00"
     schedule-permission = "system"
     schedule-priority = "background"
     schedule-log = 'mack-timotheos-b2check_{{ .Now.Format "2006-01-02 15:04:05" }}.log'
