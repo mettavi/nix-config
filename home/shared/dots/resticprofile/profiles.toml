@@ -17,6 +17,8 @@ version = "1"
   option = [
     "rclone.args=serve restic --stdio --b2-hard-delete --fast-list --verbose",
   ]
+  # default is 16MB, increase for video files
+  pack-size = 128
   password-file = "../sops-nix/secrets/users/timotheos/restic_b2_mack-timotheos"
   # true=1, set to 2 for more detail
   verbose = 1
