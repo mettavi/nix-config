@@ -44,5 +44,9 @@ keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Go to next tab" }) --  
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Go to previous tab" }) --  go to previous tab
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open current buffer in new tab" }) --  move current buffer to new tab
 
+-- Redraw the line to horizontally center cursor position
+-- Combines two keymaps (zs and zH) in one
+keymap.set("n", "z.", ":<C-u> normal zszH<CR>")
+
 -- print the current file
 keymap.set("n", "<leader>p", "<cmd>%w !lp<CR>", { desc = "Print file" })
