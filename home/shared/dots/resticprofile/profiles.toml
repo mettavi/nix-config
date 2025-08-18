@@ -38,6 +38,8 @@ version = "1"
     check-before = false
     exclude-file = "./exclude_home.txt"
     exclude-caches = true
+    # read more files concurrently (default is 2)
+    read-concurrency = 100
     # SCHEDULING
     # run the backup daily at 12:30 am
     schedule = "*.*.* 00:30"
