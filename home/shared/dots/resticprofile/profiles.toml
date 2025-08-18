@@ -8,6 +8,8 @@ version = "1"
   initialize = true
   # prevent idle sleeping
   prevent-sleep = true
+  # normally running overnight
+  priority = "high"
 
 [default]
   description = "Restic backup of user timotheos on host mack"
