@@ -22,7 +22,7 @@ version = "1"
   # default is 16MB, increase for a mix of small and large files
   pack-size = 128
   password-file = "../sops-nix/secrets/users/timotheos/restic_b2_mack-timotheos"
-  # true=1, set to 2 for more detail
+  # true=1, set to 2 for more detail (eg. lists all files in source repo and their status)
   verbose = 1
 
   [default.env]
