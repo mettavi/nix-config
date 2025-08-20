@@ -16,8 +16,7 @@ version = "1"
   repository = "rclone:b2:mack-timotheos"
   option = [
     # default for rclone.args is "serve restic --stdio --b2-hard-delete"
-    # pass the --config flag to rclone so it looks for the rclone.conf file in the user home when running via root as a system daemon
-    'rclone.args=serve restic --stdio --b2-hard-delete --config /Users/timotheos/.config/rclone/rclone.conf --fast-list --log-file=/Users/timotheos/Library/Logs/restic/mack-timotheos-b2rcl_{{ .Now.Format "2006-01-02" }}.log --stats 5m --verbose --checkers 100 --transfers 100 --order-by size,mixed,75 --max-backlog 10000',
+    'rclone.args=serve restic --stdio --b2-hard-delete --fast-list --log-file=/Users/timotheos/Library/Logs/restic/mack-timotheos-b2rcl_{{ .Now.Format "2006-01-02" }}.log --stats 2m --verbose --checkers 100 --transfers 100 --order-by size,mixed,75 --max-backlog 10000',
     "rclone.connections=100",
   ]
   # default is 16MB, increase for a mix of small and large files
@@ -27,10 +26,8 @@ version = "1"
   verbose = 1
 
   [default.env]
-    # keep one core free to prevent overloading the system
-    # GOMAXPROCS = 3
-    # tell restic where to find the local cache (in user home directory) when running via root as a system daemon
-    RESTIC_CACHE_DIR = "../../Library/Caches/restic"
+    # Point restic to the user home when running via root as a system daemon 
+    HOME = "/Users/timotheos"
 
   [default.backup]
     # set to true for first run
