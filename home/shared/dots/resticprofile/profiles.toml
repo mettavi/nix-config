@@ -16,7 +16,8 @@ version = "1"
   repository = "rclone:b2:mack-timotheos"
   option = [
     # default for rclone.args is "serve restic --stdio --b2-hard-delete"
-    'rclone.args=serve restic --stdio --b2-hard-delete --fast-list --log-file={{ .Env.HOME }}/Library/Logs/restic/mack-timotheos-b2rcl_{{ .Now.Format "2006-01-02 15:04:05" }}.log --stats 5m --verbose --checkers 100 --transfers 100 --order-by size,mixed,75 --max-backlog 10000',
+    # pass the --config flag to rclone so it looks for the rclone.conf file in the user home when running via root as a system daemon
+    'rclone.args=serve restic --stdio --b2-hard-delete --config /Users/timotheos/.config/rclone/rclone.conf --fast-list --log-file=/Users/timotheos/Library/Logs/restic/mack-timotheos-b2rcl_{{ .Now.Format "2006-01-02" }}.log --stats 5m --verbose --checkers 100 --transfers 100 --order-by size,mixed,75 --max-backlog 10000',
     "rclone.connections=100",
   ]
   # default is 16MB, increase for a mix of small and large files
