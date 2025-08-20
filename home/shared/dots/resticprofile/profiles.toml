@@ -13,7 +13,6 @@ version = "1"
 
 [default]
   description = "Restic backup of user timotheos on host mack"
-  repository = "rclone:b2:mack-timotheos"
   option = [
     # default for rclone.args is "serve restic --stdio --b2-hard-delete"
     'rclone.args=serve restic --stdio --b2-hard-delete --fast-list --log-file=/Users/timotheos/Library/Logs/restic/mack-timotheos-b2rcl_{{ .Now.Format "2006-01-02" }}.log --stats 2m --verbose --checkers 100 --transfers 100 --order-by size,mixed,75 --max-backlog 10000',
@@ -22,7 +21,8 @@ version = "1"
   # default is 16MB, increase for a mix of small and large files
   pack-size = 128
   password-file = "../sops-nix/secrets/users/timotheos/restic_b2_mack-timotheos"
-  # true=1, set to 2 for more detail (eg. lists all files in source repo and their status)
+  repository = "rclone:b2:mack-timotheos"
+  # true = 1, set to 2 for more detail (eg. lists all files in source repo and their status)
   verbose = 1
 
   [default.env]
@@ -30,7 +30,7 @@ version = "1"
     HOME = "/Users/timotheos"
 
   [default.backup]
-    # set to true for first run
+    # set to true for testing
     dry-run = false
     source = ["/Users/timotheos"]
     # set to false as "restic check" is a data intensive operation
