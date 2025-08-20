@@ -28,6 +28,7 @@ version = "1"
   [default.env]
     # keep one core free to prevent overloading the system
     # GOMAXPROCS = 3
+    # tell restic where to find the local cache (in user home directory) when running via root as a system daemon
     RESTIC_CACHE_DIR = "../../Library/Caches/restic"
 
   [default.backup]
