@@ -48,7 +48,7 @@ version = "1"
     schedule = "*-*-* 00:30"
     schedule-permission = "system"
     schedule-priority = "standard"
-    # save the log to ~/Library/Logs/restic 
+    # save the log to ~/Library/Logs/restic (NB: restic uses standard POSIX redirection for logging, as there is not log file parameter)
     # NB: use single quotes as escaping inline double quotes does not work
     schedule-log = '../../Library/Logs/restic/mack-timotheos-b2bak_{{ .Now.Format "2006-01-02 15:04:05" }}.log'
     schedule-lock-wait = "5m"
