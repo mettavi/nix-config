@@ -11,11 +11,14 @@ version = "1"
   # normally running overnight
   priority = "high"
 
+  # use template variable to define the user's home directory (can be commented out)
+  # {{ $myhome := "/Users/timotheos" }}
+
 [default]
   description = "Restic backup of user timotheos on host mack"
   option = [
     # default for rclone.args is "serve restic --stdio --b2-hard-delete"
-    'rclone.args=serve restic --stdio --b2-hard-delete --fast-list --log-file=/Users/timotheos/Library/Logs/restic/mack-timotheos-b2rcl_{{ .Now.Format "2006-01-02" }}.log --stats 2m --verbose --checkers 100 --transfers 100 --order-by size,mixed,75 --max-backlog 10000',
+    'rclone.args=serve restic --stdio --b2-hard-delete --fast-list --log-file={{ $myhome }}/Library/Logs/restic/mack-timotheos-b2rcl_{{ .Now.Format "2006-01-02" }}.log --stats 2m --verbose --checkers 100 --transfers 100 --order-by size,mixed,75 --max-backlog 10000',
     "rclone.connections=100",
   ]
   # default is 16MB, increase for a mix of small and large files
@@ -27,12 +30,12 @@ version = "1"
 
   [default.env]
     # Point restic to the user home when running via root as a system daemon 
-    HOME = "/Users/timotheos"
+    HOME = "{{ $myhome }}"
 
   [default.backup]
     # set to true for testing
     dry-run = false
-    source = ["/Users/timotheos"]
+    source = ["{{ $myhome }}"]
     # set to false as "restic check" is a data intensive operation
     # see the discussion at https://forum.restic.net/t/unexpected-costs-with-backblaze-b2-backend/4176/5
     check-before = false
