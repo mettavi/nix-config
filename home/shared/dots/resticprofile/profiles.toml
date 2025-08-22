@@ -18,7 +18,7 @@ version = "1"
   description = "Restic backup of user timotheos on host mack"
   option = [
     # default for rclone.args is "serve restic --stdio --b2-hard-delete"
-    'rclone.args=serve restic --stdio --b2-hard-delete --fast-list --log-file={{ $myhome }}/Library/Logs/restic/{{ .Now.Format "2006-01-02-15.04.05" }}-mack-timotheos-b2rcl.log --stats 2m --verbose --checkers 100 --transfers 100 --order-by size,mixed,75 --max-backlog 10000',
+    'rclone.args=serve restic --stdio --b2-hard-delete --fast-list --log-file={{ $myhome }}/Library/Logs/restic/{{ .Now.Format "20060102-1504" }}-mack-timotheos-b2rcl.log --stats 2m --verbose --checkers 100 --transfers 100 --order-by size,mixed,75 --max-backlog 10000',
     "rclone.connections=100",
   ]
   # default is 16MB, increase for a mix of small and large files
@@ -50,7 +50,7 @@ version = "1"
     schedule-priority = "standard"
     # save the log to ~/Library/Logs/restic (NB: restic uses standard POSIX redirection for logging, as there is no log file parameter)
     # NB: use single quotes as escaping inline double quotes does not work
-    schedule-log = '../../Library/Logs/restic/{{ .Now.Format "2006-01-02-15.04.05" }}-mack-timotheos-b2bak.log'
+    schedule-log = '../../Library/Logs/restic/{{ .Now.Format "20060102-1504" }}-mack-timotheos-b2bak.log'
     schedule-lock-wait = "5m"
 
     # send monitoring info to healthchecks.io
@@ -86,7 +86,7 @@ version = "1"
     schedule = "Mon *-*-* 01:30"
     schedule-permission = "system"
     schedule-priority = "background"
-    schedule-log = '../../Library/Logs/restic/{{ .Now.Format "2006-01-02-15.04.05" }}-mack-timotheos-b2prune.log'
+    schedule-log = '../../Library/Logs/restic/{{ .Now.Format "20060102-1504" }}-mack-timotheos-b2prune.log'
     schedule-lock-wait = "5m"
 
     # send monitoring info to healthchecks.io
@@ -112,7 +112,7 @@ version = "1"
     schedule = "*-*-1 02:00"
     schedule-permission = "system"
     schedule-priority = "background"
-    schedule-log = '../../Library/Logs/restic/{{ .Now.Format "2006-01-02-15.04.05" }}-mack-timotheos-b2check.log'
+    schedule-log = '../../Library/Logs/restic/{{ .Now.Format "20060102-1504" }}-mack-timotheos-b2check.log'
     schedule-lock-wait = "5m"
 
     # send monitoring info to healthchecks.io
