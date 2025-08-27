@@ -23,6 +23,13 @@ return {
 
       require("tokyonight").setup({
         style = "night",
+        -- also set in iTerm2, including the "keep background colors opaque" setting
+        transparent = true, -- Disable the background
+        styles = {
+          -- Background styles. Can be "dark", "transparent" or "normal"
+          sidebars = "transparent",
+          floats = "transparent",
+        },
         on_colors = function(colors)
           colors.bg = bg
           colors.bg_dark = bg_dark
@@ -31,7 +38,7 @@ return {
           colors.bg_popup = bg_dark
           colors.bg_search = bg_search
           colors.bg_sidebar = bg_dark
-          colors.bg_statusline = bg_dark
+          colors.bg_statusline = colors.none
           colors.bg_visual = bg_visual
           colors.border = border
           colors.fg = fg
@@ -39,6 +46,27 @@ return {
           colors.fg_float = fg
           colors.fg_gutter = fg_gutter
           colors.fg_sidebar = fg_dark
+        end,
+        on_highlights = function(highlights, colors)
+          -- TabLineFill is currently set to black
+          highlights.TabLineFill = {
+            bg = colors.none,
+          }
+          highlights.Normal = {
+            bg = colors.none,
+          }
+          highlights.NormalNC = {
+            bg = colors.none,
+          }
+          highlights.NormalFloat = {
+            bg = colors.none,
+          }
+          highlights.NormalSB = {
+            bg = colors.none,
+          }
+          highlights.MsgArea = {
+            bg = colors.none,
+          }
         end,
       })
       -- load the colorscheme here
