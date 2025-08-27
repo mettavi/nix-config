@@ -13,6 +13,10 @@ return {
     vim.cmd([[ highlight NvimTreeFolderArrowClosed guifg=#3FC5FF ]])
     vim.cmd([[ highlight NvimTreeFolderArrowOpen guifg=#3FC5FF ]])
 
+    -- set when using a transparent background
+    vim.cmd([[hi NvimTreeNormal guibg=NONE ctermbg=NONE]])
+    vim.cmd([[hi NvimTreeNormalNC guibg=NONE ctermbg=NONE]]) -- For inactive windows
+
     -- configure nvim-tree
     nvimtree.setup({
       -- updates the tree on `DirChanged` (:cd)
