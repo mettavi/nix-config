@@ -5,7 +5,8 @@ return {
   opts = {
     options = {
       mode = "tabs",
-      separator_style = "slant",
+      -- set this to to "thin" to prevent triangular white separators when setting tokyonight theme to transparent
+      separator_style = "thin",
       offsets = {
         {
           filetype = "NvimTree",
