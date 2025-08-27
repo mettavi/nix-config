@@ -85,7 +85,7 @@ version = "1"
     # run a forget and prune operation on Mondays at 1:30 am
     schedule = "Mon *-*-* 01:30"
     schedule-permission = "system"
-    schedule-priority = "background"
+    schedule-priority = "standard"
     schedule-log = '../../Library/Logs/restic/{{ .Now.Format "20060102-1504" }}-mack-timotheos-b2prune.log'
     schedule-lock-wait = "5m"
 
@@ -111,7 +111,7 @@ version = "1"
     # run an integrity check on the 1st of each month at 2 am
     schedule = "*-*-1 02:00"
     schedule-permission = "system"
-    schedule-priority = "background"
+    schedule-priority = "standard"
     schedule-log = '../../Library/Logs/restic/{{ .Now.Format "20060102-1504" }}-mack-timotheos-b2check.log'
     schedule-lock-wait = "5m"
 
