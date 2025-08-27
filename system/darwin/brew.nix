@@ -2,16 +2,6 @@
 {
   environment.variables.HOMEBREW_NO_ANALYTICS = "1";
 
-  system.defaults = {
-    CustomUserPreferences = {
-      # set iterm2 to write user prefs to custom file
-      "com.googlecode.iterm2" = {
-        "com.googlecode.iterm2.PrefsCustomFolder" = "$NIXFILES/home/shared/dots/iterm2";
-        "com.googlecode.iterm2.LoadPrefsFromCustomFolder" = true;
-      };
-    };
-  };
-
   homebrew = {
     enable = true;
 
@@ -58,11 +48,6 @@
       # "discord"
       # "google-drive"
       # "isyncr"
-      # iterm2 brew updates are more recent compared to the nix package
-      {
-        name = "iTerm2";
-        greedy = true;
-      }
       # wine wrapped ports of Windows software for macOS (previously "wineskin")
       {
         name = "kegworks";
