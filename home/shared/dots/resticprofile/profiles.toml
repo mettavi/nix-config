@@ -73,7 +73,7 @@ version = "1"
 
   [default.forget]
     # set to true for first run
-    dry-run = true
+    dry-run = false
     host = "mack"
     prune = true
     keep-last = 10
