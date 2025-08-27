@@ -1,6 +1,8 @@
 {
   config,
   lib,
+  pkgs,
+  username,
   ...
 }:
 with lib;
@@ -13,6 +15,11 @@ in
       type = types.bool;
       default = true;
       description = "Install and setup iTerm2 on darwin";
+    };
+    transparency = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Make iterm2 (and dependencies) transparent";
     };
   };
 
@@ -33,5 +40,18 @@ in
         };
       };
     };
+    home-manager.users.${username}.programs =
+      mkIf config.home-manager.users.${username}.nyx.modules.shell.tmux.enable
+        {
+          tmux = mkIf cfg.transparency {
+            extraConfig = "set -g status-style bg=default";
+            plugins = with pkgs.tmuxPlugins; [
+              {
+                plugin = catppuccin;
+                extraConfig = "set -g @catppuccin_status_background \"default\"";
+              }
+            ];
+          };
+        };
   };
 }
