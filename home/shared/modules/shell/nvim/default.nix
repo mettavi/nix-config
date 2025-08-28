@@ -21,12 +21,17 @@ in
   };
 
   config = mkIf cfg.enable {
-    programs.neovim = {
-      enable = true;
-      plugins = with pkgs.vimPlugins; [
-        noice-nvim
-        telescope-fzf-native-nvim
-      ];
+    programs = {
+      neovim = {
+        enable = true;
+        plugins = with pkgs.vimPlugins; [
+          noice-nvim
+          telescope-fzf-native-nvim
+        ];
+      };
+      zsh.shellGlobalAliases = {
+        nv = "nvim";
+      };
     };
     xdg.configFile = {
       # link without copying to nix store (manage externally) - must use absolute paths
