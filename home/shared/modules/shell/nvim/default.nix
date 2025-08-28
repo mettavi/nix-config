@@ -1,12 +1,14 @@
 {
   config,
   lib,
+  nix_repo,
   pkgs,
   ...
 }:
 
 with lib;
 let
+  inherit (config.lib.file) mkOutOfStoreSymlink;
   cfg = config.nyx.modules.shell.nvim;
 in
 {
@@ -25,6 +27,12 @@ in
         noice-nvim
         telescope-fzf-native-nvim
       ];
+    };
+    xdg.configFile = {
+      # link without copying to nix store (manage externally) - must use absolute paths
+      # mkOutOfStoreSymlink is required to allow the lazy-lock.json file to be writable
+      "nvim".source =
+        mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/nvim";
     };
   };
 }

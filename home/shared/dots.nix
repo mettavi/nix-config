@@ -1,6 +1,6 @@
-{ config, nix_repo, ... }:
 let
-  inherit (config.lib.file) mkOutOfStoreSymlink;
+  # link without copying to nix store (manage externally) - must use absolute paths
+  # inherit (config.lib.file) mkOutOfStoreSymlink;
 in
 {
   ####### CONFIGURE PACKAGES USING DOTFILES ########
@@ -38,10 +38,6 @@ in
       "atuin".source = ./dots/atuin;
       "bat/themes/tokyonight_night.tmTheme".source = ./dots/bat/themes/tokyonight_night.tmTheme;
       "fzf/.fzfrc".source = ./dots/fzf/.fzfrc;
-      # link without copying to nix store (manage externally) - must use absolute paths
-      # mkOutOfStoreSymlink is required to allow the lazy-lock.json file to be writable
-      "nvim".source =
-        mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/nvim";
       "resticprofile".source = ./dots/resticprofile;
     };
   };
