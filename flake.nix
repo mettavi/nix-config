@@ -58,6 +58,9 @@
       url = "github:Kegworks-App/Kegworks";
       flake = false;
     };
+    nixCats = {
+      url = "github:BirdeeHub/nixCats-nvim";
+    };
     mac-app-util = {
       url = "github:hraban/mac-app-util";
       inputs.nixpkgs.follows = "nixpkgs";
