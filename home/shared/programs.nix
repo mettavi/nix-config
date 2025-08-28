@@ -70,13 +70,6 @@
       keys = [ "${username}-${hostname}_ed25519" ];
     };
     lazygit.enable = true;
-    neovim = {
-      enable = true;
-      plugins = with pkgs.vimPlugins; [
-        noice-nvim
-        telescope-fzf-native-nvim
-      ];
-    };
     # pyenv.enable = true;
     # rbenv.enable = true;
     ripgrep.enable = true;
