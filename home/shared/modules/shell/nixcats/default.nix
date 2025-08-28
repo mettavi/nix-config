@@ -37,7 +37,7 @@ in
         ];
       # see the packageDefinitions below.
       # This says which of those to install.
-      packageNames = [ "myHomeModuleNvim" ];
+      packageNames = [ "mynvim" ];
 
       luaPath = ../../../dots/nvim;
 
@@ -158,7 +158,7 @@ in
       packageDefinitions.replace = {
         # These are the names of your packages
         # you can include as many as you wish.
-        myHomeModuleNvim =
+        mynvim =
           { pkgs, name, ... }:
           {
             # they contain a settings set defined above
