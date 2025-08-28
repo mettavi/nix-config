@@ -21,15 +21,20 @@ return {
       local fg_gutter = "#627E97"
       local border = "#547998"
 
+      -- only enable transparency in iTerm2
+      -- NB: also enable this in iTerm2, including the "keep background colors opaque" setting
+      local transbool = nil
+      local styles_trans = nil
+      if vim.env.ITERM_SESSION_ID ~= nil then
+        transbool = true
+        styles_trans = { sidebars = "transparent", floats = "transparent" }
+      end
+
       require("tokyonight").setup({
         style = "night",
-        -- also set in iTerm2, including the "keep background colors opaque" setting
-        transparent = true, -- Disable the background
-        styles = {
-          -- Background styles. Can be "dark", "transparent" or "normal"
-          sidebars = "transparent",
-          floats = "transparent",
-        },
+        transparent = transbool, -- Disable the background
+        -- Background styles. Can be "dark", "transparent" or "normal"
+        styles = styles_trans,
         on_colors = function(colors)
           colors.bg = bg
           colors.bg_dark = bg_dark
@@ -48,25 +53,27 @@ return {
           colors.fg_sidebar = fg_dark
         end,
         on_highlights = function(highlights, colors)
-          -- TabLineFill is currently set to black
-          highlights.TabLineFill = {
-            bg = colors.none,
-          }
-          highlights.Normal = {
-            bg = colors.none,
-          }
-          highlights.NormalNC = {
-            bg = colors.none,
-          }
-          highlights.NormalFloat = {
-            bg = colors.none,
-          }
-          highlights.NormalSB = {
-            bg = colors.none,
-          }
-          highlights.MsgArea = {
-            bg = colors.none,
-          }
+          if vim.env.ITERM_SESSION_ID ~= nil then
+            -- TabLineFill is currently set to black
+            highlights.TabLineFill = {
+              bg = colors.none,
+            }
+            highlights.Normal = {
+              bg = colors.none,
+            }
+            highlights.NormalNC = {
+              bg = colors.none,
+            }
+            highlights.NormalFloat = {
+              bg = colors.none,
+            }
+            highlights.NormalSB = {
+              bg = colors.none,
+            }
+            highlights.MsgArea = {
+              bg = colors.none,
+            }
+          end
         end,
       })
       -- load the colorscheme here
