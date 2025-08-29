@@ -31,6 +31,8 @@ in
       };
       zsh.shellGlobalAliases = {
         nv = "nvim";
+        nvc = "cd ~/.config/nvim";
+        nvs = "cd ~/.local/share/nvim";
       };
     };
     xdg.configFile = {
