@@ -14,8 +14,6 @@
     # Bash and zsh key bindings for Git objects, powered by fzf
     fzf-git-sh
   ];
-  # import program submodules
-  imports = [ ./programs ];
 
   programs = {
     # ensure home-manager itself is installed
