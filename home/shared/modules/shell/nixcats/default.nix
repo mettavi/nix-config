@@ -8,7 +8,7 @@
 with lib;
 let
   utils = inputs.nixCats.utils;
-  cfg = config.nyx.modules.shell.nvim;
+  cfg = config.nyx.modules.shell.nixcats;
 in
 {
   imports = [
@@ -18,7 +18,7 @@ in
   options.nyx.modules.shell.nixcats = {
     enable = mkOption {
       type = types.bool;
-      default = false;
+      default = true;
       description = "Install and configure neovim using the nixCats system";
     };
   };
@@ -37,7 +37,7 @@ in
         ];
       # see the packageDefinitions below.
       # This says which of those to install.
-      packageNames = [ "mynvim" ];
+      packageNames = [ "nvim" ];
 
       luaPath = ../../../dots/nvim;
 
@@ -96,7 +96,8 @@ in
               # but you have the option, and that is demonstrated here.
               # lazy loading isnt required with a config this small
               # but as a demo, we do it anyway.
-
+              noice-nvim
+              telescope-fzf-native-nvim
               # sometimes you have to fix some names
               # {
               #   plugin = catppuccin-nvim;
@@ -114,17 +115,17 @@ in
           optionalPlugins = { };
           # shared libraries to be added to LD_LIBRARY_PATH
           # variable available to nvim runtime
-          sharedLibraries = {
-            general = with pkgs; [ ];
-          };
+          # sharedLibraries = {
+          #   general = with pkgs; [ ];
+          # };
           # environmentVariables:
           # this section is for environmentVariables that should be available
           # at RUN TIME for plugins. Will be available to path within neovim terminal
-          environmentVariables = {
-            # test = {
-            #   CATTESTVAR = "It worked!";
-            # };
-          };
+          # environmentVariables = {
+          # test = {
+          #   CATTESTVAR = "It worked!";
+          # };
+          # };
           # categories of the function you would have passed to
           # python.withPackages or lua.withPackages
           # do not forget to set `hosts.python3.enable` in package settings
@@ -133,21 +134,21 @@ in
           # in your lua config via
           # vim.g.python3_host_prog
           # or run from nvim terminal via :!<packagename>-python3
-          python3.libraries = {
-            # test = [ (_:[]) ];
-          };
+          # python3.libraries = {
+          # test = [ (_:[]) ];
+          # };
           # populates $LUA_PATH and $LUA_CPATH
-          extraLuaPackages = {
-            # test = [ (_: [ ]) ];
-          };
+          # extraLuaPackages = {
+          # test = [ (_: [ ]) ];
+          # };
           # If you know what these are, you can provide custom ones by category here.
           # If you dont, check this link out:
           # https://github.com/NixOS/nixpkgs/blob/master/pkgs/build-support/setup-hooks/make-wrapper.sh
-          extraWrapperArgs = {
-            # test = [
-            #   '' --set CATTESTVAR2 "It worked again!"''
-            # ];
-          };
+          # extraWrapperArgs = {
+          # test = [
+          #   '' --set CATTESTVAR2 "It worked again!"''
+          # ];
+          # };
         }
       );
       # And then build a package with specific categories from above here:
@@ -158,7 +159,7 @@ in
       packageDefinitions.replace = {
         # These are the names of your packages
         # you can include as many as you wish.
-        mynvim =
+        nvim =
           { pkgs, name, ... }:
           {
             # they contain a settings set defined above
@@ -171,6 +172,7 @@ in
               # IMPORTANT:
               # your alias may not conflict with your other packages.
               aliases = [
+                "nv"
               ];
               # neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
               # hosts.python3.enable = true;
@@ -202,24 +204,24 @@ in
             #     "and type :NixCats to see the categories set in nvim"
             #   ];
             # };
-            # an extra test package with normal lua reload for fast edits
-            # nix doesnt provide the config in this package, allowing you free reign to edit it.
-            # then you can swap back to the normal pure package when done.
-            testnvim =
-              { pkgs, mkPlugin, ... }:
-              {
-                settings = {
-                  suffix-path = true;
-                  suffix-LD = true;
-                  wrapRc = false;
-                  unwrappedCfgPath = utils.mkLuaInline "os.getenv('HOME') .. '/.nix-config/home/shared/dots/nvim'";
-                };
-                categories = {
-                  general = true;
-                  test = false;
-                };
-                extra = { };
-              };
+          };
+        # an extra test package with normal lua reload for fast edits
+        # nix doesnt provide the config in this package, allowing you free reign to edit it.
+        # then you can swap back to the normal pure package when done.
+        testnvim =
+          { pkgs, mkPlugin, ... }:
+          {
+            settings = {
+              suffix-path = true;
+              suffix-LD = true;
+              wrapRc = false;
+              unwrappedCfgPath = utils.mkLuaInline "os.getenv('HOME') .. '/.nix-config/home/shared/dots/nvim'";
+            };
+            categories = {
+              general = true;
+              test = false;
+            };
+            extra = { };
           };
       };
     };
