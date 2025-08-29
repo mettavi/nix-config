@@ -225,5 +225,9 @@ in
           };
       };
     };
+    programs.zsh.shellGlobalAliases = {
+      nvc = "cd ~/.config/nvim";
+      nvs = "cd ~/.local/share/nvim";
+    };
   };
 }
