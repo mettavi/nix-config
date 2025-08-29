@@ -43,7 +43,14 @@ return {
       end
     end
 
-    vim.lsp.enable("bashls")
+    vim.lsp.enable({
+      "bashls",
+      "lua_ls",
+      "nixd",
+      "taplo",
+      "ts_ls",
+      "yamlls",
+    })
 
     lspconfig("bashls", {
       capabilities = capabilities,
