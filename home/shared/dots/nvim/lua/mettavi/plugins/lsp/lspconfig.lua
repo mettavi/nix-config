@@ -18,6 +18,10 @@ return {
     -- by extending the capabilities of lsp/neovim with nvim-cmp
     local capabilities = cmp_nvim_lsp.default_capabilities()
 
+    vim.lsp.config("*", {
+      capabilities = capabilities,
+    })
+
     -- code to run when lsp attaches to buffer (assign to everyl lsp server config)
     local on_attach = function(client, bufnr)
       -- inlay hints (experimental), need to turn it on manually
