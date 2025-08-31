@@ -18,6 +18,9 @@ return {
     -- by extending the capabilities of lsp/neovim with nvim-cmp
     local capabilities = cmp_nvim_lsp.default_capabilities()
 
+    local hostname = nixCats.extra("hostname")
+    local isDarwin = nixCats.extra("isDarwin")
+
     vim.lsp.config("*", {
       capabilities = capabilities,
     })
