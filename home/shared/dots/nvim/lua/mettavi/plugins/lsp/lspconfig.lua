@@ -190,6 +190,25 @@ return {
       end,
     })
 
+    vim.api.nvim_create_autocmd("LspAttach", {
+      callback = function(args)
+        -- enable (and toggle) inlay hints with a command or keymap
+        local bufnr = args.buf ---@type number
+        local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+        if client.server_capabilities.inlayHintProvider then
+          vim.api.nvim_create_user_command("ToggleInlayHints", function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
+          end, { desc = "Toggle Inlay Hints" })
+          vim.keymap.set("n", "<leader>i", function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }), { bufnr = bufnr })
+            vim.notify("Inlay hints: " .. ((vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })) and " on" or "off"))
+          end, { buffer = bufnr, desc = "Toggle Inlay Hints" })
+        else
+          print("no inlay hints available")
+        end
+      end,
+    })
+
     -- Change the Diagnostic symbols in the sign column (gutter)
     vim.diagnostic.config({
       signs = {
