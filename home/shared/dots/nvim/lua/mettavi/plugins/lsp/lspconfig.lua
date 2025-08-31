@@ -59,10 +59,117 @@ return {
       "yamlls",
     })
 
-    lspconfig("bashls", {
-      capabilities = capabilities,
-      on_attach = on_attach,
-      filetypes = { "sh", "bash" },
+    -- Server-specific settings. See `:help lsp-quickstart`
+    vim.lsp.config("lua_ls", {
+      settings = {
+        Lua = {
+          completion = {
+            callSnippet = "Replace",
+          },
+          -- make the language server recognize "vim" global
+          diagnostics = {
+            globals = { "vim" },
+          },
+          hint = {
+            enable = true, -- necessary for inlay hints
+          },
+        },
+      },
+    })
+
+    local platform
+    if isDarwin then
+      platform = "darwinConfigurations"
+    else
+      platform = "nixosConfigurations"
+    end
+
+    vim.lsp.config("nixd", {
+      cmd = { "nixd" },
+      settings = {
+        nixd = {
+          nixpkgs = {
+            expr = "import <nixpkgs> { }",
+          },
+          formatting = {
+            command = { "nixfmt" },
+          },
+          -- diagnostic = { suppress = { "sema-unused-def-lambda-witharg-formal" } },
+          options = {
+            darwin = { expr = '(builtins.getFlake ("git+file://" + toString ./.)).darwinConfigurations.mack.options' },
+            -- sysopt = {
+            --   expr = string.format(
+            --     '(builtins.getFlake ("git+file://" + toString ./.)).[%s].[%s].options',
+            --     platform,
+            --     hostname
+            --   ),
+            -- },
+            -- nixd cannot get home-manager options when installed as a nix-darwin module
+            -- ( See https://github.com/nix-community/nixd/issues/608 )
+            homeopt = {
+              expr = string.format(
+                '(builtins.getFlake ("git+file://" + toString ./.)).[%s].[%s].options.home-manager.users.type.getSubOptions []',
+                platform,
+                hostname
+              ),
+            },
+            -- Before configuring Home Manager options, consider your setup:
+            -- Which command do you use for home-manager switching?
+            --
+            --  A. home-manager switch --flake .#... (standalone Home Manager)
+            -- expr = "(builtins.getFlake (builtins.toString ./.)).homeConfigurations.<name>.options",
+            --  B. nixos-rebuild switch --flake .#... (NixOS with integrated Home Manager)
+            -- expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.<name>.options.home-manager.users.type.getSubOptions []".
+          },
+        },
+      },
+    })
+
+    local tsinlayHints = {
+      includeInlayParameterNameHints = "all",
+      includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+      includeInlayFunctionParameterTypeHints = true,
+      includeInlayVariableTypeHints = true,
+      includeInlayVariableTypeHintsWhenTypeMatchesName = false,
+      includeInlayPropertyDeclarationTypeHints = true,
+      includeInlayFunctionLikeReturnTypeHints = true,
+      includeInlayEnumMemberValueHints = true,
+    }
+    vim.lsp.config("ts_ls", {
+      settings = {
+        typescript = {
+          inlayHints = {
+            tsinlayHints,
+          },
+        },
+        javascript = {
+          inlayHints = {
+            tsinlayHints,
+          },
+        },
+      },
+      implicitProjectConfiguration = {
+        checkJs = true,
+      },
+    })
+
+    lspconfig("yamlls", {
+      settings = {
+        yaml = {
+          schemaStore = {
+            -- must disable built-in schemaStore support if you want to use
+            -- the neovim schemastore plugin and its advanced options like `ignore`.
+            enable = false,
+            -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
+            url = "",
+          },
+          schemas = require("schemastore").yaml.schemas(),
+          -- using yamlfmt for formatting
+          format = {
+            enable = false,
+          },
+        },
+      },
     })
 
     vim.api.nvim_create_autocmd("LspAttach", {
