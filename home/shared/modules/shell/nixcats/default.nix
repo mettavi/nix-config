@@ -242,6 +242,7 @@ in
               # to keep the categories table from being filled with non category things that you want to pass
               # but you can pass all the same stuff in any of these sets and access it in lua
               hostname = "${hostname}";
+              isDarwin = pkgs.stdenv.isDarwin;
             };
             # extra = {
             #   nixdExtras.nixpkgs = ''import ${pkgs.path} {}'';
