@@ -27,10 +27,18 @@ in
   };
 
   config = mkIf cfg.enable {
-    # this value, nixCats is the defaultPackageName you pass to mkNixosModules
-    # it will be the namespace for your options.
+    # this value, nixCats is the defaultPackageName you pass to utils.mkNixosModules and utils.mkHomeModules
+    # and it controls the name of the top level option set.
+    # If you made a package named `nixCats` your default package as we did here,
+    # the modules generated would be set at:
+    # config.nixCats = {
+    #   enable = true;
+    #   packageNames = [ "nixCats" ]; # <- the packages you want installed
+    #   <see :h nixCats.module for options>
+    # }
     nixCats = {
       enable = true;
+      # nixpkgs_version = inputs.nixpkgs;
       # this will add the overlays from ./overlays and also,
       # add any plugins in inputs named "plugins-pluginName" to pkgs.neovimPlugins
       # It will not apply to overall system, just nixCats.
@@ -91,6 +99,17 @@ in
               yamllint
             ];
           };
+          # themer = with pkgs; [
+          #   # you can even make subcategories based on categories and settings sets!
+          #   (builtins.getAttr packageDef.categories.colorscheme {
+          #       "onedark" = onedark-vim;
+          #       "catppuccin" = catppuccin-nvim;
+          #       "catppuccin-mocha" = catppuccin-nvim;
+          #       "tokyonight" = tokyonight-nvim;
+          #       "tokyonight-day" = tokyonight-nvim;
+          #     }
+          #   )
+          # ];
           # This is for plugins that will load at startup without using packadd:
           startupPlugins = {
             general = with pkgs.vimPlugins; [
@@ -101,6 +120,13 @@ in
               # but as a demo, we do it anyway.
               noice-nvim
               telescope-fzf-native-nvim
+              # This is for if you only want some of the grammars
+              # (nvim-treesitter.withPlugins (
+              #   plugins: with plugins; [
+              #     nix
+              #     lua
+              #   ]
+              # ))
               # sometimes you have to fix some names
               # {
               #   plugin = catppuccin-nvim;
@@ -131,6 +157,10 @@ in
           # };
           # categories of the function you would have passed to
           # python.withPackages or lua.withPackages
+          # get the path to this python environment
+          # in your lua config via
+          # vim.g.python3_host_prog
+          # or run from nvim terminal via :!<packagename>-python3
           # do not forget to set `hosts.python3.enable` in package settings
 
           # get the path to this python environment
@@ -161,10 +191,13 @@ in
       # see :help nixCats.flake.outputs.packageDefinitions
       packageDefinitions.replace = {
         # These are the names of your packages
+        # and also the default command names for them.
         # you can include as many as you wish.
         nvim =
           { pkgs, name, ... }:
           {
+            # these also receive our pkgs variable
+            # see :help nixCats.flake.outputs.packageDefinitions
             # they contain a settings set defined above
             # see :help nixCats.flake.outputs.settings
             settings = {
@@ -189,26 +222,29 @@ in
               lua = true;
               nix = true;
               yaml = true;
+
+              # we can pass whatever we want actually.
+              # have_nerd_font = false;
+              # example = {
+              #   youCan = "add more than just booleans";
+              #   toThisSet = [
+              #     "and the contents of this categories set"
+              #     "will be accessible to your lua with"
+              #     "nixCats('path.to.value')"
+              #     "see :help nixCats"
+              #     "and type :NixCats to see the categories set in nvim"
+              #   ];
+              # };
             };
             extra = {
+              # there is also an extra table you can use to pass extra stuff.
+              # anything else to pass and grab in lua with `nixCats.extra`
+              # to keep the categories table from being filled with non category things that you want to pass
+              # but you can pass all the same stuff in any of these sets and access it in lua
               hostname = "${hostname}";
             };
-            # anything else to pass and grab in lua with `nixCats.extra`
             # extra = {
             #   nixdExtras.nixpkgs = ''import ${pkgs.path} {}'';
-            # };
-            # we can pass whatever we want actually.
-            # have_nerd_font = false;
-
-            # example = {
-            #   youCan = "add more than just booleans";
-            #   toThisSet = [
-            #     "and the contents of this categories set"
-            #     "will be accessible to your lua with"
-            #     "nixCats('path.to.value')"
-            #     "see :help nixCats"
-            #     "and type :NixCats to see the categories set in nvim"
-            #   ];
             # };
           };
         # an extra test package with normal lua reload for fast edits
@@ -220,8 +256,21 @@ in
             settings = {
               suffix-path = true;
               suffix-LD = true;
+              # IMPURE PACKAGE: normal config reload
+              # include same categories as main config,
+              # will load from vim.fn.stdpath('config')
               wrapRc = false;
+              # or tell it some other place to load
+              # unwrappedCfgPath = "/some/path/to/your/config";
               unwrappedCfgPath = utils.mkLuaInline "os.getenv('HOME') .. '/.nix-config/home/shared/dots/nvim'";
+              # configDirName: will now look for nixCats-nvim within .config and .local and others
+              # this can be changed so that you can choose which ones share data folders for auths
+              # :h $NVIM_APPNAME
+              configDirName = "nixCats-nvim";
+              aliases = [ "testCat" ];
+              # If you wanted nightly, uncomment this, and the flake input.
+              # neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
+              # Probably add the cache stuff they recommend too.
             };
             categories = {
               general = true;
