@@ -6,8 +6,6 @@ return {
     "jay-babu/mason-nvim-dap.nvim",
   },
   config = function()
-    -- import lspconfig plugin
-
     -- import cmp-nvim-lsp plugin
     local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
