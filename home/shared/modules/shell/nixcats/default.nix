@@ -1,5 +1,6 @@
 {
   config,
+  hostname,
   inputs,
   lib,
   nix_repo,
@@ -188,6 +189,9 @@ in
               lua = true;
               nix = true;
               yaml = true;
+            };
+            extra = {
+              hostname = "${hostname}";
             };
             # anything else to pass and grab in lua with `nixCats.extra`
             # extra = {
