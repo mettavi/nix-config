@@ -46,7 +46,10 @@
       "daisydisk" # Disk space visualiser
 
       # "discord"
-      # "google-drive"
+      {
+        name = "google-drive";
+        greedy = true;
+      }
       # "isyncr"
       # wine wrapped ports of Windows software for macOS (previously "wineskin")
       {
