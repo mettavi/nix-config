@@ -1,5 +1,6 @@
 {
   config,
+  darwinConfig,
   hostname,
   inputs,
   lib,
@@ -243,6 +244,7 @@ in
               # but you can pass all the same stuff in any of these sets and access it in lua
               hostname = "${hostname}";
               isDarwin = pkgs.stdenv.isDarwin;
+              isItermTrans = darwinConfig.nyx.modules.system.apps.iterm2.transparency;
             };
             # extra = {
             #   nixdExtras.nixpkgs = ''import ${pkgs.path} {}'';
