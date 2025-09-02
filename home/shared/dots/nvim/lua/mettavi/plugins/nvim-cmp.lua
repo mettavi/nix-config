@@ -10,6 +10,13 @@ return {
     "rafamadriz/friendly-snippets", -- useful snippets
     "onsails/lspkind.nvim", -- vs-code like pictograms
   },
+  opts = function(_, opts) -- completion source for require statements and module annotations
+    opts.sources = opts.sources or {}
+    table.insert(opts.sources, {
+      name = "lazydev",
+      group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+    })
+  end,
   config = function()
     local cmp = require("cmp")
 
