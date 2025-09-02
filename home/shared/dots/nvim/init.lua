@@ -53,6 +53,8 @@ require("nixCatsUtils.lazyCat").setup(nixCats.pawsible({ "allPlugins", "start", 
     opts = {
       library = {
         { path = (nixCats.nixCatsPath or "") .. "/lua", words = { "nixCats" } },
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "${3rd}/luv/library", words = { "vim%.uv" } },
       },
     },
   },
