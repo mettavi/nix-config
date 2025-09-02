@@ -74,15 +74,6 @@
 
     ssh = {
       enable = true;
-      # add ssh keys to ssh-agent when making the first connection
-      # (helpful for caching passphrases and finding non-standard key names)
-      # NB: ssh-agent must be started, eg. using nixos startAgent option (enabled by default on darwin)
-      # NB: this is not required if the kechain utility is installed
-      # addKeysToAgent = "yes";
-      # more robust settings for control* options (especially a shorter controlPath value)
-      controlMaster = "auto";
-      controlPath = "~/.ssh/master-%C";
-      controlPersist = "10m";
       matchBlocks = {
         "github.com" = {
           identityFile = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519";
@@ -91,6 +82,23 @@
           hostname = "169.224.231.109";
           user = "timotheos";
           identityFile = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519";
+        };
+        "*" = {
+          forwardAgent = false;
+          # add ssh keys to ssh-agent when making the first connection
+          # (helpful for caching passphrases and finding non-standard key names)
+          # NB: ssh-agent must be started, eg. using nixos startAgent option (enabled by default on darwin)
+          # NB: this is not required if the keychain utility is installed
+          addKeysToAgent = "no";
+          compression = false;
+          serverAliveInterval = 0;
+          serverAliveCountMax = 3;
+          hashKnownHosts = false;
+          userKnownHostsFile = "~/.ssh/known_hosts";
+          # more robust settings for control* options (especially a shorter controlPath value)
+          controlMaster = "auto"; # use an existing ssh connection if available
+          controlPath = "~/.ssh/master-%C";
+          controlPersist = "10m";
         };
       };
     };
