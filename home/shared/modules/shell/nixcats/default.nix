@@ -242,7 +242,7 @@ in
               # to keep the categories table from being filled with non category things that you want to pass
               # but you can pass all the same stuff in any of these sets and access it in lua
               # pass boolean to neovim lua config for transparency in iterm2
-              isItermTrans = darwinConfig.nyx.modules.system.apps.iterm2.transparency;
+              isItermTrans = darwinConfig.nyx.modules.system.apps.iterm2.transparency or false;
             };
             # extra = {
             #   nixdExtras.nixpkgs = ''import ${pkgs.path} {}'';
