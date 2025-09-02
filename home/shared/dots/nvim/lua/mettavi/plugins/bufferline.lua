@@ -6,6 +6,7 @@ return {
     options = {
       mode = "tabs",
       -- set this to to "thin" to prevent triangular white separators when setting tokyonight theme to transparent
+      -- PS: this is the default
       separator_style = "thin",
       offsets = {
         {
