@@ -35,7 +35,12 @@
       serviceConfig = {
         Label = "org.pqrs.service.daemon.Karabiner-VirtualHIDDevice-Daemon";
         ProcessType = "Interactive";
-        Program = "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
+        # Change key used due to workaround bug in nix-darwin (as at 02092025),
+        # see https://github.com/nix-darwin/nix-darwin/issues/1578 for details
+        # Program = "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon";
+        ProgramArguments = [
+          "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon"
+        ];
         RunAtLoad = true;
         KeepAlive = {
           SuccessfulExit = false;
