@@ -242,8 +242,7 @@ in
               # anything else to pass and grab in lua with `nixCats.extra`
               # to keep the categories table from being filled with non category things that you want to pass
               # but you can pass all the same stuff in any of these sets and access it in lua
-              hostname = "${hostname}";
-              isDarwin = pkgs.stdenv.isDarwin;
+              # pass boolean to neovim lua config for transparency in iterm2
               isItermTrans = darwinConfig.nyx.modules.system.apps.iterm2.transparency;
             };
             # extra = {
