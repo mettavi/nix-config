@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  username,
   ...
 }:
 with lib;
@@ -31,5 +32,12 @@ in
       # npmGlobals.regex-adventure
       # npmGlobals.zeal-user-contrib
     ];
+    home-manager.users.${username} = {
+      programs = {
+        helix = {
+          enable = true;
+        };
+      };
+    };
   };
 }
