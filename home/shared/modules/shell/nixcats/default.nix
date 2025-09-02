@@ -1,7 +1,6 @@
 {
   config,
   darwinConfig,
-  hostname,
   inputs,
   lib,
   nix_repo,
