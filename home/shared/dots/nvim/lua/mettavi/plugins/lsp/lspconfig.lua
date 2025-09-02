@@ -18,9 +18,6 @@ return {
     -- by extending the capabilities of lsp/neovim with nvim-cmp
     local capabilities = cmp_nvim_lsp.default_capabilities()
 
-    local hostname = nixCats.extra("hostname")
-    local isDarwin = nixCats.extra("isDarwin")
-
     vim.lsp.config("*", {
       capabilities = capabilities,
     })
@@ -52,8 +49,13 @@ return {
       },
     })
 
+    -- local variables to setup nixd lsp
+    local hostname = vim.uv.os_gethostname()
+    local home = vim.env.HOME
+    local sysname = vim.uv.os_uname().sysname
+
     local platform
-    if isDarwin then
+    if sysname == "Darwin" then
       platform = "darwinConfigurations"
     else
       platform = "nixosConfigurations"
@@ -67,19 +69,10 @@ return {
           },
           -- diagnostic = { suppress = { "sema-unused-def-lambda-witharg-formal" } },
           options = {
-            darwin = { expr = '(builtins.getFlake ("git+file://" + toString ./.)).darwinConfigurations.mack.options' },
-            -- sysopt = {
-            --   expr = string.format(
-            --     '(builtins.getFlake ("git+file://" + toString ./.)).[%s].[%s].options',
-            --     platform,
-            --     hostname
-            --   ),
-            -- },
-            -- nixd cannot get home-manager options when installed as a nix-darwin module
-            -- ( See https://github.com/nix-community/nixd/issues/608 )
-            homeopt = {
+            sysopt = {
               expr = string.format(
-                '(builtins.getFlake ("git+file://" + toString ./.)).[%s].[%s].options.home-manager.users.type.getSubOptions []',
+                "(builtins.getFlake (builtins.toString %s/.nix-config)).%s.%s.options",
+                home,
                 platform,
                 hostname
               ),
@@ -91,6 +84,14 @@ return {
             -- expr = "(builtins.getFlake (builtins.toString ./.)).homeConfigurations.<name>.options",
             --  B. nixos-rebuild switch --flake .#... (NixOS with integrated Home Manager)
             -- expr = "(builtins.getFlake (builtins.toString ./.)).nixosConfigurations.<name>.options.home-manager.users.type.getSubOptions []".
+            homeopt = {
+              expr = string.format(
+                "(builtins.getFlake (builtins.toString %s/.nix-config)).%s.%s.options.home-manager.users.type.getSubOptions []",
+                home,
+                platform,
+                hostname
+              ),
+            },
           },
         },
       },
