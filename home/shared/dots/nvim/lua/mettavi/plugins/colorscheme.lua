@@ -21,20 +21,24 @@ return {
       local fg_gutter = "#627E97"
       local border = "#547998"
 
-      -- only enable transparency in iTerm2
-      -- NB: also enable this in iTerm2, including the "keep background colors opaque" setting
+      -- only enable transparency in nvim when using iTerm2
+      -- NB: also need to enable it in iTerm2, including the "keep background colors opaque" setting
       local transbool = nil
-      local styles_trans = nil
-      if vim.env.ITERM_SESSION_ID ~= nil then
+      local styles = nil
+      local trans = nixCats.extra("isItermTrans")
+      if vim.env.ITERM_SESSION_ID ~= nil and trans then
         transbool = true
-        styles_trans = { sidebars = "transparent", floats = "transparent" }
+        styles = { sidebars = "transparent", floats = "transparent" } -- "dark", "transparent" or "normal"
+      else
+        transbool = false
+        styles = { sidebars = "dark", floats = "dark" }
       end
 
       require("tokyonight").setup({
         style = "night",
         transparent = transbool, -- Disable the background
         -- Background styles. Can be "dark", "transparent" or "normal"
-        styles = styles_trans,
+        styles = styles,
         on_colors = function(colors)
           colors.bg = bg
           colors.bg_dark = bg_dark
