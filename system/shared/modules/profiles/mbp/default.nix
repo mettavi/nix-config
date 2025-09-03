@@ -20,6 +20,7 @@ in
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
+      localsend # Open source cross-platform alternative to AirDrop
       obsidian
       zoom-us # video conferencing applications
       # Install global npm packages not available in nixpkgs repo
