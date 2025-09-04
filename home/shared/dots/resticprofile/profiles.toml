@@ -16,6 +16,8 @@ version = "1"
 
 [default]
   description = "Restic backup of user timotheos on host mack"
+  # do not abort check or forget tasks when there is a stale lock file
+  force-inactive-lock = true
   option = [
     # default for rclone.args is "serve restic --stdio --b2-hard-delete"
     'rclone.args=serve restic --stdio --b2-hard-delete --fast-list --log-file={{ $myhome }}/Library/Logs/restic/{{ .Now.Format "20060102-1504" }}-mack-timotheos-b2rcl.log --stats 2m --verbose --checkers 100 --transfers 100 --order-by size,mixed,75 --max-backlog 10000',
