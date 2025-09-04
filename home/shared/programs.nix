@@ -74,6 +74,7 @@
 
     ssh = {
       enable = true;
+      enableDefaultConfig = false;
       matchBlocks = {
         "github.com" = {
           identityFile = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519";
