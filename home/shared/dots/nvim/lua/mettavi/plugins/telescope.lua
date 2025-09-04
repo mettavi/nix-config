@@ -37,6 +37,8 @@ return {
           additional_args = { "--hidden" },
         },
         live_grep = {
+          -- search hidden files, except those in .git
+          glob_pattern = { "!.git" },
           additional_args = { "--hidden" },
         },
       },
