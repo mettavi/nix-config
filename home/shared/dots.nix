@@ -38,7 +38,6 @@ in
       "atuin".source = ./dots/atuin;
       "bat/themes/tokyonight_night.tmTheme".source = ./dots/bat/themes/tokyonight_night.tmTheme;
       "fzf/.fzfrc".source = ./dots/fzf/.fzfrc;
-      "resticprofile".source = ./dots/resticprofile;
     };
   };
 }
