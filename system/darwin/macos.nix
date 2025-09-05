@@ -1,5 +1,7 @@
 {
   config,
+  hostname,
+  lib,
   nix_repo,
   username,
   ...
