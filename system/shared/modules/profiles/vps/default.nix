@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 with lib;
@@ -17,12 +18,20 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.openssh = {
-      settings = {
-      # options to harden openssh, especially for servers
-      # forbid the use of ssh password authentication
-      PasswordAuthentication = false;
-      };
-    };
+    services.openssh =
+      if pkgs.stdenv.isLinux then
+        {
+          settings = {
+            # options to harden openssh, especially for servers
+            # forbid the use of ssh password authentication
+            PasswordAuthentication = false;
+          };
+        }
+      else
+        {
+          extraConfig = ''
+            PasswordAuthentication no
+          '';
+        };
   };
 }
