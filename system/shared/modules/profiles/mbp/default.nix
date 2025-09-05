@@ -35,11 +35,6 @@ in
     ];
     home-manager.users.${username} = {
       nyx.modules.shell.restic.enable = true;
-      programs = {
-        helix = {
-          enable = true;
-        };
-      };
     };
   };
 }
