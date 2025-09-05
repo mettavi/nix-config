@@ -51,5 +51,22 @@
           config.users.users.${username}.home
         }/${nix_repo}/system/overlays
       '';
+    "newsyslog.d/restic.conf".text =
+      lib.mkIf config.home-manager.users.${username}.nyx.modules.shell.restic.enable # bash
+        ''
+          # logfilename                      [owner:group]      mode count size(KB)  when  flags [/pid_file]     [sig_num] 
+          ${
+            config.users.users.${username}.home
+          }/Library/Logs/restic/${hostname}-${username}-b2bak.log    root:staff         644  30    1024      *     NJ 
+          ${
+            config.users.users.${username}.home
+          }/Library/Logs/restic/${hostname}-${username}-b2rcl.log    root:staff         644  30    1024      *     NJ 
+          ${
+            config.users.users.${username}.home
+          }/Library/Logs/restic/${hostname}-${username}-b2prn.log    root:staff         644  4     1024      *     NJ 
+          ${
+            config.users.users.${username}.home
+          }/Library/Logs/restic/${hostname}-${username}-b2chk.log    root:staff         644  1     1024      *     NJ 
+        '';
   };
 }
