@@ -19,7 +19,6 @@ in
 {
 
   imports = [
-    ./restic.nix
     ./vim.nix
   ];
 
