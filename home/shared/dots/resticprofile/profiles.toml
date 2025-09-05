@@ -89,7 +89,7 @@ version = "1"
     schedule = "Mon *-*-* 01:30"
     schedule-permission = "system"
     schedule-priority = "standard"
-    schedule-log = '../../Library/Logs/restic/mack-timotheos-b2prune.log'
+    schedule-log = '../../Library/Logs/restic/mack-timotheos-b2prn.log'
     schedule-lock-wait = "5m"
 
     # send monitoring info to healthchecks.io
@@ -115,7 +115,7 @@ version = "1"
     schedule = "*-*-1 02:00"
     schedule-permission = "system"
     schedule-priority = "standard"
-    schedule-log = '../../Library/Logs/restic/mack-timotheos-b2check.log'
+    schedule-log = '../../Library/Logs/restic/mack-timotheos-b2chk.log'
     schedule-lock-wait = "5m"
 
     # send monitoring info to healthchecks.io
