@@ -30,10 +30,7 @@ in
         }
       ];
       settings = {
-        # options to harden openssh, especially for servers
-        # forbid the use of ssh password authentication
-        # PasswordAuthentication = mkDefault false;
-        # forbid root login through SSH
+        # forbid root login through SSH (may wish to override this for initial system setup)
         PermitRootLogin = "prohibit-password";
       };
     };
