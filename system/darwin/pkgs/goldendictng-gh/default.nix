@@ -7,11 +7,11 @@
 }:
 let
   pname = "goldendictng-gh";
-  version = "25.05.0-Release.2a2b0e16";
+  version = "25.06.0-Release.8a87a79b";
   shortver = builtins.substring 0 7 version;
   src = fetchurl {
     url = "https://github.com/xiaoyifang/goldendict-ng/releases/download/v${version}/GoldenDict-ng-${shortver}-Qt6.7.2-macOS-x86_64.dmg";
-    hash = "sha256-fZbal0+820WnvSJaN5y47Pv6yuzWk1wNRbhYp6C1GRg=";
+    hash = "sha256-MGor5nT1np9IA/t2lhSaUtNpAJOoikTkeyiR3YDVQHU=";
   };
 in
 stdenvNoCC.mkDerivation rec {
