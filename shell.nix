@@ -1,12 +1,10 @@
-# shell.nix
-{
-  pkgs ? import <nixpkgs> { },
-}:
+# shell.nix to import overlays for update script
+{ }:
 
 let
-  myOverlay = import ./system/overlays/darwin;
   pkgsWithOverlay = import <nixpkgs> {
-    overlays = [ myOverlay ];
+    # also import nixos overlays here if necessary
+    overlays = [ (import ./system/overlays/darwin) ];
   };
 in
 pkgsWithOverlay.mkShell {
