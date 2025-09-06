@@ -20,7 +20,7 @@ let
     downloadPage = "https://github.com/pqrs-org/Karabiner-DriverKit-VirtualHIDDevice/releases";
     sourceProvenance = with sourceTypes; [ binaryNativeCode ];
     license = licenses.publicDomain;
-    maintainers = with maintainers; [ ];
+    maintainers = with maintainers; [ mettavi ];
     platforms = [ "x86_64-darwin" ];
   };
 
