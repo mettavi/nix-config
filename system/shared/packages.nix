@@ -49,7 +49,6 @@ in
     nix-init # Generate Nix packages from URLs
     nix-update # Swiss-knife for updating nix packages
     node2nix # Generate Nix expressions to build NPM packages
-    ntfs3g # Read-write NTFS driver for FUSE
     nurl # generate Nix fetcher calls from repository URLs
     ocrmypdf
     # pipx

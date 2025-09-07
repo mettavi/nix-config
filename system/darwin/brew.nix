@@ -74,11 +74,6 @@
         name = "lingon-x";
         greedy = true;
       }
-      # File system integration
-      {
-        name = "macfuse";
-        greedy = true;
-      }
       # "mamp"
       # "masscode"
       # "mounty"
@@ -89,6 +84,11 @@
       "musicbrainz-picard"
       {
         name = "onedrive"; # Cloud storage client
+        greedy = true;
+      }
+      # Read/write support for NTFS formatted volumes
+      {
+        name = "paragon-ntfs";
         greedy = true;
       }
       # PDF reader, editor and annotator
