@@ -18,13 +18,16 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      restic # Backup with delta transfers (eg. to cloud storage via rclone)
-      (optionalString (cfg.useRProf) resticprofile) # Configuration manager for restic
-    ];
-    xdg.configFile = mkIf cfg.useRProf {
-      "resticprofile".source = ../../../dots/resticprofile;
+  config =
+    mkIf cfg.enable {
+      home.packages = with pkgs; [
+        restic # Backup with delta transfers (eg. to cloud storage via rclone)
+      ];
+    }
+    // mkIf cfg.useRProf {
+      home.packages = with pkgs; [ resticprofile ]; # Configuration manager for restic
+      xdg.configFile = {
+        "resticprofile".source = ../../../dots/resticprofile;
+      };
     };
-  };
 }
