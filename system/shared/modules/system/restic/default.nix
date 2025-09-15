@@ -49,6 +49,74 @@ in
         WorkingDirectory = "${config.users.users.${username}.home}/.nix-config";
       };
     };
+    resticprofile-forget = {
+      serviceConfig = {
+        EnvironmentVariables = {
+          PATH = "/usr/local/sbin:/usr/local/bin:/etc/profiles/per-user/${username}/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/${username}/.local/bin";
+          RESTICPROFILE_SCHEDULE_ID = "${
+            config.users.users.${username}.home
+          }/.config/resticprofile/profiles.toml:forget@default";
+        };
+        Label = "${hostname}.resticprofile.${username}.default.forget";
+        LimitLoadToSessionType = "System";
+        LowPriorityBackgroundIO = false;
+        LowPriorityIO = false;
+        Nice = 0;
+        ProcessType = "Standard";
+        Program = "/etc/profiles/per-user/${username}/bin/resticprofile";
+        ProgramArguments = [
+          "/etc/profiles/per-user/${username}/bin/resticprofile"
+          "--no-prio"
+          "--no-ansi"
+          "--config"
+          "${config.users.users.${username}.home}/.config/resticprofile/profiles.toml"
+          "run-schedule"
+          "forget@default"
+        ];
+        StartCalendarInterval = [
+          {
+            Hour = 1;
+            Minute = 30;
+            Weekday = 1;
+          }
+        ];
+        WorkingDirectory = "${config.users.users.${username}.home}/.nix-config";
+      };
+    };
+    resticprofile-check = {
+      serviceConfig = {
+        EnvironmentVariables = {
+          PATH = "/usr/local/sbin:/usr/local/bin:/etc/profiles/per-user/${username}/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/${username}/.local/bin";
+          RESTICPROFILE_SCHEDULE_ID = "${
+            config.users.users.${username}.home
+          }/.config/resticprofile/profiles.toml:check@default";
+        };
+        Label = "${hostname}.resticprofile.${username}.default.check";
+        LimitLoadToSessionType = "System";
+        LowPriorityBackgroundIO = false;
+        LowPriorityIO = false;
+        Nice = 0;
+        ProcessType = "Standard";
+        Program = "/etc/profiles/per-user/${username}/bin/resticprofile";
+        ProgramArguments = [
+          "/etc/profiles/per-user/${username}/bin/resticprofile"
+          "--no-prio"
+          "--no-ansi"
+          "--config"
+          "${config.users.users.${username}.home}/.config/resticprofile/profiles.toml"
+          "run-schedule"
+          "check@default"
+        ];
+        StartCalendarInterval = [
+          {
+            Day = 1;
+            Hour = 2;
+            Minute = 0;
+          }
+        ];
+        WorkingDirectory = "${config.users.users.${username}.home}/.nix-config";
+      };
+    };
   };
   home-manager.sharedModules = [
     (
