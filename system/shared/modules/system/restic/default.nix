@@ -13,18 +13,8 @@ let
       builtins.attrValues config.home-manager.users
     )
   );
-  # cfg = config.nyx.modules.system.resticdaemon;
 in
 {
-  # options.nyx.modules.system.resticdaemon = {
-  #   enable = mkOption {
-  #     type = types.bool;
-  #     # enable the system daemon for any user that has the restic option enabled
-  #     default = withRestic;
-  #     description = "Install a system daemon to run restic tasks";
-  #   };
-  # };
-
   launchd.daemons = mkIf (pkgs.stdenv.isDarwin && withRestic) {
     resticprofile = {
       serviceConfig = {
