@@ -46,7 +46,7 @@ in
             Minute = 30;
           }
         ];
-        WorkingDirectory = "${config.users.users.${username}.home}/Library/Logs/restic";
+        WorkingDirectory = "${config.users.users.${username}.home}/.nix-config";
       };
     };
   };
