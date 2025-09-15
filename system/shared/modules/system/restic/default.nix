@@ -16,7 +16,7 @@ let
 in
 {
   launchd.daemons = mkIf (pkgs.stdenv.isDarwin && withRestic) {
-    resticprofile = {
+    resticprofile-bak = {
       serviceConfig = {
         EnvironmentVariables = {
           PATH = "/usr/local/sbin:/usr/local/bin:/etc/profiles/per-user/${username}/bin:/run/current-system/sw/bin:/nix/var/nix/profiles/default/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/${username}/.local/bin";
