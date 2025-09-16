@@ -26,6 +26,7 @@ in
       options.nyx.modules.shell.restic = {
         # default is false, must be explicitly turned on for each user
         enable = mkEnableOption "Install and configure the restic backup tool";
+        # IF using restic, default to managing it with resticprofile
         useRestProf = mkOption {
           type = types.bool;
           default = true;
