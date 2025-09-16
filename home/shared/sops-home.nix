@@ -2,9 +2,11 @@
   config,
   hostname,
   secrets_path,
-  username,
   ...
 }:
+let
+  username = config.home.username;
+in
 {
   imports = [
     ./sops-templates

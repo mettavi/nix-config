@@ -1,8 +1,10 @@
 {
-  username,
   config,
   ...
 }:
+let
+  username = config.home.username;
+in
 {
   sops = {
     templates = {

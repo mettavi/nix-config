@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  username,
   ...
 }:
 with lib;
@@ -11,7 +10,9 @@ let
   # this is a secure way to read a sops-nix secret into an environment variable
   # see https://discourse.nixos.org/t/passing-secret-to-overlay-environment-variable/45795/2 for a discussion
   gh-wrapped = pkgs.writeShellScriptBin "gh" ''
-    export GITHUB_TOKEN="$(cat ${config.sops.secrets."users/${username}/github_token".path})"
+    export GITHUB_TOKEN="$(cat ${
+      config.sops.secrets."users/${config.home.username}/github_token".path
+    })"
     ${pkgs.gh}/bin/gh $@
   '';
 in

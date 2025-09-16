@@ -4,7 +4,6 @@
   inputs,
   nix_repo,
   pkgs,
-  username,
   ...
 }:
 {
@@ -65,7 +64,7 @@
       # NB: This option is deprecated as of v 2.9.0, as gpg-agent is no longer started by default
       # agents = [ "ssh" ];
       enableZshIntegration = true;
-      keys = [ "${username}-${hostname}_ed25519" ];
+      keys = [ "${config.home.username}-${hostname}_ed25519" ];
     };
     lazygit.enable = true;
     # pyenv.enable = true;
@@ -77,12 +76,12 @@
       enableDefaultConfig = false;
       matchBlocks = {
         "github.com" = {
-          identityFile = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519";
+          identityFile = "${config.home.homeDirectory}/.ssh/${config.home.username}-${hostname}_ed25519";
         };
         "salina" = {
           hostname = "169.224.231.109";
           user = "timotheos";
-          identityFile = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519";
+          identityFile = "${config.home.homeDirectory}/.ssh/${config.home.username}-${hostname}_ed25519";
         };
         "*" = {
           forwardAgent = false;
