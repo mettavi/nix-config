@@ -8,14 +8,45 @@
 }:
 with lib;
 let
-  withRestic = (
-    builtins.any (config: config.nyx.modules.shell.restic.enable) (
-      builtins.attrValues config.home-manager.users
-    )
-  );
+  cfg = config.home-manager.users.${username}.nyx.modules.shell.restic;
 in
 {
-  launchd.daemons = mkIf (pkgs.stdenv.isDarwin && withRestic) {
+  home-manager.users.${username} =
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
+    with lib;
+    let
+      cfg = config.nyx.modules.shell.restic;
+    in
+    {
+      options.nyx.modules.shell.restic = {
+        # default is false, must be explicitly turned on for each user
+        enable = mkEnableOption "Install and configure the restic backup tool";
+        useRestProf = mkOption {
+          type = types.bool;
+          default = true;
+          description = "Use resticprofile to manage restic using config files";
+        };
+      };
+      config =
+        mkIf cfg.enable {
+          home.packages = with pkgs; [
+            restic # Backup with delta transfers (eg. to cloud storage via rclone)
+          ];
+        }
+        // mkIf cfg.useRestProf {
+          home.packages = with pkgs; [ resticprofile ]; # Configuration manager for restic
+          xdg.configFile = {
+            "resticprofile".source = ../../../../../home/shared/dots/resticprofile;
+          };
+        };
+    };
+
+  launchd.daemons = mkIf (pkgs.stdenv.isDarwin && cfg.enable) {
     resticprofile-backup = {
       serviceConfig = {
         EnvironmentVariables = {
@@ -118,31 +149,4 @@ in
       };
     };
   };
-  home-manager.sharedModules = [
-    (
-      { config, ... }:
-      {
-        options.nyx.modules.shell.restic = {
-          enable = mkEnableOption "Install and configure the restic backup tool";
-          useRestProf = mkOption {
-            type = types.bool;
-            default = true;
-            description = "Use resticprofile to manage restic using config files";
-          };
-        };
-        config =
-          mkIf config.nyx.modules.shell.restic.enable {
-            home.packages = with pkgs; [
-              restic # Backup with delta transfers (eg. to cloud storage via rclone)
-            ];
-          }
-          // mkIf config.nyx.modules.shell.restic.useRestProf {
-            home.packages = with pkgs; [ resticprofile ]; # Configuration manager for restic
-            xdg.configFile = {
-              "resticprofile".source = ../../../../../home/shared/dots/resticprofile;
-            };
-          };
-      }
-    )
-  ];
 }
