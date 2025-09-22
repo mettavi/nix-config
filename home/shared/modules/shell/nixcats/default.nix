@@ -119,6 +119,7 @@ in
               # lazy loading isnt required with a config this small
               # but as a demo, we do it anyway.
               noice-nvim
+              telescope-nvim
               telescope-fzf-native-nvim
               # This is for if you only want some of the grammars
               # (nvim-treesitter.withPlugins (
