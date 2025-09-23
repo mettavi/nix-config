@@ -86,11 +86,6 @@
         name = "onedrive"; # Cloud storage client
         greedy = true;
       }
-      # Read/write support for NTFS formatted volumes
-      {
-        name = "paragon-ntfs";
-        greedy = true;
-      }
       # PDF reader, editor and annotator
       {
         name = "pdf-expert";
