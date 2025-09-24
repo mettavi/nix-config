@@ -3,13 +3,11 @@
   darwinConfig,
   inputs,
   lib,
-  nix_repo,
   ...
 }:
 
 with lib;
 let
-  inherit (config.lib.file) mkOutOfStoreSymlink;
   utils = inputs.nixCats.utils;
   cfg = config.nyx.modules.shell.nixcats;
 in
@@ -287,12 +285,6 @@ in
     programs.zsh.shellGlobalAliases = {
       nvc = "cd ~/.config/nvim";
       nvs = "cd ~/.local/share/nvim";
-    };
-    xdg.configFile = {
-      # link without copying to nix store (manage externally) - must use absolute paths
-      # mkOutOfStoreSymlink is required to allow the lazy-lock.json file to be writable
-      "nvim".source =
-        mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/nvim";
     };
   };
 }
