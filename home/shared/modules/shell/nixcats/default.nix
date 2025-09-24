@@ -205,6 +205,8 @@ in
               suffix-path = true;
               suffix-LD = true;
               wrapRc = true;
+              # set a default so the lazy-lock.json will be loaded from here regardless of the status of wrapRc (see init.lua)
+              unwrappedCfgPath = utils.mkLuaInline "os.getenv('HOME') .. '/.nix-config/home/shared/dots/nvim'";
               # unwrappedCfgPath = "/path/to/here";
               # IMPORTANT:
               # your alias may not conflict with your other packages.
