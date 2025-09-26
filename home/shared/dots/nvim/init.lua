@@ -25,6 +25,20 @@ local lazyOptions = {
   change_detection = {
     notify = false,
   },
+  -- FIXME: this option is not working and needs troubleshooting
+  --
+  -- lazy can generate helptags from the headings in markdown readme files,
+  -- so :help works even for plugins that don't have vim docs.
+  -- when the readme opens with :help it will be correctly displayed as markdown
+  readme = {
+    -- nix is unable to generate helptags for md files and lazy cannot write them to the nix store, so disable this option
+    -- see https://github.com/BirdeeHub/nixCats-nvim/issues/158 for details
+    enabled = false,
+    root = vim.fn.stdpath("state") .. "/lazy/readme",
+    files = { "README.md", "lua/**/README.md" },
+    -- only generate markdown helptags for plugins that don't have docs
+    skip_if_doc_exists = true,
+  },
 }
 
 -- NB: this the lazy wrapper. Use it like require('lazy').setup() but with an extra
