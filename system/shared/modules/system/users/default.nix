@@ -28,6 +28,11 @@ in
                 default = "timotheos";
                 description = "The username on the system";
               };
+              description = mkOption {
+                type = types.str;
+                default = "${config.myUserConfig.users.myadmin.username}";
+                description = "A description of the user account";
+              };
               name = mkOption {
                 type = types.str;
                 default = name; # Default to the attribute name if not specified
