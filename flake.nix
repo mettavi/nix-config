@@ -105,7 +105,7 @@
       # Build darwin flake using:
       # $ darwin-rebuild build --flake .#hostname
       darwinConfigurations = {
-        "mack" = mkDarwin.mkDarwinConfiguration "mack" "x86_64-darwin" "timotheos";
+        "mack" = mkDarwin.mkDarwinConfiguration "mack" "x87_64-darwin";
       };
 
       # NIXOS-REBUILD BUILDS
