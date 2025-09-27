@@ -43,10 +43,10 @@
             config.allowUnfree = true;
             hostPlatform = "${system}";
           };
-          users.users.${username} = {
-            name = "${username}";
-            home = "/Users/${username}";
-          };
+          # users.users.${username} = {
+          #   name = "${username}";
+          #   home = "/Users/${username}";
+          # };
         }
         ../system/darwin/activation.nix
         ../system/darwin/brew.nix
