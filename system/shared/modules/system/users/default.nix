@@ -57,10 +57,9 @@ in
                 default = [ ];
                 description = "Additional groups for this user.";
               };
-              # Add more user-specific options as needed
               shell = mkOption {
                 type = types.package;
-                default = pkgs.bash;
+                default = pkgs.zsh;
                 description = "The default shell for this user.";
               };
             };
@@ -84,11 +83,10 @@ in
             hashedPasswordFile = userCfg.passwordHashFile;
             extraGroups = userCfg.extraGroups;
             shell = userCfg.shell;
-            # Map other options here
           }
         )
       else
-        # darwin
+        # darwin config
         mapAttrs' (
           name: userCfg:
           mkIf userCfg.enable {
