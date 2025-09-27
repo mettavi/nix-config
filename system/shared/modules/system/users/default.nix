@@ -88,6 +88,7 @@ in
           }
         )
       else
+        # darwin
         mapAttrs' (
           name: userCfg:
           mkIf userCfg.enable {
