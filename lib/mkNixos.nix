@@ -25,7 +25,7 @@
         ../hosts/${hostname}/configuration.nix
         {
           users = {
-            # existing passwords will not be overwritten unless this is set to false
+            # existing passwords on the system will not be overwritten by the nix config unless this is set to false
             mutableUsers = false;
             # users.${username} = {
             #   isNormalUser = true;
