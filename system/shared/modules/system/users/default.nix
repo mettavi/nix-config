@@ -61,7 +61,7 @@ in
               };
               extraGroups = mkOption {
                 type = types.listOf types.str;
-                # allow user to configure networking and use sudo
+                # allow user to configure networking and use sudo (nixos only)
                 default = [
                   "networkmanager"
                   "wheel"
