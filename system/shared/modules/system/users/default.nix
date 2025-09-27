@@ -85,7 +85,7 @@ in
         mapAttrs' (
           name: userCfg:
           mkIf userCfg.enable {
-            name = name;
+            name = userCfg.username;
             isNormalUser = userCfg.isNormalUser;
             # this is required to enable password login
             # (create hash with "mkpasswd -m sha-512", or "mkpasswd" to use the stronger default "yes" encryption)
@@ -99,7 +99,7 @@ in
         mapAttrs' (
           name: userCfg:
           mkIf userCfg.enable {
-            name = name;
+            name = userCfg.username;
             shell = userCfg.shell;
           }
         ) cfg.users;
