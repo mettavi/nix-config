@@ -36,10 +36,11 @@ in
                 default = "";
                 description = "The email address of the user.";
               };
-              passwordHash = mkOption {
+              passwordHashFile = mkOption {
                 type = types.str;
-                default = "";
-                description = "The hashed password for the user.";
+                default =
+                  config.sops.secrets."users/${config.myUserConfig.users.myadmin.username}/nixos_users/${username}-${hostname}-hashpw".path;
+                description = "The hashed password file for the user.";
               };
               sudo = mkOption {
                 type = types.bool;
@@ -80,7 +81,7 @@ in
           mkIf userCfg.enable {
             name = name;
             isNormalUser = userCfg.isNormalUser;
-            hashedPassword = userCfg.passwordHash;
+            hashedPasswordFile = userCfg.passwordHashFile;
             extraGroups = userCfg.extraGroups;
             shell = userCfg.shell;
             # Map other options here
