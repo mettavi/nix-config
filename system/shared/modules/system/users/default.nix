@@ -86,6 +86,7 @@ in
   config = mkIf (cfg.users != { }) {
     users.users =
       if pkgs.stdenv.isLinux then
+        # nixos config
         mapAttrs' (
           name: userCfg:
           mkIf userCfg.enable {
