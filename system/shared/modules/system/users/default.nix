@@ -87,6 +87,8 @@ in
           mkIf userCfg.enable {
             name = name;
             isNormalUser = userCfg.isNormalUser;
+            # this is required to enable password login
+            # (create hash with "mkpasswd -m sha-512", or "mkpasswd" to use the stronger default "yes" encryption)
             hashedPasswordFile = userCfg.passwordHashFile;
             extraGroups = userCfg.extraGroups;
             shell = userCfg.shell;
