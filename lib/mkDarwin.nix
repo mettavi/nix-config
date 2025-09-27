@@ -1,12 +1,13 @@
 {
   inputs,
   self,
+  username,
   ...
 }:
 {
   # Function for nix-darwin system configuration
   mkDarwinConfiguration =
-    hostname: system: username:
+    hostname: system:
     inputs.nix-darwin.lib.darwinSystem rec {
       # Use specialArgs to pass through inputs to nix-darwin modules
       specialArgs = {
@@ -14,7 +15,6 @@
           hostname
           inputs
           system
-          username
           ;
         inherit (self)
           nix_repo
