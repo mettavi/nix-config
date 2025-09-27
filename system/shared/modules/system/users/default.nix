@@ -61,7 +61,11 @@ in
               };
               extraGroups = mkOption {
                 type = types.listOf types.str;
-                default = [ ];
+                # allow user to configure networking and use sudo
+                default = [
+                  "networkmanager"
+                  "wheel"
+                ];
                 description = "Additional groups for this user.";
               };
               shell = mkOption {
