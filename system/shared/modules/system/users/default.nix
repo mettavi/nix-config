@@ -8,10 +8,11 @@
 }:
 with lib;
 let
-  cfg = config.myUserConfig; # Define a namespace for your options
+  cfg = config.userConfig;
+  cfg_username = config.userConfig.users.myadmin.username;
 in
 {
-  options.myUserConfig = {
+  options.userConfig = {
     users = mkOption {
       type = types.attrsOf (
         types.submodule (
@@ -88,32 +89,32 @@ in
       if pkgs.stdenv.isLinux then
         # nixos config
         mapAttrs' (
-          name: userCfg:
-          mkIf userCfg.enable {
-            name = userCfg.username;
-            description = userCfg.description;
-            home = /home/${userCfg.username};
-            isNormalUser = userCfg.isNormalUser;
+          name: usrCfg:
+          mkIf usrCfg.enable {
+            name = usrCfg.username;
+            description = usrCfg.description;
+            home = /home/${usrCfg.username};
+            isNormalUser = usrCfg.isNormalUser;
             # this is required to enable password login
             # (create hash with "mkpasswd -m sha-512", or "mkpasswd" to use the stronger default "yes" encryption)
-            hashedPasswordFile = userCfg.passwordHashFile;
-            extraGroups = userCfg.extraGroups;
-            shell = userCfg.shell;
+            hashedPasswordFile = usrCfg.passwordHashFile;
+            extraGroups = usrCfg.extraGroups;
+            shell = usrCfg.shell;
           }
         )
       else
         # darwin config
         mapAttrs' (
-          name: userCfg:
-          mkIf userCfg.enable {
-            name = userCfg.username;
-            description = userCfg.description;
-            home = /Users/${userCfg.username};
-            shell = userCfg.shell;
+          name: usrCfg:
+          mkIf usrCfg.enable {
+            name = usrCfg.username;
+            description = usrCfg.description;
+            home = /Users/${usrCfg.username};
+            shell = usrCfg.shell;
           }
         ) cfg.users;
   };
-  myUserConfig.users = {
+  userConfig.users = {
     "myadmin" = {
       # defaults to username "timotheos"
       # pull encrupted "soft" secrets from private git rep
