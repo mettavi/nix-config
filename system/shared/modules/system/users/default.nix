@@ -91,6 +91,7 @@ in
           name: userCfg:
           mkIf userCfg.enable {
             name = userCfg.username;
+            description = userCfg.description;
             home = /home/${userCfg.username};
             isNormalUser = userCfg.isNormalUser;
             # this is required to enable password login
@@ -106,6 +107,7 @@ in
           name: userCfg:
           mkIf userCfg.enable {
             name = userCfg.username;
+            description = userCfg.description;
             home = /Users/${userCfg.username};
             shell = userCfg.shell;
           }
