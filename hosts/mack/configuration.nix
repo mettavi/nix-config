@@ -23,6 +23,11 @@
     profiles = {
       mbp.enable = true;
     };
+    system = {
+      userConfig.users = {
+        myadmin.enable = true;
+      };
+    };
   };
 
   home-manager = {
