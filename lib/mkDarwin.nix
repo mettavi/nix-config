@@ -1,7 +1,6 @@
 {
   inputs,
   self,
-  username,
   ...
 }:
 {
@@ -68,7 +67,6 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "nix-backup";
-            users.${username} = import ./mkUserHome.nix;
             extraSpecialArgs = specialArgs;
             sharedModules = [
               inputs.mac-app-util.homeManagerModules.default
