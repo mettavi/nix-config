@@ -1,7 +1,6 @@
 {
   config,
   hostname,
-  inputs,
   lib,
   pkgs,
   ...
@@ -12,6 +11,9 @@ let
   cfg_username = cfg.users.myadmin.username;
 in
 {
+  imports = [ ./user_db.nix ];
+
+  options.nyx.system.userConfig = {
     users = mkOption {
       type = types.attrsOf (
         types.submodule (
@@ -112,15 +114,9 @@ in
             shell = usrCfg.shell;
           }
         ) cfg.users;
-  };
-  userConfig.users = {
-    "myadmin" = {
-      # defaults to username "timotheos"
-      # pull encrypted "soft" secrets from private git rep
-      name = inputs.secrets.name;
-      description = "This is main admin account of the system, whose default username on most systems is \"timotheos\"";
-      email = inputs.secrets.email.gitHub;
+
+    home-manager.users.${cfg_username} = import ../../../../../lib/mkUserHome.nix {
+      inherit (cfg.users.myadmin) username;
     };
   };
-  _module.args.username = config.myUserConfig.users.myadmin.username;
 }

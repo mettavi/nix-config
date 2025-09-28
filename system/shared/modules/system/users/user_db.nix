@@ -1,6 +1,6 @@
 { config, inputs, ... }:
 {
-  userConfig.users = {
+  nyx.system.userConfig.users = {
     "myadmin" = {
       # defaults to username "timotheos"
       # pull encrypted "soft" secrets from private git rep
@@ -9,5 +9,5 @@
       email = inputs.secrets.email.gitHub;
     };
   };
-  _module.args.username = config.userConfig.users.myadmin.username;
+  _module.args.username = config.nyx.system.userConfig.users.myadmin.username;
 }
