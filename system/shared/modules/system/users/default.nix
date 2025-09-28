@@ -8,11 +8,10 @@
 }:
 with lib;
 let
-  cfg = config.userConfig;
-  cfg_username = config.userConfig.users.myadmin.username;
+  cfg = config.nyx.system.userConfig;
+  cfg_username = cfg.users.myadmin.username;
 in
 {
-  options.userConfig = {
     users = mkOption {
       type = types.attrsOf (
         types.submodule (
