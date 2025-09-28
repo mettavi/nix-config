@@ -10,5 +10,7 @@
       email = inputs.secrets.email.gitHub;
     };
   };
+
+  # pass the primary admin user's username to other modules
   _module.args.username = config.nyx.system.userConfig.users.myadmin.username;
 }
