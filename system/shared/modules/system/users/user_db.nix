@@ -1,5 +1,6 @@
 { config, inputs, ... }:
 {
+  # list all users managed by the nix system
   nyx.system.userConfig.users = {
     "myadmin" = {
       # defaults to username "timotheos"
