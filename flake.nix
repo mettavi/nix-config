@@ -92,12 +92,7 @@
       mkNixos = import ./lib/mkNixos.nix { inherit inputs self; };
       # initNixos = import ./lib/initNixos.nix { inherit inputs; };
     in
-    { config, ... }:
     {
-
-      # pass the primary admin user's username to other modules
-      _module.args.username = config.userConfig.users.myadmin.username;
-
       nix_repo = ".nix-config";
       secrets_path = builtins.toString inputs.secrets;
 
