@@ -9,13 +9,6 @@
   ...
 }:
 {
-  # users.users.${username} = {
-  #   # this is required to enable password login
-  # (create hash with "mkpasswd -m sha-512", or "mkpasswd" to use the stronger default "yes" encryption)
-  #   hashedPasswordFile =
-  #     config.sops.secrets."users/${username}/nixos_users/${username}-${hostname}-hashpw".path;
-  # };
-
   nix = {
     channel.enable = false;
     # enable automatic garbage collection and store optimisation
