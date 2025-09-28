@@ -30,7 +30,7 @@ in
               };
               description = mkOption {
                 type = types.str;
-                default = "${config.myUserConfig.users.myadmin.username}";
+                default = "${cfg_username}";
                 description = "A description of the user account";
               };
               name = mkOption {
@@ -46,7 +46,7 @@ in
               passwordHashFile = mkOption {
                 type = types.str;
                 default =
-                  config.sops.secrets."users/${config.myUserConfig.users.myadmin.username}/nixos_users/${username}-${hostname}-hashpw".path;
+                  config.sops.secrets."users/${cfg_username}/nixos_users/${cfg_username}-${hostname}-hashpw".path;
                 description = "The hashed password file for the user.";
               };
               sudo = mkOption {
