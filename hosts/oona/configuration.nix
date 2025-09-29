@@ -136,6 +136,18 @@ in
     };
   };
 
+  # SYSTEM MODULES SETTINGS
+  nyx = {
+    system = {
+      # enable system users
+      userConfig = {
+        timotheos = {
+          enable = true;
+        };
+      };
+    };
+  };
+
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
   home-manager.users.${username} = {
     home = {

@@ -74,8 +74,23 @@ in
   # (e.g. man configuration.nix or on https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion).
   system.stateVersion = "25.05";
 
-  # apply options for the VPS profile (eg. ssh hardening)
-  nyx.profiles.vps.enable = true;
+  # SYSTEM MODULES SETTINGS
+  nyx = {
+    profiles = {
+      # oracle cloud vps (eg. ssh hardening)
+      vps = {
+        enable = true;
+      };
+    };
+    system = {
+      # enable system users
+      userConfig = {
+        timotheos = {
+          enable = true;
+        };
+      };
+    };
+  };
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
   home-manager.users.${username} = {
