@@ -7,7 +7,7 @@
 }:
 with lib;
 let
-  # Get all users defined in your darwin system
+  # Get all users defined for your nix systems
   cfg = config.nyx.system;
 in
 {
