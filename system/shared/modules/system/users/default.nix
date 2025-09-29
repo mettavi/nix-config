@@ -68,6 +68,7 @@ in
     #   )
     # ) cfg.userConfig;
 
+    # the mapAttrs' (note the apostrophe) function allows to change the name and well as the value
     home-manager.users = mapAttrs' (
       name: usrCfg:
       nameValuePair (usrCfg.username) (
