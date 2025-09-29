@@ -97,5 +97,7 @@ in
 
     # pass the primary admin user's username to other system modules
     _module.args.username = cfg.userConfig.timotheos.username;
+    # NB: setting _module.args to a value from config will cause an infinite recursion
+    # _module.args.username = config.users.users.timotheos.name;
   };
 }
