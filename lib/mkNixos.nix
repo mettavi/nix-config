@@ -6,14 +6,13 @@
 {
   # Function for NixOS system configuration
   mkNixosConfiguration =
-    hostname: system: username:
+    hostname: system:
     inputs.nixos-pkgs.lib.nixosSystem rec {
       specialArgs = {
         inherit
           hostname
           inputs
           system
-          username
           ;
         inherit (self)
           nix_repo
@@ -75,7 +74,6 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "nix-backup";
-            users.${username} = import ./mkUserHome.nix;
             extraSpecialArgs = specialArgs;
             sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
           };

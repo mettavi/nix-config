@@ -1,3 +1,4 @@
+# This is a combined restic module for home-manager and darwin
 {
   config,
   hostname,

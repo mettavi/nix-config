@@ -107,8 +107,8 @@
       # Build nixos flake using:
       # nixos-rebuild build --flake .#hostname
       nixosConfigurations = {
-        "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
-        "salina" = mkNixos.mkNixosConfiguration "salina" "aarch64-linux" "timotheos";
+        "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux";
+        "salina" = mkNixos.mkNixosConfiguration "salina" "aarch64-linux";
       };
 
       ################################  NIXOS-ANYWHERE BUILDS  ######################################
