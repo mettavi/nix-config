@@ -23,7 +23,7 @@ in
       timotheos = {
         # pull encrypted "soft" secrets from private git rep
         fullname = inputs.secrets.name;
-        description = "This is main admin account of the system";
+        description = "This is main admin account of the system.";
         email = inputs.secrets.email.gitHub;
       };
     };
