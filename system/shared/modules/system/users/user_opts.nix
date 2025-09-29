@@ -25,7 +25,7 @@ in
             username = mkOption {
               type = types.str;
               default = "timotheos";
-              description = "The username on the system";
+              description = "The same as the attribute name, but useful for reference within the user module";
             };
             home = {
               type = types.str;
