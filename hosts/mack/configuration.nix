@@ -24,8 +24,10 @@
       mbp.enable = true;
     };
     system = {
-      userConfig.users = {
-        myadmin.enable = true;
+      userConfig = {
+        myadmin = {
+          enable = true;
+        };
       };
     };
   };
