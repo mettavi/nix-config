@@ -8,7 +8,6 @@
     gnumake
     # nodejs
     # python3
-    transmission_4-gtk
     # Command line interface to the freedesktop.org trashcan
     trash-cli
     # Extraction utility
