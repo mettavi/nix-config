@@ -35,7 +35,6 @@ in
         mapAttrs (
           name: usrCfg:
           mkIf usrCfg.enable {
-            name = usrCfg.username;
             description = usrCfg.description;
             home = "/home/${usrCfg.username}";
             isNormalUser = usrCfg.isNormalUser;
@@ -51,7 +50,6 @@ in
         mapAttrs (
           name: usrCfg:
           mkIf usrCfg.enable {
-            name = usrCfg.username;
             description = usrCfg.description;
             home = "/Users/${usrCfg.username}";
             shell = usrCfg.shell;
