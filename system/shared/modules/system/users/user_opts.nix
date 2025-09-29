@@ -8,7 +8,7 @@
 with lib;
 let
   cfg = config.nyx.system.userConfig;
-  cfg_username = cfg.myadmin.username;
+  cfg_username = cfg.timotheos.username;
 in
 {
   options.nyx.system.userConfig = mkOption {
@@ -25,7 +25,7 @@ in
             username = mkOption {
               type = types.str;
               default = "timotheos";
-              description = "The same as the attribute name, but useful for reference within the user module";
+              description = "The username on the system";
             };
             home = {
               type = types.str;
