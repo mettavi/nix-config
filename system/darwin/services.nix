@@ -1,4 +1,9 @@
-{ config, nix_repo, ... }:
+{
+  config,
+  nix_repo,
+  username,
+  ...
+}:
 {
   services = {
     openssh.enable = true;
@@ -12,7 +17,7 @@
         ProgramArguments = [
           "/run/current-system/sw/bin/kanata"
           "-c"
-          "${config.users.users.timotheos.home}/${nix_repo}/home/shared/dots/kanata/kanata.lsp"
+          "${config.users.users.${username}.home}/${nix_repo}/home/shared/dots/kanata/kanata.lsp"
         ];
         ProcessType = "Interactive";
         RunAtLoad = true;
