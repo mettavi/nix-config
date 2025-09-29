@@ -1,15 +1,9 @@
 {
-  config,
-  lib,
   modulesPath,
   pkgs,
   username,
   ...
 }:
-with lib;
-let
-  df_sh = config.home-manager.users.${username}.nyx.modules.shell.default;
-in
 {
   imports = [
     # imports for initial install with nixos-anywhere and disko
@@ -40,8 +34,6 @@ in
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos@oona"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
     ];
-    # assign the user's default shell (requires also setting "programs.${shell}.enable")
-    shell = pkgs.${df_sh};
   };
 
   ########## SYSTEM ARCHITECTURE ###########
