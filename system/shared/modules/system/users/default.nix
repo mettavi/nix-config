@@ -44,7 +44,7 @@ in
             extraGroups = usrCfg.extraGroups;
             shell = usrCfg.shell;
           }
-        )
+        ) cfg.userConfig
       else
         # darwin config
         mapAttrs (
