@@ -18,7 +18,7 @@ in
   ];
 
   config = {
-    # create a database of all users managed by the nix system
+    # create a database of users for all nix systems
     nyx.system.userConfig = {
       timotheos = {
         # pull encrypted "soft" secrets from private git rep
