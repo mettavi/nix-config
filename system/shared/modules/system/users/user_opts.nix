@@ -30,7 +30,7 @@ in
             home = {
               type = types.str;
               default = if pkgs.stdenv.isDarwin then "/Users/${cfg_username}" else "/home/${cfg_username}";
-              description = "the home directory of the user";
+              description = "The same as the attribute name, but useful for reference within the user module";
             };
             description = mkOption {
               type = types.str;
