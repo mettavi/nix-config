@@ -26,7 +26,7 @@
     system = {
       # enable system users
       userConfig = {
-        myadmin = {
+        timotheos = {
           enable = true;
         };
       };
