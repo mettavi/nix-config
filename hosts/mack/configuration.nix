@@ -24,6 +24,7 @@
       mbp.enable = true;
     };
     system = {
+      # enable system users
       userConfig = {
         myadmin = {
           enable = true;
