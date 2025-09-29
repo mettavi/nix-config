@@ -81,11 +81,10 @@ in
             ../../../../../users/${usrCfg.username}
           ];
           home = {
-            # username and home are set automatically when using home-manager as a system module
-            # username = "some_user";
-            homeDirectory = mkForce (
-              if pkgs.stdenv.isDarwin then "/Users/${usrCfg.username}" else "/home/${usrCfg.username}"
-            );
+            # username and homeDirectory are set automatically when using home-manager as a system module
+            # username = "${usrCfg.username}";
+            # homeDirectory =
+            #   if pkgs.stdenv.isDarwin then "/Users/${usrCfg.username}" else "/home/${usrCfg.username}";
             # make programs use XDG directories whenever supported
             preferXdgDirectories = true;
           };
