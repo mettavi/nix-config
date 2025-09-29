@@ -96,6 +96,6 @@ in
     ) cfg.userConfig;
 
     # pass the primary admin user's username to other system modules
-    _module.args.username = cfg.userConfig.myadmin.username;
+    _module.args.username = cfg.userConfig.timotheos.username;
   };
 }
