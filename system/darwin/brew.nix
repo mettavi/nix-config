@@ -27,6 +27,7 @@
       # Command-line fuzzy finder written in Go
       # "fzf"
       # "m4b-tool"
+      "mas" # Mac App Store command-line interface (used for the masApps module below)
     ];
     # use the "greedy" option to always upgrade auto-updated or unversioned cask to latest version
     casks = [
@@ -128,7 +129,7 @@
         greedy = true;
       }
     ];
-    # setting this option will add the mas cli binary to homebrew.brews
+
     masApps = {
       # Desktop password and login vault
       "Bitwarden" = 1352778147;
