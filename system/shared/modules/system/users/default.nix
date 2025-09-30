@@ -14,7 +14,6 @@ in
   # make the user module options available
   imports = [
     ./user_opts.nix
-    inputs.home-manager.darwinModules.home-manager
   ];
 
   config = {
