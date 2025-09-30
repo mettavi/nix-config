@@ -27,7 +27,9 @@
       # Command-line fuzzy finder written in Go
       # "fzf"
       # "m4b-tool"
-      "mas" # Mac App Store command-line interface (used for the masApps module below)
+      # Mac App Store command-line interface (used for the masApps module below)
+      # This is no longer auto-installed, see https://github.com/nix-darwin/nix-darwin/issues/1314
+      "mas"
     ];
     # use the "greedy" option to always upgrade auto-updated or unversioned cask to latest version
     casks = [
