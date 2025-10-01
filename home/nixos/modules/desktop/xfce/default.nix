@@ -35,5 +35,10 @@ in
         };
       };
     };
+    xdg.desktopEntries = {
+      xfce-terminal = {
+        noDisplay = true;
+      };
+    };
   };
 }
