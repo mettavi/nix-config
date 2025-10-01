@@ -144,6 +144,23 @@
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
   home-manager.users.${username} = {
     home = {
+      file = {
+        # create a desktop shortcut to the desktop file created under xdgDesktopEntries below
+        # ".local/state/nix/profiles/home-manager/home-path/share/applications/mack-timotheos.desktop";
+        # config.home-manager.users.${username}.home.profileDirectory
+        # "${pkgs.mack-timotheos.desktop}/share/applications/mack-timotheos.desktop";
+        "Desktop/mack-timotheos.desktop".text = # bash
+          ''
+            [Desktop Entry]
+            Comment=Home directory for timotheos on host mack
+            Exec=exo-open --working-directory /mnt/mack/timotheos --launch FileManager
+            Icon=folder
+            Name=mack-timotheos
+            Terminal=false
+            Type=Application
+            Version=1.5
+          '';
+      };
       # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
       stateVersion = "25.05";
     };
