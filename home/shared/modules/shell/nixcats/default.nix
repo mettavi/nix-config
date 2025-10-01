@@ -25,7 +25,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    # this value, nixCats is the defaultPackageName you pass to utils.mkNixosModules and utils.mkHomeModules
+    # this value, nixCats, is the defaultPackageName you pass to utils.mkNixosModules and utils.mkHomeModules
     # and it controls the name of the top level option set.
     # If you made a package named `nixCats` your default package as we did here,
     # the modules generated would be set at:
