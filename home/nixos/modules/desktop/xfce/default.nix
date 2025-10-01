@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
@@ -12,6 +13,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # add a more user friendly app menu
+    home.packages = with pkgs; [ xfce.xfce4-whiskermenu-plugin ];
     xfconf = {
       enable = true;
       settings = {
