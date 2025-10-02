@@ -14,7 +14,10 @@ in
 
   config = lib.mkIf cfg.enable {
     # add a more user friendly app menu
-    home.packages = with pkgs; [ xfce.xfce4-whiskermenu-plugin ];
+    home.packages = with pkgs; [
+      # Alternate application launcher for Xfce
+      xfce.xfce4-whiskermenu-plugin
+    ];
     xfconf = {
       enable = true;
       settings = {
@@ -35,10 +38,10 @@ in
         };
       };
     };
-    xdg.desktopEntries = {
-      xfce-terminal = {
-        noDisplay = true;
-      };
-    };
+    # xdg.desktopEntries = {
+    #   xfce-terminal = {
+    #     noDisplay = true;
+    #   };
+    # };
   };
 }
