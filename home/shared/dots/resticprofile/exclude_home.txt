@@ -490,4 +490,5 @@ $HOME/Documents/calibre
 # prevent "resource deadlock avoided" errors
 $HOME/Library/Mobile Documents/57T9237FN3~net~whatsapp~WhatsApp
 $HOME/Metadata/CoreSpotlight
+$HOME/Movies/iMovie Library.imovielibrary
 $HOME/Samsung/SmartSwitch
