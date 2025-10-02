@@ -54,6 +54,9 @@ in
       # they refer to how multiple categoryDefinitions get merged together by the module.
       # for useage of this section, refer to :h nixCats.flake.outputs.categories
       categoryDefinitions.replace = (
+        # You may also use the variables passed to your categoryDefinitions function
+        # to get access to the set of categories and settings that are being
+        # used to define the current package being built. (ses :h nixCats.flake.outputs.categoryDefinitions.schemas)
         {
           pkgs,
           settings,
