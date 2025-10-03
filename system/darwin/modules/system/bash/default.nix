@@ -5,10 +5,10 @@
 }:
 with lib;
 let
-  cfg = config.nyx.modules.system.shells.bash;
+  cfg = config.nyx.modules.system.shell.bash;
 in
 {
-  options.nyx.modules.system.shells.bash = {
+  options.nyx.modules.system.shell.bash = {
     enable = mkOption {
       type = types.bool;
       default = true;
