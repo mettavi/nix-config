@@ -22,8 +22,8 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       macpkgs.karabiner-driverkit
-      # kanata
-      # install from gh commit to get recent bugfix, see https://github.com/jtroo/kanata/issues/1539
+      # kanata # Cross-platform software keyboard remapper
+      # install from recent gh commit to get recent bugfix, see https://github.com/jtroo/kanata/issues/1539
       macpkgs.kanata-head
     ];
     launchd.daemons = {

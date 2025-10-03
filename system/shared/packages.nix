@@ -44,7 +44,6 @@ in
     ffmpeg
     gitleaks
     gyb # a command line tool for backing up your Gmail messages
-    kanata # Cross-platform software keyboard remapper
     nix-fast-build # speed-up your evaluation and building process
     nix-init # Generate Nix packages from URLs
     nix-update # Swiss-knife for updating nix packages
