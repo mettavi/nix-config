@@ -1,14 +1,18 @@
 {
+  apple-sdk_13,
+  darwinMinVersionHook,
+  fetchFromGitHub,
   lib,
   rustPlatform,
-  fetchFromGitHub,
   stdenv,
-  darwin,
+  versionCheckHook,
+  withCmd ? false,
+  writeShellScriptBin,
 }:
 
 rustPlatform.buildRustPackage {
   pname = "kanata-head";
-  version = "unstable-2025-10-02";
+  version = "1.10.0-prerelease-1";
 
   src = fetchFromGitHub {
     owner = "jtroo";
@@ -19,10 +23,29 @@ rustPlatform.buildRustPackage {
     hash = "sha256-vnz3/GkQm3PE3mA97jLbvVouQot6tOylpdJXRfpSFrA=";
   };
 
-  cargoHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+  cargoHash = "sha256-cumyuHwBVcvMfPJqrgzFMoP5m5AKa4wE7SRabxfnGC8=";
   buildType = "debug";
-  buildInputs = lib.optionals stdenv.isDarwin [
-    darwin.apple_sdk.frameworks.CoreGraphics
+
+  buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [
+    apple-sdk_13
+    (darwinMinVersionHook "13.0")
+  ];
+
+  nativeBuildInputs = lib.optionals stdenv.hostPlatform.isDarwin [
+    (writeShellScriptBin "sw_vers" ''
+      echo 'ProductVersion: 13.0'
+    '')
+  ];
+
+  buildFeatures = lib.optional withCmd "cmd";
+
+  postInstall = ''
+    install -Dm 444 assets/kanata-icon.svg $out/share/icons/hicolor/scalable/apps/kanata.svg
+  '';
+
+  doInstallCheck = true;
+  nativeInstallCheckInputs = [
+    versionCheckHook
   ];
 
   meta = {
