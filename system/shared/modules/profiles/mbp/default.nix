@@ -14,7 +14,7 @@ in
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = "A profile for my macbookpro, currently my daily OS";
+      description = "A profile for my daily driver (currently a macbookpro)";
     };
   };
 
@@ -33,6 +33,11 @@ in
       # npmGlobals.regex-adventure
       # npmGlobals.zeal-user-contrib
     ];
+    nyx.system = {
+      shell = {
+        kanata.enable = true;
+      };
+    };
     home-manager.users.${username} = {
       nyx.modules.shell.restic.enable = true;
     };
