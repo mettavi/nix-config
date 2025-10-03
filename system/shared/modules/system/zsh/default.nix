@@ -7,11 +7,11 @@
 }:
 with lib;
 let
-  cfg = config.nyx.modules.system.shells.zsh;
+  cfg = config.nyx.system.shells.zsh;
   zsh_cfg = config.home-manager.users.${username}.nyx.modules.shell.zsh;
 in
 {
-  options.nyx.modules.system.shells.zsh = {
+  options.nyx.system.shells.zsh = {
     enable = mkOption {
       type = types.bool;
       default = true;

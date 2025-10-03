@@ -6,10 +6,10 @@
 }:
 with lib;
 let
-  cfg = config.nyx.modules.system.openssh;
+  cfg = config.nyx.system.openssh;
 in
 {
-  options.nyx.modules.system.openssh = {
+  options.nyx.system.openssh = {
     enable = mkOption {
       type = types.bool;
       default = true;

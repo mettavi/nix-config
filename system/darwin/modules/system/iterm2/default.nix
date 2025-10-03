@@ -7,10 +7,10 @@
 }:
 with lib;
 let
-  cfg = config.nyx.modules.system.apps.iterm2;
+  cfg = config.nyx.system.apps.iterm2;
 in
 {
-  options.nyx.modules.system.apps.iterm2 = {
+  options.nyx.system.apps.iterm2 = {
     enable = mkOption {
       type = types.bool;
       default = true;
