@@ -33,7 +33,6 @@ in
 
     # CUSTOM APPS
     macpkgs.goldendictng-gh # Advanced multi-dictionary lookup program
-    macpkgs.karabiner-driverkit
     # macpkgs.libation-gh # Audible audiobook manager
     macpkgs.stacher # A modern GUI for yt-dlp
   ];
