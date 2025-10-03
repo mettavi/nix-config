@@ -40,7 +40,7 @@
         # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
         stateVersion = "23.11";
       };
-      nyx.modules = {
+      nyx = {
         apps = {
           vscode.enable = true;
         };

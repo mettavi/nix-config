@@ -5,10 +5,10 @@
 }:
 with lib;
 let
-  cfg = config.nyx.modules.apps.ghostty;
+  cfg = config.nyx.apps.ghostty;
 in
 {
-  options.nyx.modules.apps.ghostty = {
+  options.nyx.apps.ghostty = {
     enable = mkOption {
       type = types.bool;
       default = false;

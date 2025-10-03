@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.nyx.modules.shell.nh;
+  cfg = config.nyx.shell.nh;
 in
 {
-  options.nyx.modules.shell.nh = {
+  options.nyx.shell.nh = {
     enable = lib.mkEnableOption "Install the nh (nix helper) tool";
   };
 

@@ -39,7 +39,7 @@ in
       };
     };
     home-manager.users.${username} = {
-      nyx.modules.shell.restic.enable = true;
+      nyx.shell.restic.enable = true;
     };
   };
 }

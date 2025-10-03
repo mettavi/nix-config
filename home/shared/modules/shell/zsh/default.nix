@@ -8,10 +8,10 @@
 with lib;
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
-  cfg = config.nyx.modules.shell.zsh;
+  cfg = config.nyx.shell.zsh;
 in
 {
-  options.nyx.modules.shell.zsh = {
+  options.nyx.shell.zsh = {
     setup = mkOption {
       type = types.bool;
       default = true;

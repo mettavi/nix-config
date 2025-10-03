@@ -6,10 +6,10 @@
 }:
 with lib;
 let
-  cfg = config.nyx.modules.shell.restic;
+  cfg = config.nyx.shell.restic;
 in
 {
-  options.nyx.modules.shell.restic = {
+  options.nyx.shell.restic = {
     enable = mkEnableOption "Install and configure the restic backup tool";
     useRProf = mkOption {
       type = types.bool;

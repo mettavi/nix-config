@@ -8,7 +8,7 @@
 with lib;
 let
   cfg = config.nyx.system.shells.zsh;
-  zsh_cfg = config.home-manager.users.${username}.nyx.modules.shell.zsh;
+  zsh_cfg = config.home-manager.users.${username}.nyx.shell.zsh;
 in
 {
   options.nyx.system.shells.zsh = {

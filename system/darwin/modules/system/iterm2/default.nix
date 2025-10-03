@@ -41,7 +41,7 @@ in
       };
     };
     home-manager.users.${username}.programs =
-      mkIf config.home-manager.users.${username}.nyx.modules.shell.tmux.enable
+      mkIf config.home-manager.users.${username}.nyx.shell.tmux.enable
         {
           tmux = mkIf cfg.transparency {
             extraConfig = "set -g status-style bg=default";

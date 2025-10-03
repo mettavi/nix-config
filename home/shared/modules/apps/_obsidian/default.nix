@@ -8,10 +8,10 @@
 # see https://git.sr.ht/~neverness/multi-flake/tree/xlib/item/modules/programs/gui/obsidian for an example config
 with lib;
 let
-  cfg = config.nyx.modules.apps.obsidian;
+  cfg = config.nyx.apps.obsidian;
 in
 {
-  options.nyx.modules.apps.obsidian = {
+  options.nyx.apps.obsidian = {
     enable = mkOption {
       type = types.bool;
       default = false;

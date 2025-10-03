@@ -9,7 +9,7 @@
 }:
 with lib;
 let
-  cfg = config.home-manager.users.${username}.nyx.modules.shell.restic;
+  cfg = config.home-manager.users.${username}.nyx.shell.restic;
 in
 {
   home-manager.users.${username} =
@@ -21,10 +21,10 @@ in
     }:
     with lib;
     let
-      cfg = config.nyx.modules.shell.restic;
+      cfg = config.nyx.shell.restic;
     in
     {
-      options.nyx.modules.shell.restic = {
+      options.nyx.shell.restic = {
         # default is false, must be explicitly turned on for each user
         enable = mkEnableOption "Install and configure the restic backup tool";
         # IF using restic, default to managing it with resticprofile

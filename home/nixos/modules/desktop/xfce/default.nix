@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.nyx.modules.desktop.xfce;
+  cfg = config.nyx.desktop.xfce;
 in
 {
-  options.nyx.modules.desktop.xfce = {
+  options.nyx.desktop.xfce = {
     enable = lib.mkEnableOption "Configure XFCE Desktop";
   };
 

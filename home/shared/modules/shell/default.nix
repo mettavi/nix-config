@@ -2,7 +2,7 @@
 with builtins;
 with lib;
 {
-  options.nyx.modules.shell = {
+  options.nyx.shell = {
     default = mkOption {
       type = types.enum [
         "zsh"

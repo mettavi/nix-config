@@ -7,10 +7,10 @@
 }:
 with lib;
 let
-  cfg = config.nyx.modules.apps.vscode;
+  cfg = config.nyx.apps.vscode;
 in
 {
-  options.nyx.modules.apps.vscode = {
+  options.nyx.apps.vscode = {
     enable = mkOption {
       type = types.bool;
       default = false;

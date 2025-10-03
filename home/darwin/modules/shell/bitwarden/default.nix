@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.nyx.modules.shell.bw_backup;
+  cfg = config.nyx.shell.bw_backup;
 in
 {
-  options.nyx.modules.shell.bw_backup = {
+  options.nyx.shell.bw_backup = {
     enable = lib.mkEnableOption "Bitwarden Launchd Backup Task";
   };
 

@@ -9,14 +9,14 @@
 with lib;
 let
   utils = inputs.nixCats.utils;
-  cfg = config.nyx.modules.shell.nixcats;
+  cfg = config.nyx.shell.nixcats;
 in
 {
   imports = [
     inputs.nixCats.homeModule
   ];
 
-  options.nyx.modules.shell.nixcats = {
+  options.nyx.shell.nixcats = {
     enable = mkOption {
       type = types.bool;
       default = true;

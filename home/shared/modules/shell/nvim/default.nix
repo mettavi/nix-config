@@ -9,10 +9,10 @@
 with lib;
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
-  cfg = config.nyx.modules.shell.nvim;
+  cfg = config.nyx.shell.nvim;
 in
 {
-  options.nyx.modules.shell.nvim = {
+  options.nyx.shell.nvim = {
     enable = mkOption {
       type = types.bool;
       default = false;

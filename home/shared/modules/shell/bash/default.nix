@@ -6,10 +6,10 @@
 
 with lib;
 let
-  cfg = config.nyx.modules.shell.bash;
+  cfg = config.nyx.shell.bash;
 in
 {
-  options.nyx.modules.shell.bash = {
+  options.nyx.shell.bash = {
     enable = mkEnableOption "bash configuration";
 
     profileExtra = mkOption {

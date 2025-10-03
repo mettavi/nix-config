@@ -6,8 +6,8 @@
 }:
 with lib;
 let
-  cfg = config.nyx.modules.shell.tmux;
-  df_sh = config.nyx.modules.shell.default;
+  cfg = config.nyx.shell.tmux;
+  df_sh = config.nyx.shell.default;
 
   # EXAMPLE USE OF mkTmuxPlugin function to install plugins directly from GitHub
   tpm = pkgs.tmuxPlugins.mkTmuxPlugin rec {
@@ -23,7 +23,7 @@ let
   };
 in
 {
-  options.nyx.modules.shell.tmux = {
+  options.nyx.shell.tmux = {
     enable = mkEnableOption "Install and configure tmux";
   };
 
