@@ -1,12 +1,13 @@
 ;; Caps to escape/control configuration for Kanata
 
 (defcfg
-  ;; comment out to prevent unresponsive kanata daemon reported at https://github.com/jtroo/kanata/issues/1539
   ;; list devices explicitly to prevent problems with bluetooth mouse
-  ;; macos-dev-names-include (
-  ;;   "Apple Internal Keyboard / Trackpad"
-  ;;   "TouchBarUserDevice"
-  ;;   )
+  ;; comment out to prevent unresponsive kanata daemon reported at https://github.com/jtroo/kanata/issues/1539
+  ;; NOTE: re-enabled to test a fix for the above
+  macos-dev-names-include (
+    "Apple Internal Keyboard / Trackpad"
+    "TouchBarUserDevice"
+    )
   ;; also manage keys not in defsrc list
   process-unmapped-keys yes
   )
