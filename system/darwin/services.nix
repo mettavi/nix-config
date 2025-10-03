@@ -9,7 +9,7 @@
     openssh.enable = true;
   };
 
-  # NB: The daemon is not used in version 3.1.0 of karabiner-driverkit
+  # NB: The daemon is not used in version <3.1.0 of karabiner-driverkit
   launchd.daemons = {
     kanata = {
       serviceConfig = {
