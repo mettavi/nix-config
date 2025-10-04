@@ -41,7 +41,7 @@ in
             # (create hash with "mkpasswd -m sha-512", or "mkpasswd" to use the stronger default "yes" encryption)
             hashedPasswordFile = usrCfg.passwordHashFile;
             extraGroups = usrCfg.extraGroups;
-            shell = usrCfg.shell;
+            shell = pkgs.${usrCfg.shell};
           }
         ) cfg.userConfig
       else
@@ -51,7 +51,7 @@ in
           mkIf usrCfg.enable {
             description = usrCfg.description;
             home = "/Users/${usrCfg.username}";
-            shell = usrCfg.shell;
+            shell = pkgs.${usrCfg.shell};
           }
         ) cfg.userConfig;
 
