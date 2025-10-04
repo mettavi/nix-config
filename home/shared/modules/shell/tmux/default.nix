@@ -8,6 +8,8 @@
 with lib;
 let
   cfg = config.mettavi.shell.tmux;
+  sh_path = osConfig.users.users.${config.home.username}.shell;
+  sh_name = osConfig.mettavi.system.userConfig.${config.home.username}.shell;
 
   # EXAMPLE USE OF mkTmuxPlugin function to install plugins directly from GitHub
   tpm = pkgs.tmuxPlugins.mkTmuxPlugin rec {
@@ -125,9 +127,8 @@ in
             '';
           }
         ];
-        shell = "${osConfig.users.users.${config.home.username}.shell}/bin/${
-          osConfig.mettavi.system.userConfig.${config.home.username}.shell
-        }";
+        # pkg path in nix store + "bin" + name of shell = path to binary
+        shell = "${sh_path}/bin/${sh_name}";
         shortcut = "a";
         terminal = "tmux-256color";
         tmuxp.enable = true;
