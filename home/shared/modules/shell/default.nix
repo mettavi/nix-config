@@ -2,16 +2,6 @@
 with builtins;
 with lib;
 {
-  options.nyx.shell = {
-    default = mkOption {
-      type = types.enum [
-        "zsh"
-        "bash"
-      ];
-      default = "zsh";
-      description = "Set the user's default shell";
-    };
-  };
   # automatically import all default.nix files in all valid subdirectories
   imports =
     let
