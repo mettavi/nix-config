@@ -125,7 +125,9 @@ in
             '';
           }
         ];
-        shell = "${pkgs.${df_sh}}/bin/${df_sh}";
+        shell = "${osConfig.users.users.${config.home.username}.shell}/bin/${
+          osConfig.mettavi.system.userConfig.${config.home.username}.shell
+        }";
         shortcut = "a";
         terminal = "tmux-256color";
         tmuxp.enable = true;
