@@ -73,8 +73,8 @@ in
               description = "Additional groups for this user.";
             };
             shell = mkOption {
-              type = types.package;
-              default = pkgs.zsh;
+              type = types.str;
+              default = "zsh";
               description = "The default shell for this user.";
             };
           };
