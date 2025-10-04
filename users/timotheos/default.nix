@@ -3,7 +3,7 @@
   # install the HTML manual and "home-manager-help" command
   manual.html.enable = true;
 
-  nyx = {
+  mettavi = {
     shell = {
       bash.enable = true;
       nh.enable = true;

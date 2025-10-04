@@ -8,10 +8,10 @@
 with lib;
 let
   inherit (config.lib.file) mkOutOfStoreSymlink;
-  cfg = config.nyx.shell.zsh;
+  cfg = config.mettavi.shell.zsh;
 in
 {
-  options.nyx.shell.zsh = {
+  options.mettavi.shell.zsh = {
     setup = mkOption {
       type = types.bool;
       default = true;

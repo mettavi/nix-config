@@ -5,7 +5,7 @@
   ...
 }:
 let
-  cfg = config.nyx.shell.yazi;
+  cfg = config.mettavi.shell.yazi;
 
   yazi-plugins = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
@@ -22,7 +22,7 @@ let
   };
 in
 {
-  options.nyx.shell.yazi = {
+  options.mettavi.shell.yazi = {
     enable = lib.mkEnableOption "Install and configure yazi";
   };
 

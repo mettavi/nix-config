@@ -54,7 +54,7 @@
         }/${nix_repo}/system/overlays
       '';
     "newsyslog.d/restic.conf".text =
-      lib.mkIf config.home-manager.users.${username}.nyx.shell.restic.enable # bash
+      lib.mkIf config.home-manager.users.${username}.mettavi.shell.restic.enable # bash
         ''
           # logfilename                      [owner:group]      mode count size(KB)  when  flags [/pid_file]     [sig_num] 
           ${

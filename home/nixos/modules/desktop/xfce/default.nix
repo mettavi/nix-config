@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.nyx.desktop.xfce;
+  cfg = config.mettavi.desktop.xfce;
 in
 {
-  options.nyx.desktop.xfce = {
+  options.mettavi.desktop.xfce = {
     enable = lib.mkEnableOption "Configure XFCE Desktop";
   };
 

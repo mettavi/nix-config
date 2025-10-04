@@ -9,14 +9,14 @@
 with lib;
 let
   utils = inputs.nixCats.utils;
-  cfg = config.nyx.shell.nixcats;
+  cfg = config.mettavi.shell.nixcats;
 in
 {
   imports = [
     inputs.nixCats.homeModule
   ];
 
-  options.nyx.shell.nixcats = {
+  options.mettavi.shell.nixcats = {
     enable = mkOption {
       type = types.bool;
       default = true;
@@ -246,7 +246,7 @@ in
               # to keep the categories table from being filled with non category things that you want to pass
               # but you can pass all the same stuff in any of these sets and access it in lua
               # pass boolean to neovim lua config for transparency in iterm2
-              isItermTrans = darwinConfig.nyx.system.apps.iterm2.transparency or false;
+              isItermTrans = darwinConfig.mettavi.system.apps.iterm2.transparency or false;
             };
             # extra = {
             #   nixdExtras.nixpkgs = ''import ${pkgs.path} {}'';

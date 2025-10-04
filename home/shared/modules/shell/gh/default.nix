@@ -6,7 +6,7 @@
 }:
 with lib;
 let
-  cfg = config.nyx.shell.gh;
+  cfg = config.mettavi.shell.gh;
   # this is a secure way to read a sops-nix secret into an environment variable
   # see https://discourse.nixos.org/t/passing-secret-to-overlay-environment-variable/45795/2 for a discussion
   gh-wrapped = pkgs.writeShellScriptBin "gh" ''
@@ -18,7 +18,7 @@ let
 in
 {
   # use the gh package to enable higher threshold for rate limiting to GH API (eg. nix flake update)
-  options.nyx.shell.gh = {
+  options.mettavi.shell.gh = {
     enable = mkOption {
       type = types.bool;
       default = true;

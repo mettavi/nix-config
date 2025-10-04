@@ -7,10 +7,10 @@
 }:
 with lib;
 let
-  cfg = config.nyx.apps.vscode;
+  cfg = config.mettavi.apps.vscode;
 in
 {
-  options.nyx.apps.vscode = {
+  options.mettavi.apps.vscode = {
     enable = mkOption {
       type = types.bool;
       default = false;

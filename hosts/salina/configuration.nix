@@ -67,7 +67,7 @@
   system.stateVersion = "25.05";
 
   # SYSTEM MODULES SETTINGS
-  nyx = {
+  mettavi = {
     profiles = {
       # oracle cloud vps (eg. ssh hardening)
       vps = {

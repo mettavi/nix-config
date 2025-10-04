@@ -7,7 +7,7 @@
 }:
 with lib;
 {
-  config = lib.mkIf config.home-manager.users.${username}.nyx.shell.tmux.enable {
+  config = lib.mkIf config.home-manager.users.${username}.mettavi.shell.tmux.enable {
     environment = {
       systemPackages = with pkgs; [ pam-reattach ];
       etc = {

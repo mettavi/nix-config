@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.nyx.shell.bw_backup;
+  cfg = config.mettavi.shell.bw_backup;
 in
 {
-  options.nyx.shell.bw_backup = {
+  options.mettavi.shell.bw_backup = {
     enable = lib.mkEnableOption "Bitwarden Launchd Backup Task";
   };
 

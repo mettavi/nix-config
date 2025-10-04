@@ -7,10 +7,10 @@
 }:
 with lib;
 let
-  cfg = config.nyx.system.apps.iterm2;
+  cfg = config.mettavi.system.apps.iterm2;
 in
 {
-  options.nyx.system.apps.iterm2 = {
+  options.mettavi.system.apps.iterm2 = {
     enable = mkOption {
       type = types.bool;
       default = true;
@@ -41,7 +41,7 @@ in
       };
     };
     home-manager.users.${username}.programs =
-      mkIf config.home-manager.users.${username}.nyx.shell.tmux.enable
+      mkIf config.home-manager.users.${username}.mettavi.shell.tmux.enable
         {
           tmux = mkIf cfg.transparency {
             extraConfig = "set -g status-style bg=default";

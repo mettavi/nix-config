@@ -6,10 +6,10 @@
 }:
 with lib;
 let
-  cfg = config.nyx.profiles.vps;
+  cfg = config.mettavi.profiles.vps;
 in
 {
-  options.nyx.profiles.vps = {
+  options.mettavi.profiles.vps = {
     enable = mkOption {
       type = types.bool;
       default = false;

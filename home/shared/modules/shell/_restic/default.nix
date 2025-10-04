@@ -6,10 +6,10 @@
 }:
 with lib;
 let
-  cfg = config.nyx.shell.restic;
+  cfg = config.mettavi.shell.restic;
 in
 {
-  options.nyx.shell.restic = {
+  options.mettavi.shell.restic = {
     enable = mkEnableOption "Install and configure the restic backup tool";
     useRProf = mkOption {
       type = types.bool;

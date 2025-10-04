@@ -8,10 +8,10 @@
 }:
 with lib;
 let
-  cfg = config.nyx.system.shell.kanata;
+  cfg = config.mettavi.system.shell.kanata;
 in
 {
-  options.nyx.system.shell.kanata = {
+  options.mettavi.system.shell.kanata = {
     enable = mkOption {
       type = types.bool;
       default = false;

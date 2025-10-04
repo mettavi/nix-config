@@ -5,10 +5,10 @@
 }:
 with lib;
 let
-  cfg = config.nyx.apps.ghostty;
+  cfg = config.mettavi.apps.ghostty;
 in
 {
-  options.nyx.apps.ghostty = {
+  options.mettavi.apps.ghostty = {
     enable = mkOption {
       type = types.bool;
       default = false;

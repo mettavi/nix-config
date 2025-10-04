@@ -130,7 +130,7 @@
   };
 
   # SYSTEM MODULES SETTINGS
-  nyx = {
+  mettavi = {
     system = {
       # enable system users
       userConfig = {
@@ -164,7 +164,7 @@
       # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
       stateVersion = "25.05";
     };
-    nyx = {
+    mettavi = {
       apps = {
         ghostty.enable = true;
       };

@@ -51,7 +51,7 @@
         "https://cachix.cachix.org"
         "https://mettavi.cachix.org"
       ]
-      ++ lib.optionals config.home-manager.users.${username}.nyx.shell.yazi.enable [
+      ++ lib.optionals config.home-manager.users.${username}.mettavi.shell.yazi.enable [
         "https://yazi.cachix.org"
       ];
       extra-trusted-public-keys = [
@@ -60,7 +60,7 @@
         "cachix.cachix.org-1:eWNHQldwUO7G2VkjpnjDbWwy4KQ/HNxht7H4SSoMckM="
         "mettavi.cachix.org-1:rYvLGZOMT4z4hK7u5pzrbt8svJ/2JcUA/PTa1bQx4FU="
       ]
-      ++ lib.optionals config.home-manager.users.${username}.nyx.shell.yazi.enable [
+      ++ lib.optionals config.home-manager.users.${username}.mettavi.shell.yazi.enable [
         "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
       ];
       trusted-users = [

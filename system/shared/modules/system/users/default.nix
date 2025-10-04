@@ -8,7 +8,7 @@
 with lib;
 let
   # Get all users defined for your nix systems
-  cfg = config.nyx.system;
+  cfg = config.mettavi.system;
 in
 {
   # make the user module options available
@@ -18,7 +18,7 @@ in
 
   config = {
     # create a database of users for all nix systems
-    nyx.system.userConfig = {
+    mettavi.system.userConfig = {
       timotheos = {
         # pull encrypted "soft" secrets from private git rep
         fullname = inputs.secrets.name;

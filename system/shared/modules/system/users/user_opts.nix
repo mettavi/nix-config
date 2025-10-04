@@ -6,11 +6,11 @@
 }:
 with lib;
 let
-  cfg = config.nyx.system.userConfig;
+  cfg = config.mettavi.system.userConfig;
   cfg_username = cfg.timotheos.username;
 in
 {
-  options.nyx.system.userConfig = mkOption {
+  options.mettavi.system.userConfig = mkOption {
     type = types.attrsOf (
       types.submodule (
         { name, ... }:

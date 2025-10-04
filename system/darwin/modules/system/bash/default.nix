@@ -5,10 +5,10 @@
 }:
 with lib;
 let
-  cfg = config.nyx.system.shell.bash;
+  cfg = config.mettavi.system.shell.bash;
 in
 {
-  options.nyx.system.shell.bash = {
+  options.mettavi.system.shell.bash = {
     enable = mkOption {
       type = types.bool;
       default = true;

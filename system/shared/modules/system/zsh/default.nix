@@ -7,11 +7,11 @@
 }:
 with lib;
 let
-  cfg = config.nyx.system.shell.zsh;
-  zsh_cfg = config.home-manager.users.${username}.nyx.shell.zsh;
+  cfg = config.mettavi.system.shell.zsh;
+  zsh_cfg = config.home-manager.users.${username}.mettavi.shell.zsh;
 in
 {
-  options.nyx.system.shell.zsh = {
+  options.mettavi.system.shell.zsh = {
     enable = mkOption {
       type = types.bool;
       default = true;

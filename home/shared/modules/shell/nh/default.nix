@@ -5,10 +5,10 @@
   ...
 }:
 let
-  cfg = config.nyx.shell.nh;
+  cfg = config.mettavi.shell.nh;
 in
 {
-  options.nyx.shell.nh = {
+  options.mettavi.shell.nh = {
     enable = lib.mkEnableOption "Install the nh (nix helper) tool";
   };
 

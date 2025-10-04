@@ -7,7 +7,7 @@
 }:
 with lib;
 let
-  cfg = config.nyx.shell.tmux;
+  cfg = config.mettavi.shell.tmux;
 
   # EXAMPLE USE OF mkTmuxPlugin function to install plugins directly from GitHub
   tpm = pkgs.tmuxPlugins.mkTmuxPlugin rec {
@@ -23,7 +23,7 @@ let
   };
 in
 {
-  options.nyx.shell.tmux = {
+  options.mettavi.shell.tmux = {
     enable = mkEnableOption "Install and configure tmux";
   };
 

@@ -7,10 +7,10 @@
 }:
 with lib;
 let
-  cfg = config.nyx.profiles.mbp;
+  cfg = config.mettavi.profiles.mbp;
 in
 {
-  options.nyx.profiles.mbp = {
+  options.mettavi.profiles.mbp = {
     enable = mkOption {
       type = types.bool;
       default = false;
@@ -33,13 +33,13 @@ in
       # npmGlobals.regex-adventure
       # npmGlobals.zeal-user-contrib
     ];
-    nyx.system = {
+    mettavi.system = {
       shell = {
         kanata.enable = true;
       };
     };
     home-manager.users.${username} = {
-      nyx.shell.restic.enable = true;
+      mettavi.shell.restic.enable = true;
     };
   };
 }

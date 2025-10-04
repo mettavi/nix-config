@@ -20,7 +20,7 @@
   };
 
   # SYSTEM MODULES
-  nyx = {
+  mettavi = {
     profiles = {
       mbp.enable = true;
     };
@@ -40,7 +40,7 @@
         # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
         stateVersion = "23.11";
       };
-      nyx = {
+      mettavi = {
         apps = {
           vscode.enable = true;
         };
