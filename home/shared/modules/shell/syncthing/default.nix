@@ -9,7 +9,8 @@ let
   cert_pem = "users/${config.home.username}/syncthing/st_${hostname}_cert.pem";
   key_pem = "users/${config.home.username}/syncthing/st_${hostname}_key.pem";
   gui_pw = "users/${config.home.username}/syncthing/st_${hostname}_guipw";
-  gui_apikey = "users/${config.home.username}/syncthing/st_${hostname}_guiapikey";
+  # do not attempt to set the gui_apikey until a hm syncthing module option is available
+  # gui_apikey = "users/${config.home.username}/syncthing/st_${hostname}_guiapikey";
 in
 {
   options.mettavi.shell.syncthing = {
@@ -61,7 +62,8 @@ in
       "${cert_pem}" = { };
       "${key_pem}" = { };
       "${gui_pw}" = { };
-      "${gui_apikey}" = { };
+      # see note above
+      # "${gui_apikey}" = { };
     };
   };
 }
