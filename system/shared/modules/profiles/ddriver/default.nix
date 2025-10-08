@@ -7,10 +7,10 @@
 }:
 with lib;
 let
-  cfg = config.mettavi.profiles.mbp;
+  cfg = config.mettavi.profiles.dailydriver;
 in
 {
-  options.mettavi.profiles.mbp = {
+  options.mettavi.profiles.dailydriver = {
     enable = mkOption {
       type = types.bool;
       default = false;
@@ -39,7 +39,10 @@ in
       };
     };
     home-manager.users.${username} = {
-      mettavi.shell.restic.enable = true;
+      mettavi.shell = {
+        restic.enable = true;
+        syncthing.enable = true;
+      };
     };
   };
 }
