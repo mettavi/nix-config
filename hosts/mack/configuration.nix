@@ -22,7 +22,7 @@
   # SYSTEM MODULES
   mettavi = {
     profiles = {
-      mbp.enable = true;
+      dailydriver.enable = true;
     };
     system = {
       # enable system users
