@@ -9,7 +9,7 @@ let
   cert_pem = "users/${config.home.username}/syncthing/st_${hostname}_cert.pem";
   key_pem = "users/${config.home.username}/syncthing/st_${hostname}_key.pem";
   gui_pw = "users/${config.home.username}/syncthing/st_${hostname}_guipw";
-  gui_apikey = "users/${config.home.username}/syncthing/st_${hostname}_gui_apikey";
+  gui_apikey = "users/${config.home.username}/syncthing/st_${hostname}_guiapikey";
 in
 {
   options.mettavi.shell.syncthing = {
