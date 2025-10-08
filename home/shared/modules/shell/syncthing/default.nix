@@ -24,7 +24,6 @@ in
       '';
     services.syncthing = {
       enable = true;
-      extraOptions = [ ];
       cert = "${config.sops.secrets.${cert_pem}.path}";
       key = "${config.sops.secrets.${key_pem}.path}";
       overrideDevices = true;
