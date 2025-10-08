@@ -30,7 +30,7 @@ in
         STNODEFAULTFOLDER = "true";
       };
     };
-    services.synthing = {
+    services.syncthing = {
       enable = true;
       extraOptions = [ ];
       cert = "${config.sops.secrets.${cert_pem}.path}";
