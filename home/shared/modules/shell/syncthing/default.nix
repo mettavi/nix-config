@@ -22,14 +22,6 @@ in
       ''
         .DS_Store
       '';
-    launchd.agents.syncthing = {
-      config.EnvironmentVariables = {
-        STGUIAPIKEY = "$(cat ${gui_apikey}.path)";
-        # Don't create default ~/Sync folder.
-        # NB: the default folder is not used from version 2.0
-        STNODEFAULTFOLDER = "true";
-      };
-    };
     services.syncthing = {
       enable = true;
       extraOptions = [ ];
