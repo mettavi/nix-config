@@ -1,6 +1,5 @@
 {
   lib,
-  pkgs,
   nix-update-script,
   stdenv,
   fetchurl,
@@ -9,10 +8,10 @@
 let
   pname = "karabiner-driverkit";
   versions = {
-    darwin = "6.1.0";
+    darwin = "6.2.0";
   };
   hashes = {
-    darwin = "sha256-PdlogzBxCaR6fhT3eOC8g+7txIdH/P8SDJJP1pfodmQ=";
+    darwin = "sha256-noxGI58HSBYSQeQkRIV5ASJOXIL1tYoXMd9McL8HNqg=";
   };
   meta = with lib; {
     description = "This project implements a virtual keyboard and virtual mouse using DriverKit on macOS.";

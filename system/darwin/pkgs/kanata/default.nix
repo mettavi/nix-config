@@ -12,18 +12,19 @@
 
 rustPlatform.buildRustPackage {
   pname = "kanata-head";
-  version = "1.10.0-prerelease-1";
+  # this version requires karabiner-driverkit v.6.2.0
+  version = "1.10.0-prerelease-2";
 
   src = fetchFromGitHub {
     owner = "jtroo";
     repo = "kanata";
     # the previous commit to this one fixed a bug that was making kanata unresponsive after system sleep
     # see https://github.com/jtroo/kanata/issues/1539 for details
-    rev = "25193104aad589e6df4a4ec700750ff8e18d27bd";
-    hash = "sha256-vnz3/GkQm3PE3mA97jLbvVouQot6tOylpdJXRfpSFrA=";
+    rev = "26640cacd9a5ea163505e6660d466b0b8a0791e3";
+    hash = "sha256-aQDeMfkb6wjwQ40wP0XE2JcaOrHArvItVfB6QsmVpuc=";
   };
 
-  cargoHash = "sha256-cumyuHwBVcvMfPJqrgzFMoP5m5AKa4wE7SRabxfnGC8=";
+  cargoHash = "sha256-pEA1i7abdfBjAHwSAjwO4RKlmTMHgeDLBbbfzMbB2xg=";
   buildType = "debug";
 
   buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [
