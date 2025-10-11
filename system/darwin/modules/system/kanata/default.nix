@@ -38,12 +38,11 @@ in
           ];
           ProcessType = "Interactive";
           RunAtLoad = true;
-          # kanata loses connection to virtual keyboard after computer goes to sleeep, see https://github.com/jtroo/kanata/issues/1357
           # NB: "OtherJobActive" and "OtherJobEnabled" are deprecated keys
           KeepAlive = true;
           Nice = -30;
-          StandardOutPath = "/var/log/kanata.log";
-          StandardErrorPath = "/var/log/kanata.log";
+          StandardOutPath = "/var/log/kanata.out.log";
+          StandardErrorPath = "/var/log/kanata.err.log";
         };
       };
       karabiner = {

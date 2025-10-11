@@ -2,9 +2,8 @@
 
 (defcfg
   ;; list devices explicitly to prevent problems with bluetooth mouse
-  ;; comment out to prevent unresponsive kanata daemon reported at https://github.com/jtroo/kanata/issues/1539
-  ;; NOTE: re-enabled to test a fix for the above
   macos-dev-names-include (
+    "Karabiner DriverKit VirtualHIDKeyboard 1.8.0"
     "Apple Internal Keyboard / Trackpad"
     "TouchBarUserDevice"
     )
