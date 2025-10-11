@@ -9,7 +9,7 @@
   nixpkgs.hostPlatform = "x86_64-darwin";
 
   # the determinate insaller was used, so nix.* settings are managed in /etc/nix/nix.conf and nix.custom.conf
-  nix.enable = false;
+  # nix.enable = false;
 
   users.users.${username} = {
     # authorize remote login using ssh key
@@ -48,12 +48,6 @@
           # enable scheduled bitwarden backup task
           bw_backup.enable = true;
         };
-      };
-      programs.zsh = {
-        completionInit = ''
-          # enable auto-completion for determinate nixd
-          eval "$(determinate-nixd completion zsh)"
-        '';
       };
     };
   };
