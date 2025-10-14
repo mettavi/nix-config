@@ -14,20 +14,16 @@
   # };
 
   inputs = {
-    # MAIN INPUTS
-    # Official NixOS package source, using nixos's unstable branch by default
+    ####################### MAIN INPUTS ##########################
+
+    ######## NIX-DARWIN ########
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable"; # for nix-darwin
-    nixos-pkgs.url = "github:NixOS/nixpkgs/nixos-unstable"; # for nixOS
     nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
-    # nixpkgs-24_05.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # HOMEBREW
     nix-homebrew = {
       url = "github:zhaofengli/nix-homebrew";
       # inputs.nixpkgs.follows = "nixpkgs";
@@ -43,13 +39,23 @@
       flake = false;
     };
 
-    # PERSONAL REPOS
+    ######### NIXOS #########
+    nixos-pkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
+
+    ####### HOME_MANAGER #########
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    ####################### PERSONAL REPOS #######################
     secrets = {
       url = "git+ssh://git@github.com/mettavi/nix-secrets.git?ref=main&shallow=1";
       inputs = { };
     };
 
-    # OTHER APPS (alphabetical)
+    ################# OTHER APPS (alphabetical) ##################
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
