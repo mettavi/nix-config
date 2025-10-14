@@ -40,6 +40,20 @@
     }))
   ];
 
+  ########## SYSTEM ARCHITECTURE ###########
+
+  # enable in-memory compressed devices and swap space
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    priority = 100;
+  };
+
+  boot.kernel.sysctl = {
+    # default is 60
+    "vm.swappiness" = 90;
+  };
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
