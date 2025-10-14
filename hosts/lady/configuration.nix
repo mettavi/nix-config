@@ -1,21 +1,22 @@
-# Edit this configuration file to define what should be installed on
-
-{ config, lib, pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   hardware.firmware = [
-   (pkgs.stdenvNoCC.mkDerivation (final: {
-     name = "bcrm-firmware";
-     src = ./firmware/brcm;
-     installPhase = ''
-       mkdir -p $out/lib/firmware/brcm
-       cp ${final.src}/* "$out/lib/firmware/brcm"
-     '';
+    (pkgs.stdenvNoCC.mkDerivation (final: {
+      name = "bcrm-firmware";
+      src = ./firmware/brcm;
+      installPhase = ''
+        mkdir -p $out/lib/firmware/brcm
+        cp ${final.src}/* "$out/lib/firmware/brcm"
+      '';
     }))
   ];
 
@@ -23,7 +24,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
- 
+
   networking.hostName = "lady"; # Define your hostname.
 
   # Configure network connections interactively with nmcli or nmtui.
@@ -49,8 +50,6 @@
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
 
-  
-
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
@@ -73,23 +72,23 @@
   users.users.timotheos = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  #  packages = with pkgs; [
-  #    git 
-  #  ];
+    #  packages = with pkgs; [
+    #    git
+    #  ];
   };
 
   programs = {
-   firefox.enable = true;
-   vim.enable = true;
-   git.enable = true; 
- };
+    firefox.enable = true;
+    vim.enable = true;
+    git.enable = true;
+  };
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
-   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-     unzip
-   ];
+  environment.systemPackages = with pkgs; [
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
+    unzip
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
