@@ -88,6 +88,9 @@
   # SYSTEM MODULES SETTINGS
   mettavi = {
     system = {
+      shell = {
+        kanata.enable = true;
+      };
       # enable system users
       userConfig = {
         timotheos = {
