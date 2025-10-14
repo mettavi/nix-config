@@ -1,10 +1,12 @@
 {
+  inputs,
   pkgs,
   ...
 }:
-
 {
   imports = [
+    ./nix/substituter.nix
+    inputs.nixos-hardware.nixosModules.apple-t2
   ];
 
   hardware.firmware = [
@@ -17,6 +19,13 @@
       '';
     }))
   ];
+
+  nix.settings = {
+    # nixos adds cache.nixos.org at the very end so specifying that is not needed.
+    # on other systems please use extra-substituters to not overwrite that.
+    trusted-substituters = [ "https://cache.soopy.moe" ];
+    trusted-public-keys = [ "cache.soopy.moe-1:0RZVsQeR+GOh0VQI9rvnHz55nVXkFardDqfm4+afjPo=" ];
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
