@@ -1,7 +1,8 @@
+{ pkgs, ... }:
 {
   nix = {
-    # nix is now managed by the determinate nixd
-    enable = false;
+    enable = true;
+    package = pkgs.lixPackageSets.stable.lix;
   };
   nixpkgs = {
     overlays = [ (import ../overlays/darwin/default.nix) ];
