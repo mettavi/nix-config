@@ -8,6 +8,7 @@
     inputs.nixos-hardware.nixosModules.apple-t2
   ];
 
+  # copy Apple Broadcom (brcm) firmware for WiFi and bluetooth
   hardware.firmware = [
     (pkgs.stdenvNoCC.mkDerivation (final: {
       name = "bcrm-firmware";
@@ -22,7 +23,11 @@
   nix.settings = {
     # nixos adds cache.nixos.org at the very end so specifying that is not needed.
     # on other systems please use extra-substituters to not overwrite that.
-    trusted-substituters = [ "https://cache.soopy.moe" ];
+
+    # NB: Using this binary cache will cause Nix to not rebuild the kernel,
+    # so long as non-default options like crash dumping have not been enabled.
+    substituters = [ "https://cache.soopy.moe" ];
+    trusted-substituters = [ "https://cache.soopy.moe" ]; # to allow building as a non-trusted user
     trusted-public-keys = [ "cache.soopy.moe-1:0RZVsQeR+GOh0VQI9rvnHz55nVXkFardDqfm4+afjPo=" ];
   };
 
