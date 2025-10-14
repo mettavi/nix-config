@@ -5,7 +5,6 @@
 }:
 {
   imports = [
-    ./nix/substituter.nix
     inputs.nixos-hardware.nixosModules.apple-t2
   ];
 
