@@ -119,16 +119,6 @@
     pulse.enable = true;
   };
 
-  # NIXOS MODULE SETTINGS
-  services = {
-    openssh = {
-      # allow ssh passwords on this host
-      settings = {
-        PasswordAuthentication = true;
-      };
-    };
-  };
-
   # SYSTEM MODULES SETTINGS
   mettavi = {
     system = {
