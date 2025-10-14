@@ -81,7 +81,6 @@
   };
 
   console = {
-    keyMap = "us";
     useXkbConfig = true; # use xkb.options in tty.
   };
 
