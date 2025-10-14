@@ -56,35 +56,21 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
+  # the installation process is allowed to modify EFI boot variables
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
-
   ######## SYSTEM SERVICES ##########
-
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
 
   services = {
     # install GNOME using wayland
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
     xserver = {
+      # don't install Xserver
       enable = false;
       xkb = {
         # This might still be used by Wayland
@@ -98,9 +84,6 @@
     keyMap = "us";
     useXkbConfig = true; # use xkb.options in tty.
   };
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
 
   # SYSTEM MODULES SETTINGS
   mettavi = {
