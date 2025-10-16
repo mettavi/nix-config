@@ -55,16 +55,6 @@ in
           }
         ) cfg.userConfig;
 
-    # home-manager.users = mapAttrs' (
-    #   name: usrCfg:
-    #   nameValuePair (usrCfg.username) (
-    #     import ../../../../../lib/mkUserHome.nix {
-    #       inherit (usrCfg) username;
-    #       inherit pkgs;
-    #     }
-    #   )
-    # ) cfg.userConfig;
-
     # the mapAttrs' (note the apostrophe) function allows to change the name as well as the value
     home-manager.users = mapAttrs' (
       name: usrCfg:
