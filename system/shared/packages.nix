@@ -59,6 +59,7 @@ in
     rustc
     shellcheck
     sops # Simple and flexible tool for managing secrets
+    ssh-to-age # convert ssh keys in ed25519 format to age keys
     # texinfo # to read info files
     tldr
     tree
