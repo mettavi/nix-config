@@ -19,6 +19,13 @@
     ######## NIX-DARWIN ########
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable"; # for nix-darwin
     nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
+    # install from PR https://github.com/NixOS/nixpkgs/pull/451386 until it is merged to nixpkgs-unstable
+    # TODO: Check status at https://nixpk.gs/pr-tracker.html?pr=451386
+    nixpkgs-rubyfix = {
+      url = "github:NixOS/nixpkgs/cdb57da081701af98fcc5944dc8e174548f5584f";
+      # causes error "warning: input 'nixpkgs-rubyfix' has an override for a non-existent input 'nixpkgs'"
+      # inputs.nixpkgs.follows = "nixpkgs";
+    };
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
