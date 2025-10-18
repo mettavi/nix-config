@@ -67,10 +67,11 @@
     nixCats = {
       url = "github:BirdeeHub/nixCats-nvim";
     };
-    mac-app-util = {
-      url = "github:hraban/mac-app-util";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # Removed due to bug with sbcl dependency on intel darwin, see https://github.com/hraban/mac-app-util/issues/20
+    # mac-app-util = {
+    #   url = "github:hraban/mac-app-util";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     nix-vscode-extensions = {
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
