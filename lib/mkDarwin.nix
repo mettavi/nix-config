@@ -53,7 +53,6 @@
         ../system/darwin/modules
         ../system/shared
         ../system/shared/modules
-        inputs.mac-app-util.darwinModules.default
         # this provides a wrapper for the nix-index package (no need to install separately)
         inputs.nix-index-database.darwinModules.nix-index
         inputs.sops-nix.darwinModules.sops
@@ -65,7 +64,6 @@
             backupFileExtension = "nix-backup";
             extraSpecialArgs = specialArgs;
             sharedModules = [
-              inputs.mac-app-util.homeManagerModules.default
               inputs.sops-nix.homeManagerModules.sops
             ];
           };
