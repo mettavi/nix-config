@@ -5,7 +5,8 @@
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
-    pulse.enable = true;
+    # not recommended for T2 macs, see https://wiki.t2linux.org/guides/audio-config
+    # pulse.enable = true;
   };
   # used by pipewire and pulseaudio 
   security.rtkit.enable = true;
