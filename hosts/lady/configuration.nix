@@ -60,6 +60,20 @@
   # (enabling this is not recommended on T2 macs)
   boot.loader.efi.canTouchEfiVariables = false;
   boot.loader.efi.efiSysMountPoint = "/boot";
+  boot.loader.refind = {
+    enable = true;
+    efiInstallAsRemovable = true;
+    extraConfig = # bash
+      ''
+        # remove BIOS entries on T2 mac
+        scanfor internal,external,optical,manual
+        # hide debug text for OS other than mac
+        use_graphics_for osx,linux,windows,grub
+        # prevent the use of NVRAM on T2 mac
+        use_nvram false
+      '';
+    maxGenerations = 10;
+  };
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
