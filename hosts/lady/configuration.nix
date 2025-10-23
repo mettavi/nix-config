@@ -94,6 +94,8 @@
         variant = "mac";
       };
     };
+    # authorise file sharing with other devices
+    gnome.gnome-user-share.enable = true;
   };
 
   console = {
