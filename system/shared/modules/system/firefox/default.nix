@@ -201,4 +201,18 @@ in
 
     };
   };
+  environment.sessionVariables = lib.mkIf config.services.displayManager.gdm.wayland {
+    # for firefox to run on wayland (may be default now?)
+    MOZ_ENABLE_WAYLAND = "1";
+  };
+
+  # required for screensharing functionality
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      # xdg-desktop-portal-wlr # Use this for Sway/wlroots
+      xdg-desktop-portal-gtk # Use this for GNOME
+      # xdg-desktop-portal-kde  # Use this for KDE
+    ];
+  };
 }
