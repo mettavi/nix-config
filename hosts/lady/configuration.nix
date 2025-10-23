@@ -126,6 +126,7 @@
     mettavi = {
       apps = {
         ghostty.enable = true;
+        libreoffice.enable = true;
       };
     };
     programs = {
