@@ -57,7 +57,8 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   # the installation process is allowed to modify EFI boot variables
-  boot.loader.efi.canTouchEfiVariables = true;
+  # (enabling this is not recommended on T2 macs)
+  boot.loader.efi.canTouchEfiVariables = false;
   boot.loader.efi.efiSysMountPoint = "/boot";
 
   # Configure network connections interactively with nmcli or nmtui.
