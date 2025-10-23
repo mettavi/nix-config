@@ -56,10 +56,14 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.grub.enable = false;
   # the installation process is allowed to modify EFI boot variables
   # (enabling this is not recommended on T2 macs)
   boot.loader.efi.canTouchEfiVariables = false;
   boot.loader.efi.efiSysMountPoint = "/boot";
+
+  # this is required to set up the refind module
+  boot.loader.grub.enable = false;
   boot.loader.refind = {
     enable = true;
     efiInstallAsRemovable = true;
