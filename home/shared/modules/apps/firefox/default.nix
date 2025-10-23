@@ -183,28 +183,14 @@ in
             # replace the symlink for the search configuration on every launch
             force = true;
             default = "ddg"; # DuckDuckGo
+            privateDefault = "ddg"; # DuckDuckGo
             engines = {
-              nix-packages = {
-                name = "Nix Packages";
-                urls = [
-                  {
-                    template = "https://search.nixos.org/packages";
-                    params = [
-                      {
-                        name = "type";
-                        value = "packages";
-                      }
-                      {
-                        name = "query";
-                        value = "{searchTerms}";
-                      }
-                    ];
-                  }
-                ];
-                icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-                definedAliases = [ "@np" ];
+              home-manager = {
+                name = "hm Options";
+                urls = [ { template = "https://home-manager-options.extranix.com/?query={searchTerms}"; } ];
+                iconMapObj."16" = "https://home-manager-options.extranix.com/images/favicon.png";
+                definedAliases = [ "@hm" ];
               };
-
               nix-options = {
                 name = "Nix Options";
                 urls = [
@@ -225,7 +211,44 @@ in
                 icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
                 definedAliases = [ "@no" ];
               };
+              nix-packages = {
+                name = "Nix Packages";
+                urls = [
+                  {
+                    template = "https://search.nixos.org/packages";
+                    params = [
+                      {
+                        name = "type";
+                        value = "packages";
+                      }
+                      {
+                        name = "query";
+                        value = "{searchTerms}";
+                      }
+                    ];
+                  }
+                ];
+                icon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+                definedAliases = [ "@np" ];
+              };
+              nixos-wiki = {
+                name = "NixOS Wiki";
+                urls = [ { template = "https://wiki.nixos.org/w/index.php?search={searchTerms}"; } ];
+                iconMapObj."16" = "https://wiki.nixos.org/favicon.ico";
+                definedAliases = [ "@nw" ];
+              };
+              bing.metaData.hidden = true; # hide the bing search engine
+              google.metaData.alias = "@g"; # builtin engines only support specifying one additional alias
             };
+            order = [
+              "ddg"
+              "google"
+              "nix-packages"
+              "nix-options"
+              "home-manager"
+              "nixos-wiki"
+            ];
+          };
 
             home-manager = {
               name = "hm Options";
