@@ -38,7 +38,7 @@
           };
           # Select internationalisation properties.
           i18n = {
-            defaultLocale = "en_GB.UTF-8";
+            defaultLocale = "en_AU.UTF-8";
             extraLocaleSettings = {
               LC_ADDRESS = "en_AU.UTF-8";
               LC_IDENTIFICATION = "en_AU.UTF-8";
