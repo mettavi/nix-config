@@ -93,8 +93,6 @@ in
             # "print.print_headerleft" = "";
             # "print.print_headerright" = "";
 
-            "privacy.donottrackheader.enabled" = true;
-
             # VERTICAL TABS
             "sidebar.verticalTabs" = true;
             "sidebar.revamp" = true;
@@ -148,11 +146,20 @@ in
             "toolkit.telemetry.unifiedIsOptIn" = false;
             "toolkit.telemetry.updatePing.enabled" = false;
 
-            # Harden true; # Force enable GPU acceleration
+            # Force enable GPU acceleration
             "media.ffmpeg.vaapi.enabled" = true;
             "media.hardware-video-decoding.force-enabled" = true;
             "widget.dmabuf.force-enabled" = true; # Required in recent Firefoxes
 
+            # Enable HTTPS-Only Mode
+            "dom.security.https_only_mode" = true;
+            "dom.security.https_only_mode_ever_enabled" = true;
+
+            # Privacy settings
+            "privacy.donottrackheader.enabled" = true;
+            "privacy.trackingprotection.enabled" = true;
+            "privacy.trackingprotection.socialtracking.enabled" = true;
+            "privacy.partition.network_state.ocsp_cache" = true;
             # DISABLE CRAPPY HOME ACTIVITY STREAM PAGE
             "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" = false;
             "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" = false;
