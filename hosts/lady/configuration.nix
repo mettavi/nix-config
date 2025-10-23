@@ -54,9 +54,6 @@
     "vm.swappiness" = 90;
   };
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.grub.enable = false;
   # the installation process is allowed to modify EFI boot variables
   # (enabling this is not recommended on T2 macs)
   boot.loader.efi.canTouchEfiVariables = false;
@@ -83,7 +80,7 @@
   networking.networkmanager.enable = true;
 
   ######## SYSTEM SERVICES ##########
-
+  #
   services = {
     # install GNOME using wayland
     displayManager.gdm.enable = true;
