@@ -5,9 +5,13 @@
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
-    # not recommended for T2 macs, see https://wiki.t2linux.org/guides/audio-config
+    # pulseaudio is not recommended for T2 macs, see https://wiki.t2linux.org/guides/audio-config
     # pulse.enable = true;
   };
+
+  # ensure pulseaudio is disabled as gnome enables it by default
+  hardware.pulseaudio.enable = false;
+
   # allow pipewire to have realtime priority
   security.rtkit.enable = true;
 
