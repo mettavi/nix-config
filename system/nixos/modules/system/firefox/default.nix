@@ -63,18 +63,6 @@ in
             install_url = moz "ublock-origin";
             installation_mode = "force_installed";
           };
-          "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
-            install_url = moz "bitwarden-password-manager";
-            installation_mode = "force_installed";
-          };
-          "jid1-MnnxcxisBPnSXQ@jetpack" = {
-            install_url = moz "privacy-badger-17";
-            installation_mode = "force_installed";
-          };
-          "extension@tabliss.io" = {
-            install_url = moz "tabliss-2.6.0.xpi";
-            installation_mode = "force_installed";
-          };
         };
       # Extensions settings (NB: Few extensions support this key)
       "3rdparty".Extensions = {
