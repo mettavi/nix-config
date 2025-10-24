@@ -6,7 +6,6 @@
     gcc
     # Tool to control the generation of non-source files from sources (required for neovim telescope-fzf)
     gnumake
-    libreoffice # professional-quality productivity suite
     # Icons of the Nix logo, in Freedesktop Icon Directory Layout
     nixos-icons
     # nodejs
