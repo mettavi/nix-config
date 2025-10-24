@@ -202,12 +202,10 @@ in
 
     };
   };
-  environment.variables =
-    lib.mkIf (pkgs.stdenv.isLinux && config.services.displayManager.gdm.wayland)
-      {
-        # for firefox to run on wayland (may be default now?)
-        MOZ_ENABLE_WAYLAND = "1";
-      };
+  environment.variables = lib.mkIf (config.services.displayManager.gdm.wayland) {
+    # for firefox to run on wayland (may be default now?)
+    MOZ_ENABLE_WAYLAND = "1";
+  };
 
   # required for screensharing functionality
   xdg.portal = {
