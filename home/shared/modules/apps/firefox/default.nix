@@ -471,64 +471,64 @@ in
               install_url = moz "video-downloadhelper";
               updates_disabled = false;
             };
-            # Extensions settings
-            # Extensions settings (NB: Few extensions support this key)
-            "3rdparty".Extensions = {
-              "uBlock1@raymondhill.net".adminSettings = {
-                userSettings = rec {
-                  uiTheme = "dark";
-                  uiAccentCustom = true;
-                  uiAccentCustom0 = "#8300ff";
-                  advancedUserEnabled = true;
-                  cloudStorageEnabled = lib.mkDefault true;
-                  largeMediaSize = 500;
-                  popupPanelSections = 31;
-
-                  importedLists = [
-                    "https:#filters.adtidy.org/extension/ublock/filters/3.txt"
-                    "https:#github.com/DandelionSprout/adfilt/raw/master/LegitimateURLShortener.txt"
-                  ];
-
-                  externalLists = lib.concatStringsSep "\n" importedLists;
-                };
-
-                selectedFilterLists = [
-                  "user-filters"
-                  "ublock-filters"
-                  "ublock-badware"
-                  "ublock-privacy"
-                  "ublock-quick-fixes"
-                  "ublock-unbreak"
-                  "easylist"
-                  "adguard-generic"
-                  "adguard-mobile"
-                  "easyprivacy"
-                  "adguard-spyware-url"
-                  "block-lan"
-                  "urlhaus-1"
-                  "plowe-0"
-                  "dpollock-0"
-                  "fanboy-cookiemonster"
-                  "ublock-cookies-easylist"
-                  "adguard-cookies"
-                  "ublock-cookies-adguard"
-                  "fanboy-social"
-                  "adguard-social"
-                  "fanboy-thirdparty_social"
-                  "easylist-chat"
-                  "easylist-newsletters"
-                  "easylist-notifications"
-                  "easylist-annoyances"
-                  "adguard-mobile-app-banners"
-                  "adguard-other-annoyances"
-                  "adguard-popup-overlays"
-                  "adguard-widgets"
-                  "ublock-annoyances"
-                  "https://filters.adtidy.org/extension/ublock/filters/3.txt"
-                ];
-              };
-            };
           };
+        # Extensions settings
+        # Extensions settings (NB: Few extensions support this key)
+        "3rdparty".Extensions = {
+          "uBlock1@raymondhill.net".adminSettings = {
+            userSettings = rec {
+              uiTheme = "dark";
+              uiAccentCustom = true;
+              uiAccentCustom0 = "#8300ff";
+              advancedUserEnabled = true;
+              cloudStorageEnabled = lib.mkDefault true;
+              largeMediaSize = 500;
+              popupPanelSections = 31;
+
+              importedLists = [
+                "https:#filters.adtidy.org/extension/ublock/filters/3.txt"
+                "https:#github.com/DandelionSprout/adfilt/raw/master/LegitimateURLShortener.txt"
+              ];
+
+              externalLists = lib.concatStringsSep "\n" importedLists;
+            };
+
+            selectedFilterLists = [
+              "user-filters"
+              "ublock-filters"
+              "ublock-badware"
+              "ublock-privacy"
+              "ublock-quick-fixes"
+              "ublock-unbreak"
+              "easylist"
+              "adguard-generic"
+              "adguard-mobile"
+              "easyprivacy"
+              "adguard-spyware-url"
+              "block-lan"
+              "urlhaus-1"
+              "plowe-0"
+              "dpollock-0"
+              "fanboy-cookiemonster"
+              "ublock-cookies-easylist"
+              "adguard-cookies"
+              "ublock-cookies-adguard"
+              "fanboy-social"
+              "adguard-social"
+              "fanboy-thirdparty_social"
+              "easylist-chat"
+              "easylist-newsletters"
+              "easylist-notifications"
+              "easylist-annoyances"
+              "adguard-mobile-app-banners"
+              "adguard-other-annoyances"
+              "adguard-popup-overlays"
+              "adguard-widgets"
+              "ublock-annoyances"
+              "https://filters.adtidy.org/extension/ublock/filters/3.txt"
+            ];
+          };
+        };
       };
     };
   };
