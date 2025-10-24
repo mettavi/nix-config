@@ -202,8 +202,8 @@ in
     };
   };
   environment.sessionVariables = lib.mkIf config.services.displayManager.gdm.wayland {
-    # for firefox to run on wayland (may be default now?)
-    MOZ_ENABLE_WAYLAND = "1";
+    MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (may already be default)
+    NIXOS_OZONE_WL = "1"; # Forces Wayland backend for applications using Ozone
   };
 
   # required for screensharing functionality
