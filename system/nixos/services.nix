@@ -10,7 +10,7 @@
   };
 
   # ensure pulseaudio is disabled as gnome enables it by default
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
 
   # allow pipewire to have realtime priority
   security.rtkit.enable = true;
