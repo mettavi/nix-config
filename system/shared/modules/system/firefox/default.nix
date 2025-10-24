@@ -26,6 +26,10 @@ in
   programs.firefox = {
     enable = withFirefox;
     languagePacks = [ "en-US" ];
+    # required for screensharing under Wayland, see https://wiki.nixos.org/wiki/Firefox
+    wrapperConfig = {
+      pipewireSupport = true;
+    };
 
     # Check about:policies#documentation for options.
     policies = {
