@@ -360,6 +360,15 @@ in
             ];
           };
         };
+        order = [
+          "ddg"
+          "google"
+          "nix-packages"
+          "nix-options"
+          "nixos-wiki"
+          "home-manager"
+        ];
+        privateDefault = "ddg"; # DuckDuckGo
       };
       policies = {
         AppAutoUpdate = false;
