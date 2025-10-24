@@ -37,9 +37,16 @@ in
           extensions = {
             packages = with inputs.firefox-addons.packages.${pkgs.system}; [
               bitwarden
+              privacy-badger
               sponsorblock
+              tabliss
             ];
           };
+          # extraConfig = '' ''; # user.js
+          # userChrome = '' ''; # chrome CSS
+          # userContent = '' ''; # content CSS
+
+          # ~/.mozilla/firefox/PROFILE_NAME/prefs.js | user.js
           settings = {
             # ALPHABETICAL
             "app.normandy.first_run" = false;
@@ -55,7 +62,23 @@ in
             "browser.download.viewableInternally.typeWasRegistered.svg" = true;
             "browser.download.viewableInternally.typeWasRegistered.webp" = true;
             "browser.download.viewableInternally.typeWasRegistered.xml" = true;
-            # "browser.startup.homepage" = "https://duckduckgo.com";
+            "browser.newtabpage.pinned" = [
+              {
+                "label" = "GitHub";
+                "url" = "https://github.com";
+              }
+              {
+                "label" = "YouTube";
+                "url" = "https://youtube.com";
+              }
+              {
+                "label" = "YT Music";
+                "url" = "https://music.youtube.com";
+              }
+            ];
+            # Homepage settings
+            # 0 = blank, 1 = home, 2 = last visited page, 3 = resume previous session
+            "browser.startup.page" = 1;
             "browser.startup.homepage" = "about:home";
             "browser.search.defaultenginename" = "DuckDuckGo";
             "browser.search.order.1" = "DuckDuckGo";
@@ -66,6 +89,7 @@ in
             "browser.toolbars.bookmarks.visibility" = "newtab";
             "browser.urlbar.placeholderName" = "DuckDuckGo";
             "browser.urlbar.showSearchSuggestionsFirst" = false;
+            "browser.urlbar.suggest.calculator" = true; # integrated calculator
             # disable all the annoying quick actions
             "browser.urlbar.quickactions.enabled" = false;
             "browser.urlbar.quickactions.showPrefs" = false;
@@ -78,15 +102,45 @@ in
             "browser.protections_panel.infoMessage.seen" = true;
             "browser.helperApps.deleteTempFileOnExit" = true;
             "distribution.searchplugins.defaultLocale" = "en-AU";
+            "extensions.autoDisableScopes" = 0; # automatically enable extensions
+            "extensions.update.enabled" = false;
             "general.autoScroll" = true;
             "general.useragent.locale" = "en-AU";
+
+            "general.smoothScroll" = true;
+            "general.smoothScroll.msdPhysics.enabled" = true;
+            # Fix Firefox's smooth scrolling to have the same snappy feel as Chrome
+            "general.smoothScroll.mouseWheel.durationMaxMS" = 200;
+            "general.smoothScroll.mouseWheel.durationMinMS" = 100;
 
             # DISABLE FIREFOX ACCOUNTS
             # "identity.fxaccounts.enabled" = false;
 
+            # Prefer dark theme
+            "layout.css.prefers-color-scheme.content-override" = 0; # 0: Dark, 1: Light, 2: Auto
+
+            # Disable autoplay
+            "media.autoplay.default" = 5; # block both audible and inaudible media from autoplaying.
+
             "mousewheel.default.delta_multiplier_x" = 20;
             "mousewheel.default.delta_multiplier_y" = 20;
             "mousewheel.default.delta_multiplier_z" = 20;
+
+            # Hardens against potential credentials phishing:
+            # 0 = don’t allow sub-resources to open HTTP authentication credentials dialogs
+            # 1 = don’t allow cross-origin sub-resources to open HTTP authentication credentials dialogs
+            # 2 = allow sub-resources to open HTTP authentication credentials dialogs (default)
+            "network.auth.subresource-http-auth-allow" = 1;
+
+            # Trusted DNS (TRR) https://wiki.mozilla.org/Trusted_Recursive_Resolver
+            # 0 for off, 2 for TRR first (using DoH with a standard fallback), and 3 for TRR only (only using DoH).
+            "network.trr.mode" = 2;
+            "network.trr.uri" = "https://mozilla.cloudflare-dns.com/dns-query";
+            "network.dns.skipTRR-when-parental-control-enabled" = false;
+
+            # ECH - prevent TLS connections leaking request hostname
+            "network.dns.echconfig.enabled" = true;
+            "network.dns.http3_echconfig.enabled" = true;
 
             # "print.print_footerleft" = "";
             # "print.print_footerright" = "";
@@ -100,12 +154,23 @@ in
               "history"
               "bookmarks"
             ];
-            "signon.rememberSignons" = false; # Disable "save password" prompt
             # Firefox 75+ remembers the last workspace it was opened on as part of its session management.
             # This is annoying, because I can have a blank workspace, click Firefox from the launcher, and
             # then have Firefox open on some other workspace.
             "widget.disable-workspace-management" = true;
             "widget.use-xdg-desktop-portal.file-picker" = 1;
+
+            # Addon recomendations
+            "extensions.getAddons.showPane" = false; # disable recommendation pane in about:addons (uses Google Analytics)
+            "extensions.htmlaboutaddons.recommendations.enabled" = false; # recommendations in about:addons' Extensions and Themes panes
+
+            # Auto-decline cookies
+            "cookiebanners.service.mode" = 2;
+            "cookiebanners.service.mode.privateBrowsing" = 2;
+
+            # Crash reports
+            "breakpad.reportURL" = "";
+            "browser.tabs.crashReporting.sendReport" = false;
 
             # DISABLE IRRITATING FIRST-RUN STUFF
             "browser.bookmarks.restore_default_bookmarks" = false;
@@ -121,11 +186,17 @@ in
             "browser.uitour.enabled" = false;
             "trailhead.firstrun.didSeeAboutWelcome" = true;
 
+            "signon.rememberSignons" = false; # Disable "save password" prompt
+            "signon.autofillForms" = false;
+            "signon.formlessCapture.enabled" = false;
+            "dom.forms.autocomplete.formautofill" = false; # autocomplete fills forms as you type
+
             # DISABLE SOME TELEMETRY
             "browser.discovery.enabled" = false;
             "browser.newtabpage.activity-stream.feeds.telemetry" = false;
             "browser.newtabpage.activity-stream.telemetry" = false;
             "browser.ping-centre.telemetry" = false;
+            "browser.vpn_promo.enabled" = false;
             "datareporting.healthreport.service.enabled" = false;
             "datareporting.healthreport.uploadEnabled" = false;
             "datareporting.policy.dataSubmissionEnabled" = false;
@@ -133,6 +204,9 @@ in
             "devtools.onboarding.telemetry.logged" = false;
             "toolkit.telemetry.archive.enabled" = false;
             "toolkit.telemetry.bhrPing.enabled" = false;
+            "toolkit.telemetry.coverage.opt-out" = true; # [HIDDEN PREF]
+            "toolkit.coverage.opt-out" = true; # [FF64+] [HIDDEN PREF]
+            "toolkit.coverage.endpoint.base" = "";
             "toolkit.telemetry.enabled" = false;
             "toolkit.telemetry.firstShutdownPing.enabled" = false;
             "toolkit.telemetry.hybridContent.enabled" = false;
@@ -142,9 +216,24 @@ in
             "toolkit.telemetry.reportingpolicy.firstRun" = false;
             "toolkit.telemetry.server" = "";
             "toolkit.telemetry.shutdownPingSender.enabled" = false;
+            "toolkit.telemetry.shutdownPingSender.enabledFirstsession" = false;
             "toolkit.telemetry.unified" = false;
             "toolkit.telemetry.unifiedIsOptIn" = false;
             "toolkit.telemetry.updatePing.enabled" = false;
+
+            # As well as Firefox 'experiments'
+            "experiments.activeExperiment" = false;
+            "experiments.enabled" = false;
+            "experiments.supported" = false;
+            "network.allow-experiments" = false;
+
+            # Disable Pocket Integration
+            "browser.newtabpage.activity-stream.section.highlights.includePocket" = false;
+            "extensions.pocket.enabled" = false;
+            "extensions.pocket.api" = "";
+            "extensions.pocket.oAuthConsumerKey" = "";
+            "extensions.pocket.showHome" = false;
+            "extensions.pocket.site" = "";
 
             # Force enable GPU acceleration
             "media.ffmpeg.vaapi.enabled" = true;
@@ -155,12 +244,33 @@ in
             "dom.security.https_only_mode" = true;
             "dom.security.https_only_mode_ever_enabled" = true;
 
-            # Privacy settings
+            # PRIVACY/TRACKING SETTINGS
+            # Prevent WebRTC leaking IP address
+            "media.peerconnection.ice.default_address_only" = true;
             "privacy.donottrackheader.enabled" = true;
             "privacy.trackingprotection.enabled" = true;
+            "privacy.trackingprotection.emailtracking.enabled" = true;
+            "privacy.trackingprotection.cryptomining.enabled" = true;
+            "privacy.trackingprotection.fingerprinting.enabled" = true;
+            "privacy.trackingprotection.pbmode.enabled" = true;
             "privacy.trackingprotection.socialtracking.enabled" = true;
             "privacy.partition.network_state.ocsp_cache" = true;
+            "privacy.firstparty.isolate" = true;
+            # URL query tracking
+            "privacy.query_stripping.enabled" = true;
+            "privacy.query_stripping.enabled.pbmode" = true;
+
+            # Fingerprinting
+            "privacy.fingerprintingProtection" = true;
+            "privacy.resistFingerprinting" = true;
+            "privacy.resistFingerprinting.pbmode" = true;
+
+            # disable using the OS's geolocation service
+            "geo.provider.use_gpsd" = false;
+            "geo.provider.use_geoclue" = false;
+
             # DISABLE CRAPPY HOME ACTIVITY STREAM PAGE
+            "browser.newtab.preload" = false;
             "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" = false;
             "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" = false;
             "browser.newtabpage.activity-stream.feeds.snippets" = false;
@@ -181,7 +291,7 @@ in
           search = {
             # force replace the existing search configuration. This is recommended since Firefox will
             # replace the symlink for the search configuration on every launch
-            force = true;
+            force = true; # Firefox often replaces the symlink, so force on update
             default = "ddg"; # DuckDuckGo
             privateDefault = "ddg"; # DuckDuckGo
             engines = {
@@ -249,6 +359,8 @@ in
               "nixos-wiki"
             ];
           };
+        };
+      };
 
             home-manager = {
               name = "hm Options";
