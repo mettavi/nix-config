@@ -361,34 +361,165 @@ in
           };
         };
       };
+      policies = {
+        AppAutoUpdate = false;
+        BackgroundAppUpdate = false;
 
-            home-manager = {
-              name = "hm Options";
-              urls = [ { template = "https://home-manager-options.extranix.com/?query={searchTerms}"; } ];
-              iconMapObj."16" = "https://home-manager-options.extranix.com/images/favicon.png";
-              definedAliases = [ "@hm" ];
+        BlockAboutConfig = false;
+        DefaultDownloadDirectory = "\${home}/Downloads";
+
+        DisableBuiltinPDFViewer = false;
+        DisableFirefoxStudies = true;
+        DisableFirefoxAccounts = false;
+        DisableFirefoxScreenshots = true;
+        DisableForgetButton = false;
+        DisableMasterPasswordCreation = false;
+        DisableProfileImport = true;
+        DisableProfileRefresh = true;
+        DisableSetDesktopBackground = true;
+        DisablePocket = true;
+        DisableTelemetry = true;
+        DisableFormHistory = true;
+        DisablePasswordReveal = true;
+
+        ExtensionSettings =
+          let
+            moz = short: "https://addons.mozilla.org/firefox/downloads/latest/${short}/latest.xpi";
+          in
+          {
+            # Extensions
+
+            "*".installation_mode = "force_installed";
+
+            "uBlock0@raymondhill.net" = {
+              install_url = moz "ublock-origin";
+              installation_mode = "force_installed";
+              updates_disabled = true;
             };
 
-            nixos-wiki = {
-              name = "NixOS Wiki";
-              urls = [ { template = "https://wiki.nixos.org/w/index.php?search={searchTerms}"; } ];
-              iconMapObj."16" = "https://wiki.nixos.org/favicon.ico";
-              definedAliases = [ "@nw" ];
+            "jid1-MnnxcxisBPnSXQ@jetpack" = {
+              install_url = moz "privacy-badger17";
+              installation_mode = "force_installed";
+              updates_disabled = false;
             };
 
-            bing.metaData.hidden = true; # hide the bing search engine
-            google.metaData.alias = "@g"; # builtin engines only support specifying one additional alias
+            "{22b0eca1-8c02-4c0d-a5d7-6604ddd9836e}" = {
+              install_url = moz "Dark-Space-Theme";
+              installation_mode = "force_installed";
+              updates_disabled = false;
+            };
+            "{74145f27-f039-47ce-a470-a662b129930a}" = {
+              install_url = moz "clearUrls";
+              installation_mode = "force_installed";
+              updates_disabled = false;
+            };
+            "addon@darkreader.org" = {
+              install_url = moz "darkreader";
+              updates_disabled = true;
+            };
+            "{3579f63b-d8ee-424f-bbb6-6d0ce3285e6a}" = {
+              install_url = moz "chameleon-ext";
+              updates_disabled = true;
+            };
+            "CanvasBlocker@kkapsner.de" = {
+              install_url = moz "canvasblocker";
+              installation_mode = "force_installed";
+              updates_disabled = false;
+            };
+            "sponsorBlocker@ajay.app" = {
+              install_url = moz "sponsorblock";
+              updates_disabled = false;
+            };
+            "{e58d3966-3d76-4cd9-8552-1582fbc800c1}" = {
+              install_url = moz "buster-captcha-solver";
+              updates_disabled = false;
+            };
+            "{2e5ff8c8-32fe-46d0-9fc8-6b8986621f3c}" = {
+              install_url = moz "search_by_image";
+              updates_disabled = false;
+            };
+            "{7be2ba16-0f1e-4d93-9ebc-5164397477a9}" = {
+              install_url = moz "videospeed";
+              updates_disabled = true;
+            };
+            "@contain-facebook" = {
+              install_url = moz "facebook-container";
+              updates_disabled = false;
+            };
+            "ff2mpv@yossarian.net" = {
+              install_url = moz "ff2mpv";
+              updates_disabled = false;
+            };
+            "{036a55b4-5e72-4d05-a06c-cba2dfcc134a}" = {
+              install_url = moz "traduzir-paginas-web";
+              updates_disabled = false;
+            };
+            "{762f9885-5a13-4abd-9c77-433dcd38b8fd}" = {
+              install_url = moz "return-youtube-dislikes";
+              updates_disabled = false;
+            };
+            "{b9db16a4-6edc-47ec-a1f4-b86292ed211d}" = {
+              install_url = moz "video-downloadhelper";
+              updates_disabled = false;
+            };
+            # Extensions settings
+            # Extensions settings (NB: Few extensions support this key)
+            "3rdparty".Extensions = {
+              "uBlock1@raymondhill.net".adminSettings = {
+                userSettings = rec {
+                  uiTheme = "dark";
+                  uiAccentCustom = true;
+                  uiAccentCustom0 = "#8300ff";
+                  advancedUserEnabled = true;
+                  cloudStorageEnabled = lib.mkDefault true;
+                  largeMediaSize = 500;
+                  popupPanelSections = 31;
+
+                  importedLists = [
+                    "https:#filters.adtidy.org/extension/ublock/filters/3.txt"
+                    "https:#github.com/DandelionSprout/adfilt/raw/master/LegitimateURLShortener.txt"
+                  ];
+
+                  externalLists = lib.concatStringsSep "\n" importedLists;
+                };
+
+                selectedFilterLists = [
+                  "user-filters"
+                  "ublock-filters"
+                  "ublock-badware"
+                  "ublock-privacy"
+                  "ublock-quick-fixes"
+                  "ublock-unbreak"
+                  "easylist"
+                  "adguard-generic"
+                  "adguard-mobile"
+                  "easyprivacy"
+                  "adguard-spyware-url"
+                  "block-lan"
+                  "urlhaus-1"
+                  "plowe-0"
+                  "dpollock-0"
+                  "fanboy-cookiemonster"
+                  "ublock-cookies-easylist"
+                  "adguard-cookies"
+                  "ublock-cookies-adguard"
+                  "fanboy-social"
+                  "adguard-social"
+                  "fanboy-thirdparty_social"
+                  "easylist-chat"
+                  "easylist-newsletters"
+                  "easylist-notifications"
+                  "easylist-annoyances"
+                  "adguard-mobile-app-banners"
+                  "adguard-other-annoyances"
+                  "adguard-popup-overlays"
+                  "adguard-widgets"
+                  "ublock-annoyances"
+                  "https://filters.adtidy.org/extension/ublock/filters/3.txt"
+                ];
+              };
+            };
           };
-          order = [
-            "ddg"
-            "google"
-            "nix-packages"
-            "nix-options"
-            "nixos-wiki"
-            "home-manager"
-          ];
-          privateDefault = "ddg"; # DuckDuckGo
-        };
       };
     };
   };
