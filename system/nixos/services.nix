@@ -8,7 +8,7 @@
     # not recommended for T2 macs, see https://wiki.t2linux.org/guides/audio-config
     # pulse.enable = true;
   };
-  # used by pipewire
+  # allow pipewire to have realtime priority
   security.rtkit.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
