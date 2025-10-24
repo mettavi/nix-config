@@ -250,33 +250,32 @@ in
             ];
           };
 
-            home-manager = {
-              name = "hm Options";
-              urls = [ { template = "https://home-manager-options.extranix.com/?query={searchTerms}"; } ];
-              iconMapObj."16" = "https://home-manager-options.extranix.com/images/favicon.png";
-              definedAliases = [ "@hm" ];
-            };
-
-            nixos-wiki = {
-              name = "NixOS Wiki";
-              urls = [ { template = "https://wiki.nixos.org/w/index.php?search={searchTerms}"; } ];
-              iconMapObj."16" = "https://wiki.nixos.org/favicon.ico";
-              definedAliases = [ "@nw" ];
-            };
-
-            bing.metaData.hidden = true; # hide the bing search engine
-            google.metaData.alias = "@g"; # builtin engines only support specifying one additional alias
+          home-manager = {
+            name = "hm Options";
+            urls = [ { template = "https://home-manager-options.extranix.com/?query={searchTerms}"; } ];
+            iconMapObj."16" = "https://home-manager-options.extranix.com/images/favicon.png";
+            definedAliases = [ "@hm" ];
           };
-          order = [
-            "ddg"
-            "google"
-            "nix-packages"
-            "nix-options"
-            "nixos-wiki"
-            "home-manager"
-          ];
-          privateDefault = "ddg"; # DuckDuckGo
+
+          nixos-wiki = {
+            name = "NixOS Wiki";
+            urls = [ { template = "https://wiki.nixos.org/w/index.php?search={searchTerms}"; } ];
+            iconMapObj."16" = "https://wiki.nixos.org/favicon.ico";
+            definedAliases = [ "@nw" ];
+          };
+
+          bing.metaData.hidden = true; # hide the bing search engine
+          google.metaData.alias = "@g"; # builtin engines only support specifying one additional alias
         };
+        order = [
+          "ddg"
+          "google"
+          "nix-packages"
+          "nix-options"
+          "nixos-wiki"
+          "home-manager"
+        ];
+        privateDefault = "ddg"; # DuckDuckGo
       };
     };
   };
