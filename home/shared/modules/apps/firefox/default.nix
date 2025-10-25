@@ -40,7 +40,6 @@ in
       profiles = {
         "mettavi" = {
           id = 0;
-          name = "default";
           isDefault = true;
           bookmarks = {
             force = true;
