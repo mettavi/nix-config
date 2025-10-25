@@ -462,7 +462,7 @@ in
       enable = true;
       extraPortals =
         with pkgs;
-        lib.optionals config.services.gdm.displayManager.wayland [
+        lib.optionals config.services.displayManager.gdm.wayland [
           xdg-desktop-portal-gtk # Use this for GNOME (may already be default)
           # xdg-desktop-portal-wlr # Use this for Sway/wlroots
           # xdg-desktop-portal-kde  # Use this for KDE
