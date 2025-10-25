@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  nixosConfig,
   pkgs,
   ...
 }:
@@ -18,10 +19,11 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.sessionVariables = lib.mkIf config.services.displayManager.gdm.wayland {
-      MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (may already be default)
-      NIXOS_OZONE_WL = "1"; # Forces Wayland backend for applications using Ozone
     };
+    # home.sessionVariables = lib.mkIf nixosConfig.services.displayManager.gdm.wayland {
+    #   MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (may already be default)
+    #   NIXOS_OZONE_WL = "1"; # Forces Wayland backend for applications using Ozone
+    # };
     programs.firefox = {
       enable = true;
       languagePacks = [
@@ -29,9 +31,9 @@ in
         "en-US"
       ];
       # required for screensharing under Wayland, see https://wiki.nixos.org/wiki/Firefox
-      wrapperConfig = lib.mkIf config.services.displayManager.gdm.wayland {
-        pipewireSupport = true;
-      };
+      # wrapperConfig = lib.mkIf nixosConfig.services.displayManager.gdm.wayland {
+      #   pipewireSupport = true;
+      # };
       profiles = {
         "mettavi" = {
           id = 0;
@@ -461,7 +463,7 @@ in
       enable = true;
       extraPortals =
         with pkgs;
-        lib.optionals config.services.displayManager.gdm.wayland [
+        lib.optionals nixosConfig.services.displayManager.gdm.wayland [
           xdg-desktop-portal-gtk # Use this for GNOME (may already be default)
           # xdg-desktop-portal-wlr # Use this for Sway/wlroots
           # xdg-desktop-portal-kde  # Use this for KDE
