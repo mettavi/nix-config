@@ -37,14 +37,17 @@ in
           id = 0;
           name = "default";
           isDefault = true;
-          bookmarks = [
-            {
-              name = "wikipedia";
-              tags = [ "wiki" ];
-              keyword = "wiki";
-              url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
-            }
-          ];
+          bookmarks = {
+            force = true;
+            settings = [
+              {
+                name = "wikipedia";
+                tags = [ "wiki" ];
+                keyword = "wiki";
+                url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
+              }
+            ];
+          };
           # extensions = {
           #   packages = with inputs.firefox-addons.packages.${pkgs.system}; [
           #     bitwarden
