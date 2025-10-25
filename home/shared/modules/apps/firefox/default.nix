@@ -374,26 +374,6 @@ in
         };
       };
       policies = {
-        AppAutoUpdate = false;
-        BackgroundAppUpdate = false;
-
-        BlockAboutConfig = false;
-        DefaultDownloadDirectory = "\${home}/Downloads";
-
-        DisableBuiltinPDFViewer = false;
-        DisableFirefoxStudies = true;
-        DisableFirefoxAccounts = false;
-        DisableFirefoxScreenshots = true;
-        DisableForgetButton = false;
-        DisableMasterPasswordCreation = false;
-        DisableProfileImport = true;
-        DisableProfileRefresh = true;
-        DisableSetDesktopBackground = true;
-        DisablePocket = true;
-        DisableTelemetry = true;
-        DisableFormHistory = true;
-        DisablePasswordReveal = true;
-
         ExtensionSettings =
           let
             moz = short: "https://addons.mozilla.org/firefox/downloads/latest/${short}/latest.xpi";
