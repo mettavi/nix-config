@@ -125,6 +125,7 @@
     };
     mettavi = {
       apps = {
+        firefox.enable = true;
         ghostty.enable = true;
         libreoffice.enable = true;
       };
