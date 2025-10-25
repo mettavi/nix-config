@@ -396,25 +396,27 @@ in
             (extension "ublock-origin" "uBlock0@raymondhill.net")
           ];
 
-        "*".installation_mode = "force_installed";
-      };
-      # Extensions settings
-      # Extensions settings (NB: Few extensions support this key)
-      "3rdparty".Extensions = {
-        "uBlock1@raymondhill.net".adminSettings = {
-          userSettings = rec {
-            uiTheme = "dark";
-            uiAccentCustom = true;
-            uiAccentCustom0 = "#8300ff";
-            advancedUserEnabled = true;
-            cloudStorageEnabled = lib.mkDefault true;
-            largeMediaSize = 500;
-            popupPanelSections = 31;
+        # "*".installation_mode = "force_installed";
 
-            importedLists = [
-              "https:#filters.adtidy.org/extension/ublock/filters/3.txt"
-              "https:#github.com/DandelionSprout/adfilt/raw/master/LegitimateURLShortener.txt"
-            ];
+        # Extensions settings (NB: Few extensions support this key)
+        "3rdparty".Extensions = {
+          "uBlock1@raymondhill.net".adminSettings = {
+            userSettings = rec {
+              uiTheme = "dark";
+              uiAccentCustom = true;
+              uiAccentCustom0 = "#8300ff";
+              advancedUserEnabled = true;
+              cloudStorageEnabled = lib.mkDefault true;
+              largeMediaSize = 500;
+              popupPanelSections = 31;
+
+              importedLists = [
+                "https:#filters.adtidy.org/extension/ublock/filters/3.txt"
+                "https:#github.com/DandelionSprout/adfilt/raw/master/LegitimateURLShortener.txt"
+              ];
+
+              externalLists = lib.concatStringsSep "\n" importedLists;
+            };
 
             selectedFilterLists = [
               "user-filters"
