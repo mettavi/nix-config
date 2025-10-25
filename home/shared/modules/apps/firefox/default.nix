@@ -25,6 +25,14 @@ in
     };
     programs.firefox = {
       enable = true;
+      languagePacks = [
+        "en_AU"
+        "en-US"
+      ];
+      # required for screensharing under Wayland, see https://wiki.nixos.org/wiki/Firefox
+      wrapperConfig = lib.mkIf config.services.displayManager.gdm.wayland {
+        pipewireSupport = true;
+      };
       profiles = {
         "mettavi" = {
           id = 0;
