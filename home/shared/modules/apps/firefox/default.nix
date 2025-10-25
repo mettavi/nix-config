@@ -19,6 +19,10 @@ in
   };
 
   config = mkIf cfg.enable {
+    environment.sessionVariables = lib.mkIf config.services.displayManager.gdm.wayland {
+      MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (may already be default)
+      NIXOS_OZONE_WL = "1"; # Forces Wayland backend for applications using Ozone
+    };
     programs.firefox = {
       enable = true;
       profiles = {
@@ -360,15 +364,6 @@ in
             ];
           };
         };
-        order = [
-          "ddg"
-          "google"
-          "nix-packages"
-          "nix-options"
-          "nixos-wiki"
-          "home-manager"
-        ];
-        privateDefault = "ddg"; # DuckDuckGo
       };
       policies = {
         AppAutoUpdate = false;
@@ -530,6 +525,17 @@ in
           };
         };
       };
+    };
+    # required for screensharing functionality on Wayland
+    xdg.portal = {
+      enable = true;
+      extraPortals =
+        with pkgs;
+        lib.optionals config.services.gdm.displayManager.wayland [
+          xdg-desktop-portal-gtk # Use this for GNOME (may already be default)
+          # xdg-desktop-portal-wlr # Use this for Sway/wlroots
+          # xdg-desktop-portal-kde  # Use this for KDE
+        ];
     };
   };
 }
