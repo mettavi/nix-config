@@ -380,8 +380,10 @@ in
                 iconMapObj."16" = "https://wiki.nixos.org/favicon.ico";
                 definedAliases = [ "@nw" ];
               };
-              bing.metaData.hidden = true; # hide the bing search engine
+              # builtin search engines
               google.metaData.alias = "@g"; # builtin engines only support specifying one additional alias
+              bing.metaData.hidden = true;
+              ebay.metaData.hidden = true;
             };
             order = [
               "ddg"
