@@ -46,14 +46,14 @@ in
               url = "https://en.wikipedia.org/wiki/Special:Search?search=%s&go=Go";
             }
           ];
-          extensions = {
-            packages = with inputs.firefox-addons.packages.${pkgs.system}; [
-              bitwarden
-              privacy-badger
-              sponsorblock
-              tabliss
-            ];
-          };
+          # extensions = {
+          #   packages = with inputs.firefox-addons.packages.${pkgs.system}; [
+          #     bitwarden
+          #     privacy-badger
+          #     sponsorblock
+          #     tabliss
+          #   ];
+          # };
           # extraConfig = '' ''; # user.js
           # userChrome = '' ''; # chrome CSS
           # userContent = '' ''; # content CSS
