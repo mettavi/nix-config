@@ -394,7 +394,6 @@ in
             (extension "sponsorblock" "sponsorBlock@ajay.app")
             (extension "tabliss" "extension@tabliss.io")
             (extension "ublock-origin" "uBlock0@raymondhill.net")
-            (extension "umatrix" "uMatrix@raymondhill.net")
           ];
 
         "*".installation_mode = "force_installed";
@@ -417,43 +416,41 @@ in
               "https:#github.com/DandelionSprout/adfilt/raw/master/LegitimateURLShortener.txt"
             ];
 
-            externalLists = lib.concatStringsSep "\n" importedLists;
+            selectedFilterLists = [
+              "user-filters"
+              "ublock-filters"
+              "ublock-badware"
+              "ublock-privacy"
+              "ublock-quick-fixes"
+              "ublock-unbreak"
+              "easylist"
+              "adguard-generic"
+              "adguard-mobile"
+              "easyprivacy"
+              "adguard-spyware-url"
+              "block-lan"
+              "urlhaus-1"
+              "plowe-0"
+              "dpollock-0"
+              "fanboy-cookiemonster"
+              "ublock-cookies-easylist"
+              "adguard-cookies"
+              "ublock-cookies-adguard"
+              "fanboy-social"
+              "adguard-social"
+              "fanboy-thirdparty_social"
+              "easylist-chat"
+              "easylist-newsletters"
+              "easylist-notifications"
+              "easylist-annoyances"
+              "adguard-mobile-app-banners"
+              "adguard-other-annoyances"
+              "adguard-popup-overlays"
+              "adguard-widgets"
+              "ublock-annoyances"
+              "https://filters.adtidy.org/extension/ublock/filters/3.txt"
+            ];
           };
-
-          selectedFilterLists = [
-            "user-filters"
-            "ublock-filters"
-            "ublock-badware"
-            "ublock-privacy"
-            "ublock-quick-fixes"
-            "ublock-unbreak"
-            "easylist"
-            "adguard-generic"
-            "adguard-mobile"
-            "easyprivacy"
-            "adguard-spyware-url"
-            "block-lan"
-            "urlhaus-1"
-            "plowe-0"
-            "dpollock-0"
-            "fanboy-cookiemonster"
-            "ublock-cookies-easylist"
-            "adguard-cookies"
-            "ublock-cookies-adguard"
-            "fanboy-social"
-            "adguard-social"
-            "fanboy-thirdparty_social"
-            "easylist-chat"
-            "easylist-newsletters"
-            "easylist-notifications"
-            "easylist-annoyances"
-            "adguard-mobile-app-banners"
-            "adguard-other-annoyances"
-            "adguard-popup-overlays"
-            "adguard-widgets"
-            "ublock-annoyances"
-            "https://filters.adtidy.org/extension/ublock/filters/3.txt"
-          ];
         };
       };
     };
