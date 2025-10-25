@@ -115,7 +115,7 @@ in
             "browser.startup.homepage" = "about:home";
             "browser.search.defaultenginename" = "DuckDuckGo";
             "browser.search.order.1" = "DuckDuckGo";
-            "browser.search.region" = "PL";
+            "browser.search.region" = "AU";
             "browser.search.widget.inNavBar" = true;
             "browser.tabs.inTitlebar" = 0;
             "browser.tabs.loadInBackground" = true;
