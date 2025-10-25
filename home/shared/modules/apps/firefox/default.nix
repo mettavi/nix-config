@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   nixosConfig,
   pkgs,
@@ -19,11 +20,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    };
     # home.sessionVariables = lib.mkIf nixosConfig.services.displayManager.gdm.wayland {
     #   MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (may already be default)
     #   NIXOS_OZONE_WL = "1"; # Forces Wayland backend for applications using Ozone
     # };
+    home.file.".mozilla/firefox/${config.programs.firefox.profiles.mettavi.name}/chrome/firefox-gnome-theme".source =
+      inputs.firefox-gnome-theme;
+
     programs.firefox = {
       enable = true;
       languagePacks = [
@@ -59,11 +62,25 @@ in
           #   ];
           # };
           # extraConfig = '' ''; # user.js
-          # userChrome = '' ''; # chrome CSS
-          # userContent = '' ''; # content CSS
+          userChrome = # bash
+            ''
+              @import "firefox-gnome-theme/userChrome.css";
+            ''; # chrome CSS
+          userContent = # bash
+            ''
+              @import "firefox-gnome-theme/userContent.css";
+            ''; # content CSS
 
           # ~/.mozilla/firefox/PROFILE_NAME/prefs.js | user.js
           settings = {
+            ## FIREFOX GNOME THEME
+            ## - https://github.com/rafaelmardojai/firefox-gnome-theme/blob/7cba78f5216403c4d2babb278ff9cc58bcb3ea66/configuration/user.js
+            # (copied into here because home-manager already writes to user.js)
+            "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Enable customChrome.cs
+            "svg.context-properties.content.enabled" = true; # Enable SVG context-propertes
+            "browser.uidensity" = 0; # Set UI density to normal
+            "browser.theme.dark-private-windows" = false; # Disable private window dark theme
+
             # ALPHABETICAL
             "app.normandy.first_run" = false;
             "app.shield.optoutstudies.enabled" = false;
