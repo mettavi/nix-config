@@ -390,9 +390,6 @@ in
           in
           listToAttrs [
             (extension "bitwarden-password-manager" "{446900e4-71c2-419f-a6a7-df9c091e268b}")
-            (extension "canvasblocker" "canvasBlocker@kkapsner.de")
-            (extension "Dark-Space-Theme" "{22b0eca1-8c02-4c0d-a5d7-6604ddd9836e}")
-            (extension "libredirect" "7esoorv3@alefvanoon.anonaddy.me")
             (extension "privacy-badger17" "jid1-MnnxcxisBPnSXQ@jetpack")
             (extension "sponsorblock" "sponsorBlock@ajay.app")
             (extension "tabliss" "extension@tabliss.io")
