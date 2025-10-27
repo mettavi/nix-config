@@ -60,6 +60,14 @@
           };
           # The Git revision of the top-level flake from which this configuration was built
           system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
+          # set gtk as the default interface
+          xdg.portal.config = {
+            common = {
+              default = [
+                "gtk"
+              ];
+            };
+          };
         }
         ../hosts/${hostname}/hardware-configuration.nix
         ../system/nixos
