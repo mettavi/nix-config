@@ -6,7 +6,7 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     # allow applications (like Firefox) that expect PulseAudio to function correctly using PipeWire's implementation.
-    pulse.enable = true;
+    pulse.enable = true; # pulseaudio emulation
   };
 
   # pulseaudio is not recommended for T2 macs, see https://wiki.t2linux.org/guides/audio-config
