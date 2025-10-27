@@ -1,6 +1,6 @@
 { lib, ... }:
 {
-  # Enable sound with pipewire.
+  # Enable sound with pipewire. Wireplumber is automatically enabled if you use pipewire.
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -11,7 +11,7 @@
 
   # pulseaudio is not recommended for T2 macs, see https://wiki.t2linux.org/guides/audio-config
   # ensure pulseaudio is disabled as gnome enables it by default
-  services.pulseaudio.enable = false;
+  services.pulseaudio.enable = lib.mkDefault false;
 
   # allow pipewire to have realtime priority
   security.rtkit.enable = true;
