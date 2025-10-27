@@ -474,11 +474,19 @@ in
         };
       };
     };
-    # required for screensharing functionality on Wayland
+    # set gtk as the default interface
     xdg.portal = {
       enable = true;
+      config = lib.mkForce {
+        common = {
+          default = [
+            "gtk"
+          ];
+        };
+      };
       extraPortals =
         with pkgs;
+        # required for screensharing functionality on Wayland
         lib.optionals nixosConfig.services.displayManager.gdm.wayland [
           xdg-desktop-portal-gtk # Use this for GNOME (may already be default)
           # xdg-desktop-portal-wlr # Use this for Sway/wlroots
