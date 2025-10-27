@@ -25,7 +25,7 @@ in
     #   NIXOS_OZONE_WL = "1"; # Forces Wayland backend for applications using Ozone
     # };
 
-    # enable the firefox-gnome-theme via a flake input
+    # enable the firefox-gnome-theme via a flake input (also see userChrome and userContent below)
     home.file.".mozilla/firefox/${config.programs.firefox.profiles.mettavi.name}/chrome/firefox-gnome-theme".source =
       inputs.firefox-gnome-theme;
 
