@@ -149,8 +149,8 @@ in
             # Prefer dark theme
             "layout.css.prefers-color-scheme.content-override" = 0; # 0: Dark, 1: Light, 2: Auto
 
-            # Disable autoplay
             "media.autoplay.default" = 5; # block both audible and inaudible media from autoplaying.
+            "media.cubeb.backend" = "alsa"; # force firefox to use the ALSA/pipewire backend
 
             "mousewheel.default.delta_multiplier_x" = 20;
             "mousewheel.default.delta_multiplier_y" = 20;
