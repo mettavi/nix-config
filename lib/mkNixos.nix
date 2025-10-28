@@ -27,15 +27,6 @@
             # existing passwords on the system will not be overwritten by the nix config unless this is set to false
             # NB: Set this only for specific hosts rather than globally
             # mutableUsers = false;
-            # users.${username} = {
-            #   isNormalUser = true;
-            #   home = "/home/${username}";
-            #   # allow user to configure networking and use sudo
-            #   extraGroups = [
-            #     "networkmanager"
-            #     "wheel"
-            #   ];
-            # };
           };
           # Select internationalisation properties.
           time.timeZone = "Australia/Melbourne";
