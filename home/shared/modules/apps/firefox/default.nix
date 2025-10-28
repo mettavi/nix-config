@@ -35,6 +35,8 @@ in
         "en_AU"
         "en-US"
       ];
+      # required for screensharing under Wayland, see https://wiki.nixos.org/wiki/Firefox
+      package = (pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { });
       profiles = {
         "mettavi" = {
           id = 0;
