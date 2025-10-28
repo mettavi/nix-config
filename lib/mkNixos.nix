@@ -25,7 +25,8 @@
         {
           users = {
             # existing passwords on the system will not be overwritten by the nix config unless this is set to false
-            mutableUsers = false;
+            # NB: Set this only for specific hosts rather than globally
+            # mutableUsers = false;
             # users.${username} = {
             #   isNormalUser = true;
             #   home = "/home/${username}";
