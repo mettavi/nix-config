@@ -20,10 +20,12 @@ in
   };
 
   config = mkIf cfg.enable {
-    # home.sessionVariables = lib.mkIf nixosConfig.services.displayManager.gdm.wayland {
-    #   MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (may already be default)
-    #   NIXOS_OZONE_WL = "1"; # Forces Wayland backend for applications using Ozone
-    # };
+    home.sessionVariables = lib.mkIf nixosConfig.services.displayManager.gdm.wayland {
+      # MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (may already be default)
+      # NIXOS_OZONE_WL = "1"; # Forces Wayland backend for applications using Ozone
+      # Enable xinput2 to improve touchscreen support and enable additional touchpad gestures and smooth scrolling.
+      MOZ_USE_XINPUT2 = "1";
+    };
 
     # enable the firefox-gnome-theme via a flake input (also see userChrome and userContent below)
     home.file.".mozilla/firefox/${config.programs.firefox.profiles.mettavi.name}/chrome/firefox-gnome-theme".source =
@@ -37,6 +39,7 @@ in
       ];
       # required for screensharing under Wayland, see https://wiki.nixos.org/wiki/Firefox
       package = (pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { });
+
       profiles = {
         "mettavi" = {
           id = 0;
@@ -85,6 +88,7 @@ in
             "app.shield.optoutstudies.enabled" = false;
             # disable updates (pretty pointless with nix)
             "app.update.channel" = "default";
+
             "browser.aboutConfig.showWarning" = false;
             "browser.compactmode.show" = true;
             "browser.cache.disk.enable" = false; # Be kind to hard drive
