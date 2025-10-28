@@ -114,6 +114,8 @@ in
             "browser.search.order.1" = "DuckDuckGo";
             "browser.search.region" = "AU";
             "browser.search.widget.inNavBar" = true;
+            "browser.search.update" = false; # allow FF to update installed search engines (eg. opensearch-based update urls)
+            "browser.search.reset.enabled" = false; # Prevent reset of default search engine after FF update
             "browser.tabs.inTitlebar" = 0;
             "browser.tabs.loadInBackground" = true;
             "browser.toolbars.bookmarks.visibility" = "newtab";
