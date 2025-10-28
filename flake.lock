@@ -318,22 +318,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-rubyfix": {
-      "locked": {
-        "lastModified": 1760287183,
-        "narHash": "sha256-LszgZi9LPNLy6WyUksbzDCr0grouxb/MIGki76B7s3k=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "cdb57da081701af98fcc5944dc8e174548f5584f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "cdb57da081701af98fcc5944dc8e174548f5584f",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "disko": "disko",
@@ -352,7 +336,6 @@
         "nixos-pkgs": "nixos-pkgs",
         "nixpkgs": "nixpkgs",
         "nixpkgs-24_11": "nixpkgs-24_11",
-        "nixpkgs-rubyfix": "nixpkgs-rubyfix",
         "secrets": "secrets",
         "sops-nix": "sops-nix"
       }
