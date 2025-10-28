@@ -103,7 +103,7 @@
     useXkbConfig = true; # use xkb.options in tty.
   };
 
-  # TODO: Remove this if multiple tests do not resurface this error
+  # TODO: Remove this disabled workaround if multiple tests do not resurface this error
   # Workaround the annoying `Failed to start Network Manager Wait Online` error on switch.
   # https://github.com/NixOS/nixpkgs/issues/180175
   # systemd.services.NetworkManager-wait-online.enable = false;
