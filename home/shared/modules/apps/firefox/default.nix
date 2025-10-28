@@ -37,6 +37,10 @@ in
         "en_AU"
         "en-US"
       ];
+      nativeMessagingHosts = lib.optionals nixosConfig.services.desktopManager.gnome.enable [
+        # Gnome shell native connector
+        pkgs.gnome-browser-connector
+      ];
       # required for screensharing under Wayland, see https://wiki.nixos.org/wiki/Firefox
       package = (pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { });
 
