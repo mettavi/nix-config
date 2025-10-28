@@ -97,13 +97,16 @@
         variant = "mac";
       };
     };
-    # authorise file sharing with other devices
-    gnome.gnome-user-share.enable = true;
   };
 
   console = {
     useXkbConfig = true; # use xkb.options in tty.
   };
+
+  # TODO: Remove this if multiple tests do not resurface this error
+  # Workaround the annoying `Failed to start Network Manager Wait Online` error on switch.
+  # https://github.com/NixOS/nixpkgs/issues/180175
+  # systemd.services.NetworkManager-wait-online.enable = false;
 
   # SYSTEM MODULES SETTINGS
   mettavi = {
