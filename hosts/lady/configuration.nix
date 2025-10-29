@@ -82,12 +82,6 @@
   ######## SYSTEM SERVICES ##########
   #
   services = {
-    # install GNOME using wayland
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
-    # authorise file sharing with other devices
-    gnome.gnome-user-share.enable = true;
-
     xserver = {
       # don't install Xserver
       enable = false;
@@ -111,6 +105,7 @@
   # SYSTEM MODULES SETTINGS
   mettavi = {
     system = {
+      gnome.enable = true;
       shell = {
         kanata.enable = true;
       };
