@@ -29,16 +29,25 @@
   };
 
   # copy Apple Broadcom (brcm) firmware for WiFi and bluetooth
-  hardware.firmware = [
-    (pkgs.stdenvNoCC.mkDerivation (final: {
-      name = "bcrm-firmware";
-      src = ./firmware/brcm;
-      installPhase = ''
-        mkdir -p $out/lib/firmware/brcm
-        cp ${final.src}/* "$out/lib/firmware/brcm"
-      '';
-    }))
-  ];
+  hardware = {
+    firmware = [
+      (pkgs.stdenvNoCC.mkDerivation (final: {
+        name = "bcrm-firmware";
+        src = ./firmware/brcm;
+        installPhase = ''
+          mkdir -p $out/lib/firmware/brcm
+          cp ${final.src}/* "$out/lib/firmware/brcm"
+        '';
+      }))
+    ];
+    graphics = {
+      extraPackages = with pkgs; [
+        # unfortunately this driver is deprecated with several security vulnerabilities
+        # intel-media-sdk # for Quick Sync Video (QSV) on Intel Iris + G7 iGPU on host mack
+        intel-compute-runtime-legacy1 # Intel Graphics Compute Runtime oneAPI Level Zero and OpenCL with support for Gen8, Gen9 and Gen11 GPUs
+      ];
+    };
+  };
 
   ########## SYSTEM ARCHITECTURE ###########
 
