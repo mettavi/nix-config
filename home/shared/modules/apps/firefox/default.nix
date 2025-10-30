@@ -21,7 +21,7 @@ in
 
   config = mkIf cfg.enable {
     home.sessionVariables = lib.mkIf nixosConfig.services.displayManager.gdm.wayland {
-      # MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (may already be default)
+      # MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (enabled by default)
       # NIXOS_OZONE_WL = "1"; # Forces Wayland backend for applications using Ozone
       # take advantage of more video codecs supported by a IGP/GPU, specifies the preferred rendering device
       MOZ_DRM_DEVICE = "/dev/dri/renderD128";
