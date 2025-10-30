@@ -28,8 +28,8 @@
     trusted-public-keys = [ "cache.soopy.moe-1:0RZVsQeR+GOh0VQI9rvnHz55nVXkFardDqfm4+afjPo=" ];
   };
 
-  # copy Apple Broadcom (brcm) firmware for WiFi and bluetooth
   hardware = {
+    # copy Apple Broadcom (brcm) firmware for WiFi and bluetooth
     firmware = [
       (pkgs.stdenvNoCC.mkDerivation (final: {
         name = "bcrm-firmware";
