@@ -192,12 +192,13 @@ in
             # "print.print_headerright" = "";
 
             # VERTICAL TABS
-            "sidebar.verticalTabs" = true;
-            "sidebar.revamp" = true;
+            "sidebar.expandOnHover" = true;
             "sidebar.main.tools" = [
               "history"
               "bookmarks"
             ];
+            "sidebar.revamp" = true;
+            "sidebar.verticalTabs" = true;
             # Firefox 75+ remembers the last workspace it was opened on as part of its session management.
             # This is annoying, because as a result I can have a blank workspace, click Firefox from the launcher, and
             # then have Firefox open on some other workspace.
