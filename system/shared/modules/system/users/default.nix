@@ -1,12 +1,13 @@
 {
   config,
   inputs,
-  pkgs,
   lib,
+  pkgs,
   ...
 }:
 with lib;
 let
+  platform = if pkgs.stdenv.isDarwin then "darwin" else "nixos";
   # Get all users defined for your nix systems
   cfg = config.mettavi.system;
 in
@@ -65,8 +66,7 @@ in
             ../../../../../home/shared/programs.nix
             ../../../../../home/shared/sops-home.nix
             ../../../../../home/shared/modules
-            ../../../../../home/darwin
-            ../../../../../home/nixos
+            ../../../../../home/${platform}
             ../../../../../users/${usrCfg.username}
           ];
           home = {
