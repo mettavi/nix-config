@@ -59,7 +59,7 @@
         ../system/shared
         ../system/shared/modules
         inputs.sops-nix.nixosModules.sops
-        # this provides a wrapper for the nix-index package (no need to install separately)
+        # this provides a wrapper for the nix-index package (no need to install the package separately)
         inputs.nix-index-database.nixosModules.nix-index
         inputs.home-manager.nixosModules.home-manager
         {
