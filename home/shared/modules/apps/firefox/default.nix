@@ -424,7 +424,7 @@ in
           listToAttrs [
             (extension "bitwarden-password-manager" "{446900e4-71c2-419f-a6a7-df9c091e268b}")
             (extension "privacy-badger17" "jid1-MnnxcxisBPnSXQ@jetpack")
-            (extension "sponsorblock" "sponsorBlock@ajay.app")
+            (extension "sponsorblock" "sponsorBlocker@ajay.app")
             (extension "tabliss" "extension@tabliss.io")
             (extension "ublock-origin" "uBlock0@raymondhill.net")
           ];
