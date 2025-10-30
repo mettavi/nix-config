@@ -7,6 +7,7 @@
 {
   imports = [
     inputs.nixos-hardware.nixosModules.apple-t2
+    ./hardware-configuration.nix
   ];
 
   users.users.${username} = {
