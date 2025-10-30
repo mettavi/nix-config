@@ -433,7 +433,7 @@ in
 
         # Extensions settings (NB: Few extensions support this key)
         "3rdparty".Extensions = {
-          "uBlock1@raymondhill.net".adminSettings = {
+          "uBlock0@raymondhill.net".adminSettings = {
             userSettings = rec {
               uiTheme = "dark";
               uiAccentCustom = true;
