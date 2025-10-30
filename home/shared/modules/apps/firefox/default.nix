@@ -61,14 +61,66 @@ in
               }
             ];
           };
-          # extensions = {
-          #   packages = with inputs.firefox-addons.packages.${pkgs.system}; [
-          #     bitwarden
-          #     privacy-badger
-          #     sponsorblock
-          #     tabliss
-          #   ];
-          # };
+          extensions = {
+            force = true;
+            packages = with inputs.firefox-addons.packages.${pkgs.system}; [
+              bitwarden
+              privacy-badger
+              sponsorblock
+              tabliss
+              ublock-origin
+            ];
+            settings = {
+              "uBlock0@raymondhill.net" = {
+                force = true;
+                settings = {
+                  userSettings = {
+                    uiTheme = "dark";
+                    uiAccentCustom = true;
+                    uiAccentCustom0 = "#8300ff";
+                    advancedUserEnabled = true;
+                    cloudStorageEnabled = lib.mkDefault false;
+                    largeMediaSize = 500;
+                    popupPanelSections = 31;
+                  };
+                  selectedFilterLists = [
+                    "user-filters"
+                    "ublock-filters"
+                    "ublock-badware"
+                    "ublock-privacy"
+                    "ublock-quick-fixes"
+                    "ublock-unbreak"
+                    "easylist"
+                    "adguard-generic"
+                    "adguard-mobile"
+                    "easyprivacy"
+                    "adguard-spyware-url"
+                    "block-lan"
+                    "urlhaus-1"
+                    "plowe-0"
+                    "dpollock-0"
+                    "fanboy-cookiemonster"
+                    "ublock-cookies-easylist"
+                    "adguard-cookies"
+                    "ublock-cookies-adguard"
+                    "fanboy-social"
+                    "adguard-social"
+                    "fanboy-thirdparty_social"
+                    "easylist-chat"
+                    "easylist-newsletters"
+                    "easylist-notifications"
+                    "easylist-annoyances"
+                    "adguard-mobile-app-banners"
+                    "adguard-other-annoyances"
+                    "adguard-popup-overlays"
+                    "adguard-widgets"
+                    "ublock-annoyances"
+                    "https://filters.adtidy.org/extension/ublock/filters/3.txt"
+                  ];
+                };
+              };
+            };
+          };
           # extraConfig = '' ''; # user.js
           userChrome = # bash
             ''
@@ -404,86 +456,6 @@ in
               "nix-options"
               "home-manager"
               "nixos-wiki"
-            ];
-          };
-        };
-      };
-      policies = {
-        ExtensionSettings =
-          with builtins;
-          let
-            extension = shortId: uuid: {
-              name = uuid;
-              value = {
-                install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/${shortId}/latest.xpi";
-                installation_mode = "force_installed";
-                updates_disabled = true;
-              };
-            };
-          in
-          listToAttrs [
-            (extension "bitwarden-password-manager" "{446900e4-71c2-419f-a6a7-df9c091e268b}")
-            (extension "privacy-badger17" "jid1-MnnxcxisBPnSXQ@jetpack")
-            (extension "sponsorblock" "sponsorBlocker@ajay.app")
-            (extension "tabliss" "extension@tabliss.io")
-            (extension "ublock-origin" "uBlock0@raymondhill.net")
-          ];
-
-        # "*".installation_mode = "force_installed";
-
-        # Extensions settings (NB: Few extensions support this key)
-        "3rdparty".Extensions = {
-          "uBlock0@raymondhill.net".adminSettings = {
-            userSettings = rec {
-              uiTheme = "dark";
-              uiAccentCustom = true;
-              uiAccentCustom0 = "#8300ff";
-              advancedUserEnabled = true;
-              cloudStorageEnabled = lib.mkDefault true;
-              largeMediaSize = 500;
-              popupPanelSections = 31;
-
-              importedLists = [
-                "https:#filters.adtidy.org/extension/ublock/filters/3.txt"
-                "https:#github.com/DandelionSprout/adfilt/raw/master/LegitimateURLShortener.txt"
-              ];
-
-              externalLists = lib.concatStringsSep "\n" importedLists;
-            };
-
-            selectedFilterLists = [
-              "user-filters"
-              "ublock-filters"
-              "ublock-badware"
-              "ublock-privacy"
-              "ublock-quick-fixes"
-              "ublock-unbreak"
-              "easylist"
-              "adguard-generic"
-              "adguard-mobile"
-              "easyprivacy"
-              "adguard-spyware-url"
-              "block-lan"
-              "urlhaus-1"
-              "plowe-0"
-              "dpollock-0"
-              "fanboy-cookiemonster"
-              "ublock-cookies-easylist"
-              "adguard-cookies"
-              "ublock-cookies-adguard"
-              "fanboy-social"
-              "adguard-social"
-              "fanboy-thirdparty_social"
-              "easylist-chat"
-              "easylist-newsletters"
-              "easylist-notifications"
-              "easylist-annoyances"
-              "adguard-mobile-app-banners"
-              "adguard-other-annoyances"
-              "adguard-popup-overlays"
-              "adguard-widgets"
-              "ublock-annoyances"
-              "https://filters.adtidy.org/extension/ublock/filters/3.txt"
             ];
           };
         };
