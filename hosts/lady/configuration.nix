@@ -33,7 +33,7 @@
     # copy Apple Broadcom (brcm) firmware for WiFi and bluetooth
     firmware = [
       (pkgs.stdenvNoCC.mkDerivation (final: {
-        name = "bcrm-firmware";
+        name = "brcm-firmware";
         src = ./firmware/brcm;
         installPhase = ''
           mkdir -p $out/lib/firmware/brcm
