@@ -19,6 +19,10 @@
     aria2.enable = true;
     # atuin.enable = true;
     bat.enable = true;
+    delta = {
+      enable = true;
+      enableGitIntegration = true;
+    };
     eza = {
       enable = true;
       enableZshIntegration = false;
@@ -35,7 +39,7 @@
     };
     git = {
       enable = true;
-      delta.enable = true;
+      # delta.enable = true;
       # enable automatic maintenance of git repos using launchd/systemd
       maintenance = {
         enable = true;
@@ -46,8 +50,12 @@
           weekly = "Mon 0:53:00";
         };
       };
-      userEmail = inputs.secrets.email.gitHub;
-      userName = inputs.secrets.name;
+      settings = {
+        user = {
+          email = inputs.secrets.email.gitHub;
+          name = inputs.secrets.name;
+        };
+      };
     };
     java = {
       # Certified builds of OpenJDK (with JavaFX included for Pali Platform app)

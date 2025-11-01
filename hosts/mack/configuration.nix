@@ -19,6 +19,16 @@
     ];
   };
 
+  # copy the refind bootloader config file to its ESP
+  system.activationScripts = {
+    extraActivation = {
+      enable = true;
+      text = ''
+        cp -f ${inputs.self}/hosts/mack/refind.conf /Volumes/REFIND/EFI/BOOT/refind.conf
+      '';
+    };
+  };
+
   # SYSTEM MODULES
   mettavi = {
     profiles = {

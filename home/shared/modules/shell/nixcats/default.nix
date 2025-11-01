@@ -214,7 +214,7 @@ in
               aliases = [
                 "nv"
               ];
-              # neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
+              # neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
               # hosts.python3.enable = true;
               # hosts.node.enable = true;
             };
@@ -274,7 +274,7 @@ in
               configDirName = "nixCats-nvim";
               aliases = [ "testCat" ];
               # If you wanted nightly, uncomment this, and the flake input.
-              # neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.system}.neovim;
+              # neovim-unwrapped = inputs.neovim-nightly-overlay.packages.${pkgs.stdenv.hostPlatform.system}.neovim;
               # Probably add the cache stuff they recommend too.
             };
             categories = {
