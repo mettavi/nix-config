@@ -35,7 +35,10 @@ alias cl="clear"
 # (use a trailing space to try to expand the following word as an alias)
 # (external binaries do not recognise the zsh -g global flag)
 # alias sudo="sudo "
-alias lg="lazygit"
+
+# this alias was causing an error with the lg() function that something (not sure what yet) was injecting into .zshrc
+# alias lg="lazygit"
+
 # alias nv="nvim"
 alias pip="pip3"
 # alias tm="tmux"
