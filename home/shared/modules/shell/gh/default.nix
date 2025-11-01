@@ -31,7 +31,7 @@ in
       # NB: cannot use programs.gh home-manager module due to use of secure
       # "gh-wrapped" package (which conflicts with a pkgs.gh PATH symlink)
       git = {
-        extraConfig = {
+        settings = {
           credential = {
             # NB: this is a cross platform solution that doesn't require the osxkeychain option on darwin
             helper = "!gh auth git-credential";
