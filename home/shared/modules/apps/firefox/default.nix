@@ -251,11 +251,6 @@ in
             ];
             "sidebar.revamp" = true;
             "sidebar.verticalTabs" = true;
-            # Firefox 75+ remembers the last workspace it was opened on as part of its session management.
-            # This is annoying, because as a result I can have a blank workspace, click Firefox from the launcher, and
-            # then have Firefox open on some other workspace.
-            "widget.disable-workspace-management" = true;
-            "widget.use-xdg-desktop-portal.file-picker" = 1;
 
             # Addon recomendations
             "extensions.getAddons.showPane" = false; # disable recommendation pane in about:addons (uses Google Analytics)
