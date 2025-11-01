@@ -21,6 +21,12 @@ in
       enable = true;
       keyboards = {
         "MBP-internal" = {
+          # devices = [
+          # Replace the paths below with the appropriate device paths for your setup.
+          # Use `ls /dev/input/by-path/` to find your keyboard devices.
+          #   "/dev/input/by-path/pci-0000:e6:00.1-usb-0:5:1.1-event-kbd"
+          #   "/dev/input/by-path/pci-0000:e6:00.1-usbv2-0:5:1.1-event-kbd"
+          # ];
           config = ''
              (defsrc
               esc f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
