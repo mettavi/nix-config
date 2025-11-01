@@ -69,24 +69,12 @@
   boot.loader.efi.canTouchEfiVariables = false;
   boot.loader.efi.efiSysMountPoint = "/boot";
 
-  # this is required to set up the refind module
-  boot.loader.grub.enable = false;
-  # TODO: Check on status (replace refind with systemd-boot until https://github.com/NixOS/nixpkgs/pull/453874 is fixed)
-  boot.loader.systemd-boot.enable = true;
-  # boot.loader.refind = {
-  #   enable = true;
-  #   efiInstallAsRemovable = true;
-  #   extraConfig = # bash
-  #     ''
-  #       # remove BIOS entries on T2 mac
-  #       scanfor internal,external,optical,manual
-  #       # hide debug text for OS other than mac
-  #       use_graphics_for osx,linux,windows,grub
-  #       # prevent the use of NVRAM on T2 mac
-  #       use_nvram false
-  #     '';
-  #   maxGenerations = 10;
-  # };
+  environment.systemPackages = with pkgs; [ efibootmgr ];
+
+  boot.loader.systemd-boot = {
+    enable = true;
+    configurationLimit = 10;
+  };
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
