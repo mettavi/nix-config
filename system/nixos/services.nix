@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 {
   # Enable sound with pipewire.
   services.pipewire = {
@@ -20,6 +20,19 @@
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
 
-  # Enable CUPS to print documents.
-  services.printing.enable = lib.mkDefault true;
+  # Enable CUPS printing service
+  services.printing = {
+    enable = lib.mkDefault true;
+    drivers = with pkgs; [
+      cups-filters
+      cups-browsed
+    ];
+  };
+
+  # use Avahi’s service discovery facilities
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true; # allows applications to resolve names in the .local domain
+    openFirewall = true; # open UDP port 5353
+  };
 }
