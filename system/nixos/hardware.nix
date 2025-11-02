@@ -11,7 +11,16 @@
       vulkan-tools
     ];
   };
+  hardware.logitech = {
+    # enable support for Logitech Wireless Devices
+    wireless = {
+      enable = true;
+      # install Solaar to enable new Bolt connector and other functions
+      enableGraphical = true;
+    };
+  };
+
   environment.sessionVariables = {
-    LIBVA_DRIVER_NAME = "iHD";
-  }; # Force intel-media-driver
+    LIBVA_DRIVER_NAME = "iHD"; # Force intel-media-driver
+  };
 }
