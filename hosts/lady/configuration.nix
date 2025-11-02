@@ -87,6 +87,7 @@
       enable = false;
       xkb = {
         # This might still be used by Wayland
+        model = "macbook78"; # MacBook/MacBook Pro
         layout = "us";
         variant = "mac";
       };
