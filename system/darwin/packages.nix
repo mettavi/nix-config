@@ -5,8 +5,8 @@
 let
   # this will point to a stable nixpkgs input rather than the default one
   # use "nixpkgs_name.package_name" to install a non-default package
-  # nixpkgs-24_11 = inputs.nixpkgs-24_11.legacyPackages.${system};
-  # nixpkgs-24_05 = inputs.nixpkgs-24_05.legacyPackages.${system};
+  # nixpkgs-24_11 = inputs.nixpkgs-24_11.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+  # nixpkgs-24_05 = inputs.nixpkgs-24_05.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 
 in
 {

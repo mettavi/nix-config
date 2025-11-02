@@ -8,12 +8,12 @@
   mkDarwinConfiguration =
     hostname: system:
     inputs.nix-darwin.lib.darwinSystem rec {
+      inherit system;
       # Use specialArgs to pass through inputs to nix-darwin modules
       specialArgs = {
         inherit
           hostname
           inputs
-          system
           ;
         inherit (self)
           nix_repo

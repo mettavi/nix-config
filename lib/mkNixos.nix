@@ -8,11 +8,11 @@
   mkNixosConfiguration =
     hostname: system:
     inputs.nixos-pkgs.lib.nixosSystem rec {
+      inherit system;
       specialArgs = {
         inherit
           hostname
           inputs
-          system
           ;
         inherit (self)
           nix_repo
