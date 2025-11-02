@@ -20,18 +20,20 @@ in
   config = mkIf cfg.enable {
     environment = {
       systemPackages =
-        with pkgs;
-        with pkgs.gst_all_1;
-        [
-          celluloid # GTK frontend for the mpv video player
-          # GStreamer plugins
+        (with pkgs; [ celluloid ]) # GTK frontend for the mpv video player
+        ++ (with pkgs.gst_all_1; [
+          # GSTREAMER PLUGINS
           gst-plugins-base
           gst-plugins-good
           gst-plugins-bad
           gst-plugins-ugly
           gst-libav # FFmpeg plugin for GStreamer
           gst-vaapi # Set of VAAPI GStreamer Plug-ins
-        ];
+        ])
+        ++ (with pkgs.gnomeExtensions; [
+          app-icons-taskbar
+          # appindicator
+        ]);
       variables = {
         # Allow apps such as Gnome Files (Nautilus) to detect gstreamer plugins
         GST_PLUGIN_PATH_1_0 = [ "/run/current-system/sw/lib/gstreamer-1.0" ];
