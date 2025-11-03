@@ -101,6 +101,7 @@
   # SYSTEM MODULES SETTINGS
   mettavi = {
     system = {
+      # use the gnome desktop
       gnome.enable = true;
       shell = {
         kanata.enable = true;
@@ -125,6 +126,10 @@
         firefox.enable = true;
         ghostty.enable = true;
         libreoffice.enable = true;
+      };
+      desktop = {
+        # configure the gnome desktop
+        gnome.enable = true;
       };
     };
   };
