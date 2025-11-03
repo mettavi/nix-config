@@ -1,10 +1,12 @@
 {
   config,
+  inputs,
   lib,
   ...
 }:
 with lib;
 let
+  inherit (config.lib.file) mkOutOfStoreSymlink;
   cfg = config.mettavi.system.devices.logitech;
 in
 {
@@ -22,6 +24,24 @@ in
       wireless = {
         enable = true; # installs ltunify and logitech-udev-rules packages
         enableGraphical = true; # installs solaar gui and command for extra functionality (eg. bolt connector devices)
+      };
+    };
+    home-manager.users.${username} = {
+      home.packages =
+        with pkgs.gnomeExtensions;
+        lib.mkIf (config.mettavi.desktop.gnome.enable) [
+          solaar-extension # Allow Solaar to support certain features on non-X11 systems (eg. rules)
+        ];
+      dconf.settings = lib.mkIf (config.mettavi.desktop.gnome.enable) {
+        "org/gnome/shell" = {
+          disable-user-extensions = false;
+          enabled-extensions = [
+            "solaar-extension@sidevesh"
+          ];
+        };
+      };
+      xdg.configFile = {
+        "solaar/config.yaml".source = mkOutOfStoreSymlink "${inputs.self}/home/shared/dots/nvim";
       };
     };
   };
