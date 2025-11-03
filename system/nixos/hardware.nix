@@ -11,14 +11,6 @@
       vulkan-tools
     ];
   };
-  hardware.logitech = {
-    # enable support for Logitech Wireless Devices
-    wireless = {
-      enable = true; # installs ltunify and logitech-udev-rules packages
-      enableGraphical = true; # installs solaar gui and command for extra functionality (eg. bolt connector devices)
-    };
-  };
-
   environment.sessionVariables = {
     LIBVA_DRIVER_NAME = "iHD"; # Force intel-media-driver
   };
