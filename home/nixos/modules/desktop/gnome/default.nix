@@ -18,7 +18,8 @@ in
       (with pkgs; [ dconf-editor ])
       ++ (with pkgs.gnomeExtensions; [
         app-icons-taskbar
-        # appindicator
+        # Allow Solaar to support certain features on non X11 systems
+        solaar-extension
       ]);
     dconf.settings = {
       "org/gnome/shell" = {
@@ -26,6 +27,7 @@ in
         # `gnome-extensions list` for a list
         enabled-extensions = [
           # "aztaskbar@aztaskbar.gitlab.com" # app-icons-taskbar
+          "solaar-extension@sidevesh"
         ];
       };
       "org/gnome/desktop/peripherals/keyboard" = {
