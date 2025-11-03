@@ -103,6 +103,9 @@
     system = {
       # use the gnome desktop
       gnome.enable = true;
+      devices = {
+        logitech.enable = true;
+      };
       shell = {
         kanata.enable = true;
       };
