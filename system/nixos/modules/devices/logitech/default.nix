@@ -2,6 +2,7 @@
   config,
   inputs,
   lib,
+  username,
   ...
 }:
 with lib;
