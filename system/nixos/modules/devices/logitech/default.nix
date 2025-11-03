@@ -42,6 +42,8 @@ in
         };
       };
       xdg.configFile = {
+        # link without copying to nix store (manage externally) - must use absolute paths
+        # mkOutOfStoreSymlink is required to allow the lazy-lock.json file to be writable
         "solaar/config.yaml".source = mkOutOfStoreSymlink "${inputs.self}/home/shared/dots/nvim";
       };
     };
