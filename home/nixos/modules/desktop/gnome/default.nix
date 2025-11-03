@@ -17,7 +17,6 @@ in
       # GSettings editor for GNOME.
       (with pkgs; [ dconf-editor ])
       ++ (with pkgs.gnomeExtensions; [
-        # app-icons-taskbar
         appindicator # Adds AppIndicator, KStatusNotifierItem and legacy Tray icons support to the Shell.
         solaar-extension # Allow Solaar to support certain features on non X11 systems (eg. rules)
       ]);
