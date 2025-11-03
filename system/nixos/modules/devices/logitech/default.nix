@@ -2,12 +2,12 @@
   config,
   inputs,
   lib,
+  pkgs,
   username,
   ...
 }:
 with lib;
 let
-  inherit (config.lib.file) mkOutOfStoreSymlink;
   cfg = config.mettavi.system.devices.logitech;
 in
 {
@@ -27,25 +27,30 @@ in
         enableGraphical = true; # installs solaar gui and command for extra functionality (eg. bolt connector devices)
       };
     };
-    home-manager.users.${username} = {
-      home.packages =
-        with pkgs.gnomeExtensions;
-        lib.mkIf (config.mettavi.desktop.gnome.enable) [
-          solaar-extension # Allow Solaar to support certain features on non-X11 systems (eg. rules)
-        ];
-      dconf.settings = lib.mkIf (config.mettavi.desktop.gnome.enable) {
-        "org/gnome/shell" = {
-          disable-user-extensions = false;
-          enabled-extensions = [
-            "solaar-extension@sidevesh"
+    home-manager.users.${username} =
+      { config, nixosConfig, ... }:
+      let
+        inherit (config.lib.file) mkOutOfStoreSymlink;
+      in
+      {
+        home.packages =
+          with pkgs.gnomeExtensions;
+          lib.mkIf (nixosConfig.mettavi.system.gnome.enable) [
+            solaar-extension # Allow Solaar to support certain features on non-X11 systems (eg. rules)
           ];
+        dconf.settings = lib.mkIf (nixosConfig.mettavi.system.gnome.enable) {
+          "org/gnome/shell" = {
+            disable-user-extensions = false;
+            enabled-extensions = [
+              "solaar-extension@sidevesh"
+            ];
+          };
+        };
+        xdg.configFile = {
+          # link without copying to nix store (manage externally) - must use absolute paths
+          # mkOutOfStoreSymlink is required to allow the lazy-lock.json file to be writable
+          "solaar/config.yaml".source = mkOutOfStoreSymlink "${inputs.self}/home/shared/dots/nvim";
         };
       };
-      xdg.configFile = {
-        # link without copying to nix store (manage externally) - must use absolute paths
-        # mkOutOfStoreSymlink is required to allow the lazy-lock.json file to be writable
-        "solaar/config.yaml".source = mkOutOfStoreSymlink "${inputs.self}/home/shared/dots/nvim";
-      };
-    };
   };
 }
