@@ -18,14 +18,12 @@ in
       (with pkgs; [ dconf-editor ])
       ++ (with pkgs.gnomeExtensions; [
         appindicator # Adds AppIndicator, KStatusNotifierItem and legacy Tray icons support to the Shell.
-        solaar-extension # Allow Solaar to support certain features on non X11 systems (eg. rules)
       ]);
     dconf.settings = {
       "org/gnome/shell" = {
         disable-user-extensions = false;
         # `gnome-extensions list` for a list
         enabled-extensions = [
-          "solaar-extension@sidevesh"
           "appindicatorsupport@rgcjonas.gmail.com"
         ];
       };
