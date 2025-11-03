@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  username,
   ...
 }:
 with lib;
@@ -48,6 +49,29 @@ in
         gnome-browser-connector.enable = true;
         # authorise file sharing with other devices
         gnome-user-share.enable = true;
+      };
+    };
+    home-manager.users.${username} = {
+      home.packages =
+        # GSettings editor for GNOME.
+        (with pkgs; [ dconf-editor ])
+        ++ (with pkgs.gnomeExtensions; [
+          appindicator # Adds AppIndicator, KStatusNotifierItem and legacy Tray icons support to the Shell.
+        ]);
+      dconf.settings = {
+        "org/gnome/shell" = {
+          disable-user-extensions = false;
+          # `gnome-extensions list` for a list
+          enabled-extensions = [
+            "appindicatorsupport@rgcjonas.gmail.com"
+          ];
+        };
+        # "org/gnome/desktop/peripherals/keyboard" = {
+        # delay = lib.hm.gvariant.mkUint32 175;
+        # disable to check
+        # repeat = false;
+        # repeat-interval = lib.hm.gvariant.mkUint32 18;
+        # };
       };
     };
   };

@@ -130,10 +130,6 @@
         ghostty.enable = true;
         libreoffice.enable = true;
       };
-      desktop = {
-        # configure the gnome desktop
-        gnome.enable = true;
-      };
     };
   };
   # This value determines the NixOS release from which the default
