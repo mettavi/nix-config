@@ -23,7 +23,7 @@ in
     home.sessionVariables = lib.mkIf nixosConfig.services.displayManager.gdm.wayland {
       # MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (enabled by default)
       # NIXOS_OZONE_WL = "1"; # Forces Wayland backend for applications using Ozone
-      # take advantage of more video codecs supported by a IGP/GPU, specifies the preferred rendering device
+      # take advantage of more video codecs supported by an IGP/GPU, specifies the preferred rendering device
       MOZ_DRM_DEVICE = "/dev/dri/renderD128";
       # Enable xinput2 to improve touchscreen support and enable additional touchpad gestures and smooth scrolling.
       MOZ_USE_XINPUT2 = "1";
