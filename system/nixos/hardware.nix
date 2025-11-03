@@ -14,9 +14,8 @@
   hardware.logitech = {
     # enable support for Logitech Wireless Devices
     wireless = {
-      enable = true;
-      # install Solaar to enable new Bolt connector and other functions
-      enableGraphical = true;
+      enable = true; # installs ltunify package
+      enableGraphical = true; # installs solaar gui and command for extra functionality (eg. bolt connector devices)
     };
   };
 
