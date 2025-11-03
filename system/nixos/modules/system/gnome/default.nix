@@ -29,11 +29,11 @@ in
           gst-plugins-ugly
           gst-libav # FFmpeg plugin for GStreamer
           gst-vaapi # Set of VAAPI GStreamer Plug-ins
-        ])
-        ++ (with pkgs.gnomeExtensions; [
-          app-icons-taskbar
-          # appindicator
         ]);
+      # ++ (with pkgs.gnomeExtensions; [
+      #   app-icons-taskbar
+      #   # appindicator
+      # ]);
       variables = {
         # Allow apps such as Gnome Files (Nautilus) to detect gstreamer plugins
         GST_PLUGIN_PATH_1_0 = [ "/run/current-system/sw/lib/gstreamer-1.0" ];
