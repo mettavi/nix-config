@@ -46,7 +46,7 @@
     options = [
       "fmask=0002"
       "dmask=0002"
-      # this makes it visible in the gnome files manager (nautilus) 
+      # this makes it visible in the gnome files manager (nautilus)
       "x-gvfs-show"
     ];
   };
