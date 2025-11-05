@@ -61,6 +61,15 @@
     ];
   };
 
+  # mount the system APFS partition to hide it from the Gnome Files (nautilus) app sidebar
+  fileSystems."/mnt/macos" = {
+    device = "/dev/disk/by-uuid/f089a798-365d-41da-adbd-e7ce1965a6be";
+    fsType = "apfs";
+    options = [
+      "vol=0"
+    ];
+  };
+
   swapDevices = [
     { device = "/dev/disk/by-uuid/6168b61a-6647-4096-8f4d-7cf5856524d4"; }
   ];
