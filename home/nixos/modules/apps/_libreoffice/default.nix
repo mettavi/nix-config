@@ -14,7 +14,7 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
-      libreoffice
+      libreoffice-fresh
       hunspell
       hunspellDicts.en_AU
       hunspellDicts.en_US
