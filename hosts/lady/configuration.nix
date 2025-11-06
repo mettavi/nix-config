@@ -103,6 +103,9 @@
     system = {
       # use the gnome desktop
       gnome.enable = true;
+      apps = {
+        libreoffice.enable = true;
+      };
       devices = {
         logitech.enable = true;
       };
@@ -128,7 +131,6 @@
       apps = {
         firefox.enable = true;
         ghostty.enable = true;
-        libreoffice.enable = true;
       };
     };
   };
