@@ -85,6 +85,7 @@
     xserver = {
       # don't install Xserver
       enable = false;
+      # gnome only uses xkb config for initial set up
       xkb = {
         # This might still be used by Wayland
         model = "macbook78"; # MacBook/MacBook Pro
