@@ -19,10 +19,11 @@ in
       hunspell
       hunspellDicts.en_AU
       hunspellDicts.en_US
+      hyphenDicts.en_US
     ];
     environment.sessionVariables = {
-      PYTHONPATH = "${pkgs.libreoffice}/lib/libreoffice/program";
-      URE_BOOTSTRAP = "vnd.sun.star.pathname:${pkgs.libreoffice}/lib/libreoffice/program/fundamentalrc";
+      PYTHONPATH = "${office}/lib/libreoffice/program";
+      URE_BOOTSTRAP = "vnd.sun.star.pathname:${office}/lib/libreoffice/program/fundamentalrc";
     };
   };
 }
