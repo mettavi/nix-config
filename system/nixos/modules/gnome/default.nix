@@ -59,7 +59,8 @@ in
     home-manager.users.${username} = {
       home.packages =
         # GSettings editor for GNOME.
-        (with pkgs; [ dconf-editor ])
+        (with pkgs; [
+          switcheroo # Gnome app for converting (and resizing) images between different formats (uses imagemagick)
         ++ (with pkgs.gnomeExtensions; [
           appindicator # Adds AppIndicator, KStatusNotifierItem and legacy Tray icons support to the Shell.
         ]);
