@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
-    wasistlos # Unofficial WhatsApp desktop application for linux
+    wasistlos # Unofficial WhatsApp desktop gtk application for linux
   ];
 }
