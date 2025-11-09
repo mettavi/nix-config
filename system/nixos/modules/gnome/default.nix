@@ -20,6 +20,11 @@ in
 
   config = mkIf cfg.enable {
     environment = {
+      gnome.excludePackages = with pkgs; [
+        gnome-console # terminal emulator for the GNOME desktop
+        gnome-tour
+        epiphany # web broswer (aka "Gnome Web")
+      ];
       systemPackages =
         (with pkgs; [ celluloid ]) # GTK frontend for the mpv video player
         ++ (with pkgs.gst_all_1; [
