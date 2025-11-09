@@ -60,7 +60,9 @@ in
       home.packages =
         # GSettings editor for GNOME.
         (with pkgs; [
+          dconf-editor # GSettings editor for GNOME
           switcheroo # Gnome app for converting (and resizing) images between different formats (uses imagemagick)
+        ])
         ++ (with pkgs.gnomeExtensions; [
           appindicator # Adds AppIndicator, KStatusNotifierItem and legacy Tray icons support to the Shell.
         ]);
