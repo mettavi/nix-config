@@ -69,7 +69,9 @@
   boot.loader.efi.canTouchEfiVariables = false;
   boot.loader.efi.efiSysMountPoint = "/boot";
 
-  environment.systemPackages = with pkgs; [ efibootmgr ];
+  environment.systemPackages = with pkgs; [
+    efibootmgr # application to modify the Intel EFI Boot Manager
+  ];
 
   boot.loader.systemd-boot = {
     enable = true;
