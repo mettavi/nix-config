@@ -61,6 +61,8 @@ in
         # GSettings editor for GNOME.
         (with pkgs; [
           dconf-editor # GSettings editor for GNOME
+          gnome-extension-manager # Desktop app for managing GNOME shell extensions
+          gnome-tweaks # Tool to customize advanced GNOME 3 options
           switcheroo # Gnome app for converting (and resizing) images between different formats (uses imagemagick)
         ])
         ++ (with pkgs.gnomeExtensions; [
