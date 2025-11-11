@@ -113,6 +113,7 @@
       };
       devices = {
         logitech.enable = true;
+        touchbar.enable = true;
       };
       shell = {
         kanata.enable = true;
