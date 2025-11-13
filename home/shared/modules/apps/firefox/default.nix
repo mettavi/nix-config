@@ -68,6 +68,7 @@ in
               privacy-badger
               sponsorblock
               tabliss
+              tab-session-manager
               ublock-origin
             ];
             settings = {
