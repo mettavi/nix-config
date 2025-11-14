@@ -70,6 +70,12 @@
     ];
   };
 
+  # mount the REFIND boot manager partition to hide it from the Gnome Files (nautilus) app sidebar
+  fileSystems."/mnt/refind" = {
+    device = "/dev/disk/by-uuid/4A1A-181F";
+    fsType = "vfat";
+  };
+
   swapDevices = [
     { device = "/dev/disk/by-uuid/6168b61a-6647-4096-8f4d-7cf5856524d4"; }
   ];
