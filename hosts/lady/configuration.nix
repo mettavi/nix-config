@@ -8,6 +8,7 @@
   imports = [
     inputs.nixos-hardware.nixosModules.apple-t2
     ./hardware-configuration.nix
+    inputs.t2fanrd.nixosModules.t2fanrd
   ];
 
   users.users.${username} = {
@@ -103,7 +104,7 @@
       };
     };
     xserver = {
-      # don't install Xserver
+      # don't install Xserver by default
       enable = false;
       # gnome only uses xkb config for initial set up, configure in dconf instead
       # see https://discourse.nixos.org/t/strange-xkboptions-behavior-gnome/33535/5
