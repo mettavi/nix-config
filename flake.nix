@@ -42,6 +42,8 @@
     ######### NIXOS #########
     nixos-pkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    # fan daemon for T2 macs
+    t2fanrd.url = "github:GnomedDev/T2FanRD";
 
     ####### HOME_MANAGER #########
     home-manager = {

@@ -84,6 +84,24 @@
   ######## SYSTEM SERVICES ##########
   #
   services = {
+    # service to config fans for T2 macs
+    t2fanrd = {
+      enable = true;
+      config = {
+        Fan1 = {
+          low_temp = 40;
+          high_temp = 70;
+          speed_curve = "linear";
+          always_full_speed = false;
+        };
+        Fan2 = {
+          low_temp = 40;
+          high_temp = 70;
+          speed_curve = "linear";
+          always_full_speed = false;
+        };
+      };
+    };
     xserver = {
       # don't install Xserver
       enable = false;
