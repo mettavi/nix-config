@@ -43,7 +43,7 @@ in
         // mkIf cfg.useRestProf {
           home.packages = with pkgs; [ resticprofile ]; # Configuration manager for restic
           xdg.configFile = {
-            "resticprofile".source = ../../../../../home/shared/dots/resticprofile;
+            "resticprofile".source = ../../../../home/shared/dots/resticprofile;
           };
         };
     };
