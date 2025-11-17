@@ -58,7 +58,6 @@ in
     };
     home-manager.users.${username} = {
       home.packages =
-        # GSettings editor for GNOME.
         (with pkgs; [
           dconf-editor # GSettings editor for GNOME
           gnome-extension-manager # Desktop app for managing GNOME shell extensions
