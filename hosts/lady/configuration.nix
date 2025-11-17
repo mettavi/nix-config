@@ -118,9 +118,10 @@
   };
 
   # setting this to true causes keyboard instability in gnome desktop gui terminal emulators, configure in gnome instead
-  # console = {
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
+  console = {
+    # need to explicitly disable this setting
+    useXkbConfig = false; # use xkb.options in tty.
+  };
 
   # SYSTEM MODULES SETTINGS
   mettavi = {
