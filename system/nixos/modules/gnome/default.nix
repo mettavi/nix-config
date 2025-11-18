@@ -38,7 +38,7 @@ in
         ]);
       # ++ (with pkgs.gnomeExtensions; [
       #   app-icons-taskbar
-      #   # appindicator
+      #   appindicator
       # ]);
       variables = {
         # Allow apps such as Gnome Files (Nautilus) to detect gstreamer plugins
