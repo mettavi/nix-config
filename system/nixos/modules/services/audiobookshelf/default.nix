@@ -43,6 +43,7 @@ in
                   environments = {
                     TZ = "Australia/Melbourne";
                   };
+                  # pull from the github container registry (ghcr)
                   image = "ghcr.io/advplyr/audiobookshelf:latest";
                   noNewPrivileges = true;
                   publishPorts = [ "127.0.0.1:13378:80" ];
