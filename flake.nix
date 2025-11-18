@@ -44,6 +44,8 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     # fan daemon for T2 macs
     t2fanrd.url = "github:GnomedDev/T2FanRD";
+    # Manages Podman containers and networks on NixOS via Quadlet
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
 
     ####### HOME_MANAGER #########
     home-manager = {
