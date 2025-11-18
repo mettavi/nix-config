@@ -8,7 +8,7 @@ let
 in
 {
   options.mettavi.system.services.podman = {
-    enable = lib.mkEnableOption "Install and set up nixos podman server";
+    enable = lib.mkEnableOption "Install and set up the nixos podman server";
   };
 
   config = lib.mkIf cfg.enable {
