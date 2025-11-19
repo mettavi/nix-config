@@ -25,6 +25,12 @@
       ];
     };
   };
+
+  services.udev.packages = [
+    # enable programs to pick up the above scanners
+    pkgs.sane-airscan
+  ];
+
   environment.sessionVariables = {
     LIBVA_DRIVER_NAME = "iHD"; # Force intel-media-driver
   };
