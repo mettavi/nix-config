@@ -15,6 +15,10 @@
     sane = {
       # Enable support for SANE scanners
       enable = true;
+      disabledDefaultBackends = [
+        # prevent same scanner being found twice (once by escl, once by airscan)
+        "escl"
+      ];
       extraBackends = [
         # Apple AirScan and Microsoft WSD support, for driverless scanning (supports many vendors/devices)
         pkgs.sane-airscan
