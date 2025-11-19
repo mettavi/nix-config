@@ -59,10 +59,13 @@ in
             };
             extraGroups = mkOption {
               type = types.listOf types.str;
-              # allow user to configure networking and use sudo (nixos only)
               default = [
+                # allow user to configure networking and use sudo
                 "networkmanager"
                 "wheel"
+                # allow this user access to printer/scanner services
+                "scanner"
+                "lp"
               ];
               description = "Additional groups for this user.";
             };
