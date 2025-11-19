@@ -60,8 +60,8 @@ in
                 };
                 serviceConfig = {
                   RestartSec = "10";
-                  # Restart service when sleep finishes, unless stopped
-                  Restart = "unless-stopped";
+                  # Restart service when sleep finishes
+                  Restart = "always";
                 };
               };
             };
