@@ -51,7 +51,8 @@ in
                   publishPorts = [ "13378:80" ];
                   # the current user’s UID:GID are mapped to the same values in the container
                   # required to become root and access the mounted volumes
-                  userns = "keep-id";
+                  # WARNING: do not enable this option as it causes "Error: listen EACCES: permission denied 0.0.0.0:80"
+                  # userns = "keep-id";
                   volumes = [
                     "${volumes.audiobookshelf.ref}/Audiobooks:/audiobooks"
                     "${volumes.audiobookshelf.ref}/.config/audiobookshelf:/config"
