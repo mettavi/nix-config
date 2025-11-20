@@ -138,6 +138,9 @@
       shell = {
         kanata.enable = true;
       };
+      services = {
+        audiobookshelf.enable = true;
+      };
       # enable system users
       userConfig = {
         timotheos = {
