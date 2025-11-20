@@ -1,5 +1,15 @@
 { lib, pkgs, ... }:
 {
+  # use Avahi’s service discovery facilities
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true; # allows applications to resolve names in the .local domain
+    openFirewall = true; # open UDP port 5353
+  };
+
+  # Enable touchpad support (enabled by default in most desktopManager).
+  services.libinput.enable = true;
+
   # Enable sound with pipewire.
   services.pipewire = {
     enable = true;
@@ -10,16 +20,6 @@
     wireplumber.enable = true; # make the default explicit
   };
 
-  # pulseaudio is not recommended for T2 macs, see https://wiki.t2linux.org/guides/audio-config
-  # ensure pulseaudio is disabled as gnome enables it by default
-  services.pulseaudio.enable = lib.mkDefault false;
-
-  # allow pipewire to have realtime priority
-  security.rtkit.enable = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput.enable = true;
-
   # Enable CUPS printing service
   services.printing = {
     enable = lib.mkDefault true;
@@ -29,10 +29,11 @@
     ];
   };
 
-  # use Avahi’s service discovery facilities
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true; # allows applications to resolve names in the .local domain
-    openFirewall = true; # open UDP port 5353
-  };
+  # pulseaudio is not recommended for T2 macs, see https://wiki.t2linux.org/guides/audio-config
+  # ensure pulseaudio is disabled as gnome enables it by default
+  services.pulseaudio.enable = lib.mkDefault false;
+
+  # allow pipewire to have realtime priority
+  security.rtkit.enable = true;
+
 }
