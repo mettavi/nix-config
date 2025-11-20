@@ -65,10 +65,6 @@ in
                 };
               };
             };
-            volumes.audiobookshelf.volumeConfig = {
-              type = "bind";
-              device = config.home.homeDirectory;
-            };
           };
       };
 
