@@ -35,4 +35,7 @@
   # pulseaudio is not recommended for T2 macs, see https://wiki.t2linux.org/guides/audio-config
   # ensure pulseaudio is disabled as gnome enables it by default
   services.pulseaudio.enable = lib.mkDefault false;
+
+  # allows applications to query and manipulate storage devices (eg. for calibre)
+  services.udisks2.enable = true;
 }
