@@ -48,7 +48,7 @@ in
                   # pull from the github container registry (ghcr)
                   image = "ghcr.io/advplyr/audiobookshelf:latest";
                   noNewPrivileges = true;
-                  publishPorts = [ "127.0.0.1:13378:80" ];
+                  publishPorts = [ "13378:80" ];
                   # the current user’s UID:GID are mapped to the same values in the container
                   # required to become root and access the mounted volumes
                   userns = "keep-id";
