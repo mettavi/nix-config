@@ -153,6 +153,13 @@
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
   home-manager.users.${username} = {
     home = {
+      packages = with pkgs; [
+        # Comprehensive e-book software
+        (calibre.override {
+          # to open .cbr and .cbz files
+          unrarSupport = true;
+        })
+      ];
       # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
       stateVersion = "25.11";
     };
