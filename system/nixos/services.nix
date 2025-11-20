@@ -20,6 +20,9 @@
     wireplumber.enable = true; # make the default explicit
   };
 
+  # allow pipewire to have realtime priority
+  security.rtkit.enable = true;
+
   # Enable CUPS printing service
   services.printing = {
     enable = lib.mkDefault true;
@@ -32,8 +35,4 @@
   # pulseaudio is not recommended for T2 macs, see https://wiki.t2linux.org/guides/audio-config
   # ensure pulseaudio is disabled as gnome enables it by default
   services.pulseaudio.enable = lib.mkDefault false;
-
-  # allow pipewire to have realtime priority
-  security.rtkit.enable = true;
-
 }
