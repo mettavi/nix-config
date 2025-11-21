@@ -33,38 +33,37 @@ in
       { config, ... }:
       {
         imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
-        virtualisation.quadlet =
-          {
-            containers = {
-              audiobookshelf = {
-                autoStart = false;
-                containerConfig = {
-                  autoUpdate = "registry";
-                  environments = {
-                    TZ = "Australia/Melbourne";
-                  };
-                  # pull from the github container registry (ghcr)
-                  image = "ghcr.io/advplyr/audiobookshelf:latest";
-                  noNewPrivileges = true;
-                  publishPorts = [ "13378:80" ];
-                  # the current user’s UID:GID are mapped to the same values in the container
-                  # required to become root and access the mounted volumes
-                  # WARNING: do not enable this option as it causes "Error: listen EACCES: permission denied 0.0.0.0:80"
-                  # userns = "keep-id";
-                  volumes = [
-                    "${volumes.audiobookshelf.ref}/Audiobooks:/audiobooks"
-                    "${volumes.audiobookshelf.ref}/.config/audiobookshelf:/config"
-                    "${volumes.audiobookshelf.ref}/.local/share/audiobookshelf:/metadata"
-                  ];
+        virtualisation.quadlet = {
+          containers = {
+            audiobookshelf = {
+              autoStart = false;
+              containerConfig = {
+                autoUpdate = "registry";
+                environments = {
+                  TZ = "Australia/Melbourne";
                 };
-                serviceConfig = {
-                  RestartSec = "10";
-                  # Restart service when sleep finishes
-                  Restart = "always";
-                };
+                # pull from the github container registry (ghcr)
+                image = "ghcr.io/advplyr/audiobookshelf:latest";
+                noNewPrivileges = true;
+                publishPorts = [ "13378:80" ];
+                # the current user’s UID:GID are mapped to the same values in the container
+                # required to become root and access the mounted volumes
+                # WARNING: do not enable this option as it causes "Error: listen EACCES: permission denied 0.0.0.0:80"
+                # userns = "keep-id";
+                volumes = [
+                  "${config.home.homeDirectory}/Music/Audiobooks:/audiobooks"
+                  "${config.xdg.configHome}/audiobookshelf:/config"
+                  "${config.xdg.dataHome}/audiobookshelf/metadata:/metadata"
+                ];
+              };
+              serviceConfig = {
+                RestartSec = "10";
+                # Restart service when sleep finishes
+                Restart = "always";
               };
             };
           };
+        };
       };
 
   };
