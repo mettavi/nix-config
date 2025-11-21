@@ -16,6 +16,7 @@ in
   config = lib.mkIf cfg.enable {
     # to configure generic podman settings
     mettavi.system.services.podman.enable = true;
+    # open the port for ABS in the firewall
     networking.firewall.allowedTCPPorts = [ 13378 ];
     # to enable podman & podman systemd generator
     virtualisation.quadlet = {
