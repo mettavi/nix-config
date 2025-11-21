@@ -33,9 +33,6 @@ in
       {
         imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
         virtualisation.quadlet =
-          let
-            inherit (config.virtualisation.quadlet) volumes;
-          in
           {
             containers = {
               audiobookshelf = {
