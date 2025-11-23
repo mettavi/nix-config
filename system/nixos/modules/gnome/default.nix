@@ -59,7 +59,6 @@ in
     home-manager.users.${username} = {
       home.packages =
         (with pkgs; [
-          adw-gtk3 # Unofficial GTK 3 port of libadwaita
           dconf-editor # GSettings editor for GNOME
           gnome-extension-manager # Desktop app for managing GNOME shell extensions
           gnome-tweaks # Tool to customize advanced GNOME 3 options
@@ -71,7 +70,7 @@ in
       # Use `dconf watch /` to track stateful changes you are doing, then set them here
       dconf.settings = {
         "org/gnome/desktop/interface" = {
-          # set the system and older gtk apps ("legacy applications", pre gtk 4) to dark mode
+          # set the system to dark mode
           color-scheme = "prefer-dark";
           gtk-theme = "adw-gtk3-dark";
         };
@@ -88,6 +87,11 @@ in
         # repeat = false;
         # repeat-interval = lib.hm.gvariant.mkUint32 18;
         # };
+      };
+      gtk = {
+        enable = true;
+        # enable dark theme on legacy apps (eg. pre GTK4)
+        gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
       };
     };
   };
