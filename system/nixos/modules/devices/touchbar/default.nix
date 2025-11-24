@@ -23,7 +23,8 @@ in
       settings = {
         # F{number} keys are shown when Fn is not pressed by default.
         # Set this to true if you want the media keys to be shown without Fn pressed
-        MediaLayerDefault = true;
+        # Set to false to get Fn key combos working (eg. ALT-F2)
+        MediaLayerDefault = false;
 
         # Set this to false if you want to hide the button outline,
         # leaving only the text/logo
