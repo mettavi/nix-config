@@ -7,6 +7,8 @@
   ...
 }:
 {
+  imports = [ ./calibre-and-sync.nix ];
+
   home.packages = with pkgs; [
     atuin
     # Bash and zsh key bindings for Git objects, powered by fzf
