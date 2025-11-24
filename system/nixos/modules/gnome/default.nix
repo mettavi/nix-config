@@ -81,6 +81,10 @@ in
             "appindicatorsupport@rgcjonas.gmail.com"
           ];
         };
+        "org/gnome/desktop/wm/keybindings" = {
+          # workaround for problem with the ALT-F2 default for the Gnome run dialog
+          panel-run-dialog = [ "<Alt>S" ];
+        };
         # "org/gnome/desktop/peripherals/keyboard" = {
         # delay = lib.hm.gvariant.mkUint32 175;
         # disable to check
