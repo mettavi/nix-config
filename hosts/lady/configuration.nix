@@ -170,6 +170,22 @@
         ghostty.enable = true;
       };
     };
+    xdg.mimeApps = {
+      enable = true;
+      # See http://discourse.nixos.org/t/how-can-i-configure-the-default-apps-for-gnome/36034
+      defaultApplications = {
+        # gnome image viewer
+        "image/jpeg" = "org.gnome.Loupe.desktop";
+        # gnome document viewer
+        "application/pdf" = "org.gnome.Evince.desktop";
+        "application/lrf" = "calibre-lrfviewer.desktop";
+        "text/html" = "firefox.desktop";
+        "x-scheme-handler/http" = "firefox.desktop";
+        "x-scheme-handler/https" = "firefox.desktop";
+        "x-scheme-handler/about" = "firefox.desktop";
+        "x-scheme-handler/unknown" = "firefox.desktop";
+      };
+    };
   };
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
