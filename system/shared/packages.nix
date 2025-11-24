@@ -54,7 +54,6 @@ in
     # pnpm
     # poppler
     # python-launcher
-    rclone # sync files and directories to and from major cloud storage
     ruby
     rustc
     shellcheck
