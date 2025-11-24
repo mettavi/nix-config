@@ -56,6 +56,14 @@ in
         gnome-user-share.enable = true;
       };
     };
+    users.users.root = {
+      # add apps for root to use for troubleshooting (as the eqivalent gnome builtin apps have been removed system wide)
+      packages = with pkgs; [
+        firefox
+        ghostty
+      ];
+    };
+
     home-manager.users.${username} = {
       home.packages =
         (with pkgs; [
