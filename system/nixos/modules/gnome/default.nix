@@ -93,6 +93,13 @@ in
         # enable dark theme on legacy apps (eg. pre GTK4)
         gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
       };
+      qt = {
+        enable = true;
+        # give Qt apps a similar look and feel to the adwaita-dark theme used by Gnome
+        # See https://wiki.nixos.org/wiki/GNOME#GNOME_Qt_integration
+        platformTheme.name = "adwaita";
+        style.name = "adwaita-dark";
+      };
     };
   };
 }
