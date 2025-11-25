@@ -77,6 +77,58 @@ in
         ]);
       # Use `dconf watch /` to track stateful changes you are doing, then set them here
       dconf.settings = {
+        # organise the apps menu into folders
+        "org/gnome/desktop/app-folders" = {
+          folder-children = [
+            "Utilities"
+            "System"
+            "Calibre"
+            "Gnome Tools"
+            "LibreOffice"
+            "Nix"
+          ];
+        };
+        "org/gnome/desktop/app-folders/folders/Calibre" = {
+          name = "Calibre";
+          apps = [
+            "calibre-gui.desktop"
+            "CaliSync.desktop"
+            "calibre-ebook-viewer.desktop"
+            "calibre-ebook-edit.desktop"
+            "calibre-lrfviewer.desktop"
+          ];
+          translate = false;
+        };
+        "org/gnome/desktop/app-folders/folders/Gnome Tools" = {
+          name = "Gnome Tools";
+          apps = [
+            "com.mattjakeman.ExtensionManager.desktop"
+            "org.gnome.tweaks.desktop"
+            "ca.desrt.dconf-editor.desktop"
+          ];
+          translate = false;
+        };
+        "org/gnome/desktop/app-folders/folders/LibreOffice" = {
+          name = "LibreOffice";
+          apps = [
+            "startcenter.desktop"
+            "writer.desktop"
+            "impress.desktop"
+            "math.desktop"
+            "base.desktop"
+            "calc.desktop"
+            "draw.desktop"
+          ];
+          translate = false;
+        };
+        "org/gnome/desktop/app-folders/folders/Nix" = {
+          name = "Nix";
+          apps = [
+            "nixos-manual.desktop"
+            "home-manager-manual.desktop"
+          ];
+          translate = false;
+        };
         "org/gnome/desktop/interface" = {
           # set the system to dark mode
           color-scheme = "prefer-dark";
