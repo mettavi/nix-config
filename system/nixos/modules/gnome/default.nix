@@ -80,7 +80,7 @@ in
         "org/gnome/desktop/interface" = {
           # set the system to dark mode
           color-scheme = "prefer-dark";
-          gtk-theme = "adw-gtk3-dark";
+          gtk-theme = "Adwaita-dark";
         };
         "org/gnome/shell" = {
           disable-user-extensions = false;
