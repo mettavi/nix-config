@@ -42,13 +42,6 @@
         '';
       }))
     ];
-    graphics = {
-      extraPackages = with pkgs; [
-        # unfortunately this driver is deprecated with several security vulnerabilities
-        # intel-media-sdk # for Quick Sync Video (QSV) on Intel Iris + G7 iGPU on host mack
-        intel-compute-runtime-legacy1 # Intel Graphics Compute Runtime oneAPI Level Zero and OpenCL with support for Gen8, Gen9 and Gen11 GPUs
-      ];
-    };
   };
 
   ########## SYSTEM ARCHITECTURE ###########
@@ -132,6 +125,7 @@
         libreoffice.enable = true;
       };
       devices = {
+        intel-chips.enable = true;
         logitech.enable = true;
         touchbar.enable = true;
       };
