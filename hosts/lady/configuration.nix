@@ -172,6 +172,11 @@
     };
     xdg.mimeApps = {
       enable = true;
+      /*
+        To list all .desktop files, run:
+        ls /run/current-system/sw/share/applications # for global packages
+        ls /etc/profiles/per-user/$(id -n -u)/share/applications # for user packages
+      */
       # See http://discourse.nixos.org/t/how-can-i-configure-the-default-apps-for-gnome/36034
       defaultApplications = {
         # gnome image viewer
