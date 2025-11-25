@@ -102,8 +102,9 @@ in
       };
       gtk = {
         enable = true;
-        # enable dark theme on legacy apps (eg. pre GTK4)
+        # enable dark theme on legacy apps
         gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
+        gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
       };
       qt = {
         enable = true;
