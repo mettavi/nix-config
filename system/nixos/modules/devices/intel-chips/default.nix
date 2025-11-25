@@ -43,7 +43,7 @@ in
           vulkan-tools
           # unfortunately this driver is deprecated with several security vulnerabilities
           # use vaapi drivers abover instead
-          # intel-media-sdk # for Quick Sync Video (QSV) (8th-12th gen cpu)
+          # intel-media-sdk # for Quick Sync Video (QSV) (8th-11th gen cpu)
         ];
       };
     };
