@@ -58,6 +58,10 @@
     "vm.swappiness" = 90;
   };
 
+  # Enable GuC loading HuC firmware in i915 kernel driver
+  # Use low-power encoding with jellyfin to offload the GPU usage with the help of the HuC firmware
+  boot.kernelParams = [ "i915.enable_guc=2" ];
+
   # the installation process is allowed to modify EFI boot variables
   # (enabling this is not recommended on T2 macs)
   boot.loader.efi.canTouchEfiVariables = false;
