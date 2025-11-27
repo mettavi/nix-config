@@ -65,6 +65,7 @@
 
   environment.systemPackages = with pkgs; [
     efibootmgr # application to modify the Intel EFI Boot Manager
+    lm_sensors # tools for reading hardware sensors
   ];
 
   boot.loader.systemd-boot = {
@@ -134,6 +135,7 @@
       };
       services = {
         audiobookshelf.enable = true;
+        jellyfin.enable = true;
       };
       # enable system users
       userConfig = {

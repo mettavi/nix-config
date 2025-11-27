@@ -23,10 +23,16 @@ in
       logDir = "${home}/.local/share/jellyfin/log";
       user = "${username}";
     };
-    environment.systemPackages = [
-      pkgs.jellyfin
-      pkgs.jellyfin-web
-      pkgs.jellyfin-ffmpeg
+    environment.systemPackages = with pkgs; [
+      intel-gpu-tools # testing of the Intel DRM driver
+      jellyfin
+      jellyfin-web
+      jellyfin-ffmpeg
+      libva-utils # utilities for VA-APIpciutils
     ];
+    users.users.${username} = {
+      # add the jellyfin user to the render group
+      extraGroups = [ "render" ];
+    };
   };
 }
