@@ -48,7 +48,6 @@
   # SYSTEM MODULES SETTINGS
   mettavi = {
     system = {
-      # use the gnome desktop
       # enable system users
       userConfig = {
         timotheos = {
