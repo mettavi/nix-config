@@ -356,11 +356,11 @@
     },
     "secrets": {
       "locked": {
-        "lastModified": 1764334405,
-        "narHash": "sha256-whF9HQyxBvBl4aidXx7lnuj8KufZgt8YVGJigjaprmw=",
+        "lastModified": 1764338178,
+        "narHash": "sha256-BGCtPvRH0etUEaBlmQOGygKLgo3D/v/h3A/Fym+OPdk=",
         "owner": "mettavi",
         "repo": "nix-secrets",
-        "rev": "e71a563e31413b41b8db03918799d1b24f0c784b",
+        "rev": "658183cf3db0cc04f96a6f771b06198358897df7",
         "type": "github"
       },
       "original": {
