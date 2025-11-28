@@ -1,15 +1,9 @@
 {
-  modulesPath,
   username,
   ...
 }:
 {
   imports = [
-    # imports for initial install with nixos-anywhere and disko
-    # subsequently the disko config will configure fstab
-    (modulesPath + "/installer/scan/not-detected.nix")
-    (modulesPath + "/profiles/qemu-guest.nix")
-    ./disk-config.nix
     # ./hardware-configuration.nix
   ];
 
