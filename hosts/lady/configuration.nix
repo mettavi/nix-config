@@ -148,6 +148,7 @@
   home-manager.users.${username} = {
     home = {
       packages = with pkgs; [
+        wl-clipboard # command line copy/paste utilities for Wayland
         # Comprehensive e-book software
         (calibre.override {
           # to open .cbr and .cbz files
