@@ -1,4 +1,5 @@
 {
+  pkgs,
   username,
   ...
 }:
@@ -74,6 +75,7 @@
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
   home-manager.users.${username} = {
     home = {
+      packages = with pkgs; [ gparted ];
       # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
       stateVersion = "25.05";
     };
