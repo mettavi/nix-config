@@ -50,6 +50,19 @@
     systemd-boot.enable = true;
   };
 
+  # SYSTEM MODULES SETTINGS
+  mettavi = {
+    system = {
+      # use the gnome desktop
+      # enable system users
+      userConfig = {
+        timotheos = {
+          enable = true;
+        };
+      };
+    };
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
