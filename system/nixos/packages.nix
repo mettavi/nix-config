@@ -17,8 +17,5 @@
     trash-cli
     # Extraction utility
     # unzip
-    # Tool to access the X clipboard from a console application
-    # Required for clipboard integration with neovim
-    xclip
   ];
 }
