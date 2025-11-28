@@ -80,7 +80,11 @@
   home-manager.users.${username} = {
     home = {
       packages = with pkgs; [
+        firefox
         gparted # graphical disk partitioning tool
+        # Tool to access the X clipboard from a console application
+        # Required for clipboard integration with neovim
+        xclip
       ];
       # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
       stateVersion = "25.05";
