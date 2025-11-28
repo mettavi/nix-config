@@ -55,7 +55,10 @@
 
     ####################### PERSONAL REPOS #######################
     secrets = {
+      # use this address with ssh keys after initial setup
       url = "git+ssh://git@github.com/mettavi/nix-secrets.git?ref=main&shallow=1";
+      # use this address with a GH personal access token for initial install
+      # url = "github:mettavi/nix-secrets";
       inputs = { };
     };
 
