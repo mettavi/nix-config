@@ -23,6 +23,10 @@
     ];
   };
 
+  # "remus" is a vmware guest running on darwin host "mack"
+  # enable VMWare guest support
+  virtualisation.vmware.guest.enable = true;
+
   ########## SYSTEM ARCHITECTURE ###########
 
   # enable in-memory compressed devices and swap space
