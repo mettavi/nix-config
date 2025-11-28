@@ -72,10 +72,15 @@
   system.stateVersion = "25.05";
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
-  # home-manager.users.${username} = {
-  #   home = {
-  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  #   stateVersion = "25.05";
-  # };
-  # };
+  home-manager.users.${username} = {
+    home = {
+      # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+      stateVersion = "25.05";
+    };
+    mettavi = {
+      apps = {
+        ghostty.enable = true;
+      };
+    };
+  };
 }
