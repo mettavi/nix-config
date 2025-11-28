@@ -18,7 +18,7 @@ let
     owner = "yazi-rs";
     repo = "flavors";
     rev = "main";
-    hash = "sha256-+awiEG5ep0/6GaW8YXJ7FP0/xrL4lSrJZgr7qjh8iBc=";
+    hash = "sha256-twgXHeIj52EfpMpLrhxjYmwaPnIYah3Zk/gqCNTb2SQ=";
   };
 in
 {
