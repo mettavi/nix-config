@@ -36,6 +36,9 @@
     priority = 100;
   };
 
+  # Use latest kernel.
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   boot.kernel.sysctl = {
     # default is 60
     "vm.swappiness" = 90;
