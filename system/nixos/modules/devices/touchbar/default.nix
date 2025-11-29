@@ -24,7 +24,7 @@ in
         # F{number} keys are shown when Fn is not pressed by default.
         # Set this to true if you want the media keys to be shown without Fn pressed
         # Set to false to get Fn key combos working (eg. ALT-F2)
-        MediaLayerDefault = false;
+        MediaLayerDefault = true;
 
         # Set this to false if you want to hide the button outline,
         # leaving only the text/logo
@@ -42,7 +42,7 @@ in
         # For full reference on accepted values see the fontconfig user guide,
         # section "Font Names"
         # https://www.freedesktop.org/software/fontconfig/fontconfig-user.html
-        FontTemplate = ":bold";
+        FontTemplate = "";
 
         # Set this to false if you want the brightness of the touchbar
         # to be set to a static value instead of following the primary
