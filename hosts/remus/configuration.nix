@@ -1,36 +1,31 @@
 {
-  modulesPath,
+  pkgs,
   username,
   ...
 }:
 {
   imports = [
-    # imports for initial install with nixos-anywhere and disko
-    # subsequently the disko config will configure fstab
-    (modulesPath + "/installer/scan/not-detected.nix")
-    (modulesPath + "/profiles/qemu-guest.nix")
-    ./disk-config.nix
-    # ./hardware-configuration.nix
+    ./hardware-configuration.nix
   ];
 
   ########## IMPORTANT SETTINGS ###########
 
   # SETUP INITIAL ACCESS
-  # set up root access to prevent initial password problems for the primary user
   users.users.root = {
-    hashedPassword = "$y$j9T$kD6Saa3hxt3U5YCkHGtBp/$ybiLXiDq1f6EitKgQTPB8Nyw2BzvI2QOI0IlR.TKyf1";
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos@oona"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
     ];
   };
 
   users.users.${username} = {
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos@oona"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
     ];
   };
+
+  # "remus" is a vmware guest running on darwin host "mack"
+  # enable VMWare guest support
+  virtualisation.vmware.guest.enable = true;
 
   ########## SYSTEM ARCHITECTURE ###########
 
@@ -40,6 +35,9 @@
     algorithm = "zstd";
     priority = 100;
   };
+
+  # Use latest kernel.
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   boot.kernel.sysctl = {
     # default is 60
@@ -54,6 +52,39 @@
     systemd-boot.enable = true;
   };
 
+  # Enable the X11 windowing system.
+  services = {
+    xserver = {
+      enable = true;
+      displayManager.lightdm.enable = true;
+      # Enable the LXQT Desktop Environment.
+      desktopManager.lxqt.enable = true;
+      xkb = {
+        layout = "us";
+        variant = "mac";
+      };
+    };
+  };
+
+  # Enable networking
+  networking.networkmanager.enable = true;
+  networking.firewall.enable = false;
+
+  # Enable network manager applet
+  programs.nm-applet.enable = true;
+
+  # SYSTEM MODULES SETTINGS
+  mettavi = {
+    system = {
+      # enable system users
+      userConfig = {
+        timotheos = {
+          enable = true;
+        };
+      };
+    };
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
@@ -63,10 +94,22 @@
   system.stateVersion = "25.05";
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
-  # home-manager.users.${username} = {
-  #   home = {
-  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  #   stateVersion = "25.05";
-  # };
-  # };
+  home-manager.users.${username} = {
+    home = {
+      packages = with pkgs; [
+        firefox
+        gparted # graphical disk partitioning tool
+        # Tool to access the X clipboard from a console application
+        # Required for clipboard integration with neovim
+        xclip
+      ];
+      # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+      stateVersion = "25.05";
+    };
+    mettavi = {
+      apps = {
+        ghostty.enable = true;
+      };
+    };
+  };
 }

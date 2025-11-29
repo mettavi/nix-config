@@ -55,7 +55,11 @@
 
     ####################### PERSONAL REPOS #######################
     secrets = {
+      # use this address with ssh keys after initial setup
       url = "git+ssh://git@github.com/mettavi/nix-secrets.git?ref=main&shallow=1";
+      # use this address with a GH personal access token (PAT) for initial install
+      # NB: add the PAT directly to the nix.conf file with "access-tokens = github.com=<PAT>"
+      # url = "github:mettavi/nix-secrets";
       inputs = { };
     };
 
@@ -128,6 +132,7 @@
       nixosConfigurations = {
         "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux";
         "lady" = mkNixos.mkNixosConfiguration "lady" "x86_64-linux";
+        "remus" = mkNixos.mkNixosConfiguration "remus" "x86_64-linux";
         "salina" = mkNixos.mkNixosConfiguration "salina" "aarch64-linux";
       };
 

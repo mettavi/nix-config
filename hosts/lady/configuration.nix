@@ -154,6 +154,7 @@
   home-manager.users.${username} = {
     home = {
       packages = with pkgs; [
+        wl-clipboard # command line copy/paste utilities for Wayland
         # Comprehensive e-book software
         (calibre.override {
           # to open .cbr and .cbz files
@@ -161,7 +162,7 @@
         })
       ];
       # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-      stateVersion = "25.11";
+      stateVersion = "25.05";
     };
     mettavi = {
       apps = {
@@ -206,7 +207,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion).
-  system.stateVersion = "25.11"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
