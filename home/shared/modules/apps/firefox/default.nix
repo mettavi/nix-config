@@ -219,7 +219,8 @@ in
             "privacy.resistFingerprinting.block_mozAddonManager" = true;
 
             # Prefer dark theme webpages
-            "layout.css.prefers-color-scheme.content-override" = 0; # 0: Dark, 1: Light, 2: Auto
+            # 0: Force Dark, 1: Force Light, 2: System theme, 3: Browser theme
+            "layout.css.prefers-color-scheme.content-override" = 0;
 
             "media.autoplay.default" = 5; # block both audible and inaudible media from autoplaying.
             "media.cubeb.backend" = "alsa"; # force firefox to use the ALSA/pipewire backend
