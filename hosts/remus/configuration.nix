@@ -50,7 +50,22 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  services = {
+    xserver = {
+      enable = true;
+      displayManager.lightdm.enable = true;
+      # Enable the LXQT Desktop Environment.
+      desktopManager.lxqt.enable = true;
+      xkb = {
+        layout = "us";
+        variant = "mac";
+      };
+    };
+  };
+
+  # Enable networking
+  networking.networkmanager.enable = true;
+  networking.firewall.enable = false;
 
   # Enable the LXQT Desktop Environment.
   services.xserver.displayManager.lightdm.enable = true;
