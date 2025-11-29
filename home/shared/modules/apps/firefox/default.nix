@@ -65,6 +65,7 @@ in
             force = true;
             packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
               bitwarden
+              darkreader
               privacy-badger
               sponsorblock
               tabliss
@@ -212,6 +213,10 @@ in
 
             # DISABLE FIREFOX ACCOUNTS
             # "identity.fxaccounts.enabled" = false;
+
+            # for the darkreader extension
+            "extensions.webextensions.restrictedDomains" = "";
+            "privacy.resistFingerprinting.block_mozAddonManager" = true;
 
             # Prefer dark theme
             "layout.css.prefers-color-scheme.content-override" = 0; # 0: Dark, 1: Light, 2: Auto
