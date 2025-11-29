@@ -218,7 +218,7 @@ in
             "extensions.webextensions.restrictedDomains" = "";
             "privacy.resistFingerprinting.block_mozAddonManager" = true;
 
-            # Prefer dark theme
+            # Prefer dark theme webpages
             "layout.css.prefers-color-scheme.content-override" = 0; # 0: Dark, 1: Light, 2: Auto
 
             "media.autoplay.default" = 5; # block both audible and inaudible media from autoplaying.
