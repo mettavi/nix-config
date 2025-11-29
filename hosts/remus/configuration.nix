@@ -70,9 +70,8 @@
   networking.networkmanager.enable = true;
   networking.firewall.enable = false;
 
-  # Enable the LXQT Desktop Environment.
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.lxqt.enable = true;
+  # Enable network manager applet
+  programs.nm-applet.enable = true;
 
   # SYSTEM MODULES SETTINGS
   mettavi = {
