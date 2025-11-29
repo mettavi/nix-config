@@ -223,6 +223,7 @@ in
 
             "media.autoplay.default" = 5; # block both audible and inaudible media from autoplaying.
             "media.cubeb.backend" = "alsa"; # force firefox to use the ALSA/pipewire backend
+            "media.mkv.enabled" = true;
 
             "mousewheel.default.delta_multiplier_x" = 20;
             "mousewheel.default.delta_multiplier_y" = 20;
