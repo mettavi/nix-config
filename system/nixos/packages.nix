@@ -20,6 +20,7 @@
     trash-cli
     # Extraction utility
     # unzip
+    unetbootin # Tool to create bootable live USB devices with iso images
     usbutils # tools for working with usb devices
     # Tool to access the X clipboard from a console application
     # Required for clipboard integration with neovim
