@@ -20,7 +20,7 @@ in
     services.pia-vpn = {
       enable = true;
       certificateFile = ./ca.rsa.4096.crt;
-      environmentFile = "${hm}.sops.secrets.\"users/${username}/pia.env\".path"; # use sops-nix or agenix
+      environmentFile = "${hm}.sops.secrets.\"users/${username}/pia.env\".path";
     };
   };
 }
