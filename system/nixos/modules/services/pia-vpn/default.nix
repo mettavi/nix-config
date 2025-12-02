@@ -10,12 +10,13 @@ let
   hm = config.home-manager.users.${username};
 in
 {
+  imports = [ inputs.pia-vpn.nixosModules.default ];
+
   options.mettavi.system.services.pia-vpn = {
     enable = lib.mkEnableOption "Install and set up the Private Internet Access VPN module";
   };
 
   config = lib.mkIf cfg.enable {
-    imports = [ inputs.pia-vpn.nixosModules.default ];
     services.pia-vpn = {
       enable = true;
       certificateFile = ./ca.rsa.4096.crt;
