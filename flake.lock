@@ -75,6 +75,20 @@
         "type": "github"
       }
     },
+    "flake-compat": {
+      "locked": {
+        "lastModified": 1696426674,
+        "narHash": "sha256-kvjfFW7WAETZlt09AgDn1MrtKzP7t90Vf7vypd3OL1U=",
+        "rev": "0f9255e01c2351cc7d116c072cb317785dd33b33",
+        "revCount": 57,
+        "type": "tarball",
+        "url": "https://api.flakehub.com/f/pinned/edolstra/flake-compat/1.0.1/018afb31-abd1-7bff-a5e4-cff7e18efb7a/source.tar.gz"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://flakehub.com/f/edolstra/flake-compat/1.tar.gz"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -315,6 +329,27 @@
         "type": "github"
       }
     },
+    "pia-vpn": {
+      "inputs": {
+        "flake-compat": "flake-compat",
+        "nixpkgs": [
+          "nixos-pkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1731335737,
+        "narHash": "sha256-7p0RsrFqwtgvWij8sNUK/LnuL1ERvH7/ck8Kok1sNuQ=",
+        "owner": "rcambrj",
+        "repo": "nix-pia-vpn",
+        "rev": "3501db7fd6c538107a4f0c50fc54bff998923705",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rcambrj",
+        "repo": "nix-pia-vpn",
+        "type": "github"
+      }
+    },
     "quadlet-nix": {
       "locked": {
         "lastModified": 1763141753,
@@ -348,6 +383,7 @@
         "nixos-pkgs": "nixos-pkgs",
         "nixpkgs": "nixpkgs",
         "nixpkgs-24_11": "nixpkgs-24_11",
+        "pia-vpn": "pia-vpn",
         "quadlet-nix": "quadlet-nix",
         "secrets": "secrets",
         "sops-nix": "sops-nix",
@@ -356,10 +392,10 @@
     },
     "secrets": {
       "locked": {
-        "lastModified": 1764338178,
-        "narHash": "sha256-BGCtPvRH0etUEaBlmQOGygKLgo3D/v/h3A/Fym+OPdk=",
+        "lastModified": 1764672474,
+        "narHash": "sha256-Yox2ACzRPi+u1Wwk/0HLrf/yRr9pYeZ/cL/Qhpx4Ars=",
         "ref": "main",
-        "rev": "658183cf3db0cc04f96a6f771b06198358897df7",
+        "rev": "e3a1a915efec99c35b79e7a3dc2442e3964f979f",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/mettavi/nix-secrets.git"
