@@ -97,6 +97,11 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # privateinternetaccess.com wireguard client on networkd for NixOS
+    pia-vpn = {
+      url = "github:rcambrj/nix-pia-vpn";
+      inputs.nixpkgs.follows = "nixos-pkgs";
+    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
