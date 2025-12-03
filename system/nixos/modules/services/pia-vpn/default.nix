@@ -298,12 +298,14 @@ with lib;
         servervip="$(echo "$json" | jq -r '.server_vip')"
         peerip=$(echo "$json" | jq -r '.peer_ip')
 
+        interface="${cfg.interface}"
+
+        # ====================================================================
+        # CODE FOR NETWORKD BACKEND
         # mkdir -p /run/systemd/network/
         # touch /run/systemd/network/60-${cfg.interface}.{netdev,network}
         # chown root:systemd-network /run/systemd/network/60-${cfg.interface}.{netdev,network}
         # chmod 640 /run/systemd/network/60-${cfg.interface}.{netdev,network}
-
-        interface="${cfg.interface}"
 
         # cat > /run/systemd/network/60-${cfg.interface}.netdev <<EOF
         # ${cfg.netdevConfig}
@@ -313,12 +315,15 @@ with lib;
         # ${cfg.networkConfig}
         # EOF 
 
+        # ===================================================================
+        # CODE FOR NETWORKMANAGER BACKEND
         cat > ./wg0.conf <<EOF
         ${cfg.networkManConfig}
         EOF
 
         ${pkgs.networkmanager}/bin/nmcli connection import type wireguard file ./wg0.conf 
 
+        # ===================================================================
         echo Bringing up network interface ${cfg.interface}.
 
         ${cfg.preUp}
