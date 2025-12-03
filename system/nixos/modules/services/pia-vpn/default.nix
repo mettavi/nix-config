@@ -66,21 +66,22 @@ with lib;
 
     netdevConfig = mkOption {
       type = types.str;
-      default = ''
-        [NetDev]
-        Description = WireGuard PIA network device
-        Name = ''${interface}
-        Kind = wireguard
+      default = # bash
+        ''
+          [NetDev]
+          Description = WireGuard PIA network device
+          Name = ''${interface}
+          Kind = wireguard
 
-        [WireGuard]
-        PrivateKey = $privateKey
+          [WireGuard]
+          PrivateKey = $privateKey
 
-        [WireGuardPeer]
-        PublicKey = $(echo "$json" | jq -r '.server_key')
-        AllowedIPs = 0.0.0.0/0, ::/0
-        Endpoint = ''${wg_ip}:$(echo "$json" | jq -r '.server_port')
-        PersistentKeepalive = 25
-      '';
+          [WireGuardPeer]
+          PublicKey = $(echo "$json" | jq -r '.server_key')
+          AllowedIPs = 0.0.0.0/0, ::/0
+          Endpoint = ''${wg_ip}:$(echo "$json" | jq -r '.server_port')
+          PersistentKeepalive = 25
+        '';
       description = ''
         Configuration of 60-''${cfg.interface}.netdev
       '';
@@ -88,22 +89,23 @@ with lib;
 
     networkConfig = mkOption {
       type = types.str;
-      default = ''
-        [Match]
-        Name = ''${interface}
+      default = # bash
+        ''
+          [Match]
+          Name = ''${interface}
 
-        [Network]
-        Description = WireGuard PIA network interface
-        Address = ''${peerip}/32
+          [Network]
+          Description = WireGuard PIA network interface
+          Address = ''${peerip}/32
 
-        [RoutingPolicyRule]
-        From = ''${peerip}
-        Table = 42
+          [RoutingPolicyRule]
+          From = ''${peerip}
+          Table = 42
 
-        [Route]
-        Table = 42
-        Destination = 0.0.0.0/0
-      '';
+          [Route]
+          Table = 42
+          Destination = 0.0.0.0/0
+        '';
       description = ''
         Configuration of 60-''${cfg.interface}.network
       '';
@@ -111,21 +113,22 @@ with lib;
 
     networkManConfig = mkOption {
       type = types.str;
-      default = ''
-        [Interface]
-        # IP on the wireguard network
-        Address = ''${peerip}/32
-        Table = 42
-        PrivateKey = $privatekey 
+      default = # bash
+        ''
+          [Interface]
+          # IP on the wireguard network
+          Address = ''${peerip}/32
+          Table = 42
+          PrivateKey = $privatekey 
 
-        [Peer]
-        PublicKey = $(echo "$json" | jq -r '.server_key')
-        # restrict this to the wireguard subnet if you don't want to route everything to the tunnel
-        AllowedIPs = 0.0.0.0/0, ::/0
-        # ip and port of the peer
-        Endpoint = ''${wg_ip}:$(echo "$json" | jq -r '.server_port')
-        PersistentKeepalive = 25
-      '';
+          [Peer]
+          PublicKey = $(echo "$json" | jq -r '.server_key')
+          # restrict this to the wireguard subnet if you don't want to route everything to the tunnel
+          AllowedIPs = 0.0.0.0/0, ::/0
+          # ip and port of the peer
+          Endpoint = ''${wg_ip}:$(echo "$json" | jq -r '.server_port')
+          PersistentKeepalive = 25
+        '';
     };
 
     preUp = mkOption {
