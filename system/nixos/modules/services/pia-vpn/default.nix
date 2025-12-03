@@ -119,7 +119,7 @@ with lib;
           # IP on the wireguard network
           Address = ''${peerip}/32
           Table = 42
-          PrivateKey = $privatekey 
+          PrivateKey = $privateKey 
 
           [Peer]
           PublicKey = $(echo "$json" | jq -r '.server_key')
