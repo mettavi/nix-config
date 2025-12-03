@@ -109,6 +109,25 @@ with lib;
       '';
     };
 
+    networkManConfig = mkOption {
+      type = types.str;
+      default = ''
+        [Interface]
+        # IP on the wireguard network
+        Address = ''${peerip}/32
+        Table = 42
+        PrivateKey = $privatekey 
+
+        [Peer]
+        PublicKey = $(echo "$json" | jq -r '.server_key')
+        # restrict this to the wireguard subnet if you don't want to route everything to the tunnel
+        AllowedIPs = 0.0.0.0/0, ::/0
+        # ip and port of the peer
+        Endpoint = ''${wg_ip}:$(echo "$json" | jq -r '.server_port')
+        PersistentKeepalive = 25
+      '';
+    };
+
     preUp = mkOption {
       type = types.lines;
       default = "";
