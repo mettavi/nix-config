@@ -313,11 +313,11 @@ with lib;
         # ${cfg.networkConfig}
         # EOF 
 
-        cat > ./wg-quick.conf <<EOF
+        cat > ./wg0.conf <<EOF
         ${cfg.networkManConfig}
         EOF
 
-        ${pkgs.networkmanager}/bin/nmcli connection import type wireguard file ./wg-quick.conf 
+        ${pkgs.networkmanager}/bin/nmcli connection import type wireguard file ./wg0.conf 
 
         echo Bringing up network interface ${cfg.interface}.
 
