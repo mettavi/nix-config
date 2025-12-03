@@ -298,15 +298,23 @@ with lib;
         servervip="$(echo "$json" | jq -r '.server_vip')"
         peerip=$(echo "$json" | jq -r '.peer_ip')
 
-        mkdir -p /run/systemd/network/
-        touch /run/systemd/network/60-${cfg.interface}.{netdev,network}
-        chown root:systemd-network /run/systemd/network/60-${cfg.interface}.{netdev,network}
-        chmod 640 /run/systemd/network/60-${cfg.interface}.{netdev,network}
+        # mkdir -p /run/systemd/network/
+        # touch /run/systemd/network/60-${cfg.interface}.{netdev,network}
+        # chown root:systemd-network /run/systemd/network/60-${cfg.interface}.{netdev,network}
+        # chmod 640 /run/systemd/network/60-${cfg.interface}.{netdev,network}
 
         interface="${cfg.interface}"
 
-        cat > /run/systemd/network/60-${cfg.interface}.netdev <<EOF
-        ${cfg.netdevConfig}
+        # cat > /run/systemd/network/60-${cfg.interface}.netdev <<EOF
+        # ${cfg.netdevConfig}
+        # EOF
+        #
+        # cat > /run/systemd/network/60-${cfg.interface}.network <<EOF
+        # ${cfg.networkConfig}
+        # EOF 
+
+        cat > ./wg-quick.conf <<EOF
+        ${cfg.networkManConfig}
         EOF
 
         cat > /run/systemd/network/60-${cfg.interface}.network <<EOF
