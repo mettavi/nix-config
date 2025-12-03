@@ -317,9 +317,7 @@ with lib;
         ${cfg.networkManConfig}
         EOF
 
-        cat > /run/systemd/network/60-${cfg.interface}.network <<EOF
-        ${cfg.networkConfig}
-        EOF
+        ${pkgs.networkmanager}/bin/nmcli connection import type wireguard file ./wg-quick.conf 
 
         echo Bringing up network interface ${cfg.interface}.
 
