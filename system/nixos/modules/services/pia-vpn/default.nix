@@ -331,10 +331,19 @@ with lib;
 
         ${cfg.preUp}
 
-        networkctl reload
-        networkctl up ${cfg.interface}
+        # ====================================================================
+        # CODE FOR NETWORKD BACKEND
+        # networkctl reload
+        # networkctl up ${cfg.interface}
+        #
+        # ${pkgs.systemd}/lib/systemd/systemd-networkd-wait-online -i ${cfg.interface}
 
-        ${pkgs.systemd}/lib/systemd/systemd-networkd-wait-online -i ${cfg.interface}
+        # ===================================================================
+        # CODE FOR NETWORKMANAGER BACKEND
+        ${pkgs.networkmanager}/bin/nmcli connection reload
+        ${pkgs.networkmanager}/bin/nmcli connection up ${cfg.interface} 
+
+        # ===================================================================
 
         ${cfg.postUp}
       '';
