@@ -20,7 +20,8 @@ in
     services.pia-vpn = {
       enable = true;
       certificateFile = ./ca.rsa.4096.crt;
-      environmentFile = "${hm}.sops.secrets.\"users/${username}/pia.env\".path";
+      environmentFile = "${config.home-manager.users.${username}.sops.secrets."users/${username}/pia.env".path
+      }";
     };
   };
 }
