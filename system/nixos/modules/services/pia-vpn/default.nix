@@ -355,12 +355,22 @@ with lib;
 
         ${cfg.preDown}
 
-        rm /run/systemd/network/60-${cfg.interface}.{netdev,network} || true
+        # rm /run/systemd/network/60-${cfg.interface}.{netdev,network} || true
 
         echo Bringing down network interface ${cfg.interface}.
-        networkctl down ${cfg.interface}
-        networkctl delete ${cfg.interface}
-        networkctl reload
+
+        # ====================================================================
+        # CODE FOR NETWORKD BACKEND
+        # networkctl down ${cfg.interface}
+        # networkctl delete ${cfg.interface}
+        # networkctl reload
+
+        # ====================================================================
+        # CODE FOR NETWORKD BACKEND
+        ${pkgs.networkmanager}/bin/nmcli connection down ${cfg.interface} 
+        ${pkgs.networkmanager}/bin/nmcli connection delete id ${cfg.interface} 
+        ${pkgs.networkmanager}/bin/nmcli connection reload
+        # ===================================================================
 
         ${cfg.postDown}
       '';
