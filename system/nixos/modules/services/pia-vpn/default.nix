@@ -1,24 +1,28 @@
+# original code borrowed from https://github.com/rcambrj/nix-pia-vpn
 {
   config,
   lib,
   pkgs,
+  username,
   ...
 }:
 let
-  cfg = config.services.pia-vpn;
+  cfg = config.mettavi.system.services.pia-vpn;
 in
 with lib;
 
 {
-  options.services.pia-vpn = {
+  options.mettavi.system.services.pia-vpn = {
     enable = mkEnableOption "Private Internet Access VPN service.";
 
     certificateFile = mkOption {
       type = types.path;
+      default = ./ca.rsa.4096.crt;
       description = ''
         Path to the CA certificate for Private Internet Access servers.
 
-        This is provided as <filename>ca.rsa.4096.crt</filename>.
+        This is provided as <filename>ca.rsa.4096.crt</filename>, 
+        available from https://github.com/pia-foss/manual-connections.
       '';
     };
 
@@ -151,6 +155,12 @@ with lib;
   };
 
   config = mkIf cfg.enable {
+    mettavi.system.services.pia-vpn = {
+      # authenticate with
+      environmentFile = "${config.home-manager.users.${username}.sops.secrets."users/${username}/pia.env".path
+      }";
+    };
+
     boot.kernelModules = [ "wireguard" ];
 
     systemd.network.enable = true;
@@ -169,7 +179,8 @@ with lib;
         "network.target"
         "network-online.target"
       ];
-      wantedBy = [ "multi-user.target" ];
+      # do not start the service on system boot
+      # wantedBy = [ "multi-user.target" ];
 
       unitConfig = {
         ConditionFileNotEmpty = [
