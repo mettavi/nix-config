@@ -48,7 +48,7 @@ in
       "users/${username}/google_timotheos_app_pw" = {
       };
       # wifi passwords to configure wireless networks
-      "wifi.env" = { };
+      "users/${username}/wifi.env" = { };
     };
     templates = {
       # config file to allow postfix to use my personal gmail account automatically
