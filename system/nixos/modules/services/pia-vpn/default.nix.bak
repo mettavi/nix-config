@@ -2,6 +2,7 @@
 {
   config,
   lib,
+  nix_repo,
   pkgs,
   username,
   ...
@@ -115,10 +116,10 @@ with lib;
       type = types.str;
       default = # bash
         ''
+          # Networkmanager config for the PIA wireguard VPN service
           [Interface]
           # IP on the wireguard network
           Address = ''${peerip}/32
-          Table = 42
           PrivateKey = $privateKey 
 
           [Peer]
@@ -127,6 +128,8 @@ with lib;
           AllowedIPs = 0.0.0.0/0, ::/0
           # ip and port of the peer
           Endpoint = ''${wg_ip}:$(echo "$json" | jq -r '.server_port')
+          # how often to send an authenticated empty packet to the peer, 
+          # for the purpose of keeping a stateful firewall or NAT mapping valid persistently
           PersistentKeepalive = 25
         '';
     };
@@ -185,7 +188,16 @@ with lib;
 
     boot.kernelModules = [ "wireguard" ];
 
-    systemd.network.enable = true;
+    # If you intend to route all your traffic through the wireguard tunnel,
+    # the default configuration of the NixOS firewall will block the traffic because of rpfilter
+    # true (or “strict”), “loose” (only drop the packet if the source address is not reachable via any interface) or false
+    networking.firewall.checkReversePath = "loose";
+
+    # open the firewall for the default wireguard port
+    networking.firewall.allowedUDPPorts = [ 51820 ];
+
+    # Wireguard network manager
+    # services.wg-netmanager.enable = true;
 
     systemd.services.pia-vpn = {
       description = "Connect to Private Internet Access on ${cfg.interface}";
@@ -303,43 +315,26 @@ with lib;
 
         interface="${cfg.interface}"
 
-        # ====================================================================
-        # CODE FOR NETWORKD BACKEND
-        # mkdir -p /run/systemd/network/
-        # touch /run/systemd/network/60-${cfg.interface}.{netdev,network}
-        # chown root:systemd-network /run/systemd/network/60-${cfg.interface}.{netdev,network}
-        # chmod 640 /run/systemd/network/60-${cfg.interface}.{netdev,network}
+        # save the wireguard config to the module's directory
+        nixrepo="${
+          config.users.users.${username}.home
+        }/${nix_repo}/system/nixos/modules/services/pia-vpn/wg0.conf"
 
-        # cat > /run/systemd/network/60-${cfg.interface}.netdev <<EOF
-        # ${cfg.netdevConfig}
-        # EOF
-        #
-        # cat > /run/systemd/network/60-${cfg.interface}.network <<EOF
-        # ${cfg.networkConfig}
-        # EOF 
-
-        # ===================================================================
-        # CODE FOR NETWORKMANAGER BACKEND
-        cat > ./wg0.conf <<EOF
+        cat > $nixrepo <<EOF
         ${cfg.networkManConfig}
         EOF
 
         ${pkgs.networkmanager}/bin/nmcli connection import type wireguard file ./wg0.conf 
+        # ${pkgs.networkmanager}/bin/nmcli modify ${cfg.interface} ipv4.route-table 42 ipv6.route-table 42
+        # the main table has priority 32766
+        # ${pkgs.networkmanager}/bin/nmcli connection modify ${cfg.interface} ipv4.routing-rules "priority 1000 from all table 42" ipv6.routing-rules "priority 1000 from all table 42"
+        ${pkgs.networkmanager}/bin/nmcli connection modify ${cfg.interface} connection.autoconnect no
 
         # ===================================================================
         echo Bringing up network interface ${cfg.interface}.
 
         ${cfg.preUp}
 
-        # ====================================================================
-        # CODE FOR NETWORKD BACKEND
-        # networkctl reload
-        # networkctl up ${cfg.interface}
-        #
-        # ${pkgs.systemd}/lib/systemd/systemd-networkd-wait-online -i ${cfg.interface}
-
-        # ===================================================================
-        # CODE FOR NETWORKMANAGER BACKEND
         ${pkgs.networkmanager}/bin/nmcli connection reload
         ${pkgs.networkmanager}/bin/nmcli connection up ${cfg.interface} 
 
@@ -355,22 +350,11 @@ with lib;
 
         ${cfg.preDown}
 
-        # rm /run/systemd/network/60-${cfg.interface}.{netdev,network} || true
-
         echo Bringing down network interface ${cfg.interface}.
 
-        # ====================================================================
-        # CODE FOR NETWORKD BACKEND
-        # networkctl down ${cfg.interface}
-        # networkctl delete ${cfg.interface}
-        # networkctl reload
-
-        # ====================================================================
-        # CODE FOR NETWORKD BACKEND
         ${pkgs.networkmanager}/bin/nmcli connection down ${cfg.interface} 
         ${pkgs.networkmanager}/bin/nmcli connection delete id ${cfg.interface} 
         ${pkgs.networkmanager}/bin/nmcli connection reload
-        # ===================================================================
 
         ${cfg.postDown}
       '';
