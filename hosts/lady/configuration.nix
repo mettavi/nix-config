@@ -78,7 +78,7 @@
   ];
 
   # Configure network connections interactively with nmcli or nmtui.
-  networking.networkmanager.enable = true;
+  networking.networkmanager.wifi.powersave = false;
 
   ######## SYSTEM SERVICES ##########
   #
@@ -140,6 +140,8 @@
       services = {
         audiobookshelf.enable = true;
         jellyfin.enable = true;
+        networkmanager.enable = true;
+        pia-vpn.enable = true;
       };
       # enable system users
       userConfig = {
