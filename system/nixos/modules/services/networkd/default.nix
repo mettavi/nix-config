@@ -40,7 +40,7 @@ in
     #   networkConfig = {
     #     # start a DHCP Client for IPv4 Addressing/Routing
     #     DHCP = "ipv4";
-    #     # accept Router Advertisements for Stateless IPv6 Autoconfiguraton (SLAAC)
+    #     # accept Router Advertisements for Stateless IPv6 Autoconfiguration (SLAAC)
     #     IPv6AcceptRA = true;
     #   };
     #   # Each attribute specifies an option in the [Link] section of the unit
