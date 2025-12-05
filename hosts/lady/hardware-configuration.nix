@@ -51,15 +51,15 @@
     ];
   };
 
-  fileSystems."/mnt/bootcamp" = {
-    device = "/dev/disk/by-uuid/2B83BD105D4F5763";
-    fsType = "ntfs-3g";
-    options = [
-      "rw"
-      "uid=1000"
-      "windows_names"
-    ];
-  };
+  # fileSystems."/mnt/bootcamp" = {
+  # device = "/dev/disk/by-uuid/2F553BB73F5C54D4";
+  # fsType = "ntfs-3g";
+  # options = [
+  #   "rw"
+  #   "uid=1000"
+  #   "windows_names"
+  # ];
+  # };
 
   # mount the system APFS partition to hide it from the Gnome Files (nautilus) app sidebar
   fileSystems."/mnt/macos" = {
