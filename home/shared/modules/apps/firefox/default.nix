@@ -348,6 +348,7 @@ in
 
             # PRIVACY/TRACKING SETTINGS
             # Prevent WebRTC leaking IP address
+            "media.peerconnection.enabled" = false; # recommended by ipleak.net/#dnsleak
             "media.peerconnection.ice.default_address_only" = true;
             "privacy.donottrackheader.enabled" = true;
             "privacy.trackingprotection.enabled" = true;
