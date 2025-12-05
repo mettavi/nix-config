@@ -7,8 +7,12 @@ in
     enable = lib.mkEnableOption "Enable the systemd-networkd framework and configure the network using its declarative options";
   };
   config = lib.mkIf cfg.enable {
-    # enable networkd
-    systemd.network.enable = true;
+    systemd.network = {
+      # enable networkd
+      enable = true;
+      # if networkmanager is managing upstream connectivity, networkd is unable to detect online status
+      wait-online.enable = if config.networking.networkmanager.enable then false else true;
+    };
 
     # set to false to configure static IP addresses declaratively
     # ( less convenient if  frequently moving between different SSIDs)
