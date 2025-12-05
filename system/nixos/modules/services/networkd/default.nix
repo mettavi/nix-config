@@ -23,31 +23,31 @@ in
 
     # network definitions to automatically connect to when wpa_supplicant is running.
     # If this parameter is left empty wpa_supplicant will use /etc/wpa_supplicant.conf as the configuration file.
-    networking.wireless.networks = {
-      secretsFile = config.sops.secrets."wifi.env".path;
-      "MV-Pix8Pro" = {
-        # read PSKs from the variable ext:<variable>, defined in secretsFile
-        pskRaw = "ext:psk_mvp8pro";
-      };
-      "NEWBURY-STAFF" = {
-        pskRaw = "ext:psk_newstaff";
-      };
-    };
+    # networking.wireless.networks = {
+    #   secretsFile = config.sops.secrets."wifi.env".path;
+    #   "MV-Pix8Pro" = {
+    #     # read PSKs from the variable ext:<variable>, defined in secretsFile
+    #     pskRaw = "ext:psk_mvp8pro";
+    #   };
+    #   "NEWBURY-STAFF" = {
+    #     pskRaw = "ext:psk_newstaff";
+    #   };
+    # };
 
-    systemd.network.networks."10-lan-wifi" = {
-      matchConfig.Name = "wlp229s0";
-      # Each attribute specifies an option in the [Network] section of the unit
-      networkConfig = {
-        # start a DHCP Client for IPv4 Addressing/Routing
-        DHCP = "ipv4";
-        # accept Router Advertisements for Stateless IPv6 Autoconfiguraton (SLAAC)
-        IPv6AcceptRA = true;
-      };
-      # Each attribute specifies an option in the [Link] section of the unit
-      linkConfig = {
-        # make the routes on this interface a dependency for network-online.target
-        RequiredForOnline = "routable";
-      };
-    };
+    # systemd.network.networks."10-lan-wifi" = {
+    #   matchConfig.Name = "wlp229s0";
+    #   # Each attribute specifies an option in the [Network] section of the unit
+    #   networkConfig = {
+    #     # start a DHCP Client for IPv4 Addressing/Routing
+    #     DHCP = "ipv4";
+    #     # accept Router Advertisements for Stateless IPv6 Autoconfiguraton (SLAAC)
+    #     IPv6AcceptRA = true;
+    #   };
+    #   # Each attribute specifies an option in the [Link] section of the unit
+    #   linkConfig = {
+    #     # make the routes on this interface a dependency for network-online.target
+    #     RequiredForOnline = "routable";
+    #   };
+    # };
   };
 }
