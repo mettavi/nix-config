@@ -6,12 +6,12 @@
   ...
 }:
 let
-  cfg = config.mettavi.system.services.pia-vpn;
+  cfg = config.mettavi.system.services.pia-vpn-networkd;
 in
 with lib;
 
 {
-  options.mettavi.system.services.pia-vpn = {
+  options.mettavi.system.services.pia-vpn-networkd = {
     enable = mkEnableOption "Private Internet Access VPN service.";
 
     certificateFile = mkOption {
@@ -155,7 +155,7 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    mettavi.system.services.pia-vpn = {
+    mettavi.system.services.pia-vpn-networkd = {
       environmentFile = "${config.home-manager.users.${username}.sops.secrets."users/${username}/pia.env".path
       }";
       networkConfig = # bash
