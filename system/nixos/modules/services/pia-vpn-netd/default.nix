@@ -1,15 +1,22 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  username,
+  ...
+}:
 let
-  cfg = config.services.pia-vpn;
+  cfg = config.mettavi.system.services.pia-vpn;
 in
 with lib;
 
 {
-  options.services.pia-vpn = {
+  options.mettavi.system.services.pia-vpn = {
     enable = mkEnableOption "Private Internet Access VPN service.";
 
     certificateFile = mkOption {
       type = types.path;
+      default = ./ca.rsa.4096.crt;
       description = ''
         Path to the CA certificate for Private Internet Access servers.
 
@@ -39,7 +46,7 @@ with lib;
 
     region = mkOption {
       type = types.str;
-      default = "";
+      default = "au_adelaide-pf";
       description = ''
         Name of the region to connect to.
         See https://serverlist.piaservers.net/vpninfo/servers/v4
@@ -57,21 +64,23 @@ with lib;
 
     netdevConfig = mkOption {
       type = types.str;
-      default = ''
-        [NetDev]
-        Description = WireGuard PIA network device
-        Name = ''${interface}
-        Kind = wireguard
+      default = # bash
+        ''
+          [NetDev]
+          Description = WireGuard PIA network device
+          Name = ''${interface}
+          Kind = wireguard
 
-        [WireGuard]
-        PrivateKey = $privateKey
+          [WireGuard]
+          ListenPort = 50137
+          PrivateKey = $privateKey
 
-        [WireGuardPeer]
-        PublicKey = $(echo "$json" | jq -r '.server_key')
-        AllowedIPs = 0.0.0.0/0, ::/0
-        Endpoint = ''${wg_ip}:$(echo "$json" | jq -r '.server_port')
-        PersistentKeepalive = 25
-      '';
+          [WireGuardPeer]
+          PublicKey = $(echo "$json" | jq -r '.server_key')
+          AllowedIPs = 0.0.0.0/0, ::/0
+          Endpoint = ''${wg_ip}:$(echo "$json" | jq -r '.server_port')
+          PersistentKeepalive = 25
+        '';
       description = ''
         Configuration of 60-''${cfg.interface}.netdev
       '';
@@ -146,16 +155,87 @@ with lib;
   };
 
   config = mkIf cfg.enable {
+    mettavi.system.services.pia-vpn = {
+      environmentFile = "${config.home-manager.users.${username}.sops.secrets."users/${username}/pia.env".path
+      }";
+      networkConfig = # bash
+        ''
+          # Set VPN as default route
+          [Match]
+          Name = ''${interface}
+
+          [Network]
+          Description = WireGuard PIA network interface
+          Address = ''${peerip}/32
+
+          [RoutingPolicyRule]
+          To = ''${wg_ip}/32
+          Priority = 1000
+
+          # if port forwarding is required, make an exception for that service
+          # as it's not accessible from inside the VPN
+          [RoutingPolicyRule]
+          To = ''${meta_ip}/32
+          Priority = 1000
+
+          [RoutingPolicyRule]
+          To = 0.0.0.0/0
+          Priority = 2000
+          Table = 42
+
+          [Route]
+          Destination = 0.0.0.0/0
+          Table = 42
+        '';
+    };
+
     boot.kernelModules = [ "wireguard" ];
+    environment.systemPackages = with pkgs; [ wireguard-tools ];
 
     systemd.network.enable = true;
 
+    # networkmanager manages upstream connectivity,
+    # so networkd is unable to detect online status and will hang if not disabled
+    systemd.network.wait-online.enable = false;
+
+    # disable ipv6 to prevent it leaking from PIA-VPN which only supports ipv4
+    # see https://anagogistis.com/posts/ipv6-disable/
+    # systemd.network.networks = {
+    #   "10-disable-ipv6" = {
+    #     enable = true;
+    #     matchConfig.Name = "wlp229s0";
+    #     networkConfig = {
+    #       # enables IPv4 DHCP only
+    #       DHCP = "ipv4";
+    #       IPv6AcceptRA = false;
+    #       LinkLocalAddressing = "ipv4";
+    #     };
+    #   };
+    # };
+    # If you intend to route all your traffic through the wireguard tunnel,
+    # the default configuration of the NixOS firewall will block the traffic because of rpfilter
+    # true (or “strict”), “loose” (only drop the packet if the source address is not reachable via any interface) or false
+    # networking.firewall.checkReversePath = "loose";
+
+    # open the firewall for the configured wireguard port
+    networking.firewall.allowedUDPPorts = [ 50137 ];
+
     systemd.services.pia-vpn = {
       description = "Connect to Private Internet Access on ${cfg.interface}";
-      path = with pkgs; [ bash curl gawk jq wireguard-tools ];
+      path = with pkgs; [
+        bash
+        curl
+        gawk
+        jq
+        wireguard-tools
+      ];
       requires = [ "network-online.target" ];
-      after = [ "network.target" "network-online.target" ];
-      wantedBy = [ "multi-user.target" ];
+      after = [
+        "network.target"
+        "network-online.target"
+      ];
+      restartIfChanged = false;
+      # wantedBy = [ "multi-user.target" ];
 
       unitConfig = {
         ConditionFileNotEmpty = [
@@ -276,7 +356,7 @@ with lib;
         networkctl reload
         networkctl up ${cfg.interface}
 
-        ${pkgs.systemd}/lib/systemd/systemd-networkd-wait-online -i ${cfg.interface}
+        # ${pkgs.systemd}/lib/systemd/systemd-networkd-wait-online -i ${cfg.interface}
 
         ${cfg.postUp}
       '';
@@ -301,7 +381,10 @@ with lib;
 
     systemd.services.pia-vpn-portforward = mkIf cfg.portForward.enable {
       description = "Configure port-forwarding for PIA connection ${cfg.interface}";
-      path = with pkgs; [ curl jq ];
+      path = with pkgs; [
+        curl
+        jq
+      ];
       after = [ "pia-vpn.service" ];
       bindsTo = [ "pia-vpn.service" ];
       wantedBy = [ "pia-vpn.service" ];
