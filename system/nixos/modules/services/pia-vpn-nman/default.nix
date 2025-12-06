@@ -8,12 +8,12 @@
   ...
 }:
 let
-  cfg = config.mettavi.system.services.pia-vpn;
+  cfg = config.mettavi.system.services.pia-vpn-netmanager;
 in
 with lib;
 
 {
-  options.mettavi.system.services.pia-vpn = {
+  options.mettavi.system.services.pia-vpn-netmanager = {
     enable = mkEnableOption "Private Internet Access VPN service.";
 
     certificateFile = mkOption {
@@ -180,7 +180,7 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    mettavi.system.services.pia-vpn = {
+    mettavi.system.services.pia-vpn-netmanager = {
       # authenticate with
       environmentFile = "${config.home-manager.users.${username}.sops.secrets."users/${username}/pia.env".path
       }";
@@ -318,7 +318,7 @@ with lib;
         # save the wireguard config to the module's directory
         nixrepo="${
           config.users.users.${username}.home
-        }/${nix_repo}/system/nixos/modules/services/pia-vpn/wg0.conf"
+        }/${nix_repo}/system/nixos/modules/services/pia-vpn-nman/wg0.conf"
 
         cat > $nixrepo <<EOF
         ${cfg.networkManConfig}
