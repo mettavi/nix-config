@@ -89,22 +89,23 @@ with lib;
 
     networkConfig = mkOption {
       type = types.str;
-      default = ''
-        [Match]
-        Name = ''${interface}
+      default = # bash
+        ''
+          [Match]
+          Name = ''${interface}
 
-        [Network]
-        Description = WireGuard PIA network interface
-        Address = ''${peerip}/32
+          [Network]
+          Description = WireGuard PIA network interface
+          Address = ''${peerip}/32
 
-        [RoutingPolicyRule]
-        From = ''${peerip}
-        Table = 42
+          [RoutingPolicyRule]
+          From = ''${peerip}
+          Table = 42
 
-        [Route]
-        Table = 42
-        Destination = 0.0.0.0/0
-      '';
+          [Route]
+          Table = 42
+          Destination = 0.0.0.0/0
+        '';
       description = ''
         Configuration of 60-''${cfg.interface}.network
       '';
