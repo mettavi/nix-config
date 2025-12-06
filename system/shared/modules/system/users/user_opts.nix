@@ -60,8 +60,6 @@ in
             extraGroups = mkOption {
               type = types.listOf types.str;
               default = [
-                # allow user to configure networking and use sudo
-                "networkmanager"
                 "wheel"
                 # allow this user access to printer/scanner services
                 "scanner"

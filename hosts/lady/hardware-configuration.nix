@@ -52,7 +52,7 @@
   };
 
   fileSystems."/mnt/bootcamp" = {
-    device = "/dev/disk/by-uuid/2B83BD105D4F5763";
+    device = "/dev/disk/by-uuid/2F553BB73F5C54D4";
     fsType = "ntfs-3g";
     options = [
       "rw"
