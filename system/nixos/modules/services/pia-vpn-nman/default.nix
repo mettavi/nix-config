@@ -65,53 +65,6 @@ with lib;
       '';
     };
 
-    netdevConfig = mkOption {
-      type = types.str;
-      default = # bash
-        ''
-          [NetDev]
-          Description = WireGuard PIA network device
-          Name = ''${interface}
-          Kind = wireguard
-
-          [WireGuard]
-          PrivateKey = $privateKey
-
-          [WireGuardPeer]
-          PublicKey = $(echo "$json" | jq -r '.server_key')
-          AllowedIPs = 0.0.0.0/0, ::/0
-          Endpoint = ''${wg_ip}:$(echo "$json" | jq -r '.server_port')
-          PersistentKeepalive = 25
-        '';
-      description = ''
-        Configuration of 60-''${cfg.interface}.netdev
-      '';
-    };
-
-    networkConfig = mkOption {
-      type = types.str;
-      default = # bash
-        ''
-          [Match]
-          Name = ''${interface}
-
-          [Network]
-          Description = WireGuard PIA network interface
-          Address = ''${peerip}/32
-
-          [RoutingPolicyRule]
-          From = ''${peerip}
-          Table = 42
-
-          [Route]
-          Table = 42
-          Destination = 0.0.0.0/0
-        '';
-      description = ''
-        Configuration of 60-''${cfg.interface}.network
-      '';
-    };
-
     networkManConfig = mkOption {
       type = types.str;
       default = # bash
