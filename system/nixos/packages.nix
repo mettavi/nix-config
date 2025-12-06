@@ -9,13 +9,21 @@
     gcc
     # Tool to control the generation of non-source files from sources (required for neovim telescope-fzf)
     gnumake
+    gparted # graphic disk partitioning tool
+    lshw-gui # detailed hardware info (includes gui)
     # Icons of the Nix logo, in Freedesktop Icon Directory Layout
     nixos-icons
+    pciutils # tools for working with pci devices
     # nodejs
     # python3
     # Command line interface to the freedesktop.org trashcan
     trash-cli
     # Extraction utility
     # unzip
+    unetbootin # Tool to create bootable live USB devices with iso images
+    usbutils # tools for working with usb devices
+    # Tool to access the X clipboard from a console application
+    # Required for clipboard integration with neovim
+    xclip
   ];
 }

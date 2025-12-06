@@ -36,6 +36,9 @@
     priority = 100;
   };
 
+  # Use latest kernel.
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   boot.kernel.sysctl = {
     # default is 60
     "vm.swappiness" = 90;
@@ -50,11 +53,25 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  services = {
+    xserver = {
+      enable = true;
+      displayManager.lightdm.enable = true;
+      # Enable the LXQT Desktop Environment.
+      desktopManager.lxqt.enable = true;
+      xkb = {
+        layout = "us";
+        variant = "mac";
+      };
+    };
+  };
 
-  # Enable the LXQT Desktop Environment.
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.desktopManager.lxqt.enable = true;
+  # Enable networking
+  networking.networkmanager.enable = true;
+  networking.firewall.enable = false;
+
+  # Enable network manager applet
+  programs.nm-applet.enable = true;
 
   # SYSTEM MODULES SETTINGS
   mettavi = {

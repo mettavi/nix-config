@@ -58,19 +58,24 @@
     "vm.swappiness" = 90;
   };
 
+  # Enable GuC loading HuC firmware in i915 kernel driver
+  # Use low-power encoding with jellyfin to offload the GPU usage with the help of the HuC firmware
+  boot.kernelParams = [ "i915.enable_guc=2" ];
+
   # the installation process is allowed to modify EFI boot variables
   # (enabling this is not recommended on T2 macs)
   boot.loader.efi.canTouchEfiVariables = false;
   boot.loader.efi.efiSysMountPoint = "/boot";
 
-  environment.systemPackages = with pkgs; [
-    efibootmgr # application to modify the Intel EFI Boot Manager
-  ];
-
   boot.loader.systemd-boot = {
     enable = true;
     configurationLimit = 10;
   };
+
+  environment.systemPackages = with pkgs; [
+    efibootmgr # application to modify the Intel EFI Boot Manager
+    lm_sensors # tools for reading hardware sensors
+  ];
 
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
@@ -134,6 +139,7 @@
       };
       services = {
         audiobookshelf.enable = true;
+        jellyfin.enable = true;
       };
       # enable system users
       userConfig = {

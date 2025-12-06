@@ -54,6 +54,8 @@ in
       };
       "users/${username}/github_token" = {
       };
+      # .env file for use with systemd service for PIA VPN
+      "users/${username}/pia.env" = { };
     };
     # secrets.test = {
     #   # sopsFile = ./secrets.yml.enc; # optionally define per-secret files

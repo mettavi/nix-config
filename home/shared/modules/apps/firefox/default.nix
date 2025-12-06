@@ -65,6 +65,7 @@ in
             force = true;
             packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
               bitwarden
+              darkreader
               privacy-badger
               sponsorblock
               tabliss
@@ -213,11 +214,17 @@ in
             # DISABLE FIREFOX ACCOUNTS
             # "identity.fxaccounts.enabled" = false;
 
-            # Prefer dark theme
-            "layout.css.prefers-color-scheme.content-override" = 0; # 0: Dark, 1: Light, 2: Auto
+            # for the darkreader extension
+            "extensions.webextensions.restrictedDomains" = "";
+            "privacy.resistFingerprinting.block_mozAddonManager" = true;
+
+            # Prefer dark theme webpages
+            # 0: Force Dark, 1: Force Light, 2: System theme, 3: Browser theme
+            "layout.css.prefers-color-scheme.content-override" = 0;
 
             "media.autoplay.default" = 5; # block both audible and inaudible media from autoplaying.
             "media.cubeb.backend" = "alsa"; # force firefox to use the ALSA/pipewire backend
+            "media.mkv.enabled" = true;
 
             "mousewheel.default.delta_multiplier_x" = 20;
             "mousewheel.default.delta_multiplier_y" = 20;
@@ -329,8 +336,10 @@ in
             "extensions.pocket.site" = "";
 
             # Force enable GPU acceleration
+            "layers.acceleration.force-enabled" = true;
             "media.ffmpeg.vaapi.enabled" = true;
             "media.hardware-video-decoding.force-enabled" = true;
+            "media.windows-media-foundation.allow-d3d11-dxva" = true;
             "widget.dmabuf.force-enabled" = true; # Required in recent Firefoxes
 
             # Enable HTTPS-Only Mode

@@ -32,7 +32,7 @@ in
           intel-media-driver
           # For older processors, use with LIBVA_DRIVER_NAME=i965:
           # (older but works better for Firefox/Chromium)
-          intel-vaapi-driver
+          intel-vaapi-driver # intel video acceleration API
           libvdpau-va-gl # Video Decode and Presentation API for Unix
           intel-ocl # Generic OpenCL support
           # OpenCL support for intel CPUs before 12th gen
