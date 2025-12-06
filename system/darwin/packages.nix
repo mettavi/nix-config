@@ -17,6 +17,7 @@ in
     appcleaner
     coreutils-prefixed
     darwin.trash
+    ffmpeg
     # grandperspective
     # iina
     # iterm2
