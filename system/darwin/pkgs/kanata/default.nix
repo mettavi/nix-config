@@ -1,5 +1,5 @@
 {
-  apple-sdk_13,
+  apple-sdk,
   darwinMinVersionHook,
   fetchFromGitHub,
   lib,
@@ -28,7 +28,7 @@ rustPlatform.buildRustPackage {
   buildType = "debug";
 
   buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [
-    apple-sdk_13
+    apple-sdk
     (darwinMinVersionHook "13.0")
   ];
 
