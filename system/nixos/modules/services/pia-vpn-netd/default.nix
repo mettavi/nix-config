@@ -390,6 +390,8 @@ with lib;
       after = [ "pia-vpn.service" ];
       bindsTo = [ "pia-vpn.service" ];
       wantedBy = [ "pia-vpn.service" ];
+      # do not restart (or start) the service when running 'nixos-rebuild switch'
+      restartIfChanged = false;
 
       unitConfig = {
         ConditionFileNotEmpty = [

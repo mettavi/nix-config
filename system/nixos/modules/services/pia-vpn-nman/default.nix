@@ -166,6 +166,8 @@ with lib;
         "network.target"
         "network-online.target"
       ];
+      # do not restart (or start) the service when running 'nixos-rebuild switch'
+      restartIfChanged = false;
       # do not start the service on system boot
       # wantedBy = [ "multi-user.target" ];
 
