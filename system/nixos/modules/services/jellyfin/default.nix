@@ -23,6 +23,10 @@ in
       logDir = "${home}/.local/share/jellyfin/log";
       user = "${username}";
     };
+
+    # prevent the service from auto-starting on boot
+    systemd.services.jellyfin.wantedBy = lib.mkForce [ ];
+
     environment.systemPackages = with pkgs; [
       intel-gpu-tools # testing of the Intel DRM driver
       jellyfin
