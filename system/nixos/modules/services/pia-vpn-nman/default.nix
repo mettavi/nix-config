@@ -294,7 +294,6 @@ with lib;
         # ${pkgs.networkmanager}/bin/nmcli connection modify ${cfg.interface} ipv4.routing-rules "priority 1000 from all table 42" ipv6.routing-rules "priority 1000 from all table 42"
         ${pkgs.networkmanager}/bin/nmcli connection modify ${cfg.interface} connection.autoconnect no
 
-        # ===================================================================
         echo Bringing up network interface ${cfg.interface}.
 
         ${cfg.preUp}
@@ -302,22 +301,21 @@ with lib;
         ${pkgs.networkmanager}/bin/nmcli connection reload
         ${pkgs.networkmanager}/bin/nmcli connection up ${cfg.interface} 
 
-        # ===================================================================
-
         ${cfg.postUp}
       '';
 
       preStop = ''
-        echo Removing network interface ${cfg.interface}.
 
         interface="${cfg.interface}"
 
         ${cfg.preDown}
 
         echo Bringing down network interface ${cfg.interface}.
-
         ${pkgs.networkmanager}/bin/nmcli connection down ${cfg.interface} 
+
+        echo Removing network interface ${cfg.interface}.
         ${pkgs.networkmanager}/bin/nmcli connection delete id ${cfg.interface} 
+
         ${pkgs.networkmanager}/bin/nmcli connection reload
 
         ${cfg.postDown}
