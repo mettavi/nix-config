@@ -74,12 +74,17 @@ with lib;
           # IP on the wireguard network
           Address = ''${peerip}/32
           PrivateKey = $privateKey 
+          # DNS + Streaming + MACE, 
+          # see https://helpdesk.privateinternetaccess.com/kb/articles/using-pia-dns-in-custom-configurations
+          DNS = 10.0.0.241
+          # WG uses remote ports by default, specify the port to open the firewall (see allowedUDPPorts setting) 
+          ListenPort = 50137
 
           [Peer]
           PublicKey = $(echo "$json" | jq -r '.server_key')
           # restrict this to the wireguard subnet if you don't want to route everything to the tunnel
           AllowedIPs = 0.0.0.0/0, ::/0
-          # ip and port of the peer
+          # ip and port of the VPN server
           Endpoint = ''${wg_ip}:$(echo "$json" | jq -r '.server_port')
           # how often to send an authenticated empty packet to the peer, 
           # for the purpose of keeping a stateful firewall or NAT mapping valid persistently
