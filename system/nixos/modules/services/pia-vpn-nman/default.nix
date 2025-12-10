@@ -280,19 +280,29 @@ with lib;
         interface="${cfg.interface}"
 
         # save the wireguard config to the module's directory
-        nixrepo="${
-          config.users.users.${username}.home
-        }/${nix_repo}/system/nixos/modules/services/pia-vpn-nman/wg0.conf"
+        nixrepo="$XDG_STATE_HOME/wg0.conf"
 
         cat > $nixrepo <<EOF
-        ${cfg.networkManConfig}
-        EOF
+        ${cfg.networkManConfig} EOF
+
+        # Disable IPv6 for the wifi interface to prevent it from leaking from a non-ipv6-enabled VPN tunnel
+        # see https://anagogistis.com/posts/ipv6-disable/
+
+        # determine the network names for currently connected wifi and ethernet connections
+        myeth="$(${pkgs.networkmanager}/bin/nmcli -t -f NAME,TYPE connection show --active | grep -E 'ethernet' | cut -d: -f1)"
+        myssid="$(${pkgs.networkmanager}/bin/nmcli -t -f active,ssid dev wifi | grep '^yes' | cut -d: -f2)"
+
+        # set ethernet as the default
+        if [ -n "$myeth" ]; then
+          myconn="$myeth" 
+        else 
+          myconn="$myssid"
+        fi
+
+        ${pkgs.networkmanager}/bin/nmcli connection modify $myconn ipv6.method "disabled"
+        ${pkgs.networkmanager}/bin/nmcli connection up $myconn
 
         ${pkgs.networkmanager}/bin/nmcli connection import type wireguard file ./wg0.conf 
-        # ${pkgs.networkmanager}/bin/nmcli modify ${cfg.interface} ipv4.route-table 42 ipv6.route-table 42
-        # the main table has priority 32766
-        # ${pkgs.networkmanager}/bin/nmcli connection modify ${cfg.interface} ipv4.routing-rules "priority 1000 from all table 42" ipv6.routing-rules "priority 1000 from all table 42"
-        ${pkgs.networkmanager}/bin/nmcli connection modify ${cfg.interface} connection.autoconnect no
 
         echo Bringing up network interface ${cfg.interface}.
 
