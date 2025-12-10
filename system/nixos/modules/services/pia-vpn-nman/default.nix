@@ -79,8 +79,6 @@ with lib;
           # DNS + Streaming + MACE, 
           # see https://helpdesk.privateinternetaccess.com/kb/articles/using-pia-dns-in-custom-configurations
           DNS = 10.0.0.241
-          # WG uses remote ports by default, specify the port to open the firewall (see allowedUDPPorts setting) 
-          ListenPort = 50137
 
           [Peer]
           PublicKey = $(echo "$json" | jq -r '.server_key')
