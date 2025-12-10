@@ -140,16 +140,12 @@ with lib;
 
   config = mkIf cfg.enable {
     mettavi.system.services.pia-vpn-netmanager = {
-      # authenticate with
       environmentFile = "${config.home-manager.users.${username}.sops.secrets."users/${username}/pia.env".path
       }";
     };
 
     boot.kernelModules = [ "wireguard" ];
     environment.systemPackages = with pkgs; [ wireguard-tools ];
-
-    # open the firewall for the configured wireguard port
-    networking.firewall.allowedUDPPorts = [ 50137 ];
 
     # If you intend to route all your traffic through the wireguard tunnel,
     # the default configuration of the NixOS firewall will block the traffic because of rpfilter
