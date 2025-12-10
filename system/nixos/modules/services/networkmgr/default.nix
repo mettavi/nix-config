@@ -18,7 +18,7 @@ in
     networking.networkmanager.enable = true;
 
     # List of interfaces that will not be managed by NetworkManager
-    networking.networkmanager.unmanaged = [ "wg0" ];
+    # networking.networkmanager.unmanaged = [ "wg0" ];
 
     # allow user to configure networking
     users.users.${username}.extraGroups = [ "networkmanager" ];
