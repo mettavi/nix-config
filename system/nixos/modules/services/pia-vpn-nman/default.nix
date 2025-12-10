@@ -277,7 +277,7 @@ with lib;
         interface="${cfg.interface}"
 
         # save the wireguard config to the module's directory
-        nixrepo="$XDG_STATE_HOME/wg0.conf"
+        nixrepo="/var/lib/pia-vpn/wg0.conf"
 
         cat > $nixrepo <<EOF
         ${cfg.networkManConfig} 
