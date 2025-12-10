@@ -324,7 +324,9 @@ with lib;
         echo Removing network interface ${cfg.interface}.
         ${pkgs.networkmanager}/bin/nmcli connection delete id ${cfg.interface} 
 
-        ${pkgs.networkmanager}/bin/nmcli connection reload
+        ${pkgs.networkmanager}/bin/nmcli connection modify $myconn ipv6.method "auto"
+
+        ${pkgs.networkmanager}/bin/nmcli connection up $myconn
 
         ${cfg.postDown}
       '';
