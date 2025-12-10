@@ -141,7 +141,7 @@
         audiobookshelf.enable = true;
         jellyfin.enable = true;
         networkmanager.enable = true;
-        pia-vpn.enable = true;
+        pia-vpn-netmanager.enable = true;
       };
       # enable system users
       userConfig = {
