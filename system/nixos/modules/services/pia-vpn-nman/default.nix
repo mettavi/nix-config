@@ -73,6 +73,8 @@ with lib;
           [Interface]
           # IP on the wireguard network
           Address = ''${peerip}/32
+          # let WG add routes based on AllowedIPs setting
+          Table = auto
           PrivateKey = $privateKey 
           # DNS + Streaming + MACE, 
           # see https://helpdesk.privateinternetaccess.com/kb/articles/using-pia-dns-in-custom-configurations
