@@ -283,7 +283,8 @@ with lib;
         nixrepo="$XDG_STATE_HOME/wg0.conf"
 
         cat > $nixrepo <<EOF
-        ${cfg.networkManConfig} EOF
+        ${cfg.networkManConfig} 
+        EOF
 
         # Disable IPv6 for the wifi interface to prevent it from leaking from a non-ipv6-enabled VPN tunnel
         # see https://anagogistis.com/posts/ipv6-disable/
