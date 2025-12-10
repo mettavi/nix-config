@@ -306,7 +306,7 @@ with lib;
 
         ${cfg.preUp}
 
-        ${pkgs.networkmanager}/bin/nmcli connection reload
+        ${pkgs.networkmanager}/bin/nmcli connection modify ${cfg.interface} wireguard.mtu 1280
         ${pkgs.networkmanager}/bin/nmcli connection up ${cfg.interface} 
 
         ${cfg.postUp}
