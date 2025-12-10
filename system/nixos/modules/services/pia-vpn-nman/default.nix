@@ -82,9 +82,10 @@ with lib;
 
           [Peer]
           PublicKey = $(echo "$json" | jq -r '.server_key')
-          # restrict this to the wireguard subnet if you don't want to route everything to the tunnel
-          AllowedIPs = 0.0.0.0/0, ::/0
-          # ip and port of the VPN server
+          # route everything throug the VPN tunnel
+          # NB: restrict this to the wireguard subnet if you don't want to route everything to the tunnel
+          AllowedIPs = 0.0.0.0/0
+          # public ip and port of the VPN gateway server
           Endpoint = ''${wg_ip}:$(echo "$json" | jq -r '.server_port')
           # how often to send an authenticated empty packet to the peer, 
           # for the purpose of keeping a stateful firewall or NAT mapping valid persistently
