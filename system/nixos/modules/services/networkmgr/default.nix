@@ -37,6 +37,7 @@ in
     # Set the DNS (resolv.conf) processing mode
     # one of "default", "dnsmasq", "systemd-resolved", "none"
     networking.networkmanager.dns = "systemd-resolved";
+    services.resolved.enable = true;
 
     networking.networkmanager.wifi = {
       # wpa_supplicant or iwd (experimental)
