@@ -187,7 +187,9 @@
         "image/jpeg" = "org.gnome.Loupe.desktop";
         # gnome document viewer
         "application/pdf" = "org.gnome.Evince.desktop";
+        # calibre
         "application/lrf" = "calibre-lrfviewer.desktop";
+        "application/epub+zip" = "calibre-ebook-viewer.desktop";
         "text/html" = "firefox.desktop";
         "x-scheme-handler/http" = "firefox.desktop";
         "x-scheme-handler/https" = "firefox.desktop";
