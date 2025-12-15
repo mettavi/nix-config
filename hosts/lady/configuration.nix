@@ -171,6 +171,7 @@
         chromium.enable = true;
         firefox.enable = true;
         ghostty.enable = true;
+        qbittorrent.enable = true;
       };
     };
     xdg.mimeApps = {
