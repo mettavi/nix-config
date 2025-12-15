@@ -201,6 +201,11 @@ in
             "browser.helperApps.deleteTempFileOnExit" = true;
             "distribution.searchplugins.defaultLocale" = "en-AU";
             "extensions.autoDisableScopes" = 0; # automatically enable extensions
+
+            # disable using FF for payment autofill
+            "extensions.formautofill.paymentMethods.enabled" = false;
+            "extensions.formautofill.creditCards.enabled" = false;
+
             "extensions.update.enabled" = false;
             "general.autoScroll" = true;
             "general.useragent.locale" = "en-AU";
