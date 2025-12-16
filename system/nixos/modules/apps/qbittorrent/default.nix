@@ -8,33 +8,40 @@
 }:
 with lib;
 let
-  inherit (config.lib.file) mkOutOfStoreSymlink;
-  cfg = config.mettavi.apps.qbittorrent;
+  cfg = config.mettavi.system.apps.qbittorrent;
 in
-{
-  options.mettavi.apps.qbittorrent = {
+rec {
+  options.mettavi.system.apps.qbittorrent = {
     enable = mkEnableOption "Install and set up qbittorrent";
     isService = mkEnableOption "Use the qbittorrent web GUI with a systemd service"; # use the desktop app by default (no service)
   };
 
   config = mkIf cfg.enable {
-    # install the desktop app (no service)
-    home-manager.users.${username} = mkIf (!cfg.isService) {
-      home.packages = with pkgs; [
-        qbittorrent
-      ];
-      xdg.configFile = {
-        # link without copying to nix store (manage externally) - must use absolute paths
-        # no documentation of config file syntax is available, so use the GUI to write to an out-of-store file
-        "qBittorrent/qBittorrent.conf".source =
-          mkOutOfStoreSymlink "${inputs.self}/home/shared/modules/apps/qbittorrent/qBittorrent.conf";
+    # select the desktop app (no service)
+    home-manager.users.${username} =
+      { config, ... }:
+      with lib;
+      let
+        inherit (config.lib.file) mkOutOfStoreSymlink;
+      in
+      {
+        home.packages =
+          with pkgs;
+          mkIf (!cfg.isService) [
+            qbittorrent
+          ];
+        xdg.configFile = mkIf (!cfg.isService) {
+          # link without copying to nix store (manage externally) - must use absolute paths
+          # no documentation of config file syntax is available, so use the GUI to write to an out-of-store file
+          "qBittorrent/qBittorrent.conf".source =
+            mkOutOfStoreSymlink "${inputs.self}/system/nixos/modules/apps/qbittorrent/qBittorrent.conf";
+        };
       };
-    };
-    # install the web GUI and systemd service
+    # select the web GUI and systemd service
     services.qbittorrent = mkIf (cfg.isService) {
       enable = true;
       openFirewall = true; # open both the webuiPort and torrentPort over TCP
-      packages = pkgs.qbittorent-nox;
+      package = pkgs.qbittorent-nox;
       profileDir = "${config.users.users.${username}.home}/.config/qbittorrent"; # location of configuration files
       serverConfig = {
         LegalNotice.Accepted = true;

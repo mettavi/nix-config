@@ -128,6 +128,7 @@
       gnome.enable = true;
       apps = {
         libreoffice.enable = true;
+        qbittorrent.enable = true;
       };
       devices = {
         intel-chips.enable = true;
@@ -171,7 +172,6 @@
         chromium.enable = true;
         firefox.enable = true;
         ghostty.enable = true;
-        qbittorrent.enable = true;
       };
     };
     xdg.mimeApps = {
