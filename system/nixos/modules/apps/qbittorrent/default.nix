@@ -39,6 +39,9 @@ rec {
             source = mkOutOfStoreSymlink "${inputs.self}/system/nixos/modules/apps/qbittorrent/qBittorrent.conf";
           };
         };
+        xdg.mimeApps.defaultApplications = {
+          "x-scheme-handler/magnet" = "org.qbittorrent.qBittorrent.desktop";
+        };
       };
     # select the web GUI and systemd service
     services.qbittorrent = mkIf (cfg.isService) {
