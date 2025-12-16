@@ -33,8 +33,11 @@ rec {
         xdg.configFile = mkIf (!cfg.isService) {
           # link without copying to nix store (manage externally) - must use absolute paths
           # no documentation of config file syntax is available, so use the GUI to write to an out-of-store file
-          "qBittorrent/qBittorrent.conf".source =
-            mkOutOfStoreSymlink "${inputs.self}/system/nixos/modules/apps/qbittorrent/qBittorrent.conf";
+          "qBittorrent/qBittorrent.conf" = {
+            # do not fail if the backup file already exists, as it changes frequently; overwrite it instead
+            force = true;
+            source = mkOutOfStoreSymlink "${inputs.self}/system/nixos/modules/apps/qbittorrent/qBittorrent.conf";
+          };
         };
       };
     # select the web GUI and systemd service
