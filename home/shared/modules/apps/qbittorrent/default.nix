@@ -17,11 +17,10 @@ in
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       qbittorrent
-      # vuetorrent
+      # vuetorrent # WEBUI for qBittorrent made with Vuejs
     ];
     xdg.configFile = {
       # link without copying to nix store (manage externally) - must use absolute paths
-      # mkOutOfStoreSymlink is required to allow the lazy-lock.json file to be writable
       "qBittorrent/qBittorrent.conf".source =
         mkOutOfStoreSymlink "${inputs.self}/home/shared/modules/apps/qbittorrent/qBittorrent.conf";
     };
