@@ -300,7 +300,7 @@ with lib;
         ${pkgs.networkmanager}/bin/nmcli connection modify $myconn ipv6.method "disabled"
         ${pkgs.networkmanager}/bin/nmcli connection up $myconn
 
-        ${pkgs.networkmanager}/bin/nmcli connection import type wireguard file ./wg0.conf 
+        ${pkgs.networkmanager}/bin/nmcli connection import type wireguard file $nixrepo
 
         echo Bringing up network interface ${cfg.interface}.
 
