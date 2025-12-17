@@ -1,7 +1,7 @@
 {
   config,
-  inputs,
   lib,
+  nix_repo,
   pkgs,
   username,
   ...
@@ -33,10 +33,9 @@ rec {
         xdg.configFile = mkIf (!cfg.isService) {
           # link without copying to nix store (manage externally) - must use absolute paths
           # no documentation of config file syntax is available, so use the GUI to write to an out-of-store file
-          "qBittorrent/qBittorrent.conf" = {
+          "qBittorrent" = {
             # do not fail if the backup file already exists, as it changes frequently; overwrite it instead
-            force = true;
-            source = mkOutOfStoreSymlink "${inputs.self}/system/nixos/modules/apps/qbittorrent/qBittorrent.conf";
+            source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/qBittorrent";
           };
         };
         xdg.mimeApps.defaultApplications = {
