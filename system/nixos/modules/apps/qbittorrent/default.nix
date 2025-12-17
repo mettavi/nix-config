@@ -40,6 +40,7 @@ rec {
         };
         xdg.mimeApps.defaultApplications = {
           "x-scheme-handler/magnet" = "org.qbittorrent.qBittorrent.desktop";
+          "application/x-bittorrent" = "org.qbittorrent.qBittorrent.desktop";
         };
       };
     # select the web GUI and systemd service
