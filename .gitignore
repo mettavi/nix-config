@@ -1,4 +1,6 @@
 .DS_Store
 hosts/mack/examples
-result
 *.log
+lockfile
+*.lock
+result
