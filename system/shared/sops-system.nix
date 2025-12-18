@@ -47,6 +47,7 @@ in
       };
       "users/${username}/google_timotheos_app_pw" = {
       };
+      "users/${username}/jellarr_apikey" = { };
       # wifi passwords to configure wireless networks
       "users/${username}/wifi.env" = { };
     };
