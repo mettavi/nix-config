@@ -14,6 +14,8 @@ in
     enable = lib.mkEnableOption "Install and set up the jellyfin media server";
   };
 
+  # jellyfin-web: ${pkgs.jellyfin-web}/share/jellyfin-web/config.json
+  # jellyfin: system.xml in the configDir (see below)
   config = lib.mkIf cfg.enable {
     services.jellyfin = {
       enable = true;
