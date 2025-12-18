@@ -13,7 +13,7 @@ in
 {
 
   options.mettavi.system.services.jellarr = {
-    enable = lib.mkEnableOption "Install and set up the jellyfin media server using the jellarr third-party flake";
+    enable = lib.mkEnableOption "Install and declaratively configure the jellyfin media server using the jellarr third-party flake";
   };
 
   config = lib.mkIf cfg.enable {
