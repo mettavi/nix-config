@@ -48,6 +48,7 @@ in
       "users/${username}/google_timotheos_app_pw" = {
       };
       "users/${username}/jellarr_apikey" = { };
+      "users/${username}/jellyfin_admin-lady" = { };
       # wifi passwords to configure wireless networks
       "users/${username}/wifi.env" = { };
     };
