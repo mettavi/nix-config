@@ -42,7 +42,9 @@ in
         version = 1;
         base_url = "http://localhost:8096";
         system = {
-          enableMetrics = true; # Enable Prometheus metrics endpoint
+          # Enable Prometheus metrics endpoint at /metrics
+          # turned off by default to avoid leaking information publicly
+          enableMetrics = false;
           pluginRepositories = {
             name = "Jellyfin Stable";
             url = "https://repo.jellyfin.org/releases/plugin/manifest.json";
@@ -73,7 +75,7 @@ in
           enableDecodingColorDepth10Vp9 = true;
           enableDecodingColorDepth10HevcRext = true;
           enableDecodingColorDepth12HevcRext = true;
-          allowHevcEncoding = false;
+          allowHevcEncoding = true;
           allowAv1Encoding = false;
         };
         library = {
