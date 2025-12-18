@@ -76,6 +76,10 @@
       url = "github:rafaelmardojai/firefox-gnome-theme";
       flake = false;
     };
+    jellarr = {
+      url = "github:venkyr77/jellarr";
+      inputs.nixpkgs.follows = "nixos-pkgs";
+    };
     kegworks = {
       url = "github:Kegworks-App/Kegworks";
       flake = false;
