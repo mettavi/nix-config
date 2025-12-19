@@ -11,6 +11,10 @@ let
   home = config.users.users.${username}.home;
 in
 {
+  # import the nixos jellarr module
+  imports = [
+    inputs.jellarr.nixosModules.default
+  ];
 
   options.mettavi.system.services.jellarr = {
     enable = lib.mkEnableOption "Install and declaratively configure the jellyfin media server using the jellarr third-party flake";
@@ -20,22 +24,20 @@ in
     # install and setup the jellyfin service
     mettavi.system.services.jellyfin.enable = true;
 
-    # import the nixos jellarr module
-    imports = [
-      inputs.jellarr.nixosModules.default
-    ];
+    # prevent the service from auto-starting on boot
+    # systemd.services.jellarr.wantedBy = lib.mkForce [ ];
 
     # configure the jellarr module
     services.jellarr = {
       enable = true;
       # NB: bootstrap only works if jellarr and jellyfin are on the same host
       bootstrap = {
-        enable = true;
+        enable = false;
         apiKeyFile = config.sops.secrets."users/${username}/jellarr_apikey".path;
       };
       dataDir = "${home}/.local/share/jellarr";
       # not required if using the bootstrap option
-      # environmentFile = config.sops.templates.jellarr-env.path;
+      environmentFile = config.sops.templates."jellarr.env".path;
       user = "${username}";
       group = "jellyfin";
       config = {
@@ -100,6 +102,8 @@ in
             }
           ];
         };
+        # Run interval for the timer (default: "daily")
+        schedule = "daily";
         startup = {
           completeStartupWizard = true;
         };
