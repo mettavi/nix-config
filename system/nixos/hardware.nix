@@ -22,6 +22,14 @@
       ];
     };
   };
+
+  # handles input devices (mouse, touchpad)
+  services.libinput = {
+    enable = true;
+    # Disable input method while typing (default:false)
+    touchpad.disableWhileTyping = true;
+  };
+
   services.udev.packages = [
     # enable programs to pick up the above scanners
     pkgs.sane-airscan

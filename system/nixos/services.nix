@@ -7,9 +7,6 @@
     openFirewall = true; # open UDP port 5353
   };
 
-  # Enable touchpad support (enabled by default in most desktopManager).
-  services.libinput.enable = true;
-
   # Enable sound with pipewire.
   services.pipewire = {
     enable = true;
