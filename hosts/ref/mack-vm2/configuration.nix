@@ -1,3 +1,4 @@
+# WAS: host "remus"
 {
   pkgs,
   username,
@@ -23,7 +24,7 @@
     ];
   };
 
-  # "remus" is a vmware guest running on darwin host "mack"
+  # this host is a vmware guest running on darwin host "mack"
   # enable VMWare guest support
   virtualisation.vmware.guest.enable = true;
 
