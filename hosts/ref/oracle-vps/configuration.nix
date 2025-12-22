@@ -1,3 +1,4 @@
+# WAS: host "salina"
 {
   modulesPath,
   pkgs,
