@@ -38,8 +38,6 @@
       dates = "02:15";
     };
     settings = {
-      # especially for host salina (oracle cloud)
-      download-buffer-size = lib.mkIf (hostname == "salina") 524288000;
       # enable flakes
       experimental-features = [
         "nix-command"

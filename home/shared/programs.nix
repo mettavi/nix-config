@@ -88,11 +88,6 @@
         "github.com" = {
           identityFile = "${config.home.homeDirectory}/.ssh/${config.home.username}-${hostname}_ed25519";
         };
-        "salina" = {
-          hostname = "169.224.231.109";
-          user = "timotheos";
-          identityFile = "${config.home.homeDirectory}/.ssh/${config.home.username}-${hostname}_ed25519";
-        };
         "*" = {
           forwardAgent = false;
           # add ssh keys to ssh-agent when making the first connection

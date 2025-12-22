@@ -14,7 +14,7 @@
     ./hardware-configuration.nix
   ];
 
-  # install the ghostty terminfo (which is missing from current versions of terminfo) for ssh sessions to host salina
+  # install the ghostty terminfo (which is missing from current versions of terminfo) for ssh sessions to this host
   environment.systemPackages = with pkgs; [ ghostty.terminfo ];
 
   ########## IMPORTANT SETTINGS ###########
