@@ -24,9 +24,6 @@
       # unzip
       unetbootin # Tool to create bootable live USB devices with iso images
       usbutils # tools for working with usb devices
-      # Tool to access the X clipboard from a console application
-      # Required for clipboard integration with neovim
-      xclip
     ]
     # prevent duplicate packages of ffmpeg (jellyfin requires its own version of ffmpeg)
     ++ lib.optionals (!config.services.jellyfin.enable) [

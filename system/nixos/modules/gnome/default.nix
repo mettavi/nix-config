@@ -71,6 +71,7 @@ in
           gnome-extension-manager # Desktop app for managing GNOME shell extensions
           gnome-tweaks # Tool to customize advanced GNOME 3 options
           switcheroo # Gnome app for converting (and resizing) images between different formats (uses imagemagick)
+          wl-clipboard # command line copy/paste utilities for Wayland
         ])
         ++ (with pkgs.gnomeExtensions; [
           appindicator # Adds AppIndicator, KStatusNotifierItem and legacy Tray icons support to the Shell.
