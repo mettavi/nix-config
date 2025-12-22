@@ -40,6 +40,8 @@ in
       environmentFile = config.sops.templates."jellarr.env".path;
       user = "${username}";
       group = "jellyfin";
+      # Run interval for the timer (default: "daily")
+      schedule = "daily";
       config = {
         version = 1;
         base_url = "http://localhost:8096";
@@ -47,18 +49,20 @@ in
           # Enable Prometheus metrics endpoint at /metrics
           # turned off by default to avoid leaking information publicly
           enableMetrics = false;
-          pluginRepositories = {
-            name = "Jellyfin Stable";
-            url = "https://repo.jellyfin.org/releases/plugin/manifest.json";
-            enabled = true;
-          };
-          trickPlayOptions = {
+          pluginRepositories = [
+            {
+              name = "Jellyfin Stable";
+              url = "https://repo.jellyfin.org/releases/plugin/manifest.json";
+              enabled = true;
+            }
+          ];
+          trickplayOptions = {
             enableHwAcceleration = true;
             enableHwEncoding = true;
           };
         };
         branding = {
-          splashScreenEnabled = false;
+          splashscreenEnabled = false;
         };
         encoding = {
           enableHardwareEncoding = true;
@@ -86,24 +90,26 @@ in
               name = "Movies";
               collectionType = "movies";
               libraryOptions = {
-                pathInfos = {
-                  path = "${config.users.users.${username}.home}/media/movies";
-                };
+                pathInfos = [
+                  {
+                    path = "${config.users.users.${username}.home}/media/movies";
+                  }
+                ];
               };
             }
             {
               name = "Shows";
               collectionType = "tvshows";
               libraryOptions = {
-                pathInfos = {
-                  path = "${config.users.users.${username}.home}/media/shows";
-                };
+                pathInfos = [
+                  {
+                    path = "${config.users.users.${username}.home}/media/shows";
+                  }
+                ];
               };
             }
           ];
         };
-        # Run interval for the timer (default: "daily")
-        schedule = "daily";
         startup = {
           completeStartupWizard = true;
         };
