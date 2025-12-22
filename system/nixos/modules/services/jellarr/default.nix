@@ -38,6 +38,7 @@ in
       };
       dataDir = "${home}/.local/share/jellarr";
       # not required if using the bootstrap option
+      # BUT: set JELLARR_API_KEY to get bootstrap option to work due to https://github.com/venkyr77/jellarr/issues/30
       environmentFile = config.sops.templates."jellarr.env".path;
       user = "${username}";
       group = "jellyfin";
