@@ -27,7 +27,7 @@
     extraPortals =
       with pkgs;
       # required for screensharing functionality on Wayland
-      lib.optionals config.services.displayManager.gdm.wayland [
+      [
         xdg-desktop-portal-gnome
         xdg-desktop-portal-gtk # Use this for GNOME (may already be default)
         # xdg-desktop-portal-wlr # Use this for Sway/wlroots

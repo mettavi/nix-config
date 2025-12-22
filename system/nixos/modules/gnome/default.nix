@@ -18,6 +18,10 @@ in
     };
   };
 
+  imports = [
+    ./xdg.nix # configure xdg portals for gnome
+  ];
+
   config = mkIf cfg.enable {
     environment = {
       gnome.excludePackages = with pkgs; [
@@ -155,9 +159,10 @@ in
       };
       gtk = {
         enable = true;
+        colorScheme = "dark";
         # enable dark theme on legacy apps
-        gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
-        gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+        # gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
+        # gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
       };
       qt = {
         enable = true;
