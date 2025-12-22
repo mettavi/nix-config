@@ -136,8 +136,6 @@
       nixosConfigurations = {
         "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux";
         "lady" = mkNixos.mkNixosConfiguration "lady" "x86_64-linux";
-        "remus" = mkNixos.mkNixosConfiguration "remus" "x86_64-linux";
-        "salina" = mkNixos.mkNixosConfiguration "salina" "aarch64-linux";
       };
 
       ################################  NIXOS-ANYWHERE BUILDS  ######################################
