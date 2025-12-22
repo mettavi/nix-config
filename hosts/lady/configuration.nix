@@ -140,7 +140,8 @@
       };
       services = {
         audiobookshelf.enable = true;
-        jellyfin.enable = true;
+        # this also enables the jellyfin module
+        jellarr.enable = true;
         networkmanager.enable = true;
         pia-vpn-netmanager.enable = true;
       };
