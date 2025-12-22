@@ -61,6 +61,13 @@ in
           '';
         path = "/etc/postfix/sasl_passwd";
       };
+      "jellarr.env" = {
+        content = ''
+          JELLARR_API_KEY=${config.sops.placeholder."users/${username}/jellarr_apikey"}
+        '';
+        owner = config.services.jellarr.user;
+        group = config.services.jellarr.group;
+      };
     };
   };
   # The containing folders are created as root and if this is the first ~/.config/ entry,
