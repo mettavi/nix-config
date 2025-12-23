@@ -34,7 +34,7 @@ in
       # NB: bootstrap only works if jellarr and jellyfin are on the same host
       bootstrap = {
         # disable this feature until https://github.com/venkyr77/jellarr/issues/39 is resolved
-        enable = false;
+        enable = true;
         apiKeyFile = config.sops.secrets."users/${username}/jellarr_apikey".path;
       };
       dataDir = "${home}/.local/share/jellarr";
