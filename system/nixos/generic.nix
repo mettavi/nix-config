@@ -38,6 +38,14 @@
       dates = "02:15";
     };
     settings = {
+
+      # WARNING: This is for temporary use to authenticate while setting up the ssh keys with the sops-nix secrets system.
+      # Do not commit this to git under any circumstances!
+
+      # access-tokens = [
+      #   "github.com=<personal-access-token-here>"
+      # ];
+
       # enable flakes
       experimental-features = [
         "nix-command"
