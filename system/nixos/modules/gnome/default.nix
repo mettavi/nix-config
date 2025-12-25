@@ -150,7 +150,10 @@ in
         };
         "org/gnome/desktop/wm/keybindings" = {
           # workaround for problem with the ALT-F2 default for the Gnome run dialog
-          panel-run-dialog = [ "<Alt>S" ];
+          panel-run-dialog = [
+            "<Alt>F2" # this is the default
+            "<Alt>S" # this is a workaround for the keyboard on host lady
+          ];
         };
         # "org/gnome/desktop/peripherals/keyboard" = {
         # delay = lib.hm.gvariant.mkUint32 175;
