@@ -49,7 +49,7 @@
   boot.loader.efi.efiSysMountPoint = "/efi";
   boot.blacklistedKernelModules = [ "nouveau" ];
 
-  # Use the cachyos kernel for the latest asus g14 kernal patches.
+  # Use the cachyos kernel for the latest asus g14 kernel patches.
   boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
   networking.hostName = "oona"; # Define your hostname.
