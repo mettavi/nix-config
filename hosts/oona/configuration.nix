@@ -1,15 +1,21 @@
-{ config, lib, pkgs, username, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  username,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
-  services.xserver.videoDrivers = [ 
-    "nvidia"  
-   # according to the wiki, this is unnecessary
-   # "amdgpu" 
+  services.xserver.videoDrivers = [
+    "nvidia"
+    # according to the wiki, this is unnecessary
+    # "amdgpu"
   ];
 
   hardware.graphics.enable = true;
@@ -19,26 +25,29 @@
     modesetting.enable = true;
     dynamicBoost.enable = true;
     nvidiaSettings = true;
-   powerManagement = { 
-     enable = true; 
-   #   finegrained = true; 
-   };
+    powerManagement = {
+      enable = true;
+      #   finegrained = true;
+    };
     open = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-    prime = { 
-        offload = { 
-          enable = true; 
-          enableOffloadCmd = true; 
-        };
-        nvidiaBusId = "PCI:100:0:0";
-        amdgpuBusId = "PCI:101:0:0";
+    prime = {
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
+      nvidiaBusId = "PCI:100:0:0";
+      amdgpuBusId = "PCI:101:0:0";
     };
   };
 
   hardware.enableRedistributableFirmware = true;
 
   nixpkgs.config.allowUnfree = true;
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -105,9 +114,9 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput = { 
-    enable = true; 
-    touchpad.disableWhileTyping = true; 
+  services.libinput = {
+    enable = true;
+    touchpad.disableWhileTyping = true;
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -126,10 +135,11 @@
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
-    git  
+    firefox
+    git
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-   ];
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -150,19 +160,19 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  mettavi.system = { 
-    userConfig = { 
-      timotheos = { 
-        enable = true; 
-      }; 
+  mettavi.system = {
+    userConfig = {
+      timotheos = {
+        enable = true;
+      };
     };
   };
 
- home-manager.users.${username} = {
-   home = {
-     stateVersion = "25.11";
-   };
- };
+  home-manager.users.${username} = {
+    home = {
+      stateVersion = "25.11";
+    };
+  };
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
