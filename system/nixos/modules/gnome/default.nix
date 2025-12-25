@@ -79,6 +79,7 @@ in
         ])
         ++ (with pkgs.gnomeExtensions; [
           appindicator # Adds AppIndicator, KStatusNotifierItem and legacy Tray icons support to the Shell.
+          power-profile-indicator-2 # Add current power profile in panel's system icons.
         ]);
       # Use `dconf watch /` to track stateful changes you are doing, then set them here
       dconf.settings = {
@@ -144,6 +145,7 @@ in
           # `gnome-extensions list` for a list
           enabled-extensions = [
             "appindicatorsupport@rgcjonas.gmail.com"
+            "power-profile@fthx"
           ];
         };
         "org/gnome/desktop/wm/keybindings" = {
