@@ -165,6 +165,11 @@
     home = {
       stateVersion = "25.11";
     };
+    mettavi = {
+      apps = {
+        ghostty.enable = true;
+      };
+    };
   };
 
   # Copy the NixOS configuration file and link it from the resulting system
