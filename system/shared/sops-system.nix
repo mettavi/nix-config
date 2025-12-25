@@ -47,7 +47,6 @@ in
       };
       "users/${username}/google_timotheos_app_pw" = {
       };
-      "users/${username}/jellarr_apikey" = { };
       "users/${username}/jellyfin_admin-lady" = { };
       # wifi passwords to configure wireless networks
       "users/${username}/wifi.env" = { };
@@ -60,13 +59,6 @@ in
             [smtp.gmail.com]:587 ${email}:${config.sops.placeholder."users/${username}/google_timotheos_app_pw"}
           '';
         path = "/etc/postfix/sasl_passwd";
-      };
-      "jellarr.env" = {
-        content = ''
-          JELLARR_API_KEY=${config.sops.placeholder."users/${username}/jellarr_apikey"}
-        '';
-        owner = config.services.jellarr.user;
-        group = config.services.jellarr.group;
       };
     };
   };
