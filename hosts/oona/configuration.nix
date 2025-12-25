@@ -75,9 +75,6 @@
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
-
   services.supergfxd.enable = true;
 
   services = {
@@ -154,6 +151,8 @@
   # networking.firewall.enable = false;
 
   mettavi.system = {
+    # install and set up the gnome desktop
+    gnome.enable = true;
     userConfig = {
       timotheos = {
         enable = true;
