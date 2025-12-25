@@ -164,6 +164,32 @@
     home = {
       stateVersion = "25.11";
     };
+    dconf.settings = {
+      "org/gnome/settings-daemon/plugins/media-keys" = {
+        custom-keybindings = [
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
+        ];
+      };
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+        name = "ROG Control Center";
+        command = "rog-control-center";
+        binding = "Launch1";
+      };
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
+        name = "Next Power Mode";
+        command = "asusctl profile -n";
+        # on the keyboard this is Fn-F5
+        binding = "Launch4";
+      };
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2" = {
+        name = "Next Aura Mode";
+        command = "asusctl led-mode -n";
+        # on the keyboard this is Fn-F4
+        binding = "Launch3";
+      };
+    };
     mettavi = {
       apps = {
         ghostty.enable = true;
