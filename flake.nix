@@ -41,6 +41,10 @@
 
     ######### NIXOS #########
     nixos-pkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel/release";
+      inputs.nixpkgs.follows = "nixos-pkgs";
+    };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     # fan daemon for T2 macs
     t2fanrd.url = "github:GnomedDev/T2FanRD";
