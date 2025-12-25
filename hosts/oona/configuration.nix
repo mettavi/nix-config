@@ -22,6 +22,7 @@
 
   hardware.nvidia = {
     # enabled = lib.mkForce true;
+    # Required for offloading to ensure the iGPU is used as the primary display
     modesetting.enable = true;
     dynamicBoost.enable = true;
     nvidiaSettings = true;
