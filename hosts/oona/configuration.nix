@@ -158,6 +158,9 @@
         enable = true;
       };
     };
+    shell = {
+      kanata.enable = true;
+    };
   };
 
   home-manager.users.${username} = {
