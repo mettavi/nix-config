@@ -6,10 +6,10 @@
 }:
 with lib;
 let
-  cfg = config.mettavi.system.openssh;
+  cfg = config.mettavi.system.services.openssh;
 in
 {
-  options.mettavi.system.openssh = {
+  options.mettavi.system.services.openssh = {
     enable = mkOption {
       type = types.bool;
       default = true;
