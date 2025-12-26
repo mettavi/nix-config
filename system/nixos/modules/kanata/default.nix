@@ -20,7 +20,7 @@ in
     services.kanata = {
       enable = true;
       keyboards = {
-        "MBP-internal" = {
+        "laptop" = {
           # devices = [
           # Replace the paths below with the appropriate device paths for your setup.
           # Use `ls /dev/input/by-path/` to find your keyboard devices.
