@@ -163,6 +163,7 @@
       stateVersion = "25.11";
     };
     dconf.settings = {
+      # add custom keybindings for ASUS linux utilities
       "org/gnome/settings-daemon/plugins/media-keys" = {
         custom-keybindings = [
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
@@ -173,6 +174,7 @@
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
         name = "ROG Control Center";
         command = "rog-control-center";
+        # on the keyboard this is the M4 key
         binding = "Launch1";
       };
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
