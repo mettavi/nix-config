@@ -55,15 +55,10 @@
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
-
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
   # console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
@@ -83,41 +78,6 @@
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  # services.pulseaudio.enable = true;
-  # OR
-
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.libinput = {
-    enable = true;
-    touchpad.disableWhileTyping = true;
-  };
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.mettavi = {
-  #  isNormalUser = true;
-  #  extraGroups = [ "wheel"  "networkmanager"]; # Enable ‘sudo’ for the user.
-  #  packages = with pkgs; [
-  #   firefox
-  #   git
-  #   vim
-  # ];
-  # };
-
-  # programs.firefox.enable = true;
-
-  # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
   environment.systemPackages = with pkgs; [
     firefox
@@ -134,11 +94,6 @@
   #   enableSSHSupport = true;
   # };
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
@@ -153,6 +108,9 @@
         enable = true;
       };
     };
+    services = {
+      openssh.enable = true;
+    };
     shell = {
       kanata.enable = true;
     };
@@ -160,6 +118,10 @@
 
   home-manager.users.${username} = {
     home = {
+      packages = with pkgs; [
+        # Simple GPU Profile switcher for ASUS laptops using Supergfxctl
+        gnomeExtensions.gpu-supergfxctl-switch
+      ];
       stateVersion = "25.11";
     };
     dconf.settings = {
@@ -188,6 +150,12 @@
         command = "asusctl led-mode -n";
         # on the keyboard this is Fn-F4
         binding = "Launch3";
+      };
+      "org/gnome/shell" = {
+        # `gnome-extensions list` for a list
+        enabled-extensions = [
+          "gpu-switcher-supergfxctl@chikobara.github.io"
+        ];
       };
     };
     mettavi = {
