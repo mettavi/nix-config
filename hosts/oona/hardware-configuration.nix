@@ -4,11 +4,16 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
   ...
 }:
-
+let
+  commonOptions = [
+    "defaults"
+    "discard"
+    "noatime"
+  ];
+in
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
@@ -60,7 +65,7 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
     fsType = "btrfs";
-    options = [
+    options = commonOptions ++ [
       "compress=zstd"
       "subvol=root"
     ];
@@ -69,7 +74,7 @@
   fileSystems."/home" = {
     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
     fsType = "btrfs";
-    options = [
+    options = commonOptions ++ [
       "compress=zstd"
       "subvol=home"
     ];
@@ -78,7 +83,7 @@
   fileSystems."/nix" = {
     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
     fsType = "btrfs";
-    options = [
+    options = commonOptions ++ [
       "compress=zstd"
       "subvol=nix"
     ];
