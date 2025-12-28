@@ -344,6 +344,7 @@ in
             "layers.acceleration.force-enabled" = true;
             "media.ffmpeg.vaapi.enabled" = true;
             "media.hardware-video-decoding.force-enabled" = true;
+            "media.rdd-ffmpeg.enabled" = true;
             "media.windows-media-foundation.allow-d3d11-dxva" = true;
             "widget.dmabuf.force-enabled" = true; # Required in recent Firefoxes
 
