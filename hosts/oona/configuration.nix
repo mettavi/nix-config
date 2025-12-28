@@ -106,7 +106,8 @@
   services = {
     asusd = {
       enable = true;
-      enableUserService = true;
+      # unstable, see https://gitlab.com/asus-linux/asusctl/-/issues/532#note_2879912217
+      enableUserService = false;
       # explicitly set to use the patched package
       package = pkgs.asusctl;
     };
