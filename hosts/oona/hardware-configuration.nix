@@ -109,8 +109,7 @@ in
 
   swapDevices = [
     {
-      device = "/swap/swapfile";
-      size = 8 * 1024;
+      device = "/dev/disk/by-uuid/adadd3b9-e1ca-415d-a8a0-0d06e711f71b";
     }
   ];
 
