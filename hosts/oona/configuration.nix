@@ -43,10 +43,19 @@
   hardware.enableRedistributableFirmware = true;
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.xbootldrMountPoint = "/boot";
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/efi";
+  boot.loader = {
+    systemd-boot = {
+      enable = true;
+      # only keep 10 generations to prevent the boot partition from running out of space
+      configurationLimit = 10;
+      xbootldrMountPoint = "/boot";
+    };
+    efi = {
+      canTouchEfiVariables = true;
+      efiSysMountPoint = "/efi";
+    };
+  };
+
   boot.blacklistedKernelModules = [ "nouveau" ];
 
   # Use the cachyos kernel for the latest asus g14 kernel patches.
