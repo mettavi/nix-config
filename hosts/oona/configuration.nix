@@ -21,6 +21,7 @@
     priority = 100;
   };
 
+  # this is a misnomer as it applies to both x11 and wayland
   services.xserver.videoDrivers = [
     "nvidia"
     # according to the wiki, this is unnecessary
@@ -28,7 +29,7 @@
   ];
 
   hardware.nvidia = {
-    # Required for offloading to ensure the iGPU is used as the primary display
+    # On wayland KMS (kernel mode setting) is required for offloading to ensure the iGPU is used as the primary display
     modesetting.enable = true;
     dynamicBoost.enable = true;
     nvidiaSettings = true;
@@ -36,6 +37,8 @@
       enable = true;
       finegrained = true;
     };
+    # The open driver is recommended by nvidia now, see
+    # https://download.nvidia.com/XFree86/Linux-x86_64/565.77/README/kernel_open.html
     open = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
     prime = {
@@ -56,6 +59,7 @@
       enable = true;
       # only keep 10 generations to prevent the boot partition from running out of space
       configurationLimit = 10;
+      # place kernels and generations on a separate, large size partition
       xbootldrMountPoint = "/boot";
     };
     efi = {
