@@ -71,8 +71,23 @@
     asusd = {
       enable = true;
       enableUserService = true;
+      # explicitly set to use the patched package
+      package = pkgs.asusctl;
     };
   };
+
+  # patch the asusctl package to include "aura" keyboard lighting definitions for this model laptop
+  nixpkgs.overlays = [
+    (final: prev: {
+      asusctl = prev.asusctl.overrideAttrs (oldAttrs: {
+        # Append your new patch to the existing list of patches
+        patches = (oldAttrs.patches or [ ]) ++ [
+          # Path to your patch file (it will be copied to the Nix store)
+          ./aura_support_ga403w.patch
+        ];
+      });
+    })
+  ];
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
