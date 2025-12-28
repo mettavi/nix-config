@@ -11,6 +11,16 @@
     ./hardware-configuration.nix
   ];
 
+  ########## SYSTEM ARCHITECTURE ###########
+
+  # enable in-memory compressed devices and swap space
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    # ensure zram is given priority over standard swap
+    priority = 100;
+  };
+
   services.xserver.videoDrivers = [
     "nvidia"
     # according to the wiki, this is unnecessary
