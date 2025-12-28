@@ -27,8 +27,6 @@
     # "amdgpu"
   ];
 
-  hardware.graphics.enable = true;
-
   hardware.nvidia = {
     # Required for offloading to ensure the iGPU is used as the primary display
     modesetting.enable = true;
