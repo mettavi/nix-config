@@ -86,8 +86,6 @@
   #   useXkbConfig = true; # use xkb.options in tty.
   # };
 
-  services.supergfxd.enable = true;
-
   services = {
     asusd = {
       enable = true;
@@ -96,6 +94,8 @@
       package = pkgs.asusctl;
     };
   };
+  # this is already enabled by the asusd module above
+  # services.supergfxd.enable = true;
 
   # patch the asusctl package to include "aura" keyboard lighting definitions for this model laptop
   nixpkgs.overlays = [
