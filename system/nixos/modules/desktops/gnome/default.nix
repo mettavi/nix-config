@@ -89,7 +89,6 @@ in
             "Utilities"
             "System"
             "Gnome Tools"
-            "LibreOffice"
             "Nix"
           ];
         };
@@ -99,19 +98,6 @@ in
             "com.mattjakeman.ExtensionManager.desktop"
             "org.gnome.tweaks.desktop"
             "ca.desrt.dconf-editor.desktop"
-          ];
-          translate = false;
-        };
-        "org/gnome/desktop/app-folders/folders/LibreOffice" = {
-          name = "LibreOffice";
-          apps = [
-            "startcenter.desktop"
-            "writer.desktop"
-            "impress.desktop"
-            "math.desktop"
-            "base.desktop"
-            "calc.desktop"
-            "draw.desktop"
           ];
           translate = false;
         };
