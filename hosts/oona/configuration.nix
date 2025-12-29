@@ -217,6 +217,30 @@
         ghostty.enable = true;
       };
     };
+
+    # Run the rog-control-center app on system boot so it shows in the system tray (depends on appindicator gnome extension)
+    # NB: ensure user lingering is disabled (the default) so the service doesn't run until user login
+    systemd.user.services."rog-control-center" = {
+      Unit = {
+        Description = "Simple service to start the app on system boot";
+        # Ensures the service starts after the graphical session (and the appindicator extension) is set up
+        After = [
+          "graphical-session-pre.target"
+          "gnome-shell-wayland.target"
+        ];
+        # Requires D-Bus, which is essential for GNOME interaction
+        Requires = [ "dbus.service" ];
+      };
+      Install = {
+        # the service is automatically started when the user logs in graphically
+        WantedBy = [ "graphical-session.target" ];
+      };
+      Service = {
+        ExecStart = "${pkgs.asusctl}/bin/rog-control-center";
+        Restart = "on-failure";
+        RestartSec = 5;
+      };
+    };
   };
 
   # Copy the NixOS configuration file and link it from the resulting system
