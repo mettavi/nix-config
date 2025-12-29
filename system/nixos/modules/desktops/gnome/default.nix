@@ -7,10 +7,10 @@
 }:
 with lib;
 let
-  cfg = config.mettavi.system.gnome;
+  cfg = config.mettavi.system.desktops.gnome;
 in
 {
-  options.mettavi.system.gnome = {
+  options.mettavi.system.desktops.gnome = {
     enable = mkOption {
       type = types.bool;
       default = false;
@@ -78,7 +78,7 @@ in
           wl-clipboard # command line copy/paste utilities for Wayland
         ])
         ++ (with pkgs.gnomeExtensions; [
-          appindicator # Adds AppIndicator, KStatusNotifierItem and legacy Tray icons support to the Shell.
+          appindicator # Adds AppIndicator, KStatusNotifierItem and legacy tray icons support to the Shell.
           power-profile-indicator-2 # Add current power profile in panel's system icons.
         ]);
       # Use `dconf watch /` to track stateful changes you are doing, then set them here

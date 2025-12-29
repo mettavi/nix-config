@@ -124,10 +124,12 @@
   mettavi = {
     system = {
       # use the gnome desktop
-      gnome.enable = true;
       apps = {
         libreoffice.enable = true;
         qbittorrent.enable = true;
+      };
+      desktops = {
+        gnome.enable = true;
       };
       devices = {
         intel-chips.enable = true;

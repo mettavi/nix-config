@@ -148,17 +148,19 @@
 
   mettavi.system = {
     # install and set up the gnome desktop
-    gnome.enable = true;
-    userConfig = {
-      timotheos = {
-        enable = true;
-      };
+    desktops = {
+      gnome.enable = true;
     };
     services = {
       openssh.enable = true;
     };
     shell = {
       kanata.enable = true;
+    };
+    userConfig = {
+      timotheos = {
+        enable = true;
+      };
     };
   };
 
@@ -231,8 +233,8 @@
       };
       Service = {
         ExecStart = "${pkgs.asusctl}/bin/rog-control-center";
-        Restart = "on-failure";
-        RestartSec = 5;
+        # Restart = "on-failure";
+        # RestartSec = 5;
       };
     };
   };
