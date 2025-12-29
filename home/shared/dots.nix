@@ -37,6 +37,7 @@ in
     configFile = {
       "atuin".source = ./dots/atuin;
       "bat/themes/tokyonight_night.tmTheme".source = ./dots/bat/themes/tokyonight_night.tmTheme;
+      "fastfetch/config.jsonc".source = ./dots/fastfetch/config.jsonc;
       "fzf/.fzfrc".source = ./dots/fzf/.fzfrc;
     };
   };
