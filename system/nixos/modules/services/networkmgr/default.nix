@@ -23,13 +23,13 @@ in
     # allow user to configure networking
     users.users.${username}.extraGroups = [ "networkmanager" ];
 
-    programs = mkIf config.mettavi.system.gnome.enable {
+    programs = mkIf config.mettavi.system.desktops.gnome.enable {
       # a NetworkManager control applet for GNOME (includes nm-applet and nm-connection-manager)
       nm-applet.enable = true;
     };
 
     # set to false to configure static IP addresses declaratively
-    # ( less convenient if  frequently moving between different SSIDs)
+    # (less convenient if  frequently moving between different SSIDs)
     networking.dhcpcd.enable = true;
     # one of "dhcpcd" (dhcp client daemon) or "internal"
     networking.networkmanager.dhcp = "dhcpcd";

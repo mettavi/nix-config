@@ -35,10 +35,10 @@ in
       {
         home.packages =
           with pkgs.gnomeExtensions;
-          lib.mkIf (nixosConfig.mettavi.system.gnome.enable) [
+          lib.mkIf (nixosConfig.mettavi.system.desktops.gnome.enable) [
             solaar-extension # Allow Solaar to support certain features on non-X11 systems (eg. rules)
           ];
-        dconf.settings = lib.mkIf (nixosConfig.mettavi.system.gnome.enable) {
+        dconf.settings = lib.mkIf (nixosConfig.mettavi.system.desktops.gnome.enable) {
           "org/gnome/shell" = {
             disable-user-extensions = false;
             enabled-extensions = [
@@ -49,7 +49,8 @@ in
         xdg.configFile = {
           # link without copying to nix store (manage externally) - must use absolute paths
           # mkOutOfStoreSymlink is required to allow the lazy-lock.json file to be writable
-          "solaar/config.yaml".source = mkOutOfStoreSymlink "${inputs.self}/home/nixos/dots/solaar/config.yaml";
+          "solaar/config.yaml".source =
+            mkOutOfStoreSymlink "${inputs.self}/home/nixos/dots/solaar/config.yaml";
         };
       };
   };
