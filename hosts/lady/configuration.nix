@@ -106,7 +106,7 @@
       # gnome only uses xkb config for initial set up, configure in dconf instead
       # see https://discourse.nixos.org/t/strange-xkboptions-behavior-gnome/33535/5
       xkb = {
-        # This might still be used by Wayland
+        # Despite the xserver attribute, this might still be used by Wayland
         model = "macbook78"; # MacBook/MacBook Pro
         layout = "us";
         variant = "mac";

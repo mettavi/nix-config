@@ -129,6 +129,7 @@
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
+  # SYSTEM MODULES SETTINGS
   mettavi.system = {
     # install and set up the gnome desktop
     desktops = {
@@ -148,6 +149,7 @@
     };
   };
 
+  # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
   home-manager.users.${username} = {
     home = {
       packages = with pkgs; [
