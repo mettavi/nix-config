@@ -7,8 +7,6 @@
   ...
 }:
 {
-  imports = [ ./calibre-and-sync.nix ];
-
   home.packages = with pkgs; [
     atuin
     fastfetch # neofetch-like sys info tool

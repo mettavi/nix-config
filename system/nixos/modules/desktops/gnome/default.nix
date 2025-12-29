@@ -88,22 +88,10 @@ in
           folder-children = [
             "Utilities"
             "System"
-            "Calibre"
             "Gnome Tools"
             "LibreOffice"
             "Nix"
           ];
-        };
-        "org/gnome/desktop/app-folders/folders/Calibre" = {
-          name = "Calibre";
-          apps = [
-            "calibre-gui.desktop"
-            "CaliSync.desktop"
-            "calibre-ebook-viewer.desktop"
-            "calibre-ebook-edit.desktop"
-            "calibre-lrfviewer.desktop"
-          ];
-          translate = false;
         };
         "org/gnome/desktop/app-folders/folders/Gnome Tools" = {
           name = "Gnome Tools";
