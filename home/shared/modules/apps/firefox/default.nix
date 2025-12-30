@@ -20,7 +20,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.sessionVariables = lib.mkIf nixosConfig.services.displayManager.gdm.wayland {
+    home.sessionVariables = lib.mkIf nixosConfig.mettavi.system.display-server.wayland.enable {
       # MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (enabled by default)
       # NIXOS_OZONE_WL = "1"; # Forces Wayland backend for applications using Ozone
       # take advantage of more video codecs supported by an IGP/GPU, specifies the preferred rendering device
