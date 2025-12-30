@@ -10,8 +10,8 @@ with lib;
     paths;
 
   # disable this option for any hosts not running on the more modern wayland display-server protocol
-  options.mettavi.system.desktops.wayland = {
-    enable = mkOption {
+  options.mettavi.system.desktops = {
+    wayland = mkOption {
       description = "Whether the display server protocol is wayland";
       type = types.bool;
       default = true;
