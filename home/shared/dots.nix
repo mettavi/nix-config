@@ -39,6 +39,10 @@ in
       "bat/themes/tokyonight_night.tmTheme".source = ./dots/bat/themes/tokyonight_night.tmTheme;
       "fastfetch/config.jsonc".source = ./dots/fastfetch/config.jsonc;
       "fzf/.fzfrc".source = ./dots/fzf/.fzfrc;
+      "mpv/mpv.conf".text = ''
+        # enable hardware acceleration
+        hwdec=auto
+      '';
     };
   };
 }
