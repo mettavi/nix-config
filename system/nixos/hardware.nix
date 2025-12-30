@@ -3,6 +3,7 @@
   hardware = {
     graphics = {
       enable = true;
+      enable32Bit = true;
       extraPackages = with pkgs; [
         # modern graphics API with wide compatibility providing improved performance and better control over graphics hardware
         vulkan-loader
