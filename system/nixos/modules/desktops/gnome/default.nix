@@ -30,7 +30,8 @@ in
         epiphany # web broswer (aka "Gnome Web")
       ];
       systemPackages =
-        (with pkgs; [ celluloid ]) # GTK frontend for the mpv video player
+        (with pkgs; [
+        ])
         ++ (with pkgs.gst_all_1; [
           # GSTREAMER PLUGINS
           gst-plugins-base
@@ -71,6 +72,7 @@ in
     home-manager.users.${username} = {
       home.packages =
         (with pkgs; [
+          celluloid # GTK frontend for the mpv video player
           dconf-editor # GSettings editor for GNOME
           gnome-extension-manager # Desktop app for managing GNOME shell extensions
           gnome-tweaks # Tool to customize advanced GNOME 3 options
