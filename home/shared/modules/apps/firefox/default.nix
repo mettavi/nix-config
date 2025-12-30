@@ -344,7 +344,7 @@ in
               "extensions.pocket.showHome" = false;
               "extensions.pocket.site" = "";
 
-              # Force enable GPU acceleration
+              # Force enable GPU acceleration (see https://wiki.nixos.org/wiki/Accelerated_Video_Playback)
               "gfx.x11-egl.force-enabled" = true;
               "layers.acceleration.force-enabled" = true;
               # Set this to true if your GPU supports AV1
