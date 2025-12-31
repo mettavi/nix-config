@@ -11,6 +11,14 @@
     ./hardware-configuration.nix
   ];
 
+  users.users.${username} = {
+    # authorize remote login using ssh key
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPVF5QIYMySsyeuKEjZG97HbbjI28H4GhmmDFUpCgLdj timotheos@lady"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGuMPsZDaz4CJpc9HH6hMdP1zLxJIp7gt7No/e/wvKgb timotheos@mack"
+    ];
+  };
+
   ########## SYSTEM ARCHITECTURE ###########
 
   # enable in-memory compressed devices and swap space
