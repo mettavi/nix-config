@@ -1,5 +1,4 @@
 {
-  # config,
   pkgs,
   username,
   ...
@@ -59,10 +58,6 @@
   # Use the cachyos kernel for the latest asus g14 kernel patches.
   boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
   # console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
@@ -74,7 +69,7 @@
       enable = true;
       # unstable, see https://gitlab.com/asus-linux/asusctl/-/issues/532#note_2879912217
       enableUserService = false;
-      # explicitly set to use the patched package
+      # explicitly set to use the package patched locally with an overlay
       package = pkgs.asusctl;
     };
   };
