@@ -98,11 +98,11 @@
     devices = {
       nvidia.enable = true;
     };
-    # install and set up the gnome desktop
     desktops = {
       gnome.enable = true;
     };
     services = {
+      libvirt.enable = true;
       networkmanager.enable = true;
       openssh.enable = true;
     };

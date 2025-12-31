@@ -32,7 +32,7 @@ in
     users.users.${username}.extraGroups = [ "libvirtd" ];
 
     # the module now installs OVMF automatically
-    # Open Virtual Machine Firmware (OVMF) is a UEFI firmware implementation for virtual machines
+    # NB: Open Virtual Machine Firmware (OVMF) is a UEFI firmware implementation for virtual machines
     # that makes features like secure boot available
     virtualisation = {
       libvirtd = {
