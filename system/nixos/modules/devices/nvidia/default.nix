@@ -20,7 +20,7 @@ in
   config = mkIf cfg.enable {
 
     # this is a misnomer as it applies to both x11 and wayland
-    # AMD works out of the box
+    # NB: AMD works out of the box
     services.xserver.videoDrivers = [
       "nvidia"
     ];
@@ -53,6 +53,7 @@ in
       };
       # The open driver is recommended by nvidia now, see
       # https://download.nvidia.com/XFree86/Linux-x86_64/565.77/README/kernel_open.html
+      # NB: The NVreg_EnableGpuFirmware option cannot be disabled on the nvidia open drivers
       open = true;
       package = config.boot.kernelPackages.nvidiaPackages.stable;
       prime = {
