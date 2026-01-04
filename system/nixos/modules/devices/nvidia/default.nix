@@ -43,7 +43,9 @@ in
     ######################################################################
 
     hardware.nvidia = {
-      # On wayland KMS (kernel mode setting) is required for offloading to ensure the iGPU is used as the primary display
+      # Kernel mode setting (KMS) allows native video resolution during boot and in tty's
+      # On wayland, KMS is also required for the offloading mode (see below)
+      # to ensure the iGPU is used as the primary display
       modesetting.enable = true;
       dynamicBoost.enable = true;
       nvidiaSettings = true;

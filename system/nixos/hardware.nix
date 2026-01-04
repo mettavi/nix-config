@@ -2,7 +2,8 @@
 {
   hardware = {
     graphics = {
-      # provides openGL (open graphics library, providing userspace graphics) via the mesa graphics library
+      # enables the the mesa graphics library, which includes openGL, vulkan (general graphics support) drivers
+      # and VA-API, VDPAU (video acceleration) drivers
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [
