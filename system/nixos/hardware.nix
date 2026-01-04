@@ -2,6 +2,7 @@
 {
   hardware = {
     graphics = {
+      # provides openGL (open graphics library, providing userspace graphics) via the mesa graphics library
       enable = true;
       enable32Bit = true;
       extraPackages = with pkgs; [
