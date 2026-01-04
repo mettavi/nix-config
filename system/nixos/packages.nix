@@ -12,6 +12,7 @@
       # Tool to control the generation of non-source files from sources (required for neovim telescope-fzf)
       gnumake
       gparted # graphic disk partitioning tool
+      libva-utils # utilities for VA-API (video acceleration API)
       lshw-gui # detailed hardware info (includes gui)
       # Icons of the Nix logo, in Freedesktop Icon Directory Layout
       nixos-icons

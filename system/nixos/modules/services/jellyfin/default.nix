@@ -34,7 +34,6 @@ in
       jellyfin
       jellyfin-web
       jellyfin-ffmpeg
-      libva-utils # utilities for VA-API (video acceleration API)
     ];
     users.users.${username} = {
       # add the jellyfin user to the render group
