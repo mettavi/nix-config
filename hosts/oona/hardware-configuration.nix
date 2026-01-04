@@ -36,7 +36,10 @@ in
   boot.extraModprobeConfig = # bash
     ''
       # Add the S0ix module parameter
-      options nvidia  "NVreg_EnableS0ixPowerManagement=1"
+      options nvidia "NVreg_EnableS0ixPowerManagement=1"
+      # make the PreserveVideo... option explicit, and set a Temporary File Path to prevent errors
+      options nvidia "NVreg_PreserveVideoMemoryAllocations=1"
+      options nvidia "NVreg_TemporaryFilePath=/var/tmp"
     '';
   boot.extraModulePackages = [ ];
 
