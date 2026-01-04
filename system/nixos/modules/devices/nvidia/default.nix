@@ -37,8 +37,6 @@ in
     environment.variables = {
       # tell the VA-API library to load the NVIDIA driver
       LIBVA_DRIVER_NAME = "nvidia";
-      # Disable Firefox's sandbox for the media decoder process, allowing it to access the driver directly
-      MOZ_DISABLE_RDD_SANDBOX = "1";
       # Select the "direct" nvidia backend for VA-API
       NVD_BACKEND = "direct";
     };

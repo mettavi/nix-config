@@ -28,6 +28,10 @@ in
     }
     // lib.mkIf nixosConfig.mettavi.system.desktops.wayland {
       MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (may be enabled by default)
+    }
+    // mkIf nixosConfig.mettavi.system.devices.nvidia.enable {
+      # Disable Firefox's sandbox for the media decoder process, allowing it to access the driver directly
+      MOZ_DISABLE_RDD_SANDBOX = "1";
     };
 
     # enable the firefox-gnome-theme via a flake input (also see userChrome and userContent below)
