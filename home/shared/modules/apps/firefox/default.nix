@@ -26,7 +26,7 @@ in
       # Enable xinput2 to improve touchscreen support and enable additional touchpad gestures and smooth scrolling.
       MOZ_USE_XINPUT2 = "1";
     }
-    // lib.mkIf nixosConfig.mettavi.system.desktops.wayland {
+    // mkIf nixosConfig.mettavi.system.desktops.wayland {
       MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (may be enabled by default)
     }
     // mkIf nixosConfig.mettavi.system.devices.nvidia.enable {
