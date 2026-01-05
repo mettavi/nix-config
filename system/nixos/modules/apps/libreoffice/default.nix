@@ -29,9 +29,9 @@ in
             "startcenter.desktop"
             "writer.desktop"
             "impress.desktop"
+            "calc.desktop"
             "math.desktop"
             "base.desktop"
-            "calc.desktop"
             "draw.desktop"
           ];
           translate = false;
@@ -39,6 +39,7 @@ in
       };
     };
     environment.systemPackages = with pkgs; [
+      # gtk version (the kdeIntegration variable defaults to false)
       libreoffice-fresh
       hunspell
       hunspellDicts.en_AU
