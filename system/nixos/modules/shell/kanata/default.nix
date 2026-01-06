@@ -21,6 +21,8 @@ in
       enable = true;
       keyboards = {
         "laptop" = {
+          # An empty list, the default value, lets kanata detect which
+          # input devices are keyboards and intercept them all.
           # devices = [
           # Replace the paths below with the appropriate device paths for your setup.
           # Use `ls /dev/input/by-path/` to find your keyboard devices.
@@ -29,7 +31,7 @@ in
           # ];
           config = ''
              (defsrc
-              esc f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
+              esc
               caps a s d f h j k l ;
             )
 
@@ -55,12 +57,12 @@ in
             )
 
             (deflayer base
-              @cw brdn  brup  _    _    _    _   prev  pp  next  mute  vold  volu
+              @cw
               @escnav @a @s @d @f _ @j @k @l @;
             )
 
             (deflayer navigation
-              @cw f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
+              @cw
               _ _ _ _ _ left down up rght _
             )
           '';
