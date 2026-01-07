@@ -42,6 +42,7 @@ in
 
             (defalias
               nav (layer-while-held navigation)
+              ;; spc and other keys will terminate the caps-lock, so typing a sentence will require the key to be reused
               cw (caps-word 5000)
               escnav (tap-hold 100 100 esc @nav)
               ;; trigger a tap when rolling within the timeout (unless second key is released first)
