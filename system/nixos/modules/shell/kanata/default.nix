@@ -20,7 +20,7 @@ in
     services.kanata = {
       enable = true;
       keyboards = {
-        "laptop" = {
+        "Asus-G14" = {
           # An empty list, the default value, lets kanata detect which
           # input devices are keyboards and intercept them all.
           # devices = [
