@@ -26,6 +26,9 @@
     };
   };
 
+  # A system daemon to allow session software to update firmware
+  services.fwupd.enable = true;
+
   # handles input devices (mouse, touchpad)
   services.libinput = {
     enable = true;
