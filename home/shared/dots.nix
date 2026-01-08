@@ -42,6 +42,7 @@ in
       "mpv/mpv.conf".text = ''
         # enable hardware acceleration
         hwdec=auto
+        gpu-context=wayland
       '';
     };
   };
