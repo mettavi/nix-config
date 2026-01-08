@@ -5,7 +5,8 @@
 # See https://github.com/dh024/Bitwarden_Export for a good INTERACTIVE export script
 
 # load env vars required by script and bw binary
-source /Users/timotheos/.config/sops-nix/secrets/users/timotheos/bitwarden.env
+# shellcheck disable=SC1091
+source "$HOME"/.config/sops-nix/secrets/users/timotheos/bitwarden.env
 
 TIMESTAMP=$(date "+%Y%m%d")
 EXPORT_PATH="$HOME/Applications/backups/bitwarden"
