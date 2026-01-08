@@ -121,5 +121,7 @@ in
   ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+  # Update the CPU microcode for AMD processors
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
