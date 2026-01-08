@@ -185,6 +185,7 @@ with lib;
 
       serviceConfig = {
         Type = "oneshot";
+        # do not start the service when running 'nixos-rebuild switch'
         RemainAfterExit = true;
         Restart = "on-failure";
         EnvironmentFile = cfg.environmentFile;
