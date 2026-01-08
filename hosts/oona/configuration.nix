@@ -95,6 +95,9 @@
 
   # SYSTEM MODULES SETTINGS
   mettavi.system = {
+    apps = {
+      libreoffice.enable = true;
+    };
     devices = {
       nvidia.enable = true;
     };
