@@ -4,6 +4,9 @@
 # and https://github.com/binarypatrick/BitwardenBackup
 # See https://github.com/dh024/Bitwarden_Export for a good INTERACTIVE export script
 
+# set the user account to backup
+USER="timotheos"
+
 # load env vars required by script and bw binary
 # shellcheck disable=SC1091
 source "$HOME"/.config/sops-nix/secrets/users/timotheos/bitwarden.env
