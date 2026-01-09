@@ -86,8 +86,6 @@
       };
     };
   };
-  # this is already enabled by the asusd module above
-  # services.supergfxd.enable = true;
 
   # patch the asusctl package to include "aura" keyboard lighting definitions for this model laptop
   nixpkgs.overlays = [
