@@ -17,6 +17,7 @@
       pciutils # tools for working with pci devices
       # nodejs
       # python3
+      systemctl-tui # Simple TUI for interacting with systemd services and their logs
       # Command line interface to the freedesktop.org trashcan
       trash-cli
       # Extraction utility
