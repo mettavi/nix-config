@@ -96,6 +96,10 @@
   # SYSTEM MODULES SETTINGS
   mettavi.system = {
     apps = {
+      bitwarden = {
+        enable = true;
+        backup = false;
+      };
       libreoffice.enable = true;
     };
     devices = {
