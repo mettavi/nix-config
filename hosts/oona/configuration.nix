@@ -99,6 +99,7 @@
       libreoffice.enable = true;
     };
     devices = {
+      logitech.enable = true;
       nvidia.enable = true;
     };
     desktops = {
