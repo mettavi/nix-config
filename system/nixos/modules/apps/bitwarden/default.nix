@@ -8,12 +8,12 @@
 }:
 with lib;
 let
-  cfg = config.mettavi.apps.bitwarden;
+  cfg = config.mettavi.system.apps.bitwarden;
 in
 {
-  options.mettavi.apps.bitwarden = {
+  options.mettavi.system.apps.bitwarden = {
     enable = lib.mkEnableOption "Install and configure bitwarden, along with a backup service";
-    backup = {
+    backup = mkOption {
       description = "Run a scheduled backup of the bitwarden database";
       type = types.bool;
       default = false;
@@ -28,6 +28,7 @@ in
     ];
 
     systemd.user = mkIf cfg.backup {
+      # install the package used for making bitwarden backups
       services = {
         # make an encrypted backup weekly
         "bitwarden-backup" = {
@@ -67,13 +68,7 @@ in
       { nixosConfig, ... }:
       {
         # install the package used for making bitwarden backups
-        # environment.systemPackages = with pkgs; [ bitwarden-cli ];
         home.packages = with pkgs; mkIf nixosConfig.mettavi.system.apps.bitwarden.backup [ bitwarden-cli ];
       };
   };
-
-  # home.sessionVariables = {
-  #   # prevent nh from checking for flakes "experimental features" (which it can't read from determinate nix.conf)
-  #   NH_NO_CHECKS = "1";
-  # };
 }
