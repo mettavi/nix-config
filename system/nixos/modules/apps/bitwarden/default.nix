@@ -58,7 +58,7 @@ in
             Unit = "bitwarden-backup.service";
           };
           wantedBy = [
-            "multi-user.target"
+            "default.target"
             "timers.target"
           ];
         };
