@@ -12,7 +12,7 @@ USER="timotheos"
 source "$HOME/.config/sops-nix/secrets/users/$USER/bitwarden.env"
 
 TIMESTAMP=$(date "+%Y%m%d")
-EXPORT_PATH="$HOME/Applications/backups/bitwarden"
+EXPORT_PATH="$HOME/backups/bitwarden"
 # EXPORT_PLAIN_FILE=bw_$TIMESTAMP.json
 # EXPORT_ENCRYPTED_FILE=bw_enc_$TIMESTAMP.json
 EXPORT_OPENSSL_FILE=bw_$TIMESTAMP.enc
