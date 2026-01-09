@@ -63,6 +63,13 @@ in
         };
       };
     };
+    home-manager.users.${username} =
+      { nixosConfig, ... }:
+      {
+        # install the package used for making bitwarden backups
+        # environment.systemPackages = with pkgs; [ bitwarden-cli ];
+        home.packages = with pkgs; mkIf nixosConfig.mettavi.system.apps.bitwarden.backup [ bitwarden-cli ];
+      };
   };
 
   # home.sessionVariables = {
