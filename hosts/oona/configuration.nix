@@ -72,6 +72,19 @@
       # explicitly set to use the package patched locally with an overlay
       package = pkgs.asusctl;
     };
+    # this option is already enabled by the asusd module above
+    # services.supergfxd.enable = true;
+    xserver = {
+      # don't install Xserver by default
+      enable = false;
+      # gnome only uses xkb config for initial set up, configure in dconf instead
+      # see https://discourse.nixos.org/t/strange-xkboptions-behavior-gnome/33535/5
+      xkb = {
+        # Despite the xserver attribute, this might still be used by Wayland
+        layout = "us";
+        model = "asus_laptop";
+      };
+    };
   };
   # this is already enabled by the asusd module above
   # services.supergfxd.enable = true;
