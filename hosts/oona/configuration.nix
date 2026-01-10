@@ -109,7 +109,7 @@
     apps = {
       bitwarden = {
         enable = true;
-        backup = false;
+        backup = true;
       };
       libreoffice.enable = true;
     };
