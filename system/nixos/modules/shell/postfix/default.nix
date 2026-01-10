@@ -30,8 +30,7 @@ in
         smtp_sasl_security_options = "";
         # using texthash instead of hash simplifies the setup on nixos
         smtp_sasl_password_maps = "texthash:/etc/postfix/sasl_passwd";
-        # optional: Forward mails to root (e.g. from cron jobs, smartd)
-        # to me privately and to my work email:
+        # optional: Forward mails to root (e.g. from cron jobs, smartd) to an email address
         virtual_alias_maps = "inline:{ {${email}} }";
       };
     };
