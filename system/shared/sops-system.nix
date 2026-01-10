@@ -45,6 +45,7 @@ in
       "users/${username}/nixos_users/${username}-${hostname}-hashpw" = lib.mkIf pkgs.stdenv.isLinux {
         neededForUsers = true;
       };
+      # this is used for the gmail app password for postfix on the nix-darwin host mack
       "users/${username}/google_timotheos_app_pw" = {
       };
       "users/${username}/jellyfin_admin-lady" = { };
