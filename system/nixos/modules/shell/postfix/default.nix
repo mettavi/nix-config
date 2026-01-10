@@ -11,7 +11,7 @@ let
   cfg = config.mettavi.system.shell.postfix;
 in
 {
-  options.mettavi.system.devices.postfix = {
+  options.mettavi.system.shell.postfix = {
     enable = mkOption {
       type = types.bool;
       default = false;
