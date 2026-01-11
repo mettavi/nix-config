@@ -1,5 +1,6 @@
 {
   config,
+  hostname,
   inputs,
   lib,
   pkgs,
@@ -35,7 +36,7 @@ in
         relayhost = [ "[smtp.gmail.com]:587" ];
         smtp_sasl_auth_enable = "yes";
         # hash requires converting the password file with the postmap command; texthash avoids this
-        smtp_sasl_password_maps = "texthash:${config.sops.templates."sasl_passwd".path}";
+        smtp_sasl_password_maps = "texthash:${config.sops.templates."sasl_passwd-${hostname}".path}";
         smtp_sasl_security_options = "";
         smtp_use_tls = "yes";
       };
@@ -45,17 +46,19 @@ in
       '';
     };
     sops = {
-      secrets."users/${username}/postfix_gmail-oona" = {
+      secrets."users/${username}/postfix_gmail-${hostname}" = {
       };
       templates = {
         # config file to allow postfix to use my personal gmail account automatically
-        "sasl_passwd" = {
+        "sasl_passwd-${hostname}" = {
           content = # bash
             ''
-              [smtp.gmail.com]:587 ${email}:${config.sops.placeholder."users/${username}/postfix_gmail-oona"}
+              [smtp.gmail.com]:587 ${email}:${
+                config.sops.placeholder."users/${username}/postfix_gmail-${hostname}"
+              }
             '';
           mode = "0600";
-          path = "/etc/postfix/sasl_passwd";
+          path = "/etc/postfix/sasl_passwd-${hostname}";
         };
       };
     };
