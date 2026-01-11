@@ -119,12 +119,13 @@ return {
 
     -- Go to either the start or the end, whichever is closer.
     -- Use if you want more granular movements
-    vim.keymap.set({ "n", "x", "o" }, "]d", function()
-      require("nvim-treesitter-textobjects.move").goto_next("@conditional.outer", "textobjects")
-    end)
-    vim.keymap.set({ "n", "x", "o" }, "[d", function()
-      require("nvim-treesitter-textobjects.move").goto_previous("@conditional.outer", "textobjects")
-    end)
+    -- NB: Disable these to allow the default lspconfig keybinds to work (move to the next diagnostic message in buffer)
+    -- vim.keymap.set({ "n", "x", "o" }, "]d", function()
+    --   require("nvim-treesitter-textobjects.move").goto_next("@conditional.outer", "textobjects")
+    -- end)
+    -- vim.keymap.set({ "n", "x", "o" }, "[d", function()
+    --   require("nvim-treesitter-textobjects.move").goto_previous("@conditional.outer", "textobjects")
+    -- end)
 
     local ts_repeat_move = require("nvim-treesitter-textobjects.repeatable_move")
 
