@@ -1,5 +1,14 @@
 {
-  # References: 
+  config,
+  inputs,
+  username,
+  ...
+}:
+let
+  email = inputs.secrets.email.personal;
+in
+{
+  # References:
   # 1. https://gist.github.com/loziju/66d3f024e102704ff5222e54a4bfd50e
   # 2. https://apple.stackexchange.com/questions/444382/send-email-from-command-line-macos-monterey-12-3
   # 3. https://binarypatrick.dev/posts/configuring-postfix-with-gmail/
@@ -719,4 +728,19 @@
     ''
       @mack.local mettavihari2021@gmail.com
     '';
+  sops = {
+    # this is used for the gmail app password for postfix on the nix-darwin host mack
+    secrets."users/${username}/google_timotheos_app_pw" = {
+    };
+    templates = {
+      # config file to allow postfix to use my personal gmail account automatically
+      "sasl_passwd" = {
+        content = # bash
+          ''
+            [smtp.gmail.com]:587 ${email}:${config.sops.placeholder."users/${username}/google_timotheos_app_pw"}
+          '';
+        path = "/etc/postfix/sasl_passwd";
+      };
+    };
+  };
 }
