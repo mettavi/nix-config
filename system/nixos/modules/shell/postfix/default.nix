@@ -34,7 +34,7 @@ in
         hostname = "mail.${config.networking.hostName}";
         relayhost = [ "[smtp.gmail.com]:587" ];
         smtp_sasl_auth_enable = "yes";
-        # using texthash instead of hash simplifies the setup on nixos
+        # hash requires converting the password file with the postmap command; texthash avoids this
         smtp_sasl_password_maps = "texthash:${config.sops.templates."sasl_passwd".path}";
         smtp_sasl_security_options = "";
         smtp_use_tls = "yes";
