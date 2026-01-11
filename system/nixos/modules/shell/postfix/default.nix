@@ -29,10 +29,7 @@ in
     ];
     services.postfix = {
       enable = true;
-      enableSubmission = true;
-      enableSubmissions = true;
       settings.main = {
-        hostname = "mail.${config.networking.hostName}";
         relayhost = [ "[smtp.gmail.com]:587" ];
         smtp_sasl_auth_enable = "yes";
         # hash requires converting the password file with the postmap command; texthash avoids this
