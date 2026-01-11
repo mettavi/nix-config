@@ -2,6 +2,7 @@
   config,
   inputs,
   lib,
+  pkgs,
   username,
   ...
 }:
@@ -20,6 +21,11 @@ in
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      # includes the mail command, a user-friendly interface that allows you
+      # to compose and send emails using sendmail in the background
+      mailutils # protocol-independent mail framework
+    ];
     services.postfix = {
       enable = true;
       enableSubmission = true;
