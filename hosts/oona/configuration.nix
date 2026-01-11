@@ -109,8 +109,7 @@
     apps = {
       bitwarden = {
         enable = true;
-        # this also enables the postfix module
-        backup = true;
+        backup = true; # this also enables the postfix module
       };
       libreoffice.enable = true;
     };
