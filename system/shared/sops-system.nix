@@ -1,16 +1,12 @@
 {
   config,
   hostname,
-  inputs,
   lib,
   pkgs,
   secrets_path,
   username,
   ...
 }:
-let
-  email = inputs.secrets.email.personal;
-in
 {
   sops = {
     defaultSopsFile = "${secrets_path}/secrets.yaml";
@@ -45,22 +41,9 @@ in
       "users/${username}/nixos_users/${username}-${hostname}-hashpw" = lib.mkIf pkgs.stdenv.isLinux {
         neededForUsers = true;
       };
-      # this is used for the gmail app password for postfix on the nix-darwin host mack
-      "users/${username}/google_timotheos_app_pw" = {
-      };
       "users/${username}/jellyfin_admin-lady" = { };
       # wifi passwords to configure wireless networks
       "users/${username}/wifi.env" = { };
-    };
-    templates = {
-      # config file to allow postfix to use my personal gmail account automatically
-      "sasl_passwd" = {
-        content = # bash
-          ''
-            [smtp.gmail.com]:587 ${email}:${config.sops.placeholder."users/${username}/google_timotheos_app_pw"}
-          '';
-        path = "/etc/postfix/sasl_passwd";
-      };
     };
   };
   # The containing folders are created as root and if this is the first ~/.config/ entry,
