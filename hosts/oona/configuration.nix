@@ -127,6 +127,8 @@
     };
     shell = {
       kanata.enable = true;
+      # explicitly enable (the bitwarden module also enables this)
+      postfix.enable = true;
     };
     userConfig = {
       timotheos.enable = true;
