@@ -35,7 +35,7 @@ in
         # hash requires converting the password file with the postmap command; texthash avoids this
         smtp_sasl_password_maps = "texthash:${config.sops.templates."sasl_passwd-${hostname}".path}";
         smtp_sasl_security_options = "";
-        smtp_use_tls = "yes";
+        smtp_tls_security_level = "encrypt";
       };
       # optional: Forward mails to root (e.g. from cron jobs, smartd) to an email address
       virtual = ''
