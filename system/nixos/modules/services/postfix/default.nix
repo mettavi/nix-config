@@ -10,10 +10,10 @@
 with lib;
 let
   email = inputs.secrets.email.personal;
-  cfg = config.mettavi.system.shell.postfix;
+  cfg = config.mettavi.system.services.postfix;
 in
 {
-  options.mettavi.system.shell.postfix = {
+  options.mettavi.system.services.postfix = {
     enable = mkOption {
       type = types.bool;
       default = false;

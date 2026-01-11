@@ -30,7 +30,7 @@ in
     ];
 
     # the backup option relies on an email module to enable email notification of failed backups
-    mettavi.system.shell.postfix.enable = mkIf cfg.backup true;
+    mettavi.system.services.postfix.enable = mkIf cfg.backup true;
 
     systemd.user = mkIf cfg.backup {
       # install the package used for making bitwarden backups
