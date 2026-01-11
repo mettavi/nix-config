@@ -25,6 +25,8 @@ in
       # to get authentication-related functionality, currently this cannot be installed by home-manager
       # see https://github.com/NixOS/nixpkgs/pull/339384#issuecomment-2372065297
       bitwarden-desktop
+      # Cryptographic library that implements the SSL and TLS protocols (required for the bash script)
+      openssl_3
     ];
 
     systemd.user = mkIf cfg.backup {
