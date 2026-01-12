@@ -112,6 +112,7 @@
         backup = true; # this also enables the postfix module
       };
       libreoffice.enable = true;
+      qbittorrent.enable = true;
     };
     devices = {
       logitech.enable = true;
@@ -124,6 +125,7 @@
       libvirt.enable = true;
       networkmanager.enable = true;
       openssh.enable = true;
+      pia-vpn-netmanager.enable = true;
     };
     shell = {
       kanata.enable = true;
