@@ -141,6 +141,34 @@ with lib;
     mettavi.system.services.pia-vpn-netmanager = {
       environmentFile = "${config.home-manager.users.${username}.sops.secrets."users/${username}/pia.env".path
       }";
+      
+      region = "jakarta";
+      # postUp = ''
+      # "Kill Switch": block all traffic not passing via wg0 to prevent leaked traffic on VPN dropout
+      # Mark packets on the wg0 interface
+      # wg set ${cfg.interface} fwmark 42
+      # Forbid anything else which doesn't go through wireguard VPN on ipV4 and ipV6
+      # see https://alberand.com/nixos-wireguard-vpn.html
+      #   ${pkgs.iptables}/bin/iptables -A OUTPUT \
+      #   ! -o ${cfg.interface}\
+      #   -m mark ! --mark $(wg show ${cfg.interface} fwmark) \
+      #   -j REJECT
+      #   ${pkgs.iptables}/bin/ip6tables -A OUTPUT \
+      #   ! -o wg0 \
+      #   -m mark ! --mark $(wg show ${cfg.interface} fwmark) \
+      #   -j REJECT
+      # '';
+      # postDown = ''
+      # Remove the "kill switch" added in postUp
+      #   ${pkgs.iptables}/bin/iptables -D OUTPUT \
+      #   ! -o ${cfg.interface} \
+      #   -m mark ! --mark $(wg show ${cfg.interface} fwmark) \
+      #   -j REJECT
+      #   ${pkgs.iptables}/bin/ip6tables -D OUTPUT \
+      #   ! -o ${cfg.interface} -m mark \
+      #   ! --mark $(wg show ${cfg.interface} fwmark) \
+      #   -j REJECT
+      # '';
     };
 
     boot.kernelModules = [ "wireguard" ];
@@ -151,11 +179,20 @@ with lib;
     # true (or “strict”), “loose” (only drop the packet if the source address is not reachable via any interface) or false
     networking.firewall.checkReversePath = "loose";
 
-    # open the firewall for the default wireguard port
-    networking.firewall.allowedUDPPorts = [ 51820 ];
-
-    # Wireguard network manager
-    # services.wg-netmanager.enable = true;
+    # adapt the rpfilter to ignore wireguard related traffic
+    # networking.firewall = {
+    #   # if packets are still dropped, they will show up in dmesg
+    #   logReversePathDrops = true;
+    #   # wireguard trips rpfilter up
+    #   extraCommands = ''
+    #     iptables -t mangle -I nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN
+    #     iptables -t mangle -I nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN
+    #   '';
+    #   extraStopCommands = ''
+    #     iptables -t mangle -D nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN || true
+    #     iptables -t mangle -D nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN || true
+    #   '';
+    # };
 
     systemd.services.pia-vpn = {
       description = "Connect to Private Internet Access on ${cfg.interface}";

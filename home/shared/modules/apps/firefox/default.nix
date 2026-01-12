@@ -382,9 +382,10 @@ in
               "privacy.query_stripping.enabled.pbmode" = true;
 
               # Fingerprinting
-              "privacy.fingerprintingProtection" = true;
-              "privacy.resistFingerprinting" = true;
+              # set to false to allow dark-mode-capable webpages to detect system dark/light mode status
+              "privacy.resistFingerprinting" = false;
               "privacy.resistFingerprinting.pbmode" = true;
+              "privacy.fingerprintingProtection" = true;
 
               # disable using the OS's geolocation service
               "geo.provider.use_gpsd" = false;
