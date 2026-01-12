@@ -4,11 +4,15 @@
 # and https://github.com/binarypatrick/BitwardenBackup
 # See https://github.com/dh024/Bitwarden_Export for a good INTERACTIVE export script
 
+# set the user account to backup
+USER="timotheos"
+
 # load env vars required by script and bw binary
-source /Users/timotheos/.config/sops-nix/secrets/users/timotheos/bitwarden.env
+# shellcheck disable=SC1090,SC1091
+source "$HOME/.config/sops-nix/secrets/users/$USER/bitwarden.env"
 
 TIMESTAMP=$(date "+%Y%m%d")
-EXPORT_PATH="$HOME/Applications/backups/bitwarden"
+EXPORT_PATH="$HOME/backups/bitwarden"
 # EXPORT_PLAIN_FILE=bw_$TIMESTAMP.json
 # EXPORT_ENCRYPTED_FILE=bw_enc_$TIMESTAMP.json
 EXPORT_OPENSSL_FILE=bw_$TIMESTAMP.enc

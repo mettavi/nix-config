@@ -41,7 +41,6 @@ in
     # cmake
     cmatrix
     cowsay
-    fastfetch
     gitleaks
     gyb # a command line tool for backing up your Gmail messages
     nix-fast-build # speed-up your evaluation and building process

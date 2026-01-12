@@ -20,7 +20,9 @@ in
     services.kanata = {
       enable = true;
       keyboards = {
-        "MBP-internal" = {
+        "Asus-G14" = {
+          # An empty list, the default value, lets kanata detect which
+          # input devices are keyboards and intercept them all.
           # devices = [
           # Replace the paths below with the appropriate device paths for your setup.
           # Use `ls /dev/input/by-path/` to find your keyboard devices.
@@ -29,7 +31,7 @@ in
           # ];
           config = ''
              (defsrc
-              esc f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
+              esc
               caps a s d f h j k l ;
             )
 
@@ -40,6 +42,7 @@ in
 
             (defalias
               nav (layer-while-held navigation)
+              ;; spc and other keys will terminate the caps-lock, so typing a sentence will require the key to be reused
               cw (caps-word 5000)
               escnav (tap-hold 100 100 esc @nav)
               ;; trigger a tap when rolling within the timeout (unless second key is released first)
@@ -51,17 +54,16 @@ in
               j (tap-hold-except-keys $tap-time $hold-time j rctl (y u i o p h j k l ; n m , . /))
               k (tap-hold-except-keys $tap-time $hold-time k rsft (y u i o p h j k l ; n m , . /))
               l (tap-hold-except-keys $tap-time $hold-time l rmet (y u i o p h j k l ; n m , . /))
-              ;; the right-option key must be set to ESC+ in iterm/terminal settings for this mapping to work                                                       
               ; (tap-hold-except-keys $tap-time $hold-time ; ralt (y u i o p h j k l ; n m , . /))
             )
 
             (deflayer base
-              @cw brdn  brup  _    _    _    _   prev  pp  next  mute  vold  volu
+              @cw
               @escnav @a @s @d @f _ @j @k @l @;
             )
 
             (deflayer navigation
-              @cw f1   f2   f3   f4   f5   f6   f7   f8   f9   f10   f11   f12
+              @cw
               _ _ _ _ _ left down up rght _
             )
           '';

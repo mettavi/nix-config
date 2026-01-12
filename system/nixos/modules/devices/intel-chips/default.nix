@@ -28,6 +28,7 @@ in
       graphics = {
         enable = true;
         extraPackages = with pkgs; [
+          intel-gpu-tools # testing of the Intel DRM driver
           # For Broadwell and newer (ca. 2014+), use with LIBVA_DRIVER_NAME=iHD:
           intel-media-driver
           # For older processors, use with LIBVA_DRIVER_NAME=i965:
@@ -38,9 +39,6 @@ in
           # OpenCL support for intel CPUs before 12th gen
           # see: https://github.com/NixOS/nixpkgs/issues/356535
           intel-compute-runtime-legacy1
-          # modern graphics API that provides improved performance and better control over graphics hardware
-          vulkan-loader
-          vulkan-tools
           # unfortunately this driver is deprecated with several security vulnerabilities
           # use vaapi drivers abover instead
           # intel-media-sdk # for Quick Sync Video (QSV) (8th-11th gen cpu)

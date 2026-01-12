@@ -7,10 +7,10 @@
 }:
 with lib;
 let
-  cfg = config.mettavi.system.gnome;
+  cfg = config.mettavi.system.desktops.gnome;
 in
 {
-  options.mettavi.system.gnome = {
+  options.mettavi.system.desktops.gnome = {
     enable = mkOption {
       type = types.bool;
       default = false;
@@ -30,7 +30,8 @@ in
         epiphany # web broswer (aka "Gnome Web")
       ];
       systemPackages =
-        (with pkgs; [ celluloid ]) # GTK frontend for the mpv video player
+        (with pkgs; [
+        ])
         ++ (with pkgs.gst_all_1; [
           # GSTREAMER PLUGINS
           gst-plugins-base
@@ -40,10 +41,6 @@ in
           gst-libav # FFmpeg plugin for GStreamer
           gst-vaapi # Set of VAAPI GStreamer Plug-ins
         ]);
-      # ++ (with pkgs.gnomeExtensions; [
-      #   app-icons-taskbar
-      #   appindicator
-      # ]);
       variables = {
         # Allow apps such as Gnome Files (Nautilus) to detect gstreamer plugins
         GST_PLUGIN_PATH_1_0 = [ "/run/current-system/sw/lib/gstreamer-1.0" ];
@@ -71,6 +68,7 @@ in
     home-manager.users.${username} = {
       home.packages =
         (with pkgs; [
+          celluloid # GTK frontend for the mpv video player
           dconf-editor # GSettings editor for GNOME
           gnome-extension-manager # Desktop app for managing GNOME shell extensions
           gnome-tweaks # Tool to customize advanced GNOME 3 options
@@ -78,7 +76,8 @@ in
           wl-clipboard # command line copy/paste utilities for Wayland
         ])
         ++ (with pkgs.gnomeExtensions; [
-          appindicator # Adds AppIndicator, KStatusNotifierItem and legacy Tray icons support to the Shell.
+          appindicator # Adds AppIndicator, KStatusNotifierItem and legacy tray icons support to the Shell.
+          power-profile-indicator-2 # Add current power profile in panel's system icons.
         ]);
       # Use `dconf watch /` to track stateful changes you are doing, then set them here
       dconf.settings = {
@@ -87,22 +86,9 @@ in
           folder-children = [
             "Utilities"
             "System"
-            "Calibre"
             "Gnome Tools"
-            "LibreOffice"
             "Nix"
           ];
-        };
-        "org/gnome/desktop/app-folders/folders/Calibre" = {
-          name = "Calibre";
-          apps = [
-            "calibre-gui.desktop"
-            "CaliSync.desktop"
-            "calibre-ebook-viewer.desktop"
-            "calibre-ebook-edit.desktop"
-            "calibre-lrfviewer.desktop"
-          ];
-          translate = false;
         };
         "org/gnome/desktop/app-folders/folders/Gnome Tools" = {
           name = "Gnome Tools";
@@ -110,19 +96,6 @@ in
             "com.mattjakeman.ExtensionManager.desktop"
             "org.gnome.tweaks.desktop"
             "ca.desrt.dconf-editor.desktop"
-          ];
-          translate = false;
-        };
-        "org/gnome/desktop/app-folders/folders/LibreOffice" = {
-          name = "LibreOffice";
-          apps = [
-            "startcenter.desktop"
-            "writer.desktop"
-            "impress.desktop"
-            "math.desktop"
-            "base.desktop"
-            "calc.desktop"
-            "draw.desktop"
           ];
           translate = false;
         };
@@ -144,11 +117,15 @@ in
           # `gnome-extensions list` for a list
           enabled-extensions = [
             "appindicatorsupport@rgcjonas.gmail.com"
+            "power-profile@fthx"
           ];
         };
         "org/gnome/desktop/wm/keybindings" = {
           # workaround for problem with the ALT-F2 default for the Gnome run dialog
-          panel-run-dialog = [ "<Alt>S" ];
+          panel-run-dialog = [
+            "<Alt>F2" # this is the default
+            "<Alt>S" # this is a workaround for the keyboard on host lady
+          ];
         };
         # "org/gnome/desktop/peripherals/keyboard" = {
         # delay = lib.hm.gvariant.mkUint32 175;

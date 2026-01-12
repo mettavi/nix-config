@@ -1,4 +1,10 @@
-{ lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  username,
+  ...
+}:
 with lib;
 with pkgs.stdenv;
 let
@@ -22,20 +28,22 @@ let
       '';
 in
 {
-  home.packages = [ calibre-and-sync ];
+  home-manager.users.${username} = lib.mkIf config.mettavi.apps.calibre.enable {
+    home.packages = [ calibre-and-sync ];
 
-  /*
-    To list all .desktop files, run:
-    ls /run/current-system/sw/share/applications # for global packages
-    ls /etc/profiles/per-user/$(id -n -u)/share/applications # for user packages
-  */
-  xdg.desktopEntries.CaliSync = mkIf pkgs.stdenv.isLinux {
-    name = "CaliSync";
-    exec = "${calibre-and-sync}/bin/calibre-and-sync.sh";
-    icon = "${pkgs.calibre}/share/icons/hicolor/128x128/apps/calibre-gui.png";
-    terminal = true;
-    categories = [
-      "Office"
-    ];
+    /*
+      To list all .desktop files, run:
+      ls /run/current-system/sw/share/applications # for global packages
+      ls /etc/profiles/per-user/$(id -n -u)/share/applications # for user packages
+    */
+    xdg.desktopEntries.CaliSync = mkIf pkgs.stdenv.isLinux {
+      name = "CaliSync";
+      exec = "${calibre-and-sync}/bin/calibre-and-sync.sh";
+      icon = "${pkgs.calibre}/share/icons/hicolor/128x128/apps/calibre-gui.png";
+      terminal = true;
+      categories = [
+        "Office"
+      ];
+    };
   };
 }

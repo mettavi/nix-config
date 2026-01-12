@@ -41,6 +41,10 @@
 
     ######### NIXOS #########
     nixos-pkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    cachyos-kernel = {
+      url = "github:xddxdd/nix-cachyos-kernel/release";
+      inputs.nixpkgs.follows = "nixos-pkgs";
+    };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     # fan daemon for T2 macs
     t2fanrd.url = "github:GnomedDev/T2FanRD";
@@ -58,7 +62,7 @@
       # use this address with ssh keys after initial setup
       url = "git+ssh://git@github.com/mettavi/nix-secrets.git?ref=main&shallow=1";
       # use this address with a GH personal access token (PAT) for initial install
-      # NB: add the PAT directly to the nix.conf file with "access-tokens = github.com=<PAT>"
+      # NB: add the PAT directly to the nix.conf file (using the nix.settings flake attribute) with "access-tokens = github.com=<PAT>"
       # url = "github:mettavi/nix-secrets";
       inputs = { };
     };

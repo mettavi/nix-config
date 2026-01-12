@@ -27,6 +27,22 @@ in
     # prevent the service from auto-starting on boot
     # systemd.services.jellarr.wantedBy = lib.mkForce [ ];
 
+    # define secrets for jellarr using sops-nix module
+    sops = {
+      secrets = {
+        "users/${username}/jellarr_apikey" = { };
+      };
+      templates = {
+        "jellarr.env" = {
+          content = ''
+            JELLARR_API_KEY=${config.sops.placeholder."users/${username}/jellarr_apikey"}
+          '';
+          owner = config.services.jellarr.user;
+          group = config.services.jellarr.group;
+        };
+      };
+    };
+
     # configure the jellarr module
     services.jellarr = {
       enable = true;

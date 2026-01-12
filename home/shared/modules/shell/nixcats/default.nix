@@ -80,6 +80,7 @@ in
             general = with pkgs; [
               prettier
               taplo
+              tree-sitter
               typescript-language-server
             ];
             bash = with pkgs; [

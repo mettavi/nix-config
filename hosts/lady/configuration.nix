@@ -106,7 +106,7 @@
       # gnome only uses xkb config for initial set up, configure in dconf instead
       # see https://discourse.nixos.org/t/strange-xkboptions-behavior-gnome/33535/5
       xkb = {
-        # This might still be used by Wayland
+        # Despite the xserver attribute, this might still be used by Wayland
         model = "macbook78"; # MacBook/MacBook Pro
         layout = "us";
         variant = "mac";
@@ -124,10 +124,12 @@
   mettavi = {
     system = {
       # use the gnome desktop
-      gnome.enable = true;
       apps = {
         libreoffice.enable = true;
         qbittorrent.enable = true;
+      };
+      desktops = {
+        gnome.enable = true;
       };
       devices = {
         intel-chips.enable = true;
@@ -156,18 +158,12 @@
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
   home-manager.users.${username} = {
     home = {
-      packages = with pkgs; [
-        # Comprehensive e-book software
-        (calibre.override {
-          # to open .cbr and .cbz files
-          unrarSupport = true;
-        })
-      ];
       # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
       stateVersion = "25.05";
     };
     mettavi = {
       apps = {
+        calibre.enable = true;
         chromium.enable = true;
         firefox.enable = true;
         ghostty.enable = true;
@@ -186,9 +182,6 @@
         "image/jpeg" = "org.gnome.Loupe.desktop";
         # gnome document viewer
         "application/pdf" = "org.gnome.Evince.desktop";
-        # calibre
-        "application/lrf" = "calibre-lrfviewer.desktop";
-        "application/epub+zip" = "calibre-ebook-viewer.desktop";
         "text/html" = "firefox.desktop";
         "x-scheme-handler/http" = "firefox.desktop";
         "x-scheme-handler/https" = "firefox.desktop";
