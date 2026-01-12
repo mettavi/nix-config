@@ -171,7 +171,7 @@ with lib;
         "network.target"
         "network-online.target"
       ];
-      # do not restart the service when running 'nixos-rebuild switch'
+      # do not REstart the service when running 'nixos-rebuild switch'
       restartIfChanged = false;
       # do not start the service on system boot
       # wantedBy = [ "multi-user.target" ];
@@ -185,7 +185,7 @@ with lib;
 
       serviceConfig = {
         Type = "oneshot";
-        # do not start the service when running 'nixos-rebuild switch'
+        # do not START the service when running 'nixos-rebuild switch'
         RemainAfterExit = true;
         Restart = "on-failure";
         EnvironmentFile = cfg.environmentFile;
