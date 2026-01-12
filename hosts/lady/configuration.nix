@@ -125,6 +125,7 @@
     system = {
       # use the gnome desktop
       apps = {
+        calibre.enable = true;
         libreoffice.enable = true;
         qbittorrent.enable = true;
       };
@@ -163,7 +164,6 @@
     };
     mettavi = {
       apps = {
-        calibre.enable = true;
         chromium.enable = true;
         firefox.enable = true;
         ghostty.enable = true;

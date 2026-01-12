@@ -28,7 +28,7 @@ let
       '';
 in
 {
-  home-manager.users.${username} = lib.mkIf config.mettavi.apps.calibre.enable {
+  home-manager.users.${username} = lib.mkIf config.mettavi.system.apps.calibre.enable {
     home.packages = [ calibre-and-sync ];
 
     /*

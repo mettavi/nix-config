@@ -7,12 +7,12 @@
   ...
 }:
 let
-  cfg = config.mettavi.apps.calibre;
+  cfg = config.mettavi.system.apps.calibre;
 in
 {
   imports = [ ./calibre-and-sync.nix ];
 
-  options.mettavi.apps.calibre = {
+  options.mettavi.system.apps.calibre = {
     enable = lib.mkEnableOption "Install and set up the calibre ebook manager";
   };
 
