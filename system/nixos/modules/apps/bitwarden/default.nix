@@ -41,6 +41,13 @@ in
           # Ensures the service starts after the network is available
           after = [ "network.target" ];
           description = "Backup the bitwarden database";
+          # required by the script being scheduled
+          path = with pkgs; [
+            bash
+            bitwarden-cli
+            mailutils
+            openssl
+          ];
           serviceConfig = {
             ExecStart = "${inputs.self}/home/shared/bin/bw_backup.sh";
             # do not start the service when running 'nixos-rebuild switch'
