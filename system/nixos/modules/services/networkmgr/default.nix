@@ -46,15 +46,15 @@ in
 
     # network definitions to automatically connect to when wpa_supplicant is running.
     # If this parameter is left empty wpa_supplicant will use /etc/wpa_supplicant.conf as the configuration file.
-    networking.wireless.networks = {
-      secretsFile = config.sops.secrets."wifi.env".path;
-      "MV-Pix8Pro" = {
-        # read PSKs from the variable ext:<variable>, defined in secretsFile
-        pskRaw = "ext:psk_mvp8pro";
-      };
-      "NEWBURY-STAFF" = {
-        pskRaw = "ext:psk_newstaff";
-      };
-    };
+    # networking.wireless.networks = {
+    # secretsFile = "${config.sops.secrets."users/${username}/wifi.env".path}";
+    # "MV-Pix8Pro" = {
+    # read PSKs from the variable ext:<variable>, defined in secretsFile
+    #   pskRaw = "ext:psk_mvp8pro";
+    # };
+    #   "NEWBURY-STAFF" = {
+    #     pskRaw = "ext:psk_newstaff";
+    #   };
+    # };
   };
 }
