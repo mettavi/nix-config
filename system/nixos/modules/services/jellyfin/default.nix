@@ -17,6 +17,12 @@ in
   # jellyfin-web: ${pkgs.jellyfin-web}/share/jellyfin-web/config.json
   # jellyfin: system.xml in the configDir (see below)
   config = lib.mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      jellyfin
+      jellyfin-web
+      jellyfin-ffmpeg
+    ];
+
     services.jellyfin = {
       enable = true;
       configDir = "${home}/.config/jellyfin";
@@ -29,11 +35,6 @@ in
     # prevent the service from auto-starting on boot
     systemd.services.jellyfin.wantedBy = lib.mkForce [ ];
 
-    environment.systemPackages = with pkgs; [
-      jellyfin
-      jellyfin-web
-      jellyfin-ffmpeg
-    ];
     users.users.${username} = {
       # add the jellyfin user to the render group
       extraGroups = [ "render" ];
