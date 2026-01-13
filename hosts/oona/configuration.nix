@@ -107,6 +107,7 @@
         enable = true;
         backup = true; # this also enables the postfix module
       };
+      calibre.enable = true;
       libreoffice.enable = true;
       qbittorrent.enable = true;
     };
