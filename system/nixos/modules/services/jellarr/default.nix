@@ -6,6 +6,7 @@
   username,
   ...
 }:
+with lib;
 let
   cfg = config.mettavi.system.services.jellarr;
   home = config.users.users.${username}.home;
@@ -17,7 +18,7 @@ in
   ];
 
   options.mettavi.system.services.jellarr = {
-    enable = lib.mkEnableOption "Install and declaratively configure the jellyfin media server using the jellarr third-party flake";
+    enable = mkEnableOption "Install and declaratively configure the jellyfin media server using the jellarr third-party flake";
   };
 
   config = lib.mkIf cfg.enable {
