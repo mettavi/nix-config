@@ -10,7 +10,7 @@
 {
   sops = {
     defaultSopsFile = "${secrets_path}/secrets.yaml";
-    # If you use something differentfrom YAML, you can also specify it here:
+    # If you use something different from YAML, you can also specify it here:
     #sops.defaultSopsFormat = "yaml";
     age = {
       # automatically import host SSH keys as age keys
