@@ -119,6 +119,8 @@
       gnome.enable = true;
     };
     services = {
+      # this also enables the jellyfin module
+      jellarr.enable = true;
       libvirt.enable = true;
       networkmanager.enable = true;
       openssh.enable = true;
