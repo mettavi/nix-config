@@ -21,7 +21,7 @@ in
     enable = mkEnableOption "Install and declaratively configure the jellyfin media server using the jellarr third-party flake";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     # install and setup the jellyfin service
     mettavi.system.services.jellyfin.enable = true;
 
