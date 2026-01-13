@@ -9,10 +9,12 @@ with lib;
 let
   cfg = config.mettavi.system.services.jellyfin;
   home = config.users.users.${username}.home;
+  hostname = config.networking.hostName;
 in
 {
   options.mettavi.system.services.jellyfin = {
-    enable = lib.mkEnableOption "Install and set up the jellyfin media server";
+    enable = mkEnableOption "Install and set up the jellyfin media server";
+    set_signin = mkEnableOption "Preconfigure signin credentials using the sops-nix secrets module";
   };
 
   # jellyfin-web: ${pkgs.jellyfin-web}/share/jellyfin-web/config.json
@@ -31,6 +33,10 @@ in
       openFirewall = true;
       logDir = "${home}/.local/share/jellyfin/log";
       user = "${username}";
+    };
+
+    sops.secrets = mkIf cfg.set_signin {
+      "users/${username}/jellyfin_admin-${hostname}" = { };
     };
 
     # prevent the service from auto-starting on boot
