@@ -5,6 +5,7 @@
   username,
   ...
 }:
+with lib;
 let
   cfg = config.mettavi.system.services.jellyfin;
   home = config.users.users.${username}.home;
@@ -16,7 +17,7 @@ in
 
   # jellyfin-web: ${pkgs.jellyfin-web}/share/jellyfin-web/config.json
   # jellyfin: system.xml in the configDir (see below)
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       jellyfin
       jellyfin-web
@@ -33,7 +34,7 @@ in
     };
 
     # prevent the service from auto-starting on boot
-    systemd.services.jellyfin.wantedBy = lib.mkForce [ ];
+    systemd.services.jellyfin.wantedBy = mkForce [ ];
 
     users.users.${username} = {
       # add the jellyfin user to the render group
