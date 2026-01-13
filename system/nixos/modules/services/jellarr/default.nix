@@ -50,7 +50,10 @@ in
       # Bootstrap: automatically inserts API key into Jellyfin's database
       # NB: bootstrap only works if jellarr and jellyfin are on the same host
       bootstrap = {
-        # disable this feature until https://github.com/venkyr77/jellarr/issues/39 is resolved
+        # NB: after installing jellyfin/jellarr with nixos-rebuild,
+        # activation failed with "starting the following units: accounts-daemon.service"
+        # It turned out to be the jellarr-api-key-bootstrap service and was fixed by disabling this option.
+        # This only happens on a new install and may be due to a race condition. Needs further investigation.
         enable = true;
         apiKeyFile = config.sops.secrets."users/${username}/jellarr_apikey".path;
       };
