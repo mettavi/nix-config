@@ -141,8 +141,8 @@ with lib;
     mettavi.system.services.pia-vpn-netmanager = {
       environmentFile = "${config.home-manager.users.${username}.sops.secrets."users/${username}/pia.env".path
       }";
-      
-      region = "jakarta";
+
+      # region = "jakarta";
       # postUp = ''
       # "Kill Switch": block all traffic not passing via wg0 to prevent leaked traffic on VPN dropout
       # Mark packets on the wg0 interface
