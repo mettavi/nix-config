@@ -119,6 +119,11 @@
       gnome.enable = true;
     };
     services = {
+      # this alse enables the podman module
+      audiobookshelf = {
+        enable = true;
+        abs_home = "${config.users.users.${username}.home}/media/audiobooks";
+      };
       # this also enables the jellyfin module
       jellarr.enable = true;
       libvirt.enable = true;

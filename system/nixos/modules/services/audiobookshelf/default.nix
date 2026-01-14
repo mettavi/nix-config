@@ -11,6 +11,11 @@ in
 {
   options.mettavi.system.services.audiobookshelf = {
     enable = lib.mkEnableOption "Install and set up audiobookshelf server";
+    abs_home = lib.mkOption {
+      description = "The location of the audiobook library in the filesystem";
+      type = lib.types.path;
+      default = "${config.users.users.${username}.home}/Music/Audiobooks";
+    };
   };
 
   config = lib.mkIf cfg.enable {
