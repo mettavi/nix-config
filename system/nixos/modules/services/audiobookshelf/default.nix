@@ -7,6 +7,7 @@
 }:
 let
   cfg = config.mettavi.system.services.audiobookshelf;
+  volumes = config.virtualisation.quadlet.volumes;
 in
 {
   options.mettavi.system.services.audiobookshelf = {
@@ -70,6 +71,32 @@ in
           };
         };
       };
-
+      # used named volumes for data persistence, not bind mounts
+      volumes = {
+        abs-home = {
+          autoStart = false;
+          volumeConfig = {
+            device = "${config.mettavi.system.services.audiobookshelf.abs_home}";
+            globalArgs = [ "--log-level=debug" ];
+            type = "bind";
+            # user = "${username}";
+          };
+        };
+        abs-cfg = {
+          autoStart = false;
+          volumeConfig = {
+            device = "${config.users.users.${username}.home}/.config/audiobookshelf";
+            type = "bind";
+          };
+        };
+        abs-meta = {
+          autoStart = false;
+          volumeConfig = {
+            device = "${config.users.users.${username}.home}/.local/share/audiobookshelf/metadata";
+            type = "bind";
+          };
+        };
+      };
+    };
   };
 }
