@@ -9,7 +9,7 @@
 }:
 {
   sops = {
-    defaultSopsFile = "${secrets_path}/secrets.yaml";
+    defaultSopsFile = "${secrets_path}/secrets/common.yaml";
     # If you use something different from YAML, you can also specify it here:
     #sops.defaultSopsFormat = "yaml";
     age = {
