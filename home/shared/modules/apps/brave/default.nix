@@ -17,6 +17,8 @@ in
     };
   };
   config = mkIf cfg.enable {
+    # see https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy for a list of brave policy settings
+    # environment.etc."/brave/policies/managed/GroupPolicy.json".source = ./policies.json;
     programs.brave = {
       enable = true;
       dictionaries = [
