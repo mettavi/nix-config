@@ -13,6 +13,11 @@ in
 
   options.mettavi.system.apps.calibre = {
     enable = lib.mkEnableOption "Install and set up the calibre ebook manager";
+    cal_lib = lib.mkOption {
+      description = "The location of the calibre library in the filesystem";
+      type = lib.types.path;
+      default = "${config.users.users.${username}.home}/Documents/calibre";
+    };
   };
 
   config = lib.mkIf cfg.enable {
