@@ -36,7 +36,12 @@ in
           { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock origin
         ];
         commandLineArgs = [
+          # there are problems with vulkan and hardware acceleration on wayland
+          # until these are fixed, disable hw accel to get video working
+          # see https://github.com/NixOS/nixpkgs/pull/378184
           "--disable-features=AutofillSavePaymentMethods"
+          "--disable-gpu"
+          "--disable-gpu-compositing"
         ];
         package = pkgs.brave;
       };
