@@ -108,6 +108,7 @@
         enable = true;
         backup = true; # this also enables the postfix module
       };
+      brave.enable = true;
       calibre = {
         enable = true;
         cal_lib = "${config.users.users.${username}.home}/media/calibre";
@@ -188,7 +189,6 @@
     };
     mettavi = {
       apps = {
-        brave.enable = true;
         firefox.enable = true;
         ghostty.enable = true;
       };
