@@ -17,8 +17,21 @@ in
     };
   };
   config = mkIf cfg.enable {
-    programs.chromium = {
+    programs.brave = {
       enable = true;
+      dictionaries = [
+        pkgs.hunspellDictsChromium.en_US
+      ];
+      # NB: In order to install extensions in brave, use programs.brave rather than programs.chromium
+      extensions = [
+        { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; } # dark reader
+        { id = "hipekcciheckooncpjeljhnekcoolahp"; } # tabliss
+        { id = "iaiomicjabeggjcfkbimgmglanimpnae"; } # tab session messenger
+        { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock origin
+      ];
+      commandLineArgs = [
+        "--disable-features=AutofillSavePaymentMethods"
+      ];
       package = pkgs.brave;
     };
   };
