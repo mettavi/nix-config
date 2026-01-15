@@ -108,7 +108,10 @@
         enable = true;
         backup = true; # this also enables the postfix module
       };
-      calibre.enable = true;
+      calibre = {
+        enable = true;
+        cal_lib = "${config.users.users.${username}.home}/media/calibre";
+      };
       libreoffice.enable = true;
       qbittorrent.enable = true;
     };
