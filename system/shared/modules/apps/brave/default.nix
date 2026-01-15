@@ -18,7 +18,6 @@ in
     };
   };
   config = mkIf cfg.enable {
-
     # see https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy for a list of brave policy settings
     environment.etc."/brave/policies/managed/GroupPolicy.json".source = ./policies.json;
 
@@ -30,6 +29,7 @@ in
         ];
         # NB: In order to install extensions in brave, use programs.brave rather than programs.chromium
         extensions = [
+          { id = "nngceckbapebfimnlniiiahkandclblb"; } # bitwarden
           { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; } # dark reader
           { id = "hipekcciheckooncpjeljhnekcoolahp"; } # tabliss
           { id = "iaiomicjabeggjcfkbimgmglanimpnae"; } # tab session messenger
