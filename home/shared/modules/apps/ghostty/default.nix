@@ -32,5 +32,13 @@ in
         theme = "iTerm2 Pastel Dark Background";
       };
     };
+    xdg.terminal-exec = {
+      enable = true;
+      settings = {
+        default = [
+          "ghostty.desktop"
+        ];
+      };
+    };
   };
 }
