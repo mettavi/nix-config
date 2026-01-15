@@ -2,14 +2,15 @@
   config,
   lib,
   pkgs,
+  username,
   ...
 }:
 with lib;
 let
-  cfg = config.mettavi.apps.brave;
+  cfg = config.mettavi.system.apps.brave;
 in
 {
-  options.mettavi.apps.brave = {
+  options.mettavi.system.apps.brave = {
     enable = mkOption {
       type = types.bool;
       default = false;
@@ -17,24 +18,28 @@ in
     };
   };
   config = mkIf cfg.enable {
+
     # see https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy for a list of brave policy settings
-    # environment.etc."/brave/policies/managed/GroupPolicy.json".source = ./policies.json;
-    programs.brave = {
-      enable = true;
-      dictionaries = [
-        pkgs.hunspellDictsChromium.en_US
-      ];
-      # NB: In order to install extensions in brave, use programs.brave rather than programs.chromium
-      extensions = [
-        { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; } # dark reader
-        { id = "hipekcciheckooncpjeljhnekcoolahp"; } # tabliss
-        { id = "iaiomicjabeggjcfkbimgmglanimpnae"; } # tab session messenger
-        { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock origin
-      ];
-      commandLineArgs = [
-        "--disable-features=AutofillSavePaymentMethods"
-      ];
-      package = pkgs.brave;
+    environment.etc."/brave/policies/managed/GroupPolicy.json".source = ./policies.json;
+
+    home-manager.users.${username} = {
+      programs.brave = {
+        enable = true;
+        dictionaries = [
+          pkgs.hunspellDictsChromium.en_US
+        ];
+        # NB: In order to install extensions in brave, use programs.brave rather than programs.chromium
+        extensions = [
+          { id = "eimadpbcbfnmbkopoojfekhnkhdbieeh"; } # dark reader
+          { id = "hipekcciheckooncpjeljhnekcoolahp"; } # tabliss
+          { id = "iaiomicjabeggjcfkbimgmglanimpnae"; } # tab session messenger
+          { id = "cjpalhdlnbpafiamejdnhcphjbkeiagm"; } # ublock origin
+        ];
+        commandLineArgs = [
+          "--disable-features=AutofillSavePaymentMethods"
+        ];
+        package = pkgs.brave;
+      };
     };
   };
 }
