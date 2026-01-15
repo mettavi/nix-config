@@ -6,10 +6,10 @@
 }:
 with lib;
 let
-  cfg = config.mettavi.apps.chromium;
+  cfg = config.mettavi.apps.brave;
 in
 {
-  options.mettavi.apps.chromium = {
+  options.mettavi.apps.brave = {
     enable = mkOption {
       type = types.bool;
       default = false;
