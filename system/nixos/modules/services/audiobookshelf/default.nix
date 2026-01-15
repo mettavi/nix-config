@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.mettavi.system.services.audiobookshelf;
-  volumes = config.virtualisation.quadlet.volumes;
+  # volumes = config.virtualisation.quadlet.volumes;
 in
 {
   options.mettavi.system.services.audiobookshelf = {
@@ -51,10 +51,18 @@ in
             # required to become root and access the mounted volumes
             # WARNING: do not enable this option ("user namespace") as it causes "Error: listen EACCES: permission denied 0.0.0.0:80"
             # userns = "keep-id";
+
+            # NB: Reverted to bind mounts as named volumes would not work with audiobookshelf
+            # (the directories were all empty)
             volumes = [
-              "${volumes.abs-home.ref}:/audiobooks"
-              "${volumes.abs-cfg.ref}:/config"
-              "${volumes.abs-meta.ref}:/metadata"
+              # bind mounts
+              "${config.mettavi.system.services.audiobookshelf.abs_home}:/audiobooks"
+              "${config.users.users.${username}.home}/.config/audiobookshelf:/config"
+              "${config.users.users.${username}.home}/.local/share/audiobookshelf/metadata:/metadata"
+              # named volume mounts
+              # "${volumes.abs-home.ref}:/audiobooks"
+              # "${volumes.abs-cfg.ref}:/config"
+              # "${volumes.abs-meta.ref}:/metadata"
             ];
           };
           serviceConfig = {
@@ -65,6 +73,7 @@ in
         };
       };
       # used named volumes for data persistence, not bind mounts
+      # NB: these are not used currently due to a problem with the audiobookshelf service
       volumes = {
         abs-home = {
           autoStart = false;
