@@ -194,6 +194,11 @@ with lib;
     #   '';
     # };
 
+    sops.secrets = {
+      # .env file for use with systemd service for PIA VPN
+      "users/${username}/pia.env" = { };
+    };
+
     systemd.services.pia-vpn = {
       description = "Connect to Private Internet Access on ${cfg.interface}";
       path = with pkgs; [
