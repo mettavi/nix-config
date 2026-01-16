@@ -9,7 +9,7 @@ USER="timotheos"
 
 # load env vars required by script and bw binary
 # shellcheck disable=SC1090,SC1091
-source "$HOME/.config/sops-nix/secrets/users/$USER/bitwarden.env"
+source "/run/secrets/rendered/bitwarden.env"
 
 TIMESTAMP=$(date "+%Y%m%d")
 EXPORT_PATH="$HOME/backups/bitwarden"
