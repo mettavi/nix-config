@@ -72,7 +72,7 @@ in
           };
         };
       };
-      # used named volumes for data persistence, not bind mounts
+      # use named volumes for data persistence, not bind mounts
       # NB: these are not used currently due to a problem with the audiobookshelf service
       volumes = {
         abs-home = {
