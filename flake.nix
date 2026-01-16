@@ -125,7 +125,7 @@
     in
     {
       nix_repo = ".nix-config";
-      secrets_path = builtins.toString inputs.secrets;
+      secrets_path = toString inputs.secrets;
 
       # DARWIN-REBUILD BUILDS
       # Build darwin flake using:
