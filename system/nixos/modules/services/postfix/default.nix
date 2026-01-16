@@ -4,6 +4,7 @@
   inputs,
   lib,
   pkgs,
+  secrets_path,
   username,
   ...
 }:
