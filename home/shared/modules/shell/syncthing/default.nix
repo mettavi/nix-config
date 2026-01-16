@@ -2,6 +2,7 @@
   config,
   hostname,
   lib,
+  secrets_path,
   ...
 }:
 let
@@ -9,6 +10,7 @@ let
   cert_pem = "users/${config.home.username}/syncthing/st_${hostname}_cert.pem";
   key_pem = "users/${config.home.username}/syncthing/st_${hostname}_key.pem";
   gui_pw = "users/${config.home.username}/syncthing/st_${hostname}_guipw";
+  syncthingSecrets.sopsFile = "${secrets_path}/secrets/apps/syncthing.yaml";
   # do not attempt to set the gui_apikey until a hm syncthing module option is available
   # gui_apikey = "users/${config.home.username}/syncthing/st_${hostname}_guiapikey";
 in
@@ -59,11 +61,11 @@ in
       };
     };
     sops.secrets = {
-      "${cert_pem}" = { };
-      "${key_pem}" = { };
-      "${gui_pw}" = { };
+      "${cert_pem}" = syncthingSecrets;
+      "${key_pem}" = syncthingSecrets;
+      "${gui_pw}" = syncthingSecrets;
       # see note above
-      # "${gui_apikey}" = { };
+      # "${gui_apikey}" = syncthingSecrets;
     };
   };
 }
