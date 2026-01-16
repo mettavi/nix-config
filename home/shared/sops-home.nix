@@ -6,6 +6,7 @@
 }:
 let
   username = config.home.username;
+  rcloneSecrets.sopsFile = "${secrets_path}/secrets/apps/rclone.yaml";
 in
 {
   imports = [
@@ -31,20 +32,15 @@ in
       };
       # RCLONE KEYS
       # rclone auth token for onedrive service
-      "users/${username}/rclone_keys/rclone_1d_token" = {
-      };
+      "users/${username}/rclone_keys/rclone_1d_token" = rcloneSecrets;
       # rclone application key for backblaze b2 service
-      "users/${username}/rclone_keys/rclone_b2_appkey" = {
-      };
+      "users/${username}/rclone_keys/rclone_b2_appkey" = rcloneSecrets;
       # rclone access key id for AWS S3 Glacier Deep Archive bucket
-      "users/${username}/rclone_keys/rclone_aws_gda_keyid" = {
-      };
+      "users/${username}/rclone_keys/rclone_aws_gda_keyid" = rcloneSecrets;
       # rclone access key secret for AWS S3 Glacier Deep Archive bucket
-      "users/${username}/rclone_keys/rclone_aws_gda_keysecret" = {
-      };
+      "users/${username}/rclone_keys/rclone_aws_gda_keysecret" = rcloneSecrets;
       # rclone obfuscated encryption password
-      "users/${username}/rclone_keys/rclone_aws_gda_crypt" = {
-      };
+      "users/${username}/rclone_keys/rclone_aws_gda_crypt" = rcloneSecrets;
       # restic key for encryption of backblaze b2 repo (mbp_timotheos)
       "users/${username}/restic_b2_mack-timotheos" = {
       };
