@@ -36,7 +36,9 @@ in
     };
 
     sops.secrets = mkIf cfg.set_signin {
-      "users/${username}/jellyfin_admin-${hostname}" = { };
+      "users/${username}/jellyfin_admin-${hostname}" = {
+        sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
+      };
     };
 
     # prevent the service from auto-starting on boot
