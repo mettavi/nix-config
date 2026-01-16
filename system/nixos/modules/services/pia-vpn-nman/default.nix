@@ -139,8 +139,7 @@ with lib;
 
   config = mkIf cfg.enable {
     mettavi.system.services.pia-vpn-netmanager = {
-      environmentFile = "${config.home-manager.users.${username}.sops.secrets."users/${username}/pia.env".path
-      }";
+      environmentFile = "${config.sops.secrets."users/${username}/pia.env".path}";
 
       # region = "jakarta";
       # postUp = ''
