@@ -43,8 +43,7 @@ in
             };
             passwordHashFile = mkOption {
               type = types.str;
-              default =
-                config.sops.secrets."users/${cfg_username}/nixos_users/${cfg_username}-${hostname}-hashpw".path;
+              default = config.sops.secrets."users/${cfg_username}/${cfg_username}-${hostname}-hashpw".path;
               description = "The hashed password file for the user.";
             };
             sudo = mkOption {

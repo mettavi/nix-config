@@ -44,6 +44,7 @@ in
     };
     sops = {
       secrets."users/${username}/postfix_gmail-${hostname}" = {
+        sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
       };
       templates = {
         # config file to allow postfix to use my personal gmail account automatically
