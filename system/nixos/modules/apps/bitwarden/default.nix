@@ -81,6 +81,13 @@ in
       {
         # install the package used for making bitwarden backups
         home.packages = with pkgs; mkIf nixosConfig.mettavi.system.apps.bitwarden.backup [ bitwarden-cli ];
+
+        sops-secrets = {
+          # bitwarden .env file for use with cli
+          "users/${username}/bitwarden.env" = {
+            sopsFile = "${secrets_path}/secrets/apps/bitwarden.yaml";
+          };
+        };
       };
   };
 }

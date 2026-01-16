@@ -47,10 +47,6 @@ in
       "users/${username}/restic_b2_mack-timotheos" = {
         sopsFile = "${secrets_path}/secrets/hosts/mack.yaml";
       };
-      # bitwarden .env file for use with cli
-      "users/${username}/bitwarden.env" = {
-        sopsFile = "${secrets_path}/secrets/apps/bitwarden.yaml";
-      };
       "users/${username}/cachix_auth_token" = {
       };
       "users/${username}/github_token" = {
