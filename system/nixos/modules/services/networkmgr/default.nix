@@ -36,6 +36,7 @@ in
 
     # Set the DNS (resolv.conf) processing mode
     # one of "default", "dnsmasq", "systemd-resolved", "none"
+    # the systemd-resolved dns stub resolver listens on port 53 on IP address 127.0.0.53 by default
     networking.networkmanager.dns = "systemd-resolved";
     services.resolved.enable = true;
 
