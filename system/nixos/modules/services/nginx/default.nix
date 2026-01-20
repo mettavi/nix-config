@@ -20,6 +20,7 @@ in
   config = mkIf cfg.enable {
     services.nginx = {
       enable = true;
+      recommendedProxySettings = true;
       virtualHosts =
         let
           # Maps a list [name, port] into a config that we want
