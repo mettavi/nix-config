@@ -1,4 +1,3 @@
-# Code adapted from https://jiaxiaodong.com/posts/computing/server/nix/nginx-reverse-proxy
 {
   config,
   lib,
