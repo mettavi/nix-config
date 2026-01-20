@@ -133,6 +133,8 @@
       jellarr.enable = true;
       libvirt.enable = true;
       networkmanager.enable = true;
+      # uses resolved, dnsmasq and nginx to map localhost IP:port urls to hostnames
+      hostdns.enable = true;
       openssh.enable = true;
       pia-vpn-netmanager.enable = true;
     };
