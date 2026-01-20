@@ -30,9 +30,18 @@ in
 
     # set to false to configure static IP addresses declaratively
     # (less convenient if  frequently moving between different SSIDs)
-    networking.dhcpcd.enable = true;
+    # NB: this option also requires networking.useDHCP=true
+    # networking.dhcpcd.enable = true;
+
+    # NOTE: There are apparent problems with using dhcpcd via networkmanager
+    # because there is no /etc/dhcpcd.conf file unless 1) created manually or 2) via workarounds
+    # see 1) https://discourse.nixos.org/t/adding-to-dhcpcd-conf/33727
+    # and 2) https://github.com/NixOS/nixpkgs/issues/341092
+
     # one of "dhcpcd" (dhcp client daemon) or "internal"
-    networking.networkmanager.dhcp = "dhcpcd";
+    # networking.networkmanager.dhcp = "dhcpcd";
+
+    networking.networkmanager.dhcp = "internal"; # internal is the default
 
     # Set the DNS (resolv.conf) processing mode
     # one of "default", "dnsmasq", "systemd-resolved", "none"
