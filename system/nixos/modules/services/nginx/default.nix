@@ -68,5 +68,14 @@ in
           "localhost"
         ]);
     };
+
+    environment.etc = {
+      "systemd/resolved.conf.d/10_oona.conf".text = # bash
+        ''
+          [Resolve]
+          DNS=127.0.0.113
+          Domains=oona
+        '';
+    };
   };
 }
