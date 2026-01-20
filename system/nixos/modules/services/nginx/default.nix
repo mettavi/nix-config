@@ -37,6 +37,7 @@ in
     services.nginx = {
       enable = true;
       recommendedProxySettings = true;
+      # Code adapted from https://jiaxiaodong.com/posts/computing/server/nix/nginx-reverse-proxy
       virtualHosts =
         let
           # Maps a list [name, port] into a config that we want
