@@ -54,6 +54,54 @@ in
       backend = "wpa_supplicant";
     };
 
+    # networking.networkmanager.ensureProfiles = {
+    #   profiles = {
+    # NEWBURY-STAFF = {
+    #   connection = {
+    #     id = "NEWBURY-STAFF";
+    #     interface-name = "wlp99s0";
+    #     type = "wifi";
+    #     uuid = "e87a7616-b5a3-41da-b2a8-d6c2de0d378d";
+    #   };
+    #   ipv4 = {
+    #     # dns = "8.8.8.8 8.8.4.4";
+    #     # gateway = "192.168.1.1";
+    #     ignore-auto-dns = "true";
+    #     # auto = Automatically obtain an IP address via DHCP
+    #     method = "auto";
+    #     never-default = "false";
+    #   };
+    #   ipv6 = {
+    #     addr-gen-mode = "default";
+    #     method = "disabled";
+    #   };
+    #   wifi = {
+    #     mac-address-blacklist = "";
+    #     mode = "infrastructure";
+    #     ssid = "NEWBURY-STAFF";
+    #   };
+    #   wifi-security = {
+    #     auth-alg = "open";
+    #     key-mgmt = "wpa-psk";
+    #         psk = "$psk_newstaff";
+    #       };
+    #     };
+    #   };
+    # };
+    # secrets = {
+    #   entries = {
+    #     "*" = [
+    #       {
+    #         file = "${config.sops.secrets."users/${username}/wifi.env".path}";
+    #         key = "psk";
+    #         matchId = "NEWBURY-STAFF";
+    #         matchSetting = "wifi-security";
+    #         matchType = "wifi";
+    #       }
+    #     ];
+    #   };
+    # };
+
     # network definitions to automatically connect to when wpa_supplicant is running.
     # If this parameter is left empty wpa_supplicant will use /etc/wpa_supplicant.conf as the configuration file.
     # networking.wireless.networks = {
