@@ -6,14 +6,14 @@
 }:
 with lib;
 let
-  cfg = config.mettavi.system.services.nginx;
+  cfg = config.mettavi.system.services.hostdns;
 in
 {
-  options.mettavi.system.services.nginx = {
+  options.mettavi.system.services.hostdns = {
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = "Install and set up an nginx server";
+      description = "Set up friendly hostnames using resolved, dnsmasq and nginx for services running on localhost";
     };
   };
 
