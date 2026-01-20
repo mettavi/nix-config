@@ -55,7 +55,11 @@ in
             {
               name = "${name}.${host}";
               value = {
-                locations."/".proxyPass = "http://localhost:${port}";
+                locations."/" = {
+                  proxyPass = "http://localhost:${port}";
+                  # required for audiobookshelf
+                  proxyWebsockets = true;
+                };
               };
             }
           );
