@@ -154,6 +154,7 @@ in
               "browser.uidensity" = 0; # Set UI density to normal
               "browser.theme.dark-private-windows" = false; # Disable private window dark theme
               "widget.gtk.rounded-bottom-corners.enabled" = true; # enable rounded bottom window corners
+              # NB: Additional features can be enabled under the gnomeTheme.* key
 
               # ALPHABETICAL
               "app.normandy.first_run" = false;
