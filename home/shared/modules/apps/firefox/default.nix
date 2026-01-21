@@ -129,14 +129,15 @@ in
             };
           };
           # extraConfig = '' ''; # user.js
+          # FIREFOX GNOME THEME: create files in the profile's chrome subdirectory
           userChrome = # bash
             ''
               @import "firefox-gnome-theme/userChrome.css";
-            ''; # chrome CSS
+            ''; # userChrome.css
           userContent = # bash
             ''
               @import "firefox-gnome-theme/userContent.css";
-            ''; # content CSS
+            ''; # userContent.css
 
           # ~/.mozilla/firefox/PROFILE_NAME/prefs.js | user.js
           settings =
