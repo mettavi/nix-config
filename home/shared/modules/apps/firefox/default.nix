@@ -147,7 +147,7 @@ in
               ## FIREFOX GNOME THEME
               ## - https://github.com/rafaelmardojai/firefox-gnome-theme/blob/7cba78f5216403c4d2babb278ff9cc58bcb3ea66/configuration/user.js
               # (copied into here because home-manager already writes to user.js)
-              "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Enable customChrome.cs
+              "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Enable customChrome.css
               "svg.context-properties.content.enabled" = true; # Enable SVG context-propertes
               "browser.uidensity" = 0; # Set UI density to normal
               "browser.theme.dark-private-windows" = false; # Disable private window dark theme
