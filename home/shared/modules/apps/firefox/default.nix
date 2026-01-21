@@ -151,6 +151,7 @@ in
               "svg.context-properties.content.enabled" = true; # Enable SVG context-propertes
               "browser.uidensity" = 0; # Set UI density to normal
               "browser.theme.dark-private-windows" = false; # Disable private window dark theme
+              "widget.gtk.rounded-bottom-corners.enabled" = true; # enable rounded bottom window corners
 
               # ALPHABETICAL
               "app.normandy.first_run" = false;
