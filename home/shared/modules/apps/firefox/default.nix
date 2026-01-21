@@ -237,9 +237,14 @@ in
               "extensions.webextensions.restrictedDomains" = "";
               "privacy.resistFingerprinting.block_mozAddonManager" = true;
 
-              # Prefer dark theme webpages
+              # PREFER DARK THEME WEBPAGES
               # 0: Force Dark, 1: Force Light, 2: System theme, 3: Browser theme
+              # NB: In the FF GUI, this sets the "website appearance" option
+              # (dark/light/automatic) on the general settings page
               "layout.css.prefers-color-scheme.content-override" = 0;
+              # this controls the theme of the browser chrome rather than the webpage theme
+              # 0:light; 1:dark; 2:no-preference
+              "ui.systemUsesDarkTheme" = 1;
 
               "media.autoplay.default" = 5; # block both audible and inaudible media from autoplaying.
               "media.cubeb.backend" = "alsa"; # force firefox to use the ALSA/pipewire backend
