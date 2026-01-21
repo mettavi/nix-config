@@ -384,6 +384,8 @@ in
               # Fingerprinting
               # set to false to allow dark-mode-capable webpages to detect system dark/light mode status
               "privacy.resistFingerprinting" = false;
+              # enabling this will create narrow webpages with scrollbars moved in from the outside edges of the viewport
+              "privacy.resistFingerprinting.letterboxing" = false;
               "privacy.resistFingerprinting.pbmode" = true;
               "privacy.fingerprintingProtection" = true;
 
