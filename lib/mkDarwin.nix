@@ -55,7 +55,7 @@
         ../system/shared/modules
         # this provides a wrapper for the nix-index package (no need to install separately)
         inputs.nix-index-database.darwinModules.nix-index
-        inputs.sops-nix.darwinModules.sops
+        inputs.sops-nix-darwin.darwinModules.sops
         inputs.home-manager.darwinModules.home-manager
         {
           home-manager = {
@@ -64,7 +64,7 @@
             backupFileExtension = "nix-backup";
             extraSpecialArgs = specialArgs;
             sharedModules = [
-              inputs.sops-nix.homeManagerModules.sops
+              inputs.sops-nix-darwin.homeManagerModules.sops
             ];
           };
         }

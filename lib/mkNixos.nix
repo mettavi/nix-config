@@ -60,7 +60,7 @@
         ../system/nixos/modules
         ../system/shared
         ../system/shared/modules
-        inputs.sops-nix.nixosModules.sops
+        inputs.sops-nixos.nixosModules.sops
         # this provides a wrapper for the nix-index package (no need to install the package separately)
         inputs.nix-index-database.nixosModules.nix-index
         inputs.home-manager.nixosModules.home-manager
@@ -70,7 +70,7 @@
             useUserPackages = true;
             backupFileExtension = "nix-backup";
             extraSpecialArgs = specialArgs;
-            sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
+            sharedModules = [ inputs.sops-nixos.homeManagerModules.sops ];
           };
         }
       ];
