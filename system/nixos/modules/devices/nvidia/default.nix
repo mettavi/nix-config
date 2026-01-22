@@ -63,8 +63,6 @@ in
           enable = true;
           enableOffloadCmd = true;
         };
-        nvidiaBusId = "PCI:100:0:0";
-        amdgpuBusId = "PCI:101:0:0";
       };
     };
   };
