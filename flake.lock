@@ -529,9 +529,10 @@
         "url": "ssh://git@github.com/mettavi/nix-secrets.git"
       },
       "original": {
-        "owner": "mettavi",
-        "repo": "nix-secrets",
-        "type": "github"
+        "ref": "main",
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/mettavi/nix-secrets.git"
       }
     },
     "sops-nix": {
