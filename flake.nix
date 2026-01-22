@@ -105,8 +105,14 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    sops-nix = {
+    sops-nixos = {
       url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixos-pkgs";
+    };
+    # pin this input as a workaround for the bug with the home-manager sops-nix module
+    # see http://github.com/Mic92/sops-nix/issues/890
+    sops-nix-darwin = {
+      url = "github:Mic92/sops-nix/d7593b87b0c1c33f9cfdd485a7fef081dd5362e7";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # install a pinned version of a nix package with:
