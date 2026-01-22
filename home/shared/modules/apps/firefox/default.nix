@@ -370,9 +370,13 @@ in
               "media.windows-media-foundation.allow-d3d11-dxva" = true;
               "widget.dmabuf.force-enabled" = true; # Required in recent Firefoxes
 
-              # Enable HTTPS-Only Mode
-              "dom.security.https_only_mode" = true;
-              "dom.security.https_only_mode_ever_enabled" = true;
+              # Enable HTTPS-Only Mode: enforce webpages to be "upgraded" to https, unless the webpage is excepted
+              # NB: this will always issue warnings about http regardless of the allowlist
+              "dom.security.https_only_mode" = false;
+              "dom.security.https_only_mode_ever_enabled" = false;
+              # Enable HTTPS-FIRST mode: upgrade to an https webpage if available, otherwise use http
+              # NB: this will not attempt upgrades OR WARN about websites on the allowlist, or when http:// is typed
+              "dom.security.https_first" = true;
 
               # PRIVACY/TRACKING SETTINGS
               # Prevent WebRTC leaking IP address
