@@ -14,7 +14,9 @@
     #sops.defaultSopsFormat = "yaml";
     age = {
       # automatically import host SSH keys as age keys
-      # NB: ssh host keys can be generated with the "ssh-keygen -A" command (or automatically with nixos)
+      # NB: On darwin, ssh host keys need to be manually generated with the "ssh-keygen -A" command
+      # and then the ed25519 keys renamed to the filename format below
+      # On nixos, they can be automatically generated with the services.openssh.hostKeys option
       sshKeyPaths = [ "/etc/ssh/ssh_${hostname}_ed25519_key" ];
       # This will generate an age format private key from the host private ssh key if one does not exist
       # WARNING: Let this create the key automatically from the host private key; do not replace with the PUBLIC key
