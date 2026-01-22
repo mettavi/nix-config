@@ -522,10 +522,11 @@
       "locked": {
         "lastModified": 1768617350,
         "narHash": "sha256-zHl3NNc3emUY/0zpyV1ufCRBeBTVsgmUDYBDWoqVzuY=",
-        "owner": "mettavi",
-        "repo": "nix-secrets",
+        "ref": "main",
         "rev": "ac98ceecbfe1a64cf31d80b6f3670d95d2598d3a",
-        "type": "github"
+        "shallow": true,
+        "type": "git",
+        "url": "ssh://git@github.com/mettavi/nix-secrets.git"
       },
       "original": {
         "owner": "mettavi",

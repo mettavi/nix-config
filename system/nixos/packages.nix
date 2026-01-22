@@ -3,6 +3,7 @@
   environment.systemPackages =
     with pkgs;
     [
+      bind # Domain name server with utilities like dig and nslookup
       cpuid # Linux tool to dump x86 CPUID information about the CPU
       # gcc, gnumake and unzip are required for nvim
       # GNU Compiler Collection (required for nvim treesitter)

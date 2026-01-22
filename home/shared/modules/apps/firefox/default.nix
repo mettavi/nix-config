@@ -129,14 +129,15 @@ in
             };
           };
           # extraConfig = '' ''; # user.js
+          # FIREFOX GNOME THEME: create files in the profile's chrome subdirectory
           userChrome = # bash
             ''
               @import "firefox-gnome-theme/userChrome.css";
-            ''; # chrome CSS
+            ''; # userChrome.css
           userContent = # bash
             ''
               @import "firefox-gnome-theme/userContent.css";
-            ''; # content CSS
+            ''; # userContent.css
 
           # ~/.mozilla/firefox/PROFILE_NAME/prefs.js | user.js
           settings =
@@ -147,10 +148,14 @@ in
               ## FIREFOX GNOME THEME
               ## - https://github.com/rafaelmardojai/firefox-gnome-theme/blob/7cba78f5216403c4d2babb278ff9cc58bcb3ea66/configuration/user.js
               # (copied into here because home-manager already writes to user.js)
-              "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Enable customChrome.cs
+              # ESSENTIAL SETTINGS
+              "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Enable customChrome.css
               "svg.context-properties.content.enabled" = true; # Enable SVG context-propertes
+              # OPTIONAL SETTINGS
               "browser.uidensity" = 0; # Set UI density to normal
               "browser.theme.dark-private-windows" = false; # Disable private window dark theme
+              "widget.gtk.rounded-bottom-corners.enabled" = true; # enable rounded bottom window corners
+              # NB: Additional features can be enabled under the gnomeTheme.* key
 
               # ALPHABETICAL
               "app.normandy.first_run" = false;
@@ -232,9 +237,14 @@ in
               "extensions.webextensions.restrictedDomains" = "";
               "privacy.resistFingerprinting.block_mozAddonManager" = true;
 
-              # Prefer dark theme webpages
+              # PREFER DARK THEME WEBPAGES
               # 0: Force Dark, 1: Force Light, 2: System theme, 3: Browser theme
+              # NB: In the FF GUI, this sets the "website appearance" option
+              # (dark/light/automatic) on the general settings page
               "layout.css.prefers-color-scheme.content-override" = 0;
+              # this controls the theme of the browser chrome rather than the webpage theme
+              # 0:light; 1:dark; 2:no-preference
+              "ui.systemUsesDarkTheme" = 1;
 
               "media.autoplay.default" = 5; # block both audible and inaudible media from autoplaying.
               "media.cubeb.backend" = "alsa"; # force firefox to use the ALSA/pipewire backend
@@ -384,6 +394,8 @@ in
               # Fingerprinting
               # set to false to allow dark-mode-capable webpages to detect system dark/light mode status
               "privacy.resistFingerprinting" = false;
+              # enabling this will create narrow webpages with scrollbars moved in from the outside edges of the viewport
+              "privacy.resistFingerprinting.letterboxing" = false;
               "privacy.resistFingerprinting.pbmode" = true;
               "privacy.fingerprintingProtection" = true;
 
