@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with builtins;
 with lib;
 let
@@ -22,9 +27,14 @@ in
   };
 
   config = mkIf cfg.wayland {
-    environment.sessionVariables = {
-      # Forces Wayland backend for applications using Ozone (eg. in all chrome and most electron apps)
-      NIXOS_OZONE_WL = "1";
+    environment = {
+      sessionVariables = {
+        # Forces Wayland backend for applications using Ozone (eg. in all chrome and most electron apps)
+        NIXOS_OZONE_WL = "1";
+      };
+      systemPackages = with pkgs; [
+        wayland-utils # wayland-info utility
+      ];
     };
   };
 }
