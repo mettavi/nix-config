@@ -42,9 +42,6 @@
     nixPath = options.nix.nixPath.default ++ [
       "nixpkgs=flake:nixpkgs"
       "nixpkgs-overlays=${config.users.users.${username}.home}/${nix_repo}/system/overlays/shared"
-      "nixos-config=${
-        config.users.users.${username}.home
-      }/${nix_repo}/hosts/${hostname}/configuration.nix"
       "home-manager=${inputs.home-manager}"
     ];
     optimise = {
