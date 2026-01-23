@@ -43,21 +43,21 @@ in
     ######################################################################
 
     hardware.nvidia = {
+      dynamicBoost.enable = true;
       # Kernel mode setting (KMS) allows native video resolution during boot and in tty's
       # On wayland, KMS is also required for the offloading mode (see below)
       # to ensure the iGPU is used as the primary display
       modesetting.enable = true;
-      dynamicBoost.enable = true;
       nvidiaSettings = true;
-      powerManagement = {
-        enable = true;
-        finegrained = true;
-      };
       # The open driver is recommended by nvidia now, see
       # https://download.nvidia.com/XFree86/Linux-x86_64/565.77/README/kernel_open.html
       # NB: The NVreg_EnableGpuFirmware option cannot be disabled on the nvidia open drivers
       open = true;
       package = config.boot.kernelPackages.nvidiaPackages.stable;
+      powerManagement = {
+        enable = true;
+        finegrained = true;
+      };
       prime = {
         offload = {
           enable = true;
