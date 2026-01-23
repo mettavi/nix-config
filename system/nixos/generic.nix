@@ -1,6 +1,5 @@
 {
   config,
-  hostname,
   inputs,
   lib,
   nix_repo,
@@ -9,6 +8,11 @@
   ...
 }:
 {
+  # symlink flake.nix to the default location to make the --flake flag to "nixos-rebuild switch" unnecessary
+  environment.etc = {
+    "nixos/flake.nix".source = "${config.users.users.${username}.home}/${nix_repo}/flake.nix";
+  };
+
   nixpkgs = {
     overlays = [
       # Build the kernels on top of nixpkgs version in your flake.
