@@ -51,6 +51,17 @@ in
       # required for screensharing under Wayland, see https://wiki.nixos.org/wiki/Firefox
       package = (pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { });
 
+      # policies = {
+      #   HttpAllowlist = [
+      #     "http://abs.oona"
+      #     "http://oona"
+      #     "http://abs"
+      #     "http://localhost"
+      #     "http://127.0.0.1"
+      #   ];
+      #   HttpsOnlyMode = "enabled";
+      # };
+
       profiles = {
         "mettavi" = {
           id = 0;
