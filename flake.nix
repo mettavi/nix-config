@@ -109,7 +109,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixos-pkgs";
     };
-    # FIXME: pin this input as a workaround for the bug with the home-manager sops-nix module
+    # TODO: pin this input as a workaround for the bug with the home-manager sops-nix module
     # see http://github.com/Mic92/sops-nix/issues/890
     sops-nix-darwin = {
       url = "github:Mic92/sops-nix/d7593b87b0c1c33f9cfdd485a7fef081dd5362e7";
