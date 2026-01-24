@@ -21,6 +21,7 @@ in
 
     # this is a misnomer as it applies to both x11 and wayland
     # NB: AMD works out of the box
+    # USERSPACE LIBRARIES FOR NVIDIA
     services.xserver.videoDrivers = [
       "nvidia"
     ];
@@ -53,11 +54,14 @@ in
       # https://download.nvidia.com/XFree86/Linux-x86_64/565.77/README/kernel_open.html
       # NB: The NVreg_EnableGpuFirmware option cannot be disabled on the nvidia open drivers
       open = true;
+      # KERNEL MODULES FOR NVIDIA
+      # use config.boot to use the module from the installed kernel
       package = config.boot.kernelPackages.nvidiaPackages.stable;
       powerManagement = {
         enable = true;
         finegrained = true;
       };
+      # prime sync and reverse sync modes only work on X11
       prime = {
         offload = {
           enable = true;
