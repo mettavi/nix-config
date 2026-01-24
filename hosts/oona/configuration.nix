@@ -55,8 +55,6 @@
     };
   };
 
-  boot.blacklistedKernelModules = [ "nouveau" ];
-
   # Use the cachyos kernel for the latest asus g14 kernel patches.
   boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
 

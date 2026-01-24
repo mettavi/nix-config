@@ -19,9 +19,9 @@ in
 
   config = mkIf cfg.enable {
 
-    # this is a misnomer as it applies to both x11 and wayland
-    # NB: AMD works out of the box
     # USERSPACE LIBRARIES FOR NVIDIA
+    # Not sure if this is actually used on wayland
+    # NB: AMD works out of the box
     services.xserver.videoDrivers = [
       "nvidia"
     ];
@@ -31,6 +31,7 @@ in
     # Enable hardware video decoding (e.g., for YouTube, videos) in browsers or media players on Linux.
 
     # VA-API implemention using NVIDIA's NVDEC for use with Firefox (decoding only)
+    # NB: This is already enabled by default by the hardware.nvidia.videoAcceleration option (see below)
     hardware.graphics.extraPackages = with pkgs; [
       nvidia-vaapi-driver
     ];
@@ -43,7 +44,9 @@ in
     };
     ######################################################################
 
+    # NB: the module below adds boot.blacklistedKernelModules = [ "nouveau" ];
     hardware.nvidia = {
+      # this adds the nvidia-powerd service
       dynamicBoost.enable = true;
       # Kernel mode setting (KMS) allows native video resolution during boot and in tty's
       # On wayland, KMS is also required for the offloading mode (see below)
@@ -58,16 +61,21 @@ in
       # use config.boot to use the module from the installed kernel
       package = config.boot.kernelPackages.nvidiaPackages.stable;
       powerManagement = {
+        # this adds the nvidia-{suspend,hibernate,resume} services
         enable = true;
+        # experimental power management of prime offload
         finegrained = true;
       };
       # prime sync and reverse sync modes only work on X11
+      # NB: the bus ID settings are in the host-specific configuration.nix
       prime = {
         offload = {
           enable = true;
           enableOffloadCmd = true;
         };
       };
+      # this option adds pkgs.nvidia-vaapi-driver but no configuration (see above)
+      videoAcceleration = true; # default = true
     };
   };
 }
