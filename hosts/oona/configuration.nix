@@ -152,6 +152,10 @@
         # Simple GPU Profile switcher for ASUS laptops using Supergfxctl
         gnomeExtensions.gpu-supergfxctl-switch
       ];
+      sessionVariables = {
+        # required for electron apps, which don't read the mimeapps.list file
+        DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox";
+      };
       stateVersion = "25.11";
     };
     dconf.settings = {
