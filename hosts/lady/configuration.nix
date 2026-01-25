@@ -179,14 +179,15 @@
       # See http://discourse.nixos.org/t/how-can-i-configure-the-default-apps-for-gnome/36034
       defaultApplications = {
         # gnome image viewer
-        "image/jpeg" = "org.gnome.Loupe.desktop";
+        "image/jpeg" = [ "org.gnome.Loupe.desktop" ];
         # gnome document viewer
-        "application/pdf" = "org.gnome.Evince.desktop";
-        "text/html" = "firefox.desktop";
-        "x-scheme-handler/http" = "firefox.desktop";
-        "x-scheme-handler/https" = "firefox.desktop";
-        "x-scheme-handler/about" = "firefox.desktop";
-        "x-scheme-handler/unknown" = "firefox.desktop";
+        "application/pdf" = [ "org.gnome.Evince.desktop" ];
+        "default-web-browser" = [ "firefox.desktop" ];
+        "text/html" = [ "firefox.desktop" ];
+        "x-scheme-handler/http" = [ "firefox.desktop" ];
+        "x-scheme-handler/https" = [ "firefox.desktop" ];
+        "x-scheme-handler/about" = [ "firefox.desktop" ];
+        "x-scheme-handler/unknown" = [ "firefox.desktop" ];
       };
     };
   };

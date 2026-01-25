@@ -198,6 +198,27 @@
         ghostty.enable = true;
       };
     };
+    xdg.mimeApps = {
+      enable = true;
+      /*
+        To list all .desktop files, run:
+        ls /run/current-system/sw/share/applications # for global packages
+        ls /etc/profiles/per-user/$(id -n -u)/share/applications # for user packages
+      */
+      # See http://discourse.nixos.org/t/how-can-i-configure-the-default-apps-for-gnome/36034
+      defaultApplications = {
+        # gnome image viewer
+        "image/jpeg" = [ "org.gnome.Loupe.desktop" ];
+        # gnome document viewer
+        "application/pdf" = [ "org.gnome.Evince.desktop" ];
+        "default-web-browser" = [ "firefox.desktop" ];
+        "text/html" = [ "firefox.desktop" ];
+        "x-scheme-handler/http" = [ "firefox.desktop" ];
+        "x-scheme-handler/https" = [ "firefox.desktop" ];
+        "x-scheme-handler/about" = [ "firefox.desktop" ];
+        "x-scheme-handler/unknown" = [ "firefox.desktop" ];
+      };
+    };
 
     # Run the rog-control-center app on system boot so it shows in the system tray (depends on appindicator gnome extension)
     # NB: ensure user lingering is disabled (the default) so the service doesn't run until user login
