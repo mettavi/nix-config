@@ -87,6 +87,7 @@ in
               tabliss
               tab-session-manager
               ublock-origin
+              violentmonkey
             ];
             settings = {
               "uBlock0@raymondhill.net" = {
