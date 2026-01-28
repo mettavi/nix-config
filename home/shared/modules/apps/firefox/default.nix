@@ -21,7 +21,7 @@ in
 
   config = mkIf cfg.enable {
     home.sessionVariables = {
-      # take advantage of more video codecs supported by an IGP/GPU, specifies the preferred rendering device
+      # take advantage of more video codecs supported by an iGPU/dGPU, specifies the preferred rendering device
       MOZ_DRM_DEVICE = "/dev/dri/renderD128";
       # Enable xinput2 to improve touchscreen support and enable additional touchpad gestures and smooth scrolling.
       MOZ_USE_XINPUT2 = "1";
