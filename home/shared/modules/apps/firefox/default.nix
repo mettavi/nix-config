@@ -20,19 +20,26 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.sessionVariables = {
-      # take advantage of more video codecs supported by an iGPU/dGPU, specifies the preferred rendering device
-      MOZ_DRM_DEVICE = "/dev/dri/renderD128";
-      # Enable xinput2 to improve touchscreen support and enable additional touchpad gestures and smooth scrolling.
-      MOZ_USE_XINPUT2 = "1";
-    }
-    // mkIf nixosConfig.mettavi.system.desktops.wayland {
-      MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (may be enabled by default)
-    }
-    // mkIf nixosConfig.mettavi.system.devices.nvidia.enable {
-      # Disable Firefox's sandbox for the media decoder process, allowing it to access the driver directly
-      MOZ_DISABLE_RDD_SANDBOX = "1";
-    };
+    # NOTE: with nested attributes like below, the // operator will not properly merge the sets
+    # Instead, the right-hand set will replace the others
+    # see https://stackoverflow.com/questions/78358294/deeply-merge-sets-in-nix
+    home.sessionVariables = lib.mkMerge [
+      {
+        # take advantage of more video codecs supported by an iGPU/dGPU, specifies the preferred rendering device
+        MOZ_DRM_DEVICE = "/dev/dri/renderD128";
+        # point to the location of the widevine drm package
+        # MOZ_GMP_PATH = "${pkgs.widevine-cdm}/share/google/chrome/WidevineCdm";
+        # Enable xinput2 to improve touchscreen support and enable additional touchpad gestures and smooth scrolling.
+        MOZ_USE_XINPUT2 = "1";
+      }
+      (mkIf nixosConfig.mettavi.system.desktops.wayland {
+        MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (may be enabled by default)
+      })
+      (mkIf nixosConfig.mettavi.system.devices.nvidia.enable {
+        # Disable Firefox's sandbox for the media decoder process, allowing it to access the driver directly
+        MOZ_DISABLE_RDD_SANDBOX = "1";
+      })
+    ];
 
     # enable the firefox-gnome-theme via a flake input (also see userChrome and userContent below)
     home.file.".mozilla/firefox/${config.programs.firefox.profiles.mettavi.name}/chrome/firefox-gnome-theme".source =
