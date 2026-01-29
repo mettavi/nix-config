@@ -14,7 +14,7 @@ in
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = "Install and configure chromium or one of its relatives";
+      description = "Install and configure the Brave browser";
     };
   };
   config = mkIf cfg.enable {
