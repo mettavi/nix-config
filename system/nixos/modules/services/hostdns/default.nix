@@ -45,6 +45,10 @@ in
               "abs"
               13378
             ]
+            [
+              "jfin"
+              8096
+            ]
           ];
           configgen = (
             host: xs:
