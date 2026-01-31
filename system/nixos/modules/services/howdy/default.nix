@@ -23,7 +23,6 @@ in
     # security.pam.services = {
     #   polkit = {
     #     enable = true;
-    #     # https://github.com/boltgolt/howdy/issues/1016
     #     extraConfig = ''
     #       auth sufficient pam_howdy.so
     #     '';
