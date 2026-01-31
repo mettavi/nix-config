@@ -33,7 +33,7 @@ in
     # see https://github.com/NixOS/nixpkgs/issues/483867
     # and https://github.com/boltgolt/howdy/issues/1077
     systemd.services."polkit-agent-helper@".serviceConfig = {
-      # allow rm access to video4linux group, which includes the IR camera howdy uses
+      # allow rw access to video4linux group, which includes the IR camera howdy uses
       DeviceAllow = [ "char-video4linux rw" ];
       # allow access to physical instead of only API pseudo devices
       PrivateDevices = "no";
