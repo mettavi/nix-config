@@ -128,6 +128,8 @@
         enable = true;
         abs_home = "${config.users.users.${username}.home}/media/audiobooks";
       };
+      # enable authentication via face recognition
+      howdy.enable = true;
       # this also enables the jellyfin module
       jellarr.enable = true;
       libvirt.enable = true;
