@@ -20,6 +20,11 @@ in
     services.howdy = {
       enable = true;
       control = "sufficient";
+      settings = {
+        video = {
+          dark_threshold = 80;
+        };
+      };
     };
 
     # enable IR emitter hardware designed to be used with the Howdy facial authentication
