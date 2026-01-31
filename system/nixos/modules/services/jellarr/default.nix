@@ -142,7 +142,7 @@ in
                 config.sops.secrets."users/${username}/jellyfin_admin-${hostname}".path;
             policy = {
               isAdministrator = true;
-              loginAttemptsBeforeLogout = 3;
+              loginAttemptsBeforeLockout = 3;
             };
           }
         ];
