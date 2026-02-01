@@ -5,6 +5,7 @@
     [
       bind # Domain name server with utilities like dig and nslookup
       cpuid # Linux tool to dump x86 CPUID information about the CPU
+      cryptsetup # luks utility for dm-crypt (the "device mapper" kernel encryption system)
       # gcc, gnumake and unzip are required for nvim
       # GNU Compiler Collection (required for nvim treesitter)
       gcc
