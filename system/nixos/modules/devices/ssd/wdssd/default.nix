@@ -25,7 +25,7 @@ in
         # <volume-name> <encrypted-device> [key-file] [options]
         nixbak UUID=c8afcf0e-1642-4b85-a74b-9b8182a7f06a ${
           config.sops.secrets."users/${username}/wdssd.luks.key".path
-        } noauto;
+        } noauto
       '';
     };
 
