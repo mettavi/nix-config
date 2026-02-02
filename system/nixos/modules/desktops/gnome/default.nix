@@ -46,6 +46,10 @@ in
         GST_PLUGIN_PATH_1_0 = [ "/run/current-system/sw/lib/gstreamer-1.0" ];
       };
     };
+
+    # attempt to automatically unlock the user’s default Gnome keyring upon login
+    security.pam.services.gdm-login.enableGnomeKeyring = true;
+
     services = {
       # install GNOME using wayland
       displayManager.gdm.enable = lib.mkDefault true;
