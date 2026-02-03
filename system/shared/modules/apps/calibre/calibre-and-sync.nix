@@ -37,7 +37,10 @@ in
   home-manager.users.${username} =
     { osConfig, ... }:
     lib.mkIf osConfig.mettavi.system.apps.calibre.enable {
-      home.packages = [ calibre-and-sync ];
+      home.packages = with pkgs; [
+        calibre-and-sync
+        rclone # sync files and directories to and from major cloud storage
+      ];
 
       /*
         To list all .desktop files, run:
