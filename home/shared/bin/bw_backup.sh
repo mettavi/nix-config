@@ -22,7 +22,7 @@ EXPORT_OPENSSL_FILE=bw_$TIMESTAMP.enc
 EXPORT_ORG_OPENSSL_FILE=bw_org_$TIMESTAMP.enc
 
 NOTIFICATION_EMAIL="timotheos.allen@gmail.com" # Email address used for notification if job fails
-NOTIFICATION_EMAIL_SUBJECT="Bitwarden Backup Failed"
+NOTIFICATION_EMAIL_SUBJECT="Bitwarden Unlock Failed"
 NOTIFICATION_EMAIL_BODY="The automated Bitwarden backup failed when trying to unlock the vault"
 
 if [ ! -d "$EXPORT_PATH" ]; then
