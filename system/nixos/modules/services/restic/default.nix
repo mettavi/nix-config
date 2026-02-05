@@ -126,7 +126,18 @@ in
             ];
             repository = "rclone:b2:oona-${username}";
             rcloneConfigFile = "${config.home-manager.users.${username}.sops.templates."rclone.conf".path}";
-            rcloneOptions = { };
+            rcloneOptions = {
+              checkers = 100;
+              fast-list = true;
+              # restic already keeps deleted files
+              hard-delete = true;
+              log-file = "";
+              max-backlog = 10000;
+              order-by = "size,mixed,75";
+              stats = "2m";
+              transfers = 100;
+              verbose = true;
+            };
             # checks are resource-intensive in backblaze b2, so do not run a check every time
             runCheck = false;
             # need to test this (some files may be owned by root)
