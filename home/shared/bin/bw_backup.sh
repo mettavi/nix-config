@@ -13,6 +13,7 @@ source "$XDG_CONFIG_HOME/sops-nix/secrets/users/$USER/bitwarden.env"
 
 TIMESTAMP=$(date "+%Y%m%d")
 EXPORT_PATH="$HOME/backups/bitwarden"
+LOG_PATH="$XDG_STATE_HOME/logs/bitwarden"
 # EXPORT_PLAIN_FILE=bw_$TIMESTAMP.json
 # EXPORT_ENCRYPTED_FILE=bw_enc_$TIMESTAMP.json
 EXPORT_OPENSSL_FILE=bw_$TIMESTAMP.enc
@@ -29,6 +30,12 @@ if [ ! -d "$EXPORT_PATH" ]; then
   mkdir -p "$EXPORT_PATH"
 else
   echo "Folder 'bitwarden_backups' already exists."
+
+if [ ! -d "$LOG_PATH" ]; then
+  echo "Folder 'logs/bitwarden' does not exist. Creating it..."
+  mkdir -p "$LOG_PATH"
+else
+  echo "Folder 'logs/bitwarden' already exists."
 fi
 
 bw login --apikey
@@ -50,7 +57,8 @@ fi
 
 # Encrypted export using openssl
 echo "Export encrypted json using openssl..."
-bw --raw --session "$BW_SESSION" export --format json | openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -k "$OPENSSL_ENC_PASS" -out "$EXPORT_PATH"/"$EXPORT_OPENSSL_FILE"
+bw --raw --session "$BW_SESSION" export --format json | openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -k "$OPENSSL_ENC_PASS" -out "$EXPORT_PATH"/"$EXPORT_OPENSSL_FILE" \
+  >"$LOG_PATH" 2>&1
 
 # ORGANIZATION
 if [[ -n "$BW_ORG_ID" ]]; then
