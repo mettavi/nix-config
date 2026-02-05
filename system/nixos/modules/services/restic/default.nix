@@ -112,7 +112,6 @@ in
             inherit
               checkOpts
               createWrapper
-              extraBackupArgs
               home_exclude
               inhibitsSleep
               initialize
@@ -120,6 +119,7 @@ in
               timerConfig
               ;
             exclude = home_exclude;
+            extraBackupArgs = "${extraBackupArgs}" ++ [ "rclone.connections=100" ];
             passwordFile = config.sops.secrets."users/${username}/restic-oona-${username}-b2".path;
             paths = [
               "${home}"
