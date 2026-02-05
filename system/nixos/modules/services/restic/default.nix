@@ -76,7 +76,7 @@ in
           };
         in
         {
-          "oona-local" = {
+          "oona-local-sys" = {
             inherit
               extraBackupArgs
               home_exclude
@@ -90,23 +90,46 @@ in
               "--read-data" # also check integrity of the actual data
             ];
             # Patterns to exclude when backing up
-            exclude = nixos_exclude ++ home_exclude;
-            passwordFile = config.sops.secrets."users/${username}/restic-oona-local".path;
+            exclude = nixos_exclude;
+            passwordFile = config.sops.secrets."users/${username}/restic-oona-local-sys".path;
             paths = [
               "/etc/group"
               "/etc/machine-id"
               "/etc/NetworkManager/system-connections"
               "/etc/passwd"
               "/etc/subgid"
-              "${home}"
               "/root"
               "/var/backup"
               "/var/lib"
             ];
-            repository = "/run/media/${username}/<disk_label>/${hostname}";
+            repository = "/run/media/${username}/<disk_label>/${hostname}/root";
             # run backups when the removable disk is mounted, not on a schedule
             timerConfig = null;
             user = "root";
+          };
+          "oona-local-home" = {
+            inherit
+              extraBackupArgs
+              home_exclude
+              nixos_exclude
+              inhibitsSleep
+              initialize
+              pruneOpts
+              runCheck
+              ;
+            checkOpts = "${checkOpts}" ++ [
+              "--read-data" # also check integrity of the actual data
+            ];
+            # Patterns to exclude when backing up
+            exclude = home_exclude;
+            passwordFile = config.sops.secrets."users/${username}/restic-oona-local-home".path;
+            paths = [
+              "${home}"
+            ];
+            repository = "/run/media/${username}/<disk_label>/${hostname}/user";
+            # run backups when the removable disk is mounted, not on a schedule
+            timerConfig = null;
+            user = "${username}";
           };
           "oona-${username}-b2" = {
             inherit
@@ -155,16 +178,30 @@ in
         sopsFile = "${secrets_path}/secrets/hosts/oona.yaml";
       };
     };
-    systemd.services.oona-local = {
-      unitConfig = {
-        Description = "Run a backup whenever the device is plugged in (and mounted)";
-        # See https://bbs.archlinux.org/viewtopic.php?id=207050
-        # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
-        # or use the ConditionPathIsMountPoint= option?
-        # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
-        # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
-        ConditionPathIsMountPoint = "/run/media/${username}/<disk_label>/oona-local";
-        # or perhaps WantedBy= option?
+    systemd.services = {
+      oona-local-sys = {
+        unitConfig = {
+          Description = "Run a backup whenever the device is plugged in (and mounted)";
+          # See https://bbs.archlinux.org/viewtopic.php?id=207050
+          # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
+          # or use the ConditionPathIsMountPoint= option?
+          # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
+          # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
+          ConditionPathIsMountPoint = "/run/media/${username}/<disk_label>/${hostname}/root";
+          # or perhaps WantedBy= option?
+        };
+      };
+      oona-local-home = {
+        unitConfig = {
+          Description = "Run a backup whenever the device is plugged in (and mounted)";
+          # See https://bbs.archlinux.org/viewtopic.php?id=207050
+          # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
+          # or use the ConditionPathIsMountPoint= option?
+          # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
+          # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
+          ConditionPathIsMountPoint = "/run/media/${username}/<disk_label>/${hostname}/user";
+          # or perhaps WantedBy= option?
+        };
       };
     };
   };
