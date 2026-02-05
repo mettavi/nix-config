@@ -130,7 +130,7 @@ in
               checkers = 100;
               fast-list = true;
               # restic already keeps deleted files
-              hard-delete = true;
+              b2-hard-delete = true;
               log-file = "";
               max-backlog = 10000;
               order-by = "size,mixed,75";
