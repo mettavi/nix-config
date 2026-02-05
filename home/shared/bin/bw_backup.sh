@@ -21,14 +21,14 @@ EXPORT_OPENSSL_FILE=bw_$TIMESTAMP.enc
 EXPORT_ORG_OPENSSL_FILE=bw_org_$TIMESTAMP.enc
 
 NOTIFICATION_EMAIL="timotheos.allen@gmail.com" # Email address used for notification if job fails
-NOTIFICATION_EMAIL_SUBJECT="Bitwarden Backup Failed"
+NOTIFICATION_EMAIL_SUBJECT="Bitwarden Unlock Failed"
 NOTIFICATION_EMAIL_BODY="The automated Bitwarden backup failed when trying to unlock the vault"
 
 if [ ! -d "$EXPORT_PATH" ]; then
-  echo "Folder 'bitwarden_backups' does not exist. Creating it..."
+  echo "Folder '~/backups/bitwarden' does not exist. Creating it..."
   mkdir -p "$EXPORT_PATH"
 else
-  echo "Folder 'bitwarden_backups' already exists."
+  echo "Folder '~/backups/bitwarden' already exists."
 fi
 
 bw login --apikey

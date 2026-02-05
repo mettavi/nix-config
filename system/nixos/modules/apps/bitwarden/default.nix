@@ -34,7 +34,7 @@ in
     mettavi.system.services.postfix.enable = mkIf cfg.backup true;
 
     systemd.user = mkIf cfg.backup {
-      # install the package used for making bitwarden backups
+      # create the service used for making bitwarden backups
       services = {
         # make an encrypted backup weekly
         "bitwarden-backup" = {
