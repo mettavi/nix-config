@@ -6,6 +6,7 @@
     pdfarranger # python-gtk application to merge/split/rotate/crop/rearrange PDFs
     picard # offical musicbrainz tagger
     pika-backup
+    variety # wallpaper manager
     wasistlos # Unofficial WhatsApp desktop gtk application for linux
     zoom-us # video conferencing application
   ];
