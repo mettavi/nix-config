@@ -14,6 +14,7 @@
       gparted # graphic disk partitioning tool
       libva-utils # utilities for VA-API (video acceleration API)
       lshw-gui # detailed hardware info (includes gui)
+      lsof # tool to list open files
       # Icons of the Nix logo, in Freedesktop Icon Directory Layout
       nixos-icons
       pciutils # tools for working with pci devices
