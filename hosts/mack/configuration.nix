@@ -50,9 +50,6 @@
         stateVersion = "23.11";
       };
       mettavi = {
-        apps = {
-          vscode.enable = true;
-        };
         shell = {
           # enable scheduled bitwarden backup task
           bw_backup.enable = true;
