@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   username,
   ...
@@ -84,6 +85,31 @@
         layout = "us";
         model = "asus_laptop";
       };
+    };
+  };
+
+  # AUTOSTARTING THE ROG_CONTROL_CENTRE APP
+
+  # this option is not working reliably, see https://github.com/NixOS/nixpkgs/issues/455932
+  # programs.rog-control-center = {
+  #   enable = true;
+  #   autoStart = true;
+  # };
+  # so manually define a service instead
+  systemd.user.services.rog-control-center = {
+    description = "rog-control-center";
+    after = [ "graphical-session.target" ];
+    partOf = [ "graphical-session.target" ];
+    startLimitBurst = 5;
+    startLimitIntervalSec = 120;
+    wantedBy = [ "graphical-session.target" ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = lib.getExe' pkgs.asusctl "rog-control-center";
+      Restart = "always";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
+      ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
     };
   };
 
@@ -223,31 +249,6 @@
         "x-scheme-handler/unknown" = [ "firefox.desktop" ];
       };
     };
-
-    # Run the rog-control-center app on system boot so it shows in the system tray (depends on appindicator gnome extension)
-    # NB: ensure user lingering is disabled (the default) so the service doesn't run until user login
-    # NB: DISABLE THIS SERVICE UNTIL IT IS FIXED
-    # systemd.user.services."rog-control-center" = {
-    #   Unit = {
-    #     Description = "Simple service to start the app on system boot";
-    #     # Ensures the service starts after the graphical session (and the appindicator extension) is set up
-    #     After = [
-    #       "graphical-session-pre.target"
-    #       "gnome-shell-wayland.target"
-    #     ];
-    #     # Requires D-Bus, which is essential for GNOME interaction
-    #     Requires = [ "dbus.service" ];
-    #   };
-    #   Install = {
-    #     # the service is automatically started when the user logs in graphically
-    #     WantedBy = [ "graphical-session.target" ];
-    #   };
-    #   Service = {
-    #     ExecStart = "${pkgs.asusctl}/bin/rog-control-center";
-    #     # Restart = "on-failure";
-    #     # RestartSec = 5;
-    #   };
-    # };
   };
 
   # Copy the NixOS configuration file and link it from the resulting system
