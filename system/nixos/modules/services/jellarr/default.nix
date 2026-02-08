@@ -129,6 +129,17 @@ in
                 ];
               };
             }
+            {
+              name = "Music";
+              collectionType = "music";
+              libraryOptions = {
+                pathInfos = [
+                  {
+                    path = "${config.users.users.${username}.home}/media/music";
+                  }
+                ];
+              };
+            }
           ];
         };
         startup = {
