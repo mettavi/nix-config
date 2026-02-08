@@ -137,9 +137,7 @@ in
         users = [
           {
             name = "${username}";
-            passwordFile =
-              optionalString config.mettavi.system.services.jellyfin.set_signin
-                config.sops.secrets."users/${username}/jellyfin_admin-${hostname}".path;
+            passwordFile = config.sops.secrets."users/${username}/jellyfin_admin-${hostname}".path;
             policy = {
               isAdministrator = true;
               loginAttemptsBeforeLockout = 3;

@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  secrets_path,
   username,
   ...
 }:
@@ -14,7 +15,8 @@ in
 {
   options.mettavi.system.services.jellyfin = {
     enable = mkEnableOption "Install and set up the jellyfin media server";
-    set_signin = mkEnableOption "Preconfigure signin credentials using the sops-nix secrets module";
+    # the jellarr module makes this option compulsory
+    # set_signin = mkEnableOption "Preconfigure signin credentials using the sops-nix secrets module";
   };
 
   # jellyfin-web: ${pkgs.jellyfin-web}/share/jellyfin-web/config.json
@@ -35,7 +37,7 @@ in
       user = "${username}";
     };
 
-    sops.secrets = mkIf cfg.set_signin {
+    sops.secrets = {
       "users/${username}/jellyfin_admin-${hostname}" = {
         sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
       };
