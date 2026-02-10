@@ -26,6 +26,7 @@ in
       address = "127.0.0.1";
       # configure Tika and Gotenberg to process Office and e-mail files with OCR
       configureTika = true;
+      consumptionDir = "${config.users.users.${username}.home}/Downloads/paperless";
       # Configure a local PostgreSQL database server
       database.createLocally = true;
       dataDir = "${config.users.users.${username}.home}/.local/share/paperless";
