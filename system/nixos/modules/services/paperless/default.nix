@@ -37,13 +37,9 @@ in
       port = 28981;
       settings = {
         # PAPERLESS_CONSUMER_ENABLE_BARCODES = true;
-        # PAPERLESS_CONSUMER_IGNORE_PATTERN = [
-        #   ".DS_STORE/*"
-        #   "desktop.ini"
-        # ];
-        # PAPERLESS_CONSUMER_RECURSIVE = true;
-        # PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS = true;
-        PAPERLESS_DBHOST = "localhost";
+        PAPERLESS_CONSUMER_RECURSIVE = true;
+        PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS = true;
+        PAPERLESS_DBHOST = "/run/postgresql";
         PAPERLESS_DBNAME = "paperless";
         PAPERLESS_DBUSER = "paperless";
         # PAPERLESS_DBPASS is defined in the environmentFile (see above)
@@ -53,7 +49,7 @@ in
           pdfa_image_compression = "lossless";
         };
         PAPERLESS_TIME_ZONE = "Australia/Melbourne";
-        PAPERLESS_TRASH_DIR = "${config.services.paperless.mediaDir}/trash";
+        PAPERLESS_EMPTY_TRASH_DIR = "/home/.Trash-0";
         # PAPERLESS_URL = "https://paperless.example.com";
       };
     };
