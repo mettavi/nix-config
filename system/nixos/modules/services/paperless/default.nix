@@ -9,7 +9,7 @@
 with lib;
 let
   cfg = config.mettavi.system.services.paperless-ngx;
-  "pngx-${hostname}Secrets".sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
+  paperlessSecrets.sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
 in
 {
   options.mettavi.system.services.paperless-ngx = {
