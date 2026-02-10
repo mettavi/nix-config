@@ -58,5 +58,15 @@ in
       "users/${username}/paperless-${hostname}.env" = paperlessSecrets;
       "users/${username}/paperless-${hostname}-pw" = paperlessSecrets;
     };
+    # create directories in ~ that paperless can use
+    systemd.tmpfiles.rules =
+      let
+        home = "${config.users.users.${username}.home}";
+      in
+      [
+        "d ${home}/.local/share/paperless 0770 ${username} root -"
+        "d ${home}/Downloads/paperless 0770 ${username} root -"
+        "d ${home}/media/paperless 0770 ${username} root -"
+      ];
   };
 }
