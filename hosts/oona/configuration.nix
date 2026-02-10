@@ -205,14 +205,14 @@
       };
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
         name = "Next Power Mode";
-        command = "asusctl profile -n";
-        # on the keyboard this is Fn-F5
+        command = "asusctl profile next";
+        # on the main keyboard this is Fn-F5
         binding = "Launch4";
       };
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2" = {
         name = "Next Aura Mode";
-        command = "asusctl led-mode -n";
-        # on the keyboard this is Fn-F4
+        command = "asusctl leds next";
+        # on the main keyboard this is Fn-F4
         binding = "Launch3";
       };
       "org/gnome/shell" = {
