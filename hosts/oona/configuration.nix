@@ -156,14 +156,14 @@
         enable = true;
         abs_home = "${config.users.users.${username}.home}/media/audiobooks";
       };
+      # uses resolved, dnsmasq and nginx to map localhost IP:port urls to hostnames
+      hostdns.enable = true;
       # enable authentication via face recognition
       howdy.enable = true;
       # this also enables the jellyfin module
       jellarr.enable = true;
       libvirt.enable = true;
       networkmanager.enable = true;
-      # uses resolved, dnsmasq and nginx to map localhost IP:port urls to hostnames
-      hostdns.enable = true;
       openssh.enable = true;
       pia-vpn-netmanager.enable = true;
     };
