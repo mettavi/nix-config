@@ -58,10 +58,8 @@ in
       };
     };
     sops.secrets = {
-      "users/${username}" = {
-        "paperless-${hostname}.env" = "pngx-${hostname}Secrets";
-        "paperless-${hostname}-pw" = "pngx-${hostname}Secrets";
-      };
+      "users/${username}/paperless-${hostname}.env" = paperlessSecrets;
+      "users/${username}/paperless-${hostname}-pw" = paperlessSecrets;
     };
   };
 }
