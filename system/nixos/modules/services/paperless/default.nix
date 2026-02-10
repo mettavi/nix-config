@@ -56,7 +56,6 @@ in
         PAPERLESS_TRASH_DIR = "${config.services.paperless.mediaDir}/trash";
         # PAPERLESS_URL = "https://paperless.example.com";
       };
-      user = "${username}";
     };
     sops.secrets = {
       "users/${username}" = {

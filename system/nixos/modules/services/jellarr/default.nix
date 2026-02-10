@@ -87,7 +87,7 @@ in
         };
         encoding = {
           enableHardwareEncoding = true;
-          hardwareAccelerationType = "vaapi";
+          hardwareAccelerationType = "nvenc";
           vaapiDevice = "/dev/dri/renderD128";
           hardwareDecodingCodecs = [
             "h264"
@@ -103,7 +103,7 @@ in
           enableDecodingColorDepth10HevcRext = true;
           enableDecodingColorDepth12HevcRext = true;
           allowHevcEncoding = true;
-          allowAv1Encoding = false;
+          allowAv1Encoding = true;
         };
         library = {
           virtualFolders = [
