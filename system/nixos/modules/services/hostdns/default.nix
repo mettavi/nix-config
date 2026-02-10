@@ -41,13 +41,20 @@ in
         let
           # Maps a list [name, port] into a config that we want
           portMap = [
+            # audiobookshelf
             [
               "abs"
               13378
             ]
+            # jellyfin
             [
-              "jfin"
+              "jf"
               8096
+            ]
+            # paperless-ngx
+            [
+              "pp"
+              28981
             ]
           ];
           configgen = (
