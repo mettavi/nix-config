@@ -139,6 +139,7 @@
         touchbar.enable = true;
       };
       shell = {
+        # see the host-specific keyboard config below
         kanata.enable = true;
       };
       services = {
@@ -156,6 +157,14 @@
       };
     };
   };
+
+  services.kanata.keyboards."home-keys".extraDefCfg = ''
+    linux-dev-names-include (
+      "Apple Inc. Apple Internal Keyboard / Trackpad"
+      "Apple Headset"
+    )
+    process-unmapped-keys yes
+  '';
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
   home-manager.users.${username} = {

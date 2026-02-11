@@ -8,7 +8,6 @@
 }:
 with lib;
 let
-  hostname = config.networking.hostName;
   cfg = config.mettavi.system.shell.kanata;
 in
 {
@@ -28,7 +27,7 @@ in
     services.kanata = {
       enable = true;
       keyboards = {
-        "Asus-G14-${hostname}" = {
+        "home-keys" = {
           # An empty list, the default value, lets kanata detect which input devices are keyboards and intercept them all.
           # Setting this option is necessary to automatically assign different configs to different hosts/devices
           # NOTE: This option is not working on host oona under nixos (even as root with a minimal config - requires more testing)
@@ -80,12 +79,6 @@ in
               @cw
               _ _ _ _ _ left down up rght _
             )
-          '';
-          extraDefCfg = optionalString ("${hostname}" == "oona") ''
-            linux-dev-names-include (
-              "Asus Keyboard"
-            )
-            process-unmapped-keys yes
           '';
         };
       };
