@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   username,
   ...
@@ -87,6 +88,31 @@
     };
   };
 
+  # AUTOSTARTING THE ROG_CONTROL_CENTRE APP
+
+  # this option is not working reliably, see https://github.com/NixOS/nixpkgs/issues/455932
+  # programs.rog-control-center = {
+  #   enable = true;
+  #   autoStart = true;
+  # };
+  # so manually define a service instead
+  systemd.user.services.rog-control-center = {
+    description = "rog-control-center";
+    after = [ "graphical-session.target" ];
+    partOf = [ "graphical-session.target" ];
+    startLimitBurst = 5;
+    startLimitIntervalSec = 120;
+    wantedBy = [ "graphical-session.target" ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = lib.getExe' pkgs.asusctl "rog-control-center";
+      Restart = "always";
+      RestartSec = 1;
+      TimeoutStopSec = 10;
+      ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
+    };
+  };
+
   # patch the asusctl package to include "aura" keyboard lighting definitions for this model laptop
   # NB: git clone the repo, add the new lines and then run 'git diff > ../aura_support_ga403w.patch
   nixpkgs.overlays = [
@@ -130,14 +156,14 @@
         enable = true;
         abs_home = "${config.users.users.${username}.home}/media/audiobooks";
       };
+      # uses resolved, dnsmasq and nginx to map localhost IP:port urls to hostnames
+      hostdns.enable = true;
       # enable authentication via face recognition
       howdy.enable = true;
       # this also enables the jellyfin module
       jellarr.enable = true;
       libvirt.enable = true;
       networkmanager.enable = true;
-      # uses resolved, dnsmasq and nginx to map localhost IP:port urls to hostnames
-      hostdns.enable = true;
       openssh.enable = true;
       pia-vpn-netmanager.enable = true;
     };
@@ -179,14 +205,14 @@
       };
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
         name = "Next Power Mode";
-        command = "asusctl profile -n";
-        # on the keyboard this is Fn-F5
+        command = "asusctl profile next";
+        # on the main keyboard this is Fn-F5
         binding = "Launch4";
       };
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2" = {
         name = "Next Aura Mode";
-        command = "asusctl led-mode -n";
-        # on the keyboard this is Fn-F4
+        command = "asusctl leds next";
+        # on the main keyboard this is Fn-F4
         binding = "Launch3";
       };
       "org/gnome/shell" = {
@@ -223,31 +249,6 @@
         "x-scheme-handler/unknown" = [ "firefox.desktop" ];
       };
     };
-
-    # Run the rog-control-center app on system boot so it shows in the system tray (depends on appindicator gnome extension)
-    # NB: ensure user lingering is disabled (the default) so the service doesn't run until user login
-    # NB: DISABLE THIS SERVICE UNTIL IT IS FIXED
-    # systemd.user.services."rog-control-center" = {
-    #   Unit = {
-    #     Description = "Simple service to start the app on system boot";
-    #     # Ensures the service starts after the graphical session (and the appindicator extension) is set up
-    #     After = [
-    #       "graphical-session-pre.target"
-    #       "gnome-shell-wayland.target"
-    #     ];
-    #     # Requires D-Bus, which is essential for GNOME interaction
-    #     Requires = [ "dbus.service" ];
-    #   };
-    #   Install = {
-    #     # the service is automatically started when the user logs in graphically
-    #     WantedBy = [ "graphical-session.target" ];
-    #   };
-    #   Service = {
-    #     ExecStart = "${pkgs.asusctl}/bin/rog-control-center";
-    #     # Restart = "on-failure";
-    #     # RestartSec = 5;
-    #   };
-    # };
   };
 
   # Copy the NixOS configuration file and link it from the resulting system

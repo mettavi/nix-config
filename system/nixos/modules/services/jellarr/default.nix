@@ -87,7 +87,7 @@ in
         };
         encoding = {
           enableHardwareEncoding = true;
-          hardwareAccelerationType = "vaapi";
+          hardwareAccelerationType = "nvenc";
           vaapiDevice = "/dev/dri/renderD128";
           hardwareDecodingCodecs = [
             "h264"
@@ -103,7 +103,7 @@ in
           enableDecodingColorDepth10HevcRext = true;
           enableDecodingColorDepth12HevcRext = true;
           allowHevcEncoding = true;
-          allowAv1Encoding = false;
+          allowAv1Encoding = true;
         };
         library = {
           virtualFolders = [
@@ -129,6 +129,17 @@ in
                 ];
               };
             }
+            {
+              name = "Music";
+              collectionType = "music";
+              libraryOptions = {
+                pathInfos = [
+                  {
+                    path = "${config.users.users.${username}.home}/media/music";
+                  }
+                ];
+              };
+            }
           ];
         };
         startup = {
@@ -137,9 +148,7 @@ in
         users = [
           {
             name = "${username}";
-            passwordFile =
-              optionalString config.mettavi.system.services.jellyfin.set_signin
-                config.sops.secrets."users/${username}/jellyfin_admin-${hostname}".path;
+            passwordFile = config.sops.secrets."users/${username}/jellyfin_admin-${hostname}".path;
             policy = {
               isAdministrator = true;
               loginAttemptsBeforeLockout = 3;
