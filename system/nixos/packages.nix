@@ -3,7 +3,9 @@
   environment.systemPackages =
     with pkgs;
     [
+      bind # Domain name server with utilities like dig and nslookup
       cpuid # Linux tool to dump x86 CPUID information about the CPU
+      cryptsetup # luks utility for dm-crypt (the "device mapper" kernel encryption system)
       # gcc, gnumake and unzip are required for nvim
       # GNU Compiler Collection (required for nvim treesitter)
       gcc
@@ -12,6 +14,7 @@
       gparted # graphic disk partitioning tool
       libva-utils # utilities for VA-API (video acceleration API)
       lshw-gui # detailed hardware info (includes gui)
+      lsof # tool to list open files
       # Icons of the Nix logo, in Freedesktop Icon Directory Layout
       nixos-icons
       pciutils # tools for working with pci devices

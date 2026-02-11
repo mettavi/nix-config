@@ -12,7 +12,6 @@
     fastfetch # neofetch-like sys info tool
     # Bash and zsh key bindings for Git objects, powered by fzf
     fzf-git-sh
-    rclone # sync files and directories to and from major cloud storage
   ];
 
   programs = {

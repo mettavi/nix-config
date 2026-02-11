@@ -6,6 +6,7 @@
   username,
   ...
 }:
+with lib;
 let
   cfg = config.mettavi.system.services.jellarr;
   home = config.users.users.${username}.home;
@@ -17,10 +18,10 @@ in
   ];
 
   options.mettavi.system.services.jellarr = {
-    enable = lib.mkEnableOption "Install and declaratively configure the jellyfin media server using the jellarr third-party flake";
+    enable = mkEnableOption "Install and declaratively configure the jellyfin media server using the jellarr third-party flake";
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     # install and setup the jellyfin service
     mettavi.system.services.jellyfin.enable = true;
 
@@ -49,8 +50,9 @@ in
       # Bootstrap: automatically inserts API key into Jellyfin's database
       # NB: bootstrap only works if jellarr and jellyfin are on the same host
       bootstrap = {
-        # disable this feature until https://github.com/venkyr77/jellarr/issues/39 is resolved
-        enable = true;
+        # this option runs on reboot/nixos rebuild and then forces the jellyfin service to run
+        # disable this option to start jellyfin manually
+        enable = false;
         apiKeyFile = config.sops.secrets."users/${username}/jellarr_apikey".path;
       };
       dataDir = "${home}/.local/share/jellarr";
@@ -85,7 +87,7 @@ in
         };
         encoding = {
           enableHardwareEncoding = true;
-          hardwareAccelerationType = "vaapi";
+          hardwareAccelerationType = "nvenc";
           vaapiDevice = "/dev/dri/renderD128";
           hardwareDecodingCodecs = [
             "h264"
@@ -101,7 +103,7 @@ in
           enableDecodingColorDepth10HevcRext = true;
           enableDecodingColorDepth12HevcRext = true;
           allowHevcEncoding = true;
-          allowAv1Encoding = false;
+          allowAv1Encoding = true;
         };
         library = {
           virtualFolders = [
@@ -127,6 +129,17 @@ in
                 ];
               };
             }
+            {
+              name = "Music";
+              collectionType = "music";
+              libraryOptions = {
+                pathInfos = [
+                  {
+                    path = "${config.users.users.${username}.home}/media/music";
+                  }
+                ];
+              };
+            }
           ];
         };
         startup = {
@@ -138,7 +151,7 @@ in
             passwordFile = config.sops.secrets."users/${username}/jellyfin_admin-${hostname}".path;
             policy = {
               isAdministrator = true;
-              loginAttemptsBeforeLogout = 3;
+              loginAttemptsBeforeLockout = 3;
             };
           }
         ];

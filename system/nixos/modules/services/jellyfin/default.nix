@@ -2,21 +2,32 @@
   config,
   lib,
   pkgs,
+  secrets_path,
   username,
   ...
 }:
+with lib;
 let
   cfg = config.mettavi.system.services.jellyfin;
   home = config.users.users.${username}.home;
+  hostname = config.networking.hostName;
 in
 {
   options.mettavi.system.services.jellyfin = {
-    enable = lib.mkEnableOption "Install and set up the jellyfin media server";
+    enable = mkEnableOption "Install and set up the jellyfin media server";
+    # the jellarr module makes this option compulsory
+    # set_signin = mkEnableOption "Preconfigure signin credentials using the sops-nix secrets module";
   };
 
   # jellyfin-web: ${pkgs.jellyfin-web}/share/jellyfin-web/config.json
   # jellyfin: system.xml in the configDir (see below)
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      jellyfin
+      jellyfin-web
+      jellyfin-ffmpeg
+    ];
+
     services.jellyfin = {
       enable = true;
       configDir = "${home}/.config/jellyfin";
@@ -26,14 +37,15 @@ in
       user = "${username}";
     };
 
-    # prevent the service from auto-starting on boot
-    systemd.services.jellyfin.wantedBy = lib.mkForce [ ];
+    sops.secrets = {
+      "users/${username}/jellyfin_admin-${hostname}" = {
+        sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
+      };
+    };
 
-    environment.systemPackages = with pkgs; [
-      jellyfin
-      jellyfin-web
-      jellyfin-ffmpeg
-    ];
+    # prevent the service from auto-starting on boot
+    systemd.services.jellyfin.wantedBy = mkForce [ ];
+
     users.users.${username} = {
       # add the jellyfin user to the render group
       extraGroups = [ "render" ];

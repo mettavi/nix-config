@@ -43,7 +43,7 @@ rec {
           "application/x-bittorrent" = "org.qbittorrent.qBittorrent.desktop";
         };
       };
-    # select the web GUI and systemd service
+    # select the web GUI and systemd service (qBittorrent-nox - "no X server")
     services.qbittorrent = mkIf (cfg.isService) {
       enable = true;
       openFirewall = true; # open both the webuiPort and torrentPort over TCP

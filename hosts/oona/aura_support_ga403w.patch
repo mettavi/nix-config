@@ -1,20 +1,13 @@
 diff --git a/rog-aura/data/aura_support.ron b/rog-aura/data/aura_support.ron
-index 71c19bc6..d73cba97 100644
+index 8ab3b34e..d3f83d5b 100644
 --- a/rog-aura/data/aura_support.ron
 +++ b/rog-aura/data/aura_support.ron
-@@ -107,7 +107,7 @@
+@@ -998,4 +998,13 @@
          advanced_type: r#None,
-         power_zones: [Keyboard],
+         power_zones: [Ally],
      ),
--    ( 
-+    (
-         device_name: "FX607V",
-         product_id: "",
-         layout_name: "fa506i",
-@@ -611,6 +611,15 @@
-         advanced_type: r#None,
-         power_zones: [Keyboard],
-     ),
+-])
+\ No newline at end of file
 +    (
 +        device_name: "GA403W",
 +        product_id: "",
@@ -24,6 +17,4 @@ index 71c19bc6..d73cba97 100644
 +        advanced_type: r#None,
 +        power_zones: [Keyboard],
 +    ),
-     (
-         device_name: "GA503Q",
-         product_id: "",
++])

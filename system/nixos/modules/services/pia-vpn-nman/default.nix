@@ -139,10 +139,9 @@ with lib;
 
   config = mkIf cfg.enable {
     mettavi.system.services.pia-vpn-netmanager = {
-      environmentFile = "${config.home-manager.users.${username}.sops.secrets."users/${username}/pia.env".path
-      }";
-      
-      region = "jakarta";
+      environmentFile = "${config.sops.secrets."users/${username}/pia.env".path}";
+
+      # region = "jakarta";
       # postUp = ''
       # "Kill Switch": block all traffic not passing via wg0 to prevent leaked traffic on VPN dropout
       # Mark packets on the wg0 interface
@@ -193,6 +192,11 @@ with lib;
     #     iptables -t mangle -D nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN || true
     #   '';
     # };
+
+    sops.secrets = {
+      # .env file for use with systemd service for PIA VPN
+      "users/${username}/pia.env" = { };
+    };
 
     systemd.services.pia-vpn = {
       description = "Connect to Private Internet Access on ${cfg.interface}";

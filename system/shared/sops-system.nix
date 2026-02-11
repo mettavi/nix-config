@@ -9,12 +9,14 @@
 }:
 {
   sops = {
-    defaultSopsFile = "${secrets_path}/secrets.yaml";
-    # If you use something differentfrom YAML, you can also specify it here:
+    defaultSopsFile = "${secrets_path}/secrets/common.yaml";
+    # If you use something different from YAML, you can also specify it here:
     #sops.defaultSopsFormat = "yaml";
     age = {
       # automatically import host SSH keys as age keys
-      # NB: ssh host keys can be generated with the "ssh-keygen -A" command (or automatically with nixos)
+      # NB: On darwin, ssh host keys need to be manually generated with the "ssh-keygen -A" command
+      # and then the ed25519 keys renamed to the filename format below
+      # On nixos, they can be automatically generated with the services.openssh.hostKeys option
       sshKeyPaths = [ "/etc/ssh/ssh_${hostname}_ed25519_key" ];
       # This will generate an age format private key from the host private ssh key if one does not exist
       # WARNING: Let this create the key automatically from the host private key; do not replace with the PUBLIC key
@@ -38,10 +40,13 @@
         path = "${config.users.users.${username}.home}/.config/sops/age/keys.txt";
       };
       # nixos hashed user passwords
-      "users/${username}/nixos_users/${username}-${hostname}-hashpw" = lib.mkIf pkgs.stdenv.isLinux {
+      "users/${username}/${username}-${hostname}-hashpw" = lib.mkIf pkgs.stdenv.isLinux {
         neededForUsers = true;
+        sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
       };
-      "users/${username}/jellyfin_admin-lady" = { };
+      "users/${username}/jellyfin_admin-lady" = {
+        sopsFile = "${secrets_path}/secrets/hosts/lady.yaml";
+      };
       # wifi passwords to configure wireless networks
       "users/${username}/wifi.env" = { };
     };

@@ -20,19 +20,26 @@ in
   };
 
   config = mkIf cfg.enable {
-    home.sessionVariables = {
-      # take advantage of more video codecs supported by an IGP/GPU, specifies the preferred rendering device
-      MOZ_DRM_DEVICE = "/dev/dri/renderD128";
-      # Enable xinput2 to improve touchscreen support and enable additional touchpad gestures and smooth scrolling.
-      MOZ_USE_XINPUT2 = "1";
-    }
-    // mkIf nixosConfig.mettavi.system.desktops.wayland {
-      MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (may be enabled by default)
-    }
-    // mkIf nixosConfig.mettavi.system.devices.nvidia.enable {
-      # Disable Firefox's sandbox for the media decoder process, allowing it to access the driver directly
-      MOZ_DISABLE_RDD_SANDBOX = "1";
-    };
+    # NOTE: with nested attributes like below, the // operator will not properly merge the sets
+    # Instead, the right-hand set will replace the others
+    # see https://stackoverflow.com/questions/78358294/deeply-merge-sets-in-nix
+    home.sessionVariables = lib.mkMerge [
+      {
+        # take advantage of more video codecs supported by an iGPU/dGPU, specifies the preferred rendering device
+        MOZ_DRM_DEVICE = "/dev/dri/renderD128";
+        # point to the location of the widevine drm package
+        # MOZ_GMP_PATH = "${pkgs.widevine-cdm}/share/google/chrome/WidevineCdm";
+        # Enable xinput2 to improve touchscreen support and enable additional touchpad gestures and smooth scrolling.
+        MOZ_USE_XINPUT2 = "1";
+      }
+      (mkIf nixosConfig.mettavi.system.desktops.wayland {
+        MOZ_ENABLE_WAYLAND = "1"; # Explicitly enables Wayland for Firefox (may be enabled by default)
+      })
+      (mkIf nixosConfig.mettavi.system.devices.nvidia.enable {
+        # Disable Firefox's sandbox for the media decoder process, allowing it to access the driver directly
+        MOZ_DISABLE_RDD_SANDBOX = "1";
+      })
+    ];
 
     # enable the firefox-gnome-theme via a flake input (also see userChrome and userContent below)
     home.file.".mozilla/firefox/${config.programs.firefox.profiles.mettavi.name}/chrome/firefox-gnome-theme".source =
@@ -50,6 +57,17 @@ in
       ];
       # required for screensharing under Wayland, see https://wiki.nixos.org/wiki/Firefox
       package = (pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { });
+
+      # policies = {
+      #   HttpAllowlist = [
+      #     "http://abs.oona"
+      #     "http://oona"
+      #     "http://abs"
+      #     "http://localhost"
+      #     "http://127.0.0.1"
+      #   ];
+      #   HttpsOnlyMode = "enabled";
+      # };
 
       profiles = {
         "mettavi" = {
@@ -76,6 +94,7 @@ in
               tabliss
               tab-session-manager
               ublock-origin
+              violentmonkey
             ];
             settings = {
               "uBlock0@raymondhill.net" = {
@@ -129,14 +148,15 @@ in
             };
           };
           # extraConfig = '' ''; # user.js
+          # FIREFOX GNOME THEME: create files in the profile's chrome subdirectory
           userChrome = # bash
             ''
               @import "firefox-gnome-theme/userChrome.css";
-            ''; # chrome CSS
+            ''; # userChrome.css
           userContent = # bash
             ''
               @import "firefox-gnome-theme/userContent.css";
-            ''; # content CSS
+            ''; # userContent.css
 
           # ~/.mozilla/firefox/PROFILE_NAME/prefs.js | user.js
           settings =
@@ -147,10 +167,14 @@ in
               ## FIREFOX GNOME THEME
               ## - https://github.com/rafaelmardojai/firefox-gnome-theme/blob/7cba78f5216403c4d2babb278ff9cc58bcb3ea66/configuration/user.js
               # (copied into here because home-manager already writes to user.js)
-              "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Enable customChrome.cs
+              # ESSENTIAL SETTINGS
+              "toolkit.legacyUserProfileCustomizations.stylesheets" = true; # Enable customChrome.css
               "svg.context-properties.content.enabled" = true; # Enable SVG context-propertes
+              # OPTIONAL SETTINGS
               "browser.uidensity" = 0; # Set UI density to normal
               "browser.theme.dark-private-windows" = false; # Disable private window dark theme
+              "widget.gtk.rounded-bottom-corners.enabled" = true; # enable rounded bottom window corners
+              # NB: Additional features can be enabled under the gnomeTheme.* key
 
               # ALPHABETICAL
               "app.normandy.first_run" = false;
@@ -232,9 +256,14 @@ in
               "extensions.webextensions.restrictedDomains" = "";
               "privacy.resistFingerprinting.block_mozAddonManager" = true;
 
-              # Prefer dark theme webpages
+              # PREFER DARK THEME WEBPAGES
               # 0: Force Dark, 1: Force Light, 2: System theme, 3: Browser theme
+              # NB: In the FF GUI, this sets the "website appearance" option
+              # (dark/light/automatic) on the general settings page
               "layout.css.prefers-color-scheme.content-override" = 0;
+              # this controls the theme of the browser chrome rather than the webpage theme
+              # 0:light; 1:dark; 2:no-preference
+              "ui.systemUsesDarkTheme" = 1;
 
               "media.autoplay.default" = 5; # block both audible and inaudible media from autoplaying.
               "media.cubeb.backend" = "alsa"; # force firefox to use the ALSA/pipewire backend
@@ -360,9 +389,13 @@ in
               "media.windows-media-foundation.allow-d3d11-dxva" = true;
               "widget.dmabuf.force-enabled" = true; # Required in recent Firefoxes
 
-              # Enable HTTPS-Only Mode
-              "dom.security.https_only_mode" = true;
-              "dom.security.https_only_mode_ever_enabled" = true;
+              # Enable HTTPS-Only Mode: enforce webpages to be "upgraded" to https, unless the webpage is excepted
+              # NB: this will always issue warnings about http regardless of the allowlist
+              "dom.security.https_only_mode" = false;
+              "dom.security.https_only_mode_ever_enabled" = false;
+              # Enable HTTPS-FIRST mode: upgrade to an https webpage if available, otherwise use http
+              # NB: this will not attempt upgrades OR WARN about websites on the allowlist, or when http:// is typed
+              "dom.security.https_first" = true;
 
               # PRIVACY/TRACKING SETTINGS
               # Prevent WebRTC leaking IP address
@@ -384,6 +417,8 @@ in
               # Fingerprinting
               # set to false to allow dark-mode-capable webpages to detect system dark/light mode status
               "privacy.resistFingerprinting" = false;
+              # enabling this will create narrow webpages with scrollbars moved in from the outside edges of the viewport
+              "privacy.resistFingerprinting.letterboxing" = false;
               "privacy.resistFingerprinting.pbmode" = true;
               "privacy.fingerprintingProtection" = true;
 

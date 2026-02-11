@@ -105,7 +105,11 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    sops-nix = {
+    sops-nixos = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixos-pkgs";
+    };
+    sops-nix-darwin = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
@@ -125,7 +129,7 @@
     in
     {
       nix_repo = ".nix-config";
-      secrets_path = builtins.toString inputs.secrets;
+      secrets_path = toString inputs.secrets;
 
       # DARWIN-REBUILD BUILDS
       # Build darwin flake using:

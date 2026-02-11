@@ -3,6 +3,7 @@
   inputs,
   lib,
   pkgs,
+  secrets_path,
   username,
   ...
 }:
@@ -33,7 +34,7 @@ in
     mettavi.system.services.postfix.enable = mkIf cfg.backup true;
 
     systemd.user = mkIf cfg.backup {
-      # install the package used for making bitwarden backups
+      # create the service used for making bitwarden backups
       services = {
         # make an encrypted backup weekly
         "bitwarden-backup" = {
@@ -81,6 +82,13 @@ in
       {
         # install the package used for making bitwarden backups
         home.packages = with pkgs; mkIf nixosConfig.mettavi.system.apps.bitwarden.backup [ bitwarden-cli ];
+
+        sops.secrets = {
+          # bitwarden .env file for use with cli
+          "users/${username}/bitwarden.env" = {
+            sopsFile = "${secrets_path}/secrets/apps/bitwarden.yaml";
+          };
+        };
       };
   };
 }

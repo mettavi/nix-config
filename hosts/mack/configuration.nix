@@ -1,3 +1,8 @@
+# NB: Workarounds for the occasional "enter a password to unlock the disk nix store" error related to the detnix/lix installers
+# 1. Open "Keychain Access.app" and in the "System" keychain, look for an entry like "disk1 encryption password"
+# 2. use command: security find-generic-password -s "Nix Store" -w"
+# See https://github.com/DeterminateSystems/nix-installer/issues/1498
+# and https://github.com/DeterminateSystems/nix-installer/issues/753
 {
   hostname,
   inputs,
@@ -50,9 +55,6 @@
         stateVersion = "23.11";
       };
       mettavi = {
-        apps = {
-          vscode.enable = true;
-        };
         shell = {
           # enable scheduled bitwarden backup task
           bw_backup.enable = true;

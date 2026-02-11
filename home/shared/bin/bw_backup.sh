@@ -9,7 +9,7 @@ USER="timotheos"
 
 # load env vars required by script and bw binary
 # shellcheck disable=SC1090,SC1091
-source "$HOME/.config/sops-nix/secrets/users/$USER/bitwarden.env"
+source "$XDG_CONFIG_HOME/sops-nix/secrets/users/$USER/bitwarden.env"
 
 TIMESTAMP=$(date "+%Y%m%d")
 EXPORT_PATH="$HOME/backups/bitwarden"
@@ -21,14 +21,14 @@ EXPORT_OPENSSL_FILE=bw_$TIMESTAMP.enc
 EXPORT_ORG_OPENSSL_FILE=bw_org_$TIMESTAMP.enc
 
 NOTIFICATION_EMAIL="timotheos.allen@gmail.com" # Email address used for notification if job fails
-NOTIFICATION_EMAIL_SUBJECT="Bitwarden Backup Failed"
+NOTIFICATION_EMAIL_SUBJECT="Bitwarden Unlock Failed"
 NOTIFICATION_EMAIL_BODY="The automated Bitwarden backup failed when trying to unlock the vault"
 
 if [ ! -d "$EXPORT_PATH" ]; then
-  echo "Folder 'bitwarden_backups' does not exist. Creating it..."
+  echo "Folder '~/backups/bitwarden' does not exist. Creating it..."
   mkdir -p "$EXPORT_PATH"
 else
-  echo "Folder 'bitwarden_backups' already exists."
+  echo "Folder '~/backups/bitwarden' already exists."
 fi
 
 bw login --apikey

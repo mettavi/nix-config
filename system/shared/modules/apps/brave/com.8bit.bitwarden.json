@@ -1,0 +1,12 @@
+{
+  "name": "com.8bit.bitwarden",
+  "description": "Bitwarden desktop <-> browser bridge",
+  "path": "/nix/store/9447xrs7z1s5i9skqc0r2w82bfajsz19-bitwarden-desktop-2025.12.0/libexec/desktop_proxy",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://nngceckbapebfimnlniiiahkandclblb/",
+    "chrome-extension://hccnnhgbibccigepcmlgppchkpfdophk/",
+    "chrome-extension://jbkfoedolllekgbhcbcoahefnbanhhlh/",
+    "chrome-extension://ccnckbpmaceehanjmeomladnmlffdjgn/"
+  ]
+}

@@ -125,6 +125,7 @@
     system = {
       # use the gnome desktop
       apps = {
+        brave.enable = true;
         calibre.enable = true;
         libreoffice.enable = true;
         qbittorrent.enable = true;
@@ -164,7 +165,6 @@
     };
     mettavi = {
       apps = {
-        chromium.enable = true;
         firefox.enable = true;
         ghostty.enable = true;
       };
@@ -179,22 +179,15 @@
       # See http://discourse.nixos.org/t/how-can-i-configure-the-default-apps-for-gnome/36034
       defaultApplications = {
         # gnome image viewer
-        "image/jpeg" = "org.gnome.Loupe.desktop";
+        "image/jpeg" = [ "org.gnome.Loupe.desktop" ];
         # gnome document viewer
-        "application/pdf" = "org.gnome.Evince.desktop";
-        "text/html" = "firefox.desktop";
-        "x-scheme-handler/http" = "firefox.desktop";
-        "x-scheme-handler/https" = "firefox.desktop";
-        "x-scheme-handler/about" = "firefox.desktop";
-        "x-scheme-handler/unknown" = "firefox.desktop";
-      };
-    };
-    xdg.terminal-exec = {
-      enable = true;
-      settings = {
-        default = [
-          "ghostty.desktop"
-        ];
+        "application/pdf" = [ "org.gnome.Evince.desktop" ];
+        "default-web-browser" = [ "firefox.desktop" ];
+        "text/html" = [ "firefox.desktop" ];
+        "x-scheme-handler/http" = [ "firefox.desktop" ];
+        "x-scheme-handler/https" = [ "firefox.desktop" ];
+        "x-scheme-handler/about" = [ "firefox.desktop" ];
+        "x-scheme-handler/unknown" = [ "firefox.desktop" ];
       };
     };
   };

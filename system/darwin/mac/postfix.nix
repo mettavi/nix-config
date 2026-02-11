@@ -1,6 +1,7 @@
 {
   config,
   inputs,
+  secrets_path,
   username,
   ...
 }:
@@ -731,6 +732,7 @@ in
   sops = {
     # this is used for the gmail app password for postfix on the nix-darwin host mack
     secrets."users/${username}/google_timotheos_app_pw" = {
+      sopsFile = "${secrets_path}/secrets/hosts/mack.yaml";
     };
     templates = {
       # config file to allow postfix to use my personal gmail account automatically
