@@ -165,6 +165,7 @@
       libvirt.enable = true;
       networkmanager.enable = true;
       openssh.enable = true;
+      paperless-ngx.enable = true;
       pia-vpn-netmanager.enable = true;
     };
     shell = {
