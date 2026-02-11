@@ -168,12 +168,20 @@
       pia-vpn-netmanager.enable = true;
     };
     shell = {
+      # see the host-specific keyboard config below
       kanata.enable = true;
     };
     userConfig = {
       timotheos.enable = true;
     };
   };
+
+  services.kanata.keyboards."home-keys".extraDefCfg = ''
+    linux-dev-names-include (
+      "Asus Keyboard"
+    )
+    process-unmapped-keys yes
+  '';
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
   home-manager.users.${username} = {
