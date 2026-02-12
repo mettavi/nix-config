@@ -39,6 +39,13 @@ in
       PrivateDevices = "no";
     };
 
+    # disable howdy on reboot login, for security and to prevent the
+    # "the login keyring did not get unlocked when you logged into your computer" error when launching bitwarden
+    security.pam.services = {
+      gdm.howdy.enable = false;
+      login.howdy.enable = false;
+    };
+
     services.howdy = {
       enable = true;
       control = "sufficient";
