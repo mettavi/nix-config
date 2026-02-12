@@ -11,6 +11,21 @@ with lib;
 let
   home = "${config.users.users.${username}.home}";
   cfg = config.mettavi.system.services.restic;
+  logfile_dir = "$XDG_STATE_HOME/logs/rclone";
+  logfile = "${logfile_dir}/restic-oona.log";
+  restic-rcl-b2 =
+    pkgs.writeShellScriptBin "restic-rcl-b2.sh" # bash
+      ''
+        # Setup and run sync
+
+        # create the base directory if it doesn't exist
+        if [ ! -d ${logfile_dir} ]; then
+          mkdir -p ${logfile_dir} 
+        fi
+        rclone --log-level INFO --log-file=${logfile} \
+          --verbose --b2-hard-delete --checkers 100 --transfers 100 --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
+          sync ${config.services.restic.backups.oona-local-home.repository} b2:oona-${username}/
+      '';
 in
 {
   options.mettavi.system.services.restic = {
