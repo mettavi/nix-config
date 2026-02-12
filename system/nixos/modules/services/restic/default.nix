@@ -12,7 +12,8 @@ let
   cfg = config.mettavi.system.services.restic;
   home = "${config.users.users.${username}.home}";
   logfile_dir = "$XDG_STATE_HOME/logs/rclone";
-  logfile = "${logfile_dir}/restic-oona.log";
+  logfile = "${logfile_dir}/restic-${hostname}.log";
+  # create an rclone shell script
   restic-rcl-b2 =
     pkgs.writeShellScriptBin "restic-rcl-b2.sh" # bash
       ''
@@ -24,7 +25,9 @@ let
         # copy the local restic backup to the cloud (backblaze b2)
         rclone --log-level INFO --log-file=${logfile} \
           --verbose --b2-hard-delete --checkers 100 --transfers 100 --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
-          sync ${config.services.restic.backups.oona-local-home.repository} b2:oona-${username}/
+          sync ${
+            config.services.restic.backups.${hostname} - local-home.repository
+          } b2:${hostname}-${username}/
       '';
   vol_label = "${config.mettavi.system.services.restic.vol_label}";
 in
@@ -99,7 +102,7 @@ in
         in
         {
           # local backup of system
-          "oona-local-sys" = {
+          "${hostname}-local-sys" = {
             inherit
               extraBackupArgs
               home_exclude
@@ -114,7 +117,7 @@ in
             ];
             # Patterns to exclude when backing up
             exclude = nixos_exclude;
-            passwordFile = config.sops.secrets."users/${username}/restic-oona-local-sys".path;
+            passwordFile = config.sops.secrets."users/${username}/restic-${hostname}-local-sys".path;
             paths = [
               "/etc/group"
               "/etc/machine-id"
@@ -131,7 +134,7 @@ in
             user = "root";
           };
           # local backup of home directory
-          "oona-local-home" = {
+          "${hostname}-local-home" = {
             inherit
               extraBackupArgs
               home_exclude
@@ -146,7 +149,7 @@ in
             ];
             # Patterns to exclude when backing up
             exclude = home_exclude;
-            passwordFile = config.sops.secrets."users/${username}/restic-oona-local-home".path;
+            passwordFile = config.sops.secrets."users/${username}/restic-${hostname}-local-home".path;
             paths = [
               "${home}"
             ];
@@ -156,7 +159,7 @@ in
             user = "${username}";
           };
           # backup drectly to cloud using rclone
-          "oona-${username}-b2" = {
+          "${hostname}-${username}-b2" = {
             inherit
               checkOpts
               createWrapper
@@ -168,11 +171,11 @@ in
               ;
             exclude = home_exclude;
             extraBackupArgs = "${extraBackupArgs}" ++ [ "rclone.connections=100" ];
-            passwordFile = config.sops.secrets."users/${username}/restic-oona-${username}-b2".path;
+            passwordFile = config.sops.secrets."users/${username}/restic-${hostname}-${username}-b2".path;
             paths = [
               "${home}"
             ];
-            repository = "rclone:b2:oona-${username}";
+            repository = "rclone:b2:${hostname}-${username}";
             rcloneConfigFile = "${config.home-manager.users.${username}.sops.templates."rclone.conf".path}";
             rcloneOptions = {
               checkers = 100;
@@ -195,16 +198,16 @@ in
     };
     sops.secrets = {
       # encryption password for local backup
-      "users/${username}/restic-oona-local" = {
-        sopsFile = "${secrets_path}/secrets/hosts/oona.yaml";
+      "users/${username}/restic-${hostname}-local" = {
+        sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
       };
       # encryption password for cloud backup to backblaze b2
-      "users/${username}/restic-oona-${username}-b2" = {
-        sopsFile = "${secrets_path}/secrets/hosts/oona.yaml";
+      "users/${username}/restic-${hostname}-${username}-b2" = {
+        sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
       };
     };
     systemd.services = {
-      oona-local-sys = {
+      "${hostname}-local-sys" = {
         unitConfig = {
           Description = "Run a backup whenever the device is plugged in (and mounted)";
           # See https://bbs.archlinux.org/viewtopic.php?id=207050
@@ -216,7 +219,7 @@ in
           # or perhaps WantedBy= option?
         };
       };
-      oona-local-home = {
+      "${hostname}-local-home" = {
         unitConfig = {
           Description = "Run a backup whenever the device is plugged in (and mounted)";
           # See https://bbs.archlinux.org/viewtopic.php?id=207050
