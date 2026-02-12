@@ -47,9 +47,6 @@ in
       };
     };
 
-    # attempt to automatically unlock the user’s default Gnome keyring upon login
-    security.pam.services.gdm-login.enableGnomeKeyring = true;
-
     services = {
       # install GNOME using wayland
       displayManager.gdm.enable = lib.mkDefault true;
