@@ -40,6 +40,7 @@ in
     environment.systemPackages = with pkgs; [
       # CHECK: not sure if this is required
       rclone # sync files and directories to and from major cloud storage
+      restic-rcl-b2
     ];
 
     services.restic = {
