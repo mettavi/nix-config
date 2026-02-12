@@ -63,4 +63,10 @@ in
     "users/${username}/paperless-${hostname}.env" = paperlessSecrets;
     "users/${username}/paperless-${hostname}-pw" = paperlessSecrets;
   };
+  # prevent the services from auto-starting on boot
+  systemd.services = {
+    redis-paperless.wantedBy = mkForce [ ];
+    paperless-scheduler.wantedBy = mkForce [ ];
+    # postgresql.target.wantedBy = mkForce [ ];
+  };
 }
