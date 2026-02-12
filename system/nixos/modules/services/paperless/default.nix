@@ -31,6 +31,9 @@ in
         # configure Tika and Gotenberg to process Office and e-mail files with OCR
         configureTika = true;
         consumptionDir = "${dataDir}/consume";
+        # true sets permissions to 777
+        # prefer systemd.tmpfiles option for hardened security (see below)
+        consumptionDirIsPublic = false;
         # Configure a local PostgreSQL database server
         database.createLocally = true;
         dataDir = "${dataDir}";
@@ -68,5 +71,11 @@ in
       paperless-scheduler.wantedBy = mkForce [ ];
       # postgresql.target.wantedBy = mkForce [ ];
     };
+    # only allow sudo users (in group wheel) to use the consumption directory
+    # (more secure than consumptionDirIsPublic option)
+    systemd.tmpfiles.rules = [
+      # type path mode user group (expiry)
+      "d ${config.services.paperless.consumptionDir} 0775 paperless wheel -"
+    ];
   };
 }
