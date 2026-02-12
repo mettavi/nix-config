@@ -46,7 +46,7 @@ in
       };
       vaults = {
         "Documents/VaultsTest/AABCAP 2025-26" = {
-          enable = true;
+          enable = false;
           settings = {
             app = {
               attachmentFolderPath = "Utilities/Assets/";
