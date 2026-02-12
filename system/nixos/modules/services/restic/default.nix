@@ -9,8 +9,8 @@
 }:
 with lib;
 let
-  home = "${config.users.users.${username}.home}";
   cfg = config.mettavi.system.services.restic;
+  home = "${config.users.users.${username}.home}";
   logfile_dir = "$XDG_STATE_HOME/logs/rclone";
   logfile = "${logfile_dir}/restic-oona.log";
   restic-rcl-b2 =
