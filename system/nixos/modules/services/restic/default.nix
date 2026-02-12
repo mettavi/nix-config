@@ -16,12 +16,12 @@ let
   restic-rcl-b2 =
     pkgs.writeShellScriptBin "restic-rcl-b2.sh" # bash
       ''
-        # Setup and run sync
-
         # create the base directory if it doesn't exist
         if [ ! -d ${logfile_dir} ]; then
           mkdir -p ${logfile_dir} 
         fi
+
+        # copy the local restic backup to the cloud (backblaze b2)
         rclone --log-level INFO --log-file=${logfile} \
           --verbose --b2-hard-delete --checkers 100 --transfers 100 --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
           sync ${config.services.restic.backups.oona-local-home.repository} b2:oona-${username}/
@@ -98,6 +98,7 @@ in
           };
         in
         {
+          # local backup of system
           "oona-local-sys" = {
             inherit
               extraBackupArgs
@@ -129,6 +130,7 @@ in
             timerConfig = null;
             user = "root";
           };
+          # local backup of home directory
           "oona-local-home" = {
             inherit
               extraBackupArgs
@@ -153,6 +155,7 @@ in
             timerConfig = null;
             user = "${username}";
           };
+          # backup drectly to cloud using rclone
           "oona-${username}-b2" = {
             inherit
               checkOpts
