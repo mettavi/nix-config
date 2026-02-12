@@ -59,4 +59,8 @@ in
         };
       };
   };
+  sops.secrets = {
+    "users/${username}/paperless-${hostname}.env" = paperlessSecrets;
+    "users/${username}/paperless-${hostname}-pw" = paperlessSecrets;
+  };
 }
