@@ -21,52 +21,42 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.paperless = {
-      enable = true;
-      address = "127.0.0.1";
-      # configure Tika and Gotenberg to process Office and e-mail files with OCR
-      configureTika = true;
-      consumptionDir = "${config.users.users.${username}.home}/Downloads/paperless";
-      # Configure a local PostgreSQL database server
-      database.createLocally = true;
-      dataDir = "${config.users.users.${username}.home}/.local/share/paperless";
-      environmentFile = config.sops.secrets."users/${username}/paperless-${hostname}.env".path;
-      mediaDir = "${config.users.users.${username}.home}/media/paperless";
-      # enable a workaround for document classifier timeouts
-      openMPThreadingWorkaround = true;
-      passwordFile = config.sops.secrets."users/${username}/paperless-${hostname}-pw".path;
-      port = 28981;
-      settings = {
-        # PAPERLESS_CONSUMER_ENABLE_BARCODES = true;
-        PAPERLESS_CONSUMER_RECURSIVE = true;
-        PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS = true;
-        PAPERLESS_DBHOST = "/run/postgresql";
-        PAPERLESS_DBNAME = "paperless";
-        PAPERLESS_DBUSER = "paperless";
-        # PAPERLESS_DBPASS is defined in the environmentFile (see above)
-        PAPERLESS_OCR_LANGUAGE = "eng";
-        PAPERLESS_OCR_USER_ARGS = {
-          optimize = 1;
-          pdfa_image_compression = "lossless";
-        };
-        PAPERLESS_TIME_ZONE = "Australia/Melbourne";
-        PAPERLESS_EMPTY_TRASH_DIR = "/home/.Trash-0";
-        # PAPERLESS_URL = "https://paperless.example.com";
-      };
-    };
-    sops.secrets = {
-      "users/${username}/paperless-${hostname}.env" = paperlessSecrets;
-      "users/${username}/paperless-${hostname}-pw" = paperlessSecrets;
-    };
-    # create directories in ~ that paperless can use
-    systemd.tmpfiles.rules =
+    services.paperless =
       let
-        home = "${config.users.users.${username}.home}";
+        dataDir = "/var/lib/paperless";
       in
-      [
-        "d ${home}/.local/share/paperless 0770 ${username} root -"
-        "d ${home}/Downloads/paperless 0770 ${username} root -"
-        "d ${home}/media/paperless 0770 ${username} root -"
-      ];
+      {
+        enable = true;
+        address = "127.0.0.1";
+        # configure Tika and Gotenberg to process Office and e-mail files with OCR
+        configureTika = true;
+        consumptionDir = "${dataDir}/consume";
+        # Configure a local PostgreSQL database server
+        database.createLocally = true;
+        dataDir = "${dataDir}";
+        environmentFile = config.sops.secrets."users/${username}/paperless-${hostname}.env".path;
+        mediaDir = "${dataDir}/media";
+        # enable a workaround for document classifier timeouts
+        openMPThreadingWorkaround = true;
+        passwordFile = config.sops.secrets."users/${username}/paperless-${hostname}-pw".path;
+        port = 28981;
+        settings = {
+          # PAPERLESS_CONSUMER_ENABLE_BARCODES = true;
+          PAPERLESS_CONSUMER_RECURSIVE = true;
+          PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS = true;
+          PAPERLESS_DBHOST = "/run/postgresql";
+          PAPERLESS_DBNAME = "paperless";
+          PAPERLESS_DBUSER = "paperless";
+          # PAPERLESS_DBPASS is defined in the environmentFile (see above)
+          PAPERLESS_OCR_LANGUAGE = "eng";
+          PAPERLESS_OCR_USER_ARGS = {
+            optimize = 1;
+            pdfa_image_compression = "lossless";
+          };
+          PAPERLESS_TIME_ZONE = "Australia/Melbourne";
+          # PAPERLESS_EMPTY_TRASH_DIR = "/home/.Trash-0";
+          # PAPERLESS_URL = "https://paperless.example.com";
+        };
+      };
   };
 }
