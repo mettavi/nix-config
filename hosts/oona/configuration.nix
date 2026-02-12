@@ -235,6 +235,7 @@
       apps = {
         firefox.enable = true;
         ghostty.enable = true;
+        obsidian.enable = true;
       };
     };
     xdg.mimeApps = {
