@@ -26,6 +26,7 @@ let
           --verbose --b2-hard-delete --checkers 100 --transfers 100 --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
           sync ${config.services.restic.backups.oona-local-home.repository} b2:oona-${username}/
       '';
+  vol_label = "${config.mettavi.system.services.restic.vol_label}";
 in
 {
   options.mettavi.system.services.restic = {
@@ -33,6 +34,11 @@ in
       type = types.bool;
       default = false;
       description = "Set up and configure restic backup jobs";
+    };
+    vol_label = mkOption {
+      type = types.str;
+      default = "";
+      description = "The volume label of the backup device (eg. 'luks-samt7')";
     };
   };
 
@@ -118,7 +124,7 @@ in
               "/var/backup"
               "/var/lib"
             ];
-            repository = "/run/media/${username}/<disk_label>/${hostname}/root";
+            repository = "/run/media/${username}/${vol_label}/${hostname}/root";
             # run backups when the removable disk is mounted, not on a schedule
             timerConfig = null;
             user = "root";
@@ -142,7 +148,7 @@ in
             paths = [
               "${home}"
             ];
-            repository = "/run/media/${username}/<disk_label>/${hostname}/user";
+            repository = "/run/media/${username}/${vol_label}/${hostname}/user";
             # run backups when the removable disk is mounted, not on a schedule
             timerConfig = null;
             user = "${username}";
@@ -203,7 +209,7 @@ in
           # or use the ConditionPathIsMountPoint= option?
           # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
           # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
-          ConditionPathIsMountPoint = "/run/media/${username}/<disk_label>/${hostname}/root";
+          ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}/${hostname}/root";
           # or perhaps WantedBy= option?
         };
       };
@@ -215,7 +221,7 @@ in
           # or use the ConditionPathIsMountPoint= option?
           # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
           # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
-          ConditionPathIsMountPoint = "/run/media/${username}/<disk_label>/${hostname}/user";
+          ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}/${hostname}/user";
           # or perhaps WantedBy= option?
         };
       };
