@@ -182,7 +182,7 @@ in
               fast-list = true;
               # restic already keeps deleted files
               b2-hard-delete = true;
-              log-file = "";
+              log-file = "${logfile}";
               max-backlog = 10000;
               order-by = "size,mixed,75";
               stats = "2m";
