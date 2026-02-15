@@ -9,7 +9,7 @@
 with lib;
 let
   cfg = config.mettavi.system.services.paperless-ngx;
-  paperlessSecrets.sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
+  paperlessSecrets.sopsFile = "${secrets_path}/secrets/apps/paperless.yaml";
 in
 {
   options.mettavi.system.services.paperless-ngx = {
@@ -39,7 +39,7 @@ in
         # Configure a local PostgreSQL database server
         database.createLocally = true;
         dataDir = "${dataDir}";
-        environmentFile = config.sops.secrets."users/${username}/paperless-${hostname}.env".path;
+        environmentFile = config.sops.secrets."users/${username}/paperless/ppless-${hostname}.env".path;
         # enable automated daily backups
         exporter = {
           enable = true;
@@ -55,7 +55,7 @@ in
         mediaDir = "${dataDir}/media";
         # enable a workaround for document classifier timeouts
         openMPThreadingWorkaround = true;
-        passwordFile = config.sops.secrets."users/${username}/paperless-${hostname}-pw".path;
+        passwordFile = config.sops.secrets."users/${username}/paperless/ppless-${hostname}-pw".path;
         port = 28981;
         settings = {
           # PAPERLESS_CONSUMER_ENABLE_BARCODES = true;
@@ -78,12 +78,14 @@ in
         };
       };
     sops.secrets = {
-      "users/${username}/paperless-${hostname}.env" = {
+      "users/${username}/paperless/pplessGPT-${hostname}-openai-token" = paperlessSecrets;
+      "users/${username}/paperless/ppless-${hostname}-apitoken" = paperlessSecrets;
+      "users/${username}/paperless/ppless-${hostname}.env" = {
         group = "${config.users.users.paperless.name}";
         mode = "0440";
-        sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
+        sopsFile = "${secrets_path}/secrets/apps/paperless.yaml";
       };
-      "users/${username}/paperless-${hostname}-pw" = paperlessSecrets;
+      "users/${username}/paperless/ppless-${hostname}-pw" = paperlessSecrets;
     };
     # prevent the services from auto-starting on boot
     systemd.services = {
