@@ -47,6 +47,8 @@ in
           # PAPERLESS_CONSUMER_ENABLE_BARCODES = true;
           PAPERLESS_CONSUMER_RECURSIVE = true;
           PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS = true;
+          # the language(s) in which most of your documents are written
+          PAPERLESS_DATE_PARSER_LANGUAGES = "en-AU";
           PAPERLESS_DBHOST = "/run/postgresql";
           PAPERLESS_DBNAME = "paperless";
           PAPERLESS_DBUSER = "paperless";
