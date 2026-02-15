@@ -158,7 +158,7 @@ in
             timerConfig = null;
             user = "${username}";
           };
-          # backup drectly to cloud using rclone
+          # do a restic backup directly to cloud using rclone
           "${hostname}-${username}-b2" = {
             inherit
               checkOpts
