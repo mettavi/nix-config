@@ -38,6 +38,18 @@ in
         database.createLocally = true;
         dataDir = "${dataDir}";
         environmentFile = config.sops.secrets."users/${username}/paperless-${hostname}.env".path;
+        # enable automated daily backups
+        exporter = {
+          enable = true;
+          directory = "${dataDir}/export";
+          onCalendar = "01:30:00";
+          settings = {
+            compare-checksums = true;
+            delete = true;
+            no-color = true;
+            no-progress-bar = true;
+          };
+        };
         mediaDir = "${dataDir}/media";
         # enable a workaround for document classifier timeouts
         openMPThreadingWorkaround = true;
