@@ -76,7 +76,11 @@ in
         };
       };
     sops.secrets = {
-      "users/${username}/paperless-${hostname}.env" = paperlessSecrets;
+      "users/${username}/paperless-${hostname}.env" = {
+        group = "${config.users.users.paperless.name}";
+        mode = "0440";
+        sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
+      };
       "users/${username}/paperless-${hostname}-pw" = paperlessSecrets;
     };
     # prevent the services from auto-starting on boot
