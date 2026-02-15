@@ -60,7 +60,7 @@ in
           };
           PAPERLESS_TIME_ZONE = "Australia/Melbourne";
           # PAPERLESS_EMPTY_TRASH_DIR = "/home/.Trash-0";
-          # PAPERLESS_URL = "https://paperless.example.com";
+          PAPERLESS_URL = "http://localhost:28981";
         };
       };
     sops.secrets = {
