@@ -41,7 +41,7 @@ in
           default = "openai"; # openai, mistral, ollama, or anthropic
           description = "Which LLM provider to use for OCR";
         };
-        vision_model = mkOption {
+        model = mkOption {
           type = types.str;
           default = "gpt-4o"; # minicpm-v (ollama) or gpt-4o (openai) or claude-sonnet-4-5 (anthropic/claude)
           description = "Which LLM model to use for OCR";
@@ -157,13 +157,14 @@ in
 
               # OCR Configuration
               OCR_PROVIDER = "llm"; # llm, google_docai, azure or docling
-              VISION_LLM_PROVIDER = "${cfg.llm.ocr.provider}"; # openai, ollama, mistral, or anthropic
-              VISION_LLM_MODEL = "${cfg.llm.ocr.vision_model}";
+              VISION_LLM_PROVIDER = "${cfg.llm.ocr.provider}";
+              VISION_LLM_MODEL = "${cfg.llm.ocr.model}";
               # OLLAMA_HOST = "http://host.docker.internal:11434"; # If using Ollama
 
               # OCR Processing Mode
               OCR_PROCESS_MODE = "image"; # Optional, default: image, other options: pdf, whole_pdf
               PDF_SKIP_EXISTING_OCR = "false"; # Optional, skip OCR for PDFs with existing OCR
+
               # Enhanced OCR Features
               CREATE_LOCAL_HOCR = "false"; # Optional, save hOCR files locally
               LOCAL_HOCR_PATH = "/app/hocr"; # Optional, path for hOCR files
@@ -180,6 +181,7 @@ in
             };
             # pull from the github container registry (ghcr)
             image = "ghcr.io/icereed/paperless-gpt:latest";
+            # give the container access to the host network
             networks = [ "host" ];
             noNewPrivileges = true;
             publishPorts = [ "8080:8080" ];
