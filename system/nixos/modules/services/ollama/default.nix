@@ -11,7 +11,7 @@ let
 in
 {
   options.mettavi.system.services.ollama = {
-    enable = mkEnableOption "Install and set up the jellyfin media server";
+    enable = mkEnableOption "Install and set up the ollama LLM service";
   };
 
   config = mkIf cfg.enable {
