@@ -95,6 +95,9 @@ in
     systemd.services = {
       redis-paperless.wantedBy = mkForce [ ];
       paperless-scheduler.wantedBy = mkForce [ ];
+      paperless-gpt = {
+        restartIfChanged = false;
+      };
       # postgresql.target.wantedBy = mkForce [ ];
     };
     # only allow sudo users (in group wheel) to use the consumption directory
