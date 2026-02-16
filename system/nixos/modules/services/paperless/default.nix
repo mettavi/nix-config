@@ -154,6 +154,7 @@ in
               # LLM Configuration
               LLM_PROVIDER = "${cfg.llm.generic.provider}";
               LLM_MODEL = "${cfg.llm.generic.model}";
+              LLM_LANGUAGE = "English";
 
               # OCR Configuration
               OCR_PROVIDER = "llm"; # llm, google_docai, azure or docling
