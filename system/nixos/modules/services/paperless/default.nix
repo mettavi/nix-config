@@ -22,6 +22,32 @@ in
       default = false;
       description = "Install and setup paperless-ngx, a documents database tool";
     };
+    llm = {
+      generic = {
+        provider = mkOption {
+          type = types.str;
+          default = "openai"; # openai, mistral, ollama, or anthropic
+          description = "Which LLM provider to use";
+        };
+        model = mkOption {
+          type = types.str;
+          default = "gpt-4o";
+          description = "Which LLM model to use";
+        };
+      };
+      ocr = {
+        provider = mkOption {
+          type = types.str;
+          default = "openai"; # openai, mistral, ollama, or anthropic
+          description = "Which LLM provider to use for OCR";
+        };
+        vision_model = mkOption {
+          type = types.str;
+          default = "gpt-4o"; # minicpm-v (ollama) or gpt-4o (openai) or claude-sonnet-4-5 (anthropic/claude)
+          description = "Which LLM model to use for OCR";
+        };
+      };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -118,13 +144,17 @@ in
               # PAPERLESS_PUBLIC_URL = "http://paperless.mydomain.com";
               MANUAL_TAG = "paperless-gpt";
               AUTO_TAG = "paperless-gpt-auto";
-              OCR_PROVIDER = "llm"; # llm, google_docai, azure or docling
+
               # LLM Configuration
-              LLM_PROVIDER = "openai"; # openai, mistral, ollama, or anthropic
-              LLM_MODEL = "gpt-4o";
-              VISION_LLM_PROVIDER = "openai"; # openai, ollama, mistral, or anthropic
-              VISION_LLM_MODEL = "gpt-4o"; # minicpm-v (ollama) or gpt-4o (openai) or claude-sonnet-4-5 (anthropic/claude)
+              LLM_PROVIDER = "${cfg.llm.generic.provider}";
+              LLM_MODEL = "${cfg.llm.generic.model}";
+
+              # OCR Configuration
+              OCR_PROVIDER = "llm"; # llm, google_docai, azure or docling
+              VISION_LLM_PROVIDER = "${cfg.llm.ocr.provider}"; # openai, ollama, mistral, or anthropic
+              VISION_LLM_MODEL = "${cfg.llm.ocr.vision_model}";
               # OLLAMA_HOST = "http://host.docker.internal:11434"; # If using Ollama
+
               # OCR Processing Mode
               OCR_PROCESS_MODE = "image"; # Optional, default: image, other options: pdf, whole_pdf
               PDF_SKIP_EXISTING_OCR = "false"; # Optional, skip OCR for PDFs with existing OCR
