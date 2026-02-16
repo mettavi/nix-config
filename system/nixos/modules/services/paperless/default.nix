@@ -102,5 +102,70 @@ in
     };
     # add the admin user to the paperless group
     users.users.${username}.extraGroups = [ "paperless" ];
+
+    virtualisation.quadlet = {
+      containers = {
+        paperless-gpt = {
+          autoStart = false;
+          containerConfig = {
+            autoUpdate = "registry";
+            environmentFiles = [
+              "${config.sops.secrets."users/${username}/paperless/ppless-gpt-${hostname}.env".path}"
+            ];
+            environments = {
+              TZ = "Australia/Melbourne";
+              PAPERLESS_BASE_URL = "http://localhost:28981";
+              # PAPERLESS_PUBLIC_URL = "http://paperless.mydomain.com";
+              MANUAL_TAG = "paperless-gpt";
+              AUTO_TAG = "paperless-gpt-auto";
+              # LLM Configuration
+              LLM_PROVIDER = "openai"; # openai, mistral, ollama, or anthropic
+              LLM_MODEL = "gpt-4o";
+              # OCR Configuration
+              OCR_PROVIDER = "llm"; # llm, google_docai, azure or docling
+              VISION_LLM_PROVIDER = "openai"; # openai, ollama, mistral, or anthropic
+              VISION_LLM_MODEL = "gpt-4o"; # minicpm-v (ollama) or gpt-4o (openai) or claude-sonnet-4-5 (anthropic/claude)
+              # OLLAMA_HOST = "http://host.docker.internal:11434"; # If using Ollama
+              # OCR Processing Mode
+              OCR_PROCESS_MODE = "image"; # Optional, default: image, other options: pdf, whole_pdf
+              PDF_SKIP_EXISTING_OCR = "false"; # Optional, skip OCR for PDFs with existing OCR
+              # Enhanced OCR Features
+              CREATE_LOCAL_HOCR = "false"; # Optional, save hOCR files locally
+              LOCAL_HOCR_PATH = "/app/hocr"; # Optional, path for hOCR files
+              CREATE_LOCAL_PDF = "false"; # Optional, save enhanced PDFs locally
+              LOCAL_PDF_PATH = "/app/pdf"; # Optional, path for PDF files
+              PDF_UPLOAD = "false"; # Optional, upload enhanced PDFs to paperless-ngx
+              PDF_REPLACE = "false"; # Optional and DANGEROUS, delete original after upload
+              PDF_COPY_METADATA = "true"; # Optional, copy metadata from original document
+              PDF_OCR_TAGGING = "true"; # Optional, add tag to processed documents
+              PDF_OCR_COMPLETE_TAG = "paperless-gpt-ocr-complete"; # Optional, tag name
+              AUTO_OCR_TAG = "paperless-gpt-ocr-auto"; # Optional
+              OCR_LIMIT_PAGES = "5"; # Optional, default: 5. Set to 0 for no limit.
+              LOG_LEVEL = "info"; # Optional: debug, warn, error
+            };
+            # pull from the github container registry (ghcr)
+            image = "ghcr.io/icereed/paperless-gpt:latest";
+            networks = [ "host" ];
+            noNewPrivileges = true;
+            publishPorts = [ "8080:8080" ];
+            volumes = [
+              # bind mounts
+              # "./prompts:/app/prompts" # Mount the prompts directory
+              "${config.users.users.${username}.home}/.config/paperless-gpt/prompts:/apps/prompts" # Mount the prompts directory
+              # "./hocr:/app/hocr" # Only if CREATE_LOCAL_HOCR is true
+              # "./pdf:/app/pdf" # Only if CREATE_LOCAL_HOCR is true
+            ];
+          };
+          serviceConfig = {
+            RestartSec = "10";
+            # Restart service when sleep finishes
+            Restart = "always";
+          };
+        };
+      };
+      # networks = {
+      #   internal.networkConfig.internal = [ "10.0.123.1/24" ];
+      # };
+    };
   };
 }
