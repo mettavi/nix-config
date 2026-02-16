@@ -25,6 +25,11 @@ in
   };
 
   config = mkIf cfg.enable {
+    # create a directory for the container bind mount
+    home-manager.users.${username} = {
+      xdg.configFile."paperless-gpt/prompts/.keep".text = "";
+    };
+
     # to enable and configure generic podman settings
     mettavi.system.services.podman.enable = true;
     services.paperless =
