@@ -9,7 +9,11 @@
 with lib;
 let
   cfg = config.mettavi.system.services.paperless-ngx;
-  paperlessSecrets.sopsFile = "${secrets_path}/secrets/apps/paperless.yaml";
+  paperlessSecrets = {
+    group = "${config.users.users.paperless.name}";
+    mode = "0440";
+    sopsFile = "${secrets_path}/secrets/apps/paperless.yaml";
+  };
 in
 {
   options.mettavi.system.services.paperless-ngx = {
@@ -78,13 +82,8 @@ in
         };
       };
     sops.secrets = {
-      "users/${username}/paperless/pplessGPT-${hostname}-openai-token" = paperlessSecrets;
-      "users/${username}/paperless/ppless-${hostname}-apitoken" = paperlessSecrets;
-      "users/${username}/paperless/ppless-${hostname}.env" = {
-        group = "${config.users.users.paperless.name}";
-        mode = "0440";
-        sopsFile = "${secrets_path}/secrets/apps/paperless.yaml";
-      };
+      "users/${username}/paperless/ppless-gpt-${hostname}.env" = paperlessSecrets;
+      "users/${username}/paperless/ppless-${hostname}.env" = paperlessSecrets;
       "users/${username}/paperless/ppless-${hostname}-pw" = paperlessSecrets;
     };
     # prevent the services from auto-starting on boot
