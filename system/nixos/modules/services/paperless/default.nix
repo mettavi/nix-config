@@ -118,11 +118,10 @@ in
               # PAPERLESS_PUBLIC_URL = "http://paperless.mydomain.com";
               MANUAL_TAG = "paperless-gpt";
               AUTO_TAG = "paperless-gpt-auto";
+              OCR_PROVIDER = "llm"; # llm, google_docai, azure or docling
               # LLM Configuration
               LLM_PROVIDER = "openai"; # openai, mistral, ollama, or anthropic
               LLM_MODEL = "gpt-4o";
-              # OCR Configuration
-              OCR_PROVIDER = "llm"; # llm, google_docai, azure or docling
               VISION_LLM_PROVIDER = "openai"; # openai, ollama, mistral, or anthropic
               VISION_LLM_MODEL = "gpt-4o"; # minicpm-v (ollama) or gpt-4o (openai) or claude-sonnet-4-5 (anthropic/claude)
               # OLLAMA_HOST = "http://host.docker.internal:11434"; # If using Ollama
