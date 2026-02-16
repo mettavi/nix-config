@@ -100,11 +100,7 @@ in
       };
       # postgresql.target.wantedBy = mkForce [ ];
     };
-    # only allow sudo users (in group wheel) to use the consumption directory
-    # (more secure than consumptionDirIsPublic option)
-    systemd.tmpfiles.rules = [
-      # type path mode user group (expiry)
-      "d ${config.services.paperless.consumptionDir} 0775 paperless wheel -"
-    ];
+    # add the admin user to the paperless group
+    users.users.${username}.extraGroups = [ "paperless" ];
   };
 }
