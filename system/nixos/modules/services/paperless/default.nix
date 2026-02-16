@@ -58,6 +58,12 @@ in
 
     # to enable and configure generic podman settings
     mettavi.system.services.podman.enable = true;
+
+    # enable the ollama module if required
+    mettavi.system.services.ollama.enable = mkIf (
+      (cfg.llm.generic.provider == "ollama") || (cfg.llm.ocr.provider == "ollama")
+    ) true;
+
     services.paperless =
       let
         dataDir = "/var/lib/paperless";
