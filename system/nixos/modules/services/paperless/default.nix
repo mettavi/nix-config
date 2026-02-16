@@ -64,7 +64,7 @@ in
       (cfg.llm.generic.provider == "ollama") || (cfg.llm.ocr.provider == "ollama")
     ) true;
 
-    # define non-default options here if required
+    # DEFINE NON-DEFAULT OPTIONS HERE IF REQUIRED
     # cfg.llm = {
     #   generic = {
     #     provider = "ollama";
