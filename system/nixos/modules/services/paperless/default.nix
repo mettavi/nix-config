@@ -64,6 +64,26 @@ in
       (cfg.llm.generic.provider == "ollama") || (cfg.llm.ocr.provider == "ollama")
     ) true;
 
+    # define non-default options here if required
+    # cfg.llm = {
+    #   generic = {
+    #     provider = "ollama";
+    #     model = "qwen3:8b";
+    #   };
+    #   ocr = {
+    #     provider = "ollama";
+    #     model = "minicpm-v:8b";
+    #   };
+    # };
+
+    services.ollama.loadModels =
+      optionalString (cfg.llm.generic.provider == "ollama") [
+        "${cfg.llm.generic.model}"
+      ]
+      ++ optionalString (cfg.llm.ocr.provider == "ollama") [
+        "${cfg.llm.ocr.model}"
+      ];
+
     services.paperless =
       let
         dataDir = "/var/lib/paperless";
