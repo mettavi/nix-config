@@ -22,6 +22,11 @@ in
       default = false;
       description = "Install and setup paperless-ngx, a documents database tool";
     };
+    withPaperless-GPT = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Enhance OCR scanning with the paperless-gpt addon";
+    };
     llm = {
       generic = {
         provider = mkOption {
@@ -155,7 +160,7 @@ in
     # add the admin user to the paperless group
     users.users.${username}.extraGroups = [ "paperless" ];
 
-    virtualisation.quadlet = {
+    virtualisation.quadlet = mkIf cfg.withPaperless-GPT {
       containers = {
         paperless-gpt = {
           autoStart = false;
@@ -225,9 +230,6 @@ in
           };
         };
       };
-      # networks = {
-      #   internal.networkConfig.internal = [ "10.0.123.1/24" ];
-      # };
     };
   };
 }
