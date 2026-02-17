@@ -17,7 +17,7 @@ in
   config = mkIf cfg.enable {
     services.ollama = {
       enable = true;
-      package = mkIf (config.mettavi.system.devices.nvidia) pkgs.ollama-cuda; # nividia GPU acceleration
+      package = mkIf (config.mettavi.system.devices.nvidia.enable) pkgs.ollama-cuda; # nividia GPU acceleration
       home = "/var/lib/ollama";
       host = "127.0.0.1";
       # Optional: preload models, see https://ollama.com/library
