@@ -184,7 +184,7 @@ in
               # OLLAMA LLM Configuration
               OLLAMA_HOST = "http://localhost:11434"; # If using Ollama
               OLLAMA_CONTEXT_LENGTH = "8192"; # Sets Ollama NumCtx (context window)
-              TOKEN_LIMIT = 1000; # Recommended for smaller models
+              TOKEN_LIMIT = "1000"; # Recommended for smaller models
 
               # OCR Configuration
               OCR_PROVIDER = "llm"; # llm, google_docai, azure or docling
