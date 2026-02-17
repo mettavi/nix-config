@@ -171,25 +171,29 @@ in
               MANUAL_TAG = "paperless-gpt";
               AUTO_TAG = "paperless-gpt-auto";
 
-              # LLM Configuration
+              # LLM Configuration (for non-OCR features)
               LLM_PROVIDER = "${cfg.llm.generic.provider}";
               LLM_MODEL = "${cfg.llm.generic.model}";
               LLM_LANGUAGE = "English";
+
+              # OLLAMA LLM Configuration
+              OLLAMA_HOST = "http://localhost:11434"; # If using Ollama
+              OLLAMA_CONTEXT_LENGTH = "8192"; # Sets Ollama NumCtx (context window)
+              TOKEN_LIMIT = 1000; # Recommended for smaller models
 
               # OCR Configuration
               OCR_PROVIDER = "llm"; # llm, google_docai, azure or docling
               VISION_LLM_PROVIDER = "${cfg.llm.ocr.provider}";
               VISION_LLM_MODEL = "${cfg.llm.ocr.model}";
-              # OLLAMA_HOST = "http://host.docker.internal:11434"; # If using Ollama
 
               # OCR Processing Mode
               OCR_PROCESS_MODE = "image"; # Optional, default: image, other options: pdf, whole_pdf
               PDF_SKIP_EXISTING_OCR = "false"; # Optional, skip OCR for PDFs with existing OCR
 
               # Enhanced OCR Features
-              CREATE_LOCAL_HOCR = "false"; # Optional, save hOCR files locally
+              CREATE_LOCAL_HOCR = "true"; # Optional, save hOCR files locally
               LOCAL_HOCR_PATH = "/app/hocr"; # Optional, path for hOCR files
-              CREATE_LOCAL_PDF = "false"; # Optional, save enhanced PDFs locally
+              CREATE_LOCAL_PDF = "true"; # Optional, save enhanced PDFs locally
               LOCAL_PDF_PATH = "/app/pdf"; # Optional, path for PDF files
               PDF_UPLOAD = "false"; # Optional, upload enhanced PDFs to paperless-ngx
               PDF_REPLACE = "false"; # Optional and DANGEROUS, delete original after upload
@@ -197,7 +201,7 @@ in
               PDF_OCR_TAGGING = "true"; # Optional, add tag to processed documents
               PDF_OCR_COMPLETE_TAG = "paperless-gpt-ocr-complete"; # Optional, tag name
               AUTO_OCR_TAG = "paperless-gpt-ocr-auto"; # Optional
-              OCR_LIMIT_PAGES = "5"; # Optional, default: 5. Set to 0 for no limit.
+              OCR_LIMIT_PAGES = "0"; # Optional, default: 5. Set to 0 for no limit.
               LOG_LEVEL = "info"; # Optional: debug, warn, error
             };
             # pull from the github container registry (ghcr)
