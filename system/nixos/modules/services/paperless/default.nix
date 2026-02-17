@@ -183,7 +183,7 @@ in
               TZ = "Australia/Melbourne";
               PAPERLESS_BASE_URL = "http://localhost:28981";
               # PAPERLESS_PUBLIC_URL = "http://paperless.mydomain.com";
-              MANUAL_TAG = "paperless-gpt";
+              MANUAL_TAG = "paperless-gpt-manual";
               AUTO_TAG = "paperless-gpt-auto";
 
               # LLM Configuration (for non-OCR features)
