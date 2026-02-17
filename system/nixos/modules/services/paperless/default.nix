@@ -160,6 +160,15 @@ in
     # add the admin user to the paperless group
     users.users.${username}.extraGroups = [ "paperless" ];
 
+    systemd.tmpfiles.rules = [
+      # type path mode user group (expiry)
+      "d /var/lib/paperless/paperless-gpt 0770 paperless paperless -"
+      "d /var/lib/paperless/paperless-gpt/prompts 0770 paperless paperless -"
+      "d /var/lib/paperless/paperless-gpt/hocr 0770 paperless paperless -"
+      "d /var/lib/paperless/paperless-gpt/pdf 0770 paperless paperless -"
+      "d /var/lib/paperless/paperless-gpt/config 0770 paperless paperless -"
+    ];
+
     virtualisation.quadlet = mkIf cfg.withPaperless-GPT {
       containers = {
         paperless-gpt = {
@@ -217,10 +226,10 @@ in
             publishPorts = [ "8080:8080" ];
             volumes = [
               # bind mounts
-              # "./prompts:/app/prompts" # Mount the prompts directory
-              "${config.users.users.${username}.home}/.config/paperless-gpt/prompts:/apps/prompts" # Mount the prompts directory
-              # "./hocr:/app/hocr" # Only if CREATE_LOCAL_HOCR is true
-              # "./pdf:/app/pdf" # Only if CREATE_LOCAL_HOCR is true
+              "${config.services.paperless.dataDir}/paperless-gpt/prompts:/app/prompts"
+              "${config.services.paperless.dataDir}/paperless-gpt/hocr:/app/hocr" # Only if CREATE_LOCAL_HOCR is true
+              "${config.services.paperless.dataDir}/paperless-gpt/pdf:/app/pdf" # Only if CREATE_LOCAL_PDF is true
+              "${config.services.paperless.dataDir}/paperless-gpt/config:/app/config"
             ];
           };
           serviceConfig = {
