@@ -70,16 +70,16 @@ in
     ) true;
 
     # DEFINE NON-DEFAULT OPTIONS HERE IF REQUIRED
-    # cfg.llm = {
-    #   generic = {
-    #     provider = "ollama";
-    #     model = "qwen3:8b";
-    #   };
-    #   ocr = {
-    #     provider = "ollama";
-    #     model = "minicpm-v:8b";
-    #   };
-    # };
+    mettavi.system.services.paperless-ngx.llm = {
+      generic = {
+        provider = "ollama";
+        model = "qwen3:8b";
+      };
+      ocr = {
+        provider = "ollama";
+        model = "minicpm-v:8b";
+      };
+    };
 
     services.ollama.loadModels =
       optionalString (cfg.llm.generic.provider == "ollama") [
