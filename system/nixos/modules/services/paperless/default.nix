@@ -160,6 +160,7 @@ in
     # add the admin user to the paperless group
     users.users.${username}.extraGroups = [ "paperless" ];
 
+    # create the directories that will be mounted in the paperless-gpt container
     systemd.tmpfiles.rules = [
       # type path mode user group (expiry)
       "d /var/lib/paperless/paperless-gpt 0770 paperless paperless -"
