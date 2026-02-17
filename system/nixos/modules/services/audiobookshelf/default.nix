@@ -19,15 +19,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # to configure generic podman settings
+    # to enable and configure generic podman settings
     mettavi.system.services.podman.enable = true;
     # open the port for ABS in the firewall
     networking.firewall.allowedTCPPorts = [ 13378 ];
-    # to enable podman & podman systemd generator
-    virtualisation.quadlet = {
-      enable = true;
-      autoUpdate.enable = true;
-    };
     # users.users.${username} = {
     # required for auto start before user login
     # linger = true;

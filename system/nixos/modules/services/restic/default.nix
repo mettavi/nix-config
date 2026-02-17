@@ -26,7 +26,7 @@ let
         rclone --log-level INFO --log-file=${logfile} \
           --verbose --b2-hard-delete --checkers 100 --transfers 100 --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
           sync ${
-            config.services.restic.backups.${hostname} - local-home.repository
+            config.services.restic.backups."${hostname}-local-home".repository
           } b2:${hostname}-${username}/
       '';
   vol_label = "${config.mettavi.system.services.restic.vol_label}";
@@ -158,7 +158,7 @@ in
             timerConfig = null;
             user = "${username}";
           };
-          # backup drectly to cloud using rclone
+          # do a restic backup directly to cloud using rclone
           "${hostname}-${username}-b2" = {
             inherit
               checkOpts

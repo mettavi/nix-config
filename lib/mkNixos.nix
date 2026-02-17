@@ -21,8 +21,6 @@
       };
       modules = [
         inputs.disko.nixosModules.disko
-        # to enable podman & podman systemd generator
-        inputs.quadlet-nix.nixosModules.quadlet
         ../hosts/${hostname}/configuration.nix
         {
           users = {
