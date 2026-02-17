@@ -43,9 +43,7 @@
         greedy = true;
       }
       # "cheatsheet"
-      "cirrus" # Inspector for iCloud Drive folders
       # "coteditor"
-      "customshortcuts" # Customise menu item keyboard shortcuts, integrates with keyclu
       # Disk space visualiser
       {
         name = "daisydisk";
@@ -64,12 +62,6 @@
           no_quarantine = true;
         };
       }
-      # popup window showing application's shortcuts
-      {
-        name = "keyclu";
-        greedy = true;
-      }
-      # key-codes
       "kid3"
       # Create, manage and debug system and user services
       {
@@ -100,11 +92,6 @@
       # "plex-media-server"
       "private-internet-access"
       # "qlmarkdown"
-      # Mux and tag mp4 files
-      {
-        name = "subler";
-        greedy = true;
-      }
       # Open-source BitTorrent client
       # NB: The GUI versions on nixpkgs do not work on mac
       {
@@ -148,7 +135,6 @@
       "PastePal" = 1503446680;
       # "Patterns" = 429449079;
       "PDF Squeezer" = 1502111349;
-      "PDFgear" = 6469021132;
       # "Snip" = 1527428847;
       # "Sync Folders Pro" = 522706442;
       # keeps reinstalling itself, install directly from app store instead
