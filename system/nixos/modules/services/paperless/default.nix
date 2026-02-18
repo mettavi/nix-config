@@ -210,7 +210,7 @@ in
               LOCAL_HOCR_PATH = "/app/hocr"; # Optional, path for hOCR files
               CREATE_LOCAL_PDF = "true"; # Optional, save enhanced PDFs locally
               LOCAL_PDF_PATH = "/app/pdf"; # Optional, path for PDF files
-              PDF_UPLOAD = "false"; # Optional, upload enhanced PDFs to paperless-ngx
+              PDF_UPLOAD = "true"; # Optional, upload enhanced PDFs to paperless-ngx
               PDF_REPLACE = "false"; # Optional and DANGEROUS, delete original after upload
               PDF_COPY_METADATA = "true"; # Optional, used with PDF_UPLOAD, copy metadata from original document
               PDF_OCR_TAGGING = "true"; # Optional, add tag to processed documents
