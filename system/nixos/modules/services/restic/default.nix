@@ -174,7 +174,11 @@ in
             passwordFile = config.sops.secrets."users/${username}/restic-${hostname}-${username}-b2".path;
             paths = [
               "${home}"
+            ]
+            ++ optionalString config.mettavi.system.services.paperless-ngx.enable [
+              "${config.services.paperless.dataDir}"
             ];
+
             repository = "rclone:b2:${hostname}-${username}";
             rcloneConfigFile = "${config.home-manager.users.${username}.sops.templates."rclone.conf".path}";
             rcloneOptions = {
