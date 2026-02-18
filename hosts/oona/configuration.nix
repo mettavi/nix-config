@@ -165,6 +165,7 @@
       libvirt.enable = true;
       networkmanager.enable = true;
       openssh.enable = true;
+      # also enables the ollama module
       paperless-ngx.enable = true;
       pia-vpn-netmanager.enable = true;
     };
