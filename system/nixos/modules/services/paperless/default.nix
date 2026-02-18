@@ -112,7 +112,6 @@ in
           };
         };
       sops.secrets = {
-        # "users/${username}/paperless/ppless-gpt-${hostname}.env" = paperlessSecrets;
         "users/${username}/paperless/ppless-${hostname}.env" = paperlessSecrets;
         "users/${username}/paperless/ppless-${hostname}-pw" = paperlessSecrets;
       };
@@ -136,10 +135,6 @@ in
           restartIfChanged = false;
         };
         # postgresql.target.wantedBy = mkForce [ ];
-      };
-      # create a directory for the container bind mount
-      home-manager.users.${username} = {
-        xdg.configFile."paperless-gpt/prompts/.keep".text = "";
       };
 
       # create the directories that will be mounted in the paperless-gpt container
