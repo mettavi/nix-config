@@ -126,6 +126,34 @@ in
     })
 
     (mkIf cfg.withPaperless-GPT {
+      # enable the ollama module if required
+      mettavi.system.services.ollama.enable = mkIf (
+        (cfg.llm.generic.provider == "ollama") || (cfg.llm.ocr.provider == "ollama")
+      ) true;
+
+      # DEFINE NON-DEFAULT OPTIONS HERE IF REQUIRED
+      mettavi.system.services.paperless-ngx.llm = {
+        generic = {
+          provider = "ollama";
+          model = "qwen3:8b";
+        };
+        ocr = {
+          provider = "ollama";
+          model = "minicpm-v:8b";
+        };
+      };
+
+      # to enable and configure generic podman settings
+      mettavi.system.services.podman.enable = true;
+
+      services.ollama.loadModels =
+        optionalString (cfg.llm.generic.provider == "ollama") [
+          "${cfg.llm.generic.model}"
+        ]
+        ++ optionalString (cfg.llm.ocr.provider == "ollama") [
+          "${cfg.llm.ocr.model}"
+        ];
+
       sops.secrets = {
         "users/${username}/paperless/ppless-gpt-${hostname}.env" = paperlessSecrets;
       };
@@ -146,34 +174,6 @@ in
         "d /var/lib/paperless/paperless-gpt/pdf 0770 paperless paperless -"
         "d /var/lib/paperless/paperless-gpt/config 0770 paperless paperless -"
       ];
-
-      # to enable and configure generic podman settings
-      mettavi.system.services.podman.enable = true;
-
-      # enable the ollama module if required
-      mettavi.system.services.ollama.enable = mkIf (
-        (cfg.llm.generic.provider == "ollama") || (cfg.llm.ocr.provider == "ollama")
-      ) true;
-
-      # DEFINE NON-DEFAULT OPTIONS HERE IF REQUIRED
-      mettavi.system.services.paperless-ngx.llm = {
-        generic = {
-          provider = "ollama";
-          model = "qwen3:8b";
-        };
-        ocr = {
-          provider = "ollama";
-          model = "minicpm-v:8b";
-        };
-      };
-
-      services.ollama.loadModels =
-        optionalString (cfg.llm.generic.provider == "ollama") [
-          "${cfg.llm.generic.model}"
-        ]
-        ++ optionalString (cfg.llm.ocr.provider == "ollama") [
-          "${cfg.llm.ocr.model}"
-        ];
 
       virtualisation.quadlet = {
         containers = {
