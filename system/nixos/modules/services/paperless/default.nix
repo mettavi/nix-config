@@ -192,10 +192,14 @@ in
               LLM_MODEL = "${cfg.llm.generic.model}";
               LLM_LANGUAGE = "English";
 
-              # OLLAMA LLM Configuration
-              OLLAMA_HOST = "http://localhost:11434"; # If using Ollama
-              OLLAMA_CONTEXT_LENGTH = "8192"; # Sets Ollama NumCtx (context window)
-              TOKEN_LIMIT = "1000"; # Recommended for smaller models
+              # Local LLM Configuration
+              OLLAMA_HOST = "http://localhost:11434";
+              # NB: the following two parameters are used for metadata processing, not OCR
+              # Sets Ollama NumCtx (context window); if unset, model default is used
+              # NB: If you hit "context length exceeded" or memory issues, reduce or choose a smaller model/context size
+              # OLLAMA_CONTEXT_LENGTH = "8192";
+              # NB: Lower this value if you see truncated or incomplete responses
+              TOKEN_LIMIT = "2000"; # recommended for smaller models
 
               # OCR Configuration
               OCR_PROVIDER = "llm"; # llm, google_docai, azure or docling
