@@ -212,7 +212,7 @@ in
               LOCAL_PDF_PATH = "/app/pdf"; # Optional, path for PDF files
               PDF_UPLOAD = "false"; # Optional, upload enhanced PDFs to paperless-ngx
               PDF_REPLACE = "false"; # Optional and DANGEROUS, delete original after upload
-              PDF_COPY_METADATA = "true"; # Optional, copy metadata from original document
+              PDF_COPY_METADATA = "true"; # Optional, used with PDF_UPLOAD, copy metadata from original document
               PDF_OCR_TAGGING = "true"; # Optional, add tag to processed documents
               PDF_OCR_COMPLETE_TAG = "paperless-gpt-ocr-complete"; # Optional, tag name
               AUTO_OCR_TAG = "paperless-gpt-ocr-auto"; # Optional
