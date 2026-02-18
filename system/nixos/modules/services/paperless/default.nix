@@ -181,6 +181,7 @@ in
             ];
             environments = {
               TZ = "Australia/Melbourne";
+              # PAPERLESS_API_TOKEN  and OPENAI_API_KEY are loaded from the environment file "ppless-gpt-${hostname}.env"
               PAPERLESS_BASE_URL = "http://localhost:28981";
               # PAPERLESS_PUBLIC_URL = "http://paperless.mydomain.com";
               MANUAL_TAG = "paperless-gpt-manual";
