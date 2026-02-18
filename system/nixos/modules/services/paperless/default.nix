@@ -123,8 +123,8 @@ in
       };
       # add the admin user to the paperless group
       users.users.${username}.extraGroups = [ "paperless" ];
-
     })
+
     (mkIf cfg.withPaperless-GPT {
       sops.secrets = {
         "users/${username}/paperless/ppless-gpt-${hostname}.env" = paperlessSecrets;
