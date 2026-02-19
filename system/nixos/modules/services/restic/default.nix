@@ -176,7 +176,7 @@ in
               "${home}"
             ]
             ++ optionalString config.mettavi.system.services.paperless-ngx.enable [
-              "${config.services.paperless.dataDir}"
+              "${config.services.paperless.dataDir}/export"
             ];
 
             repository = "rclone:b2:${hostname}-${username}";
