@@ -83,7 +83,7 @@ in
   # create directories in ~ that paperless can use
   systemd.tmpfiles.rules =
     let
-      home = "${config.users.users.${username}.home}";
+      home = "${config.users.users.${username}.home}"; 
     in
     [
       # type path mode user group (expiry)
@@ -91,3 +91,18 @@ in
       "d ${home}/Downloads/paperless 0770 ${username} root -"
       "d ${home}/media/paperless 0770 ${username} paperless -"
     ];
+
+
+  #####################################################################
+  # MERGING MULTIPLE TOP-LEVEL VARIABLES DEPENDENT ON A COMMON CONDITION 
+  # IN A MODULE CONFIG BLOCK
+
+  config = lib.mkMerge [ 
+    (lib.mkIf cfg.enable {
+      services.foo.enabled = true;  # Always enabled
+    })
+    (lib.mkIf useFeature {
+      services.foo.bar = 7;  # Only included if useFeature is true
+      services.foo.baz = "example";  # Another variable based on the condition
+    })
+  ];
