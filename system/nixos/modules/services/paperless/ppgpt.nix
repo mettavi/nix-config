@@ -2,11 +2,18 @@
   config,
   hostname,
   lib,
+  secrets_path,
+  username,
   ...
 }:
 with lib;
 let
   cfg = config.mettavi.system.services.paperless-ngx.ppgpt;
+  paperlessSecrets = {
+    group = "${config.users.users.paperless.name}";
+    mode = "0440";
+    sopsFile = "${secrets_path}/secrets/apps/paperless.yaml";
+  };
 in
 {
   options.mettavi.system.services.paperless-ngx.ppgpt = {
@@ -50,7 +57,7 @@ in
     ) true;
 
     # DEFINE NON-DEFAULT OPTIONS HERE IF REQUIRED
-    mettavi.system.services.paperless-ngx.llm = {
+    mettavi.system.services.paperless-ngx.ppgpt.llm = {
       generic = {
         provider = "ollama";
         model = "qwen3:8b";
