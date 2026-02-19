@@ -22,7 +22,7 @@ in
       default = false;
       description = "Install and setup paperless-ngx, a documents database tool";
     };
-    withPaperless-GPT = mkOption {
+    withPaperlessGPT = mkOption {
       type = types.bool;
       default = true;
       description = "Enhance OCR scanning with the paperless-gpt addon";
