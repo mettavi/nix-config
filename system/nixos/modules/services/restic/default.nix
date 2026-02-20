@@ -156,7 +156,7 @@ in
             ++ optionalString config.mettavi.system.services.paperless-ngx.enable [
               "${config.services.paperless.dataDir}/export"
             ];
-            repository = "/run/media/${username}/${vol_label}/${hostname}/user";
+            repository = "/run/media/${username}/${vol_label}/${hostname}/${username}";
             # run backups when the removable disk is mounted, not on a schedule
             timerConfig = null;
             user = "${username}";
@@ -234,7 +234,7 @@ in
           # or use the ConditionPathIsMountPoint= option?
           # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
           # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
-          ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}/${hostname}/user";
+          ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}/${hostname}/${username}";
           # or perhaps WantedBy= option?
         };
       };
