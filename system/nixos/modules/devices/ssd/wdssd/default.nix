@@ -29,6 +29,8 @@ in
       '';
     };
 
+    # Create a keyfile with: dd if=/dev/urandom of=/path/to/keyfile bs=4096 count=1, and chmod 0400
+    # Then add it to the device with: cryptsetup luksAddKey /dev/sdX /path/to/keyfile
     # NB: In order to encrypt a binary file, the example command on the sops-nix repo did not work
     # This is the successful command:
     # cat secrets/wdssd.key | sops encrypt --filename-override secrets/wdssd.luks.key \
