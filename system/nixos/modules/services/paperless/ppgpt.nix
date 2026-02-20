@@ -65,6 +65,7 @@ in
       ocr = {
         provider = "ollama";
         model = "minicpm-v:8b";
+        # model = "qwen3-vl:8b";
       };
     };
 
