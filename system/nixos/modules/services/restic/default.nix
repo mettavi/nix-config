@@ -101,7 +101,7 @@ in
           };
         in
         {
-          # local backup of system
+          # LOCAL BACKUP OF SYSTEM
           "${hostname}-local-sys" = {
             inherit
               extraBackupArgs
@@ -133,7 +133,7 @@ in
             timerConfig = null;
             user = "root";
           };
-          # local backup of home directory
+          # LOCAL BACKUP OF HOME DIRECTORY
           "${hostname}-local-home" = {
             inherit
               extraBackupArgs
@@ -161,7 +161,7 @@ in
             timerConfig = null;
             user = "${username}";
           };
-          # do a restic backup directly to cloud using rclone
+          # DO A RESTIC BACKUP DIRECTLY TO CLOUD USING RCLONE
           "${hostname}-${username}-b2" = {
             inherit
               checkOpts
