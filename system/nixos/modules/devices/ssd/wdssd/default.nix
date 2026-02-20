@@ -19,6 +19,7 @@ in
   };
 
   config = mkIf cfg.enable {
+    # automatically unlock a luks disk with a keyfile
     environment.etc.crypttab = {
       mode = "0600";
       text = ''
