@@ -83,7 +83,7 @@ in
     sops.secrets = {
       "users/${username}/paperless/ppless-gpt-${hostname}.env" = paperlessSecrets;
     };
-    # prevent the services from auto-starting on boot
+
     systemd.services = {
       paperless-gpt = {
         restartIfChanged = false;
@@ -103,6 +103,7 @@ in
 
     virtualisation.quadlet = {
       containers = {
+        # this container runs as root
         paperless-gpt = {
           autoStart = false;
           containerConfig = {
@@ -153,7 +154,7 @@ in
               PDF_OCR_COMPLETE_TAG = "paperless-gpt-ocr-complete"; # Optional, tag name
               AUTO_OCR_TAG = "paperless-gpt-ocr-auto"; # Optional
               OCR_LIMIT_PAGES = "0"; # Optional, default: 5. Set to 0 for no limit.
-              LOG_LEVEL = "info"; # Optional: debug, warn, error
+              LOG_LEVEL = "debug"; # Optional: debug, info, warn, error
             };
             # pull from the github container registry (ghcr)
             image = "ghcr.io/icereed/paperless-gpt:latest";
