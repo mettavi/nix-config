@@ -152,6 +152,9 @@ in
             passwordFile = config.sops.secrets."users/${username}/restic-${hostname}-local-home".path;
             paths = [
               "${home}"
+            ]
+            ++ optionalString config.mettavi.system.services.paperless-ngx.enable [
+              "${config.services.paperless.dataDir}/export"
             ];
             repository = "/run/media/${username}/${vol_label}/${hostname}/user";
             # run backups when the removable disk is mounted, not on a schedule
