@@ -83,7 +83,6 @@ in
   };
 
   config = mkIf cfg.enable {
-
     # CONFIGURE RESTIC BACKUP JOBS USING MODULE OPTIONS
     mettavi.system.services.restic.jobs = {
       # BACKUP THE MAIN USER'S HOME DIRECTORY
@@ -225,8 +224,7 @@ in
           #   # need to test this (some files may be owned by root)
           #   user = "${username}";
           # };
-        }
-      ) cfg.jobs;
+        }) cfg.jobs;
     };
     sops.secrets = {
       # encryption password for local home backup
