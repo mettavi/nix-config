@@ -247,7 +247,7 @@ in
           ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}/${hostname}/sys";
           # or perhaps WantedBy= option?
         };
-        ServiceConfig = {
+        serviceConfig = {
           # ensure it is not considered "started" until after the main process EXITS
           # this means that following services do not start until the this process is COMPLETE
           Type = "oneshot";
