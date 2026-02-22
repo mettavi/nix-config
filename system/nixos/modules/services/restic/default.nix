@@ -29,6 +29,10 @@ let
             config.services.restic.backups."${hostname}-local-home".repository
           } b2:${hostname}-${username}/
       '';
+  resticSecrets = {
+    sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
+  };
+  snapshots = "/mnt/snapshots";
   vol_label = "${config.mettavi.system.services.restic.vol_label}";
 in
 {
