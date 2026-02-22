@@ -59,7 +59,7 @@ in
                   description = "The short name of the backup job";
                 };
                 exclusions = mkOption {
-                  type = listOf path;
+                  type = listOf str;
                   description = "A list of paths to exclude from the backup";
                 };
                 paths = mkOption {
