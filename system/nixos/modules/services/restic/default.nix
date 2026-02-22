@@ -72,7 +72,7 @@ in
     };
     vol_label = mkOption {
       type = types.str;
-      default = "";
+      default = "nixbak";
       description = "The volume label of the backup device (eg. 'luks-samt7')";
     };
   };
