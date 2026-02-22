@@ -49,11 +49,6 @@ in
             { job, ... }:
             {
               options = {
-                enable = mkOption {
-                  type = bool;
-                  default = true;
-                  description = "Whether to enable this backup job";
-                };
                 label = mkOption {
                   type = str;
                   description = "The short name of the backup job";
