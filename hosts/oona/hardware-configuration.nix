@@ -46,6 +46,10 @@ in
     '';
   boot.extraModulePackages = [ ];
 
+  boot.supportedFilesystems = [
+    "ntfs" # required to mount ntfs partitions
+  ];
+
   # Asus kernel patches
   #  boot.kernelPatches = let
   #     version = config.boot.kernelPackages.kernel.version;
@@ -111,6 +115,17 @@ in
     options = [
       "fmask=0077"
       "dmask=0077"
+    ];
+  };
+
+  # mount the main Windows 11 Pro partition
+  fileSystems."/mnt/win11pro" = {
+    device = "/dev/disk/by-uuid/D02CB4C42CB4A73E";
+    fsType = "ntfs-3g";
+    options = [
+      "rw"
+      "uid=1000"
+      "windows_names"
     ];
   };
 
