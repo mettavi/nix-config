@@ -4,6 +4,7 @@
   hostname,
   lib,
   pkgs,
+  secrets_path,
   username,
   ...
 }:
@@ -46,6 +47,12 @@ in
             "resticprofile".source = ../../../../home/shared/dots/resticprofile;
           };
         };
+      sops.secrets = {
+        # restic key for encryption of backblaze b2 repo (mbp_timotheos)
+        "users/${username}/restic_b2_mack-timotheos" = {
+          sopsFile = "${secrets_path}/secrets/apps/restic.yaml";
+        };
+      };
     };
 
   launchd.daemons = mkIf (pkgs.stdenv.isDarwin && cfg.enable) {
