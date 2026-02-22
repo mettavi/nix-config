@@ -257,6 +257,7 @@ in
         };
       };
       # send desktop notifications about failed backups using libnotify
+      # ref: https://www.arthurkoziel.com/restic-backups-b2-nixos/
       "notify-backup-failed" = {
         enable = true;
         description = "Notify on failed backup";
