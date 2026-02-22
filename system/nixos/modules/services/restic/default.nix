@@ -87,49 +87,56 @@ in
     # CONFIGURE RESTIC BACKUP JOBS USING MODULE OPTIONS
     mettavi.system.services.restic.jobs = {
       # BACKUP THE MAIN USER'S HOME DIRECTORY
-      "${hostname}-local-${username}" = {
-        enable = true;
-        label = "home";
-        exclusions = [
-          "${snapshots}/home/${username}/.local/share/Trash"
-          "${home}/.cache"
-          "${home}/Downloads"
-          "${home}/.npm"
-          "${home}/.local/share/containers"
-          "!${home}/.local/share/containers/storage/volumes"
-        ];
-        paths = [
-          "${snapshots}/${username}"
-        ];
-        user = "${username}";
-      };
+      "${hostname}-local-home" =
+        let
+          user-snapshots = "${snapshots}/home";
+        in
+        {
+          enable = true;
+          label = "home";
+          exclusions = [
+            "${user-snapshots}/${username}/.local/share/Trash"
+            "${user-snapshots}/${username}/.cache"
+            "${user-snapshots}/${username}/Downloads"
+            "${user-snapshots}/${username}/.npm"
+            "${user-snapshots}/${username}/.local/share/containers"
+            "!${user-snapshots}/${username}/.local/share/containers/storage/volumes"
+          ];
+          paths = [
+            "${user-snapshots}/${username}"
+          ];
+          user = "${username}";
+        };
       # BACKUP IMPORTANT SYSTEM DIRECTORIES
-      "${hostname}-local-root" = {
-        enable = true;
-        label = "root";
-        exclusions = [
-          "${snapshots}/root/.cache"
-          ".log"
-          ".tmp"
-          ".Trash"
-          "/var/lib/containers"
-          "!/var/lib/containers/storage/volumes"
-        ];
-        paths = [
-          "${snapshots}/root/etc/group"
-          "/etc/machine-id"
-          "/etc/NetworkManager/system-connections"
-          "/etc/passwd"
-          "/etc/subgid"
-          "/root"
-          "/var/backup"
-          "/var/lib"
-        ]
-        ++ optionalString config.mettavi.system.services.paperless-ngx.enable [
-          "${snapshots}/root/var/lib/paperless/export"
-        ];
-        user = "root";
-      };
+      "${hostname}-local-sys" =
+        let
+          sys-snapshots = "${snapshots}/sys";
+        in
+        {
+          enable = true;
+          label = "sys";
+          exclusions = [
+            "${sys-snapshots}/root/.cache"
+            "${sys-snapshots}/.log"
+            "${sys-snapshots}/.tmp"
+            "${sys-snapshots}/.Trash"
+            "${sys-snapshots}/var/lib/containers"
+            "!${sys-snapshots}/var/lib/containers/storage/volumes"
+          ];
+          paths = [
+            "${sys-snapshots}/etc/machine-id"
+            "${sys-snapshots}/etc/NetworkManager/system-connections"
+            "${sys-snapshots}/etc/passwd"
+            "${sys-snapshots}/etc/subgid"
+            "${sys-snapshots}/root"
+            "${sys-snapshots}/var/backup"
+            "${sys-snapshots}/var/lib"
+          ]
+          ++ optionalString config.mettavi.system.services.paperless-ngx.enable [
+            "${sys-snapshots}/root/var/lib/paperless/export"
+          ];
+          user = "root";
+        };
     };
     environment.systemPackages = with pkgs; [
       # CHECK: not sure if this is required
@@ -142,12 +149,12 @@ in
         job: jobsCfg:
         mkIf "${jobsCfg.enable}" {
           backupPrepareCommand.text = ''
-            btrfs subvolume snapshot -r /home ${snapshots}/${username}
-            btrfs subvolume snapshot -r / ${snapshots}/root
+            btrfs subvolume snapshot -r /home ${snapshots}/home
+            btrfs subvolume snapshot -r / ${snapshots}/sys
           '';
           backupCleanupCommand.text = ''
-            btrfs subvolume delete ${snapshots}/${username}
-            btrfs subvolume delete ${snapshots}/root
+            btrfs subvolume delete ${snapshots}/home
+            btrfs subvolume delete ${snapshots}/sys
           '';
           checkOpts = [
             "--with-cache" # just to make checks faster
@@ -223,43 +230,42 @@ in
     };
     sops.secrets = {
       # encryption password for local home backup
-      "users/${username}/restic-${hostname}-local-${username}" = resticSecrets;
+      "users/${username}/restic-${hostname}-local-home" = resticSecrets;
       # encryption password for local root backup
-      "users/${username}/restic-${hostname}-local-root" = resticSecrets;
+      "users/${username}/restic-${hostname}-local-sys" = resticSecrets;
       # encryption password for cloud backup to backblaze b2
       "users/${username}/restic-${hostname}-${username}-b2" = resticSecrets;
     };
-    systemd.services = # mapAttrs (
-      {
-        "${hostname}-local-root" = {
-          unitConfig = {
-            Description = "Run a backup whenever the device is plugged in (and mounted)"; # See https://bbs.archlinux.org/viewtopic.php?id=207050
-            # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
-            # or use the ConditionPathIsMountPoint= option?
-            # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
-            # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
-            ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}/${hostname}/root";
-            # or perhaps WantedBy= option?
-          };
-          ServiceConfig = {
-            # ensure it is not considered "started" until after the main process EXITS
-            # this means that following services do not start until the this process is COMPLETE
-            Type = "oneshot";
-          };
+    systemd.services = {
+      "${hostname}-local-root" = {
+        unitConfig = {
+          Description = "Run a backup whenever the device is plugged in (and mounted)"; # See https://bbs.archlinux.org/viewtopic.php?id=207050
+          # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
+          # or use the ConditionPathIsMountPoint= option?
+          # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
+          # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
+          ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}/${hostname}/sys";
+          # or perhaps WantedBy= option?
         };
-        "${hostname}-local-${username}" = {
-          unitConfig = {
-            After = "${hostname}-local-root.service";
-            Description = "Run a user backup whenever the device is plugged in (and mounted)";
-            # See https://bbs.archlinux.org/viewtopic.php?id=207050
-            # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
-            # or use the ConditionPathIsMountPoint= option?
-            # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
-            # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
-            ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}/${hostname}/${username}";
-            # or perhaps WantedBy= option?
-          };
+        ServiceConfig = {
+          # ensure it is not considered "started" until after the main process EXITS
+          # this means that following services do not start until the this process is COMPLETE
+          Type = "oneshot";
         };
       };
+      "${hostname}-local-${username}" = {
+        unitConfig = {
+          After = "${hostname}-local-sys.service";
+          Description = "Run a user backup whenever the device is plugged in (and mounted)";
+          # See https://bbs.archlinux.org/viewtopic.php?id=207050
+          # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
+          # or use the ConditionPathIsMountPoint= option?
+          # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
+          # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
+          ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}/${hostname}/home";
+          # or perhaps WantedBy= option?
+        };
+      };
+    };
   };
 }
