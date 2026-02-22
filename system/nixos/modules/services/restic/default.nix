@@ -224,7 +224,7 @@ in
       "users/${username}/restic-${hostname}-local-sys" = resticSecrets;
     };
     systemd.services = {
-      "${hostname}-local-root" = {
+      "restic-backups-${hostname}-local-sys" = {
         unitConfig = {
           Description = "Run a backup whenever the device is plugged in (and mounted)"; # See https://bbs.archlinux.org/viewtopic.php?id=207050
           # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
@@ -240,7 +240,7 @@ in
           Type = "oneshot";
         };
       };
-      "${hostname}-local-${username}" = {
+      "restic-backups-${hostname}-local-home" = {
         unitConfig = {
           After = "${hostname}-local-sys.service";
           Description = "Run a user backup whenever the device is plugged in (and mounted)";
