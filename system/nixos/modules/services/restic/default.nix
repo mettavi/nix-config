@@ -82,7 +82,7 @@ in
 
     # CONFIGURE RESTIC BACKUP JOBS USING MODULE OPTIONS
     mettavi.system.services.restic.jobs = {
-      # backup the main user's home directory
+      # BACKUP THE MAIN USER'S HOME DIRECTORY
       "${hostname}-local-${username}" = {
         enable = true;
         label = "home";
@@ -99,7 +99,7 @@ in
         ];
         user = "${username}";
       };
-      # backup important system directories
+      # BACKUP IMPORTANT SYSTEM DIRECTORIES
       "${hostname}-local-root" = {
         enable = true;
         label = "root";
