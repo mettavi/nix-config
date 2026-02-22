@@ -162,7 +162,7 @@ in
           ];
           createWrapper = true;
           # Patterns to exclude when backing up
-          exclude = "${jobsCfg.exclusions}";
+          exclude = jobsCfg.exclusions;
           extraBackupArgs = [
             "--tag ${hostname}"
           ];
@@ -172,7 +172,7 @@ in
           initialize = true;
           passwordFile =
             config.sops.secrets."users/${username}/restic-${hostname}-local-${jobsCfg.label}".path;
-          paths = "${jobsCfg.paths}";
+          paths = jobsCfg.paths;
           pruneOpts = [
             "--keep-daily 7"
             "--keep-weekly 5"
