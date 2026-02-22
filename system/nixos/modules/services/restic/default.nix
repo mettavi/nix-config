@@ -42,6 +42,36 @@ in
       default = false;
       description = "Set up and configure restic backup jobs";
     };
+    jobs = mkOption {
+      type =
+        with lib.types;
+        attrsOf (
+          submodule (
+            { job, ... }:
+            {
+              options = {
+                enable = mkOption {
+                  type = bool;
+                  default = true;
+                  description = "Whether to enable this backup job";
+                };
+                label = mkOption {
+                  type = str;
+                  description = "The short name of the backup job";
+                };
+                exclusions = mkOption {
+                  type = listOf path;
+                  description = "A list of paths to exclude from the backup";
+                };
+                paths = mkOption {
+                  type = listOf path;
+                  description = "A list of paths to backup";
+                };
+              };
+            }
+          )
+        );
+    };
     vol_label = mkOption {
       type = types.str;
       default = "";
@@ -50,6 +80,54 @@ in
   };
 
   config = mkIf cfg.enable {
+
+    # CONFIGURE RESTIC BACKUP JOBS USING MODULE OPTIONS
+    mettavi.system.services.restic.jobs = {
+      # backup the main user's home directory
+      "${hostname}-local-${username}" = {
+        enable = true;
+        label = "home";
+        exclusions = [
+          "${snapshots}/home/${username}/.local/share/Trash"
+          "${home}/.cache"
+          "${home}/Downloads"
+          "${home}/.npm"
+          "${home}/.local/share/containers"
+          "!${home}/.local/share/containers/storage/volumes"
+        ];
+        paths = [
+          "${snapshots}/${username}"
+        ];
+        user = "${username}";
+      };
+      # backup important system directories
+      "${hostname}-local-root" = {
+        enable = true;
+        label = "root";
+        exclusions = [
+          "${snapshots}/root/.cache"
+          ".log"
+          ".tmp"
+          ".Trash"
+          "/var/lib/containers"
+          "!/var/lib/containers/storage/volumes"
+        ];
+        paths = [
+          "${snapshots}/root/etc/group"
+          "/etc/machine-id"
+          "/etc/NetworkManager/system-connections"
+          "/etc/passwd"
+          "/etc/subgid"
+          "/root"
+          "/var/backup"
+          "/var/lib"
+        ]
+        ++ optionalString config.mettavi.system.services.paperless-ngx.enable [
+          "${snapshots}/root/var/lib/paperless/export"
+        ];
+        user = "root";
+      };
+    };
     environment.systemPackages = with pkgs; [
       # CHECK: not sure if this is required
       rclone # sync files and directories to and from major cloud storage
