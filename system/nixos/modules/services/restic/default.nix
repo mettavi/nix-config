@@ -86,7 +86,6 @@ in
           user-snapshots = "${snapshots}/home";
         in
         {
-          enable = true;
           label = "home";
           exclusions = [
             "${user-snapshots}/${username}/.local/share/Trash"
@@ -107,7 +106,6 @@ in
           sys-snapshots = "${snapshots}/sys";
         in
         {
-          enable = true;
           label = "sys";
           exclusions = [
             "${sys-snapshots}/root/.cache"
