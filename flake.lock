@@ -521,10 +521,10 @@
     },
     "secrets": {
       "locked": {
-        "lastModified": 1771215108,
-        "narHash": "sha256-bTiyxM19B2gQ4RquM6NWA0xWXgezeOamDgkkiTrfiew=",
+        "lastModified": 1771755152,
+        "narHash": "sha256-lfOhbCZGNQQwbTPLkeSoxYkHcC8tYKH6gbHbDGY3YOk=",
         "ref": "main",
-        "rev": "73e1d226984d45175aa71e78d0674b2fe30a1018",
+        "rev": "eed7ef729cd454784453a103e3fd0f2fd85de0b0",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/mettavi/nix-secrets.git"
