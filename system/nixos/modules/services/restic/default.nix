@@ -66,6 +66,10 @@ in
                   type = listOf path;
                   description = "A list of paths to backup";
                 };
+                user = mkOption {
+                  type = str;
+                  description = "The user to run the backup job as";
+                };
               };
             }
           )
@@ -173,7 +177,7 @@ in
           runCheck = true;
           # run backups when the removable disk is mounted, not on a schedule
           timerConfig = null;
-          user = "${jobsCfg.label}";
+          user = "${jobsCfg.user}";
           # DO A RESTIC BACKUP DIRECTLY TO CLOUD USING RCLONE
           # "${hostname}-${username}-b2" = {
           #   inherit
