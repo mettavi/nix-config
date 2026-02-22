@@ -231,8 +231,6 @@ in
       "users/${username}/restic-${hostname}-local-home" = resticSecrets;
       # encryption password for local root backup
       "users/${username}/restic-${hostname}-local-sys" = resticSecrets;
-      # encryption password for cloud backup to backblaze b2
-      "users/${username}/restic-${hostname}-${username}-b2" = resticSecrets;
     };
     systemd.services = {
       "${hostname}-local-root" = {
