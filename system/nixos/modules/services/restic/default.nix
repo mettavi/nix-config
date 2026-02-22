@@ -147,12 +147,12 @@ in
     services.restic = {
       backups = mapAttrs (
         job: jobsCfg:
-        mkIf "${jobsCfg.enable}" {
-          backupPrepareCommand.text = ''
+        {
+          backupPrepareCommand = ''
             btrfs subvolume snapshot -r /home ${snapshots}/home
             btrfs subvolume snapshot -r / ${snapshots}/sys
           '';
-          backupCleanupCommand.text = ''
+          backupCleanupCommand = ''
             btrfs subvolume delete ${snapshots}/home
             btrfs subvolume delete ${snapshots}/sys
           '';
