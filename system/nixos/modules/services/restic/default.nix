@@ -131,6 +131,7 @@ in
         };
     };
     environment.systemPackages = with pkgs; [
+      libnotify # Library that sends desktop notifications
       # CHECK: not sure if this is required
       rclone # sync files and directories to and from major cloud storage
       restic-rcl-b2
@@ -233,6 +234,7 @@ in
           # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
           ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}/${hostname}/sys";
           # or perhaps WantedBy= option?
+          OnFailure = "notify-backup-failed.service";
         };
         serviceConfig = {
           # ensure it is not considered "started" until after the main process EXITS
@@ -251,7 +253,28 @@ in
           # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
           ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}/${hostname}/home";
           # or perhaps WantedBy= option?
+          OnFailure = "notify-backup-failed.service";
         };
+      };
+      # send desktop notifications about failed backups using libnotify
+      "notify-backup-failed" = {
+        enable = true;
+        description = "Notify on failed backup";
+        serviceConfig = {
+          Type = "oneshot";
+          User = "${username}";
+        };
+
+        # required for notify-send
+        environment.DBUS_SESSION_BUS_ADDRESS = "unix:path=/run/user/${
+          toString config.users.users.${username}.uid
+        }/bus";
+
+        script = ''
+          ${pkgs.libnotify}/bin/notify-send --urgency=critical \
+            "Backup failed" \
+            "$(journalctl -u restic-backups-daily -n 5 -o cat)"
+        '';
       };
     };
   };
