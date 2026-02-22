@@ -139,87 +139,85 @@ in
     ];
 
     services.restic = {
-      backups = mapAttrs (
-        job: jobsCfg:
-        {
-          backupPrepareCommand = ''
-            btrfs subvolume snapshot -r /home ${snapshots}/home
-            btrfs subvolume snapshot -r / ${snapshots}/sys
-          '';
-          backupCleanupCommand = ''
-            btrfs subvolume delete ${snapshots}/home
-            btrfs subvolume delete ${snapshots}/sys
-          '';
-          checkOpts = [
-            "--with-cache" # just to make checks faster
-            "--read-data" # also check integrity of the actual data
-          ];
-          createWrapper = true;
-          # Patterns to exclude when backing up
-          exclude = jobsCfg.exclusions;
-          extraBackupArgs = [
-            "--tag ${hostname}"
-          ];
-          # Prevent the system from sleeping while backing up
-          inhibitsSleep = true;
-          # create the repo if it doesn't exist
-          initialize = true;
-          passwordFile =
-            config.sops.secrets."users/${username}/restic-${hostname}-local-${jobsCfg.label}".path;
-          paths = jobsCfg.paths;
-          pruneOpts = [
-            "--keep-daily 7"
-            "--keep-weekly 5"
-            "--keep-monthly 12"
-            "--keep-yearly 10"
-            "--group-by tags"
-          ];
-          repository = "/run/media/${username}/${vol_label}/${hostname}/${jobsCfg.label}";
-          runCheck = true;
-          # run backups when the removable disk is mounted, not on a schedule
-          timerConfig = null;
-          user = "${jobsCfg.user}";
-          # DO A RESTIC BACKUP DIRECTLY TO CLOUD USING RCLONE
-          # "${hostname}-${username}-b2" = {
-          #   inherit
-          #     checkOpts
-          #     createWrapper
-          #     home_exclude
-          #     inhibitsSleep
-          #     initialize
-          #     pruneOpts
-          #     timerConfig
-          #     ;
-          #   exclude = home_exclude;
-          #   extraBackupArgs = "${extraBackupArgs}" ++ [ "rclone.connections=100" ];
-          #   passwordFile = config.sops.secrets."users/${username}/restic-${hostname}-${username}-b2".path;
-          #   paths = [
-          #     "${home}"
-          #   ]
-          #   ++ optionalString config.mettavi.system.services.paperless-ngx.enable [
-          #     "${config.services.paperless.dataDir}/export"
-          #   ];
-          #
-          #   repository = "rclone:b2:${hostname}-${username}";
-          #   rcloneConfigFile = "${config.home-manager.users.${username}.sops.templates."rclone.conf".path}";
-          #   rcloneOptions = {
-          #     checkers = 100;
-          #     fast-list = true;
-          #     # restic already keeps deleted files
-          #     b2-hard-delete = true;
-          #     log-file = "${logfile}";
-          #     max-backlog = 10000;
-          #     order-by = "size,mixed,75";
-          #     stats = "2m";
-          #     transfers = 100;
-          #     verbose = true;
-          #   };
-          #   # checks are resource-intensive in backblaze b2, so do not run a check every time
-          #   runCheck = false;
-          #   # need to test this (some files may be owned by root)
-          #   user = "${username}";
-          # };
-        }) cfg.jobs;
+      backups = mapAttrs (job: jobsCfg: {
+        backupPrepareCommand = ''
+          btrfs subvolume snapshot -r /home ${snapshots}/home
+          btrfs subvolume snapshot -r / ${snapshots}/sys
+        '';
+        backupCleanupCommand = ''
+          btrfs subvolume delete ${snapshots}/home
+          btrfs subvolume delete ${snapshots}/sys
+        '';
+        checkOpts = [
+          "--with-cache" # just to make checks faster
+          "--read-data" # also check integrity of the actual data
+        ];
+        createWrapper = true;
+        # Patterns to exclude when backing up
+        exclude = jobsCfg.exclusions;
+        extraBackupArgs = [
+          "--tag ${hostname}"
+        ];
+        # Prevent the system from sleeping while backing up
+        inhibitsSleep = true;
+        # create the repo if it doesn't exist
+        initialize = true;
+        passwordFile =
+          config.sops.secrets."users/${username}/restic-${hostname}-local-${jobsCfg.label}".path;
+        paths = jobsCfg.paths;
+        pruneOpts = [
+          "--keep-daily 7"
+          "--keep-weekly 5"
+          "--keep-monthly 12"
+          "--keep-yearly 10"
+          "--group-by tags"
+        ];
+        repository = "/run/media/${username}/${vol_label}/${hostname}/${jobsCfg.label}";
+        runCheck = true;
+        # run backups when the removable disk is mounted, not on a schedule
+        timerConfig = null;
+        user = "${jobsCfg.user}";
+        # DO A RESTIC BACKUP DIRECTLY TO CLOUD USING RCLONE
+        # "${hostname}-${username}-b2" = {
+        #   inherit
+        #     checkOpts
+        #     createWrapper
+        #     home_exclude
+        #     inhibitsSleep
+        #     initialize
+        #     pruneOpts
+        #     timerConfig
+        #     ;
+        #   exclude = home_exclude;
+        #   extraBackupArgs = "${extraBackupArgs}" ++ [ "rclone.connections=100" ];
+        #   passwordFile = config.sops.secrets."users/${username}/restic-${hostname}-${username}-b2".path;
+        #   paths = [
+        #     "${home}"
+        #   ]
+        #   ++ optionalString config.mettavi.system.services.paperless-ngx.enable [
+        #     "${config.services.paperless.dataDir}/export"
+        #   ];
+        #
+        #   repository = "rclone:b2:${hostname}-${username}";
+        #   rcloneConfigFile = "${config.home-manager.users.${username}.sops.templates."rclone.conf".path}";
+        #   rcloneOptions = {
+        #     checkers = 100;
+        #     fast-list = true;
+        #     # restic already keeps deleted files
+        #     b2-hard-delete = true;
+        #     log-file = "${logfile}";
+        #     max-backlog = 10000;
+        #     order-by = "size,mixed,75";
+        #     stats = "2m";
+        #     transfers = 100;
+        #     verbose = true;
+        #   };
+        #   # checks are resource-intensive in backblaze b2, so do not run a check every time
+        #   runCheck = false;
+        #   # need to test this (some files may be owned by root)
+        #   user = "${username}";
+        # };
+      }) cfg.jobs;
     };
     sops.secrets = {
       # encryption password for local home backup
