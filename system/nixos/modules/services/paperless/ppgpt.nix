@@ -173,8 +173,7 @@ in
           };
           serviceConfig = {
             RestartSec = "10";
-            # Restart service when sleep finishes
-            Restart = "always";
+            Restart = "on-failure";
           };
         };
       };
