@@ -12,7 +12,7 @@ in
 {
   options.mettavi.system.devices.wdssd = {
     enable = mkOption {
-      type = bool;
+      type = types.bool;
       default = false;
       description = "Set up a luks-encrypted WD ssd to auto-unlock and automount";
     };
@@ -28,7 +28,7 @@ in
         # <mapper-name> <encrypted-device> [key-file] [options]
         luks-wdssd UUID=c8afcf0e-1642-4b85-a74b-9b8182a7f06a ${
           config.sops.secrets."users/${username}/wdssd.luks.key".path
-        } luks noauto
+        } luks,noauto,nofail
       '';
     };
 
