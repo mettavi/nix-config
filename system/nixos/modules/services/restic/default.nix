@@ -29,7 +29,7 @@ let
           } b2:${hostname}-${username}/
       '';
   resticSecrets = {
-    sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
+    sopsFile = "${secrets_path}/secrets/apps/restic.yaml";
   };
   snapshots = "/mnt/snapshots";
   vol_label = "${config.mettavi.system.services.restic.vol_label}";
