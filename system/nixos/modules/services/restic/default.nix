@@ -242,7 +242,7 @@ in
       };
       "restic-backups-${hostname}-local-home" = {
         unitConfig = {
-          After = "${hostname}-local-sys.service";
+          After = mkForce "${hostname}-local-sys.service";
           Description = "Run a user backup whenever the device is plugged in (and mounted)";
           # See https://bbs.archlinux.org/viewtopic.php?id=207050
           # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
