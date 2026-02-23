@@ -119,11 +119,11 @@ in
               # PAPERLESS_PUBLIC_URL = "http://paperless.mydomain.com";
               MANUAL_TAG = "paperless-gpt-manual";
               AUTO_TAG = "paperless-gpt-auto";
-              AUTO_GENERATE_TITLE = true;
-              AUTO_GENERATE_TAGS = true;
-              AUTO_GENERATE_CORRESPONDENTS = true;
-              AUTO_GENERATE_DOCUMENT_TYPE = true; # Only existing document types will be used
-              AUTO_GENERATE_CREATED_DATE = true;
+              AUTO_GENERATE_TITLE = "true";
+              AUTO_GENERATE_TAGS = "true";
+              AUTO_GENERATE_CORRESPONDENTS = "true";
+              AUTO_GENERATE_DOCUMENT_TYPE = "true"; # Only existing document types will be used
+              AUTO_GENERATE_CREATED_DATE = "true";
 
               # LLM Configuration (for non-OCR features)
               LLM_PROVIDER = "${cfg.llm.generic.provider}";
