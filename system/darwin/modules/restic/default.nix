@@ -40,6 +40,12 @@ in
           home.packages = with pkgs; [
             restic # Backup with delta transfers (eg. to cloud storage via rclone)
           ];
+          sops.secrets = {
+            # restic key for encryption of backblaze b2 repo (mbp_timotheos)
+            "users/${username}/restic_b2_mack-timotheos" = {
+              sopsFile = "${secrets_path}/secrets/apps/restic.yaml";
+            };
+          };
         }
         // mkIf cfg.useRestProf {
           home.packages = with pkgs; [ resticprofile ]; # Configuration manager for restic
@@ -47,12 +53,6 @@ in
             "resticprofile".source = ../../../../home/shared/dots/resticprofile;
           };
         };
-      sops.secrets = {
-        # restic key for encryption of backblaze b2 repo (mbp_timotheos)
-        "users/${username}/restic_b2_mack-timotheos" = {
-          sopsFile = "${secrets_path}/secrets/apps/restic.yaml";
-        };
-      };
     };
 
   launchd.daemons = mkIf (pkgs.stdenv.isDarwin && cfg.enable) {
