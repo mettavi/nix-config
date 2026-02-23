@@ -165,7 +165,7 @@ in
               PDF_OCR_TAGGING = "true"; # Optional, add tag to processed documents
               PDF_OCR_COMPLETE_TAG = "paperless-gpt-ocr-complete"; # Optional, tag name
               OCR_LIMIT_PAGES = "0"; # Optional, default: 5. Set to 0 for no limit.
-              LOG_LEVEL = "debug"; # Optional: debug, info, warn, error
+              LOG_LEVEL = "info"; # Optional: debug, info, warn, error
             };
             # pull from the github container registry (ghcr)
             image = "ghcr.io/icereed/paperless-gpt:latest";
