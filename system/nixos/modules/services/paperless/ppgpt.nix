@@ -144,9 +144,11 @@ in
               VISION_LLM_PROVIDER = "${cfg.llm.ocr.provider}";
               VISION_LLM_MODEL = "${cfg.llm.ocr.model}";
 
-              # OCR Processing Mode
-              OCR_PROCESS_MODE = "image"; # Optional, default: image, other options: pdf, whole_pdf
-              # Works with pdf and whole_pdf processing modes (OCR_PROCESS_MODE)
+              # OCR PROCESSING MODE
+              # Optional, default: image, other options: pdf, whole_pdf (all pp in one operation)
+              # NB: LLM-based OCR (OpenAI/Ollama) only works with "image" mode
+              OCR_PROCESS_MODE = "image";
+              # Works with pdf and whole_pdf modes
               PDF_SKIP_EXISTING_OCR = "false"; # Optional, skip OCR for PDFs with existing OCR
 
               # Enhanced OCR Features
