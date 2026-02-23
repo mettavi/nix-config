@@ -151,15 +151,17 @@ in
               # Works with pdf and whole_pdf modes
               PDF_SKIP_EXISTING_OCR = "false"; # Optional, skip OCR for PDFs with existing OCR
 
-              # Enhanced OCR Features
+              # ENHANCED OCR FEATURES
+              # NOTE: These enhanced features only work with Google Document AI
               AUTO_OCR_TAG = "paperless-gpt-ocr-auto"; # Optional
-              CREATE_LOCAL_HOCR = "true"; # Optional, save hOCR files locally
+              CREATE_LOCAL_HOCR = "true"; # Optional, save hOCR (HTML-based OCR representation) files locally
               LOCAL_HOCR_PATH = "/app/hocr"; # Optional, path for hOCR files
               CREATE_LOCAL_PDF = "true"; # Optional, save enhanced PDFs locally
               LOCAL_PDF_PATH = "/app/pdf"; # Optional, path for PDF files
               PDF_UPLOAD = "true"; # Optional, upload enhanced PDFs to paperless-ngx
               PDF_REPLACE = "false"; # Optional and DANGEROUS, delete original after upload
               PDF_COPY_METADATA = "true"; # Optional, used with PDF_UPLOAD, copy metadata from original document
+
               PDF_OCR_TAGGING = "true"; # Optional, add tag to processed documents
               PDF_OCR_COMPLETE_TAG = "paperless-gpt-ocr-complete"; # Optional, tag name
               OCR_LIMIT_PAGES = "0"; # Optional, default: 5. Set to 0 for no limit.
