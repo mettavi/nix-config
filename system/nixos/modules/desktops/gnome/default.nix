@@ -66,89 +66,105 @@ in
       ];
     };
 
-    home-manager.users.${username} = {
-      home.packages =
-        (with pkgs; [
-          celluloid # GTK frontend for the mpv video player
-          dconf-editor # GSettings editor for GNOME
-          gnome-extension-manager # Desktop app for managing GNOME shell extensions
-          gnome-tweaks # Tool to customize advanced GNOME 3 options
-          switcheroo # Gnome app for converting (and resizing) images between different formats (uses imagemagick)
-          wl-clipboard # command line copy/paste utilities for Wayland
-        ])
-        ++ (with pkgs.gnomeExtensions; [
-          appindicator # Adds AppIndicator, KStatusNotifierItem and legacy tray icons support to the Shell.
-          power-profile-indicator-2 # Add current power profile in panel's system icons.
-        ]);
-      # Use `dconf watch /` to track stateful changes you are doing, then set them here
-      dconf.settings = {
-        # organise the apps menu into folders
-        "org/gnome/desktop/app-folders" = {
-          folder-children = [
-            "Utilities"
-            "System"
-            "Gnome Tools"
-            "Nix"
-          ];
+    home-manager.users.${username} =
+      { config, nixosConfig, ... }:
+      {
+        home.packages =
+          (with pkgs; [
+            celluloid # GTK frontend for the mpv video player
+            dconf-editor # GSettings editor for GNOME
+            gnome-extension-manager # Desktop app for managing GNOME shell extensions
+            gnome-tweaks # Tool to customize advanced GNOME 3 options
+            switcheroo # Gnome app for converting (and resizing) images between different formats (uses imagemagick)
+            wl-clipboard # command line copy/paste utilities for Wayland
+          ])
+          ++ (with pkgs.gnomeExtensions; [
+            appindicator # Adds AppIndicator, KStatusNotifierItem and legacy tray icons support to the Shell.
+            power-profile-indicator-2 # Add current power profile in panel's system icons.
+          ]);
+        # Use `dconf watch /` to track stateful changes you are doing, then set them here
+        dconf.settings = {
+          # organise the apps menu into folders
+          "org/gnome/desktop/app-folders" = {
+            folder-children = [
+              "Utilities"
+              "System"
+              "Gnome Tools"
+              "Nix"
+            ];
+          };
+          "org/gnome/desktop/app-folders/folders/Gnome Tools" = {
+            name = "Gnome Tools";
+            apps = [
+              "com.mattjakeman.ExtensionManager.desktop"
+              "org.gnome.tweaks.desktop"
+              "ca.desrt.dconf-editor.desktop"
+            ];
+            translate = false;
+          };
+          "org/gnome/desktop/app-folders/folders/Nix" = {
+            name = "Nix";
+            apps = [
+              "nixos-manual.desktop"
+              "home-manager-manual.desktop"
+            ];
+            translate = false;
+          };
+          "org/gnome/desktop/interface" = {
+            # set the system to dark mode
+            color-scheme = "prefer-dark";
+            gtk-theme = "Adwaita-dark";
+          };
+          "org/gnome/shell" = {
+            disable-user-extensions = false;
+            # `gnome-extensions list` for a list
+            enabled-extensions = [
+              "appindicatorsupport@rgcjonas.gmail.com"
+              "power-profile@fthx"
+            ];
+          };
+          "org/gnome/desktop/wm/keybindings" = {
+            # workaround for problem with the ALT-F2 default for the Gnome run dialog
+            panel-run-dialog = [
+              "<Alt>F2" # this is the default
+              "<Alt>S" # this is a workaround for the keyboard on host lady
+            ];
+          };
+          # "org/gnome/desktop/peripherals/keyboard" = {
+          # delay = lib.hm.gvariant.mkUint32 175;
+          # disable to check
+          # repeat = false;
+          # repeat-interval = lib.hm.gvariant.mkUint32 18;
+          # };
         };
-        "org/gnome/desktop/app-folders/folders/Gnome Tools" = {
-          name = "Gnome Tools";
-          apps = [
-            "com.mattjakeman.ExtensionManager.desktop"
-            "org.gnome.tweaks.desktop"
-            "ca.desrt.dconf-editor.desktop"
-          ];
-          translate = false;
+        gtk = {
+          enable = true;
+          colorScheme = "dark";
+          gtk3 = {
+            # configure bookmarks in nautilus/files left-menu
+            bookmarks =
+              optionals nixosConfig.mettavi.system.services.paperless-ngx.enable [
+                "${nixosConfig.services.paperless.consumptionDir} paperless"
+              ]
+              ++ [
+                "file://${config.xdg.userDirs.documents}"
+                "file://${config.xdg.userDirs.download}"
+                "file://${config.xdg.userDirs.music}"
+                "file://${config.xdg.userDirs.pictures}"
+                "file://${config.xdg.userDirs.videos}"
+              ];
+          };
+          # enable dark theme on legacy apps
+          # gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
+          # gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
         };
-        "org/gnome/desktop/app-folders/folders/Nix" = {
-          name = "Nix";
-          apps = [
-            "nixos-manual.desktop"
-            "home-manager-manual.desktop"
-          ];
-          translate = false;
+        qt = {
+          enable = true;
+          # give Qt apps a similar look and feel to the adwaita-dark theme used by Gnome
+          # See https://wiki.nixos.org/wiki/GNOME#GNOME_Qt_integration
+          platformTheme.name = "adwaita";
+          style.name = "adwaita-dark";
         };
-        "org/gnome/desktop/interface" = {
-          # set the system to dark mode
-          color-scheme = "prefer-dark";
-          gtk-theme = "Adwaita-dark";
-        };
-        "org/gnome/shell" = {
-          disable-user-extensions = false;
-          # `gnome-extensions list` for a list
-          enabled-extensions = [
-            "appindicatorsupport@rgcjonas.gmail.com"
-            "power-profile@fthx"
-          ];
-        };
-        "org/gnome/desktop/wm/keybindings" = {
-          # workaround for problem with the ALT-F2 default for the Gnome run dialog
-          panel-run-dialog = [
-            "<Alt>F2" # this is the default
-            "<Alt>S" # this is a workaround for the keyboard on host lady
-          ];
-        };
-        # "org/gnome/desktop/peripherals/keyboard" = {
-        # delay = lib.hm.gvariant.mkUint32 175;
-        # disable to check
-        # repeat = false;
-        # repeat-interval = lib.hm.gvariant.mkUint32 18;
-        # };
       };
-      gtk = {
-        enable = true;
-        colorScheme = "dark";
-        # enable dark theme on legacy apps
-        # gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
-        # gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
-      };
-      qt = {
-        enable = true;
-        # give Qt apps a similar look and feel to the adwaita-dark theme used by Gnome
-        # See https://wiki.nixos.org/wiki/GNOME#GNOME_Qt_integration
-        platformTheme.name = "adwaita";
-        style.name = "adwaita-dark";
-      };
-    };
   };
 }
