@@ -30,6 +30,8 @@
       # Mac App Store command-line interface (used for the masApps module below)
       # This is no longer auto-installed, see https://github.com/nix-darwin/nix-darwin/issues/1314
       "mas"
+      # more up-to-date than nixpkgs (compatibility issues in version 16)
+      "ocrmypdf"
     ];
     # use the "greedy" option to always upgrade auto-updated or unversioned cask to latest version
     casks = [
