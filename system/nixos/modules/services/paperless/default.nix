@@ -76,6 +76,7 @@ in
           PAPERLESS_DBNAME = "paperless";
           PAPERLESS_DBUSER = "paperless";
           # PAPERLESS_DBPASS is defined in the environmentFile (see above)
+          PAPERLESS_EMPTY_TRASH_DIR = "/var/lib/paperless/Trash";
           # PAPERLESS_FILENAME_FORMAT = "{{document_type}}/{{created_year}}/{{title}}_{{created}}";
           PAPERLESS_OAUTH_CALLBACK_BASE_URL = "http://localhost:28981";
           PAPERLESS_OCR_LANGUAGE = "eng";
@@ -84,7 +85,6 @@ in
             pdfa_image_compression = "lossless";
           };
           PAPERLESS_TIME_ZONE = "Australia/Melbourne";
-          # PAPERLESS_EMPTY_TRASH_DIR = "/home/.Trash-0";
           PAPERLESS_URL = "http://localhost:28981";
         };
       };
@@ -98,6 +98,11 @@ in
       paperless-scheduler.wantedBy = mkForce [ ];
       # postgresql.target.wantedBy = mkForce [ ];
     };
+    # create the Trash directory
+    systemd.tmpfiles.rules = [
+      # type path mode user group (expiry)
+      "d /var/lib/paperless/Trash 0770 paperless paperless -"
+    ];
     # add the admin user to the paperless group
     users.users.${username}.extraGroups = [ "paperless" ];
   };
