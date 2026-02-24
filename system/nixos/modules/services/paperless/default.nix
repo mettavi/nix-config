@@ -76,6 +76,8 @@ in
           PAPERLESS_DBNAME = "paperless";
           PAPERLESS_DBUSER = "paperless";
           # PAPERLESS_DBPASS is defined in the environmentFile (see above)
+          # PAPERLESS_FILENAME_FORMAT = "{{document_type}}/{{created_year}}/{{title}}_{{created}}";
+          PAPERLESS_OAUTH_CALLBACK_BASE_URL = "http://localhost:28981";
           PAPERLESS_OCR_LANGUAGE = "eng";
           PAPERLESS_OCR_USER_ARGS = {
             optimize = 1;
