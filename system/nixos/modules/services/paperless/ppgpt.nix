@@ -119,6 +119,11 @@ in
               # PAPERLESS_PUBLIC_URL = "http://paperless.mydomain.com";
               MANUAL_TAG = "paperless-gpt-manual";
               AUTO_TAG = "paperless-gpt-auto";
+              AUTO_GENERATE_TITLE = "true";
+              AUTO_GENERATE_TAGS = "true";
+              AUTO_GENERATE_CORRESPONDENTS = "true";
+              AUTO_GENERATE_DOCUMENT_TYPE = "true"; # Only existing document types will be used
+              AUTO_GENERATE_CREATED_DATE = "true";
 
               # LLM Configuration (for non-OCR features)
               LLM_PROVIDER = "${cfg.llm.generic.provider}";
@@ -139,23 +144,28 @@ in
               VISION_LLM_PROVIDER = "${cfg.llm.ocr.provider}";
               VISION_LLM_MODEL = "${cfg.llm.ocr.model}";
 
-              # OCR Processing Mode
-              OCR_PROCESS_MODE = "image"; # Optional, default: image, other options: pdf, whole_pdf
+              # OCR PROCESSING MODE
+              # Optional, default: image, other options: pdf, whole_pdf (all pp in one operation)
+              # NB: LLM-based OCR (OpenAI/Ollama) only works with "image" mode
+              OCR_PROCESS_MODE = "image";
+              # Works with pdf and whole_pdf modes
               PDF_SKIP_EXISTING_OCR = "false"; # Optional, skip OCR for PDFs with existing OCR
 
-              # Enhanced OCR Features
-              CREATE_LOCAL_HOCR = "true"; # Optional, save hOCR files locally
+              # ENHANCED OCR FEATURES
+              # NOTE: These enhanced features only work with Google Document AI
+              AUTO_OCR_TAG = "paperless-gpt-ocr-auto"; # Optional
+              CREATE_LOCAL_HOCR = "true"; # Optional, save hOCR (HTML-based OCR representation) files locally
               LOCAL_HOCR_PATH = "/app/hocr"; # Optional, path for hOCR files
               CREATE_LOCAL_PDF = "true"; # Optional, save enhanced PDFs locally
               LOCAL_PDF_PATH = "/app/pdf"; # Optional, path for PDF files
               PDF_UPLOAD = "true"; # Optional, upload enhanced PDFs to paperless-ngx
               PDF_REPLACE = "false"; # Optional and DANGEROUS, delete original after upload
               PDF_COPY_METADATA = "true"; # Optional, used with PDF_UPLOAD, copy metadata from original document
+
               PDF_OCR_TAGGING = "true"; # Optional, add tag to processed documents
               PDF_OCR_COMPLETE_TAG = "paperless-gpt-ocr-complete"; # Optional, tag name
-              AUTO_OCR_TAG = "paperless-gpt-ocr-auto"; # Optional
               OCR_LIMIT_PAGES = "0"; # Optional, default: 5. Set to 0 for no limit.
-              LOG_LEVEL = "debug"; # Optional: debug, info, warn, error
+              LOG_LEVEL = "info"; # Optional: debug, info, warn, error
             };
             # pull from the github container registry (ghcr)
             image = "ghcr.io/icereed/paperless-gpt:latest";

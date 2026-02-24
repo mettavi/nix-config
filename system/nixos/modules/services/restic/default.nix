@@ -232,7 +232,7 @@ in
           # or use the ConditionPathIsMountPoint= option?
           # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
           # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
-          ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}/${hostname}/sys";
+          ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}";
           # or perhaps WantedBy= option?
           OnFailure = "notify-backup-failed.service";
         };
@@ -251,7 +251,7 @@ in
           # or use the ConditionPathIsMountPoint= option?
           # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
           # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
-          ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}/${hostname}/home";
+          ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}";
           # or perhaps WantedBy= option?
           OnFailure = "notify-backup-failed.service";
         };
