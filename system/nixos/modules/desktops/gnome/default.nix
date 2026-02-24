@@ -144,7 +144,7 @@ in
             # configure bookmarks in nautilus/files left-menu
             bookmarks =
               optionals nixosConfig.mettavi.system.services.paperless-ngx.enable [
-                "${nixosConfig.services.paperless.consumptionDir} paperless"
+                "file://${nixosConfig.services.paperless.consumptionDir} paperless"
               ]
               ++ [
                 "file://${config.xdg.userDirs.documents}"
