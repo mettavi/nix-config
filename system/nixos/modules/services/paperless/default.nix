@@ -130,7 +130,7 @@ in
             echo "    -> Database dump successful."
 
             echo "[+] Deleting backups older than ''${RETENTION_DAYS} days..."
-            find "${ppconfig.dataDir}" -maxdepth 1 -type d -mtime +''${RETENTION_DAYS} -exec rm -rf {} \;
+            find "${ppconfig.exporter.directory}" -maxdepth 1 -type d -mtime +''${RETENTION_DAYS} -exec rm -rf {} \;
             echo "    -> Cleanup completed."
 
             echo "========================================================"
