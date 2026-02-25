@@ -56,7 +56,8 @@ in
           onCalendar = "01:30:00";
           settings = {
             compare-checksums = true;
-            delete = true;
+            # do not touch the database dumps in this directory
+            delete = mkForce false;
             no-color = true;
             no-progress-bar = true;
           };
@@ -76,6 +77,7 @@ in
           PAPERLESS_DBNAME = "paperless";
           PAPERLESS_DBUSER = "paperless";
           # PAPERLESS_DBPASS is defined in the environmentFile (see above)
+          # the folder needs to already exist (see systemd.tmpfiles below)
           PAPERLESS_EMPTY_TRASH_DIR = "/var/lib/paperless/Trash";
           # PAPERLESS_FILENAME_FORMAT = "{{document_type}}/{{created_year}}/{{title}}_{{created}}";
           PAPERLESS_OAUTH_CALLBACK_BASE_URL = "http://localhost:28981";
@@ -87,15 +89,53 @@ in
           PAPERLESS_TIME_ZONE = "Australia/Melbourne";
           PAPERLESS_URL = "http://localhost:28981";
         };
+        user = "paperless";
       };
     sops.secrets = {
       "users/${username}/paperless/ppless-${hostname}.env" = paperlessSecrets;
       "users/${username}/paperless/ppless-${hostname}-pw" = paperlessSecrets;
     };
-    # prevent the services from auto-starting on boot
     systemd.services = {
-      redis-paperless.wantedBy = mkForce [ ];
+      paperless-exporter =
+        let
+          ppconfig = config.services.paperless;
+        in
+        {
+          # NB: code adapted from https://deployn.de/en/blog/paperless-backup-restore/
+          preStart = ''
+            # --- CONFIGURATION ---
+            # How many days should backups be kept?
+            RETENTION_DAYS=30
+
+            # 1. Create new backup directory
+            DATE_STAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+            BACKUP_DIR="${ppconfig.exporter.directory}/''${DATE_STAMP}"
+            mkdir -p "''${BACKUP_DIR}"
+            echo "[+] Creating backup directory: ''${BACKUP_DIR}"
+
+            # 2. Backup PostgreSQL database
+            echo "[+] Creating PostgreSQL Dump..."
+            pg_dump -U ${ppconfig.settings.PAPERLESS_DBUSER} -d ${ppconfig.settings.PAPERLESS_DBNAME} > "''${BACKUP_DIR}/paperless-db.sql"
+            # Check if the dump is empty (-s checks if the size > 0)
+            if [ ! -s "''${BACKUP_DIR}/paperless-db.sql" ]; then
+              echo "ERROR: Database dump is empty!"
+              rm -rf "''${BACKUP_DIR}"
+              exit 1
+            fi
+            echo "    -> Database dump successful."
+
+            echo "[+] Deleting backups older than ''${RETENTION_DAYS} days..."
+            find "${ppconfig.dataDir}" -maxdepth 1 -type d -mtime +''${RETENTION_DAYS} -exec rm -rf {} \;
+            echo "    -> Cleanup completed."
+
+            echo "========================================================"
+            echo "Paperless backup successfully completed!"
+            echo "========================================================"
+          '';
+        };
+      # don't autostart these services
       paperless-scheduler.wantedBy = mkForce [ ];
+      redis-paperless.wantedBy = mkForce [ ];
       # postgresql.target.wantedBy = mkForce [ ];
     };
     # create the Trash directory
