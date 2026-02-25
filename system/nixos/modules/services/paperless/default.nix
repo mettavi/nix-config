@@ -2,6 +2,7 @@
   config,
   hostname,
   lib,
+  pkgs,
   secrets_path,
   username,
   ...
@@ -101,6 +102,10 @@ in
           ppconfig = config.services.paperless;
         in
         {
+          path = with pkgs; [
+            findutils
+            postgresql
+          ];
           # NB: code adapted from https://deployn.de/en/blog/paperless-backup-restore/
           preStart = ''
             # --- CONFIGURATION ---
