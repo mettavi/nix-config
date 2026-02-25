@@ -155,8 +155,5 @@
       # "oona" = initNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
       # };
 
-      # Expose the package set, including overlays, for convenience.
-      darwinPackages = self.darwinConfigurations."mack".pkgs;
-
     };
 }

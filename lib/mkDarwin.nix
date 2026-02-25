@@ -24,6 +24,8 @@
       modules = [
         ../hosts/${hostname}/configuration.nix
         {
+          # Expose the package set, including overlays, for convenience.
+          darwinPackages = self.darwinConfigurations."${hostname}".pkgs;
           networking.hostName = "${hostname}";
           nix = {
             extraOptions = ''
