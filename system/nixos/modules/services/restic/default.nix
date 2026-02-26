@@ -119,6 +119,7 @@ in
             "${sys-snapshots}/etc/machine-id"
             "${sys-snapshots}/etc/NetworkManager/system-connections"
             "${sys-snapshots}/etc/passwd"
+            "${sys-snapshots}/etc/group"
             "${sys-snapshots}/etc/subgid"
             "${sys-snapshots}/root"
             "${sys-snapshots}/var/backup"
