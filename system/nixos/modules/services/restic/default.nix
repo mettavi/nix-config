@@ -139,6 +139,7 @@ in
 
     services.restic = {
       backups = mapAttrs (job: jobsCfg: {
+        # -r creates the snapshot read-only
         backupPrepareCommand = ''
           btrfs subvolume snapshot -r /home ${snapshots}/home
           btrfs subvolume snapshot -r / ${snapshots}/sys
