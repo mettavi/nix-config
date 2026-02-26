@@ -45,6 +45,7 @@ in
     gyb # a command line tool for backing up your Gmail messages
     nix-fast-build # speed-up your evaluation and building process
     nix-init # Generate Nix packages from URLs
+    nix-tree # browse nix-store path dependencies
     nix-update # Swiss-knife for updating nix packages
     node2nix # Generate Nix expressions to build NPM packages
     nurl # generate Nix fetcher calls from repository URLs
