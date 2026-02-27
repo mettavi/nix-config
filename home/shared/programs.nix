@@ -94,14 +94,14 @@
           # NB: this is not required if the keychain utility is installed
           addKeysToAgent = "no";
           compression = false;
-          serverAliveInterval = 0;
-          serverAliveCountMax = 3;
-          hashKnownHosts = false;
-          userKnownHostsFile = "~/.ssh/known_hosts";
           # more robust settings for control* options (especially a shorter controlPath value)
           controlMaster = "auto"; # use an existing ssh connection if available
           controlPath = "~/.ssh/master-%C";
           controlPersist = "10m";
+          hashKnownHosts = false;
+          serverAliveInterval = 0;
+          serverAliveCountMax = 3;
+          userKnownHostsFile = "~/.ssh/known_hosts";
         };
       };
     };
