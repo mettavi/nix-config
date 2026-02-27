@@ -90,7 +90,7 @@
           forwardAgent = false;
           # add ssh keys to ssh-agent when making the first connection
           # (helpful for caching passphrases and finding non-standard key names)
-          # NB: ssh-agent must be started, eg. using nixos startAgent option (enabled by default on darwin)
+          # NB: ssh-agent must be started, eg. using NIXOS startAgent option (enabled by default on darwin)
           # NB: this is not required if the keychain utility is installed
           addKeysToAgent = "no";
           compression = false;
