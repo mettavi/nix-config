@@ -8,8 +8,9 @@
 
 {
   imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
+    # customise the hardware scan config
+    # NB: hardware-configuration.nix is auto-generated during install and is imported in the mkNixos function
+    ./hardware-config-custom.nix
   ];
 
   users.users.${username} = {
