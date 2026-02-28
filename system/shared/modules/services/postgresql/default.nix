@@ -28,6 +28,7 @@ in
           log_destination = lib.mkForce "syslog"; # stderr, csvlog, syslog, and eventlog
           log_statement = "all"; # none, ddl, mod, all
           log_min_messages = "debug1"; # error, warning, notice, info, debug 1..5
+          port = 5432;
         };
       };
     };
