@@ -47,6 +47,7 @@ in
         # prefer systemd.tmpfiles option for hardened security (see below)
         consumptionDirIsPublic = false;
         # Configure a local PostgreSQL database server
+        # Sets PAPERLESS_DBENGINE = "postgresql";
         database.createLocally = true;
         dataDir = "${dataDir}";
         environmentFile = config.sops.secrets."users/${username}/paperless/ppless-${hostname}.env".path;
