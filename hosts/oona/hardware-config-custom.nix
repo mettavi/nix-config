@@ -122,6 +122,18 @@ in
     ];
   };
 
+  # mount the CachyOS partition
+  fileSystems."/mnt/cachyos" = {
+    device = "/dev/disk/by-uuid/79b393a3-adfe-4033-aeb6-0397aa8581e3";
+    fsType = "btrfs";
+    # NB: The default zstd compression level is 3.
+    # This option is used across all subvolumes on the btrfs device
+    options = commonOptions ++ [
+      "compress=zstd"
+      "subvol=@"
+    ];
+  };
+
   # mount the main Windows 11 Pro partition
   fileSystems."/mnt/win11pro" = {
     device = "/dev/disk/by-uuid/D02CB4C42CB4A73E";
