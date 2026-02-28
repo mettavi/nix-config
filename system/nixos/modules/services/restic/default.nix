@@ -31,7 +31,7 @@ let
   resticSecrets = {
     sopsFile = "${secrets_path}/secrets/apps/restic.yaml";
   };
-  snapshots = "/mnt/snapshots";
+  snapshots = "/mnt/.snapshots";
   vol_label = "${config.mettavi.system.services.restic.vol_label}";
 in
 {
