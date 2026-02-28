@@ -4,6 +4,7 @@
   config,
   lib,
   modulesPath,
+  username,
   ...
 }:
 let
@@ -106,9 +107,22 @@ in
   fileSystems."/home" = {
     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
     fsType = "btrfs";
+    # required on home directories for sops-nix to work with btrfs
+    # See https://github.com/Mic92/sops-nix/issues/721
+    neededForBoot = true;
     options = commonOptions ++ [
       "compress=zstd"
       "subvol=@home"
+    ];
+  };
+
+  fileSystems."/home/${username}" = {
+    device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+    fsType = "btrfs";
+    neededForBoot = true;
+    options = commonOptions ++ [
+      "compress=zstd"
+      "subvol=@homeadmin"
     ];
   };
 
