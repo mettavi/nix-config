@@ -136,6 +136,16 @@ in
     ];
   };
 
+  fileSystems."/home/${username}/.local/share/containers" = {
+    device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+    fsType = "btrfs";
+    neededForBoot = true;
+    options = commonOptions ++ [
+      "compress=zstd"
+      "subvol=@admincontainers"
+    ];
+  };
+
   fileSystems."/var/lib/libvirt/images" = {
     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
     fsType = "btrfs";
