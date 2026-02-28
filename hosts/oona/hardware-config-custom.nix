@@ -85,6 +85,24 @@ in
     ];
   };
 
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+    fsType = "btrfs";
+    options = commonOptions ++ [
+      "compress=zstd"
+      "subvol=@nix"
+    ];
+  };
+
+  fileSystems."/root" = {
+    device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+    fsType = "btrfs";
+    options = commonOptions ++ [
+      "compress=zstd"
+      "subvol=@roothome"
+    ];
+  };
+
   fileSystems."/home" = {
     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
     fsType = "btrfs";
