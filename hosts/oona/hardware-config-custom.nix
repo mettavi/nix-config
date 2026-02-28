@@ -112,12 +112,39 @@ in
     ];
   };
 
-  fileSystems."/nix" = {
+  fileSystems."/var/lib/libvirt/images" = {
     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
     fsType = "btrfs";
     options = commonOptions ++ [
       "compress=zstd"
-      "subvol=@nix"
+      "subvol=@libvirtimgs"
+    ];
+  };
+
+  fileSystems."/var/lib/containers" = {
+    device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+    fsType = "btrfs";
+    options = commonOptions ++ [
+      "compress=zstd"
+      "subvol=@vlcontainers"
+    ];
+  };
+
+  fileSystems."/var/log" = {
+    device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+    fsType = "btrfs";
+    options = commonOptions ++ [
+      "compress=zstd"
+      "subvol=@varlog"
+    ];
+  };
+
+  fileSystems."/var/tmp" = {
+    device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+    fsType = "btrfs";
+    options = commonOptions ++ [
+      "compress=zstd"
+      "subvol=@vartmp"
     ];
   };
 
