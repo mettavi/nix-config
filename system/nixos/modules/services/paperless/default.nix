@@ -93,7 +93,7 @@ in
         user = "paperless";
       };
 
-    # enable the postgresql module to allow additional configuration
+    # if using postgresql, enable the system postgresql module to allow additional configuration
     mettavi.system.services.postgresql.enable = config.services.paperless.database.createLocally;
 
     sops.secrets = {
