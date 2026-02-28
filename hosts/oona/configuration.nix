@@ -169,6 +169,7 @@
       # also enables the ollama module
       paperless-ngx.enable = true;
       pia-vpn-netmanager.enable = true;
+      restic.enable = true;
     };
     shell = {
       # see the host-specific keyboard config below
