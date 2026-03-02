@@ -23,12 +23,12 @@ in
         # use the wildcard feature of dnsmasq to easily configure hosts on localhost, rather than /etc/hosts
         # send *.oona to localhost, and also append .oona to single label hostnames
         address = "/oona/127.0.0.1";
-        # do not bind to the wildcard (127.x.x.x) of the listen-address, just the literal IP address
+        # bind to this address only rather than the wildcard (eg. 127.x.x.x)
         bind-interfaces = true;
         # listen on port 53, but bound to this custom address (to prevent conflict with resolve-d 127.0.0.53)
         listen-address = "127.0.0.113";
-        # do not refer to /etc/resolv.conf, to prevent an infinite loop with resolved
-        # NB: /etc/resolv.conf has a "stub" DNS address pointing to resolved
+        # do not refer to /etc/resolv.conf, to prevent an infinite loop with resolve-d
+        # NB: /etc/resolv.conf has a "stub" DNS address pointing to resolve-d
         no-resolv = true;
       };
     };
