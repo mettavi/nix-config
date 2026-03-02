@@ -4,7 +4,6 @@
   config,
   lib,
   modulesPath,
-  username,
   ...
 }:
 let
@@ -72,6 +71,25 @@ in
   #   }
   # ];
 
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/EE2C-39D6";
+    fsType = "vfat";
+    options = [
+      "fmask=0022"
+      "dmask=0022"
+    ];
+  };
+
+  fileSystems."/efi" = {
+    device = "/dev/disk/by-uuid/24B4-5D5C";
+    fsType = "vfat";
+    # set these permissions to prevent the "random seed file is world accessible which is a security hole" boot error
+    options = [
+      "fmask=0077"
+      "dmask=0077"
+    ];
+  };
+
   # NB: systemd may also auto-create var/lib/portables and var/lib/machines nested btrfs subvolumes
   # and the nixos installer or other programs may create nested subvolumes (eg. tmp, var/tmp, srv)
   # Nested subvolumes do not need to be added to /etc/fstab
@@ -116,33 +134,56 @@ in
     ];
   };
 
-  fileSystems."/home/${username}" = {
-    device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
-    fsType = "btrfs";
-    neededForBoot = true;
-    options = commonOptions ++ [
-      "compress=zstd"
-      "subvol=@homeadmin"
-    ];
-  };
+  # fileSystems."/home/${username}" = {
+  #   device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+  #   fsType = "btrfs";
+  #   neededForBoot = true;
+  #   options = commonOptions ++ [
+  #     "compress=zstd"
+  #     "subvol=@homeadmin"
+  #   ];
+  # };
 
-  fileSystems."/home/${username}/media" = {
-    device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
-    fsType = "btrfs";
-    neededForBoot = true;
-    options = commonOptions ++ [
-      "compress=zstd"
-      "subvol=@adminmedia"
-    ];
-  };
+  # fileSystems."/home/${username}/media" = {
+  #   device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+  #   fsType = "btrfs";
+  #   options = commonOptions ++ [
+  #     "compress=zstd"
+  #     "subvol=@adminmedia"
+  #   ];
+  # };
 
-  fileSystems."/home/${username}/.local/share/containers" = {
+  # fileSystems."/home/${username}/.local/share/containers" = {
+  #   device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+  #   fsType = "btrfs";
+  #   options = commonOptions ++ [
+  #     "compress=zstd"
+  #     "subvol=@admincontainers"
+  #   ];
+  # };
+
+  # fileSystems."/home/${username}/Downloads" = {
+  #   device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+  #   fsType = "btrfs";
+  #   options = commonOptions ++ [
+  #     "compress=zstd"
+  #     "subvol=@admindownloads"
+  #   ];
+  # };
+
+  #fileSystems."/var/lib" = {
+  #  device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+  #  fsType = "btrfs";
+  #  neededForBoot = true;
+  #  options = [ "subvol=@varlib" "compress=zstd" "noatime" ];
+  #};
+
+  fileSystems."/var/lib/containers" = {
     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
     fsType = "btrfs";
-    neededForBoot = true;
     options = commonOptions ++ [
       "compress=zstd"
-      "subvol=@admincontainers"
+      "subvol=@vlcontainers"
     ];
   };
 
@@ -155,12 +196,14 @@ in
     ];
   };
 
-  fileSystems."/var/lib/containers" = {
+  fileSystems."/var/lib/postgresql" = {
     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
     fsType = "btrfs";
+    # Ensures /var/lib is mounted first
+    depends = [ "/var/lib" ];
     options = commonOptions ++ [
       "compress=zstd"
-      "subvol=@vlcontainers"
+      "subvol=@vlpostgres"
     ];
   };
 
@@ -182,36 +225,17 @@ in
     ];
   };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/EE2C-39D6";
-    fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
-    ];
-  };
-
-  fileSystems."/efi" = {
-    device = "/dev/disk/by-uuid/24B4-5D5C";
-    fsType = "vfat";
-    # set these permissions to prevent the "random seed file is world accessible which is a security hole" boot error
-    options = [
-      "fmask=0077"
-      "dmask=0077"
-    ];
-  };
-
   # mount the CachyOS partition
-  fileSystems."/mnt/cachyos" = {
-    device = "/dev/disk/by-uuid/79b393a3-adfe-4033-aeb6-0397aa8581e3";
-    fsType = "btrfs";
-    # NB: The default zstd compression level is 3.
-    # This option is used across all subvolumes on the btrfs device
-    options = commonOptions ++ [
-      "compress=zstd"
-      "subvol=@"
-    ];
-  };
+  # fileSystems."/mnt/cachyos" = {
+  #   device = "/dev/disk/by-uuid/79b393a3-adfe-4033-aeb6-0397aa8581e3";
+  #   fsType = "btrfs";
+  # NB: The default zstd compression level is 3.
+  # This option is used across all subvolumes on the btrfs device
+  #   options = commonOptions ++ [
+  #     "compress=zstd"
+  #     "subvol=@"
+  #   ];
+  #  };
 
   # mount the main Windows 11 Pro partition
   fileSystems."/mnt/win11pro" = {
