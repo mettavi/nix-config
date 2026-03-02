@@ -35,6 +35,8 @@ in
 
     services.nginx = {
       enable = true;
+      # see https://github.com/paperless-ngx/paperless-ngx/discussions/11159
+      proxyTimeout = "600m";
       recommendedProxySettings = true;
       # Code adapted from https://jiaxiaodong.com/posts/computing/server/nix/nginx-reverse-proxy
       virtualHosts =
