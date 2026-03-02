@@ -53,6 +53,8 @@ in
         enable = true;
         address = "127.0.0.1";
         # configure Tika and Gotenberg to process Office and e-mail files with OCR
+        # NOTE: When adding Gmail Oauth, always use the localhost address, NOT the virtual host address
+        # eg. load the site at http://localhost:<port>, not http://pp.oona, to prevent a security error
         configureTika = true;
         consumptionDir = "${dataDir}/consume";
         # true sets permissions to 777
