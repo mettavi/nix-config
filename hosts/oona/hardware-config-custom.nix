@@ -90,6 +90,14 @@ in
     ];
   };
 
+  # CHECK BTRFS FILE CONSISTENCY
+  # check the status of the last scrub with "btrfs scrub status /" or in the journal
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "monthly";
+    fileSystems = [ "/" ];
+  };
+
   # NB: systemd may also auto-create var/lib/portables and var/lib/machines nested btrfs subvolumes
   # and the nixos installer or other programs may create nested subvolumes (eg. tmp, var/tmp, srv)
   # Nested subvolumes do not need to be added to /etc/fstab
