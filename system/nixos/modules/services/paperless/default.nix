@@ -33,18 +33,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.nginx.virtualHosts."pp.oona" = mkIf config.mettavi.system.services.hostdns.enable {
-      locations."/" = {
-        # override default nginx settings where necessary
-        # See https://github.com/paperless-ngx/paperless-ngx/wiki/Using-a-Reverse-Proxy-with-Paperless-ngx#nginx
-        extraConfig = ''
-          proxy_set_header Host $host:$server_port;
-          proxy_set_header X-Forwarded-Host $server_name;
-          add_header Referrer-Policy "strict-origin-when-cross-origin";
-        '';
-      };
-    };
-
     services.paperless =
       let
         dataDir = "/var/lib/paperless";
