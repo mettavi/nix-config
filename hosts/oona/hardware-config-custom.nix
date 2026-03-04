@@ -240,8 +240,9 @@ in
   # NB: The default zstd compression level is 3.
   # This option is used across all subvolumes on the btrfs device
   #   options = commonOptions ++ [
-  #     "compress=zstd"
   #     "subvol=@"
+  #     "compress=zstd"
+  #      "nofail"
   #   ];
   #  };
 
@@ -250,6 +251,7 @@ in
     device = "/dev/disk/by-uuid/D02CB4C42CB4A73E";
     fsType = "ntfs-3g";
     options = [
+      "nofail"
       "rw"
       "uid=1000"
       "windows_names"
