@@ -100,7 +100,7 @@ in
 
   # NB: systemd may also auto-create var/lib/portables and var/lib/machines nested btrfs subvolumes
   # and the nixos installer or other programs may create nested subvolumes (eg. tmp, var/tmp, srv)
-  # Nested subvolumes do not need to be added to /etc/fstab
+  # Nested subvolumes inherit the settings of their parents and do not need to be added to /etc/fstab
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
     fsType = "btrfs";
