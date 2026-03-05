@@ -264,6 +264,30 @@ in
     }
   ];
 
+  # SET NO COPY-ON-WRITE ON SPECIAL BTRFS SUBVOLUMES
+  # NB: 1) Setting this by a mount option will apply the option to ALL subvolumes on the partition.
+  #        This method (using systemd tmpfiles) allows it to be set per subvolume.
+  #     2) This is best used on an empty directory as it only applies to NEW files.
+  #     3) Disabling COW will also disable btrfs compression and integrity checksumming.
+  systemd.tmpfiles.rules = [
+    # type path mode user group (expiry)
+    "h /var/lib/libvirt/images - - - - +C"
+    "h /var/lib/postgresql - - - - +C"
+  ];
+
+  # make it certain that the above systemd tmpfiles rules are executed
+  # AFTER the btrfs subvolumes have been mounted
+  systemd.services.systemd-tmpfiles-setup = {
+    requires = [
+      "var-lib-libvirt-images.mount"
+      "var-lib-postgresql.mount"
+    ];
+    after = [
+      "var-lib-libvirt-images.mount"
+      "var-lib-postgresql.mount"
+    ];
+  };
+
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
 
   # Update the CPU microcode for AMD processors
