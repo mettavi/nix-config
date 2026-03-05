@@ -122,7 +122,6 @@ in
             "${sys-snapshots}/etc/group"
             "${sys-snapshots}/etc/subgid"
             "${sys-snapshots}/root"
-            "${sys-snapshots}/var/backup"
             "${sys-snapshots}/var/lib"
           ]
           ++ optionalString config.mettavi.system.services.paperless-ngx.enable [
