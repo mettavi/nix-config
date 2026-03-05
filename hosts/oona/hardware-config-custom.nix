@@ -264,6 +264,32 @@ in
     }
   ];
 
+  systemd.services."pre-btrfs-mount" = {
+    enable = false;
+    description = "Make directories to be mounted on btrfs subvolumes immutable to prevent them being written to when unmounted";
+    before = [
+      "-.mount"
+      "nix.mount"
+      "root.mount"
+      "var-lib-containers.mount"
+      "var-lib-libvirt-images.mount"
+      "var-lib-postgres.mount"
+      "var-log.mount"
+      "var-temp.mount"
+      "home.mount"
+    ];
+    path = with pkgs; [ e2fsprogs ];
+    script = ''
+      # see https://serverfault.com/a/570271
+      chattr +i / /nix /var/log /var/lib/containers /var/lib/libvirt/images /var/lib/postgresql /var/log /var/tmp /home
+    '';
+    serviceConfig = {
+      RemainAfterExit = true;
+      Type = "oneshot";
+    };
+    wantedBy = [ "multi-user.target" ];
+  };
+
   # SET NO COPY-ON-WRITE ON SPECIAL BTRFS SUBVOLUMES
   # NB: 1) Setting this by a mount option will apply the option to ALL subvolumes on the partition.
   #        This method (using systemd tmpfiles) allows it to be set per subvolume.
