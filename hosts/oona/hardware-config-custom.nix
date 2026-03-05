@@ -258,11 +258,7 @@ in
     ];
   };
 
-  swapDevices = [
-    {
-      device = "/dev/disk/by-uuid/adadd3b9-e1ca-415d-a8a0-0d06e711f71b";
-    }
-  ];
+# NB: The swap device is defined in the default hardware-configuration.nix
 
   systemd.services."pre-btrfs-mount" = {
     enable = false;
