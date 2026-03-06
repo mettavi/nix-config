@@ -263,7 +263,7 @@ in
     ];
   };
 
-# NB: The swap device is defined in the default hardware-configuration.nix
+  # NB: The swap device is defined in the default hardware-configuration.nix
 
   systemd.services."pre-btrfs-mount" = {
     enable = false;
@@ -295,7 +295,7 @@ in
   # NB: 1) Setting this by a mount option will apply the option to ALL subvolumes on the partition.
   #        This method (using systemd tmpfiles) allows it to be set per subvolume.
   #     2) This is best used on an empty directory as it only applies to NEW files.
-  #     3) Disabling COW will also disable btrfs compression and integrity checksumming.
+  #     3) Disabling COW will also disable the btrfs file integrity checksumming.
   systemd.tmpfiles.rules = [
     # type path mode user group (expiry)
     "h /var/lib/libvirt/images - - - - +C"
