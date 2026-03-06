@@ -274,9 +274,9 @@ in
       "root.mount"
       "var-lib-containers.mount"
       "var-lib-libvirt-images.mount"
-      "var-lib-postgres.mount"
+      "var-lib-postgresql.mount"
       "var-log.mount"
-      "var-temp.mount"
+      "var-tmp.mount"
       "home.mount"
     ];
     path = with pkgs; [ e2fsprogs ];
