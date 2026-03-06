@@ -39,10 +39,14 @@ in
       in
       {
         enable = true;
+        # NB: Some of the recommended settings for nginx for paperless do not work on the nixos module
+        # (https://github.com/paperless-ngx/paperless-ngx/wiki/Using-a-Reverse-Proxy-with-Paperless-ngx#nginx)
         address = "127.0.0.1";
         # configure Tika and Gotenberg to process Office and e-mail files with OCR
         # NOTE: When adding Gmail Oauth, always use the localhost address, NOT the virtual host address
         # eg. load the site at http://localhost:<port>, not http://pp.oona, to prevent a security error
+
+        # PS The Gmail Oauth client for paperless is set to "published" to increase the timeout on the refresh token
         configureTika = true;
         consumptionDir = "${dataDir}/consume";
         # true sets permissions to 777
