@@ -5,6 +5,7 @@
   lib,
   modulesPath,
   pkgs,
+  username,
   ...
 }:
 let
@@ -147,42 +148,42 @@ in
     ];
   };
 
-  # fileSystems."/home/${username}" = {
-  #   device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
-  #   fsType = "btrfs";
-  #   neededForBoot = true;
-  #   options = commonOptions ++ [
-  #     "compress=zstd"
-  #     "subvol=@homeadmin"
-  #   ];
-  # };
+   fileSystems."/home/${username}" = {
+     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+     fsType = "btrfs";
+     neededForBoot = true;
+     options = commonOptions ++ [
+       "compress=zstd"
+       "subvol=@adminhome"
+     ];
+   };
 
-  # fileSystems."/home/${username}/media" = {
-  #   device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
-  #   fsType = "btrfs";
-  #   options = commonOptions ++ [
-  #     "compress=zstd"
-  #     "subvol=@adminmedia"
-  #   ];
-  # };
+   fileSystems."/home/${username}/media" = {
+     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+     fsType = "btrfs";
+     options = commonOptions ++ [
+       "compress=zstd"
+       "subvol=@adminmedia"
+     ];
+   };
 
-  # fileSystems."/home/${username}/.local/share/containers" = {
-  #   device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
-  #   fsType = "btrfs";
-  #   options = commonOptions ++ [
-  #     "compress=zstd"
-  #     "subvol=@admincontainers"
-  #   ];
-  # };
+   fileSystems."/home/${username}/.local/share/containers" = {
+     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+     fsType = "btrfs";
+     options = commonOptions ++ [
+       "compress=zstd"
+       "subvol=@admincontainers"
+     ];
+   };
 
-  # fileSystems."/home/${username}/Downloads" = {
-  #   device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
-  #   fsType = "btrfs";
-  #   options = commonOptions ++ [
-  #     "compress=zstd"
-  #     "subvol=@admindownloads"
-  #   ];
-  # };
+   fileSystems."/home/${username}/Downloads" = {
+     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+     fsType = "btrfs";
+     options = commonOptions ++ [
+       "compress=zstd"
+       "subvol=@admindownloads"
+     ];
+   };
 
   #fileSystems."/var/lib" = {
   #  device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
