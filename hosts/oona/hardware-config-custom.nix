@@ -67,7 +67,8 @@ in
   fileSystems."/efi" = {
     device = "/dev/disk/by-uuid/24B4-5D5C";
     fsType = "vfat";
-    # set these permissions to prevent the "random seed file is world accessible which is a security hole" boot error
+    # set these permissions to prevent the "random seed file is world accessible
+    # which is a security hole" boot error
     options = [
       "fmask=0077"
       "dmask=0077"
