@@ -255,6 +255,7 @@ in
 
   # NB: The swap device is defined in the default hardware-configuration.nix
 
+  # MAKE DIRECTORIES THAT ARE TO BE MOUNTED ON BTRFS SUBVOLUMES IMMUTABLE
   systemd.services."pre-btrfs-mount" = {
     enable = false;
     description = "Make directories to be mounted on btrfs subvolumes immutable to prevent them being written to when unmounted";
