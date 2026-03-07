@@ -275,7 +275,9 @@ in
       "var-log.mount"
       "var-tmp.mount"
     ];
-    path = with pkgs; [ e2fsprogs ];
+    path = with pkgs; [
+      e2fsprogs # contains the chattr binary
+    ];
     script = ''
       # see https://serverfault.com/a/570271
       chattr +i / /nix /root /home \
