@@ -75,6 +75,29 @@ in
     ];
   };
 
+  # mount the HOME subvolume of the CachyOS partition
+  fileSystems."/mnt/cachyos/home" = {
+    device = "/dev/disk/by-uuid/2a1020bc-0b4e-4b74-a373-8e624aec1e11";
+    fsType = "btrfs";
+    options = commonOptions ++ [
+      "subvol=@home"
+      "compress=zstd"
+      "nofail"
+    ];
+  };
+
+  # mount the main Windows 11 Pro partition
+  fileSystems."/mnt/win11pro" = {
+    device = "/dev/disk/by-uuid/D02CB4C42CB4A73E";
+    fsType = "ntfs-3g";
+    options = [
+      "nofail"
+      "rw"
+      "uid=1000"
+      "windows_names"
+    ];
+  };
+
   # CHECK BTRFS FILE CONSISTENCY
   # check the status of the last scrub with "btrfs scrub status /" or in the journal
   services.btrfs.autoScrub = {
@@ -227,29 +250,6 @@ in
     options = commonOptions ++ [
       "compress=zstd"
       "subvol=@vartmp"
-    ];
-  };
-
-  # mount the HOME subvolume of the CachyOS partition
-  fileSystems."/mnt/cachyos/home" = {
-    device = "/dev/disk/by-uuid/2a1020bc-0b4e-4b74-a373-8e624aec1e11";
-    fsType = "btrfs";
-    options = commonOptions ++ [
-      "subvol=@home"
-      "compress=zstd"
-      "nofail"
-    ];
-  };
-
-  # mount the main Windows 11 Pro partition
-  fileSystems."/mnt/win11pro" = {
-    device = "/dev/disk/by-uuid/D02CB4C42CB4A73E";
-    fsType = "ntfs-3g";
-    options = [
-      "nofail"
-      "rw"
-      "uid=1000"
-      "windows_names"
     ];
   };
 
