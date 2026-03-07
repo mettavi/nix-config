@@ -55,28 +55,6 @@ in
     "ntfs" # required to mount ntfs partitions
   ];
 
-  # Asus kernel patches
-  #  boot.kernelPatches = let
-  #     version = config.boot.kernelPackages.kernel.version;
-  # in [
-  #   {
-  #     name = "g14";
-  #     patch = builtins.fetchurl {
-  # url = "https://gitlab.com/dragonn/linux-g14/-/raw/${lib.versions.majorMinor version}/asus-patch-series.patch";
-  # url = "https://gitlab.com/asus-linux/fedora-kernel/-/raw/rog-${lib.versions.majorMinor version}/asus-patch-series.patch";
-  #        url = "https://gitlab.com/asus-linux/linux-g14/-/raw/${lib.versions.majorMinor version}/asus-patch-series.patch";
-  #       sha256 = "0fgbv87z7jyi6f2y0mm246pv7p0nhvznpbmdlf04gl9xinvs2g5m";
-  #     };
-  # structuredExtraConfig = with lib.kernel; {
-  #   ASUS_ARMOURY = module;
-  # ASUS_WMI_BIOS = yes;
-  # };
-  #     extraMeta = {
-  #       branch = lib.versions.majorMinor version;
-  #     };
-  #   }
-  # ];
-
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/EE2C-39D6";
     fsType = "vfat";
