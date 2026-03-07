@@ -80,9 +80,9 @@ in
     device = "/dev/disk/by-uuid/2a1020bc-0b4e-4b74-a373-8e624aec1e11";
     fsType = "btrfs";
     options = commonOptions ++ [
-      "subvol=@home"
       "compress=zstd"
       "nofail"
+      "subvol=@home"
     ];
   };
 
