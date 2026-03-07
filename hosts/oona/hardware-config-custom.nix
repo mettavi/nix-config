@@ -82,9 +82,17 @@ in
     fileSystems = [ "/" ];
   };
 
-  # NB: systemd may also auto-create var/lib/portables and var/lib/machines nested btrfs subvolumes
-  # and the nixos installer or other programs may create nested subvolumes (eg. tmp, var/tmp, srv)
-  # Nested subvolumes inherit the settings of their parents and do not need to be added to /etc/fstab
+  ################ BTRFS SUBVOLUMES ###################
+  # To make a new TOP-LEVEL btrfs subvolume, mount the hidden root subvolume first:
+  # eg. sudo mount /dev/nvme0n1p7 /mnt/btrfs && sudo btrfs subvolume create @subvolname
+  # To easily make a NESTED btrfs subvolume, use the SAME NAME (without an @) as the existing directory:
+  # eg. mv /var/cache /var/cache.bak && sudo btrfs subvolume create /var/cache
+  # && cp -a --reflink=always /var/cache.bak/. /var/cache/
+  # Such nested subvolumes inherit the settings of their parents and do not need to be added to /etc/fstab
+  # NB: systemd (eg. /var/lib/portables and /var/lib/machines) and the os installer/other programs
+  # (eg. /tmp, /var/tmp, /srv) may also auto-create nested btrfs subvolumes
+  #####################################################
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
     fsType = "btrfs";
