@@ -155,6 +155,14 @@ in
       redis-paperless.wantedBy = mkForce [ ];
       # postgresql.target.wantedBy = mkForce [ ];
     };
+    # if the exporter schedule is missed, run it when the system is online
+    systemd.timers = {
+      paperless-exporter = {
+        timerConfig = {
+          Persistent = true;
+        };
+      };
+    };
     # create the Trash directory
     systemd.tmpfiles.rules = [
       # type path mode user group (expiry)
