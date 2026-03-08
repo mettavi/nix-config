@@ -312,6 +312,7 @@ in
   #        This method (using systemd tmpfiles) allows it to be set per subvolume.
   #     2) This is best used on an empty directory as it only applies to NEW files.
   #     3) Disabling COW will also disable btrfs file integrity checksumming.
+
   systemd.tmpfiles.rules = [
     # type path mode user group (expiry)
     "h /var/lib/libvirt/images - - - - +C"
