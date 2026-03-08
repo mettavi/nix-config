@@ -154,7 +154,9 @@ in
                 format = optionalString (partContent.format != "") "${partContent.format}";
                 mountpoint = optionalString (partContent.mountPoint != "") "${partContent.mountPoint}";
                 mountOptions =
-                  optionals (partContent.mountOptions != "") "${partContent.commonOptions}"
+                  optionals (
+                    partContent.mountOptions != "" || partContent.commonOptions != ""
+                  ) "${partContent.commonOptions}"
                   ++ "${partContent.mountOptions}";
                 subvolumes = mapAttrs (
                   subvol: subvolCfg:
