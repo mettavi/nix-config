@@ -27,7 +27,10 @@ in
             description = "The label of the physical disk";
           };
           partScheme = mkOption {
-            type = str;
+            type = enum [
+              "gpt"
+              "msdos"
+            ];
             description = "The disk partitioning scheme to use";
             default = "gpt";
           };
