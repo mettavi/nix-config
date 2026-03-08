@@ -107,7 +107,7 @@
     serviceConfig = {
       Type = "simple";
       ExecStart = lib.getExe' pkgs.asusctl "rog-control-center";
-      Restart = "always";
+      Restart = "on-failure";
       RestartSec = 1;
       TimeoutStopSec = 10;
       ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
