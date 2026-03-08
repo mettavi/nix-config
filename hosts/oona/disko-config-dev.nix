@@ -137,45 +137,5 @@ in
         };
       };
     };
-
-    disko.devices.disk = mapAttrs (disk: diskCfg: {
-      "${diskCfg.name}" = {
-        type = "disk";
-        device = "${diskCfg.device}";
-        content = {
-          type = "${diskCfg.partScheme}";
-          partitions = mapAttrs (part: partCfg: {
-            "${partCfg.name}" = {
-              label = "${partCfg.label}";
-              name = "${partCfg.name}";
-              size = optionalString (cfg.disks.name.partitions.name.size != "") "${partCfg.size}";
-              type = optionalString (cfg.disks.name.partitions.name.partType != "") "${partCfg.partType}";
-              content = mapAttrs (content: contentCfg: {
-                type = optionalString (cfg.disks.name.partitions.name.content.type != "") "${contentCfg.type}";
-                extraArgs = optionals (cfg.disks.name.partitions.name.content.type != "") "${contentCfg.extraArgs}";
-                format =
-                  optionalString (cfg.disks.name.partitions.name.content.format != "")
-                    "${contentCfg.format}";
-                mountpoint = optionalString (
-                  cfg.disks.name.partitions.name.content.mountPoint != ""
-                ) "${contentCfg.mountPoint}";
-                mountOptions =
-                  optionals (cfg.disks.name.partitions.name.content.mountOptions != "") "${partCfg.commonOptions}"
-                  ++ "${contentCfg.mountOptions}";
-                subvolumes = mapAttrs (
-                  subvol: subvolCfg:
-                  mkIf (cfg.disks.name.partitions.name.content.btrfsSubs != "") {
-                    "${subvolCfg.subName}" = {
-                      mountpoint = "${subvolCfg.mountPoint}";
-                      mountOptions = "${contentCfg.commonBtrfsOptions}" ++ "${subvolCfg.mountOptions}";
-                    };
-                  }
-                ) cfg.disks.partitions.name.content.btrfsSubs;
-              }) cfg.disks.name.partitions.name.content;
-            };
-          }) cfg.disks.name.partitions;
-        };
-      };
-    }) cfg.disks;
   };
 }
