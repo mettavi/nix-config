@@ -20,7 +20,7 @@ in
         options = {
           device = mkOption {
             type = str;
-            description = "The device path under /dev/disk/by-param/id (or /dev/diskid)";
+            description = "The device path (eg. /dev/nvme0n1)";
           };
           name = mkOption {
             type = str;
