@@ -1,0 +1,181 @@
+{
+  config,
+  lib,
+  username,
+  ...
+}:
+with lib;
+let
+  cfg = config.mettavi.system.devices.disko;
+in
+{
+  config = mkIf cfg.enable {
+    mettavi.system.devices.disko.disks = {
+      "nvme0n1" = {
+        device = "/dev/nvme0n1";
+        name = "nvme0n1";
+        partitions = {
+          "ESP" = {
+            label = "EFI";
+            name = "ESP";
+            partType = "EF00"; # EFI System Partition
+            content = {
+              format = "vfat";
+              mountPoint = "/efi";
+              mountOptions = [
+                "fmask=0022"
+                "dmask=0022"
+              ];
+            };
+          };
+          "BOOT" = {
+            label = "BOOT";
+            name = "BOOT";
+            partType = "EA00"; # XBOOTLDR partition
+            content = {
+              format = "vfat";
+              mountPoint = "/boot";
+              mountOptions = [
+                "fmask=0077"
+                "dmask=0077"
+              ];
+            };
+          };
+          "swap" = {
+            label = "swap";
+            name = "swap";
+            size = "8G";
+            content = {
+              type = "swap";
+            };
+          };
+          "win11pro" = {
+            label = "win11pro";
+            name = "win11pro";
+            content = {
+              type = "ntfs";
+              mountPoint = "/mnt/win11pro";
+              mountOptions = [
+                "nofail"
+                "rw"
+                "uid=1000"
+                "windows_names"
+              ];
+            };
+          };
+          "primary" = {
+            label = "primary";
+            name = "primary";
+            content = {
+              type = "btrfs";
+              btrfsSubs = {
+                "/" = {
+                  mountPoint = "/";
+                  subName = "@root";
+                };
+                "/nix" = {
+                  mountPoint = "/nix";
+                  subName = "@nix";
+                };
+                "/root" = {
+                  mountPoint = "/root";
+                  subName = "@roothome";
+                };
+                "/home" = {
+                  mountPoint = "/home";
+                  subName = "@home";
+                };
+                "home/${username}" = {
+                  mountPoint = "/home/${username}";
+                  subName = "@adminhome";
+                };
+                "home/${username}" = {
+                  mountPoint = "/home/${username}/.local/share/containers";
+                  subName = "@admincontainers";
+                };
+                "/home/${username}/Downloads" = {
+                  mountPoint = "/home/${username}/Downloads";
+                  subName = "@admindownloads";
+                };
+                "/home/${username}/Downloads" = {
+                  mountPoint = "/home/${username}/Downloads";
+                  mountOptions = [
+                    "x-gvfs-hide"
+                  ];
+                  subName = "@admindownloads";
+                };
+                "/home/${username}/media" = {
+                  mountPoint = "/home/${username}/media";
+                  mountOptions = [
+                    "x-gvfs-hide"
+                  ];
+                  subName = "@adminmedia";
+                };
+                "/var/lib/containers" = {
+                  mountPoint = "/var/lib/containers";
+                  subName = "@vlcontainers";
+                };
+                "/var/lib/libvirt/images" = {
+                  mountPoint = "/var/lib/libvirt/images";
+                  subName = "@libvirtimgs";
+                };
+                "/var/lib/postgresql" = {
+                  mountPoint = "/var/lib/postgresql";
+                  subName = "@vlpostgres";
+                };
+                "/var/log" = {
+                  mountPoint = "/var/log";
+                  subName = "@varlog";
+                };
+                "/var/tmp" = {
+                  mountPoint = "/var/tmp";
+                  subName = "@vartmp";
+                };
+              };
+            };
+          };
+        };
+      };
+    };
+
+    disko.devices.disk = mapAttrs (disk: diskCfg: {
+      "${diskCfg.name}" = {
+        type = "disk";
+        device = "${diskCfg.device}";
+        content = {
+          type = "${diskCfg.partScheme}";
+          partitions = mapAttrs (part: partCfg: {
+            "${partCfg.name}" = {
+              label = "${partCfg.label}";
+              name = "${partCfg.name}";
+              size = optionalString (cfg.disks.name.partitions.name.size != "") "${partCfg.size}";
+              type = optionalString (cfg.disks.name.partitions.name.partType != "") "${partCfg.partType}";
+              content = mapAttrs (content: contentCfg: {
+                type = optionalString (cfg.disks.name.partitions.name.content.type != "") "${contentCfg.type}";
+                extraArgs = optionals (cfg.disks.name.partitions.name.content.type != "") "${contentCfg.extraArgs}";
+                format =
+                  optionalString (cfg.disks.name.partitions.name.content.format != "")
+                    "${contentCfg.format}";
+                mountpoint = optionalString (
+                  cfg.disks.name.partitions.name.content.mountPoint != ""
+                ) "${contentCfg.mountPoint}";
+                mountOptions =
+                  optionals (cfg.disks.name.partitions.name.content.mountOptions != "") "${partCfg.commonOptions}"
+                  ++ "${contentCfg.mountOptions}";
+                subvolumes = mapAttrs (
+                  subvol: subvolCfg:
+                  mkIf (cfg.disks.name.partitions.name.content.btrfsSubs != "") {
+                    "${subvolCfg.subName}" = {
+                      mountpoint = "${subvolCfg.mountPoint}";
+                      mountOptions = "${contentCfg.commonBtrfsOptions}" ++ "${subvolCfg.mountOptions}";
+                    };
+                  }
+                ) cfg.disks.partitions.name.content.btrfsSubs;
+              }) cfg.disks.name.partitions.name.content;
+            };
+          }) cfg.disks.name.partitions;
+        };
+      };
+    }) cfg.disks;
+  };
+}
