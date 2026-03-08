@@ -74,8 +74,8 @@
       # explicitly set to use the package patched locally with an overlay
       package = pkgs.asusctl;
     };
-    # this option is already enabled by the asusd module above
-    # services.supergfxd.enable = true;
+    # do not install this with the asusd module as it is now deprecated
+    supergfxd.enable = false;
     xserver = {
       # don't install Xserver by default
       enable = false;
