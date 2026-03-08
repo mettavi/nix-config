@@ -45,29 +45,27 @@ in
       type =
         with lib.types;
         attrsOf (
-          submodule (
-            { job, ... }:
-            {
-              options = {
-                label = mkOption {
-                  type = str;
-                  description = "The short name of the backup job";
-                };
-                exclusions = mkOption {
-                  type = listOf str;
-                  description = "A list of paths to exclude from the backup";
-                };
-                paths = mkOption {
-                  type = listOf path;
-                  description = "A list of paths to backup";
-                };
-                user = mkOption {
-                  type = str;
-                  description = "The user to run the backup job as";
-                };
+          submodule {
+            options = {
+              label = mkOption {
+                type = str;
+                description = "The short name of the backup job";
               };
-            }
-          )
+              exclusions = mkOption {
+                type = listOf str;
+                description = "A list of paths to exclude from the backup";
+              };
+              paths = mkOption {
+                type = listOf path;
+                description = "A list of paths to backup";
+              };
+              user = mkOption {
+                type = str;
+                description = "The user to run the backup job as";
+              };
+            };
+          }
+
         );
     };
     vol_label = mkOption {
