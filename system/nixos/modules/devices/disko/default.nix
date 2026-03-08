@@ -95,7 +95,7 @@ in
                       };
                       type = mkOption {
                         type = str;
-                        description = "The content block partition type";
+                        description = "The type that is set within the partition's content block";
                       };
                       btrfsExtraArgs = mkOption {
                         type = listOf str;
