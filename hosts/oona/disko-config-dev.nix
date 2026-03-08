@@ -28,9 +28,9 @@ in
               ];
             };
           };
-          "BOOT" = {
-            label = "BOOT";
-            name = "BOOT";
+          "boot" = {
+            label = "boot";
+            name = "boot";
             partType = "EA00"; # XBOOTLDR partition
             content = {
               format = "vfat";
@@ -50,7 +50,6 @@ in
             };
           };
           "win11pro" = {
-            label = "win11pro";
             name = "win11pro";
             content = {
               type = "ntfs";
@@ -63,9 +62,9 @@ in
               ];
             };
           };
-          "primary" = {
-            label = "primary";
-            name = "primary";
+          "nixos" = {
+            label = "nixos";
+            name = "nixos";
             content = {
               type = "btrfs";
               btrfsSubs = {
