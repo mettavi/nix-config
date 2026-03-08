@@ -55,6 +55,8 @@ in
                 };
                 partType = mkOption {
                   type = str;
+                  # See https://wiki.archlinux.org/title/GPT_fdisk#Partition_type for a list
+                  # useful for less common and boot partition types
                   description = "The type that is set above the partition's content block";
                 };
                 content = mkOption {
