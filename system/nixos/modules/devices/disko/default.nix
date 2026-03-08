@@ -44,7 +44,7 @@ in
                 };
                 label = mkOption {
                   type = str;
-                  description = "Define the partition label";
+                  description = "Set the LABEL of the partition";
                 };
                 name = mkOption {
                   type = str;
@@ -137,7 +137,7 @@ in
             type = "${diskCfg.partScheme}";
             partitions = mapAttrs (part: partCfg: {
               "${partCfg.name}" = {
-                label = "${partCfg.label}";
+                label = optionalString (cfg.disks.name.partitions.name.label != "") "${partCfg.label}";
                 name = "${partCfg.name}";
                 size = optionalString (cfg.disks.name.partitions.name.size != "") "${partCfg.size}";
                 type = optionalString (cfg.disks.name.partitions.name.partType != "") "${partCfg.partType}";
