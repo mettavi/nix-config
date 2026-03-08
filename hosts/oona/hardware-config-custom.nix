@@ -256,39 +256,54 @@ in
   # NB: The swap device is defined in the default hardware-configuration.nix
 
   # MAKE DIRECTORIES THAT ARE TO BE MOUNTED ON BTRFS SUBVOLUMES IMMUTABLE
-  systemd.services."pre-btrfs-mount" = {
-    enable = false;
-    description = "Make directories to be mounted on btrfs subvolumes immutable to prevent them being written to when unmounted";
-    # ensure this is set BEFORE the btrfs subvolume is mounted
-    before = [
-      "-.mount"
-      "home.mount"
-      "home-${username}.mount"
-      "home-${username}-.local-share-containers.mount"
-      "home-${username}-Downloads.mount"
-      "home-${username}-media.mount"
-      "nix.mount"
-      "root.mount"
-      "var-lib-containers.mount"
-      "var-lib-libvirt-images.mount"
-      "var-lib-postgresql.mount"
-      "var-log.mount"
-      "var-tmp.mount"
-    ];
-    path = with pkgs; [
-      e2fsprogs # contains the chattr binary
-    ];
-    script = ''
-      # see https://serverfault.com/a/570271
-      chattr +i / /nix /root /home \
-      /var/lib/containers /var/lib/libvirt/images /var/lib/postgresql /var/log /var/tmp \ 
-      /home/${username} /home/${username}/.local/share/containers /home/${username}/Downloads /home/${username}/media
-    '';
-    serviceConfig = {
-      RemainAfterExit = true;
-      Type = "oneshot";
+  systemd = {
+    services."pre-btrfs-mount" = {
+      enable = true;
+      description = "Set immutable attribute on mount point";
+      # ensure this is set BEFORE the btrfs subvolume is mounted
+      before = [
+        "-.mount"
+        # "home.mount"
+        # "home-${username}.mount"
+        # "home-${username}-.local-share-containers.mount"
+        # "home-${username}-Downloads.mount"
+        # "home-${username}-media.mount"
+        # "nix.mount"
+        # "root.mount"
+        # "var-lib-containers.mount"
+        # "var-lib-libvirt-images.mount"
+        # "var-lib-postgresql.mount"
+        # "var-log.mount"
+        # "var-tmp.mount"
+      ];
+      path = with pkgs; [
+        e2fsprogs # contains the chattr binary
+      ];
+      script = ''
+        # see https://serverfault.com/a/570271
+        chattr +i / 
+        # /nix /root /home \
+        # /var/lib/containers /var/lib/libvirt/images /var/lib/postgresql /var/log /var/tmp \ 
+        # /home/${username} /home/${username}/.local/share/containers /home/${username}/Downloads /home/${username}/media
+      '';
+      serviceConfig = {
+        RemainAfterExit = true;
+        Type = "oneshot";
+      };
+      unitConfig = {
+        DefaultDependencies = false;
+      };
+      wantedBy = [ "multi-user.target" ];
     };
-    wantedBy = [ "multi-user.target" ];
+    # ensure all btrfs subvolumes are mounted AFTER the chattr service (see above)
+    mounts = [
+      {
+        after = [ "pre-btrfs-mount.service" ];
+        requires = [ "pre-btrfs-mount.service" ];
+        where = "/";
+        what = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
+      }
+    ];
   };
 
   ######################################################
