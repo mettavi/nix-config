@@ -54,13 +54,8 @@ in
                   description = "The name of the partition";
                 };
                 partType = mkOption {
-                  type = enum [
-                    "primary"
-                    "logical"
-                    "extended"
-                  ];
-                  description = "The global partition type";
-                  default = "primary";
+                  type = str;
+                  description = "The type that is set above the partition's content block";
                 };
                 content = mkOption {
                   type = attrsOf (submodule {
