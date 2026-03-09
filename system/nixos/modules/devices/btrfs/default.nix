@@ -23,6 +23,7 @@ in
       with lib.types;
       attrsOf (submodule {
         options = {
+          enable = mkEnableOption "Enable this btrfs subvolume";
           label = mkOption {
             type = str;
             description = "The name of the btrfs subvolume";
