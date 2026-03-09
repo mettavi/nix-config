@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  username,
   ...
 }:
 with lib;
@@ -47,6 +48,89 @@ in
       enable = true;
       interval = "monthly";
       fileSystems = [ "/" ];
+    };
+
+    # configure default btrfs subvolumes
+    cfg.subvolumes = {
+      "@root" = {
+        enable = mkDefault true;
+        label = "@root";
+        mountpoint = "/";
+      };
+      "@nix" = {
+        enable = mkDefault true;
+        label = "@nix";
+        mountpoint = "/nix";
+      };
+      "@roothome" = {
+        enable = mkDefault true;
+        label = "@roothome";
+        mountpoint = "/root";
+      };
+      "@vlcontainers" = {
+        enable = mkDefault true;
+        label = "@vlcontainers";
+        mountpoint = "/var/lib/containers";
+      };
+      "@libvirtimgs" = {
+        enable = mkDefault true;
+        label = "@libvirtimgs";
+        mountpoint = "/var/lib/libvirt/images";
+      };
+      "@vlpostgres" = {
+        enable = mkDefault true;
+        label = "@vlpostgres";
+        mountpoint = "/var/lib/postgresql";
+      };
+      "@varlog" = {
+        enable = mkDefault true;
+        label = "@varlog";
+        mountpoint = "/var/log";
+      };
+      "@vartmp" = {
+        enable = mkDefault true;
+        label = "@vartmp";
+        mountpoint = "/var/tmp";
+      };
+      "@adminhome" = {
+        enable = mkDefault true;
+        label = "@adminhome";
+        mountpoint = "/home/${username}";
+      };
+      "@admincontainers" = {
+        enable = mkDefault true;
+        label = "@admincontainers";
+        mountpoint = "/home/${username}/.local/share/containers";
+      };
+      "@admindownloads" = {
+        enable = mkDefault true;
+        label = "@admindownloads";
+        mountpoint = "/home/${username}/Downloads";
+        # hide in the Nautilus devices menu
+        mountOptions = [ "x-gvfs-hide" ];
+      };
+      "@adminmedia" = {
+        enable = mkDefault true;
+        label = "@adminmedia";
+        mountpoint = "/home/${username}/media";
+        mountOptions = [ "x-gvfs-hide" ];
+      };
+    };
+    fileSystems = {
+      "/var/lib/postgresql" = {
+        device = "/dev/disk/by-label/nixos";
+        # Ensures /var/lib is mounted first
+        depends = [ "/var/lib" ];
+      };
+      # ensure the home subvolume is mounted early for sops-nix
+      "/home" = {
+        device = "/dev/disk/by-label/nixos";
+        neededForBoot = true;
+      };
+      "/home/${username}" = {
+        device = "/dev/disk/by-label/nixos";
+        neededForBoot = true;
+      };
     };
   };
 }
