@@ -35,7 +35,11 @@ in
         with lib.types;
         attrsOf (submodule {
           options = {
-            enable = mkEnableOption "Enable this btrfs subvolume";
+            enable = mkOption {
+              type = bool;
+              default = true;
+              description = "Enable this btrfs subvolume";
+            };
             label = mkOption {
               type = str;
               description = "The name of the btrfs subvolume";
