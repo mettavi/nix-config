@@ -14,6 +14,29 @@ in
       default = false;
       description = "Create and configure a btrfs partition using disko";
     };
+    commonMountOptions = mkOption {
+      type = listOf str;
+      default = [ "compression=zstd" ];
+      description = "Mountpoint options common to all subvolumes";
+    };
+    subvolumes =
+      with lib.types;
+      attrsOf (submodule {
+        options = {
+          label = mkOption {
+            type = str;
+            description = "The name of the btrfs subvolume";
+          };
+          mountpoint = mkOption {
+            type = str;
+            description = "Where to mount the btrfs subvolume";
+          };
+          mountOptions = mkOption {
+            type = listOf str;
+            description = "Mount options specific to a specific subvolume";
+          };
+        };
+      });
   };
 
   config = mkIf cfg.enable {
