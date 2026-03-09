@@ -28,19 +28,19 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
     fsType = "btrfs";
-    options = [ "subvol=root" ];
+    options = [ "subvol=@root" ];
   };
 
   fileSystems."/nix" = {
     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
     fsType = "btrfs";
-    options = [ "subvol=nix" ];
+    options = [ "subvol=@nix" ];
   };
 
   fileSystems."/home" = {
     device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
     fsType = "btrfs";
-    options = [ "subvol=home" ];
+    options = [ "subvol=@home" ];
   };
 
   fileSystems."/efi" = {
