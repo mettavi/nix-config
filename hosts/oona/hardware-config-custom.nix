@@ -14,10 +14,6 @@ let
     "discard"
     "noatime"
   ];
-  btrfsOptions = [
-    "x-systemd.requires=pre-btrfs-mount.service"
-    "x-systemd.after=pre-btrfs-mount.service"
-  ];
 in
 {
   imports = [
