@@ -1,19 +1,13 @@
 {
-  config,
-  lib,
   username,
   ...
 }:
-with lib;
-let
-  cfg = config.mettavi.system.devices.disko;
-in
 {
-  config = mkIf cfg.enable {
-    mettavi.system.devices.disko.disks = {
-      "nvme0n1" = {
-        device = "/dev/nvme0n1";
-        name = "nvme0n1";
+  mettavi.system.devices.disko.disks = {
+    "nvme0n1" = {
+      device = "/dev/nvme0n1";
+      name = "nvme0n1";
+      content = {
         partitions = {
           "ESP" = {
             label = "EFI";
@@ -26,7 +20,7 @@ in
                 "fmask=0022"
                 "dmask=0022"
               ];
-              type = "filesystem";
+              contentType = "filesystem";
             };
           };
           "boot" = {
@@ -40,7 +34,7 @@ in
                 "fmask=0077"
                 "dmask=0077"
               ];
-              type = "filesystem";
+              contentType = "filesystem";
             };
           };
           "swap" = {
@@ -48,13 +42,13 @@ in
             name = "swap";
             size = "8G";
             content = {
-              type = "swap";
+              contentType = "swap";
             };
           };
           "win11pro" = {
             name = "win11pro";
             content = {
-              type = "ntfs";
+              contentType = "ntfs";
               mountPoint = "/mnt/win11pro";
               mountOptions = [
                 "nofail"
@@ -68,7 +62,7 @@ in
             label = "nixos";
             name = "nixos";
             content = {
-              type = "btrfs";
+              contentType = "btrfs";
               btrfsSubs = {
                 "/" = {
                   mountPoint = "/";
@@ -90,13 +84,9 @@ in
                   mountPoint = "/home/${username}";
                   subName = "@adminhome";
                 };
-                "home/${username}" = {
+                "home/${username}/.local/share/containers" = {
                   mountPoint = "/home/${username}/.local/share/containers";
                   subName = "@admincontainers";
-                };
-                "/home/${username}/Downloads" = {
-                  mountPoint = "/home/${username}/Downloads";
-                  subName = "@admindownloads";
                 };
                 "/home/${username}/Downloads" = {
                   mountPoint = "/home/${username}/Downloads";
