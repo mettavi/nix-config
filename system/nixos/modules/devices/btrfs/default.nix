@@ -11,11 +11,27 @@
 {
   config,
   lib,
+  pkgs,
   username,
   ...
 }:
 with lib;
 let
+  mountUnits = [
+    "-.mount"
+    "nix.mount"
+    "root.mount"
+    "var-lib-containers.mount"
+    "var-lib-libvirt-images.mount"
+    "var-lib-postgresql.mount"
+    "var-log.mount"
+    "var-tmp.mount"
+    "home.mount"
+    "home-${username}.mount"
+    "home-${username}-.local-share-containers.mount"
+    "home-${username}-Downloads.mount"
+    "home-${username}-media.mount"
+  ];
   cfg = config.mettavi.system.devices.btrfs;
 in
 {
@@ -162,10 +178,9 @@ in
         ];
         script = ''
           # see https://serverfault.com/a/570271
-          chattr +i / 
-          # /nix /root /home \
-          # /var/lib/containers /var/lib/libvirt/images /var/lib/postgresql /var/log /var/tmp \ 
-          # /home/${username} /home/${username}/.local/share/containers /home/${username}/Downloads /home/${username}/media
+          chattr +i / /nix /root /home \
+          /var/lib/containers /var/lib/libvirt/images /var/lib/postgresql /var/log /var/tmp \ 
+          /home/${username} /home/${username}/.local/share/containers /home/${username}/Downloads /home/${username}/media
         '';
         serviceConfig = {
           RemainAfterExit = true;
