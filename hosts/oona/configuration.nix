@@ -193,6 +193,7 @@
       packages = with pkgs; [
         # Simple GPU Profile switcher for ASUS laptops using Supergfxctl
         gnomeExtensions.gpu-supergfxctl-switch
+        goldendict-ng # Advanced multi-dictionary lookup program
       ];
       sessionVariables = {
         # required for electron apps, which don't read the mimeapps.list file
