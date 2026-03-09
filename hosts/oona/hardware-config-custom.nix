@@ -94,14 +94,6 @@ in
     ];
   };
 
-  # CHECK BTRFS FILE CONSISTENCY
-  # check the status of the last scrub with "btrfs scrub status /" or in the journal
-  services.btrfs.autoScrub = {
-    enable = true;
-    interval = "monthly";
-    fileSystems = [ "/" ];
-  };
-
   ################ BTRFS SUBVOLUMES ###################
   # To make a new TOP-LEVEL btrfs subvolume, mount the hidden root subvolume first:
   # eg. sudo mount /dev/nvme0n1p7 /mnt/btrfs && sudo btrfs subvolume create @subvolname
