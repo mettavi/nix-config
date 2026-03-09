@@ -177,37 +177,14 @@ in
         wantedBy = [ "multi-user.target" ];
       };
       # ensure all btrfs subvolumes are mounted AFTER the chattr service (see above)
-      mounts =
-        let
-          mountUnits = [
-            "-.mount"
-            # "nix.mount"
-            # "root.mount"
-            # "var-lib-containers.mount"
-            # "var-lib-libvirt-images.mount"
-            # "var-lib-postgresql.mount"
-            # "var-log.mount"
-            # "var-tmp.mount"
-            # "home.mount"
-            # "home-${username}.mount"
-            # "home-${username}-.local-share-containers.mount"
-            # "home-${username}-Downloads.mount"
-            # "home-${username}-media.mount"
-          ];
-        in
-        [
-          builtins.listToAttrs
-          (map (munit: {
-            munit = {
-              after = [ "pre-btrfs-mount.service" ];
-              requires = [ "pre-btrfs-mount.service" ];
-              where = builtins.replaceStrings [ "//" ] [ "/" ] (
-                "/" + builtins.replaceStrings [ "-" ".mount" ] [ "/" "" ] "${munit}"
-              );
-              what = "/dev/disk/by-label/nixos";
-            };
-          }) mountUnits)
-        ];
+      mounts = map (munit: {
+        after = [ "pre-btrfs-mount.service" ];
+        requires = [ "pre-btrfs-mount.service" ];
+        where = builtins.replaceStrings [ "//" ] [ "/" ] (
+          "/" + builtins.replaceStrings [ "-" ".mount" ] [ "/" "" ] "${munit}"
+        );
+        what = "/dev/disk/by-label/nixos";
+      }) mountUnits;
     };
 
     ######################################################
