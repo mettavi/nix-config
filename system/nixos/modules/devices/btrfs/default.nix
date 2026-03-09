@@ -34,7 +34,7 @@ in
           };
           mountOptions = mkOption {
             type = listOf str;
-            description = "Mount options specific to a specific subvolume";
+            description = "Mount options specific to a subvolume";
           };
         };
       });
