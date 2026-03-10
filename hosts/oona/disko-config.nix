@@ -61,108 +61,116 @@ in
             };
             nixos = {
               # end = "-32G";
-              content = {
-                # passwordFile = "/tmp/secret.key";
-                # settings.allowDiscards = true;
-                type = "btrfs";
-                extraArgs = [ "-f" ];
-                # subvolumes = builtins.mapAttrs "subvol:subvolCfg:" {
-                #   ${subvol} = "${subvolCfg.mountpoint}";
-                # } config.mettavi.system.devices.btrfs.subvolumes;
-                subvolumes = {
-                  "@root" = {
-                    mountpoint = "/";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "@nix" = {
-                    mountpoint = "/nix";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "@roothome" = {
-                    mountpoint = "/root";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "@vlcontainers" = {
-                    mountpoint = "/var/lib/containers";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "@libvirtimgs" = {
-                    mountpoint = "/var/lib/libvirt/images";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "@vlpostgres" = {
-                    mountpoint = "/var/lib/postgresql";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "@varlog" = {
-                    mountpoint = "/var/log";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "@vartmp" = {
-                    mountpoint = "/var/tmp";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "@home" = {
-                    mountpoint = "/home";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "@adminhome" = {
-                    mountpoint = "/home/timotheos";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "@admincontainers" = {
-                    mountpoint = "/home/timotheos/.local/share/containers";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "@admindownloads" = {
-                    mountpoint = "/home/timotheos/Downloads";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
-                  "@adminmedia" = {
-                    mountpoint = "/home/timotheos/media";
-                    mountOptions = [
-                      "compress=zstd"
-                      "noatime"
-                    ];
-                  };
+              content =
+                let
+                  cfg = config.mettavi.system.devices.btrfs;
+                in
+                {
+                  # passwordFile = "/tmp/secret.key";
+                  # settings.allowDiscards = true;
+                  type = "btrfs";
+                  extraArgs = [ "-f" ];
+                  subvolumes = mapAttrs (
+                    subvol: subvolCfg:
+                    mkIf subvolCfg.enable {
+                      mountpoint = "${subvolCfg.mountpoint}";
+                      mountOptions = subvolCfg.mountOptions ++ cfg.commonMountOptions;
+                    }
+                  ) cfg.subvolumes;
+                  # subvolumes = {
+                  #   "@root" = {
+                  #     mountpoint = "/";
+                  #     mountOptions = [
+                  #       "compress=zstd"
+                  #       "noatime"
+                  #     ];
+                  #   };
+                  #   "@nix" = {
+                  #     mountpoint = "/nix";
+                  #     mountOptions = [
+                  #       "compress=zstd"
+                  #       "noatime"
+                  #     ];
+                  #   };
+                  #   "@roothome" = {
+                  #     mountpoint = "/root";
+                  #     mountOptions = [
+                  #       "compress=zstd"
+                  #       "noatime"
+                  #     ];
+                  #   };
+                  #   "@vlcontainers" = {
+                  #     mountpoint = "/var/lib/containers";
+                  #     mountOptions = [
+                  #       "compress=zstd"
+                  #       "noatime"
+                  #     ];
+                  #   };
+                  #   "@libvirtimgs" = {
+                  #     mountpoint = "/var/lib/libvirt/images";
+                  #     mountOptions = [
+                  #       "compress=zstd"
+                  #       "noatime"
+                  #     ];
+                  #   };
+                  #   "@vlpostgres" = {
+                  #     mountpoint = "/var/lib/postgresql";
+                  #     mountOptions = [
+                  #       "compress=zstd"
+                  #       "noatime"
+                  #     ];
+                  #   };
+                  #   "@varlog" = {
+                  #     mountpoint = "/var/log";
+                  #     mountOptions = [
+                  #       "compress=zstd"
+                  #       "noatime"
+                  #     ];
+                  #   };
+                  #   "@vartmp" = {
+                  #     mountpoint = "/var/tmp";
+                  #     mountOptions = [
+                  #       "compress=zstd"
+                  #       "noatime"
+                  #     ];
+                  #   };
+                  #   "@home" = {
+                  #     mountpoint = "/home";
+                  #     mountOptions = [
+                  #       "compress=zstd"
+                  #       "noatime"
+                  #     ];
+                  #   };
+                  #   "@adminhome" = {
+                  #     mountpoint = "/home/timotheos";
+                  #     mountOptions = [
+                  #       "compress=zstd"
+                  #       "noatime"
+                  #     ];
+                  #   };
+                  #   "@admincontainers" = {
+                  #     mountpoint = "/home/timotheos/.local/share/containers";
+                  #     mountOptions = [
+                  #       "compress=zstd"
+                  #       "noatime"
+                  #     ];
+                  #   };
+                  #   "@admindownloads" = {
+                  #     mountpoint = "/home/timotheos/Downloads";
+                  #     mountOptions = [
+                  #       "compress=zstd"
+                  #       "noatime"
+                  #     ];
+                  #   };
+                  #   "@adminmedia" = {
+                  #     mountpoint = "/home/timotheos/media";
+                  #     mountOptions = [
+                  #       "compress=zstd"
+                  #       "noatime"
+                  #     ];
+                  #   };
+                  # };
                 };
-              };
             };
             swap = {
               size = "8G";
