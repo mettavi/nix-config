@@ -8,6 +8,7 @@ in
     enable = mkEnableOption "Use disko to set up and configure this host";
   };
 
+  # NB: See https://wiki.archlinux.org/title/GPT_fdisk#Partition_type for a list of disk type codes
   config = mkIf cfg.enable {
     disko.devices.disk = {
       nvme0n1 = {
