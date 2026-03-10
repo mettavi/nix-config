@@ -192,14 +192,14 @@ in
         wantedBy = [ "multi-user.target" ];
       };
       # ensure all btrfs subvolumes are mounted AFTER the chattr service (see above)
-      mounts = map (munit: {
-        after = [ "pre-btrfs-mount.service" ];
-        requires = [ "pre-btrfs-mount.service" ];
-        where = builtins.replaceStrings [ "//" ] [ "/" ] (
-          "/" + builtins.replaceStrings [ "-" ".mount" ] [ "/" "" ] "${munit}"
-        );
-        what = "/dev/disk/by-label/nixos";
-      }) mountUnits;
+      #   mounts = map (munit: {
+      #     after = [ "pre-btrfs-mount.service" ];
+      #     requires = [ "pre-btrfs-mount.service" ];
+      #     where = builtins.replaceStrings [ "//" ] [ "/" ] (
+      #       "/" + builtins.replaceStrings [ "-" ".mount" ] [ "/" "" ] "${munit}"
+      #     );
+      #     what = "/dev/disk/by-label/nixos";
+      #   }) mountUnits;
     };
 
     ######################################################
