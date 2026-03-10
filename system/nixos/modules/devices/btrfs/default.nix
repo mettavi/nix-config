@@ -169,7 +169,7 @@ in
     # MAKE UNDERLYING DIRECTORIES IMMUTABLE
     systemd = {
       services."pre-btrfs-mount" = {
-        enable = true;
+        enable = false;
         description = "Set immutable attribute on mount point";
         # ensure this is set BEFORE the btrfs subvolume is mounted
         before = mountUnits;
