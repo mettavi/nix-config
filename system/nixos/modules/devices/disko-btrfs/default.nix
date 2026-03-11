@@ -90,6 +90,12 @@ in
         label = "@root";
         mountpoint = "/";
       };
+      "@root/tmp" = {
+        enable = mkDefault true;
+      };
+      "@root/var/cache" = {
+        enable = mkDefault true;
+      };
       "@nix" = {
         enable = mkDefault true;
         label = "@nix";
@@ -99,6 +105,9 @@ in
         enable = mkDefault true;
         label = "@roothome";
         mountpoint = "/root";
+      };
+      "@roothome/.cache" = {
+        enable = mkDefault true;
       };
       "@vlcontainers" = {
         enable = mkDefault true;
@@ -134,6 +143,9 @@ in
         enable = mkDefault true;
         label = "@adminhome";
         mountpoint = "/home/${username}";
+      };
+      "@adminhome/.cache" = {
+        enable = mkDefault true;
       };
       "@admincontainers" = {
         enable = mkDefault true;
