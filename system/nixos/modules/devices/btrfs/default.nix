@@ -166,9 +166,13 @@ in
       };
     };
 
+    # WARNING: Do NOT make important systemd directories immutable,
+    # otherwise the system will not be able to boot!
+
     # MAKE UNDERLYING DIRECTORIES IMMUTABLE
     systemd = {
       services."pre-btrfs-mount" = {
+        # DISABLE THIS SERVICE, UNTIL A SAFE ALTERNATIVE IS FOUND
         enable = false;
         description = "Set immutable attribute on mount point";
         # ensure this is set BEFORE the btrfs subvolume is mounted
@@ -191,6 +195,7 @@ in
         };
         wantedBy = [ "multi-user.target" ];
       };
+      # DISABLE THESE MOUNT UNITS, UNTIL A SAFE ALTERNATIVE IS FOUND
       # ensure all btrfs subvolumes are mounted AFTER the chattr service (see above)
       #   mounts = map (munit: {
       #     after = [ "pre-btrfs-mount.service" ];
