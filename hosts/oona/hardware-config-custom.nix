@@ -1,9 +1,7 @@
 # All custom hardware code belongs here.
 # The basic hardware scan code in hardware-configuration.nix should not be edited.
 {
-  config,
   lib,
-  modulesPath,
   username,
   ...
 }:
@@ -16,24 +14,17 @@ let
   ];
 in
 {
-  imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
-  ];
 
   boot.initrd.availableKernelModules = [
-    "nvme"
-    "xhci_pci"
-    "thunderbolt"
-    "usbhid"
     "usb_storage"
     "sd_mod"
-    "rtsx_pci_sdmmc"
   ];
+
   boot.initrd.kernelModules = [ "nvidia" ];
   boot.kernelModules = [
-    "kvm-amd"
     "nvidia"
   ];
+
   boot.extraModprobeConfig = # bash
     ''
       # Add the S0ix module parameter
@@ -50,6 +41,8 @@ in
   boot.supportedFilesystems = [
     "ntfs" # required to mount ntfs partitions
   ];
+
+  # NB: The swap device is defined in the default hardware-configuration.nix
 
   fileSystems =
     let
@@ -220,10 +213,4 @@ in
   #  options = [ "subvol=@varlib" "compress=zstd" "noatime" ];
   #};
 
-  # NB: The swap device is defined in the default hardware-configuration.nix
-
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-
-  # Update the CPU microcode for AMD processors
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }
