@@ -129,7 +129,6 @@ in
         enable = mkDefault true;
         label = "@home";
         mountpoint = "/home";
-        mountOptions = [ "x-initrd.mount" ];
       };
       "@adminhome" = {
         enable = mkDefault true;
