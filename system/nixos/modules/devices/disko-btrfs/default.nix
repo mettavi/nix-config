@@ -90,6 +90,7 @@ in
         label = "@root";
         mountpoint = "/";
       };
+      # A nested subvolume doesn't need a mountpoint as its parent is mounted
       "@root/tmp" = {
         enable = mkDefault true;
       };
