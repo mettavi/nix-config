@@ -180,8 +180,6 @@ in
       "/var/lib/postgresql" = {
         inherit device;
         fsType = "btrfs";
-        # Ensures /var/lib is mounted first
-        depends = [ "/var/lib" ];
         options = commonOptions ++ [
           "compress=zstd"
           "subvol=@vlpostgres"
@@ -204,11 +202,4 @@ in
         ];
       };
     };
-
-  #fileSystems."/var/lib" = {
-  #  device = "/dev/disk/by-uuid/f8d2d292-064d-403d-8578-cddd38a090e8";
-  #  fsType = "btrfs";
-  #  neededForBoot = true;
-  #  options = [ "subvol=@varlib" "compress=zstd" "noatime" ];
-  #};
 }
