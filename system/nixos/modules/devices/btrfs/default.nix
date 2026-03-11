@@ -32,10 +32,10 @@ let
     "home-${username}-Downloads.mount"
     "home-${username}-media.mount"
   ];
-  cfg = config.mettavi.system.devices.btrfs;
+  cfg = config.mettavi.system.devices.disko-btrfs;
 in
 {
-  options.mettavi.system.devices.btrfs = {
+  options.mettavi.system.devices.disko-btrfs = {
     enable = mkOption {
       type = types.bool;
       default = false;
@@ -84,7 +84,7 @@ in
     };
 
     # configure default btrfs subvolumes
-    mettavi.system.devices.btrfs.subvolumes = {
+    mettavi.system.devices.disko-btrfs.subvolumes = {
       "@root" = {
         enable = mkDefault true;
         label = "@root";
