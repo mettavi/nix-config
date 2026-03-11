@@ -14,7 +14,6 @@ let
   ];
 in
 {
-
   boot.initrd.availableKernelModules = [
     "usb_storage"
     "sd_mod"
@@ -212,5 +211,4 @@ in
   #  neededForBoot = true;
   #  options = [ "subvol=@varlib" "compress=zstd" "noatime" ];
   #};
-
 }
