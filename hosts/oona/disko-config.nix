@@ -66,7 +66,7 @@ in
               # end = "-32G";
               content =
                 let
-                  cfg = config.mettavi.system.devices.btrfs;
+                  cfg = config.mettavi.system.devices.disko-btrfs;
                 in
                 {
                   # passwordFile = "/tmp/secret.key";
