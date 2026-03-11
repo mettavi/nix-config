@@ -1,3 +1,5 @@
+# NOTE: Disko is not supported on multi-boot systems.
+# It is best suited to remote servers or VMs where the whole disk can be dedicated to nixos.
 { config, lib, ... }:
 with lib;
 let
