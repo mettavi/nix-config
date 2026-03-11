@@ -145,7 +145,6 @@
       qbittorrent.enable = true;
     };
     devices = {
-      btrfs.enable = false;
       logitech.enable = true;
       nvidia.enable = true;
       # wdssd.enable = true;
