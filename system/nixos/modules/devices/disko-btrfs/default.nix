@@ -152,19 +152,27 @@ in
         enable = mkDefault true;
         label = "@admincontainers";
         mountpoint = "/home/${username}/.local/share/containers";
+        mountOptions = [
+          "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
+        ];
       };
       "@admindownloads" = {
         enable = mkDefault true;
         label = "@admindownloads";
         mountpoint = "/home/${username}/Downloads";
-        # hide in the Nautilus devices menu
-        mountOptions = [ "x-gvfs-hide" ];
+        mountOptions = [
+          "x-gvfs-hide" # hide the subvolume from the Files (Nautilus) devices menu
+          "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
+        ];
       };
       "@adminmedia" = {
         enable = mkDefault true;
         label = "@adminmedia";
         mountpoint = "/home/${username}/media";
-        mountOptions = [ "x-gvfs-hide" ];
+        mountOptions = [
+          "x-gvfs-hide"
+          "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
+        ];
       };
     };
     fileSystems = {
