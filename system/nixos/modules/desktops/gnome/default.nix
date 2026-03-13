@@ -19,6 +19,7 @@ in
   };
 
   imports = [
+    ./gsconnect.nix # sub-module to install the gsconnect extension
     ./xdg.nix # configure xdg portals for gnome
   ];
 
@@ -31,6 +32,7 @@ in
       ];
       systemPackages =
         (with pkgs; [
+          nautilus-python # Python bindings for the Nautilus Extension API
         ])
         ++ (with pkgs.gst_all_1; [
           # GSTREAMER PLUGINS
