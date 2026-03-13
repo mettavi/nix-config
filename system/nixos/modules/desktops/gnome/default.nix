@@ -117,7 +117,7 @@ in
           };
           "org/gnome/shell" = {
             disable-user-extensions = false;
-            # `gnome-extensions list` for a list
+            # auto-enable installed extensions (run `gnome-extensions list` for a list)
             enabled-extensions = [
               "appindicatorsupport@rgcjonas.gmail.com"
               "power-profile@fthx"
