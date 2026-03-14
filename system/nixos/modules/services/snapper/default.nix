@@ -20,26 +20,50 @@ in
   config = mkIf cfg.enable {
     services.snapper =
       let
+        # Any option mentioned in man:snapper-configs(5) is valid here
         commonConfig = {
-          TIMELINE_CREATE = true;
+          # PERMISSIONS #
+          # List of users/groups allowed to operate with the config.
+          # (“root” is always implicitly included)
+          ALLOW_USERS = [ "${username}" ];
+          ALLOW_GROUPS = [ ];
+          # sync above ALLOW users/groups to the acl of the .snapshots directory
+          SYNC_ACL = true;
+          # whether pre and post snapshots should be compared in the background after creation
+          BACKGROUND_COMPARISON = "yes";
+          # whether the empty-pre-post cleanup algorithm should be run
+          EMPTY_PRE_POST_CLEANUP = "yes";
+          EMPTY_PRE_POST_MIN_AGE = "1800";
+          FSTYPE = "btrfs"; # Only btrfs is stable and tested.
+
+          ###### NUMBER CLEANUP ALGORITHM ######
+          NUMBER_CLEANUP = false;
+          # Minimal age (secs) for snapshots to be deleted
+          NUMBER_MIN_AGE = "1800";
+          NUMBER_LIMIT = "50";
+          NUMBER_LIMIT_IMPORTANT = "10";
+
+          ###### TIMELINE CLEANUP ALGORITHM ######
+          TIMELINE_CREATE = true; # Whether hourly snapshots should be created
+          # Old snapshots are automatically deleted.
+          # By default, the first snapshot of the last ten days, months and years is kept.
           TIMELINE_CLEANUP = true;
           TIMELINE_LIMIT_HOURLY = "10";
           TIMELINE_LIMIT_DAILY = "7";
           TIMELINE_LIMIT_WEEKLY = "0";
           TIMELINE_LIMIT_MONTHLY = "0";
-          TIMELINE_LIMIT_YEARLY = "0";
-          BACKGROUND_COMPARISON = "yes";
-          NUMBER_CLEANUP = "no";
-          NUMBER_MIN_AGE = "1800";
-          NUMBER_LIMIT = "50";
-          NUMBER_LIMIT_IMPORTANT = "10";
-          EMPTY_PRE_POST_CLEANUP = "yes";
-          EMPTY_PRE_POST_MIN_AGE = "1800";
+          TIMELINE_LIMIT_YEARLY = "10";
         };
       in
       {
-        snapshotInterval = "hourly";
+        # a list of files that should never be reverted
+        # Note that filters do not exclude files or directories from being snapshotted.
+        # For that, use subvolumes or mount points.
         cleanupInterval = "1d";
+        filters = "";
+        persistentTimer = true;
+        snapshotRootOnBoot = false;
+        snapshotInterval = "hourly";
         configs = {
           adminhome = commonConfig // {
             SUBVOLUME = "/home/${username}";
