@@ -50,9 +50,9 @@ in
 
           ###### TIMELINE SNAPSHOTS ######
           TIMELINE_CREATE = true; # Whether hourly snapshots should be created
-          # Old snapshots are automatically deleted.
-          # By default, the first snapshot of the last ten days, months and years is kept.
           TIMELINE_CLEANUP = true;
+          # Hourly/daily/weekly/monthly/yearly snapshots are the first snapshot taken in that time period
+          # Keep snapshots for the last x hours/days/weeks/months/years
           TIMELINE_LIMIT_HOURLY = "10";
           TIMELINE_LIMIT_DAILY = "7";
           TIMELINE_LIMIT_WEEKLY = "0";
