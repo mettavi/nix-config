@@ -22,28 +22,33 @@ in
       let
         # Any option mentioned in man:snapper-configs(5) is valid here
         commonConfig = {
-          # PERMISSIONS #
+          FSTYPE = "btrfs"; # Only btrfs is stable and tested.
+          ### PERMISSIONS ###
           # List of users/groups allowed to operate with the config.
           # (“root” is always implicitly included)
           ALLOW_USERS = [ "${username}" ];
           ALLOW_GROUPS = [ ];
           # sync above ALLOW users/groups to the acl of the .snapshots directory
           SYNC_ACL = true;
-          # whether pre and post snapshots should be compared in the background after creation
+
+          # The intention of PRE/POST SNAPSHOT PAIRS is to snapshot
+          # the filesystem before and after a modification.
+          # Whether pre and post snapshots should be compared in the background after creation
           BACKGROUND_COMPARISON = "yes";
-          # whether the empty-pre-post cleanup algorithm should be run
+          # Whether the empty-pre-post cleanup algorithm should be run,
+          # which deletes pre/post snapshot pairs with empty diffs.
           EMPTY_PRE_POST_CLEANUP = "yes";
-          EMPTY_PRE_POST_MIN_AGE = "1800";
-          FSTYPE = "btrfs"; # Only btrfs is stable and tested.
+          EMPTY_PRE_POST_MIN_AGE = "1800"; # Minimal age (secs) for snapshots to be deleted
 
           ###### NUMBER CLEANUP ALGORITHM ######
+          # Deletes old snapshots when a certain number of snapshots is reached.
           NUMBER_CLEANUP = false;
           # Minimal age (secs) for snapshots to be deleted
           NUMBER_MIN_AGE = "1800";
           NUMBER_LIMIT = "50";
           NUMBER_LIMIT_IMPORTANT = "10";
 
-          ###### TIMELINE CLEANUP ALGORITHM ######
+          ###### TIMELINE SNAPSHOTS ######
           TIMELINE_CREATE = true; # Whether hourly snapshots should be created
           # Old snapshots are automatically deleted.
           # By default, the first snapshot of the last ten days, months and years is kept.
@@ -56,11 +61,12 @@ in
         };
       in
       {
-        # a list of files that should never be reverted
+        cleanupInterval = "1d";
+        # a list of files that should never be reverted (eg. state info like /etc/mtab)
         # Note that filters do not exclude files or directories from being snapshotted.
         # For that, use subvolumes or mount points.
-        cleanupInterval = "1d";
         filters = "";
+        # trigger the snapshot immediately if the last trigger was missed
         persistentTimer = true;
         snapshotRootOnBoot = false;
         snapshotInterval = "hourly";
