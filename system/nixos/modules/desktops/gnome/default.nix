@@ -144,6 +144,19 @@ in
         };
         gtk = {
           enable = true;
+          theme = {
+            name = "Adwaita-dark";
+            package = pkgs.gnome-themes-extra;
+          };
+          iconTheme = {
+            name = "Adwaita";
+            package = pkgs.adwaita-icon-theme;
+          };
+          cursorTheme = {
+            name = "Adwaita";
+            size = 24;
+            package = pkgs.adwaita-icon-theme;
+          };
           # DISABLE THIS SETTING TO PREVENT THE ERROR:
           # "Using GtkSettings:gtk-application-prefer-dark-theme with libadwaita is unsupported.
           # Please use AdwStyleManager:color-scheme instead""
