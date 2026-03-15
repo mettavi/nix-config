@@ -144,7 +144,11 @@ in
         };
         gtk = {
           enable = true;
-          colorScheme = "dark";
+          # DISABLE THIS SETTING TO PREVENT THE ERROR:
+          # "Using GtkSettings:gtk-application-prefer-dark-theme with libadwaita is unsupported.
+          # Please use AdwStyleManager:color-scheme instead""
+          # Use the extraConfig setting instead (see below)
+          # colorScheme = "dark";
           gtk3 = {
             # configure bookmarks in nautilus/files left-menu
             bookmarks =
@@ -158,6 +162,8 @@ in
                 "file://${config.xdg.userDirs.pictures}"
                 "file://${config.xdg.userDirs.videos}"
               ];
+            # Use extraConfig instead of colorScheme to avoid gtk-interface-color-scheme=2 bug
+            extraConfig.gtk-application-prefer-dark-theme = 1;
           };
           # enable dark theme on legacy apps
           # gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
