@@ -178,9 +178,10 @@ in
             # Use extraConfig instead of colorScheme to avoid gtk-interface-color-scheme=2 bug
             extraConfig.gtk-application-prefer-dark-theme = 1;
           };
-          # enable dark theme on legacy apps
-          # gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
-          # gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+          # GTK 4: Disable theme to prevent broken gtk.css import workaround
+          # Dark mode is handled via dconf color-scheme = "prefer-dark" above
+          # See: https://github.com/nix-community/home-manager/issues/8232
+          gtk4.theme = null;
         };
         qt = {
           enable = true;
