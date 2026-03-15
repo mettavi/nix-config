@@ -116,7 +116,7 @@ in
             # set the system to dark mode
             color-scheme = "prefer-dark";
             # Setting this seems deprecated (set color-scheme as above instead),
-            # and also breaks dark mode in Libre Office, see:
+            # and also breaks dark mode in LibreOffice, see:
             # https://superuser.com/questions/1885361/libreoffice-ignores-appearance-mode-but-observes-the-gtk-theme-environment-vari
             # gtk-theme = "Adwaita-dark";
           };
