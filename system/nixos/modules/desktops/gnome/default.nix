@@ -115,7 +115,10 @@ in
           "org/gnome/desktop/interface" = {
             # set the system to dark mode
             color-scheme = "prefer-dark";
-            gtk-theme = "Adwaita-dark";
+            # Setting this seems deprecated (set color-scheme as above instead),
+            # and also breaks dark mode in Libre Office, see:
+            # https://superuser.com/questions/1885361/libreoffice-ignores-appearance-mode-but-observes-the-gtk-theme-environment-vari
+            # gtk-theme = "Adwaita-dark";
           };
           "org/gnome/shell" = {
             disable-user-extensions = false;
