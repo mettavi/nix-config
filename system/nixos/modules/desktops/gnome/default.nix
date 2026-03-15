@@ -190,6 +190,9 @@ in
           platformTheme.name = "adwaita";
           style.name = "adwaita-dark";
         };
+        # Ensure session variables are available in the GUI session (eg. Wayland, X11)
+        # see https://www.reddit.com/r/NixOS/comments/18hdool/comment/kdbc7y1/
+        systemd.user.sessionVariables = config.home.sessionVariables;
       };
   };
 }
