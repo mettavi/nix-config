@@ -84,7 +84,7 @@ in
     # CONFIGURE RESTIC BACKUP JOBS USING MODULE OPTIONS
     mettavi.system.services.restic.jobs = {
       # BACKUP THE MAIN USER'S HOME DIRECTORY
-      "${hostname}-local-home" =
+      "${hostname}-home" =
         let
           user-snapshots = "${snapshots}/home";
         in
@@ -105,7 +105,7 @@ in
           user = "${username}";
         };
       # BACKUP IMPORTANT SYSTEM DIRECTORIES
-      "${hostname}-local-sys" =
+      "${hostname}-sys" =
         let
           sys-snapshots = "${snapshots}/sys";
         in
@@ -170,8 +170,7 @@ in
           inhibitsSleep = true;
           # create the repo if it doesn't exist
           initialize = true;
-          passwordFile =
-            config.sops.secrets."users/${username}/restic-${hostname}-local-${jobsCfg.label}".path;
+          passwordFile = config.sops.secrets."users/${username}/restic-${hostname}-${jobsCfg.label}".path;
           paths = jobsCfg.paths;
           pruneOpts = [
             "--keep-daily 7"
@@ -230,12 +229,12 @@ in
     };
     sops.secrets = {
       # encryption password for local home backup
-      "users/${username}/restic-${hostname}-local-home" = resticSecrets;
+      "users/${username}/restic-${hostname}-home" = resticSecrets;
       # encryption password for local root backup
-      "users/${username}/restic-${hostname}-local-sys" = resticSecrets;
+      "users/${username}/restic-${hostname}-sys" = resticSecrets;
     };
     systemd.services = {
-      "restic-backups-${hostname}-local-sys" = {
+      "restic-backups-${hostname}-sys" = {
         unitConfig = {
           Description = "Run a backup whenever the device is plugged in (and mounted)"; # See https://bbs.archlinux.org/viewtopic.php?id=207050
           # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
@@ -252,9 +251,9 @@ in
           Type = "oneshot";
         };
       };
-      "restic-backups-${hostname}-local-home" = {
+      "restic-backups-${hostname}-home" = {
         unitConfig = {
-          After = mkForce "${hostname}-local-sys.service";
+          After = mkForce "${hostname}-sys.service";
           Description = "Run a user backup whenever the device is plugged in (and mounted)";
           # See https://bbs.archlinux.org/viewtopic.php?id=207050
           # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
