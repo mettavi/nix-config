@@ -150,6 +150,7 @@ in
           backupPrepareCommand = ''
             btrfs subvolume snapshot -r /home ${snapshots}/home
             btrfs subvolume snapshot -r / ${snapshots}/sys
+            ${pkgs.restic}/bin/restic unlock
           '';
           backupCleanupCommand = ''
             btrfs subvolume delete ${snapshots}/home
