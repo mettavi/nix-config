@@ -28,9 +28,12 @@ in
     ''
       # Add the S0ix module parameter
       options nvidia "NVreg_EnableS0ixPowerManagement=1"
-      # make the PreserveVideo... option explicit, and set a Temporary File Path to prevent errors
-      options nvidia "NVreg_PreserveVideoMemoryAllocations=1"
-      options nvidia "NVreg_TemporaryFilePath=/var/tmp"
+      # change defaults to workaround the nvidia GPU freeze-on-resume problem
+      # see https://bbs.archlinux.org/viewtopic.php?id=300676
+      options nvidia "NVreg_PreserveVideoMemoryAllocations=0"
+      # allows nvidia to manage the frame buffer device (experimental status)
+      options "nvidia_drm.fbdev=0"
+      # options nvidia "NVreg_TemporaryFilePath=/var/tmp"
       # set the default state of function lock (workaround for lack of Fn-Esc toggle)
       # NB: as at 8/01/2025, this is changing the value but the function lock is still fixed on
       options asus_wmi fnlock_default=N
