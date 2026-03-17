@@ -24,9 +24,7 @@ let
         # copy the local restic backup to the cloud (backblaze b2)
         rclone --log-level INFO --log-file=${logfile} \
           --verbose --b2-hard-delete --checkers 100 --transfers 100 --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
-          sync ${
-            config.services.restic.backups."${hostname}-local-home".repository
-          } b2:${hostname}-${username}/
+          sync ${config.services.restic.backups."${hostname}-home".repository} b2:${hostname}-${username}/
       '';
   resticSecrets = {
     sopsFile = "${secrets_path}/secrets/apps/restic.yaml";
