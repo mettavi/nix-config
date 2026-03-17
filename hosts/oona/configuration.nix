@@ -10,7 +10,6 @@
   imports = [
     # customise the hardware scan config
     # NB: hardware-configuration.nix is auto-generated during install and is imported in the mkNixos function
-    # ./hardware-config-custom.nix
     ./mount.nix
     ./kernel.nix
   ];
