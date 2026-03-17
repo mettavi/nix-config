@@ -21,7 +21,6 @@
       nixos-icons
       parted # GNU parted
       pciutils # tools for working with pci devices
-      # nodejs
       # python3
       smartmontools # tool for monitoring the health of hard drives
       systemctl-tui # Simple TUI for interacting with systemd services and their logs
