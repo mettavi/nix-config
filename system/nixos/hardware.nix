@@ -1,5 +1,9 @@
 { pkgs, ... }:
 {
+  environment.systemPackages = with pkgs; [
+    vulkan-tools # vulkan tools and utilities
+  ];
+
   hardware = {
     graphics = {
       # enables the the mesa graphics library, which includes openGL, vulkan (general graphics support) drivers
@@ -9,7 +13,6 @@
       extraPackages = with pkgs; [
         # modern graphics API with wide compatibility providing improved performance and better control over graphics hardware
         vulkan-loader
-        vulkan-tools
       ];
     };
     sane = {
