@@ -225,14 +225,11 @@ in
         }
       ) cfg.jobs;
     };
-    sops.secrets = {
-      # encryption password for local home backup
-      "users/${username}/restic-${hostname}-home" = resticSecrets;
-      # encryption password for local root backup
-      "users/${username}/restic-${hostname}-sys" = resticSecrets;
-    };
-    systemd.services = {
-      "restic-backups-${hostname}-sys" = {
+
+    sops.secrets = concatMapAttrs (key: value: {
+      # encryption password for each restic backup job
+      "users/${username}/restic-${hostname}-${value.label}" = resticSecrets;
+    }) cfg.jobs;
         unitConfig = {
           Description = "Run a backup whenever the device is plugged in (and mounted)"; # See https://bbs.archlinux.org/viewtopic.php?id=207050
           # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
