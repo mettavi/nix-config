@@ -21,7 +21,7 @@
   # Set of kernel modules to be loaded in the second stage of the boot process
   boot.kernelModules = [
     "nvidia"
-    "kvm-amd" # kernel-based vm support for AMD
+    "kvm-amd" # kernel-based VM support for AMD
   ];
   # additional packages supplying kernel modules
   boot.extraModulePackages = [ ];
