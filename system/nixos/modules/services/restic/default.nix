@@ -230,57 +230,63 @@ in
       # encryption password for each restic backup job
       "users/${username}/restic-${hostname}-${value.label}" = resticSecrets;
     }) cfg.jobs;
-        unitConfig = {
-          Description = "Run a backup whenever the device is plugged in (and mounted)"; # See https://bbs.archlinux.org/viewtopic.php?id=207050
-          # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
-          # or use the ConditionPathIsMountPoint= option?
-          # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
-          # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
-          ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}";
-          # or perhaps WantedBy= option?
-          OnFailure = "notify-backup-failed.service";
-        };
-        serviceConfig = {
-          # ensure it is not considered "started" until after the main process EXITS
-          # this means that following services do not start until the this process is COMPLETE
-          Type = "oneshot";
-        };
-      };
-      "restic-backups-${hostname}-home" = {
-        unitConfig = {
-          After = mkForce "${hostname}-sys.service";
-          Description = "Run a user backup whenever the device is plugged in (and mounted)";
-          # See https://bbs.archlinux.org/viewtopic.php?id=207050
-          # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
-          # or use the ConditionPathIsMountPoint= option?
-          # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
-          # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
-          ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}";
-          # or perhaps WantedBy= option?
-          OnFailure = "notify-backup-failed.service";
-        };
-      };
-      # send desktop notifications about failed backups using libnotify
-      # ref: https://www.arthurkoziel.com/restic-backups-b2-nixos/
-      "notify-backup-failed" = {
-        enable = true;
-        description = "Notify on failed backup";
+
+    systemd.services =
+      let
+        Description = "Run a backup whenever the device is plugged in (and mounted)"; # See https://bbs.archlinux.org/viewtopic.php?id=207050
+        # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
+        # or use the ConditionPathIsMountPoint= option?
+        # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
+        # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
+        # See https://bbs.archlinux.org/viewtopic.php?id=207050
+        # ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}";
+        # or perhaps WantedBy= option?
+        ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}";
+        # ensure it is not considered "started" until after the main process EXITS
+        # this means that following services do not start until the this process is COMPLETE
         serviceConfig = {
           Type = "oneshot";
-          User = "${username}";
         };
-
-        # required for notify-send
-        environment.DBUS_SESSION_BUS_ADDRESS = "unix:path=/run/user/${
-          toString config.users.users.${username}.uid
-        }/bus";
-
-        script = ''
-          ${pkgs.libnotify}/bin/notify-send --urgency=critical \
-            "Backup failed" \
-            "$(journalctl -u restic-backups-daily -n 5 -o cat)"
-        '';
-      };
-    };
+      in
+      mkMerge [
+        {
+          "restic-backups-${hostname}-sys" = {
+            unitConfig = {
+              inherit Description ConditionPathIsMountPoint;
+              OnFailure = "notify-backup-failed-sys.service";
+            };
+            inherit serviceConfig;
+          };
+          "restic-backups-${hostname}-home" = {
+            unitConfig = {
+              inherit Description ConditionPathIsMountPoint;
+              After = mkForce "${hostname}-sys.service";
+              OnFailure = "notify-backup-failed-home.service";
+            };
+            inherit serviceConfig;
+          };
+        }
+        # send desktop notifications about failed backups using libnotify
+        # ref: https://www.arthurkoziel.com/restic-backups-b2-nixos/
+        (concatMapAttrs (key: value: {
+          "notify-backup-failed.${value.label}" = {
+            enable = true;
+            description = "Notify on failed backup";
+            serviceConfig = {
+              Type = "oneshot";
+              User = "${username}";
+            };
+            # required for notify-send
+            environment.DBUS_SESSION_BUS_ADDRESS = "unix:path=/run/user/${
+              toString config.users.users.${username}.uid
+            }/bus";
+            script = ''
+              ${pkgs.libnotify}/bin/notify-send --urgency=critical \
+                "Backup failed" \
+                "$(journalctl -u restic-backups-${hostname}-${value.label} -n 5 -o cat)"
+            '';
+          };
+        }) cfg.jobs)
+      ];
   };
 }
