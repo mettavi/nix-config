@@ -20,8 +20,7 @@ in
   config = mkIf cfg.enable {
 
     # USERSPACE LIBRARIES FOR NVIDIA (propietary, required for nvidia-produced kernel modules)
-    # Not sure if this is actually used on wayland
-    # NB: AMD works out of the box
+    # NB: For Xorg and Wayland, AMD works out of the box
     services.xserver.videoDrivers = [
       "nvidia"
     ];
@@ -56,6 +55,7 @@ in
       # On wayland, KMS is also required for the offloading mode (see below)
       # to ensure the iGPU is used as the primary display
       modesetting.enable = true;
+      # Enable the Nvidia settings GUI, accessible via `nvidia-settings`
       nvidiaSettings = true;
       # The open driver is recommended by nvidia now, see
       # https://download.nvidia.com/XFree86/Linux-x86_64/565.77/README/kernel_open.html
@@ -67,7 +67,7 @@ in
       powerManagement = {
         # this adds the nvidia-{suspend,hibernate,resume} services
         enable = true;
-        # experimental power management of prime offload
+        # experimental power management of prime offload (turns off GPU when not in use)
         finegrained = true;
       };
       # prime sync and reverse sync modes only work on X11
