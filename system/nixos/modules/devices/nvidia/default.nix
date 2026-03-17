@@ -19,7 +19,7 @@ in
 
   config = mkIf cfg.enable {
 
-    # USERSPACE LIBRARIES FOR NVIDIA
+    # USERSPACE LIBRARIES FOR NVIDIA (propietary, required for nvidia-produced kernel modules)
     # Not sure if this is actually used on wayland
     # NB: AMD works out of the box
     services.xserver.videoDrivers = [
