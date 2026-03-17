@@ -35,7 +35,8 @@
       options nvidia "NVreg_PreserveVideoMemoryAllocations=0"
       # allows nvidia to manage the frame buffer device (experimental status)
       options "nvidia_drm.fbdev=0"
-      # options nvidia "NVreg_TemporaryFilePath=/var/tmp"
+      # see https://wiki.nixos.org/wiki/NVIDIA re this option
+      options nvidia "NVreg_TemporaryFilePath=/var/tmp"
       # set the default state of function lock (workaround for lack of Fn-Esc toggle)
       # NB: as at 8/01/2025, this is changing the value but the function lock is still fixed on
       options asus_wmi fnlock_default=N
