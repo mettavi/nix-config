@@ -57,9 +57,6 @@
     };
   };
 
-  # Use the cachyos kernel for the latest asus g14 kernel patches.
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
-
   # console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";

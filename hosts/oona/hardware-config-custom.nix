@@ -14,6 +14,8 @@ let
   ];
 in
 {
+  # override the Linux kernel (and hence its kernel modules) used by NixOS
+  # Use the cachyos kernel for the latest asus g14 kernel patches (using custom flake input and overlay)
   boot.initrd.availableKernelModules = [
     "usb_storage"
     "sd_mod"
