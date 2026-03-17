@@ -36,18 +36,17 @@ in
       nvidia-vaapi-driver
     ];
 
-    environment = {
-      systemPackages = with pkgs; [
-        nvtopPackages.nvidia # htop-like task monitor for nvidia GPUs
-      ];
-      variables = {
-        # tell the VA-API library to load the NVIDIA driver
-        LIBVA_DRIVER_NAME = "nvidia";
-        # Select the "direct" nvidia backend for VA-API
-        NVD_BACKEND = "direct";
-      };
+    environment.variables = {
+      # tell the VA-API library to load the NVIDIA driver
+      LIBVA_DRIVER_NAME = "nvidia";
+      # Select the "direct" nvidia backend for VA-API
+      NVD_BACKEND = "direct";
     };
     ######################################################################
+
+    environment.systemPackages = with pkgs; [
+      nvtopPackages.nvidia # htop-like task monitor for nvidia GPUs
+    ];
 
     # NB: the module below adds boot.blacklistedKernelModules = [ "nouveau" ];
     hardware.nvidia = {
