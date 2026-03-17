@@ -19,6 +19,27 @@ in
 
   config = mkIf cfg.enable {
 
+    # KERNEL MODULES
+    # modules that are ALWAYS loaded by the initrd
+    boot.initrd.kernelModules = [ "nvidia" ];
+    # kernel modules to be loaded in the second stage of the boot process
+    boot.kernelModules = [
+      "nvidia"
+    ];
+
+    boot.extraModprobeConfig = # bash
+      ''
+        # Add the S0ix module parameter
+        options nvidia "NVreg_EnableS0ixPowerManagement=1"
+        # change defaults to workaround the nvidia GPU freeze-on-resume problem
+        # see https://bbs.archlinux.org/viewtopic.php?id=300676
+        options nvidia "NVreg_PreserveVideoMemoryAllocations=0"
+        # allows nvidia to manage the frame buffer device (experimental status)
+        options "nvidia_drm.fbdev=0"
+        # see https://wiki.nixos.org/wiki/NVIDIA re this option
+        options nvidia "NVreg_TemporaryFilePath=/var/tmp"
+      '';
+
     # USERSPACE LIBRARIES FOR NVIDIA (propietary, required for nvidia-produced kernel modules)
     # NB: For Xorg and Wayland, AMD works out of the box
     services.xserver.videoDrivers = [
