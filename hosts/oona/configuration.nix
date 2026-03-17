@@ -70,8 +70,8 @@
   services = {
     asusd = {
       enable = true;
-      # unstable, see https://gitlab.com/asus-linux/asusctl/-/issues/532#note_2879912217
-      enableUserService = false;
+      # option is unstable and deprecated, see https://gitlab.com/asus-linux/asusctl/-/issues/532#note_2879912217
+      # enableUserService = true;
       # explicitly set to use the package patched locally with an overlay
       package = pkgs.asusctl;
     };
