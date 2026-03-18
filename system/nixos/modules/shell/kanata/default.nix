@@ -56,8 +56,6 @@ in
 
             (defalias
               nav (layer-while-held navigation)
-              ;; spc and other keys will terminate the caps-lock, so typing a sentence will require the key to be reused
-              cw (caps-word 5000)
               escnav (tap-hold 100 100 esc @nav)
               ;; trigger a tap when rolling within the timeout (unless second key is released first)
               ;; don't trigger hold for keys from same side ("bilateral combinations")
@@ -69,16 +67,21 @@ in
               k (tap-hold-except-keys $tap-time $hold-time k rsft (y u i o p h j k l ; n m , . /))
               l (tap-hold-except-keys $tap-time $hold-time l rmet (y u i o p h j k l ; n m , . /))
               ; (tap-hold-except-keys $tap-time $hold-time ; ralt (y u i o p h j k l ; n m , . /))
+             ;; caps-word by default works on a-z/A-Z and -/_ keys
+             ;; spc and other keys will terminate the caps-lock, so typing a sentence will require the key to be reused
+             ;; cw (caps-word 5000)
+             ;; tap caps-lock again to disable it
+             cwt (caps-word-toggle 2000)
             )
 
             (deflayer base
-              @cw
               @escnav @a @s @d @f _ @j @k @l @;
+             @cwt
             )
 
             (deflayer navigation
-              @cw
               _ _ _ _ _ left down up rght _
+             @cwt
             )
           '';
             process-unmapped-keys yes
