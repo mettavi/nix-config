@@ -178,11 +178,22 @@
     };
   };
 
+  # KEYBOARD CONFIG
   services.kanata.keyboards."home-keys".extraDefCfg = ''
     linux-dev-names-include (
       "Asus Keyboard"
     )
   '';
+
+  # experimental code for mapping the copilot key to sysrq, implemented instead with kanata
+  # NB: kept for reference to the keyboard name/code on this host
+  # services.udev = {
+  #   extraHwdb = ''
+  #     evdev:name:Asus Keyboard:*
+  #     evdev:input:b0003v0B05p19B6e0110*
+  #      KEYBOARD_KEY_70072=sysrq # original KEY_F23 (copilot key)
+  #   '';
+  # };
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
   home-manager.users.${username} = {
