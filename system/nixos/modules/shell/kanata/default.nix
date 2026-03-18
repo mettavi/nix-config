@@ -24,6 +24,7 @@ in
     # see https://github.com/NixOS/nixpkgs/issues/317282 for details
     hardware.uinput.enable = true;
 
+    # NB: more config (eg. setting the keyboard name) may be in the host-specific file
     services.kanata = {
       enable = true;
       keyboards = {
