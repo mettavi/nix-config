@@ -182,7 +182,6 @@
     linux-dev-names-include (
       "Asus Keyboard"
     )
-    process-unmapped-keys yes
   '';
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS

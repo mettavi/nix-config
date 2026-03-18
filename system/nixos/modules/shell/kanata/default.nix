@@ -81,6 +81,7 @@ in
               _ _ _ _ _ left down up rght _
             )
           '';
+            process-unmapped-keys yes
         };
       };
     };
