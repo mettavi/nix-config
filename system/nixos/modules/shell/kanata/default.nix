@@ -74,11 +74,6 @@ in
              ; (tap-hold-except-keys $tap-time $hold-time ; ralt (y u i o p h j k l ; n m , . /))
             )
 
-            ;; Remap Copilot key to sysrq
-            (defchordsv2
-             (lsft lmet f23) ssrq 10 all-released ()
-            )
-
             (deflayer base
              @cwt
              @escnav @a @s @d @f _ @j @k @l @;
@@ -90,8 +85,6 @@ in
             )
           '';
           extraDefCfg = ''
-            ;; Required for defchordsv2 (see above)
-            concurrent-tap-hold yes
             process-unmapped-keys yes
           '';
         };

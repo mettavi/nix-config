@@ -179,11 +179,21 @@
   };
 
   # KEYBOARD CONFIG
-  services.kanata.keyboards."home-keys".extraDefCfg = ''
-    linux-dev-names-include (
-      "Asus Keyboard"
-    )
-  '';
+  services.kanata.keyboards."home-keys" = {
+    config = ''
+      ;; Remap Copilot key to sysrq
+      (defchordsv2
+       (lsft lmet f23) ssrq 10 all-released ()
+      )
+    '';
+    extraDefCfg = ''
+      linux-dev-names-include (
+        "Asus Keyboard"
+      )
+      ;; Required for defchordsv2 (see above)
+      concurrent-tap-hold yes
+    '';
+  };
 
   # experimental code for mapping the copilot key to sysrq, implemented instead with kanata
   # NB: kept for reference to the keyboard name/code on this host
