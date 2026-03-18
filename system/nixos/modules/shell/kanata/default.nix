@@ -72,6 +72,9 @@ in
              ;; cw (caps-word 5000)
              ;; tap caps-lock again to disable it
              cwt (caps-word-toggle 2000)
+            ;; Remap Copilot key to sysrq
+            (defchordsv2
+             (lsft lmet f23) ssrq 10 all-released ()
             )
 
             (deflayer base
@@ -84,7 +87,11 @@ in
              @cwt
             )
           '';
+          extraDefCfg = ''
+            ;; Required for defchordsv2 (see above)
+            concurrent-tap-hold yes
             process-unmapped-keys yes
+          '';
         };
       };
     };
