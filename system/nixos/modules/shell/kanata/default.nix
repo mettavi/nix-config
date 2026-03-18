@@ -24,7 +24,6 @@ in
     # see https://github.com/NixOS/nixpkgs/issues/317282 for details
     hardware.uinput.enable = true;
 
-    # NB: more config (eg. setting the keyboard name) may be in the host-specific file
     services.kanata = {
       enable = true;
       keyboards = {
@@ -44,14 +43,15 @@ in
             # "/dev/hidraw0"
           ];
           config = ''
-             (defsrc
-              esc
-              caps a s d f h j k l ;
+            ;; see https://github.com/jtroo/kanata/blob/main/parser/src/keys/mod.rs for a list of keys
+            (defsrc
+             esc
+             caps a s d f h j k l ;
             )
 
             (defvar
-              tap-time 150
-              hold-time 200
+             tap-time 150
+             hold-time 200
             )
 
             (defalias
