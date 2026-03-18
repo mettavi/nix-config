@@ -26,12 +26,13 @@
   # additional packages supplying kernel modules
   boot.extraModulePackages = [ ];
   # specify eg. module options to be appended to the generated modprobe.conf
+  # can be used for both built-in and loadable kernel modules
   boot.extraModprobeConfig = # bash
     ''
       # set the default state of function lock (workaround for lack of Fn-Esc toggle)
       # NB: as at 8/01/2025, this is changing the value but the function lock is still fixed on
       options asus_wmi fnlock_default=N
     '';
-  # Parameters added to the kernel command line
+  # Parameters added to the kernel command line (can only be used for built-in modules)
   boot.kernelParams = [ ];
 }
