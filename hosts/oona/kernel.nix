@@ -1,5 +1,6 @@
 # NB: nvidia config is in a separate module
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
+with lib;
 {
   # override the Linux kernel (and hence its kernel modules) used by NixOS
   # Use the cachyos kernel for the latest asus g14 kernel patches (using custom flake input and overlay)
@@ -35,4 +36,8 @@
     '';
   # Parameters added to the kernel command line (can only be used for built-in modules)
   boot.kernelParams = [ ];
+
+  # SysRq shortcuts can be used to trigger a more graceful reboot
+  boot.kernel.sysctl."kernel.sysrq" = mkDefault 1;
+
 }
