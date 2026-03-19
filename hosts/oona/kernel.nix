@@ -4,7 +4,7 @@ with lib;
 {
   # override the Linux kernel (and hence its kernel modules) used by NixOS
   # Use the cachyos kernel for the latest asus g14 kernel patches (using custom flake input and overlay)
-  # for nixos default kernels, see pkgs.linuxKernel.kernels.linux* in nixpkgs
+  # for nixos default kernels, see eg. pkgs.linuxKernel.kernels.linux_6_19 in nixpkgs
   boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest; # default pkgs.linuxPackages_latest
 
   ###### KERNEL MODULES ######
