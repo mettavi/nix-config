@@ -94,7 +94,7 @@ in
       package = config.boot.kernelPackages.nvidiaPackages.stable;
       powerManagement = {
         # this adds the nvidia-{suspend,hibernate,resume} services
-        # NB: This option will add nvidia.NVreg_PreserveVideoMemoryAllocations=1 to boot.kernelParams
+        # and the option nvidia.NVreg_PreserveVideoMemoryAllocations=1 to boot.kernelParams
         enable = true;
         # experimental power management of prime offload (turns off GPU when not in use)
         # NB: this option will add NVreg_DynamicPowerManagement=0x02 to boot.kernelParams
