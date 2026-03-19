@@ -12,7 +12,7 @@
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
-    # allow applications (like Firefox) that expect PulseAudio to function correctly using PipeWire's implementation.
+    # allow applications (like Firefox) that expect PulseAudio function correctly using PipeWire's implementation.
     pulse.enable = true; # pulseaudio emulation
     wireplumber.enable = true; # make the default explicit
   };
