@@ -27,6 +27,7 @@ in
       "nvidia"
     ];
 
+    # kernel module or builtin options to be added to /etc/modprobe.d/
     boot.extraModprobeConfig = # bash
       ''
         # Add the S0ix module parameter
