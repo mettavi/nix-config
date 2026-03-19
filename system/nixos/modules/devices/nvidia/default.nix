@@ -21,7 +21,11 @@ in
 
     # KERNEL MODULES
     # modules that are ALWAYS loaded by the initrd
-    boot.initrd.kernelModules = [ "nvidia" ];
+    boot.initrd.kernelModules = [
+      # nvidia module is not needed in the initrd
+      # see https://discourse.nixos.org/t/nvidia-drm-fails-to-load/69582/4
+      # "nvidia"
+    ];
     # kernel modules to be loaded in the second stage of the boot process
     boot.kernelModules = [
       "nvidia"
