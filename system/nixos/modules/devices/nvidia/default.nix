@@ -30,16 +30,21 @@ in
     # kernel module or builtin options to be added to /etc/modprobe.d/
     boot.extraModprobeConfig = # bash
       ''
+        # options yourmodulename optionA=valueA optionB=valueB # syntax
         # Add the S0ix module parameter
-        options nvidia "NVreg_EnableS0ixPowerManagement=1"
-        # change defaults to workaround the nvidia GPU freeze-on-resume problem
-        # see https://bbs.archlinux.org/viewtopic.php?id=300676
-        options nvidia "NVreg_PreserveVideoMemoryAllocations=0"
-        # allows nvidia to manage the frame buffer device (experimental status)
-        options "nvidia_drm.fbdev=0"
+        options nvidia NVreg_EnableS0ixPowerManagement=1
         # see https://wiki.nixos.org/wiki/NVIDIA re this option
-        options nvidia "NVreg_TemporaryFilePath=/var/tmp"
+        options nvidia NVreg_TemporaryFilePath=/var/tmp
       '';
+
+    # Parameters added to the kernel command line (can only be used for built-in modules)
+    boot.kernelParams = [
+      # change defaults to workaround the nvidia GPU freeze-on-resume problem
+      # see https://bbs.archlinux.org/viewtopic.php?id=300676
+      "nvidia.NVreg_PreserveVideoMemoryAllocations=0"
+      # allows nvidia to manage the frame buffer device (experimental status)
+      "nvidia-drm.fbdev=0"
+    ];
 
     # USERSPACE LIBRARIES FOR NVIDIA (propietary, required for nvidia-produced kernel modules)
     # NB: For Xorg and Wayland, AMD works out of the box
