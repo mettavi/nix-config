@@ -40,10 +40,11 @@ in
     # Parameters added to the kernel command line (can only be used for built-in modules)
     boot.kernelParams = [
       # change defaults to workaround the nvidia GPU freeze-on-resume problem
+      # NB: these parameters are ALSO set by some hardware.nvidia.* options (see below)
       # see https://bbs.archlinux.org/viewtopic.php?id=300676
-      "nvidia.NVreg_PreserveVideoMemoryAllocations=0"
+      # "nvidia.NVreg_PreserveVideoMemoryAllocations=0"
       # allows nvidia to manage the frame buffer device (experimental status)
-      "nvidia-drm.fbdev=0"
+      # "nvidia-drm.fbdev=0"
     ];
 
     # USERSPACE LIBRARIES FOR NVIDIA (propietary, required for nvidia-produced kernel modules)
