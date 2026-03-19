@@ -73,7 +73,7 @@ in
       { config, nixosConfig, ... }:
       {
         home.file = {
-          # add a template to add a new text file in the Files/Nautilus app
+          # add a template to add a new text file option in the right-click menu of the Files/Nautilus app
           "${config.home.homeDirectory}/Templates/New Text Document.txt".text = "";
         };
         home.packages =
