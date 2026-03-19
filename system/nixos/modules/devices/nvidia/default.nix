@@ -76,6 +76,7 @@ in
       # Kernel mode setting (KMS) allows native video resolution during boot and in tty's
       # On wayland, KMS is also required for the offloading mode (see below)
       # to ensure the iGPU is used as the primary display
+      # NB: This option will add nvidia-drm.fbdev=1 to boot.kernelParams
       modesetting.enable = true;
       # Enable the Nvidia settings GUI, accessible via `nvidia-settings`
       nvidiaSettings = true;
@@ -88,8 +89,10 @@ in
       package = config.boot.kernelPackages.nvidiaPackages.stable;
       powerManagement = {
         # this adds the nvidia-{suspend,hibernate,resume} services
+        # NB: This option will add nvidia.NVreg_PreserveVideoMemoryAllocations=1 to boot.kernelParams
         enable = true;
         # experimental power management of prime offload (turns off GPU when not in use)
+        # NB: this option will add NVreg_DynamicPowerManagement=0x02 to boot.kernelParams
         finegrained = true;
       };
       # prime sync and reverse sync modes only work on X11
