@@ -129,6 +129,11 @@ in
               "power-profile@fthx"
             ];
           };
+          # to prevent "gvfsd-wsdd[4350]: Failed to spawn the wsdd daemon" log errors
+          # see https://forums.linuxmint.com/viewtopic.php?t=430130
+          "org/gnome/system/wsdd" = mkIf (!nixosConfig.services.samba-wsdd.enable) {
+            display-mode = "disabled";
+          };
           "org/gnome/desktop/wm/keybindings" = {
             # workaround for problem with the ALT-F2 default for the Gnome run dialog
             panel-run-dialog = [
