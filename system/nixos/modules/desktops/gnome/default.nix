@@ -72,6 +72,10 @@ in
     home-manager.users.${username} =
       { config, nixosConfig, ... }:
       {
+        home.file = {
+          # add a template to add a new text file in the Files/Nautilus app
+          "${config.home.homeDirectory}/Templates/New Text Document.txt".text = "";
+        };
         home.packages =
           (with pkgs; [
             celluloid # GTK frontend for the mpv video player
