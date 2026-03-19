@@ -26,7 +26,7 @@ with lib;
   ];
   # additional packages supplying kernel modules
   boot.extraModulePackages = [ ];
-  # specify eg. module options to be appended to the generated modprobe.conf
+  # specify eg. module options to be added to /etc/modprobe.d/
   # can be used for both built-in and loadable kernel modules
   boot.extraModprobeConfig = # bash
     ''
