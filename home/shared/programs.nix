@@ -41,6 +41,13 @@
     git = {
       enable = true;
       # delta.enable = true;
+      # include config files from a non-default location
+      includes = [
+        {
+          path = "~/${nix_repo}/.gitconfig";
+          condition = "gitdir:~/${nix_repo}/.git";
+        }
+      ];
       # enable automatic maintenance of git repos using launchd/systemd
       maintenance = {
         enable = true;
