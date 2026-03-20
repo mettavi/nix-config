@@ -6,6 +6,9 @@
   pkgs,
   ...
 }:
+let
+  homeDir = "${config.home.homeDirectory}";
+in
 {
   home.packages = with pkgs; [
     atuin
@@ -51,7 +54,7 @@
       # enable automatic maintenance of git repos using launchd/systemd
       maintenance = {
         enable = true;
-        repositories = [ "${config.home.homeDirectory}/${nix_repo}" ];
+        repositories = [ "${homeDir}/${nix_repo}" ];
         timers = {
           daily = "Tue..Sun *-*-* 0:53:00";
           hourly = "*-*-* 1..23:53:00";
