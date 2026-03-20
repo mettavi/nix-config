@@ -115,8 +115,8 @@ in
         fsType = "btrfs";
         options = commonOptions ++ [
           "compress=zstd"
-          "x-gvfs-trash" # Enables trash functionality in Files app (Nautilus)
           "subvol=@admincontainers"
+          "x-gvfs-trash" # Enables trash functionality in Files app (Nautilus)
         ];
       };
       "/home/${username}/Downloads" = {
@@ -124,9 +124,9 @@ in
         fsType = "btrfs";
         options = commonOptions ++ [
           "compress=zstd"
+          "subvol=@admindownloads"
           "x-gvfs-hide" # hide in the Nautilus devices menu
           "x-gvfs-trash" # Enables trash functionality in Files app (Nautilus)
-          "subvol=@admindownloads"
         ];
       };
       "/home/${username}/media" = {
@@ -134,9 +134,9 @@ in
         fsType = "btrfs";
         options = commonOptions ++ [
           "compress=zstd"
+          "subvol=@adminmedia"
           "x-gvfs-hide" # hide in the Nautilus devices menu
           "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
-          "subvol=@adminmedia"
         ];
       };
       "/var/lib/containers" = {
