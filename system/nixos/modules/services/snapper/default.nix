@@ -53,6 +53,7 @@ in
           TIMELINE_CLEANUP = true;
           # Hourly/daily/weekly/monthly/yearly snapshots are the first snapshot taken in that time period
           # Keep snapshots for the last x hours/days/weeks/months/years
+          TIMELINE_MIN_AGE = "1800"; # keep snapshots for at least 30 mins
           TIMELINE_LIMIT_HOURLY = "10";
           TIMELINE_LIMIT_DAILY = "7";
           TIMELINE_LIMIT_WEEKLY = "0";
