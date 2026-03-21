@@ -88,15 +88,52 @@ in
         };
       };
 
-    # create nested .snapshots btrfs subvolumes to store the snapshots taken by snapper
+    # create top-level .snapshots btrfs subvolumes to store the snapshots taken by snapper
+    # also create the corresponding directories to be mounted on them
     # NB: The .snapshots directory must be owned by root and must not be writable (eg. r-x) by anybody else.
     # NB 2: Ensure the root / is a btrfs subvolume for the below "v" subvolume rules to work
     # see https://discourse.nixos.org/t/snapper-should-snapshots-subvolumes-be-created-automatically/22329/11
     systemd.tmpfiles.rules = [
       # type path mode user group (expiry) (argument)
-      "v /home/${username}/.snapshots 0750 root ${username} -"
-      "v /home/${username}/media/.snapshots 0750 root ${username} -"
-      "v /var/lib/postgresql/.snapshots 0750 root ${username} -"
+      "v /@admin-snaps 0750 root ${username} -"
+      "d /home/${username}/.snapshots 0750 root ${username} -"
+      "v /@adminmedia-snaps 0750 root ${username} -"
+      "d /home/${username}/media/.snapshots 0750 root ${username} -"
+      "v /@vlpgsql-snaps 0750 root ${username} -"
+      "d /var/lib/postgresql/.snapshots 0750 root ${username} -"
     ];
+
+    # mount the snapshot subvolumes on .snapshots directories within each parent subvolume
+    fileSystems =
+      let
+        # NB: this is the same as `label = "nixos"`
+        device = mkForce "/dev/disk/by-label/nixos";
+      in
+      {
+        "/home/${username}/.snapshots" = {
+          inherit device;
+          fsType = "btrfs";
+          options = commonOptions ++ [
+            "compress=zstd"
+            "subvol=@admin-snaps"
+          ];
+        };
+        "/home/${username}/media/.snapshots" = {
+          inherit device;
+          fsType = "btrfs";
+          options = commonOptions ++ [
+            "compress=zstd"
+            "subvol=@adminmedia-snaps"
+          ];
+        };
+        "/var/lib/postgresql/.snapshots" = {
+          inherit device;
+          fsType = "btrfs";
+          options = commonOptions ++ [
+            "compress=zstd"
+            "subvol=@vlpgsql-snaps"
+          ];
+        };
+      };
   };
 }
