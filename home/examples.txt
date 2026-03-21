@@ -86,7 +86,7 @@ in
       home = "${config.users.users.${username}.home}"; 
     in
     [
-      # type path mode user group (expiry)
+      # type path mode user group (expiry) (argument)
       "d ${home}/.local/share/paperless 0770 ${username} root -"
       "d ${home}/Downloads/paperless 0770 ${username} root -"
       "d ${home}/media/paperless 0770 ${username} paperless -"

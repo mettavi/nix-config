@@ -165,7 +165,7 @@ in
     };
     # create the Trash directory
     systemd.tmpfiles.rules = [
-      # type path mode user group (expiry)
+      # type path mode user group (expiry) (argument)
       "d /var/lib/paperless/Trash 0770 paperless paperless -"
     ];
     # add the admin user to the paperless group

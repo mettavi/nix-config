@@ -241,7 +241,7 @@ in
     #     3) Disabling COW will also disable btrfs file integrity checksumming.
 
     systemd.tmpfiles.rules = [
-      # type path mode user group (expiry)
+      # type path mode user group (expiry) (argument)
       "h /var/lib/libvirt/images - - - - +C"
       "h /var/lib/postgresql - - - - +C"
     ];

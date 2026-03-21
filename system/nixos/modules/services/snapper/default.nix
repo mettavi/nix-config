@@ -89,7 +89,7 @@ in
     # NB 2: Ensure the root / is a btrfs subvolume for the below "v" subvolume rules to work
     # see https://discourse.nixos.org/t/snapper-should-snapshots-subvolumes-be-created-automatically/22329/11
     systemd.tmpfiles.rules = [
-      # type path mode user group (expiry)
+      # type path mode user group (expiry) (argument)
       "v /home/${username}/.snapshots 0750 root ${username} -"
       "v /home/${username}/media/.snapshots 0750 root ${username} -"
       "v /var/lib/postgresql/.snapshots 0750 root ${username} -"

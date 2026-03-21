@@ -26,6 +26,7 @@ in
     programs.virt-manager.enable = true;
     # enable UEFI firmware support in Virt-Manager, Libvirt, Gnome-Boxes etc, see https://wiki.nixos.org/wiki/QEMU
     systemd.tmpfiles.rules = [
+      # type path mode user group (expiry) (argument)
       "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu_kvm}/share/qemu/firmware"
     ];
 
