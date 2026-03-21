@@ -123,7 +123,7 @@ in
             "${sys-snapshots}/etc/machine-id"
             "${sys-snapshots}/etc/NetworkManager/system-connections"
             "${sys-snapshots}/etc/passwd"
-            "${sys-snapshots}/etc/group"
+            "${sys-snapshots}/etc/ssh/ssh_${hostname}_ed25519_key*"
             "${sys-snapshots}/etc/subgid"
             "${sys-snapshots}/root"
             # includes the important /var/lib/nixos
