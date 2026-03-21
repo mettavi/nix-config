@@ -203,6 +203,7 @@ in
         description = "Set immutable attribute on mount point";
         # ensure this is set BEFORE the btrfs subvolume is mounted
         before = mountUnits;
+        requiredBy = mountUnits;
         path = with pkgs; [
           e2fsprogs # contains the chattr binary
         ];
