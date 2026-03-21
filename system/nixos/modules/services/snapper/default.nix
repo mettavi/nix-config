@@ -18,6 +18,10 @@ in
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      btrfs-assistant # btrfs gui management tool
+    ];
+
     services.snapper =
       let
         # Any option mentioned in man:snapper-configs(5) is valid here
