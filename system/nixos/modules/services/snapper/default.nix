@@ -112,7 +112,7 @@ in
           "discard"
           "noatime"
         ];
-        # NB: this is the same as `label = "nixos"`
+        # NB: this is the same as `label = mkForce "nixos"`
         device = mkForce "/dev/disk/by-label/nixos";
         fsType = "btrfs";
       in
