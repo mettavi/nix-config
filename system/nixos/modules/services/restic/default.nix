@@ -119,12 +119,14 @@ in
             "!${sys-snapshots}/var/lib/containers/storage/volumes"
           ];
           paths = [
+            "${sys-snapshots}/etc/group"
             "${sys-snapshots}/etc/machine-id"
             "${sys-snapshots}/etc/NetworkManager/system-connections"
             "${sys-snapshots}/etc/passwd"
             "${sys-snapshots}/etc/group"
             "${sys-snapshots}/etc/subgid"
             "${sys-snapshots}/root"
+            # includes the important /var/lib/nixos
             "${sys-snapshots}/var/lib"
           ]
           ++ optionalString config.mettavi.system.services.paperless-ngx.enable [
