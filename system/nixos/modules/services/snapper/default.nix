@@ -90,8 +90,8 @@ in
 
     # create top-level .snapshots btrfs subvolumes to store the snapshots taken by snapper
     # also create the corresponding directories to be mounted on them
-    # NB: The .snapshots directory must be owned by root and must not be writable (eg. r-x) by anybody else.
-    # NB 2: Ensure the root / is a btrfs subvolume for the below "v" subvolume rules to work
+    # NB: For snapper, the .snapshots directory must be owned by root and must not be writable (eg. r-x) by anybody else.
+    # NB 2: Also ensure the root / is a btrfs subvolume for the systemd-tmpfiles "v" subvolume rules to work
     # see https://discourse.nixos.org/t/snapper-should-snapshots-subvolumes-be-created-automatically/22329/11
     systemd.tmpfiles.rules = [
       # type path mode user group (expiry) (argument)
