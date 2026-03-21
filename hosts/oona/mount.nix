@@ -22,6 +22,7 @@ in
 
   fileSystems =
     let
+      # NB: this is the same as `label = "nixos"`
       device = mkForce "/dev/disk/by-label/nixos";
     in
     {
