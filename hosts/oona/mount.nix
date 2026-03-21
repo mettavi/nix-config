@@ -68,7 +68,7 @@ in
         inherit device;
         fsType = "btrfs";
         # NB: The default zstd compression level is 3.
-        # This option is used across all subvolumes on the btrfs device
+        # NB: Most btrfs options are common to all subvolumes on the btrfs partition
         options = commonOptions ++ [
           "compress=zstd"
           "subvol=@root"
