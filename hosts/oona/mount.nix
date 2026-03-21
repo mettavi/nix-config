@@ -6,13 +6,6 @@
   ...
 }:
 with lib;
-let
-  commonOptions = [
-    "defaults"
-    "discard"
-    "noatime"
-  ];
-in
 {
   boot.supportedFilesystems = [
     "ntfs" # required to mount ntfs partitions
@@ -22,8 +15,15 @@ in
 
   fileSystems =
     let
+      btrfsOptions = [ "compress=zstd" ];
+      commonOptions = [
+        "defaults"
+        "discard"
+        "noatime"
+      ];
       # NB: this is the same as `label = "nixos"`
       device = mkForce "/dev/disk/by-label/nixos";
+      fsType = "btrfs";
     in
     {
       "/boot" = {
@@ -46,8 +46,8 @@ in
       };
       # mount the HOME subvolume of the CachyOS partition
       "/mnt/cachyos/home" = {
+        inherit fsType;
         device = mkForce "/dev/disk/by-uuid/2a1020bc-0b4e-4b74-a373-8e624aec1e11";
-        fsType = "btrfs";
         options = commonOptions ++ [
           "compress=zstd"
           "nofail"
@@ -66,99 +66,109 @@ in
         ];
       };
       "/" = {
-        inherit device;
-        fsType = "btrfs";
+        inherit device fsType;
         # NB: The default zstd compression level is 3.
         # NB: Most btrfs options are common to all subvolumes on the btrfs partition
-        options = commonOptions ++ [
-          "compress=zstd"
-          "subvol=@root"
-        ];
+        options =
+          commonOptions
+          ++ btrfsOptions
+          ++ [
+            "subvol=@root"
+          ];
       };
       "/nix" = {
-        inherit device;
-        fsType = "btrfs";
-        options = commonOptions ++ [
-          "compress=zstd"
-          "subvol=@nix"
-        ];
+        inherit device fsType;
+        options =
+          commonOptions
+          ++ btrfsOptions
+          ++ [
+            "subvol=@nix"
+          ];
       };
       "/root" = {
-        inherit device;
-        fsType = "btrfs";
-        options = commonOptions ++ [
-          "compress=zstd"
-          "subvol=@roothome"
-        ];
+        inherit device fsType;
+        options =
+          commonOptions
+          ++ btrfsOptions
+          ++ [
+            "subvol=@roothome"
+          ];
       };
       "/home" = {
-        inherit device;
-        fsType = "btrfs";
+        inherit device fsType;
         # required on home directories for sops-nix to work with btrfs
         # See https://github.com/Mic92/sops-nix/issues/721
         neededForBoot = true;
-        options = commonOptions ++ [
-          "compress=zstd"
-          "subvol=@home"
-        ];
+        options =
+          commonOptions
+          ++ btrfsOptions
+          ++ [
+            "subvol=@home"
+          ];
       };
       "/home/${username}" = {
-        inherit device;
-        fsType = "btrfs";
+        inherit device fsType;
         neededForBoot = true;
-        options = commonOptions ++ [
-          "compress=zstd"
-          "subvol=@adminhome"
-        ];
+        options =
+          commonOptions
+          ++ btrfsOptions
+          ++ [
+            "subvol=@adminhome"
+          ];
       };
       "/home/${username}/.local/share/containers" = {
-        inherit device;
-        fsType = "btrfs";
-        options = commonOptions ++ [
-          "compress=zstd"
-          "subvol=@admincontainers"
-          "x-gvfs-trash" # Enables trash functionality in Files app (Nautilus) for the mounted filesystem
-        ];
+        inherit device fsType;
+        options =
+          commonOptions
+          ++ btrfsOptions
+          ++ [
+            "subvol=@admincontainers"
+            "x-gvfs-trash" # Enables trash functionality in Files app (Nautilus) for the mounted filesystem
+          ];
       };
       "/home/${username}/Downloads" = {
-        inherit device;
-        fsType = "btrfs";
-        options = commonOptions ++ [
-          "compress=zstd"
-          "subvol=@admindownloads"
-          "x-gvfs-hide" # hide in the Nautilus devices menu
-          "x-gvfs-trash"
-        ];
+        inherit device fsType;
+        options =
+          commonOptions
+          ++ btrfsOptions
+          ++ [
+            "subvol=@admindownloads"
+            "x-gvfs-hide" # hide in the Nautilus devices menu
+            "x-gvfs-trash"
+          ];
       };
       "/home/${username}/media" = {
-        inherit device;
-        fsType = "btrfs";
-        options = commonOptions ++ [
-          "compress=zstd"
-          "subvol=@adminmedia"
-          "x-gvfs-hide"
-          "x-gvfs-trash"
-        ];
+        inherit device fsType;
+        options =
+          commonOptions
+          ++ btrfsOptions
+          ++ [
+            "subvol=@adminmedia"
+            "x-gvfs-hide"
+            "x-gvfs-trash"
+          ];
       };
       "/var/lib/containers" = {
-        inherit device;
-        fsType = "btrfs";
-        options = commonOptions ++ [
-          "compress=zstd"
-          "subvol=@vlcontainers"
-        ];
+        inherit device fsType;
+        options =
+          commonOptions
+          ++ btrfsOptions
+          ++ [
+            "subvol=@vlcontainers"
+          ];
       };
       "/var/lib/libvirt/images" = {
         inherit device;
         fsType = "btrfs";
-        options = commonOptions ++ [
-          "compress=zstd"
-          "subvol=@libvirtimgs"
-        ];
+        options =
+          commonOptions
+          ++ btrfsOptions
+          ++ [
+            "subvol=@libvirtimgs"
+          ];
       };
       "/var/lib/postgresql" = {
-        inherit device;
-        fsType = "btrfs";
+        inherit device fsType;
         options = commonOptions ++ [
           "compress=zstd"
           "subvol=@vlpostgres"
@@ -167,18 +177,21 @@ in
       "/var/log" = {
         inherit device;
         fsType = "btrfs";
-        options = commonOptions ++ [
-          "compress=zstd"
-          "subvol=@varlog"
-        ];
+        options =
+          commonOptions
+          ++ btrfsOptions
+          ++ [
+            "subvol=@varlog"
+          ];
       };
       "/var/tmp" = {
-        inherit device;
-        fsType = "btrfs";
-        options = commonOptions ++ [
-          "compress=zstd"
-          "subvol=@vartmp"
-        ];
+        inherit device fsType;
+        options =
+          commonOptions
+          ++ btrfsOptions
+          ++ [
+            "subvol=@vartmp"
+          ];
       };
     };
 

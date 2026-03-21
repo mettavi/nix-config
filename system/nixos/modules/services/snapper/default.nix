@@ -107,32 +107,42 @@ in
     fileSystems =
       let
         # NB: this is the same as `label = "nixos"`
+        btrfsOptions = [ "compress=zstd" ];
+        commonOptions = [
+          "defaults"
+          "discard"
+          "noatime"
+        ];
         device = mkForce "/dev/disk/by-label/nixos";
+        fsType = "btrfs";
       in
       {
         "/home/${username}/.snapshots" = {
-          inherit device;
-          fsType = "btrfs";
-          options = commonOptions ++ [
-            "compress=zstd"
-            "subvol=@admin-snaps"
-          ];
+          inherit device fsType;
+          options =
+            commonOptions
+            ++ btrfsOptions
+            ++ [
+              "subvol=@admin-snaps"
+            ];
         };
         "/home/${username}/media/.snapshots" = {
-          inherit device;
-          fsType = "btrfs";
-          options = commonOptions ++ [
-            "compress=zstd"
-            "subvol=@adminmedia-snaps"
-          ];
+          inherit device fsType;
+          options =
+            commonOptions
+            ++ btrfsOptions
+            ++ [
+              "subvol=@adminmedia-snaps"
+            ];
         };
         "/var/lib/postgresql/.snapshots" = {
-          inherit device;
-          fsType = "btrfs";
-          options = commonOptions ++ [
-            "compress=zstd"
-            "subvol=@vlpgsql-snaps"
-          ];
+          inherit device fsType;
+          options =
+            commonOptions
+            ++ btrfsOptions
+            ++ [
+              "subvol=@vlpgsql-snaps"
+            ];
         };
       };
   };
