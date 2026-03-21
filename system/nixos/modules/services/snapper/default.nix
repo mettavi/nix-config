@@ -106,13 +106,13 @@ in
     # mount the snapshot subvolumes on .snapshots directories within each parent subvolume
     fileSystems =
       let
-        # NB: this is the same as `label = "nixos"`
         btrfsOptions = [ "compress=zstd" ];
         commonOptions = [
           "defaults"
           "discard"
           "noatime"
         ];
+        # NB: this is the same as `label = "nixos"`
         device = mkForce "/dev/disk/by-label/nixos";
         fsType = "btrfs";
       in
