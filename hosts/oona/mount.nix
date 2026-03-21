@@ -181,6 +181,14 @@ in
       };
     };
 
+  # CHECK BTRFS FILE CONSISTENCY
+  # check the status of the last scrub with "btrfs scrub status /" or in the journal
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "monthly";
+    fileSystems = [ "/" ];
+  };
+
   ######################################################
   # SET NO COPY-ON-WRITE ON SPECIAL BTRFS SUBVOLUMES
   # NB: 1) Setting this by a mount option will apply the option to ALL subvolumes on the partition.
