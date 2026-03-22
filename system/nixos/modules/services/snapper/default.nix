@@ -7,6 +7,20 @@
 with lib;
 let
   cfg = config.mettavi.system.services.snapper;
+  mounts = [
+    {
+      mount = "/home/${username}/.snapshots";
+      subvol = "@admin-snaps";
+    }
+    {
+      mount = "/home/${username}/media/.snapshots";
+      subvol = "@adminmedia-snaps";
+    }
+    {
+      mount = "/var/lib/postgreql/.snapshots";
+      subvol = "@vlpgsql-snaps";
+    }
+  ];
 in
 {
   options.mettavi.system.services.snapper = {
@@ -107,47 +121,109 @@ in
       "d /var/lib/postgresql/.snapshots 0750 root ${username} -"
     ];
 
-    # mount the snapshot subvolumes on .snapshots directories within each parent subvolume
-    fileSystems =
+    # systemd.services.snapper-tmpfiles =
+    #   let
+    #     mountPoints = [
+    #       "home-${username}-.snapshots.mount"
+    #       "home-${username}-media-.snapshots.mount"
+    #       "var-lib-postgresql-.snapshots.mount"
+    #     ];
+    #   in
+    #   {
+    #     description = "Ensure subvolumes and mountpoints for snapper snapshots are created before they are mounted";
+    #     path = [ "systemd-tmpfiles" ];
+    #     script = "systemd-tmpfiles --create --remove --exclude-prefix=/dev";
+    #     before = mountPoints;
+    #     requiredBy = mountPoints;
+    #     serviceConfig = {
+    #       Type = "oneshot";
+    #       RemainAfterExit = "yes";
+    #     };
+    #   };
+
+    # create a service to create btrfs subvolumes and directories with systemd-tmpfiles before they are mounted
+    systemd.services =
       let
-        btrfsOptions = [ "compress=zstd" ];
-        commonOptions = [
-          "defaults"
-          "discard"
-          "noatime"
+        mountUnits = [
+          # -1 takes the rest of the string
+          (builtins.substring 1 "-1" (builtins.replaceStrings [ "/" ] [ "-" ] "${mnt}" + ".mount"))
         ];
-        # NB: this is the same as `label = mkForce "nixos"`
-        device = mkForce "/dev/disk/by-label/nixos";
-        fsType = "btrfs";
       in
-      {
-        "/home/${username}/.snapshots" = {
-          inherit device fsType;
-          options =
-            commonOptions
-            ++ btrfsOptions
-            ++ [
-              "subvol=@admin-snaps"
-            ];
+      builtins.listToAttrs (
+        map (mnt: sub: {
+          name = sub;
+          value = {
+            description = "Ensure subvolumes and mountpoints for snapper snapshots are created before they are mounted";
+            path = with pkgs; [ systemd ];
+            script = "systemd-tmpfiles --create --remove --exclude-prefix=/dev";
+            before = mountUnits;
+            requiredBy = mountUnits;
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = "yes";
+            };
+          };
+        }) mounts
+      );
+
+    fileSystems = builtins.listToAttrs (
+      map (mnt: sub: {
+        name = mnt;
+        value = {
+          device = mkForce "/dev/disk/by-label/nixos";
+          fsType = "btrfs";
+          options = [
+            "defaults"
+            "discard"
+            "noatime"
+            "compress=zstd"
+            "subvol=${sub}"
+          ];
         };
-        "/home/${username}/media/.snapshots" = {
-          inherit device fsType;
-          options =
-            commonOptions
-            ++ btrfsOptions
-            ++ [
-              "subvol=@adminmedia-snaps"
-            ];
-        };
-        "/var/lib/postgresql/.snapshots" = {
-          inherit device fsType;
-          options =
-            commonOptions
-            ++ btrfsOptions
-            ++ [
-              "subvol=@vlpgsql-snaps"
-            ];
-        };
-      };
+      }) mounts
+    );
+
+    # mount the snapshot subvolumes on .snapshots directories within each parent subvolume
+    # fileSystems =
+    #   let
+    #     btrfsOptions = [ "compress=zstd" ];
+    #     commonOptions = [
+    #       "defaults"
+    #       "discard"
+    #       "noatime"
+    #     ];
+    #     # NB: this is the same as `label = mkForce "nixos"`
+    #     device = mkForce "/dev/disk/by-label/nixos";
+    #     fsType = "btrfs";
+    #   in
+    # {
+    #   "/home/${username}/.snapshots" = {
+    #     inherit device fsType;
+    #     options =
+    #       commonOptions
+    #       ++ btrfsOptions
+    #       ++ [
+    #         "subvol=@admin-snaps"
+    #       ];
+    #   };
+    #   "/home/${username}/media/.snapshots" = {
+    #     inherit device fsType;
+    #     options =
+    #       commonOptions
+    #       ++ btrfsOptions
+    #       ++ [
+    #         "subvol=@adminmedia-snaps"
+    #       ];
+    #   };
+    #   "/var/lib/postgresql/.snapshots" = {
+    #     inherit device fsType;
+    #     options =
+    #       commonOptions
+    #       ++ btrfsOptions
+    #       ++ [
+    #         "subvol=@vlpgsql-snaps"
+    #       ];
+    #   };
+    # };
   };
 }
