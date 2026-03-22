@@ -52,6 +52,7 @@ return {
     end,
   },
   {
+    -- Original modules from nvim-treesitter master branch
     "MeanderingProgrammer/treesitter-modules.nvim",
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = {
