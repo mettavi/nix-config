@@ -106,3 +106,26 @@ in
       services.foo.baz = "example";  # Another variable based on the condition
     })
   ];
+
+
+  #####################################################################
+  # LOOPS
+
+  concatMapAttrs: used to transform both the key and the value in an attribute set
+  NB: other fuctions such as mapAttrs use the unmodified parameter key/name as the key in the new attribute set
+
+Example from restic/default.nix (nixos):
+
+    sops.secrets = concatMapAttrs (key: value: {
+      # encryption password for each restic backup job
+      "users/${username}/restic-${hostname}-${value.label}" = resticSecrets;
+    }) cfg.jobs;
+
+Note how the key/name is transformed using the input parameter, rather than being taken from it unmodified
+
+
+  mapAtts
+
+  listtoAttrs
+
+  map
