@@ -33,6 +33,7 @@ in
           ALLOW_USERS = [ "${username}" ];
           ALLOW_GROUPS = [ ];
           # sync above ALLOW users/groups to the acl of the .snapshots directory
+          # this allows the user to run snapper commands
           SYNC_ACL = true;
 
           # The intention of PRE/POST SNAPSHOT PAIRS is to snapshot
