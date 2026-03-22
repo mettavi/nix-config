@@ -89,7 +89,10 @@ in
         };
       };
 
-    # create top-level .snapshots btrfs subvolumes to store the snapshots taken by snapper
+    # create TOP-LEVEL .snapshots btrfs subvolumes to store the snapshots taken by snapper
+    # see https://www.reddit.com/r/btrfs/comments/kkms59/snappers_snapshot_location/
+    # and https://www.reddit.com/r/btrfs/comments/rnl6j5/is_there_any_compelling_reason_to_not_use_nested/
+    # and https://bbs.archlinux.org/viewtopic.php?id=194491
     # also create the corresponding directories to be mounted on them
     # NB: For snapper, the .snapshots directory must be owned by root and must not be writable (eg. r-x) by anybody else.
     # NB 2: Also ensure the root / is a btrfs subvolume for the systemd-tmpfiles "v" subvolume rules to work
