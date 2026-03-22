@@ -49,6 +49,11 @@ return {
       end
     end, { silent = true })
 
+    -- add markdown completions
+    require("render-markdown").setup({
+      completions = { lsp = { enabled = true } },
+    })
+
     -- add vim style up and down navigation to cmp-cmdline with ctrl-k and ctrl-j
     local cmdline_mappings = cmp.mapping.preset.cmdline({
       ["<C-j>"] = { c = cmp.mapping.select_next_item() },
