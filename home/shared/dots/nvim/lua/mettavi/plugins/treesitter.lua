@@ -57,7 +57,7 @@ return {
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = {
       ensure_installed = languages,
-      fold = { enable = false },
+      fold = { enable = true },
       highlight = { enable = true },
       indent = { enable = true },
       incremental_selection = { enable = true },
