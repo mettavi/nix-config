@@ -168,7 +168,29 @@
       paperless-ngx.enable = true;
       pia-vpn-netmanager.enable = true;
       restic.enable = true;
-      snapper.enable = true;
+      snapper = {
+        enable = true;
+        mounts = {
+          # The key (e.g., 'adminhome') is just a label for Nix
+          adminhome = {
+            datadir = "/home/${username}";
+            snapsvol = "@adminhome-snaps";
+            # You can override specific settings just for adminhome!
+            extraConfig = {
+              TIMELINE_LIMIT_HOURLY = "24";
+            }; # Custom override!
+          };
+          adminmedia = {
+            datadir = "/home/${username}/media";
+            snapsvol = "@adminmedia-snaps";
+          };
+          vlpgsql = {
+            enable = false; # This subvolume is defined but won't be processed
+            datadir = "/var/lib/postgresql";
+            snapsvol = "@vlpgsql-snaps";
+          };
+        };
+      };
     };
     shell = {
       # see the host-specific keyboard config below
