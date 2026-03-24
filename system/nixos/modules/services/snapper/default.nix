@@ -11,6 +11,50 @@ let
 
   # Filter only the mounts where 'enable = true'
   enabledMounts = filterAttrs (name: mount: mount.enable) cfg.mounts;
+
+  # Any option mentioned in man:snapper-configs(5) is valid here
+  # Shared settings for every Snapper configuration
+  commonConfig = {
+    FSTYPE = "btrfs"; # Only btrfs is stable and tested.
+    ### PERMISSIONS ###
+    # List of users/groups allowed to operate with the config.
+    # (“root” is always implicitly included)
+    ALLOW_USERS = [ "${username}" ];
+    ALLOW_GROUPS = [ ];
+    # sync above ALLOW users/groups to the acl of the .snapshots directory
+    # this allows the user to run snapper commands
+    SYNC_ACL = true;
+
+    # The intention of PRE/POST SNAPSHOT PAIRS is to snapshot
+    # the filesystem before and after a modification.
+    # Whether pre and post snapshots should be compared in the background after creation
+    BACKGROUND_COMPARISON = "yes";
+    # Whether the empty-pre-post cleanup algorithm should be run,
+    # which deletes pre/post snapshot pairs with empty diffs.
+    EMPTY_PRE_POST_CLEANUP = "yes";
+    EMPTY_PRE_POST_MIN_AGE = "1800"; # Minimal age (secs) for snapshots to be deleted
+
+    ###### NUMBER CLEANUP ALGORITHM ######
+    # Deletes old snapshots when a certain number of snapshots is reached.
+    NUMBER_CLEANUP = false;
+    # Minimal age (secs) for snapshots to be deleted
+    NUMBER_MIN_AGE = "1800";
+    NUMBER_LIMIT = "50";
+    NUMBER_LIMIT_IMPORTANT = "10";
+
+    ###### TIMELINE SNAPSHOTS ######
+    TIMELINE_CREATE = true; # Whether hourly snapshots should be created
+    TIMELINE_CLEANUP = true;
+    # Hourly/daily/weekly/monthly/yearly snapshots are the first snapshot taken in that time period
+    # Keep snapshots for the last x hours/days/weeks/months/years
+    TIMELINE_MIN_AGE = "1800"; # keep snapshots for at least 30 mins
+    TIMELINE_LIMIT_HOURLY = "10";
+    TIMELINE_LIMIT_DAILY = "7";
+    TIMELINE_LIMIT_WEEKLY = "0";
+    TIMELINE_LIMIT_MONTHLY = "0";
+    TIMELINE_LIMIT_YEARLY = "10";
+  };
+
   # Helper to turn a path like /home/user into home-user (used for systemd units)
   toUnitName = path: substring 1 (-1) (replaceStrings [ "/" ] [ "-" ] path);
 
@@ -58,66 +102,21 @@ in
       btrfs-assistant # btrfs gui management tool
     ];
 
-    services.snapper =
-      let
-        # Any option mentioned in man:snapper-configs(5) is valid here
-        # Shared settings for every Snapper configuration
-        commonConfig = {
-          FSTYPE = "btrfs"; # Only btrfs is stable and tested.
-          ### PERMISSIONS ###
-          # List of users/groups allowed to operate with the config.
-          # (“root” is always implicitly included)
-          ALLOW_USERS = [ "${username}" ];
-          ALLOW_GROUPS = [ ];
-          # sync above ALLOW users/groups to the acl of the .snapshots directory
-          # this allows the user to run snapper commands
-          SYNC_ACL = true;
-
-          # The intention of PRE/POST SNAPSHOT PAIRS is to snapshot
-          # the filesystem before and after a modification.
-          # Whether pre and post snapshots should be compared in the background after creation
-          BACKGROUND_COMPARISON = "yes";
-          # Whether the empty-pre-post cleanup algorithm should be run,
-          # which deletes pre/post snapshot pairs with empty diffs.
-          EMPTY_PRE_POST_CLEANUP = "yes";
-          EMPTY_PRE_POST_MIN_AGE = "1800"; # Minimal age (secs) for snapshots to be deleted
-
-          ###### NUMBER CLEANUP ALGORITHM ######
-          # Deletes old snapshots when a certain number of snapshots is reached.
-          NUMBER_CLEANUP = false;
-          # Minimal age (secs) for snapshots to be deleted
-          NUMBER_MIN_AGE = "1800";
-          NUMBER_LIMIT = "50";
-          NUMBER_LIMIT_IMPORTANT = "10";
-
-          ###### TIMELINE SNAPSHOTS ######
-          TIMELINE_CREATE = true; # Whether hourly snapshots should be created
-          TIMELINE_CLEANUP = true;
-          # Hourly/daily/weekly/monthly/yearly snapshots are the first snapshot taken in that time period
-          # Keep snapshots for the last x hours/days/weeks/months/years
-          TIMELINE_MIN_AGE = "1800"; # keep snapshots for at least 30 mins
-          TIMELINE_LIMIT_HOURLY = "10";
-          TIMELINE_LIMIT_DAILY = "7";
-          TIMELINE_LIMIT_WEEKLY = "0";
-          TIMELINE_LIMIT_MONTHLY = "0";
-          TIMELINE_LIMIT_YEARLY = "10";
-        };
-      in
-      {
-        cleanupInterval = "1d";
-        # a list of files that should never be reverted (eg. state info like /etc/mtab)
-        # Note that filters do not exclude files or directories from being snapshotted.
-        # For that, use subvolumes or mount points.
-        filters = "";
-        # trigger the snapshot immediately if the last trigger was missed
-        persistentTimer = true;
-        snapshotRootOnBoot = false;
-        snapshotInterval = "hourly";
-        # mapAttrs handles the key-value pairing automatically
-        configs = mapAttrs (
-          name: mount: commonConfig // mount.extraConfig // { SUBVOLUME = mount.datadir; }
-        ) enabledMounts;
-      };
+    services.snapper = {
+      cleanupInterval = "1d";
+      # a list of files that should never be reverted (eg. state info like /etc/mtab)
+      # Note that filters do not exclude files or directories from being snapshotted.
+      # For that, use subvolumes or mount points.
+      filters = "";
+      # trigger the snapshot immediately if the last trigger was missed
+      persistentTimer = true;
+      snapshotRootOnBoot = false;
+      snapshotInterval = "hourly";
+      # mapAttrs handles the key-value pairing automatically
+      configs = mapAttrs (
+        name: mount: commonConfig // mount.extraConfig // { SUBVOLUME = mount.datadir; }
+      ) enabledMounts;
+    };
 
     # create services to create btrfs subvolumes and directories before they are mounted
     # We use mapAttrs' (the "prime" version) because we want to change the
