@@ -134,9 +134,6 @@ in
               gnugrep
               util-linux # for the mount binary
             ];
-            # only run after the parent directories have been mounted
-            # after = mountParent;
-            # requires = mountParent;
             # create the subvolumes and directories BEFORE they are to be mounted
             before = mountUnit;
             requiredBy = mountUnit;
@@ -180,6 +177,7 @@ in
             };
             unitConfig = {
               DefaultDependencies = "no";
+              # only run after the parent directories have been mounted
               RequiresMountsFor = [ mountParent ];
             };
             wantedBy = [
