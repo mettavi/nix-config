@@ -178,7 +178,7 @@
             # You can override specific settings just for adminhome!
             extraConfig = {
               TIMELINE_LIMIT_HOURLY = "24";
-            }; # Custom override!
+            };
           };
           adminmedia = {
             datadir = "/home/${username}/media";
