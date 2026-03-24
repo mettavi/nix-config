@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   username,
   ...
 }:
@@ -9,16 +10,19 @@ let
   cfg = config.mettavi.system.services.snapper;
   mounts = [
     {
-      mount = "/home/${username}/.snapshots";
-      subvol = "@admin-snaps";
+      enable = true;
+      datadir = "/home/${username}";
+      snapsvol = "@adminhome-snaps";
     }
     {
-      mount = "/home/${username}/media/.snapshots";
-      subvol = "@adminmedia-snaps";
+      enable = true;
+      datadir = "/home/${username}/media";
+      snapsvol = "@adminmedia-snaps";
     }
     {
-      mount = "/var/lib/postgreql/.snapshots";
-      subvol = "@vlpgsql-snaps";
+      enable = false;
+      datadir = "/var/lib/postgresql";
+      snapsvol = "@vlpgsql-snaps";
     }
   ];
 in
@@ -97,7 +101,7 @@ in
           adminmedia = commonConfig // {
             SUBVOLUME = "/home/${username}/media";
           };
-          postgres = commonConfig // {
+          vlpgsql = commonConfig // {
             SUBVOLUME = "/var/lib/postgresql";
           };
         };
@@ -111,15 +115,15 @@ in
     # NB: For snapper, the .snapshots directory must be owned by root and must not be writable (eg. r-x) by anybody else.
     # NB 2: Also ensure the root / is a btrfs subvolume for the systemd-tmpfiles "v" subvolume rules to work
     # see https://discourse.nixos.org/t/snapper-should-snapshots-subvolumes-be-created-automatically/22329/11
-    systemd.tmpfiles.rules = [
-      # type path mode user group (expiry) (argument)
-      "v /@admin-snaps 0750 root ${username} -"
-      "d /home/${username}/.snapshots 0750 root ${username} -"
-      "v /@adminmedia-snaps 0750 root ${username} -"
-      "d /home/${username}/media/.snapshots 0750 root ${username} -"
-      "v /@vlpgsql-snaps 0750 root ${username} -"
-      "d /var/lib/postgresql/.snapshots 0750 root ${username} -"
-    ];
+    # systemd.tmpfiles.rules = [
+    #   # type path mode user group (expiry) (argument)
+    #   "v /@admin-snaps 0750 root ${username} -"
+    #   "d /home/${username}/.snapshots 0750 root ${username} -"
+    #   "v /@adminmedia-snaps 0750 root ${username} -"
+    #   "d /home/${username}/media/.snapshots 0750 root ${username} -"
+    #   "v /@vlpgsql-snaps 0750 root ${username} -"
+    #   "d /var/lib/postgresql/.snapshots 0750 root ${username} -"
+    # ];
 
     # systemd.services.snapper-tmpfiles =
     #   let
@@ -141,46 +145,108 @@ in
     #     };
     #   };
 
-    # create a service to create btrfs subvolumes and directories with systemd-tmpfiles before they are mounted
-    systemd.services =
-      let
-        mountUnits = [
-          # -1 takes the rest of the string
-          (builtins.substring 1 "-1" (builtins.replaceStrings [ "/" ] [ "-" ] "${mnt}" + ".mount"))
-        ];
-      in
-      builtins.listToAttrs (
-        map (mnt: sub: {
-          name = sub;
+    # create services to create btrfs subvolumes and directories before they are mounted
+    systemd.services = builtins.listToAttrs (
+      map (
+        mount:
+        let
+          mountParent = [
+            (builtins.substring 1 (-1) (builtins.replaceStrings [ "/" ] [ "-" ] "${mount.datadir}") + ".mount")
+          ];
+          mountUnit = [
+            # -1 takes the rest of the string
+            (builtins.substring 1 (-1) (
+              builtins.replaceStrings [ "/" ] [ "-" ] "${mount.datadir}" + "-.snapshots.mount"
+            ))
+          ];
+          serviceUnit = (builtins.substring 1 (-1) "${mount.snapsvol}");
+        in
+        # mkIf mount.enable {
+        {
+          name = serviceUnit;
           value = {
-            description = "Ensure subvolumes and mountpoints for snapper snapshots are created before they are mounted";
-            path = with pkgs; [ systemd ];
-            script = "systemd-tmpfiles --create --remove --exclude-prefix=/dev";
-            before = mountUnits;
-            requiredBy = mountUnits;
+            description = "Ensure the subvolume ${mount.snapsvol} and directory ${mount.datadir}/.snapshots are created before they need to be mounted";
+            path = with pkgs; [
+              btrfs-progs
+              coreutils
+              gnugrep
+              util-linux # for the mount binary
+            ];
+            # only run after the parent directories have been mounted
+            # after = mountParent;
+            # requires = mountParent;
+            # create the subvolumes and directories BEFORE they are to be mounted
+            before = mountUnit;
+            requiredBy = mountUnit;
+            restartIfChanged = false;
+            script = ''
+              # create TOP-LEVEL .snapshots btrfs subvolumes to store the snapshots taken by snapper
+              # see https://www.reddit.com/r/btrfs/comments/kkms59/snappers_snapshot_location/
+              # and https://www.reddit.com/r/btrfs/comments/rnl6j5/is_there_any_compelling_reason_to_not_use_nested/
+              # and https://bbs.archlinux.org/viewtopic.php?id=194491
+              # also create the corresponding directories to be mounted on them
+              # NB: For snapper, the .snapshots directory must be owned by root and must not be writable (eg. r-x) by anybody else.
+              # see https://discourse.nixos.org/t/snapper-should-snapshots-subvolumes-be-created-automatically/22329/11
+
+              # Check if the btrfs subvolume exists
+              if ! btrfs subvolume list / | grep -q ${mount.snapsvol}; then
+                mount /dev/disk/by-label/nixos /mnt/btrfs
+                # Create the subvolume
+                btrfs subvolume create /mnt/btrfs/${mount.snapsvol}
+                echo "Subvolume created at ${mount.snapsvol}"
+                chown root:${username} /mnt/btrfs/${mount.snapsvol}
+                chmod 750 /mnt/btrfs/${mount.snapsvol}
+                umount /mnt/btrfs
+              else
+                echo "Subvolume already exists at ${mount.snapsvol}"
+              fi
+
+              # Check if the directory exists
+              if [ ! -d "${mount.datadir}/.snapshots" ]; then
+                # Create the directory
+                echo "Folder ${mount.datadir}/.snapshots does not exist. Creating it..."
+                mkdir -p "${mount.datadir}/.snapshots" 
+                chown root:${username} "${mount.datadir}/.snapshots" 
+                chmod 750 "${mount.datadir}/.snapshots" 
+              else
+                echo "Folder ${mount.datadir}/.snapshots already exists."
+              fi 
+            '';
             serviceConfig = {
               Type = "oneshot";
               RemainAfterExit = "yes";
             };
+            unitConfig = {
+              DefaultDependencies = "no";
+              RequiresMountsFor = [ mountParent ];
+            };
+            wantedBy = [
+              "local-fs.target"
+            ];
           };
-        }) mounts
-      );
+        }
+      ) mounts
+    );
 
     fileSystems = builtins.listToAttrs (
-      map (mnt: sub: {
-        name = mnt;
-        value = {
-          device = mkForce "/dev/disk/by-label/nixos";
-          fsType = "btrfs";
-          options = [
-            "defaults"
-            "discard"
-            "noatime"
-            "compress=zstd"
-            "subvol=${sub}"
-          ];
-        };
-      }) mounts
+      map (
+        mount:
+        # mkIf mount.enable {
+        {
+          name = mount.datadir + "/.snapshots";
+          value = {
+            device = mkForce "/dev/disk/by-label/nixos";
+            fsType = "btrfs";
+            options = [
+              "nofail"
+              "defaults"
+              "discard"
+              "noatime"
+              "compress=zstd"
+              "subvol=${mount.snapsvol}"
+            ];
+          };
+        }) mounts
     );
 
     # mount the snapshot subvolumes on .snapshots directories within each parent subvolume
