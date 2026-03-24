@@ -107,44 +107,6 @@ in
         };
       };
 
-    # create TOP-LEVEL .snapshots btrfs subvolumes to store the snapshots taken by snapper
-    # see https://www.reddit.com/r/btrfs/comments/kkms59/snappers_snapshot_location/
-    # and https://www.reddit.com/r/btrfs/comments/rnl6j5/is_there_any_compelling_reason_to_not_use_nested/
-    # and https://bbs.archlinux.org/viewtopic.php?id=194491
-    # also create the corresponding directories to be mounted on them
-    # NB: For snapper, the .snapshots directory must be owned by root and must not be writable (eg. r-x) by anybody else.
-    # NB 2: Also ensure the root / is a btrfs subvolume for the systemd-tmpfiles "v" subvolume rules to work
-    # see https://discourse.nixos.org/t/snapper-should-snapshots-subvolumes-be-created-automatically/22329/11
-    # systemd.tmpfiles.rules = [
-    #   # type path mode user group (expiry) (argument)
-    #   "v /@admin-snaps 0750 root ${username} -"
-    #   "d /home/${username}/.snapshots 0750 root ${username} -"
-    #   "v /@adminmedia-snaps 0750 root ${username} -"
-    #   "d /home/${username}/media/.snapshots 0750 root ${username} -"
-    #   "v /@vlpgsql-snaps 0750 root ${username} -"
-    #   "d /var/lib/postgresql/.snapshots 0750 root ${username} -"
-    # ];
-
-    # systemd.services.snapper-tmpfiles =
-    #   let
-    #     mountPoints = [
-    #       "home-${username}-.snapshots.mount"
-    #       "home-${username}-media-.snapshots.mount"
-    #       "var-lib-postgresql-.snapshots.mount"
-    #     ];
-    #   in
-    #   {
-    #     description = "Ensure subvolumes and mountpoints for snapper snapshots are created before they are mounted";
-    #     path = [ "systemd-tmpfiles" ];
-    #     script = "systemd-tmpfiles --create --remove --exclude-prefix=/dev";
-    #     before = mountPoints;
-    #     requiredBy = mountPoints;
-    #     serviceConfig = {
-    #       Type = "oneshot";
-    #       RemainAfterExit = "yes";
-    #     };
-    #   };
-
     # create services to create btrfs subvolumes and directories before they are mounted
     systemd.services = builtins.listToAttrs (
       map (
@@ -248,48 +210,5 @@ in
           };
         }) mounts
     );
-
-    # mount the snapshot subvolumes on .snapshots directories within each parent subvolume
-    # fileSystems =
-    #   let
-    #     btrfsOptions = [ "compress=zstd" ];
-    #     commonOptions = [
-    #       "defaults"
-    #       "discard"
-    #       "noatime"
-    #     ];
-    #     # NB: this is the same as `label = mkForce "nixos"`
-    #     device = mkForce "/dev/disk/by-label/nixos";
-    #     fsType = "btrfs";
-    #   in
-    # {
-    #   "/home/${username}/.snapshots" = {
-    #     inherit device fsType;
-    #     options =
-    #       commonOptions
-    #       ++ btrfsOptions
-    #       ++ [
-    #         "subvol=@admin-snaps"
-    #       ];
-    #   };
-    #   "/home/${username}/media/.snapshots" = {
-    #     inherit device fsType;
-    #     options =
-    #       commonOptions
-    #       ++ btrfsOptions
-    #       ++ [
-    #         "subvol=@adminmedia-snaps"
-    #       ];
-    #   };
-    #   "/var/lib/postgresql/.snapshots" = {
-    #     inherit device fsType;
-    #     options =
-    #       commonOptions
-    #       ++ btrfsOptions
-    #       ++ [
-    #         "subvol=@vlpgsql-snaps"
-    #       ];
-    #   };
-    # };
   };
 }
