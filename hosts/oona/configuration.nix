@@ -184,10 +184,10 @@
             datadir = "/home/${username}/media";
             snapsvol = "@adminmedia-snaps";
           };
-          vlpgsql = {
+          vlpostgres = {
             enable = false; # This subvolume is defined but won't be processed
             datadir = "/var/lib/postgresql";
-            snapsvol = "@vlpgsql-snaps";
+            snapsvol = "@vlpostgres-snaps";
           };
         };
       };
