@@ -60,6 +60,9 @@ let
 
 in
 {
+
+  imports = [ ./health-check.nix ];
+
   options.mettavi.system.services.snapper = {
     enable = mkOption {
       type = types.bool;
