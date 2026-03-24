@@ -1,4 +1,7 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  ...
+}:
 {
   home.packages = with pkgs; [
     deja-dup # simple backup tool based on restic (special backup format)
@@ -10,4 +13,12 @@
     wasistlos # Unofficial WhatsApp desktop gtk application for linux
     zoom-us # video conferencing application
   ];
+
+  xdg.autostart = {
+    enable = true;
+    entries = [
+      "${pkgs.variety}/share/applications/variety.desktop"
+    ];
+  };
+
 }
