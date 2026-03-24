@@ -198,7 +198,7 @@ in
     fileSystems = mapAttrs' (
       name: mount:
       nameValuePair "${mount.datadir}/.snapshots" {
-        device = mkForce "/dev/disk/by-label/nixos";
+        device = "/dev/disk/by-label/nixos";
         fsType = "btrfs";
         options = [
           "nofail"
