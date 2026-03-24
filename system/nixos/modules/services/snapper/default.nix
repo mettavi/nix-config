@@ -176,6 +176,7 @@ in
               RemainAfterExit = "yes";
             };
             unitConfig = {
+              # disable the defaults to prevent circular dependency errors
               DefaultDependencies = "no";
               # only run after the parent directories have been mounted
               RequiresMountsFor = [ mountParent ];
@@ -188,6 +189,7 @@ in
       ) mounts
     );
 
+    # mount the subvolumes on the .snaphosts directories
     fileSystems = builtins.listToAttrs (
       map (
         mount:
