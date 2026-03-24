@@ -11,6 +11,9 @@ let
 
   # Filter only the mounts where 'enable = true'
   enabledMounts = filterAttrs (name: mount: mount.enable) cfg.mounts;
+  # Helper to turn a path like /home/user into home-user (used for systemd units)
+  toUnitName = path: substring 1 (-1) (replaceStrings [ "/" ] [ "-" ] path);
+
 in
 {
   options.mettavi.system.services.snapper = {
@@ -122,9 +125,8 @@ in
     systemd.services = mapAttrs' (
       name: mount:
       let
-        # Helper to turn a path like /home/user into home-user (used for systemd units)
-        toUnitName = path: substring 1 (-1) (replaceStrings [ "/" ] [ "-" ] path);
-        serviceName = removePrefix "@" mount.snapsvol;
+        serviceName = "setup-snapper-${name}";
+        mountUnit = "${toUnitName mount.datadir}-.snapshots.mount";
       in
       nameValuePair serviceName {
         description = "Ensure the subvolume ${mount.snapsvol} and directory ${mount.datadir}/.snapshots are created before they need to be mounted";
@@ -135,8 +137,8 @@ in
           util-linux # for the mount binary
         ];
         # create the subvolumes and directories BEFORE they are to be mounted
-        before = [ "${toUnitName mount.datadir}-.snapshots.mount" ];
-        requiredBy = [ "${toUnitName mount.datadir}-snapshots.mount" ];
+        before = [ mountUnit ];
+        requiredBy = [ mountUnit ];
         restartIfChanged = false;
         script = ''
           # create TOP-LEVEL .snapshots btrfs subvolumes to store the snapshots taken by snapper
