@@ -168,6 +168,7 @@
       paperless-ngx.enable = true;
       pia-vpn-netmanager.enable = true;
       restic.enable = true;
+      snapper.enable = true;
     };
     shell = {
       # see the host-specific keyboard config below
