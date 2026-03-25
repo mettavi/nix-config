@@ -1,6 +1,6 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 {
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = [
     (pkgs.writeShellScriptBin "nix-undo" ''
       #!/usr/bin/env bash
 
@@ -37,15 +37,14 @@
     '')
   ];
 
-  # Add this to the // { ... } block in systemd.services
   systemd.services = {
     snapper-cleanup-git-safety = {
       description = "Cleanup old Git safety snapshots";
       path = with pkgs; [
         snapper
         coreutils
+        findutils
         gawk
-        xargs
       ];
       serviceConfig.Type = "oneshot";
       script = ''
@@ -67,13 +66,13 @@
         fi
       '';
     };
-    systemd.timers.snapper-cleanup-git-safety = {
-      description = "Daily cleanup of Git safety snapshots";
-      timerConfig = {
-        OnCalendar = "daily";
-        Persistent = true;
-      };
-      wantedBy = [ "timers.target" ];
+  };
+  systemd.timers.snapper-cleanup-git-safety = {
+    description = "Daily cleanup of Git safety snapshots";
+    timerConfig = {
+      OnCalendar = "daily";
+      Persistent = true;
     };
+    wantedBy = [ "timers.target" ];
   };
 }
