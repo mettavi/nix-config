@@ -1,5 +1,6 @@
 { pkgs, username, ... }:
 {
+  # create a script to rollback from a bad git commit using a pre-commit snapper snapshot
   environment.systemPackages = [
     (pkgs.writeShellScriptBin "nix-undo" ''
       #!/usr/bin/env bash
