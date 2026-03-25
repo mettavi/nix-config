@@ -12,8 +12,8 @@ let
   # Filter only the mounts where 'enable = true'
   enabledMounts = filterAttrs (name: mount: mount.enable) cfg.mounts;
 
+  # SHARED SETTINGS FOR EVERY SNAPPER CONFIGURATION
   # Any option mentioned in man:snapper-configs(5) is valid here
-  # Shared settings for every Snapper configuration
   commonConfig = {
     FSTYPE = "btrfs"; # Only btrfs is stable and tested.
     ### PERMISSIONS ###
@@ -61,6 +61,7 @@ let
 in
 {
 
+  # add a systemd health-check and a desktop notification service
   imports = [ ./health-check.nix ];
 
   options.mettavi.system.services.snapper = {
@@ -192,6 +193,7 @@ in
           RequiresMountsFor = [ "${toUnitName mount.datadir}.mount" ];
         };
         wantedBy = [
+          # set it up during the file mounting stage of system boot
           "local-fs.target"
         ];
       }
