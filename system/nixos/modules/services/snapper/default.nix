@@ -62,7 +62,10 @@ in
 {
 
   # add a systemd health-check and a desktop notification service
-  imports = [ ./health-check.nix ];
+  imports = [
+    ./git-snap.nix
+    ./health-check.nix
+  ];
 
   options.mettavi.system.services.snapper = {
     enable = mkOption {
