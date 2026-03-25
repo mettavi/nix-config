@@ -190,7 +190,7 @@ in
           # disable the defaults to prevent circular dependency errors
           DefaultDependencies = false;
           # only run after the parent directories have been mounted
-          RequiresMountsFor = [ "${toUnitName mount.datadir}.mount" ];
+          RequiresMountsFor = [ "/run/systemd/generator/${toUnitName mount.datadir}.mount" ];
         };
         wantedBy = [
           # set it up during the file mounting stage of system boot
