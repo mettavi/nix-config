@@ -104,6 +104,40 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       btrfs-assistant # btrfs gui management tool
+      (pkgs.writeShellScriptBin "nix-undo" ''
+        #!/usr/bin/env bash
+
+        # 1. Find the ID of the latest 'git-pre-safety' snapshot
+        # We sort by ID and take the last one
+        SNAP_ID=$(snapper -c adminhome list --userdata type=git-pre-safety | tail -n 1 | awk '{print $1}')
+
+        if [ -z "$SNAP_ID" ] || [ "$SNAP_ID" == "ID" ]; then
+            echo "❌ No pre-commit safety snapshots found!"
+            exit 1
+        fi
+
+        echo "🔍 Found safety snapshot ID: $SNAP_ID"
+        echo "⚠️ This will revert all changes in /home/${username} to this state."
+        read -p "Are you sure you want to proceed? (y/N) " -n 1 -r
+        echo
+        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+            echo "Aborted."
+            exit 0
+        fi
+
+        # 2. Undo the changes
+        # 'undochange' is better than 'rollback' for home directories 
+        # because it doesn't require a reboot.
+        echo "🔄 Reverting files..."
+        sudo snapper -c adminhome undochange $SNAP_ID..0
+
+        # 3. Reset Git state
+        # If the commit actually went through, we need to move the Git pointer back
+        echo "🌿 Resetting Git index..."
+        git reset --soft HEAD~1
+
+        echo "✅ Rollback complete. Your files and Git are back to the pre-commit state."
+      '')
     ];
 
     services.snapper = {
@@ -144,6 +178,7 @@ in
         requiredBy = [ mountUnit ];
         restartIfChanged = false;
         script = ''
+          #!/usr/bin/env bash
           # create TOP-LEVEL .snapshots btrfs subvolumes to store the snapshots taken by snapper
           # see https://www.reddit.com/r/btrfs/comments/kkms59/snappers_snapshot_location/
           # and https://www.reddit.com/r/btrfs/comments/rnl6j5/is_there_any_compelling_reason_to_not_use_nested/
