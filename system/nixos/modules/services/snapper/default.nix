@@ -61,7 +61,7 @@ let
 in
 {
 
-  # add a systemd health-check and a desktop notification service
+  # add a systemd health-check/desktop notification service, and a git pre-commit snapshot service
   imports = [
     ./git-snap.nix
     ./health-check.nix
