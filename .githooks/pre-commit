@@ -9,7 +9,7 @@ git add home/shared/dots/nvim/lazy-lock.json
 # check staged files for secrets
 echo "Checking for secrets..."
 echo
-exec gitleaks protect --staged -v
+gitleaks protect --staged -v
 
 # Get current branch and the hash we are building ON TOP OF
 BRANCH=$(git rev-parse --abbrev-ref HEAD)
