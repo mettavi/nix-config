@@ -154,27 +154,10 @@ in
           ];
           createWrapper = true;
           # Patterns to exclude when backing up
-          exclude = jobsCfg.exclusions;
-          extraBackupArgs = [
-            "--tag ${hostname}"
-          ];
-          # Prevent the system from sleeping while backing up
-          inhibitsSleep = true;
-          # create the repo if it doesn't exist
-          initialize = true;
-          passwordFile = config.sops.secrets."users/${username}/restic-${hostname}-${jobsCfg.label}".path;
-          paths = jobsCfg.paths;
-          pruneOpts = [
-            "--keep-daily 7"
-            "--keep-weekly 5"
-            "--keep-monthly 12"
-            "--keep-yearly 10"
-            "--group-by tags"
-          ];
-          repository = "/run/media/${username}/${vol_label}/${hostname}/${jobsCfg.label}";
-          runCheck = true;
-          # run backups when the removable disk is mounted, not on a schedule
-          timerConfig = null;
+          exclude = concatMapAttrs (vol: pth: "${pth.mount}/${vol}/${pth.exclusions}") enabledJobs;
+          passwordFile = config.sops.secrets."users/${username}/restic-${job}".path;
+          paths = concatMapAttrs (vol: pth: "${pth.mount}/${vol}/${pth.paths}") enabledJobs;
+          repository = "/run/media/${username}/${vol_label}/${job}";
           user = "${jobsCfg.user}";
           # DO A RESTIC BACKUP DIRECTLY TO CLOUD USING RCLONE
           # "${hostname}-${username}-b2" = {
