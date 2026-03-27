@@ -139,20 +139,14 @@ in
         // job.localConfig
         // {
           # -r creates the snapshot read-only
-          backupPrepareCommand = ''
-            btrfs subvolume snapshot -r /home ${snapshots}/home
-            btrfs subvolume snapshot -r / ${snapshots}/sys
-            ${pkgs.restic}/bin/restic unlock
-          '';
-          backupCleanupCommand = ''
-            btrfs subvolume delete ${snapshots}/home
-            btrfs subvolume delete ${snapshots}/sys
-          '';
-          checkOpts = [
-            "--with-cache" # just to make checks faster
-            "--read-data" # also check integrity of the actual data
-          ];
-          createWrapper = true;
+          backupPrepareCommand =
+            concatMapAttrsStringSep "\n" (
+              vol: pth: optionalString pth.enable "btrfs subvolume snapshot -r ${pth.mount} ${pth.mount}/${vol}"
+            ) cfg.jobs.volumes
+            + "\n${pkgs.restic}/bin/restic unlock";
+          backupCleanupCommand = concatMapAttrsStringSep "\n" (
+            vol: pth: optionalString pth.enable "btrfs subvolume delete ${pth.mount}/${vol}"
+          ) cfg.jobs.volumes;
           # Patterns to exclude when backing up
           exclude = mapAttrsToList (
             vol: pth: optionalString pth.enable "${pth.mount}/${vol}/${pth.exclusions}"
