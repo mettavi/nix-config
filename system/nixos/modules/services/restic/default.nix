@@ -136,7 +136,7 @@ in
       backups = mapAttrs (
         job: jobsCfg:
         commonConfig
-        // jobsCfg.localConfig
+        // job.localConfig
         // {
           # -r creates the snapshot read-only
           backupPrepareCommand = ''
@@ -155,10 +155,10 @@ in
           createWrapper = true;
           # Patterns to exclude when backing up
           exclude = concatMapAttrs (vol: pth: "${pth.mount}/${vol}/${pth.exclusions}") enabledJobs;
-          passwordFile = config.sops.secrets."users/${username}/restic-${job}".path;
+          passwordFile = config.sops.secrets."users/${username}/restic-${name}".path;
           paths = concatMapAttrs (vol: pth: "${pth.mount}/${vol}/${pth.paths}") enabledJobs;
-          repository = "/run/media/${username}/${vol_label}/${job}";
-          user = "${jobsCfg.user}";
+          repository = "/run/media/${username}/${vol_label}/${name}";
+          user = "${job.user}";
         }
       ) enabledJobs;
     };
