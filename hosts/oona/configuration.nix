@@ -174,7 +174,7 @@
           "${hostname}" = {
             extraConfig = { };
             vol_label = "";
-            subvolumes = {
+            volumes = {
               "@adminhome" = {
                 exclusions = [
                   ".local/share/Trash"
