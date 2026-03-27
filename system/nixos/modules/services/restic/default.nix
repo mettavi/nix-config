@@ -199,14 +199,6 @@ in
             };
             inherit serviceConfig;
           };
-          "restic-backups-${hostname}-home" = {
-            unitConfig = {
-              inherit Description ConditionPathIsMountPoint;
-              After = mkForce "${hostname}-sys.service";
-              OnFailure = "notify-backup-failed-home.service";
-            };
-            inherit serviceConfig;
-          };
         }
         # send desktop notifications about failed backups using libnotify
         # ref: https://www.arthurkoziel.com/restic-backups-b2-nixos/
