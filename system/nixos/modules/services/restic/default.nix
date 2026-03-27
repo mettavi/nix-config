@@ -10,6 +10,7 @@
 with lib;
 let
   cfg = config.mettavi.system.services.restic;
+
   # SHARED SETTINGS FOR EVERY RESTIC CONFIGURATION
   commonConfig = {
     checkOpts = [
@@ -31,13 +32,17 @@ let
       "--keep-yearly 10"
       "--group-by tags"
     ];
-
     runCheck = true;
     # run backups when the removable disk is mounted, not on a schedule
     timerConfig = null;
   };
+
+  # Filter only the backup jobs where 'enable = true'
+  enabledJobs = filterAttrs (name: job: job.enable) cfg.jobs;
+
   logfile_dir = "$XDG_STATE_HOME/logs/rclone";
   logfile = "${logfile_dir}/restic-${hostname}.log";
+
   # create an rclone shell script
   restic-rcl-b2 =
     pkgs.writeShellScriptBin "restic-rcl-b2.sh" # bash
@@ -52,10 +57,11 @@ let
           --verbose --b2-hard-delete --checkers 100 --transfers 100 --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
           sync ${config.services.restic.backups."${hostname}-home".repository} b2:${hostname}-${username}/
       '';
+
   resticSecrets = {
     sopsFile = "${secrets_path}/secrets/apps/restic.yaml";
   };
-  snapshots = "/mnt/.snapshots";
+
   vol_label = "${config.mettavi.system.services.restic.vol_label}";
 in
 {
