@@ -200,13 +200,16 @@ in
           #   user = "${username}";
           # };
         }
-      ) cfg.jobs;
+      ) enabledJobs;
     };
 
-    sops.secrets = concatMapAttrs (key: value: {
-      # encryption password for each restic backup job
-      "users/${username}/restic-${hostname}-${value.label}" = resticSecrets;
-    }) cfg.jobs;
+    sops.secrets = mapAttrs' (
+      name: job:
+      nameValuePair "users/${username}/restic-${name}" {
+        # encryption password for each restic backup job
+        sopsFile = "${secrets_path}/secrets/apps/restic.yaml";
+      }
+    ) enabledJobs;
 
     systemd.services =
       let
