@@ -154,9 +154,13 @@ in
           ];
           createWrapper = true;
           # Patterns to exclude when backing up
-          exclude = concatMapAttrs (vol: pth: "${pth.mount}/${vol}/${pth.exclusions}") enabledJobs;
+          exclude = mapAttrsToList (
+            vol: pth: optionalString pth.enable "${pth.mount}/${vol}/${pth.exclusions}"
+          ) cfg.jobs.volumes;
           passwordFile = config.sops.secrets."users/${username}/restic-${name}".path;
-          paths = concatMapAttrs (vol: pth: "${pth.mount}/${vol}/${pth.paths}") enabledJobs;
+          paths = mapAttrsToList (
+            vol: pth: optionalString pth.enable "${pth.mount}/${vol}/${pth.paths}"
+          ) cfg.jobs.volumes;
           repository = "/run/media/${username}/${vol_label}/${name}";
           user = "${job.user}";
         }
