@@ -136,7 +136,7 @@ in
       backups = mapAttrs (
         job: jobsCfg:
         commonConfig
-        // job.localConfig
+        // jobsCfg.localConfig
         // {
           # -r creates the snapshot read-only
           backupPrepareCommand = ''
