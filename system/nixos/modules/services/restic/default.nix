@@ -81,10 +81,10 @@ in
               default = true;
               description = "Whether to enable this backup job";
             };
-            extraConfig = mkOption {
+            localConfig = mkOption {
               type = types.attrs;
               default = { };
-              description = "Extra restic config options to override the defaults";
+              description = "Local job config options that override the defaults";
             };
             vol_label = mkOption {
               type = types.str;
@@ -135,7 +135,9 @@ in
     services.restic = {
       backups = mapAttrs (
         job: jobsCfg:
-        mkIf jobsCfg.enable {
+        commonConfig
+        // job.localConfig
+        // {
           # -r creates the snapshot read-only
           backupPrepareCommand = ''
             btrfs subvolume snapshot -r /home ${snapshots}/home
