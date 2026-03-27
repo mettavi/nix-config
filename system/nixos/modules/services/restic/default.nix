@@ -86,15 +86,15 @@ in
               default = { };
               description = "Local job config options that override the defaults";
             };
-            vol_label = mkOption {
-              type = types.str;
-              default = "nixbak";
-              description = "The volume label of the backup device (eg. 'luks-samt7')";
-            };
             user = mkOption {
               type = str;
               default = "root";
               description = "The user to run the backup job as";
+            };
+            vol_label = mkOption {
+              type = types.str;
+              default = "nixbak";
+              description = "The volume label of the backup device (eg. 'luks-samt7')";
             };
             volumes = mkOption {
               type = attrsOf (submodule {
