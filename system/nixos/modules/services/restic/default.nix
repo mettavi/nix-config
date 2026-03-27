@@ -10,6 +10,7 @@
 with lib;
 let
   cfg = config.mettavi.system.services.restic;
+  # SHARED SETTINGS FOR EVERY RESTIC CONFIGURATION
   commonConfig = {
     checkOpts = [
       "--with-cache" # just to make checks faster
