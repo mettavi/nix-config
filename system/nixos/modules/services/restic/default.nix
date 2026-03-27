@@ -134,7 +134,7 @@ in
 
     services.restic = {
       backups = mapAttrs (
-        job: jobsCfg:
+        name: job:
         commonConfig
         // job.localConfig
         // {
