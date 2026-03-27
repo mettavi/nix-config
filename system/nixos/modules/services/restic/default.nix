@@ -82,7 +82,7 @@ in
               description = "Whether to enable this backup job";
             };
             localConfig = mkOption {
-              type = types.attrs;
+              type = attrs;
               default = { };
               description = "Local job config options that override the defaults";
             };
@@ -96,7 +96,7 @@ in
               description = "The user to run the backup job as";
             };
             vol_label = mkOption {
-              type = types.str;
+              type = str;
               default = "nixbak";
               description = "The volume label of the backup device (eg. 'luks-samt7')";
             };
