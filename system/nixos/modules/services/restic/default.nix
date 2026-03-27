@@ -86,6 +86,10 @@ in
               default = { };
               description = "Local job config options that override the defaults";
             };
+            repo = mkOption {
+              type = str;
+              description = "The restic repository to backup to";
+            };
             user = mkOption {
               type = str;
               default = "root";
