@@ -10,6 +10,31 @@
 with lib;
 let
   cfg = config.mettavi.system.services.restic;
+  commonConfig = {
+    checkOpts = [
+      "--with-cache" # just to make checks faster
+      "--read-data" # also check integrity of the actual data
+    ];
+    createWrapper = true;
+    extraBackupArgs = [
+      "--tag ${hostname}"
+    ];
+    # Prevent the system from sleeping while backing up
+    inhibitsSleep = true;
+    # create the repo if it doesn't exist
+    initialize = true;
+    pruneOpts = [
+      "--keep-daily 7"
+      "--keep-weekly 5"
+      "--keep-monthly 12"
+      "--keep-yearly 10"
+      "--group-by tags"
+    ];
+
+    runCheck = true;
+    # run backups when the removable disk is mounted, not on a schedule
+    timerConfig = null;
+  };
   logfile_dir = "$XDG_STATE_HOME/logs/rclone";
   logfile = "${logfile_dir}/restic-${hostname}.log";
   # create an rclone shell script
@@ -93,62 +118,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    # CONFIGURE RESTIC BACKUP JOBS USING MODULE OPTIONS
-    mettavi.system.services.restic.jobs = {
-      # BACKUP THE MAIN USER'S HOME DIRECTORY
-      "${hostname}-home" =
-        let
-          user-snapshots = "${snapshots}/home";
-        in
-        {
-          enable = true;
-          label = "home";
-          exclusions = [
-            "${user-snapshots}/${username}/.local/share/Trash"
-            "${user-snapshots}/${username}/.cache"
-            "${user-snapshots}/${username}/Downloads"
-            "${user-snapshots}/${username}/.npm"
-            "${user-snapshots}/${username}/.local/share/containers"
-            "!${user-snapshots}/${username}/.local/share/containers/storage/volumes"
-          ];
-          paths = [
-            "${user-snapshots}/${username}"
-          ];
-          user = "${username}";
-        };
-      # BACKUP IMPORTANT SYSTEM DIRECTORIES
-      "${hostname}-sys" =
-        let
-          sys-snapshots = "${snapshots}/sys";
-        in
-        {
-          enable = true;
-          label = "sys";
-          exclusions = [
-            "${sys-snapshots}/root/.cache"
-            "${sys-snapshots}/.log"
-            "${sys-snapshots}/.tmp"
-            "${sys-snapshots}/.Trash"
-            "${sys-snapshots}/var/lib/containers"
-            "!${sys-snapshots}/var/lib/containers/storage/volumes"
-          ];
-          paths = [
-            "${sys-snapshots}/etc/group"
-            "${sys-snapshots}/etc/machine-id"
-            "${sys-snapshots}/etc/NetworkManager/system-connections"
-            "${sys-snapshots}/etc/passwd"
-            "${sys-snapshots}/etc/ssh/ssh_${hostname}_ed25519_key*"
-            "${sys-snapshots}/etc/subgid"
-            "${sys-snapshots}/root"
-            # includes the important /var/lib/nixos
-            "${sys-snapshots}/var/lib"
-          ]
-          ++ optionalString config.mettavi.system.services.paperless-ngx.enable [
-            "${sys-snapshots}/root/var/lib/paperless/export"
-          ];
-          user = "root";
-        };
-    };
     environment.systemPackages = with pkgs; [
       libnotify # Library that sends desktop notifications
       # CHECK: not sure if this is required
