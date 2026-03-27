@@ -42,39 +42,53 @@ in
     jobs = mkOption {
       type =
         with lib.types;
-        attrsOf (
-          submodule {
-            options = {
-              enable = mkOption {
-                type = bool;
-                default = false;
-                description = "Whether to enable this backup job";
-              };
-              label = mkOption {
-                type = str;
-                description = "The short name of the backup job";
-              };
-              exclusions = mkOption {
-                type = listOf str;
-                description = "A list of paths to exclude from the backup";
-              };
-              paths = mkOption {
-                type = listOf path;
-                description = "A list of paths to backup";
-              };
-              user = mkOption {
-                type = str;
-                description = "The user to run the backup job as";
-              };
+        attrsOf (submodule {
+          options = {
+            enable = mkOption {
+              type = bool;
+              default = true;
+              description = "Whether to enable this backup job";
             };
-          }
-
-        );
-    };
-    vol_label = mkOption {
-      type = types.str;
-      default = "nixbak";
-      description = "The volume label of the backup device (eg. 'luks-samt7')";
+            extraConfig = mkOption {
+              type = types.attrs;
+              default = { };
+              description = "Extra restic config options to override the defaults";
+            };
+            vol_label = mkOption {
+              type = types.str;
+              default = "nixbak";
+              description = "The volume label of the backup device (eg. 'luks-samt7')";
+            };
+            user = mkOption {
+              type = str;
+              default = "root";
+              description = "The user to run the backup job as";
+            };
+            volumes = mkOption {
+              type = attrsOf (submodule {
+                options = {
+                  enable = mkOption {
+                    type = bool;
+                    default = true;
+                    description = "Whether to backup from this partition/subvolume";
+                  };
+                  exclusions = mkOption {
+                    type = listOf str;
+                    description = "A list of paths to exclude from the partition/subvolume backup";
+                  };
+                  mount = mkOption {
+                    type = path;
+                    description = "The mount path of the partition/subvolume";
+                  };
+                  paths = mkOption {
+                    type = listOf path;
+                    description = "A list of paths to backup from the partition/subvolume";
+                  };
+                };
+              });
+            };
+          };
+        });
     };
   };
 
