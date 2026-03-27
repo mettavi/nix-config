@@ -224,7 +224,7 @@ in
                 "$(journalctl -u restic-backups-${hostname}-${value.label} -n 5 -o cat)"
             '';
           };
-        }) cfg.jobs)
+        }) enabledJobs)
       ];
   };
 }
