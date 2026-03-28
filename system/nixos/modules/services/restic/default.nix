@@ -97,7 +97,7 @@ in
             };
             vol_label = mkOption {
               type = str;
-              default = "nixbak";
+              default = "";
               description = "The volume label of the backup device (eg. 'luks-samt7')";
             };
             volumes = mkOption {
@@ -159,7 +159,7 @@ in
           paths = mapAttrsToList (
             vol: pth: optionalString pth.enable "${pth.mount}/${vol}/${pth.paths}"
           ) cfg.jobs.volumes;
-          repository = "/run/media/${username}/${vol_label}/${name}";
+          repository = "${job.repo}/${name}";
           user = "${job.user}";
         }
       ) enabledJobs;

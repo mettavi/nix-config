@@ -173,8 +173,8 @@
         jobs = {
           "${hostname}" = {
             extraConfig = { };
-            repo = "/run/media/${username}/{config.mettavi.system.services.restic.jobs.vol_label}";
-            vol_label = "";
+            repo = "/run/media/${username}/${config.mettavi.system.services.restic.jobs.vol_label}";
+            vol_label = "Share";
             volumes = {
               "@adminhome" = {
                 exclusions = [
