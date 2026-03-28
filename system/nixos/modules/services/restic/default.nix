@@ -146,19 +146,19 @@ in
           backupPrepareCommand =
             concatMapAttrsStringSep "\n" (
               vol: pth: optionalString pth.enable "btrfs subvolume snapshot -r ${pth.mount} ${pth.mount}/${vol}"
-            ) cfg.jobs.volumes
+            ) job.volumes
             + "\n${pkgs.restic}/bin/restic unlock";
           backupCleanupCommand = concatMapAttrsStringSep "\n" (
             vol: pth: optionalString pth.enable "btrfs subvolume delete ${pth.mount}/${vol}"
-          ) cfg.jobs.volumes;
+          ) job.volumes;
           # Patterns to exclude when backing up
           exclude = mapAttrsToList (
             vol: pth: optionalString pth.enable "${pth.mount}/${vol}/${pth.exclusions}"
-          ) cfg.jobs.volumes;
+          ) job.volumes;
           passwordFile = config.sops.secrets."users/${username}/restic-${name}".path;
           paths = mapAttrsToList (
             vol: pth: optionalString pth.enable "${pth.mount}/${vol}/${pth.paths}"
-          ) cfg.jobs.volumes;
+          ) job.volumes;
           repository = "${job.repo}/${name}";
           user = "${job.user}";
         }
