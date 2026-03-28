@@ -202,8 +202,8 @@ in
         }
         # send desktop notifications about failed backups using libnotify
         # ref: https://www.arthurkoziel.com/restic-backups-b2-nixos/
-        (concatMapAttrs (key: value: {
-          "notify-backup-failed.${value.label}" = {
+        (concatMapAttrs (name: job: {
+          "notify-backup-failed-${name}" = {
             enable = true;
             description = "Notify on failed backup";
             serviceConfig = {
@@ -217,7 +217,7 @@ in
             script = ''
               ${pkgs.libnotify}/bin/notify-send --urgency=critical \
                 "Backup failed" \
-                "$(journalctl -u restic-backups-${hostname}-${value.label} -n 5 -o cat)"
+                "$(journalctl -u restic-backups-${hostname}-${name} -n 5 -o cat)"
             '';
           };
         }) enabledJobs)
