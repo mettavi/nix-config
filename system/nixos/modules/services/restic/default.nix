@@ -40,6 +40,9 @@ let
   # Filter only the backup jobs where 'enable = true'
   enabledJobs = filterAttrs (name: job: job.enable) cfg.jobs;
 
+  # Filter jobs that backup to a removable disk
+  diskJobs = filterAttrs (name: job: job.vol_label != "") cfg.jobs;
+
   logfile_dir = "$XDG_STATE_HOME/logs/rclone";
   logfile = "${logfile_dir}/restic-${hostname}.log";
 
@@ -173,52 +176,29 @@ in
       }
     ) enabledJobs;
 
-    systemd.services =
-      let
-        Description = "Run a backup whenever the device is plugged in (and mounted)"; # See https://bbs.archlinux.org/viewtopic.php?id=207050
-        # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
-        # or use the ConditionPathIsMountPoint= option?
-        # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
-        # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
-        # See https://bbs.archlinux.org/viewtopic.php?id=207050
-        # ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}";
-        # or perhaps WantedBy= option?
-        ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}";
-        # ensure it is not considered "started" until after the main process EXITS
-        # this means that following services do not start until the this process is COMPLETE
-        serviceConfig = {
-          Type = "oneshot";
-        };
-      in
-      mkMerge [
-        {
-          "restic-backups-${hostname}-sys" = {
-            unitConfig = {
-              inherit Description ConditionPathIsMountPoint;
-              OnFailure = "notify-backup-failed-sys.service";
-            };
-            inherit serviceConfig;
+    systemd.services = mkMerge [
+      (mapAttrs' (
+        name: job:
+        nameValuePair "restic-backups-${name}" {
+          description = "Run a backup whenever the device is plugged in (and mounted)"; # See https://bbs.archlinux.org/viewtopic.php?id=207050
+          # ensure it is not considered "started" until after the main process EXITS
+          # this means that following services do not start until the this process is COMPLETE
+          onFailure = [ "notify-backup-failed-${name}.service" ];
+          unitConfig = {
+            # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
+            # or use the ConditionPathIsMountPoint= option?
+            # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
+            # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
+            # See https://bbs.archlinux.org/viewtopic.php?id=207050
+            # ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}";
+            # or perhaps WantedBy= option?
+            ConditionPathIsMountPoint = "${job.repo}";
+          };
+          serviceConfig = {
+            Type = "oneshot";
           };
         }
-        # send desktop notifications about failed backups using libnotify
-        # ref: https://www.arthurkoziel.com/restic-backups-b2-nixos/
-        (concatMapAttrs (name: job: {
-          "notify-backup-failed-${name}" = {
-            enable = true;
-            description = "Notify on failed backup";
-            serviceConfig = {
-              Type = "oneshot";
-              User = "${username}";
-            };
-            # required for notify-send
-            environment.DBUS_SESSION_BUS_ADDRESS = "unix:path=/run/user/${
-              toString config.users.users.${username}.uid
-            }/bus";
-            script = ''
-              ${pkgs.libnotify}/bin/notify-send --urgency=critical \
-                "Backup failed" \
-                "$(journalctl -u restic-backups-${hostname}-${name} -n 5 -o cat)"
-            '';
+      ) diskJobs)
           };
         }) enabledJobs)
       ];
