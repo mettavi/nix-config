@@ -5,14 +5,14 @@
   username,
   ...
 }:
-with lib;
+with lib.types;
 let
   cfg = config.mettavi.system.devices.wdssd;
 in
 {
   options.mettavi.system.devices.wdssd = {
     enable = mkOption {
-      type = types.bool;
+      type = bool;
       default = false;
       description = "Set up a luks-encrypted WD ssd to auto-unlock and automount";
     };
