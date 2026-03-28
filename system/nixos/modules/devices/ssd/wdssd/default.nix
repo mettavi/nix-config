@@ -5,6 +5,7 @@
   username,
   ...
 }:
+with lib;
 with lib.types;
 let
   cfg = config.mettavi.system.devices.wdssd;
