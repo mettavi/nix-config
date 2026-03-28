@@ -168,52 +168,56 @@
       # also enables the ollama module
       paperless-ngx.enable = true;
       pia-vpn-netmanager.enable = true;
-      restic = {
-        enable = true;
-        jobs = {
-          "${hostname}" = {
-            extraConfig = { };
-            repo = "/run/media/${username}/${config.mettavi.system.services.restic.jobs.vol_label}";
-            vol_label = "Share";
-            volumes = {
-              "@adminhome" = {
-                exclusions = [
-                  ".local/share/Trash"
-                  ".npm"
-                ];
-                mount = "/home/${username}";
-                paths = [ "." ];
-              };
-              "@adminmedia" = {
-                exclusions = [ ];
-                mount = "/home/${username}/media";
-                paths = [ "." ];
-              };
-              "@root" = {
-                exclusions = [
-                  ".Trash"
-                ];
-                mount = "/";
-                paths = [
-                  "etc/group"
-                  "etc/machine-id"
-                  "etc/NetworkManager/system-connections"
-                  "etc/passwd"
-                  "etc/ssh/ssh_${hostname}_ed25519_key*"
-                  "etc/subgid"
-                  # includes the important /var/lib/nixos
-                  "var/lib"
-                ];
-              };
-              "@roothome" = {
-                exclusions = [ ".Trash-0" ];
-                mount = "/root";
-                paths = [ "." ];
+      restic =
+        let
+          cfg = config.mettavi.system.services.restic.jobs;
+        in
+        {
+          enable = true;
+          jobs = {
+            "${hostname}" = {
+              extraConfig = { };
+              repo = "/run/media/${username}/${cfg.vol_label}";
+              vol_label = "Share";
+              volumes = {
+                "@adminhome" = {
+                  exclusions = [
+                    ".local/share/Trash"
+                    ".npm"
+                  ];
+                  mount = "/home/${username}";
+                  paths = [ "." ];
+                };
+                "@adminmedia" = {
+                  exclusions = [ ];
+                  mount = "/home/${username}/media";
+                  paths = [ "." ];
+                };
+                "@root" = {
+                  exclusions = [
+                    ".Trash"
+                  ];
+                  mount = "/";
+                  paths = [
+                    "etc/group"
+                    "etc/machine-id"
+                    "etc/NetworkManager/system-connections"
+                    "etc/passwd"
+                    "etc/ssh/ssh_${hostname}_ed25519_key*"
+                    "etc/subgid"
+                    # includes the important /var/lib/nixos
+                    "var/lib"
+                  ];
+                };
+                "@roothome" = {
+                  exclusions = [ ".Trash-0" ];
+                  mount = "/root";
+                  paths = [ "." ];
+                };
               };
             };
           };
         };
-      };
       snapper = {
         enable = true;
         mounts = {
