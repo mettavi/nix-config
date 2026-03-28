@@ -33,28 +33,30 @@ in
       MAX_AGE=$((24 * 3600)) # 24 hours in seconds
 
       ${concatStringsSep "\n" (
-        mapAttrsToList (name: m: ''
-          echo "Checking config: ${name}..."
+        mapAttrsToList (
+          name: m: # bash
+          ''
+            echo "Checking config: ${name}..."
 
-          # Get the timestamp of the newest snapshot (last line of snapper list)
-          LAST_SNAP_TIME=$(snapper -c ${name} list | awk -F '|' '/^[ ]*[1-9]/ { print $4 }' | tail -n 1 | xargs)
+            # Get the timestamp of the newest snapshot (last line of snapper list)
+            LAST_SNAP_TIME=$(snapper -c ${name} list | awk -F '|' '/^[ ]*[1-9]/ { print $4 }' | tail -n 1 | xargs)
 
-          if [ -z "$LAST_SNAP_TIME" ]; then
-            echo "ERROR: No snapshots found for ${name}!"
-            EXIT_CODE=1
-          else
-            # Convert Snapper time to epoch
-            LAST_SNAP_EPOCH=$(date -d "$LAST_SNAP_TIME" +%s)
-            AGE=$((CURRENT_TIME - LAST_SNAP_EPOCH))
-
-            if [ "$AGE" -gt "$MAX_AGE" ]; then
-              echo "ERROR: Latest snapshot for ${name} is $((AGE / 3600)) hours old!"
+            if [ -z "$LAST_SNAP_TIME" ]; then
+              echo "ERROR: No snapshots found for ${name}!"
               EXIT_CODE=1
             else
-              echo "OK: Latest snapshot for ${name} is $((AGE / 60)) minutes old."
+              # Convert Snapper time to epoch
+              LAST_SNAP_EPOCH=$(date -d "$LAST_SNAP_TIME" +%s)
+              AGE=$((CURRENT_TIME - LAST_SNAP_EPOCH))
+
+              if [ "$AGE" -gt "$MAX_AGE" ]; then
+                echo "ERROR: Latest snapshot for ${name} is $((AGE / 3600)) hours old!"
+                EXIT_CODE=1
+              else
+                echo "OK: Latest snapshot for ${name} is $((AGE / 60)) minutes old."
+              fi
             fi
-          fi
-        '') enabledMounts
+          '') enabledMounts
       )}
 
       exit $EXIT_CODE
