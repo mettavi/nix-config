@@ -116,6 +116,10 @@ in
 
 Example from restic/default.nix (nixos):
 
+  resticSecrets = {
+    sopsFile = "${secrets_path}/secrets/apps/restic.yaml";
+  };
+
     sops.secrets = concatMapAttrs (key: value: {
       # encryption password for each restic backup job
       "users/${username}/restic-${hostname}-${value.label}" = resticSecrets;
