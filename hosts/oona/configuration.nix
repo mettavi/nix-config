@@ -168,17 +168,17 @@
       # also enables the ollama module
       paperless-ngx.enable = true;
       pia-vpn-netmanager.enable = true;
-      restic =
-        let
-          cfg = config.mettavi.system.services.restic.jobs;
-        in
-        {
-          enable = true;
-          jobs = {
-            "${hostname}" = {
-              extraConfig = { };
-              repo = "/run/media/${username}/${cfg.vol_label}";
+      restic = {
+        enable = true;
+        jobs = {
+          "${hostname}" =
+            let
               vol_label = "Share";
+            in
+            {
+              inherit vol_label;
+              localConfig = { };
+              repo = "/run/media/${username}/${vol_label}";
               volumes = {
                 "@adminhome" = {
                   exclusions = [
@@ -216,8 +216,8 @@
                 };
               };
             };
-          };
         };
+      };
       snapper = {
         enable = true;
         mounts = {
