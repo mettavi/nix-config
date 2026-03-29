@@ -136,10 +136,10 @@ in
       in
       nameValuePair serviceName {
         description = "Ensure the subvolume ${mount.snapsvol} and directory ${mount.datadir}/.snapshots are created before they need to be mounted";
+        # NB: By default, coreutils, fundutils, gnugrep and gnused are automatically added to path.*
+        # See the systemd.services.<name>.enableDefaultPath option
         path = with pkgs; [
           btrfs-progs
-          coreutils
-          gnugrep
           util-linux # for the mount binary
         ];
         # create the subvolumes and directories BEFORE they are to be mounted

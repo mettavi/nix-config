@@ -41,10 +41,10 @@
   systemd.services = {
     snapper-cleanup-git-safety = {
       description = "Cleanup old Git safety snapshots";
+      # NB: By default, coreutils, fundutils, gnugrep and gnused are automatically added to path.*
+      # See the systemd.services.<name>.enableDefaultPath option
       path = with pkgs; [
         snapper
-        coreutils
-        findutils
         gawk
       ];
       serviceConfig.Type = "oneshot";

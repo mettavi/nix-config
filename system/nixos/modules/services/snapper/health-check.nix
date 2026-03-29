@@ -76,10 +76,10 @@ in
   # A helper service to send desktop alerts from the system level
   systemd.services.snapper-alert = {
     description = "Send desktop notification on snapper failure";
+    # NB: By default, coreutils, fundutils, gnugrep and gnused are automatically added to path.*
+    # See the systemd.services.<name>.enableDefaultPath option
     path = with pkgs; [
       libnotify
-      procps
-      coreutils
     ];
     serviceConfig.Type = "oneshot";
     script = ''
