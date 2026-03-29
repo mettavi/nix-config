@@ -4,6 +4,7 @@
   lib,
   pkgs,
   secrets_path,
+  utils,
   username,
   ...
 }:
@@ -159,28 +160,61 @@ in
     services.restic = {
       backups = mapAttrs (
         name: job:
+        let
+          isDiskJob = job.vol_label != "";
+
+          btrfsCommands = concatMapAttrsStringSep "\n" (
+            vol: pth:
+            optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r ${pth.mount} ${pth.mount}/${vol}"
+          ) job.volumes;
+
+          # Logic specifically for USB/Disk jobs
+          diskPrepare = ''
+            USER_ID=$(id -u ${username})
+            if sudo -u ${username} \
+               DISPLAY=:0 \
+               DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
+               ${pkgs.zenity}/bin/zenity --question --title="Backup: ${name}" \
+               --text="USB Disk '${job.vol_label}' detected. Start backup?" --timeout=30; then
+              
+              ${btrfsCommands}
+              ${pkgs.restic}/bin/restic unlock
+            else
+              echo "User cancelled or timeout. Skipping disk backup."
+              exit 0
+            fi
+          '';
+
+          # Logic for Cloud/Other jobs (No popup, just snapshots)
+          cloudPrepare = ''
+            ${btrfsCommands}
+            ${pkgs.restic}/bin/restic unlock
+          '';
+
+        in
         commonConfig
         // job.localConfig
         // {
           # -r creates the snapshot read-only
-          backupPrepareCommand =
-            concatMapAttrsStringSep "\n" (
-              vol: pth:
-              optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r ${pth.mount} ${pth.mount}/${vol}"
-            ) job.volumes
-            + "\n${pkgs.restic}/bin/restic unlock";
+          # Choose the right preparation script based on job type
+          backupPrepareCommand = if isDiskJob then diskPrepare else cloudPrepare;
           backupCleanupCommand = concatMapAttrsStringSep "\n" (
             vol: pth:
             optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume delete ${pth.mount}/${vol}"
           ) job.volumes;
           # Patterns to exclude when backing up
-          exclude = mapAttrsToList (
-            vol: pth: optionalString pth.enable "${pth.mount}/${vol}/${pth.exclusions}"
-          ) job.volumes;
+          exclude = concatLists (
+            mapAttrsToList (
+              vol: pth: if pth.enable then map (exc: "${pth.mount}/${vol}/${exc}") pth.exclusions else [ ]
+            ) job.volumes
+          );
           passwordFile = config.sops.secrets."users/${username}/restic-${name}".path;
-          paths = mapAttrsToList (
-            vol: pth: optionalString pth.enable "${pth.mount}/${vol}/${pth.paths}"
-          ) job.volumes;
+          # paths to actually back up
+          paths = concatLists (
+            mapAttrsToList (
+              vol: pth: if pth.enable then map (p: "${pth.mount}/${vol}/${p}") pth.paths else [ ]
+            ) job.volumes
+          );
           repository = "${job.repo}/${name}";
           user = "${job.user}";
         }
@@ -195,39 +229,50 @@ in
       }
     ) enabledJobs;
 
+    # Run a backup whenever the device is plugged in (and mounted)
     systemd.services = mkMerge [
+      # LAYER 1: Base configuration for ALL enabled jobs
       (mapAttrs' (
         name: job:
         nameValuePair "restic-backups-${name}" {
-          description = "Run a backup whenever the device is plugged in (and mounted)";
-          # ensure it is not considered "started" until after the main process EXITS
-          # this means that following services do not start until the this process is COMPLETE
+          # Universal notification triggers
+          onSuccess = [ "notify-backup-success-${name}.service" ];
           onFailure = [ "notify-backup-failed-${name}.service" ];
-          preStart = ''
-            read -t 30 -p "Backup job is queued, do you want to proceed?\n (yes/no within 30 secs, default is yes) " yn
-            yn=''${yn:-yes}  # Default to 'yes' if no response
-            if [[ "$yn" == "yes" ]]; then
-              concatMapAttrsStringSep "\n" (
-                vol: pth: optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r ${pth.mount} ${pth.mount}/${vol}"
-              ) job.volumes
-              + "\n${pkgs.restic}/bin/restic unlock";
-            fi
-          '';
-          # WantedBy = dev-disk-by\x2dlabel-Share.device
-          # (value retrieved by "systemctl status /dev/disk/by-label/Share" when device is plugged in)
-          # See https://bbs.archlinux.org/viewtopic.php?id=207050
-          # or WantedBy = run-media-timotheos-Share.mount (from "systemctl --user list-units -t mount")
-          # see https://askubuntu.com/questions/25071/how-to-run-a-script-when-a-specific-flash-drive-is-mounted
-          # and https://forums.linuxmint.com/viewtopic.php?t=431843
-          wantedBy = [
-            substring
-            1
-            (-1)
-            (replaceStrings [ "/" ] [ "-" ] "${job.repo}.mount")
-          ];
+        }
+      ) enabledJobs)
+
+      # LAYER 2: Extra "Mount Logic" specifically for USB disk jobs
+      (mapAttrs' (
+        name: job:
+        nameValuePair "restic-backups-${name}" {
+          # bindsTo tells systemd: "The thing I depend on is gone, I should stop immediately."
+          bindsTo = [ "${utils.escapeSystemdPath job.repo}.mount" ];
+          after = [ "${utils.escapeSystemdPath job.repo}.mount" ];
+          wantedBy = [ "${utils.escapeSystemdPath job.repo}.mount" ];
         }
       ) diskJobs)
 
+      # LAYER 3: The Success Notification Service definition
+      (mapAttrs' (
+        name: job:
+        nameValuePair "notify-backup-success-${name}" {
+          description = "Notify on successful backup";
+          serviceConfig = {
+            Type = "oneshot";
+            User = "${username}";
+          };
+          script = ''
+            USER_ID=$(id -u ${username})
+            sudo -u ${username} \
+            DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
+            ${pkgs.libnotify}/bin/notify-send --urgency=low \
+              "Backup Complete" \
+              "Restic job '${name}' finished successfully."
+          '';
+        }
+      ) enabledJobs)
+
+      # LAYER 4: The Failure Notification Service definition
       # send desktop notifications about failed backups using libnotify
       # ref: https://www.arthurkoziel.com/restic-backups-b2-nixos/
       (mapAttrs' (
