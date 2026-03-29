@@ -65,7 +65,6 @@ let
     sopsFile = "${secrets_path}/secrets/apps/restic.yaml";
   };
 
-  vol_label = "${config.mettavi.system.services.restic.vol_label}";
 in
 {
   options.mettavi.system.services.restic = {
@@ -148,11 +147,13 @@ in
           # -r creates the snapshot read-only
           backupPrepareCommand =
             concatMapAttrsStringSep "\n" (
-              vol: pth: optionalString pth.enable "btrfs subvolume snapshot -r ${pth.mount} ${pth.mount}/${vol}"
+              vol: pth:
+              optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r ${pth.mount} ${pth.mount}/${vol}"
             ) job.volumes
             + "\n${pkgs.restic}/bin/restic unlock";
           backupCleanupCommand = concatMapAttrsStringSep "\n" (
-            vol: pth: optionalString pth.enable "btrfs subvolume delete ${pth.mount}/${vol}"
+            vol: pth:
+            optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume delete ${pth.mount}/${vol}"
           ) job.volumes;
           # Patterns to exclude when backing up
           exclude = mapAttrsToList (
@@ -189,7 +190,7 @@ in
             yn=''${yn:-yes}  # Default to 'yes' if no response
             if [[ "$yn" == "yes" ]]; then
               concatMapAttrsStringSep "\n" (
-                vol: pth: optionalString pth.enable "btrfs subvolume snapshot -r ${pth.mount} ${pth.mount}/${vol}"
+                vol: pth: optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r ${pth.mount} ${pth.mount}/${vol}"
               ) job.volumes
               + "\n${pkgs.restic}/bin/restic unlock";
             fi
