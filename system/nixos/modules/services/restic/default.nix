@@ -11,6 +11,27 @@ with lib;
 let
   cfg = config.mettavi.system.services.restic;
 
+  backup-now = pkgs.writeShellScriptBin "backup-now" ''
+    # If no argument is provided, show available jobs
+    if [ -z "$1" ]; then
+      echo "Usage: backup-now <job-name>"
+      echo "Available jobs:"
+      # lists all configured Restic jobs so you don't have to remember the exact names
+      systemctl list-units "restic-backups-*" --all --no-legend | awk '{print $1}' | sed 's/restic-backups-//g' | sed 's/.service//g'
+      exit 1
+    fi
+
+    JOB_NAME="restic-backups-$1.service"
+
+    echo "🚀 Triggering backup job: $1..."
+
+    # We use sudo because systemd backup services are system-level
+    sudo systemctl start "$JOB_NAME"
+
+    echo "✅ Job started. You can follow the logs with:"
+    echo "   journalctl -u $JOB_NAME -f"
+  '';
+
   # SHARED SETTINGS FOR EVERY RESTIC CONFIGURATION
   commonConfig = {
     checkOpts = [
@@ -128,6 +149,7 @@ in
 
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
+      backup-now
       libnotify # Library that sends desktop notifications
       # CHECK: not sure if this is required
       rclone # sync files and directories to and from major cloud storage
