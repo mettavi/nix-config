@@ -90,7 +90,8 @@ in
       # This allows a system-root process to "talk" to your desktop
       sudo -u ${username} \
         DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
-        notify-send -u critical "Snapper Health Alert" "Snapshots have not been created in over 24 hours! Check 'journalctl -u snapper-health-check'"
+        notify-send -u critical "Snapper Health Alert" \
+        "Snapshots have not been created in over 24 hours! Check 'journalctl -u snapper-health-check'"
     '';
   };
 }
