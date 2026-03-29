@@ -181,7 +181,7 @@ in
       (mapAttrs' (
         name: job:
         nameValuePair "restic-backups-${name}" {
-          description = "Run a backup whenever the device is plugged in (and mounted)"; # See https://bbs.archlinux.org/viewtopic.php?id=207050
+          description = "Run a backup whenever the device is plugged in (and mounted)";
           # ensure it is not considered "started" until after the main process EXITS
           # this means that following services do not start until the this process is COMPLETE
           onFailure = [ "notify-backup-failed-${name}.service" ];
@@ -210,13 +210,31 @@ in
         }
       ) diskJobs)
 
+      # send desktop notifications about failed backups using libnotify
+      # ref: https://www.arthurkoziel.com/restic-backups-b2-nixos/
+      (mapAttrs' (
+        name: job:
+        nameValuePair "notify-backup-failed-${name}" {
+          enable = true;
+          description = "Notify on failed backup";
           serviceConfig = {
             Type = "oneshot";
+            User = "${username}";
           };
+          script = ''
+            # Find the primary user's ID (assuming the one you defined in your module)
+            USER_ID=$(id -u ${username})
+
+            # Run notify-send as that user, pointing to their DBus session
+            # This allows a system-root process to "talk" to your desktop
+            sudo -u ${username} \
+            DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
+            ${pkgs.libnotify}/bin/notify-send --urgency=critical \
+              "Backup failed" \
+              "$(journalctl -u restic-backups-${name} -n 5 -o cat)"
+          '';
         }
-      ) diskJobs)
-          };
-        }) enabledJobs)
-      ];
+      ) enabledJobs)
+    ];
   };
 }
