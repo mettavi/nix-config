@@ -184,16 +184,31 @@ in
           # ensure it is not considered "started" until after the main process EXITS
           # this means that following services do not start until the this process is COMPLETE
           onFailure = [ "notify-backup-failed-${name}.service" ];
-          unitConfig = {
-            # RequiresMountsFor = "/run/media/xxx/Seagate Backup";
-            # or use the ConditionPathIsMountPoint= option?
-            # See https://unix.stackexchange.com/questions/281650/systemd-unit-requiresmountsfor-vs-conditionpathisdirectory
-            # and https://www.mavjs.org/post/automatic-backup-restic-systemd-service/
-            # See https://bbs.archlinux.org/viewtopic.php?id=207050
-            # ConditionPathIsMountPoint = "/run/media/${username}/${vol_label}";
-            # or perhaps WantedBy= option?
-            ConditionPathIsMountPoint = "${job.repo}";
-          };
+          preStart = ''
+            read -t 30 -p "Backup job is queued, do you want to proceed?\n (yes/no within 30 secs, default is yes) " yn
+            yn=''${yn:-yes}  # Default to 'yes' if no response
+            if [[ "$yn" == "yes" ]]; then
+              concatMapAttrsStringSep "\n" (
+                vol: pth: optionalString pth.enable "btrfs subvolume snapshot -r ${pth.mount} ${pth.mount}/${vol}"
+              ) job.volumes
+              + "\n${pkgs.restic}/bin/restic unlock";
+            fi
+          '';
+          # WantedBy = dev-disk-by\x2dlabel-Share.device
+          # (value retrieved by "systemctl status /dev/disk/by-label/Share" when device is plugged in)
+          # See https://bbs.archlinux.org/viewtopic.php?id=207050
+          # or WantedBy = run-media-timotheos-Share.mount (from "systemctl --user list-units -t mount")
+          # see https://askubuntu.com/questions/25071/how-to-run-a-script-when-a-specific-flash-drive-is-mounted
+          # and https://forums.linuxmint.com/viewtopic.php?t=431843
+          wantedBy = [
+            substring
+            1
+            (-1)
+            (replaceStrings [ "/" ] [ "-" ] "${job.repo}.mount")
+          ];
+        }
+      ) diskJobs)
+
           serviceConfig = {
             Type = "oneshot";
           };
