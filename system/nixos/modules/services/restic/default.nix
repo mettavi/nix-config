@@ -115,7 +115,7 @@ in
                     description = "The mount path of the partition/subvolume";
                   };
                   paths = mkOption {
-                    type = listOf path;
+                    type = listOf str;
                     description = "A list of paths to backup from the partition/subvolume";
                   };
                 };
