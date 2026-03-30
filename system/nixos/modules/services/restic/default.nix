@@ -186,10 +186,11 @@ in
           '';
 
           # Logic for Cloud/Other jobs (No popup, just snapshots)
-          cloudPrepare = ''
-            ${btrfsCommands}
-            ${pkgs.restic}/bin/restic unlock
-          '';
+          cloudPrepare = # bash
+            ''
+              ${btrfsCommands}
+              ${pkgs.restic}/bin/restic unlock
+            '';
 
         in
         commonConfig
