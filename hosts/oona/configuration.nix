@@ -195,7 +195,7 @@
                 };
                 "@root" = {
                   exclusions = [
-                    ".Trash"
+                    ".Trash-0"
                   ];
                   mount = "/";
                   paths = [
@@ -210,7 +210,10 @@
                   ];
                 };
                 "@roothome" = {
-                  exclusions = [ ".Trash-0" ];
+                  exclusions = [
+                    ".local/share/Trash"
+                    ".Trash-0"
+                  ];
                   mount = "/root";
                   paths = [ "." ];
                 };
