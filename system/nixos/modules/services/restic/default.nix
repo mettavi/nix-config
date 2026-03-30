@@ -168,22 +168,46 @@ in
             optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r ${pth.mount} ${pth.mount}/${vol}"
           ) job.volumes;
 
+          # The actual mount point (parent of the repo folder)
+          mountPath = "/run/media/${username}/${job.vol_label}";
+
+          pidFile = "/run/user/$(id -u ${username})/restic-progress-${name}.pid";
+
           # Logic specifically for USB/Disk jobs
-          diskPrepare = ''
-            USER_ID=$(id -u ${username})
-            if sudo -u ${username} \
-               DISPLAY=:0 \
-               DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
-               ${pkgs.zenity}/bin/zenity --question --title="Backup: ${name}" \
-               --text="USB Disk '${job.vol_label}' detected. Start backup?" --timeout=30; then
-              
-              ${btrfsCommands}
-              ${pkgs.restic}/bin/restic unlock
-            else
-              echo "User cancelled or timeout. Skipping disk backup."
-              exit 0
-            fi
-          '';
+          diskPrepare = # bash
+            ''
+              # 1. MOUNT GUARD: Check if the path is actually a mount point
+              if ! ${pkgs.util-linux}/bin/mountpoint -q "${mountPath}"; then
+                echo "ERROR: ${mountPath} is not a mount point. Aborting to save root partition."
+                exit 1 # Exit with 1 so systemd knows the 'preparation' failed
+              fi
+
+              USER_ID=$(id -u ${username})
+              # 2. PROMPT
+              if sudo -u ${username} \
+                 DISPLAY=:0 \
+                 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
+                 ${pkgs.zenity}/bin/zenity --question --title="Backup: ${name}" \
+                 --text="USB Disk '${job.vol_label}' detected. Start backup?" --timeout=30; then
+                
+                ${btrfsCommands}
+                ${pkgs.restic}/bin/restic unlock
+
+                # 3. PULSING PROGRESS BAR
+                sudo -u ${username} \
+                   DISPLAY=:0 \
+                   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
+                   ${pkgs.zenity}/bin/zenity --progress --pulsate \
+                   --title="Restic Backup" \
+                   --text="Backing up to ${job.vol_label}..." \
+                   --no-cancel --auto-close & 
+                
+                echo $! > ${pidFile}
+              else
+                echo "User cancelled or timeout."
+                exit 0
+              fi
+            '';
 
           # Logic for Cloud/Other jobs (No popup, just snapshots)
           cloudPrepare = # bash
