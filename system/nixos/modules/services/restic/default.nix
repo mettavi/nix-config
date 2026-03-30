@@ -230,14 +230,22 @@ in
           # Patterns to exclude when backing up
           exclude = concatLists (
             mapAttrsToList (
-              vol: pth: if pth.enable then map (exc: "${pth.mount}/${vol}/${exc}") pth.exclusions else [ ]
+              vol: pth:
+              if pth.enable then
+                map (exc: replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}/${exc}") pth.exclusions
+              else
+                [ ]
             ) job.volumes
           );
           passwordFile = config.sops.secrets."users/${username}/restic-${name}".path;
           # paths to actually back up
           paths = concatLists (
             mapAttrsToList (
-              vol: pth: if pth.enable then map (p: "${pth.mount}/${vol}/${p}") pth.paths else [ ]
+              vol: pth:
+              if pth.enable then
+                map (p: replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}/${p}") pth.paths
+              else
+                [ ]
             ) job.volumes
           );
           repository = "${job.repo}/${name}";
