@@ -65,24 +65,29 @@ let
   # Filter jobs that backup to a removable disk
   diskJobs = filterAttrs (name: job: job.vol_label != "") cfg.jobs;
 
-  logfile_dir = "$XDG_STATE_HOME/logs/rclone";
-  logfile = "${logfile_dir}/restic-${hostname}.log";
-
   # create an rclone shell script
-  restic-rcl-b2 =
-    pkgs.writeShellScriptBin "restic-rcl-b2.sh" # bash
+  sync-b2 =
+    pkgs.writeShellScriptBin "sync-b2.sh" # bash
       ''
-        # create the base directory if it doesn't exist
-        if [ ! -d ${logfile_dir} ]; then
-          mkdir -p ${logfile_dir} 
+        # If no argument is provided, show available jobs
+        if [ -z "$1" ]; then
+          echo "Usage: rclone-b2.sh <job-name>"
+          echo "Available jobs:"
+          # lists all configured Restic jobs so you don't have to remember the exact names
+          systemctl list-unit-files "restic-backups-*" --all --no-legend | awk '{print $1}' | sed 's/restic-backups-//g' | sed 's/.service//g'
+          exit 1
         fi
 
-        # copy the local restic backup to the cloud (backblaze b2)
-        rclone --log-level INFO --log-file=${logfile} \
-          --verbose --b2-hard-delete --checkers 100 --transfers 100 --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
-          sync ${config.services.restic.backups."${hostname}".repository} b2:${hostname}-${username}/
-      '';
+        JOB_NAME="rclone-sync-$1.service"
 
+        echo "🚀 Triggering rclone sync job: $1..."
+
+        # We use sudo because systemd rclone services are system-level
+        sudo systemctl start "$JOB_NAME"
+
+        echo "✅ Job started. You can follow the logs with:"
+        echo "   journalctl -u $JOB_NAME -f"
+      '';
 in
 {
   options.mettavi.system.services.restic = {
@@ -154,7 +159,7 @@ in
       libnotify # Library that sends desktop notifications
       # CHECK: not sure if this is required
       rclone # sync files and directories to and from major cloud storage
-      restic-rcl-b2
+      sync-b2
     ];
 
     services.restic = {
@@ -262,7 +267,6 @@ in
       }
     ) enabledJobs;
 
-    # Run a backup whenever the device is plugged in (and mounted)
     systemd.services = mkMerge [
       # LAYER 1: Base configuration for ALL enabled jobs
       (mapAttrs' (
@@ -289,6 +293,7 @@ in
       (mapAttrs' (
         name: job:
         nameValuePair "notify-backup-success-${name}" {
+          enable = true;
           description = "Notify on successful backup";
           serviceConfig = {
             Type = "oneshot";
@@ -328,6 +333,35 @@ in
             ${pkgs.libnotify}/bin/notify-send --urgency=critical \
               "Backup failed" \
               "$(journalctl -u restic-backups-${name} -n 5 -o cat)"
+          '';
+        }
+      ) enabledJobs)
+
+      (mapAttrs' (
+        name: job:
+        nameValuePair "rclone-sync-${name}" {
+          enable = true;
+          description = "Sync backups to the cloud with rclone";
+          serviceConfig = {
+            Type = "oneshot";
+            User = "${username}";
+          };
+          script = ''
+            logfile_dir = "$XDG_STATE_HOME/logs/rclone"
+            logfile = "$logfile_dir/restic-${hostname}.log"
+
+            # create the base directory if it doesn't exist
+            if [ ! -d $logfile_dir ]; then
+              echo "Creating $logfile_dir..."
+              mkdir -p $logfile_dir 
+            else
+              echo "$logfile_dir already exits"
+            fi
+
+            # copy the local restic backup to the cloud (backblaze b2)
+            rclone --log-level INFO --log-file=$logfile \
+              --verbose --b2-hard-delete --checkers 100 --transfers 100 --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
+              sync "${job.repo}/${name}" b2:${hostname}/restic/
           '';
         }
       ) enabledJobs)
