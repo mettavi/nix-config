@@ -12,26 +12,69 @@ with lib;
 let
   cfg = config.mettavi.system.services.restic;
 
-  backup-now = pkgs.writeShellScriptBin "backup-now" ''
-    # If no argument is provided, show available jobs
-    if [ -z "$1" ]; then
-      echo "Usage: backup-now <job-name>"
-      echo "Available jobs:"
-      # lists all configured Restic jobs so you don't have to remember the exact names
-      systemctl list-unit-files "restic-backups-*" --all --no-legend | awk '{print $1}' | sed 's/restic-backups-//g' | sed 's/.service//g'
-      exit 1
-    fi
+  # 1. Define all your custom tools in one place
+  scriptDefinitions = {
+    "backup-now" = {
+      type = "trigger";
+      prefix = "restic-backups-";
+      description = "Restic backup";
+    };
+    "sync-b2" = {
+      type = "trigger";
+      prefix = "rclone-sync-";
+      description = "Rclone cloud sync";
+    };
+    "backup-status" = {
+      type = "status";
+      prefixes = [
+        "restic-backups-"
+        "rclone-sync-"
+      ];
+      description = "Backup & Sync Status";
+    };
+  };
 
-    JOB_NAME="restic-backups-$1.service"
+  # 2. The "Factory" function that builds the scripts
+  makeCustomScript =
+    name: conf:
+    pkgs.writeShellScriptBin name (
+      if conf.type == "trigger" then # bash
+        ''
+          # --- TRIGGER SCRIPT LOGIC ---
+          if [ -z "$1" ]; then
+            echo "Usage: ${name} <job-name>"
+            echo "Available ${conf.description} jobs:"
+            ${pkgs.systemd}/bin/systemctl list-unit-files "${conf.prefix}*" --no-legend | \
+              ${pkgs.gawk}/bin/awk '{print $1}' | ${pkgs.gnused}/bin/sed 's/${conf.prefix}//g' | ${pkgs.gnused}/bin/sed 's/.service//g'
+            exit 1
+          fi
 
-    echo "🚀 Triggering backup job: $1..."
+          JOB_NAME="${conf.prefix}$1.service"
+          echo "🚀 Triggering ${conf.description}: $1..."
+          sudo ${pkgs.systemd}/bin/systemctl start "$JOB_NAME"
+          echo "✅ Job started. Follow logs with: journalctl -u $JOB_NAME -f"
+        ''
+      # bash
+      else
+        ''
+          # --- STATUS SCRIPT LOGIC ---
+          echo "--- ${conf.description} ---"
+          printf "%-30s %-20s %-10s\n" "UNIT" "LAST EXIT" "RESULT"
+          echo "----------------------------------------------------------------------"
 
-    # We use sudo because systemd backup services are system-level
-    sudo systemctl start "$JOB_NAME"
+          # Iterate through all specified prefixes
+          for prefix in ${builtins.concatStringsSep " " conf.prefixes}; do
+            for unit in $(${pkgs.systemd}/bin/systemctl list-unit-files "$prefix*" --no-legend | ${pkgs.gawk}/bin/awk '{print $1}'); do
+              # Extract the timestamp and the last result (success/failed/etc)
+              INFO=$(${pkgs.systemd}/bin/systemctl show "$unit" --property=InactiveExitTimestamp --property=Result --value | ${pkgs.coreutils}/bin/tr '\n' ' ')
+              printf "%-30s %-20s\n" "$unit" "$INFO"
+            done
+          done
+        ''
+    );
 
-    echo "✅ Job started. You can follow the logs with:"
-    echo "   journalctl -u $JOB_NAME -f"
-  '';
+  # 3. Map the definitions into a list of packages
+  customScripts = lib.mapAttrsToList (name: conf: makeCustomScript name conf) scriptDefinitions;
 
   # SHARED SETTINGS FOR EVERY RESTIC CONFIGURATION
   commonConfig = {
@@ -65,29 +108,6 @@ let
   # Filter jobs that backup to a removable disk
   diskJobs = filterAttrs (name: job: job.vol_label != "") cfg.jobs;
 
-  # create an rclone shell script
-  sync-b2 =
-    pkgs.writeShellScriptBin "sync-b2.sh" # bash
-      ''
-        # If no argument is provided, show available jobs
-        if [ -z "$1" ]; then
-          echo "Usage: rclone-b2.sh <job-name>"
-          echo "Available jobs:"
-          # lists all configured Restic jobs so you don't have to remember the exact names
-          systemctl list-unit-files "restic-backups-*" --all --no-legend | awk '{print $1}' | sed 's/restic-backups-//g' | sed 's/.service//g'
-          exit 1
-        fi
-
-        JOB_NAME="rclone-sync-$1.service"
-
-        echo "🚀 Triggering rclone sync job: $1..."
-
-        # We use sudo because systemd rclone services are system-level
-        sudo systemctl start "$JOB_NAME"
-
-        echo "✅ Job started. You can follow the logs with:"
-        echo "   journalctl -u $JOB_NAME -f"
-      '';
 in
 {
   options.mettavi.system.services.restic = {
@@ -154,13 +174,13 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      backup-now
-      libnotify # Library that sends desktop notifications
-      # CHECK: not sure if this is required
-      rclone # sync files and directories to and from major cloud storage
-      sync-b2
-    ];
+    environment.systemPackages =
+      with pkgs;
+      [
+        libnotify # Library that sends desktop notifications
+        rclone # sync files and directories to and from major cloud storage
+      ]
+      ++ customScripts; # Merge the generated scripts into your packages
 
     services.restic = {
       backups = mapAttrs (
@@ -342,29 +362,48 @@ in
         nameValuePair "rclone-sync-${name}" {
           enable = true;
           description = "Sync backups to the cloud with rclone";
+          # Only run if the repo config is actually reachable
+          unitConfig.ConditionPathExists = "${job.repo}/${name}/config";
           serviceConfig = {
             Type = "oneshot";
             User = "${username}";
+            # Systemd creates /var/log/rclone and gives ${username} write access
+            LogsDirectory = "rclone";
           };
-          script = ''
-            logfile_dir = "$XDG_STATE_HOME/logs/rclone"
-            logfile = "$logfile_dir/restic-${hostname}.log"
+          script = # bash
+            ''
+              # Use a timestamp so every backup has its own unique log file
+              TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
+              LOGFILE="/var/log/rclone/sync-$TIMESTAMP.log"
 
-            # create the base directory if it doesn't exist
-            if [ ! -d $logfile_dir ]; then
-              echo "Creating $logfile_dir..."
-              mkdir -p $logfile_dir 
-            else
-              echo "$logfile_dir already exits"
-            fi
-
-            # copy the local restic backup to the cloud (backblaze b2)
-            rclone --log-level INFO --log-file=$logfile \
-              --verbose --b2-hard-delete --checkers 100 --transfers 100 --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
-              sync "${job.repo}/${name}" b2:${hostname}/restic/
-          '';
+              # copy the local restic backup to the cloud (backblaze b2)
+              rclone --log-level INFO --log-file=$LOGFILE \
+                --verbose --b2-hard-delete --checkers 100 --transfers 100 \
+                --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
+                sync "${job.repo}/${name}" b2:${hostname}/restic/
+            '';
         }
       ) enabledJobs)
+    ];
+    systemd.timers = mapAttrs' (
+      name: job:
+      nameValuePair "rclone-sync-${name}" {
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          # Run every Monday at 3:00 AM
+          OnCalendar = "Monday *-*-* 03:00:00";
+          # If the computer was off at 3 AM, run it as soon as we boot up
+          Persistent = true;
+          # Spread the load (if you have multiple jobs)
+          RandomizedDelaySec = "1h";
+        };
+      }
+    ) enabledJobs;
+
+    # clean up the rclone log files periodically
+    systemd.tmpfiles.rules = [
+      # Type  Path               Mode  User        Group       Age  Argument
+      "d      /var/log/rclone    0755  ${username} root        30d  -"
     ];
   };
 }
