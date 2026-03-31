@@ -182,6 +182,7 @@
               volumes = {
                 "@adminhome" = {
                   exclusions = [
+                    ".Trash-0"
                     ".local/share/Trash"
                     ".npm"
                   ];
@@ -189,7 +190,7 @@
                   paths = [ "." ];
                 };
                 "@adminmedia" = {
-                  exclusions = [ ];
+                  exclusions = [ ".Trash-0" ];
                   mount = "/home/${username}/media";
                   paths = [ "." ];
                 };
@@ -211,8 +212,8 @@
                 };
                 "@roothome" = {
                   exclusions = [
-                    ".local/share/Trash"
                     ".Trash-0"
+                    ".local/share/Trash"
                   ];
                   mount = "/root";
                   paths = [ "." ];
