@@ -18,7 +18,7 @@ let
       echo "Usage: backup-now <job-name>"
       echo "Available jobs:"
       # lists all configured Restic jobs so you don't have to remember the exact names
-      systemctl list-units "restic-backups-*" --all --no-legend | awk '{print $1}' | sed 's/restic-backups-//g' | sed 's/.service//g'
+      systemctl list-unit-files "restic-backups-*" --all --no-legend | awk '{print $1}' | sed 's/restic-backups-//g' | sed 's/.service//g'
       exit 1
     fi
 
