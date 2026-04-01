@@ -156,6 +156,7 @@
         enable = true;
         abs_home = "${config.users.users.${username}.home}/media/audiobooks";
       };
+      btrfs.enable = true;
       # uses resolved, dnsmasq and nginx to map localhost IP:port urls to hostnames
       hostdns.enable = true;
       # enable authentication via face recognition
