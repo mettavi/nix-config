@@ -7,7 +7,7 @@
 
       # 1. Find the ID of the latest 'git-pre-safety' snapshot
       # We sort by ID and take the last one
-      SNAP_ID=$(snapper -c adminhome list --userdata type=git-pre-safety | tail -n 1 | awk '{print $1}')
+      SNAP_ID=$(snapper -c adminhome list | grep git-pre-safety | tail -n 1 | awk '{print $1}')
 
       if [ -z "$SNAP_ID" ] || [ "$SNAP_ID" == "ID" ]; then
           echo "❌ No pre-commit safety snapshots found!"
@@ -54,7 +54,7 @@
         # 1. List all git-pre-safety IDs
         # 2. Exclude the most recent 20 (change this number to your preference)
         # 3. Delete the rest
-        OLD_IDS=$(snapper -c adminhome list --userdata type=git-pre-safety | \
+        OLD_IDS=$(snapper -c adminhome list | grep git-pre-safety | \
                   awk '/^[ ]*[1-9]/ {print $1}' | \
                   head -n -20)
 
