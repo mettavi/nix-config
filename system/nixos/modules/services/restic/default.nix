@@ -211,6 +211,7 @@ in
               # 2. PROMPT
               if sudo -u ${username} \
                  DISPLAY=:0 \
+                 XDG_RUNTIME_DIR=/run/user/$USER_ID \
                  DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
                  ${pkgs.zenity}/bin/zenity --question --title="Backup: ${name}" \
                  --text="USB Disk '${job.vol_label}' detected. Start backup?" --timeout=30; then
@@ -221,6 +222,7 @@ in
                 # 3. PULSING PROGRESS BAR
                 sudo -u ${username} \
                    DISPLAY=:0 \
+                   XDG_RUNTIME_DIR=/run/user/$USER_ID \
                    DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
                    ${pkgs.zenity}/bin/zenity --progress --pulsate \
                    --title="Restic Backup" \
@@ -322,6 +324,7 @@ in
           script = ''
             USER_ID=$(id -u ${username})
             sudo -u ${username} \
+            XDG_RUNTIME_DIR=/run/user/$USER_ID \
             DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
             ${pkgs.libnotify}/bin/notify-send --urgency=low \
               "Backup Complete" \
@@ -349,6 +352,7 @@ in
             # Run notify-send as that user, pointing to their DBus session
             # This allows a system-root process to "talk" to your desktop
             sudo -u ${username} \
+            XDG_RUNTIME_DIR=/run/user/$USER_ID \
             DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
             ${pkgs.libnotify}/bin/notify-send --urgency=critical \
               "Backup failed" \
@@ -385,6 +389,7 @@ in
         }
       ) enabledJobs)
     ];
+
     systemd.timers = mapAttrs' (
       name: job:
       nameValuePair "rclone-sync-${name}" {
