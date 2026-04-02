@@ -54,8 +54,7 @@ let
           sudo ${pkgs.systemd}/bin/systemctl start "$JOB_NAME"
           echo "✅ Job started. Follow logs with: journalctl -u $JOB_NAME -f"
         ''
-      # bash
-      else
+      else # bash
         ''
           # --- STATUS SCRIPT LOGIC ---
           echo "--- ${conf.description} ---"
@@ -185,74 +184,18 @@ in
     services.restic = {
       backups = mapAttrs (
         name: job:
-        let
-          isDiskJob = job.vol_label != "";
-
-          btrfsCommands = concatMapAttrsStringSep "\n" (
-            vol: pth:
-            optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r ${pth.mount} ${pth.mount}/${vol}"
-          ) job.volumes;
-
-          # The actual mount point (parent of the repo folder)
-          mountPath = "/run/media/${username}/${job.vol_label}";
-
-          pidFile = "/run/user/$(id -u ${username})/restic-progress-${name}.pid";
-
-          # Logic specifically for USB/Disk jobs
-          diskPrepare = # bash
-            ''
-              # 1. MOUNT GUARD: Check if the path is actually a mount point
-              if ! ${pkgs.util-linux}/bin/mountpoint -q "${mountPath}"; then
-                echo "ERROR: ${mountPath} is not a mount point. Aborting to save root partition."
-                exit 1 # Exit with 1 so systemd knows the 'preparation' failed
-              fi
-
-              USER_ID=$(id -u ${username})
-              # 2. PROMPT
-              if sudo -u ${username} \
-                 DISPLAY=:0 \
-                 XDG_RUNTIME_DIR=/run/user/$USER_ID \
-                 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
-                 ${pkgs.zenity}/bin/zenity --question --title="Backup: ${name}" \
-                 --text="USB Disk '${job.vol_label}' detected. Start backup?" --timeout=30; then
-                
-                ${btrfsCommands}
-                ${pkgs.restic}/bin/restic unlock
-
-                # 3. PULSING PROGRESS BAR
-                sudo -u ${username} \
-                   DISPLAY=:0 \
-                   XDG_RUNTIME_DIR=/run/user/$USER_ID \
-                   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
-                   ${pkgs.zenity}/bin/zenity --progress --pulsate \
-                   --title="Restic Backup" \
-                   --text="Backing up to ${job.vol_label}..." \
-                   --no-cancel --auto-close & 
-                
-                echo $! > ${pidFile}
-              else
-                echo "User cancelled or timeout."
-                exit 0
-              fi
-            '';
-
-          # Logic for Cloud/Other jobs (No popup, just snapshots)
-          cloudPrepare = # bash
-            ''
-              ${btrfsCommands}
-              ${pkgs.restic}/bin/restic unlock
-            '';
-
-        in
         commonConfig
         // job.localConfig
         // {
-          # -r creates the snapshot read-only
-          # Choose the right preparation script based on job type
-          backupPrepareCommand = if isDiskJob then diskPrepare else cloudPrepare;
+          # NB: this command has been moved to serviceConfig.ExecCondition, see below
+          # backupPrepareCommand = if isDiskJob then diskPrepare else cloudPrepare;
           backupCleanupCommand = concatMapAttrsStringSep "\n" (
             vol: pth:
-            optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume delete ${pth.mount}/${vol}"
+            let
+              # the escaped mount point of the pre-backup snapshot
+              subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+            in
+            optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume delete ${subvolMount}"
           ) job.volumes;
           # Patterns to exclude when backing up
           exclude = concatLists (
@@ -293,7 +236,94 @@ in
       # LAYER 1: Base configuration for ALL enabled jobs
       (mapAttrs' (
         name: job:
+        let
+          isDiskJob = (job.vol_label != "");
+
+          # -r creates the snapshot read-only
+          btrfsCommands = concatMapAttrsStringSep "\n" (
+            vol: pth:
+            let
+              # the escaped mount point of the subvolume snapshot
+              subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+            in
+            optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r ${pth.mount} ${subvolMount}"
+          ) job.volumes;
+
+          # The actual mount point (parent of the repo folder)
+          mountPath = "/run/media/${username}/${job.vol_label}";
+
+          pidFile = "/run/user/$(id -u ${username})/restic-progress-${name}.pid";
+
+          # Logic specifically for USB/Disk jobs
+          diskPrepare = # bash
+            ''
+              # 1. MOUNT GUARD: Check if the path is actually a mount point
+              if ! ${pkgs.util-linux}/bin/mountpoint -q "${mountPath}"; then
+                echo "ERROR: ${mountPath} is not a mount point. Aborting to save root partition."
+                exit 255 # Exit with 255 so systemd "ExecCondition" knows the 'preparation' failed
+              fi
+
+              # 1. Identify the user's environment
+              # We need to tell Zenity WHERE to show up.
+              USER_ID=$(id -u ${username})
+
+              # 2. Run Zenity as the user and capture the exit code
+              # --question: creates a Yes/No dialog
+              # --timeout: automatically continues after 30 seconds
+              ${pkgs.sudo}/bin/sudo -u ${username} \
+                 DISPLAY=:0 \
+                 XDG_RUNTIME_DIR=/run/user/$USER_ID \
+                 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
+                 ${pkgs.zenity}/bin/zenity --question --title="Backup: ${name}" \
+                 --text="USB Disk '${job.vol_label}' detected. Start backup?" --timeout=30
+
+              ZEN_EXIT=$?
+                
+              # 3. Evaluate the Exit Code
+              # 0 = Yes, 5 = Timeout. We proceed for both.
+              if [ "$ZEN_EXIT" -eq 0 ] || [ "$ZEN_EXIT" -eq 5 ]; then
+                if [ "$ZEN_EXIT" -eq 5 ]; then
+                  echo "Zenity timed out. Proceeding with backup by default..."
+                else
+                  echo "User clicked YES. Starting backup..."
+                fi
+                
+                ${btrfsCommands}
+                ${pkgs.restic}/bin/restic unlock
+
+                # 3. PULSING PROGRESS BAR
+                ${pkgs.sudo}/bin/sudo -u ${username} \
+                DISPLAY=:0 \
+                XDG_RUNTIME_DIR=/run/user/$USER_ID \
+                DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
+                ${pkgs.zenity}/bin/zenity --progress --pulsate \
+                --title="Restic Backup" \
+                --text="Backing up to ${job.vol_label}..." \
+                --no-cancel --auto-close & 
+
+                echo $! > ${pidFile}
+
+              else
+                # If exit code is 1 (User clicked NO) or anything else (ESC/Closed window), exit with status 1
+                # inside a systemd "ExecCondition" (see below) so the service doesn't "fail," it just skips.
+                echo "User explicitly cancelled (Exit Code: $ZEN_EXIT). Skipping backup."
+                exit 1
+              fi
+            '';
+          # Logic for Cloud/Other jobs (No popup, just snapshots)
+          cloudPrepare = # bash
+            ''
+              ${btrfsCommands}
+              ${pkgs.restic}/bin/restic unlock
+            '';
+        in
         nameValuePair "restic-backups-${name}" {
+          serviceConfig = {
+            # ExecCondition: with exit code 1 through 254 (inclusive),
+            # the remaining commands are skipped but the unit is not marked as failed
+            # Choose the right preparation script based on job type
+            ExecCondition = if isDiskJob then diskPrepare else cloudPrepare;
+          };
           # Universal notification triggers
           onSuccess = [ "notify-backup-success-${name}.service" ];
           onFailure = [ "notify-backup-failed-${name}.service" ];
@@ -323,7 +353,7 @@ in
           };
           script = ''
             USER_ID=$(id -u ${username})
-            sudo -u ${username} \
+            ${pkgs.sudo}/bin/sudo -u ${username} \
             XDG_RUNTIME_DIR=/run/user/$USER_ID \
             DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
             ${pkgs.libnotify}/bin/notify-send --urgency=low \
@@ -351,7 +381,7 @@ in
 
             # Run notify-send as that user, pointing to their DBus session
             # This allows a system-root process to "talk" to your desktop
-            sudo -u ${username} \
+            ${pkgs.sudo}/bin/sudo -u ${username} \
             XDG_RUNTIME_DIR=/run/user/$USER_ID \
             DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
             ${pkgs.libnotify}/bin/notify-send --urgency=critical \
@@ -381,7 +411,7 @@ in
               LOGFILE="/var/log/rclone/sync-$TIMESTAMP.log"
 
               # copy the local restic backup to the cloud (backblaze b2)
-              rclone --log-level INFO --log-file=$LOGFILE \
+              ${pkgs.rclone} --log-level INFO --log-file=$LOGFILE \
                 --verbose --b2-hard-delete --checkers 100 --transfers 100 \
                 --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
                 sync "${job.repo}/${name}" b2:${hostname}/restic/
