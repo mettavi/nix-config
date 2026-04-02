@@ -54,7 +54,7 @@ let
           sudo ${pkgs.systemd}/bin/systemctl start "$JOB_NAME"
           echo "✅ Job started. Follow logs with: journalctl -u $JOB_NAME -f"
         ''
-      else # bash
+      else
         ''
           # --- STATUS SCRIPT LOGIC ---
           echo "--- ${conf.description} ---"
@@ -255,63 +255,65 @@ in
           pidFile = "/run/user/$(id -u ${username})/restic-progress-${name}.pid";
 
           # Logic specifically for USB/Disk jobs
-          diskPrepare = # bash
-            ''
-              # 1. MOUNT GUARD: Check if the path is actually a mount point
-              if ! ${pkgs.util-linux}/bin/mountpoint -q "${mountPath}"; then
-                echo "ERROR: ${mountPath} is not a mount point. Aborting to save root partition."
-                exit 255 # Exit with 255 so systemd "ExecCondition" knows the 'preparation' failed
-              fi
+          # 1. MOUNT GUARD: Check if the path is actually a mount point
+          diskPrepare =
+            pkgs.writeShellScriptBin "diskPrepare" # bash
+              ''
+                if ! ${pkgs.util-linux}/bin/mountpoint -q "${mountPath}"; then
+                  echo "ERROR: ${mountPath} is not a mount point. Aborting to save root partition."
+                  # Exit with 255 so systemd "ExecCondition" knows the 'preparation' failed
+                  exit 255
+                fi
 
-              # 1. Identify the user's environment
-              # We need to tell Zenity WHERE to show up.
-              USER_ID=$(id -u ${username})
+                # 1. Identify the user's environment
+                # We need to tell Zenity WHERE to show up.
+                USER_ID=$(id -u ${username})
 
-              # 2. Run Zenity as the user and capture the exit code
-              # --question: creates a Yes/No dialog
-              # --timeout: automatically continues after 30 seconds
-                 DISPLAY=:0 \
-                 XDG_RUNTIME_DIR=/run/user/$USER_ID \
-                 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
-                 ${pkgs.zenity}/bin/zenity --question --title="Backup: ${name}" \
-                 --text="USB Disk '${job.vol_label}' detected. Start backup?" --timeout=30
+                # 2. Run Zenity as the user and capture the exit code
+                # --question: creates a Yes/No dialog
+                # --timeout: automatically continues after 30 seconds
                 # NB: USE THE SUDO WRAPPER ON NIXOS, because "sudo needs setuid to work, 
                 # but the package itself in nixpkgs can’t have it"
                 /run/wrappers/bin/sudo -u ${username} \
+                   DISPLAY=:0 \
+                   XDG_RUNTIME_DIR=/run/user/$USER_ID \
+                   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
+                   ${pkgs.zenity}/bin/zenity --question --title="Backup: ${name}" \
+                   --text="USB Disk '${job.vol_label}' detected. Start backup?" --timeout=30
 
-              ZEN_EXIT=$?
-                
-              # 3. Evaluate the Exit Code
-              # 0 = Yes, 5 = Timeout. We proceed for both.
-              if [ "$ZEN_EXIT" -eq 0 ] || [ "$ZEN_EXIT" -eq 5 ]; then
-                if [ "$ZEN_EXIT" -eq 5 ]; then
-                  echo "Zenity timed out. Proceeding with backup by default..."
-                else
-                  echo "User clicked YES. Starting backup..."
-                fi
-                
-                ${btrfsCommands}
-                ${pkgs.restic}/bin/restic unlock
+                ZEN_EXIT=$?
+                  
+                # 3. Evaluate the Exit Code
+                # 0 = Yes, 5 = Timeout. We proceed for both.
+                if [ "$ZEN_EXIT" -eq 0 ] || [ "$ZEN_EXIT" -eq 5 ]; then
+                  if [ "$ZEN_EXIT" -eq 5 ]; then
+                    echo "Zenity timed out. Proceeding with backup by default..."
+                  else
+                    echo "User clicked YES. Starting backup..."
+                  fi
+                  
+                  ${btrfsCommands}
+                  ${pkgs.restic}/bin/restic unlock
 
-                # 3. PULSING PROGRESS BAR
-                DISPLAY=:0 \
-                XDG_RUNTIME_DIR=/run/user/$USER_ID \
-                DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
-                ${pkgs.zenity}/bin/zenity --progress --pulsate \
-                --title="Restic Backup" \
-                --text="Backing up to ${job.vol_label}..." \
-                --no-cancel --auto-close & 
+                  # 3. PULSING PROGRESS BAR
                   /run/wrappers/bin/sudo -u ${username} \
+                  DISPLAY=:0 \
+                  XDG_RUNTIME_DIR=/run/user/$USER_ID \
+                  DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
+                  ${pkgs.zenity}/bin/zenity --progress --pulsate \
+                  --title="Restic Backup" \
+                  --text="Backing up to ${job.vol_label}..." \
+                  --no-cancel --auto-close & 
 
-                echo $! > ${pidFile}
+                  echo $! > ${pidFile}
 
-              else
-                # If exit code is 1 (User clicked NO) or anything else (ESC/Closed window), exit with status 1
-                # inside a systemd "ExecCondition" (see below) so the service doesn't "fail," it just skips.
-                echo "User explicitly cancelled (Exit Code: $ZEN_EXIT). Skipping backup."
-                exit 1
-              fi
-            '';
+                else
+                  # If exit code is 1 (User clicked NO) or anything else (ESC/Closed window), exit with status 1
+                  # inside a systemd "ExecCondition" (see below) so the service doesn't "fail," it just skips.
+                  echo "User explicitly cancelled (Exit Code: $ZEN_EXIT). Skipping backup."
+                  exit 1
+                fi
+              '';
           # Logic for Cloud/Other jobs (No popup, just snapshots)
           cloudPrepare = # bash
             ''
@@ -324,7 +326,7 @@ in
             # ExecCondition: with exit code 1 through 254 (inclusive),
             # the remaining commands are skipped but the unit is not marked as failed
             # Choose the right preparation script based on job type
-            ExecCondition = if isDiskJob then diskPrepare else cloudPrepare;
+            ExecCondition = if isDiskJob then "${diskPrepare}/bin/diskPrepare" else cloudPrepare;
           };
           # Universal notification triggers
           onSuccess = [ "notify-backup-success-${name}.service" ];
