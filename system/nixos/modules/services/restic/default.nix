@@ -270,12 +270,14 @@ in
               # 2. Run Zenity as the user and capture the exit code
               # --question: creates a Yes/No dialog
               # --timeout: automatically continues after 30 seconds
-              ${pkgs.sudo}/bin/sudo -u ${username} \
                  DISPLAY=:0 \
                  XDG_RUNTIME_DIR=/run/user/$USER_ID \
                  DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
                  ${pkgs.zenity}/bin/zenity --question --title="Backup: ${name}" \
                  --text="USB Disk '${job.vol_label}' detected. Start backup?" --timeout=30
+                # NB: USE THE SUDO WRAPPER ON NIXOS, because "sudo needs setuid to work, 
+                # but the package itself in nixpkgs can’t have it"
+                /run/wrappers/bin/sudo -u ${username} \
 
               ZEN_EXIT=$?
                 
@@ -292,7 +294,6 @@ in
                 ${pkgs.restic}/bin/restic unlock
 
                 # 3. PULSING PROGRESS BAR
-                ${pkgs.sudo}/bin/sudo -u ${username} \
                 DISPLAY=:0 \
                 XDG_RUNTIME_DIR=/run/user/$USER_ID \
                 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
@@ -300,6 +301,7 @@ in
                 --title="Restic Backup" \
                 --text="Backing up to ${job.vol_label}..." \
                 --no-cancel --auto-close & 
+                  /run/wrappers/bin/sudo -u ${username} \
 
                 echo $! > ${pidFile}
 
@@ -353,7 +355,7 @@ in
           };
           script = ''
             USER_ID=$(id -u ${username})
-            ${pkgs.sudo}/bin/sudo -u ${username} \
+            /run/wrappers/bin/sudo -u ${username} \
             XDG_RUNTIME_DIR=/run/user/$USER_ID \
             DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
             ${pkgs.libnotify}/bin/notify-send --urgency=low \
@@ -381,7 +383,7 @@ in
 
             # Run notify-send as that user, pointing to their DBus session
             # This allows a system-root process to "talk" to your desktop
-            ${pkgs.sudo}/bin/sudo -u ${username} \
+            /run/wrappers/bin/sudo -u ${username} \
             XDG_RUNTIME_DIR=/run/user/$USER_ID \
             DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
             ${pkgs.libnotify}/bin/notify-send --urgency=critical \
