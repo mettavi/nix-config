@@ -51,19 +51,14 @@
         name = "daisydisk";
         greedy = true;
       }
-      # "discord"
-      {
-        name = "google-drive";
-        greedy = true;
-      }
       # "isyncr"
       # wine wrapped ports of Windows software for macOS (previously "wineskin")
-      {
-        name = "kegworks";
-        args = {
-          no_quarantine = true;
-        };
-      }
+      # {
+      #   name = "kegworks";
+      #   args = {
+      #     no_quarantine = true;
+      #   };
+      # }
       "kid3"
       # Create, manage and debug system and user services
       {
@@ -81,18 +76,12 @@
       # "microsoft-onenote"
       # "microsoft-powerpoint"
       # "microsoft-word"
-      "musicbrainz-picard"
-      {
-        name = "onedrive"; # Cloud storage client
-        greedy = true;
-      }
       # PDF reader, editor and annotator
       {
         name = "pdf-expert";
         greedy = true;
       }
       # "plex-media-server"
-      "private-internet-access"
       # "qlmarkdown"
       # Open-source BitTorrent client
       # NB: The GUI versions on nixpkgs do not work on mac
@@ -108,10 +97,6 @@
         greedy = true;
       }
       # Create, manage, and run virtual machines
-      {
-        name = "vmware-fusion";
-        greedy = true;
-      }
       # Install and switch between multiple versions of Xcode
       {
         name = "xcodes-app";
@@ -141,7 +126,6 @@
       # "Sync Folders Pro" = 522706442;
       # keeps reinstalling itself, install directly from app store instead
       # "tipitaka_pali_reader" = 1541426949;
-      "WhatsApp Messenger" = 310633997;
     };
   };
 }

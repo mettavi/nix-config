@@ -20,7 +20,7 @@
       # these taps must also be included in inputs in flake.nix
       "homebrew/homebrew-core" = inputs.homebrew-core;
       "homebrew/homebrew-cask" = inputs.homebrew-cask;
-      "Kegworks-App/homebrew-Kegworks" = inputs.kegworks;
+      # "Kegworks-App/homebrew-Kegworks" = inputs.kegworks;
     };
 
     # Optional: Enable fully-declarative tap management
