@@ -41,33 +41,6 @@ in
         shellIntegrationOptions = [ "-p 80%,60%" ];
       };
     };
-    git = {
-      enable = true;
-      # delta.enable = true;
-      # include config files from a non-default location
-      includes = [
-        {
-          path = "~/${nix_repo}/.gitconfig";
-          condition = "gitdir:~/${nix_repo}/.git";
-        }
-      ];
-      # enable automatic maintenance of git repos using launchd/systemd
-      maintenance = {
-        enable = true;
-        repositories = [ "${homeDir}/${nix_repo}" ];
-        timers = {
-          daily = "Tue..Sun *-*-* 0:53:00";
-          hourly = "*-*-* 1..23:53:00";
-          weekly = "Mon 0:53:00";
-        };
-      };
-      settings = {
-        user = {
-          email = inputs.secrets.email.gitHub;
-          name = inputs.secrets.name;
-        };
-      };
-    };
     java = {
       # Certified builds of OpenJDK (with JavaFX included for Pali Platform app)
       enable = true;
