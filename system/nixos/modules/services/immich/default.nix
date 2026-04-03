@@ -28,7 +28,6 @@ in
       database = {
         # enable the postgres db
         enable = true;
-        enableVectors = false;
         # the new extension for full-text search
         enableVectorChord = true;
         createDB = true;
