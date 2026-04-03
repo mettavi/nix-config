@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 with lib;
@@ -16,7 +17,7 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       immich-cli
-      immich-go # tool for bulk-uploads
+      # immich-go # tool for bulk-uploads
     ];
 
     services.immich = {
@@ -38,6 +39,7 @@ in
       environment = {
         IMMICH_CONFIG_FILE = "/run/immich/config.json";
         IMMICH_LOG_LEVEL = "log"; # verbose, debug, log, warn, error
+        TZ = "Australia/Melbourne";
       };
       # localhost or 0.0.0.0 for unrestricted
       host = "0.0.0.0";
@@ -54,7 +56,7 @@ in
       port = 2283;
       redis.enable = true;
       # eg. file containing DB_PASSWORD=<pass>, IMMICH_API_KEY=<key>
-      secretsFile = "";
+      secretsFile = null;
       settings = { };
     };
 
