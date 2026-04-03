@@ -28,8 +28,6 @@ in
       database = {
         # enable the postgres db
         enable = true;
-        # the new extension for full-text search
-        enableVectorChord = true;
         createDB = true;
         # url or unix socket path
         host = "/run/postgresql";
