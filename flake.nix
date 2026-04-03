@@ -83,10 +83,6 @@
       url = "github:venkyr77/jellarr";
       inputs.nixpkgs.follows = "nixos-pkgs";
     };
-    kegworks = {
-      url = "github:Kegworks-App/Kegworks";
-      flake = false;
-    };
     nixCats = {
       url = "github:BirdeeHub/nixCats-nvim";
     };
