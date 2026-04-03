@@ -4,7 +4,6 @@
   inputs,
   lib,
   nix_repo,
-  pkgs,
   ...
 }:
 let
@@ -33,25 +32,28 @@ in
       gitleaks protect --staged -v
     ''
     # only use this code on host oona
-    + lib.optionalString (hostname == "oona") ''
-      # Get current branch and the hash we are building ON TOP OF
-      BRANCH=$(git rev-parse --abbrev-ref HEAD)
-      PREV_HASH=$(git rev-parse --short HEAD)
+    +
+      lib.optionalString (hostname == "oona") # bash
+        ''
 
-      echo "🛡️ Pre-commit safety snapshot starting..."
+          # Get current branch and the hash we are building ON TOP OF
+          BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          PREV_HASH=$(git rev-parse --short HEAD)
 
-      # Snapshot the state BEFORE the commit happens
-      snapper -c adminhome create \
-        --description "Pre-commit: $BRANCH (Base: $PREV_HASH)" \
-        --userdata "type=git-pre-safety,branch=$BRANCH"
+          echo "🛡️ Pre-commit safety snapshot starting..."
 
-      if [ $? -eq 0 ]; then
-        echo "✅ Safety snapshot created. Proceeding with commit..."
-      else
-        echo "❌ Snapper failed! Commit aborted for safety."
-        exit 1
-      fi
-    '';
+          # Snapshot the state BEFORE the commit happens
+          snapper -c adminhome create \
+            --description "Pre-commit: $BRANCH (Base: $PREV_HASH)" \
+            --userdata "type=git-pre-safety,branch=$BRANCH"
+
+          if [ $? -eq 0 ]; then
+            echo "✅ Safety snapshot created. Proceeding with commit..."
+          else
+            echo "❌ Snapper failed! Commit aborted for safety."
+            exit 1
+          fi
+        '';
     programs.git = {
       enable = true;
       # delta.enable = true;

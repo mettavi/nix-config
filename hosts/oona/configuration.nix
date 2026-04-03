@@ -339,6 +339,9 @@
         ghostty.enable = true;
         obsidian.enable = true;
       };
+      shell = {
+        git.enable = true;
+      };
     };
     xdg.mimeApps = {
       enable = true;
