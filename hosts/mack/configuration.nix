@@ -58,7 +58,6 @@
         shell = {
           # enable scheduled bitwarden backup task
           bw_backup.enable = true;
-          git.enable = true;
         };
       };
     };
