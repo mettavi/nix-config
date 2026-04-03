@@ -161,6 +161,7 @@
       hostdns.enable = true;
       # enable authentication via face recognition
       howdy.enable = true;
+      immich.enable = true;
       # this also enables the jellyfin module
       jellarr.enable = true;
       libvirt.enable = true;
