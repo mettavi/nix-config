@@ -48,6 +48,11 @@ in
               "abs"
               13378
             ]
+            # immich
+            [
+              "imm"
+              2283
+            ]
             # jellyfin
             [
               "jf"
