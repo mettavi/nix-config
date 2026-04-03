@@ -6,13 +6,18 @@
   nix_repo,
   ...
 }:
+with lib;
 let
   cfg = config.mettavi.shell.git;
   homeDir = "${config.home.homeDirectory}";
 in
 {
   options.mettavi.shell.git = {
-    enable = lib.mkEnableOption "Install and configure git";
+    enable = lib.mkOption {
+      description = "Install and configure git";
+      type = types.bool;
+      default = true;
+    };
   };
 
   config = lib.mkIf cfg.enable {
