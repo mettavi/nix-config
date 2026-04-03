@@ -25,7 +25,8 @@
         ../hosts/${hostname}/configuration.nix
         {
           # Expose the package set, including overlays, for convenience.
-          darwinPackages = self.darwinConfigurations."${hostname}".pkgs;
+          # this line, which used to be required, now causes an infinite recursion error
+          # darwinPackages = self.darwinConfigurations."${hostname}".pkgs;
           networking.hostName = "${hostname}";
           nix = {
             extraOptions = ''
