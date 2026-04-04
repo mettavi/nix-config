@@ -57,6 +57,8 @@ in
       redis.enable = true;
       # eg. file containing DB_PASSWORD=<pass>, IMMICH_API_KEY=<key>
       secretsFile = null;
+      # config file /run/immich/config.json
+      # Setting it to null allows configuring Immich in the web interface.
       settings = { };
     };
 
