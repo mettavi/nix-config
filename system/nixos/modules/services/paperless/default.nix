@@ -122,7 +122,7 @@ in
           preStart = ''
             # --- CONFIGURATION ---
             # How many days should backups be kept?
-            RETENTION_DAYS=30
+            RETENTION_DAYS=14
 
             # 1. Create new backup directory
             DATE_STAMP=$(date +"%Y-%m-%d_%H-%M-%S")
