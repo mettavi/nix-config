@@ -197,6 +197,7 @@ in
             in
             optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume delete ${subvolMount}"
           ) job.volumes;
+
           # Patterns to exclude when backing up
           exclude = concatLists (
             mapAttrsToList (
@@ -252,13 +253,12 @@ in
           # The actual mount point (parent of the repo folder)
           mountPath = "/run/media/${username}/${job.vol_label}";
 
-          pidFile = "/run/user/$(id -u ${username})/restic-progress-${name}.pid";
-
           # Logic specifically for USB/Disk jobs
           # 1. MOUNT GUARD: Check if the path is actually a mount point
           diskPrepare =
             pkgs.writeShellScriptBin "diskPrepare" # bash
               ''
+                # MOUNT GUARD
                 if ! ${pkgs.util-linux}/bin/mountpoint -q "${mountPath}"; then
                   echo "ERROR: ${mountPath} is not a mount point. Aborting to save root partition."
                   # Exit with 255 so systemd "ExecCondition" knows the 'preparation' failed
@@ -269,20 +269,29 @@ in
                 # We need to tell Zenity WHERE to show up.
                 USER_ID=$(id -u ${username})
 
+                # 2. AUTO-DETECT WAYLAND SOCKET
+                # This finds wayland-0, wayland-1, etc., dynamically
+                WAYLAND_SOCKET=$(ls /run/user/$USER_ID/wayland-* | head -n 1 | xargs basename)
+
+                # We define the Wayland environment once to keep things clean
+                # Note: wayland-0 is the default for the first logged-in user
+                # We add DBUS_SESSION_BUS_ADDRESS explicitly to fix the "Transport" error
+                WAYLAND_ENV="WAYLAND_DISPLAY=$WAYLAND_SOCKET XDG_RUNTIME_DIR=/run/user/$USER_ID XDG_CURRENT_DESKTOP=GNOME GDK_BACKEND=wayland XDG_SESSION_TYPE=wayland DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus"
+
                 # 2. Run Zenity as the user and capture the exit code
                 # --question: creates a Yes/No dialog
                 # --timeout: automatically continues after 30 seconds
                 # NB: USE THE SUDO WRAPPER ON NIXOS, because "sudo needs setuid to work, 
                 # but the package itself in nixpkgs can’t have it"
-                /run/wrappers/bin/sudo -u ${username} \
-                   DISPLAY=:0 \
-                   XDG_RUNTIME_DIR=/run/user/$USER_ID \
-                   DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
+                if /run/wrappers/bin/sudo -u ${username} env $WAYLAND_ENV \
                    ${pkgs.zenity}/bin/zenity --question --title="Backup: ${name}" \
-                   --text="USB Disk '${job.vol_label}' detected. Start backup?" --timeout=30
+                   --text="USB Disk '${job.vol_label}' detected. Start backup?" --timeout=30; then
 
-                ZEN_EXIT=$?
-                  
+                  ZEN_EXIT=$?
+                else
+                  ZEN_EXIT=$?
+                fi  
+
                 # 3. Evaluate the Exit Code
                 # 0 = Yes, 5 = Timeout. We proceed for both.
                 if [ "$ZEN_EXIT" -eq 0 ] || [ "$ZEN_EXIT" -eq 5 ]; then
@@ -294,18 +303,6 @@ in
                   
                   ${btrfsCommands}
                   ${pkgs.restic}/bin/restic unlock
-
-                  # 3. PULSING PROGRESS BAR
-                  /run/wrappers/bin/sudo -u ${username} \
-                  DISPLAY=:0 \
-                  XDG_RUNTIME_DIR=/run/user/$USER_ID \
-                  DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
-                  ${pkgs.zenity}/bin/zenity --progress --pulsate \
-                  --title="Restic Backup" \
-                  --text="Backing up to ${job.vol_label}..." \
-                  --no-cancel --auto-close & 
-
-                  echo $! > ${pidFile}
 
                 else
                   # If exit code is 1 (User clicked NO) or anything else (ESC/Closed window), exit with status 1
@@ -361,8 +358,9 @@ in
             XDG_RUNTIME_DIR=/run/user/$USER_ID \
             DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
             ${pkgs.libnotify}/bin/notify-send --urgency=normal \
-              "Backup Complete" \
-              "Restic job '${name}' finished successfully."
+              "Restic Backup" \
+              "Job '${name}' finished successfully. You can unplug the drive." \
+              --icon=emblem-success --app-name="Restic"
           '';
         }
       ) enabledJobs)
