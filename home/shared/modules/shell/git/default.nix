@@ -24,6 +24,8 @@ in
     home.file."${nix_repo}/.githooks/pre-commit".text = # bash
     ''
       #!/usr/bin/env bash
+      ".gitconfig".source = ../../../dots/git/.gitconfig;
+      ".gitignore_global".source = ../../../dots/git/.gitignore_global;
 
       # commit current version of nvim (Lazy) plugins catalogue
       echo

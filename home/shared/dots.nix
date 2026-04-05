@@ -24,8 +24,6 @@ in
   # };
 
   home.file = {
-    ".gitconfig".source = ./dots/git/.gitconfig;
-    ".gitignore_global".source = ./dots/git/.gitignore_global;
     ".npmrc".source = ./dots/node/.npmrc;
     # "Library/Preferences/com.plexapp.plexmediaserver.plist".source =
     #  if pkgs.stdenv.isDarwin then ./dots/plex/com.plexapp.plexmediaserver.plist else "";
