@@ -360,7 +360,7 @@ in
             /run/wrappers/bin/sudo -u ${username} \
             XDG_RUNTIME_DIR=/run/user/$USER_ID \
             DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
-            ${pkgs.libnotify}/bin/notify-send --urgency=low \
+            ${pkgs.libnotify}/bin/notify-send --urgency=normal \
               "Backup Complete" \
               "Restic job '${name}' finished successfully."
           '';
