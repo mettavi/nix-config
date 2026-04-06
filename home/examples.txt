@@ -128,8 +128,8 @@ Example from restic/default.nix (nixos):
 Note how the key/name is transformed using the input parameter, rather than being taken from it unmodified
 
 
-  mapAtts
+  mapAttrs
 
-  listtoAttrs
+  listToAttrs
 
   map
