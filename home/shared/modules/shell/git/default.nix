@@ -25,43 +25,20 @@ in
       ".gitconfig".source = ../../../dots/git/.gitconfig;
       ".gitignore_global".source = ../../../dots/git/.gitignore_global;
       "${nix_repo}/.githooks/pre-commit".text = # bash
-      ''
-        #!/usr/bin/env bash
+        ''
+          #!/usr/bin/env bash
 
-        # commit current version of nvim (Lazy) plugins catalogue
-        echo
-        echo "Checking for changes to lazy-lock.json..."
-        echo
-        git add home/shared/dots/nvim/lazy-lock.json
+          # commit current version of nvim (Lazy) plugins catalogue
+          echo
+          echo "Checking for changes to lazy-lock.json..."
+          echo
+          git add home/shared/dots/nvim/lazy-lock.json
 
-        # check staged files for secrets
-        echo "Checking for secrets..."
-        echo
-        gitleaks protect --staged -v
-      ''
-      # only use this code on host oona
-      +
-        lib.optionalString (hostname == "oona") # bash
-          ''
-
-            # Get current branch and the hash we are building ON TOP OF
-            BRANCH=$(git rev-parse --abbrev-ref HEAD)
-            PREV_HASH=$(git rev-parse --short HEAD)
-
-            echo "🛡️ Pre-commit safety snapshot starting..."
-
-            # Snapshot the state BEFORE the commit happens
-            snapper -c adminhome create \
-              --description "Pre-commit: $BRANCH (Base: $PREV_HASH)" \
-              --userdata "type=git-pre-safety,branch=$BRANCH"
-
-            if [ $? -eq 0 ]; then
-              echo "✅ Safety snapshot created. Proceeding with commit..."
-            else
-              echo "❌ Snapper failed! Commit aborted for safety."
-              exit 1
-            fi
-          '';
+          # check staged files for secrets
+          echo "Checking for secrets..."
+          echo
+          gitleaks protect --staged -v
+        '';
     };
     programs.git = {
       enable = true;

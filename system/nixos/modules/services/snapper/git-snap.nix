@@ -1,5 +1,40 @@
-{ pkgs, username, ... }:
 {
+  lib,
+  nix_repo,
+  pkgs,
+  username,
+  ...
+}:
+with lib;
+{
+  home-manager.users.${username} = {
+    home.file = {
+      # run a snapper snapshot before each git commit
+      "${nix_repo}/.githooks/pre-commit".text =
+        # add the code at the bottom of the file (see the git module for the rest)
+        mkAfter
+          # bash
+          ''
+            # Get current branch and the hash we are building ON TOP OF
+            BRANCH=$(git rev-parse --abbrev-ref HEAD)
+            PREV_HASH=$(git rev-parse --short HEAD)
+
+            echo "🛡️ Pre-commit safety snapshot starting..."
+
+            # Snapshot the state BEFORE the commit happens
+            snapper -c adminhome create \
+              --description "Pre-commit: $BRANCH (Base: $PREV_HASH)" \
+              --userdata "type=git-pre-safety,branch=$BRANCH"
+
+            if [ $? -eq 0 ]; then
+              echo "✅ Safety snapshot created. Proceeding with commit..."
+            else
+              echo "❌ Snapper failed! Commit aborted for safety."
+              exit 1
+            fi
+          '';
+    };
+  };
   # create a script to rollback from a bad git commit using a pre-commit snapper snapshot
   environment.systemPackages = [
     (pkgs.writeShellScriptBin "nix-undo" ''
