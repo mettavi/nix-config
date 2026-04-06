@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  username,
   ...
 }:
 with lib;
@@ -20,7 +21,15 @@ in
     services = {
       postgresql = {
         enable = true;
+        # eg. "/var/lib/postgresql/17"
         dataDir = "/var/lib/postgresql/${config.services.postgresql.package.psqlSchema}";
+        # peer authentication map, see pg_ident.conf in the nix store
+        # NB: use "sudo -u postgres/immich psql -U postgres/immich" etc. to login with the default users
+        identMap = # bash
+          ''
+            # map the root user to the pgsql "postgres" user (eg. allow "sudo psql -U postgres")
+            postgres root postgres
+          '';
         settings = {
           log_connections = true;
           logging_collector = true; # Enable capturing of stderr and csvlog into log file
