@@ -89,6 +89,32 @@ let
     inhibitsSleep = true;
     # create the repo if it doesn't exist
     initialize = true;
+    # Use a wrapper to pass the parent id to workaround problem with --files-from flag discussed at
+    # https://github.com/restic/restic/issues/2246
+    package = pkgs.writeShellScriptBin "restic" ''
+      # If the command is 'backup', we inject our parent logic
+      if [[ "$1" == "backup" ]]; then
+        shift # remove 'backup' from the argument list
+        
+        echo "Custom Wrapper: Determining latest snapshot for --parent..."
+        
+        # Extract the ID of the latest snapshot
+        # We use --quiet to avoid extra noise in the JSON output
+        PARENT_ID=$(${pkgs.restic}/bin/restic --json snapshots --quiet | \
+          ${pkgs.jq}/bin/jq -r 'try max_by(.time) | .short_id // empty')
+
+        if [ -n "$PARENT_ID" ]; then
+          echo "Custom Wrapper: Using parent snapshot $PARENT_ID"
+          exec ${pkgs.restic}/bin/restic backup --parent "$PARENT_ID" "$@"
+        else
+          echo "Custom Wrapper: No existing snapshots found. Starting fresh."
+          exec ${pkgs.restic}/bin/restic backup "$@"
+        fi
+      else
+        # For all other commands (unlock, check, etc.), execute normally
+        exec ${pkgs.restic}/bin/restic "$@"
+      fi
+    '';
     pruneOpts = [
       "--keep-daily 7"
       "--keep-weekly 5"
