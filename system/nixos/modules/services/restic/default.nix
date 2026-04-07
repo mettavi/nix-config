@@ -240,6 +240,14 @@ in
         let
           isDiskJob = (job.vol_label != "");
 
+          pgCommands =
+            let
+              dbs = config.services.postgresqlBackup.databases;
+            in
+            concatMapStringsSep "\n" (
+              db: "${pkgs.systemd}/bin/systemctl start postgresqlBackup-${db}.service"
+            ) dbs;
+
           # -r creates the snapshot read-only
           btrfsCommands = concatMapAttrsStringSep "\n" (
             vol: pth:
@@ -301,6 +309,7 @@ in
                     echo "User clicked YES. Starting backup..."
                   fi
                   
+                  ${pgCommands}
                   ${btrfsCommands}
                   ${pkgs.restic}/bin/restic unlock
 
@@ -314,6 +323,7 @@ in
           # Logic for Cloud/Other jobs (No popup, just snapshots)
           cloudPrepare = # bash
             ''
+              ${pgCommands}
               ${btrfsCommands}
               ${pkgs.restic}/bin/restic unlock
             '';

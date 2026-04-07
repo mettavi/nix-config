@@ -208,6 +208,7 @@
                     "etc/passwd"
                     "etc/ssh/ssh_${hostname}_ed25519_key*"
                     "etc/subgid"
+                    "var/backup/postgresql"
                     # includes the important /var/lib/nixos
                     "var/lib"
                   ];

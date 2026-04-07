@@ -60,10 +60,12 @@ in
       # config file /run/immich/config.json
       # Setting it to null allows configuring Immich in the web interface.
       settings = {
+        # immich has replaced pg_dumpall with pg_dump for the auto-backup,
+        # see https://github.com/immich-app/immich/pull/23978
         backup = {
           database = {
             cronExpression = "0 02 * * *";
-            enabled = true;
+            enabled = false;
             keepLastAmount = 14;
           };
         };

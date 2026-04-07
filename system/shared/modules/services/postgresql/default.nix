@@ -59,6 +59,7 @@ in
         location = "/var/backup/postgresql";
         pgdumpOptions = "--clean --if-exists";
         pgdumpAllOptions = "";
+        # execute with the restic service rather than scheduling
         startAt = "";
       };
     };
