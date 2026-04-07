@@ -109,47 +109,6 @@ in
       "users/${username}/paperless/ppless-${hostname}-pw" = paperlessSecrets;
     };
     systemd.services = {
-      paperless-exporter =
-        let
-          ppconfig = config.services.paperless;
-        in
-        {
-          path = with pkgs; [
-            findutils
-            postgresql
-          ];
-          # NB: code adapted from https://deployn.de/en/blog/paperless-backup-restore/
-          preStart = ''
-            # --- CONFIGURATION ---
-            # How many days should backups be kept?
-            RETENTION_DAYS=14
-
-            # 1. Create new backup directory
-            DATE_STAMP=$(date +"%Y-%m-%d_%H-%M-%S")
-            BACKUP_DIR="${ppconfig.exporter.directory}/''${DATE_STAMP}"
-            mkdir -p "''${BACKUP_DIR}"
-            echo "[+] Creating backup directory: ''${BACKUP_DIR}"
-
-            # 2. Backup PostgreSQL database
-            echo "[+] Creating PostgreSQL Dump..."
-            pg_dump -U ${ppconfig.settings.PAPERLESS_DBUSER} -d ${ppconfig.settings.PAPERLESS_DBNAME} > "''${BACKUP_DIR}/paperless-db.sql"
-            # Check if the dump is empty (-s checks if the size > 0)
-            if [ ! -s "''${BACKUP_DIR}/paperless-db.sql" ]; then
-              echo "ERROR: Database dump is empty!"
-              rm -rf "''${BACKUP_DIR}"
-              exit 1
-            fi
-            echo "    -> Database dump successful."
-
-            echo "[+] Deleting backups older than ''${RETENTION_DAYS} days..."
-            find "${ppconfig.exporter.directory}" -maxdepth 1 -type d -mtime +''${RETENTION_DAYS} -exec rm -rf {} \;
-            echo "    -> Cleanup completed."
-
-            echo "========================================================"
-            echo "Paperless backup successfully completed!"
-            echo "========================================================"
-          '';
-        };
       # don't autostart these services
       paperless-scheduler.wantedBy = mkForce [ ];
       redis-paperless.wantedBy = mkForce [ ];
