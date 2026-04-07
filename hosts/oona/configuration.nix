@@ -199,6 +199,7 @@
                 "@root" = {
                   exclusions = [
                     ".Trash-0"
+                    "/var/backup/postgresql/*.prev.sql"
                   ];
                   mount = "/";
                   paths = [
