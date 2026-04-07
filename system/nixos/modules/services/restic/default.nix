@@ -394,9 +394,9 @@ in
             XDG_RUNTIME_DIR=/run/user/$USER_ID \
             DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
             ${pkgs.libnotify}/bin/notify-send --urgency=normal \
+              --icon=emblem-success --app-name="Restic" \
               "Restic Backup" \
-              "Job '${name}' finished successfully. You can unplug the drive." \
-              --icon=emblem-success --app-name="Restic"
+              "Job '${name}' finished successfully. You can unplug the drive."
           '';
         }
       ) enabledJobs)
@@ -423,6 +423,7 @@ in
             XDG_RUNTIME_DIR=/run/user/$USER_ID \
             DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
             ${pkgs.libnotify}/bin/notify-send --urgency=critical \
+              --icon=emblem-failure --app-name="Restic" \
               "Backup failed" \
               "$(journalctl -u restic-backups-${name} -n 5 -o cat)"
           '';
