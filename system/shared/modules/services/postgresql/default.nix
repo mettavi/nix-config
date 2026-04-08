@@ -14,11 +14,6 @@ in
       default = false;
       description = "Install and configure the postgresql service";
     };
-    backup = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Whether to enable db backup systemd services";
-    };
   };
 
   config = mkIf cfg.enable {
@@ -43,24 +38,6 @@ in
           log_min_messages = "debug1"; # error, warning, notice, info, debug 1..5
           port = 5432;
         };
-      };
-
-      postgresqlBackup = mkIf cfg.backup {
-        enable = true;
-        # uses pg_dumpall
-        backupAll = config.services.postgresqlBackup.databases == [ ];
-        # restic dedupe works better without compression
-        compression = "none";
-        compressionLevel = 6;
-        databases = [
-          "immich"
-          "paperless"
-        ];
-        location = "/var/backup/postgresql";
-        pgdumpOptions = "--clean --if-exists";
-        pgdumpAllOptions = "";
-        # execute with the restic service rather than scheduling
-        startAt = "";
       };
     };
   };
