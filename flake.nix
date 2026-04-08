@@ -18,7 +18,8 @@
 
     ######## NIX-DARWIN ########
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable"; # for nix-darwin
-    nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
+    # migrate to this input when 26.05 stable is released, which is the last version to support intel darwin
+    # nixpkgs-26_05.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
