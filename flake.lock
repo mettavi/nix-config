@@ -397,22 +397,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-24_11": {
-      "locked": {
-        "lastModified": 1751290243,
-        "narHash": "sha256-kNf+obkpJZWar7HZymXZbW+Rlk3HTEIMlpc6FCNz0Ds=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "5ab036a8d97cb9476fbe81b09076e6e91d15e1b6",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-24.11-darwin",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-lib": {
       "locked": {
         "lastModified": 1772328832,
@@ -508,7 +492,6 @@
         "nixos-hardware": "nixos-hardware",
         "nixos-pkgs": "nixos-pkgs",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-24_11": "nixpkgs-24_11",
         "quadlet-nix": "quadlet-nix",
         "secrets": "secrets",
         "sops-nix-darwin": "sops-nix-darwin",
