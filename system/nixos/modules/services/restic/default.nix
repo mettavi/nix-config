@@ -450,8 +450,8 @@ in
               LOGFILE="/var/log/rclone/sync-$TIMESTAMP.log"
 
               # copy the local restic backup to the cloud (backblaze b2)
-              ${pkgs.rclone} --log-level INFO --log-file=$LOGFILE \
-                --verbose --b2-hard-delete --checkers 100 --transfers 100 \
+              ${pkgs.rclone}/bin/rclone --log-level INFO --log-file=$LOGFILE \
+                --b2-hard-delete --checkers 100 --transfers 100 \
                 --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
                 sync "${job.repo}/${name}" b2:${hostname}/restic/
             '';
