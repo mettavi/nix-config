@@ -20,7 +20,11 @@ in
   };
 
   config = mkIf cfg.enable {
-    # set this explicitly to bypass the first-run bug, even though it is already set in the module
+    # NB: The module automatically configures the required permissions for kanata
+    # (see https://github.com/jtroo/kanata/blob/main/docs/setup-linux.md)
+    # BUT: setting hardware.uinput.enable seems to be required on reinstall
+    # even though it is already set in the module
+    # On one occasion it even needed to be set in the host configuration.nix while kanata was disabled instead of here
     # see https://github.com/NixOS/nixpkgs/issues/317282 for details
     hardware.uinput.enable = true;
 

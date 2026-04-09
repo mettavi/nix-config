@@ -76,6 +76,10 @@
     lm_sensors # tools for reading hardware sensors
   ];
 
+  # this may need to be enabled when reinstalling kanata
+  # see the kanata module for details
+  # hardware.uinput.enable = true;
+
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.wifi.powersave = false;
 
