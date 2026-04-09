@@ -36,16 +36,17 @@ in
           # Setting this option is necessary to automatically assign different configs to different hosts/devices
           # NOTE: This option is not working on host oona under nixos (even as root with a minimal config - requires more testing)
           # The workaround is to use "linux-dev-names-include" in option extraDefCfg instead
-          devices = [
-            # Replace the paths below with the appropriate device paths for your setup.
-            # Use `ls /dev/input/by-path/` to find your keyboard devices.
-            #   "/dev/input/by-path/pci-0000:e6:00.1-usb-0:5:1.1-event-kbd"
-            #   "/dev/input/by-path/pci-0000:e6:00.1-usbv2-0:5:1.1-event-kbd"
-            # Prefer `ls /dev/input/by-id/` if possible as this is more stable
-            # ASUS G24 GA403WR laptop keyboard (currently not working)
-            # "/dev/input/by-id/usb-ITE_Tech._Inc._ITE_Device_8910_-hidraw"
-            # "/dev/hidraw0"
-          ];
+
+          # devices = [
+          # Replace the paths below with the appropriate device paths for your setup.
+          # Use `ls /dev/input/by-path/` to find your keyboard devices.
+          #   "/dev/input/by-path/pci-0000:e6:00.1-usb-0:5:1.1-event-kbd"
+          #   "/dev/input/by-path/pci-0000:e6:00.1-usbv2-0:5:1.1-event-kbd"
+          # Prefer `ls /dev/input/by-id/` if possible as this is more stable
+          # ASUS G24 GA403WR laptop keyboard (currently not working)
+          # "/dev/input/by-id/usb-ITE_Tech._Inc._ITE_Device_8910_-hidraw"
+          # "/dev/hidraw0"
+          # ];
           config = ''
             ;; see https://github.com/jtroo/kanata/blob/main/parser/src/keys/mod.rs for a list of keys
             (defsrc
