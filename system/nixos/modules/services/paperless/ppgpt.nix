@@ -19,7 +19,7 @@ in
   options.mettavi.system.services.paperless-ngx.ppgpt = {
     enable = mkOption {
       type = types.bool;
-      default = config.mettavi.system.services.paperless-ngx.withPaperlessGPT;
+      default = cfg.enable && cfg.withPaperlessGPT;
       description = "Enhance metadata and OCR scanning with the paperless-gpt addon";
     };
     llm = {
