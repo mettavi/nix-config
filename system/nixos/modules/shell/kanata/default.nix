@@ -95,13 +95,6 @@ in
         };
       };
     };
-    # required for preventing permissions errors when connecting to keyboard devices using the services.kanata.devices option
-    # services.udev.extraRules = ''
-    #   KERNEL=="uinput", MODE="0660", GROUP="uinput", OPTIONS+="static_node=uinput"
-    #   SUBSYSTEM=="hidraw", ATTRS{idVendor}=="0b05", ATTRS{idProduct}=="19b6", GROUP="uinput", MODE="0660"
-    #   # KERNEL=="hidraw0", SUBSYSTEM=="hidraw", GROUP="uinput", MODE="0660"
-    # '';
-    # environment.systemPackages = with pkgs; [ kanata ];
 
     # THIS IS A MANUAL SYSTEMD CONFIGURATION FOR TESTING
     systemd.services.kanata-Asus-G14 = {
