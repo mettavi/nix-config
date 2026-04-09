@@ -162,12 +162,13 @@
     };
   };
 
-  services.kanata.keyboards."home-keys".extraDefCfg = ''
-    linux-dev-names-include (
-      "Apple Inc. Apple Internal Keyboard / Trackpad"
-      "Apple Headset"
-    )
-  '';
+  # this config is disabling the trackpad for some reason, so disabling
+  # services.kanata.keyboards."home-keys".extraDefCfg = ''
+  #   linux-dev-names-include (
+  #     "Apple Inc. Apple Internal Keyboard / Trackpad"
+  #     "Apple Headset"
+  #   )
+  # '';
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
   home-manager.users.${username} = {
