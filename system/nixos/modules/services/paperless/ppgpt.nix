@@ -8,12 +8,7 @@
 }:
 with lib;
 let
-  cfg = config.mettavi.system.services.paperless-ngx.ppgpt;
-  paperlessSecrets = {
-    group = "${config.users.users.paperless.name}";
-    mode = "0440";
-    sopsFile = "${secrets_path}/secrets/apps/paperless.yaml";
-  };
+  cfg = config.mettavi.system.services.paperless-ngx;
 in
 {
   options.mettavi.system.services.paperless-ngx.ppgpt = {
@@ -81,9 +76,17 @@ in
         "${cfg.llm.ocr.model}"
       ];
 
-    sops.secrets = {
-      "users/${username}/paperless/ppless-gpt-${hostname}.env" = paperlessSecrets;
-    };
+    sops.secrets =
+      let
+        paperlessSecrets = {
+          group = "${config.users.users.paperless.name}";
+          mode = "0440";
+          sopsFile = "${secrets_path}/secrets/apps/paperless.yaml";
+        };
+      in
+      {
+        "users/${username}/paperless/ppless-gpt-${hostname}.env" = paperlessSecrets;
+      };
 
     systemd.services = {
       paperless-gpt = {
