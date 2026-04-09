@@ -23,7 +23,6 @@ in
     # iterm2
     # karabiner-elements
     # keka
-    keycastr # keystroke visualiser
     # pam-reattach # for touchid support in tmux (binary "reattach-to-session-namespace")
     # getting error "cannot download WhatsApp.app from any mirror"
     # fix was committed to master on Wed 18 Dec, see https://github.com/NixOS/nixpkgs/pull/365792/commits

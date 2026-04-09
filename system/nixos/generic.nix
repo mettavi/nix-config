@@ -42,9 +42,10 @@
       options = "--delete-older-than 30d"; # Delete generations older than 30 days
       persistent = true;
     };
-    # this ensures $NIX_PATH is set to an immutable location in the nix-store
+    # for traditional nix commands like nix-shell, this sets <nixpkgs> AND points it to the local nix store
+    # NB: this value must be set explicitly because nix.channel = false (which will default nixPath to null)
     nixPath = options.nix.nixPath.default ++ [
-      "nixpkgs=flake:nixpkgs"
+      "nixpkgs=${inputs.nixos-pkgs}"
       "nixpkgs-overlays=${config.users.users.${username}.home}/${nix_repo}/system/overlays/shared"
       "home-manager=${inputs.home-manager}"
     ];

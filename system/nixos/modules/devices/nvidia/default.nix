@@ -19,9 +19,40 @@ in
 
   config = mkIf cfg.enable {
 
-    # USERSPACE LIBRARIES FOR NVIDIA
-    # Not sure if this is actually used on wayland
-    # NB: AMD works out of the box
+    # KERNEL MODULES
+    # modules that are ALWAYS loaded by the initrd
+    boot.initrd.kernelModules = [
+      # nvidia module is not needed in the initrd
+      # see https://discourse.nixos.org/t/nvidia-drm-fails-to-load/69582/4
+      # "nvidia"
+    ];
+    # kernel modules to be loaded in the second stage of the boot process
+    boot.kernelModules = [
+      "nvidia"
+    ];
+
+    # kernel module or builtin options to be added to /etc/modprobe.d/
+    boot.extraModprobeConfig = # bash
+      ''
+        # options yourmodulename optionA=valueA optionB=valueB # syntax
+        # Add the S0ix module parameter
+        options nvidia NVreg_EnableS0ixPowerManagement=1
+        # see https://wiki.nixos.org/wiki/NVIDIA re this option
+        options nvidia NVreg_TemporaryFilePath=/var/tmp
+      '';
+
+    # Parameters added to the kernel command line (can only be used for built-in modules)
+    boot.kernelParams = [
+      # change defaults to workaround the nvidia GPU freeze-on-resume problem
+      # NB: these parameters are ALSO set by some hardware.nvidia.* options (see below)
+      # see https://bbs.archlinux.org/viewtopic.php?id=300676
+      # "nvidia.NVreg_PreserveVideoMemoryAllocations=0"
+      # allows nvidia to manage the frame buffer device (experimental status)
+      # "nvidia-drm.fbdev=0"
+    ];
+
+    # USERSPACE LIBRARIES FOR NVIDIA (propietary, required for nvidia-produced kernel modules)
+    # NB: For Xorg and Wayland, AMD works out of the box
     services.xserver.videoDrivers = [
       "nvidia"
     ];
@@ -36,18 +67,17 @@ in
       nvidia-vaapi-driver
     ];
 
-    environment = {
-      systemPackages = with pkgs; [
-        nvtopPackages.nvidia # htop-like task monitor for nvidia GPUs
-      ];
-      variables = {
-        # tell the VA-API library to load the NVIDIA driver
-        LIBVA_DRIVER_NAME = "nvidia";
-        # Select the "direct" nvidia backend for VA-API
-        NVD_BACKEND = "direct";
-      };
+    environment.variables = {
+      # tell the VA-API library to load the NVIDIA driver
+      LIBVA_DRIVER_NAME = "nvidia";
+      # Select the "direct" nvidia backend for VA-API
+      NVD_BACKEND = "direct";
     };
     ######################################################################
+
+    environment.systemPackages = with pkgs; [
+      nvtopPackages.nvidia # htop-like task monitor for nvidia GPUs
+    ];
 
     # NB: the module below adds boot.blacklistedKernelModules = [ "nouveau" ];
     hardware.nvidia = {
@@ -56,7 +86,9 @@ in
       # Kernel mode setting (KMS) allows native video resolution during boot and in tty's
       # On wayland, KMS is also required for the offloading mode (see below)
       # to ensure the iGPU is used as the primary display
+      # NB: This option will add nvidia-drm.fbdev=1 to boot.kernelParams
       modesetting.enable = true;
+      # Enable the Nvidia settings GUI, accessible via `nvidia-settings`
       nvidiaSettings = true;
       # The open driver is recommended by nvidia now, see
       # https://download.nvidia.com/XFree86/Linux-x86_64/565.77/README/kernel_open.html
@@ -67,8 +99,10 @@ in
       package = config.boot.kernelPackages.nvidiaPackages.stable;
       powerManagement = {
         # this adds the nvidia-{suspend,hibernate,resume} services
+        # and the option nvidia.NVreg_PreserveVideoMemoryAllocations=1 to boot.kernelParams
         enable = true;
-        # experimental power management of prime offload
+        # experimental power management of prime offload (turns off GPU when not in use)
+        # NB: this option will add NVreg_DynamicPowerManagement=0x02 to boot.kernelParams
         finegrained = true;
       };
       # prime sync and reverse sync modes only work on X11

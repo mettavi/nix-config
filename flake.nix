@@ -18,7 +18,8 @@
 
     ######## NIX-DARWIN ########
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable"; # for nix-darwin
-    nixpkgs-24_11.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
+    # migrate to this input when 26.05 stable is released, which is the last version to support intel darwin
+    # nixpkgs-26_05.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,10 +42,9 @@
 
     ######### NIXOS #########
     nixos-pkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    cachyos-kernel = {
-      url = "github:xddxdd/nix-cachyos-kernel/release";
-      inputs.nixpkgs.follows = "nixos-pkgs";
-    };
+    # Do not override cachyos-kernel nixpkgs input, otherwise there can
+    # be mismatch between patches and kernel version
+    cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     # fan daemon for T2 macs
     t2fanrd.url = "github:GnomedDev/T2FanRD";
@@ -83,10 +83,6 @@
     jellarr = {
       url = "github:venkyr77/jellarr";
       inputs.nixpkgs.follows = "nixos-pkgs";
-    };
-    kegworks = {
-      url = "github:Kegworks-App/Kegworks";
-      flake = false;
     };
     nixCats = {
       url = "github:BirdeeHub/nixCats-nvim";
@@ -154,9 +150,6 @@
       # nixosConfigurations = {
       # "oona" = initNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
       # };
-
-      # Expose the package set, including overlays, for convenience.
-      darwinPackages = self.darwinConfigurations."mack".pkgs;
 
     };
 }

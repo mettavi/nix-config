@@ -1,0 +1,135 @@
+
+#################################################################################
+#  USING CONDITIONAL STATMENTS (EG. TO SHARE SETTINGS BETWEEN NIXOS AND DARWIN)
+
+# Refer to https://www.reddit.com/r/NixOS/comments/1k48yqr/shared_home_manager_between_nixos_and_nixdarwin/ 
+# and see https://github.com/AlexNabokikh/nix-config for more examples
+# Ensure common packages are installed
+# USE LIB.OPTIONALS FOR LISTS
+
+  home.packages = with pkgs;
+    [
+      anki-bin
+      awscli2
+      dig
+      du-dust
+      ...
+    ]
+    ++ lib.optionals stdenv.isDarwin [
+      colima
+      docker
+      hidden-bar
+      raycast
+    ]
+    ++ lib.optionals (!stdenv.isDarwin) [
+      pavucontrol
+      pulseaudio
+      tesseract
+      unzip
+      wl-clipboard
+    ];
+
+# USE LIB.MKIF FOR ATTRIBUTE SETS
+
+{
+  lib,
+  pkgs,
+  ...
+}: {
+  config = lib.mkIf (!pkgs.stdenv.isDarwin) {
+    # Install OBS Studio via home-manager module
+    programs.obs-studio.enable = true;
+
+    # Enable catppuccin theming for OBS.
+    catppuccin.obs.enable = true;
+  };
+}
+
+# USE LIB.OPTIONALSTRING FOR STRINGS
+
+let
+  lib = import <nixpkgs/lib>;
+  enableFeature = true;
+  message = "Hello" + lib.strings.optionalString enableFeature " world!";
+in
+  message
+
+# In this example, message would evaluate to "Hello world!" because enableFeature is true. 
+# If enableFeature were false, message would evaluate to "Hello".
+
+# USE IF/THEN/ELSE FOR VALUES OF OPTIONS
+
+{pkgs, ...}: {
+  # Install alacritty via home-manager module
+  programs.alacritty = {
+    enable = true;
+      window = {
+        decorations =
+          if pkgs.stdenv.isDarwin
+          then "buttonless"
+          else "none";
+      };
+      font = {
+        size =
+          if pkgs.stdenv.isDarwin
+          then 15
+          else 12;
+      };
+    };
+  };
+
+  ####################################################################
+  # CREATING DIRECTORIES IN NIXOS USING SYSTEMD.TMPFILES
+  # create directories in ~ that paperless can use
+  systemd.tmpfiles.rules =
+    let
+      home = "${config.users.users.${username}.home}"; 
+    in
+    [
+      # type path mode user group (expiry) (argument)
+      "d ${home}/.local/share/paperless 0770 ${username} root -"
+      "d ${home}/Downloads/paperless 0770 ${username} root -"
+      "d ${home}/media/paperless 0770 ${username} paperless -"
+    ];
+
+
+  #####################################################################
+  # MERGING MULTIPLE TOP-LEVEL VARIABLES DEPENDENT ON A COMMON CONDITION 
+  # IN A MODULE CONFIG BLOCK
+
+  config = lib.mkMerge [ 
+    (lib.mkIf cfg.enable {
+      services.foo.enabled = true;  # Always enabled
+    })
+    (lib.mkIf useFeature {
+      services.foo.bar = 7;  # Only included if useFeature is true
+      services.foo.baz = "example";  # Another variable based on the condition
+    })
+  ];
+
+
+  #####################################################################
+  # LOOPS
+
+  concatMapAttrs: used to transform both the key and the value in an attribute set
+  NB: other fuctions such as mapAttrs use the unmodified parameter key/name as the key in the new attribute set
+
+Example from restic/default.nix (nixos):
+
+  resticSecrets = {
+    sopsFile = "${secrets_path}/secrets/apps/restic.yaml";
+  };
+
+    sops.secrets = concatMapAttrs (key: value: {
+      # encryption password for each restic backup job
+      "users/${username}/restic-${hostname}-${value.label}" = resticSecrets;
+    }) cfg.jobs;
+
+Note how the key/name is transformed using the input parameter, rather than being taken from it unmodified
+
+
+  mapAttrs
+
+  listToAttrs
+
+  map

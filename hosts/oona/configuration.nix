@@ -1,5 +1,6 @@
 {
   config,
+  hostname,
   lib,
   pkgs,
   username,
@@ -8,8 +9,10 @@
 
 {
   imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
+    # customise the hardware scan config
+    # NB: hardware-configuration.nix is auto-generated during install and is imported in the mkNixos function
+    ./mount.nix
+    ./kernel.nix
   ];
 
   users.users.${username} = {
@@ -56,9 +59,6 @@
     };
   };
 
-  # Use the cachyos kernel for the latest asus g14 kernel patches.
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
-
   # console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
@@ -68,13 +68,13 @@
   services = {
     asusd = {
       enable = true;
-      # unstable, see https://gitlab.com/asus-linux/asusctl/-/issues/532#note_2879912217
-      enableUserService = false;
+      # option is unstable and deprecated, see https://gitlab.com/asus-linux/asusctl/-/issues/532#note_2879912217
+      # enableUserService = true;
       # explicitly set to use the package patched locally with an overlay
       package = pkgs.asusctl;
     };
-    # this option is already enabled by the asusd module above
-    # services.supergfxd.enable = true;
+    # do not install this with the asusd module as it is now deprecated
+    supergfxd.enable = false;
     xserver = {
       # don't install Xserver by default
       enable = false;
@@ -106,7 +106,7 @@
     serviceConfig = {
       Type = "simple";
       ExecStart = lib.getExe' pkgs.asusctl "rog-control-center";
-      Restart = "always";
+      Restart = "on-failure";
       RestartSec = 1;
       TimeoutStopSec = 10;
       ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
@@ -145,7 +145,7 @@
     devices = {
       logitech.enable = true;
       nvidia.enable = true;
-      wdssd.enable = true;
+      # wdssd.enable = true;
     };
     desktops = {
       gnome.enable = true;
@@ -156,16 +156,99 @@
         enable = true;
         abs_home = "${config.users.users.${username}.home}/media/audiobooks";
       };
+      btrfs.enable = true;
       # uses resolved, dnsmasq and nginx to map localhost IP:port urls to hostnames
       hostdns.enable = true;
       # enable authentication via face recognition
       howdy.enable = true;
+      immich.enable = true;
       # this also enables the jellyfin module
       jellarr.enable = true;
       libvirt.enable = true;
       networkmanager.enable = true;
       openssh.enable = true;
+      # also enables the ollama module
+      paperless-ngx.enable = true;
       pia-vpn-netmanager.enable = true;
+      restic = {
+        enable = true;
+        jobs = {
+          "${hostname}" =
+            let
+              vol_label = "Share";
+            in
+            {
+              inherit vol_label;
+              localConfig = { };
+              repo = "/run/media/${username}/${vol_label}";
+              volumes = {
+                "@adminhome" = {
+                  exclusions = [
+                    ".Trash-0"
+                    ".local/share/Trash"
+                    ".npm"
+                  ];
+                  mount = "/home/${username}";
+                  paths = [ "." ];
+                };
+                "@adminmedia" = {
+                  exclusions = [ ".Trash-0" ];
+                  mount = "/home/${username}/media";
+                  paths = [ "." ];
+                };
+                "@root" = {
+                  exclusions = [
+                    ".Trash-0"
+                    "/var/backup/postgresql/*.prev.sql"
+                  ];
+                  mount = "/";
+                  paths = [
+                    "etc/group"
+                    "etc/machine-id"
+                    "etc/NetworkManager/system-connections"
+                    "etc/passwd"
+                    "etc/ssh/ssh_${hostname}_ed25519_key*"
+                    "etc/subgid"
+                    "var/backup/postgresql"
+                    # includes the important /var/lib/nixos
+                    "var/lib"
+                  ];
+                };
+                "@roothome" = {
+                  exclusions = [
+                    ".Trash-0"
+                    ".local/share/Trash"
+                  ];
+                  mount = "/root";
+                  paths = [ "." ];
+                };
+              };
+            };
+        };
+      };
+      snapper = {
+        enable = true;
+        mounts = {
+          # The key (e.g., 'adminhome') is just a label for Nix
+          adminhome = {
+            datadir = "/home/${username}";
+            snapsvol = "@adminhome-snaps";
+            # You can override specific settings just for adminhome!
+            extraConfig = {
+              TIMELINE_LIMIT_HOURLY = "24";
+            };
+          };
+          adminmedia = {
+            datadir = "/home/${username}/media";
+            snapsvol = "@adminmedia-snaps";
+          };
+          vlpostgres = {
+            enable = false; # This subvolume is defined but won't be processed
+            datadir = "/var/lib/postgresql";
+            snapsvol = "@vlpostgres-snaps";
+          };
+        };
+      };
     };
     shell = {
       # see the host-specific keyboard config below
@@ -176,12 +259,33 @@
     };
   };
 
-  services.kanata.keyboards."home-keys".extraDefCfg = ''
-    linux-dev-names-include (
-      "Asus Keyboard"
-    )
-    process-unmapped-keys yes
-  '';
+  # KEYBOARD CONFIG
+  services.kanata.keyboards."home-keys" = {
+    config = ''
+      ;; Remap Copilot key to sysrq
+      (defchordsv2
+       (lsft lmet f23) ssrq 10 all-released ()
+      )
+    '';
+    extraDefCfg = ''
+      linux-dev-names-include (
+        "Asus Keyboard"
+      )
+      ;; Required for defchordsv2 (see above)
+      concurrent-tap-hold yes
+    '';
+  };
+
+  # experimental code for mapping the copilot key to sysrq, implemented instead with kanata
+  # NB: kept for reference to the keyboard name/code on this host
+  # services.udev = {
+  #   extraHwdb = ''
+  # choose one of the following two lines to identify the keyboard
+  #     evdev:name:Asus Keyboard:*
+  #     evdev:input:b0003v0B05p19B6e0110*
+  #      KEYBOARD_KEY_70072=sysrq # original KEY_F23 (copilot key)
+  #   '';
+  # };
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
   home-manager.users.${username} = {
@@ -189,6 +293,7 @@
       packages = with pkgs; [
         # Simple GPU Profile switcher for ASUS laptops using Supergfxctl
         gnomeExtensions.gpu-supergfxctl-switch
+        goldendict-ng # Advanced multi-dictionary lookup program
       ];
       sessionVariables = {
         # required for electron apps, which don't read the mimeapps.list file
@@ -234,6 +339,7 @@
       apps = {
         firefox.enable = true;
         ghostty.enable = true;
+        obsidian.enable = true;
       };
     };
     xdg.mimeApps = {

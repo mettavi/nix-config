@@ -30,6 +30,8 @@
       # Mac App Store command-line interface (used for the masApps module below)
       # This is no longer auto-installed, see https://github.com/nix-darwin/nix-darwin/issues/1314
       "mas"
+      # more up-to-date than nixpkgs (compatibility issues in version 16)
+      "ocrmypdf"
     ];
     # use the "greedy" option to always upgrade auto-updated or unversioned cask to latest version
     casks = [
@@ -43,33 +45,20 @@
         greedy = true;
       }
       # "cheatsheet"
-      "cirrus" # Inspector for iCloud Drive folders
       # "coteditor"
-      "customshortcuts" # Customise menu item keyboard shortcuts, integrates with keyclu
       # Disk space visualiser
       {
         name = "daisydisk";
         greedy = true;
       }
-      # "discord"
-      {
-        name = "google-drive";
-        greedy = true;
-      }
       # "isyncr"
       # wine wrapped ports of Windows software for macOS (previously "wineskin")
-      {
-        name = "kegworks";
-        args = {
-          no_quarantine = true;
-        };
-      }
-      # popup window showing application's shortcuts
-      {
-        name = "keyclu";
-        greedy = true;
-      }
-      # key-codes
+      # {
+      #   name = "kegworks";
+      #   args = {
+      #     no_quarantine = true;
+      #   };
+      # }
       "kid3"
       # Create, manage and debug system and user services
       {
@@ -87,24 +76,13 @@
       # "microsoft-onenote"
       # "microsoft-powerpoint"
       # "microsoft-word"
-      "musicbrainz-picard"
-      {
-        name = "onedrive"; # Cloud storage client
-        greedy = true;
-      }
       # PDF reader, editor and annotator
       {
         name = "pdf-expert";
         greedy = true;
       }
       # "plex-media-server"
-      "private-internet-access"
       # "qlmarkdown"
-      # Mux and tag mp4 files
-      {
-        name = "subler";
-        greedy = true;
-      }
       # Open-source BitTorrent client
       # NB: The GUI versions on nixpkgs do not work on mac
       {
@@ -119,10 +97,6 @@
         greedy = true;
       }
       # Create, manage, and run virtual machines
-      {
-        name = "vmware-fusion";
-        greedy = true;
-      }
       # Install and switch between multiple versions of Xcode
       {
         name = "xcodes-app";
@@ -148,12 +122,10 @@
       "PastePal" = 1503446680;
       # "Patterns" = 429449079;
       "PDF Squeezer" = 1502111349;
-      "PDFgear" = 6469021132;
       # "Snip" = 1527428847;
       # "Sync Folders Pro" = 522706442;
       # keeps reinstalling itself, install directly from app store instead
       # "tipitaka_pali_reader" = 1541426949;
-      "WhatsApp Messenger" = 310633997;
     };
   };
 }

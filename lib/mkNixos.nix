@@ -21,8 +21,6 @@
       };
       modules = [
         inputs.disko.nixosModules.disko
-        # to enable podman & podman systemd generator
-        inputs.quadlet-nix.nixosModules.quadlet
         ../hosts/${hostname}/configuration.nix
         {
           users = {
@@ -55,6 +53,7 @@
           # The Git revision of the top-level flake from which this configuration was built
           system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
         }
+        # Include the results of the hardware scan
         ../hosts/${hostname}/hardware-configuration.nix
         ../system/nixos
         ../system/nixos/modules

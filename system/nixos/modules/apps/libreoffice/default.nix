@@ -45,6 +45,9 @@ in
       hunspellDicts.en_AU
       hunspellDicts.en_US
       hyphenDicts.en_US
+      # MS fonts
+      corefonts
+      vista-fonts
     ];
     environment.sessionVariables = {
       PYTHONPATH = "${office}/lib/libreoffice/program";

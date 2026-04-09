@@ -6,6 +6,9 @@
   pkgs,
   ...
 }:
+let
+  homeDir = "${config.home.homeDirectory}";
+in
 {
   home.packages = with pkgs; [
     atuin
@@ -36,26 +39,6 @@
         enableShellIntegration = true;
         # open in popup windows in 80% width, 60% height
         shellIntegrationOptions = [ "-p 80%,60%" ];
-      };
-    };
-    git = {
-      enable = true;
-      # delta.enable = true;
-      # enable automatic maintenance of git repos using launchd/systemd
-      maintenance = {
-        enable = true;
-        repositories = [ "${config.home.homeDirectory}/${nix_repo}" ];
-        timers = {
-          daily = "Tue..Sun *-*-* 0:53:00";
-          hourly = "*-*-* 1..23:53:00";
-          weekly = "Mon 0:53:00";
-        };
-      };
-      settings = {
-        user = {
-          email = inputs.secrets.email.gitHub;
-          name = inputs.secrets.name;
-        };
       };
     };
     java = {
@@ -90,18 +73,18 @@
           forwardAgent = false;
           # add ssh keys to ssh-agent when making the first connection
           # (helpful for caching passphrases and finding non-standard key names)
-          # NB: ssh-agent must be started, eg. using nixos startAgent option (enabled by default on darwin)
+          # NB: ssh-agent must be started, eg. using NIXOS startAgent option (enabled by default on darwin)
           # NB: this is not required if the keychain utility is installed
           addKeysToAgent = "no";
           compression = false;
-          serverAliveInterval = 0;
-          serverAliveCountMax = 3;
-          hashKnownHosts = false;
-          userKnownHostsFile = "~/.ssh/known_hosts";
           # more robust settings for control* options (especially a shorter controlPath value)
           controlMaster = "auto"; # use an existing ssh connection if available
           controlPath = "~/.ssh/master-%C";
           controlPersist = "10m";
+          hashKnownHosts = false;
+          serverAliveInterval = 0;
+          serverAliveCountMax = 3;
+          userKnownHostsFile = "~/.ssh/known_hosts";
         };
       };
     };

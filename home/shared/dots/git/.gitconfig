@@ -13,6 +13,10 @@
 [pull]
   rebase = false
 
+[push]
+  # automatically assume --set-upstream on default push for a new clone
+  autoSetupRemote = true
+
 [core]
   excludesfile = ~/.gitignore_global
   pager = delta

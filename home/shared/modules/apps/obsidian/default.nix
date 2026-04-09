@@ -24,29 +24,29 @@ in
       enable = true;
       defaultSettings = {
         corePlugins = [
-          "file-explorer"
-          "global-search"
-          "switcher"
-          "graph"
           "backlink"
-          "canvas"
-          "outgoing-link"
-          "tag-pane"
-          "page-preview"
-          "daily-notes"
-          "templates"
-          "note-composer"
-          "command-palette"
-          "editor-status"
           "bookmarks"
-          "outline"
-          "word-count"
+          "canvas"
+          "command-palette"
+          "daily-notes"
+          "editor-status"
+          "file-explorer"
           "file-recovery"
+          "global-search"
+          "graph"
+          "note-composer"
+          "outgoing-link"
+          "outline"
+          "page-preview"
+          "switcher"
+          "tag-pane"
+          "templates"
+          "word-count"
         ];
       };
       vaults = {
         "Documents/VaultsTest/AABCAP 2025-26" = {
-          enable = true;
+          enable = false;
           settings = {
             app = {
               attachmentFolderPath = "Utilities/Assets/";

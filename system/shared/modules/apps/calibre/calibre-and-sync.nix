@@ -21,7 +21,6 @@ let
         wait $! # optional really, but a bit safer
 
         # Setup and run sync
-
         # create the base directory if it doesn't exist
         if [ ! -d ${logfile_dir} ]; then
           mkdir -p ${logfile_dir} 

@@ -1,5 +1,4 @@
 {
-  config,
   pkgs,
   ...
 }:
@@ -45,10 +44,15 @@ in
     gyb # a command line tool for backing up your Gmail messages
     nix-fast-build # speed-up your evaluation and building process
     nix-init # Generate Nix packages from URLs
+    nix-tree # browse nix-store path dependencies
     nix-update # Swiss-knife for updating nix packages
-    node2nix # Generate Nix expressions to build NPM packages
+    # remove unmaintained package
+    # node2nix # Generate Nix expressions to build NPM packages
+    nodejs
     nurl # generate Nix fetcher calls from repository URLs
-    ocrmypdf
+    # Change to homebrew package which is more up-to-date (v. 17+) and bypasses a problem with the ghostscript dependency
+    # See https://github.com/ocrmypdf/OCRmyPDF/issues/1612#issuecomment-3829322081 for reference
+    # ocrmypdf
     # pipx
     # pnpm
     # poppler

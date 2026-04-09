@@ -89,6 +89,15 @@ in
             sopsFile = "${secrets_path}/secrets/apps/bitwarden.yaml";
           };
         };
+        # setting autostart using the desktop GUI hardcodes the app path
+        # in $XDG_CONFIG_HOME/autostart, causing failure
+        # see https://discourse.nixos.org/t/bitwarden-unlock-with-system-authentication-on-nixos/68643/11
+        xdg.autostart = {
+          enable = true;
+          entries = [
+            "${pkgs.bitwarden-desktop}/share/applications/bitwarden.desktop"
+          ];
+        };
       };
   };
 }

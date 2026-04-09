@@ -28,7 +28,16 @@ in
       };
     };
 
-    # Use the declared options and user data to set up users on the system
+    # USE THE DECLARED OPTIONS AND USER DATA TO SET UP USERS ON THE SYSTEM
+
+    # create a personal group for the user
+    users.groups = mapAttrs (
+      name: usrCfg:
+      mkIf usrCfg.enable {
+        members = [ "${usrCfg.username}" ];
+      }
+    ) cfg.userConfig;
+
     users.users =
       if pkgs.stdenv.isLinux then
         # nixos config

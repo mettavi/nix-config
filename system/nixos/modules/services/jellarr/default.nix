@@ -86,9 +86,14 @@ in
           splashscreenEnabled = false;
         };
         encoding = {
+          hardwareAccelerationType = if config.mettavi.system.devices.nvidia.enable then "nvenc" else "vaapi";
           enableHardwareEncoding = true;
-          hardwareAccelerationType = "nvenc";
-          vaapiDevice = "/dev/dri/renderD128";
+          allowAv1Encoding = true;
+          allowHevcEncoding = true;
+          enableDecodingColorDepth10Hevc = true;
+          enableDecodingColorDepth10Vp9 = true;
+          enableDecodingColorDepth10HevcRext = true;
+          enableDecodingColorDepth12HevcRext = true;
           hardwareDecodingCodecs = [
             "h264"
             "hevc"
@@ -98,12 +103,7 @@ in
             "vp9"
             "av1"
           ];
-          enableDecodingColorDepth10Hevc = true;
-          enableDecodingColorDepth10Vp9 = true;
-          enableDecodingColorDepth10HevcRext = true;
-          enableDecodingColorDepth12HevcRext = true;
-          allowHevcEncoding = true;
-          allowAv1Encoding = true;
+          vaapiDevice = (optionalString (config.networking.hostName == "lady")) "/dev/dri/renderD128";
         };
         library = {
           virtualFolders = [

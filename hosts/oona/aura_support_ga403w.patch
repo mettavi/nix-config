@@ -1,15 +1,13 @@
 diff --git a/rog-aura/data/aura_support.ron b/rog-aura/data/aura_support.ron
-index 8ab3b34e..d3f83d5b 100644
+index 066f452a..37dc63c0 100644
 --- a/rog-aura/data/aura_support.ron
 +++ b/rog-aura/data/aura_support.ron
-@@ -998,4 +998,13 @@
+@@ -692,6 +692,15 @@
          advanced_type: r#None,
-         power_zones: [Ally],
+         power_zones: [Keyboard],
      ),
--])
-\ No newline at end of file
 +    (
-+        device_name: "GA403W",
++        device_name: "GA403WR",
 +        product_id: "",
 +        layout_name: "ga401q",
 +        basic_modes: [Static, Breathe, RainbowCycle, RainbowWave, Pulse],
@@ -17,4 +15,6 @@ index 8ab3b34e..d3f83d5b 100644
 +        advanced_type: r#None,
 +        power_zones: [Keyboard],
 +    ),
-+])
+     (
+         device_name: "GA403WW",
+         product_id: "",

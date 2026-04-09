@@ -142,7 +142,7 @@
           asyncomplete-vim
           asyncomplete-lsp-vim
           fzf
-          fzfWrapper
+          fzf-wrapper
           fzf-vim
           molokai
           nerdtree

@@ -1,4 +1,5 @@
 .DS_Store
+.githooks/
 hosts/mack/examples
 *.log
 lockfile

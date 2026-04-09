@@ -6,20 +6,24 @@
       bind # Domain name server with utilities like dig and nslookup
       cpuid # Linux tool to dump x86 CPUID information about the CPU
       cryptsetup # luks utility for dm-crypt (the "device mapper" kernel encryption system)
+      evtest # simple tool for input event debugging
       # gcc, gnumake and unzip are required for nvim
       # GNU Compiler Collection (required for nvim treesitter)
       gcc
       # Tool to control the generation of non-source files from sources (required for neovim telescope-fzf)
       gnumake
       gparted # graphic disk partitioning tool
+      gptfdisk # tools for GPT disks
+      hdparm # tool to get/set drive parameters
       libva-utils # utilities for VA-API (video acceleration API)
       lshw-gui # detailed hardware info (includes gui)
       lsof # tool to list open files
       # Icons of the Nix logo, in Freedesktop Icon Directory Layout
       nixos-icons
+      parted # GNU parted
       pciutils # tools for working with pci devices
-      # nodejs
       # python3
+      smartmontools # tool for monitoring the health of hard drives
       systemctl-tui # Simple TUI for interacting with systemd services and their logs
       # Command line interface to the freedesktop.org trashcan
       trash-cli
