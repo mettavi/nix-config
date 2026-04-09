@@ -97,83 +97,79 @@ in
     };
 
     # THIS IS A MANUAL SYSTEMD CONFIGURATION FOR TESTING
-    systemd.services.kanata-Asus-G14 = {
-      enable = false;
-      unitConfig = {
-        Description = "Kanata keyboard remapper";
-        Documentation = "https://github.com/jtroo/kanata";
-        Wants = "modprobe@uinput.service";
-        After = "modprobe@uinput.service";
-      };
-      serviceConfig = {
-        Type = "simple";
-        # User = "kanata";
-        Environment = [ "PATH=/run/current-system/sw/bin:/etc/profiles/per-user/${username}/bin" ];
-        ExecStart = "${pkgs.kanata}/bin/kanata --quiet --cfg ${
-          config.users.users.${username}.home
-        }/${nix_repo}/system/nixos/modules/shell/kanata/kanata.lsp";
-        Restart = "no";
-
-        # REMOVE ALL HARDENING OPTIONS TO TEST WITH A MINIMAL CONFIG
-        # Security
-        # CapabilityBoundingSet = "";
-        # DeviceAllow = [
-        #   "/dev/uinput rw"
-        #   "char-input"
-        #   "/dev/stdin"
-        #   "/dev/input/by-id/usb-ITE_Tech._Inc._ITE_Device_8910_-hidraw r"
-        #   "/dev/hidraw0 r"
-        # ];
-        # DevicePolicy = "strict";
-        # PrivateDevices = true;
-        # BindPaths = [ "/dev/uinput" ];
-        # BindReadOnlyPaths = [
-        #   "/dev/stdin"
-        #   "/dev/input/"
-        #   "${config.users.users.${username}.home}/${nix_repo}/"
-        # ];
-        # InaccessiblePaths = "/dev/shm";
-        # LockPersonality = true;
-        # NoNewPrivileges = true;
-        # PrivateTmp = true;
-        # PrivateNetwork = true;
-        # PrivateUsers = true;
-        # The following (ProtectClock) can not be enabled, otherwise Kanata can not open /dev/uinput.
-        # More hardening would require to explicitly list allowed system calls.
-        #ProtectClock=true
-        # ProtectHome = true;
-        # ProtectHostname = true;
-        # ProtectKernelTunables = true;
-        # ProtectKernelModules = true;
-        # ProtectKernelLogs = true;
-        # ProtectSystem = "strict";
-        # ProtectControlGroups = true;
-        # Allow only on AddressFamily and then deny it to effectively deny everything
-        # RestrictAddressFamilies = [
-        #   "AF_AX25"
-        #   "~AF_AX25"
-        # ];
-        # RestrictNamespaces = true;
-        # RuntimeDirectory = "Asus-G14";
-        # SystemCallArchitectures = "native";
-        # SystemCallErrorNumber = "EPERM";
-        # SystemCallFilter = [
-        #   "@system-service"
-        #   "~@privileged"
-        #   "~@resources"
-        # ];
-        # RemoveIPC = true;
-        # IPAddressDeny = "any";
-        # RestrictSUIDSGID = true;
-        # RestrictRealtime = true;
-        # MemoryDenyWriteExecute = true;
-        # UMask = "0077";
-      };
-      wantedBy = [ "multi-user.target" ];
-    };
-    # users.users.root.extraGroups = [
-    #   "uinput"
-    #   "input"
-    # ];
+    # systemd.services.kanata-Asus-G14 = {
+    #   enable = false;
+    #   unitConfig = {
+    #     Description = "Kanata keyboard remapper";
+    #     Documentation = "https://github.com/jtroo/kanata";
+    #     Wants = "modprobe@uinput.service";
+    #     After = "modprobe@uinput.service";
+    #   };
+    #   serviceConfig = {
+    #     Type = "simple";
+    #     # User = "kanata";
+    #     Environment = [ "PATH=/run/current-system/sw/bin:/etc/profiles/per-user/${username}/bin" ];
+    #     ExecStart = "${pkgs.kanata}/bin/kanata --quiet --cfg ${
+    #       config.users.users.${username}.home
+    #     }/${nix_repo}/system/nixos/modules/shell/kanata/kanata.lsp";
+    #     Restart = "no";
+    #
+    #     # REMOVE ALL HARDENING OPTIONS TO TEST WITH A MINIMAL CONFIG
+    #     # Security
+    #     # CapabilityBoundingSet = "";
+    #     # DeviceAllow = [
+    #     #   "/dev/uinput rw"
+    #     #   "char-input"
+    #     #   "/dev/stdin"
+    #     #   "/dev/input/by-id/usb-ITE_Tech._Inc._ITE_Device_8910_-hidraw r"
+    #     #   "/dev/hidraw0 r"
+    #     # ];
+    #     # DevicePolicy = "strict";
+    #     # PrivateDevices = true;
+    #     # BindPaths = [ "/dev/uinput" ];
+    #     # BindReadOnlyPaths = [
+    #     #   "/dev/stdin"
+    #     #   "/dev/input/"
+    #     #   "${config.users.users.${username}.home}/${nix_repo}/"
+    #     # ];
+    #     # InaccessiblePaths = "/dev/shm";
+    #     # LockPersonality = true;
+    #     # NoNewPrivileges = true;
+    #     # PrivateTmp = true;
+    #     # PrivateNetwork = true;
+    #     # PrivateUsers = true;
+    #     # The following (ProtectClock) can not be enabled, otherwise Kanata can not open /dev/uinput.
+    #     # More hardening would require to explicitly list allowed system calls.
+    #     #ProtectClock=true
+    #     # ProtectHome = true;
+    #     # ProtectHostname = true;
+    #     # ProtectKernelTunables = true;
+    #     # ProtectKernelModules = true;
+    #     # ProtectKernelLogs = true;
+    #     # ProtectSystem = "strict";
+    #     # ProtectControlGroups = true;
+    #     # Allow only on AddressFamily and then deny it to effectively deny everything
+    #     # RestrictAddressFamilies = [
+    #     #   "AF_AX25"
+    #     #   "~AF_AX25"
+    #     # ];
+    #     # RestrictNamespaces = true;
+    #     # RuntimeDirectory = "Asus-G14";
+    #     # SystemCallArchitectures = "native";
+    #     # SystemCallErrorNumber = "EPERM";
+    #     # SystemCallFilter = [
+    #     #   "@system-service"
+    #     #   "~@privileged"
+    #     #   "~@resources"
+    #     # ];
+    #     # RemoveIPC = true;
+    #     # IPAddressDeny = "any";
+    #     # RestrictSUIDSGID = true;
+    #     # RestrictRealtime = true;
+    #     # MemoryDenyWriteExecute = true;
+    #     # UMask = "0077";
+    #   };
+    #   wantedBy = [ "multi-user.target" ];
+    # };
   };
 }
