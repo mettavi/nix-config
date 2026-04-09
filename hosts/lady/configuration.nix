@@ -163,7 +163,6 @@
       "Apple Inc. Apple Internal Keyboard / Trackpad"
       "Apple Headset"
     )
-    process-unmapped-keys yes
   '';
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
