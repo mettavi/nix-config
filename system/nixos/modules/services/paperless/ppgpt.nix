@@ -45,7 +45,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf cfg.ppgpt.enable {
     # enable the ollama module if required
     mettavi.system.services.ollama.enable = mkIf (
       (cfg.llm.generic.provider == "ollama") || (cfg.llm.ocr.provider == "ollama")
