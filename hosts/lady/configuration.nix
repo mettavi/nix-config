@@ -76,6 +76,10 @@
     lm_sensors # tools for reading hardware sensors
   ];
 
+  # this may need to be enabled when reinstalling kanata
+  # see the kanata module for details
+  # hardware.uinput.enable = true;
+
   # Configure network connections interactively with nmcli or nmtui.
   networking.networkmanager.wifi.powersave = false;
 
@@ -158,13 +162,13 @@
     };
   };
 
-  services.kanata.keyboards."home-keys".extraDefCfg = ''
-    linux-dev-names-include (
-      "Apple Inc. Apple Internal Keyboard / Trackpad"
-      "Apple Headset"
-    )
-    process-unmapped-keys yes
-  '';
+  # this config is disabling the trackpad for some reason, so disabling
+  # services.kanata.keyboards."home-keys".extraDefCfg = ''
+  #   linux-dev-names-include (
+  #     "Apple Inc. Apple Internal Keyboard / Trackpad"
+  #     "Apple Headset"
+  #   )
+  # '';
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
   home-manager.users.${username} = {

@@ -8,18 +8,13 @@
 }:
 with lib;
 let
-  cfg = config.mettavi.system.services.paperless-ngx.ppgpt;
-  paperlessSecrets = {
-    group = "${config.users.users.paperless.name}";
-    mode = "0440";
-    sopsFile = "${secrets_path}/secrets/apps/paperless.yaml";
-  };
+  cfg = config.mettavi.system.services.paperless-ngx;
 in
 {
   options.mettavi.system.services.paperless-ngx.ppgpt = {
     enable = mkOption {
       type = types.bool;
-      default = config.mettavi.system.services.paperless-ngx.withPaperlessGPT;
+      default = cfg.enable && cfg.withPaperlessGPT;
       description = "Enhance metadata and OCR scanning with the paperless-gpt addon";
     };
     llm = {
@@ -50,7 +45,7 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf cfg.ppgpt.enable {
     # enable the ollama module if required
     mettavi.system.services.ollama.enable = mkIf (
       (cfg.llm.generic.provider == "ollama") || (cfg.llm.ocr.provider == "ollama")
@@ -81,9 +76,17 @@ in
         "${cfg.llm.ocr.model}"
       ];
 
-    sops.secrets = {
-      "users/${username}/paperless/ppless-gpt-${hostname}.env" = paperlessSecrets;
-    };
+    sops.secrets =
+      let
+        paperlessSecrets = {
+          group = "${config.users.users.paperless.name}";
+          mode = "0440";
+          sopsFile = "${secrets_path}/secrets/apps/paperless.yaml";
+        };
+      in
+      {
+        "users/${username}/paperless/ppless-gpt-${hostname}.env" = paperlessSecrets;
+      };
 
     systemd.services = {
       paperless-gpt = {
