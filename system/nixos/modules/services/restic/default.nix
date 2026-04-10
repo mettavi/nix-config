@@ -72,6 +72,48 @@ let
         ''
     );
 
+  # Reusable notification helper
+  mkNotify =
+    {
+      title,
+      msg,
+      urgency ? "normal",
+      icon ? "info",
+      runAsUser ? null,
+      action ? null, # e.g., "view_log=View Log"
+    }:
+    let
+      # Use a bash subshell to generate a timestamp (e.g., 20:45:10)
+      timestamp = "$(date +'%H:%M:%S')";
+      fullTitle = "${title} [${timestamp}]";
+
+      # notifyCmd = "${pkgs.libnotify}/bin/notify-send --urgency=${urgency} --icon=${icon} --app-name='Restic' '${title}' '${msg}'";
+
+      # Base notify command with optional action
+      actionFlag = if action != null then "--action='${action}'" else "";
+      notifyCmd = "${pkgs.libnotify}/bin/notify-send ${actionFlag} --urgency=${urgency} --icon=${icon} --app-name='Restic' '${fullTitle}' '${msg}'";
+    in
+    if runAsUser == null then
+      # Version for services already running as the user (e.g., rclone)
+      # bash
+      ''
+        export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus
+        ${notifyCmd}
+      ''
+    else
+      # Version for root services needing to notify a user (e.g., restic)
+      # bash
+      ''
+        # Find the primary user's ID
+        USER_ID=$(id -u ${runAsUser})
+        # Run notify-send as that user, pointing to their DBus session
+        # This allows a system-root process to "talk" to your desktop
+        /run/wrappers/bin/sudo -u ${runAsUser} \
+          DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
+          XDG_RUNTIME_DIR=/run/user/$USER_ID \
+          ${notifyCmd}
+      '';
+
   # 3. Map the definitions into a list of packages
   customScripts = lib.mapAttrsToList (name: conf: makeCustomScript name conf) scriptDefinitions;
 
@@ -387,22 +429,16 @@ in
             Type = "oneshot";
             User = "${username}";
           };
-          script = ''
-            USER_ID=$(id -u ${username})
-            /run/wrappers/bin/sudo -u ${username} \
-            XDG_RUNTIME_DIR=/run/user/$USER_ID \
-            DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
-            ${pkgs.libnotify}/bin/notify-send --urgency=normal \
-              --icon=emblem-success --app-name="Restic" \
-              "Restic Backup" \
-              "Job '${name}' finished successfully. You can unplug the drive."
-          '';
+          script = mkNotify {
+            runAsUser = username; # This triggers the sudo wrapper
+            title = "Restic Backup";
+            msg = "Job '${name}' finished successfully. You can unplug the drive.";
+          };
         }
       ) enabledJobs)
 
       # LAYER 4: The Failure Notification Service definition
       # send desktop notifications about failed backups using libnotify
-      # ref: https://www.arthurkoziel.com/restic-backups-b2-nixos/
       (mapAttrs' (
         name: job:
         nameValuePair "notify-backup-failed-${name}" {
@@ -412,6 +448,17 @@ in
             Type = "oneshot";
             User = "${username}";
           };
+          script = mkNotify {
+            runAsUser = username; # This triggers the sudo wrapper
+            urgency = "critical";
+            icon = "error";
+            title = "Backup failed";
+            # We use a subshell to grab the journal logs for the message
+            msg = "$(journalctl -u restic-backups-${name} -n 5 -o cat)";
+          };
+        }
+      ) enabledJobs)
+
           script = ''
             # Find the primary user's ID (assuming the one you defined in your module)
             USER_ID=$(id -u ${username})
@@ -434,9 +481,22 @@ in
         nameValuePair "rclone-sync-${name}" {
           enable = true;
           description = "Sync backups to the cloud with rclone";
-          # Only run if the repo config is actually reachable
-          unitConfig.ConditionPathExists = "${job.repo}/${name}/config";
           serviceConfig = {
+            # Only run if the repo config is actually reachable
+            ExecCondition = "${pkgs.coreutils}/bin/test -f ${job.repo}/${name}/config";
+            ExecStopPost =
+              pkgs.writeShellScript "notify-rclone-skipped" # bash
+                ''
+                  # SERVICE_RESULT is set to 'exec-condition' if ExecCondition fails
+                  if [ "$SERVICE_RESULT" = "exec-condition" ]; then
+                    ${mkNotify {
+                      title = "Backup Skipped";
+                      msg = "USB Drive not found at ${job.repo}. Sync cancelled.";
+                      icon = "drive-harddisk";
+                      urgency = "critical";
+                    }}
+                  fi
+                '';
             Type = "oneshot";
             User = "${username}";
             # Systemd creates /var/log/rclone and gives ${username} write access
