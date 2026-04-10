@@ -288,11 +288,10 @@ in
           mountPath = "/run/media/${username}/${job.vol_label}";
 
           # Logic specifically for USB/Disk jobs
-          # 1. MOUNT GUARD: Check if the path is actually a mount point
           diskPrepare =
             pkgs.writeShellScriptBin "diskPrepare" # bash
               ''
-                # MOUNT GUARD
+                # 1. MOUNT GUARD: Check if the path is actually a mount point
                 if ! ${pkgs.util-linux}/bin/mountpoint -q "${mountPath}"; then
                   echo "ERROR: ${mountPath} is not a mount point. Aborting to save root partition."
                   # Exit with 255 so systemd "ExecCondition" knows the 'preparation' failed
