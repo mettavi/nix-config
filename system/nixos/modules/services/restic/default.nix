@@ -81,24 +81,25 @@ let
       icon ? "info",
       runAsUser ? null,
       action ? null, # e.g., "view_log=View Log"
+      timeout ? null,
     }:
     let
       # Use a bash subshell to generate a timestamp (e.g., 20:45:10)
       timestamp = "$(date +'%H:%M:%S')";
-      fullTitle = "${title} [${timestamp}]";
 
-      # notifyCmd = "${pkgs.libnotify}/bin/notify-send --urgency=${urgency} --icon=${icon} --app-name='Restic' '${title}' '${msg}'";
-
-      # Base notify command with optional action
+      # Construct optional flags
       actionFlag = if action != null then "--action='${action}'" else "";
-      notifyCmd = "${pkgs.libnotify}/bin/notify-send ${actionFlag} --urgency=${urgency} --icon=${icon} --app-name='Restic' '${fullTitle}' '${msg}'";
+      timeoutFlag = if timeout != null then "-t ${toString timeout}" else "";
+
+      # We use double quotes for the title so Bash can expand the $(date) subshell
+      notifyCmd = "${pkgs.libnotify}/bin/notify-send ${actionFlag} ${timeoutFlag} --urgency=${urgency} --icon=${icon} --app-name='Restic' \"${title} [${timestamp}]\" '${msg}'";
     in
     if runAsUser == null then
       # Version for services already running as the user (e.g., rclone)
       # bash
       ''
         export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus
-        ${notifyCmd}
+        eval ${notifyCmd}
       ''
     else
       # Version for root services needing to notify a user (e.g., restic)
@@ -111,7 +112,7 @@ let
         /run/wrappers/bin/sudo -u ${runAsUser} \
           DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
           XDG_RUNTIME_DIR=/run/user/$USER_ID \
-          ${notifyCmd}
+          /bin/sh -c ${lib.escapeShellArg notifyCmd}
       '';
 
   # 3. Map the definitions into a list of packages
@@ -121,7 +122,6 @@ let
   commonConfig = {
     checkOpts = [
       "--with-cache" # just to make checks faster
-      "--read-data" # also check integrity of the actual data
     ];
     createWrapper = true;
     extraBackupArgs = [
@@ -452,6 +452,7 @@ in
             runAsUser = username; # This triggers the sudo wrapper
             urgency = "critical";
             icon = "error";
+            timeout = 0; # Stays on screen until clicked
             title = "Backup failed";
             # We use a subshell to grab the journal logs for the message
             msg = "$(journalctl -u restic-backups-${name} -n 5 -o cat)";
@@ -494,6 +495,7 @@ in
                       msg = "USB Drive not found at ${job.repo}. Sync cancelled.";
                       icon = "drive-harddisk";
                       urgency = "critical";
+                      timeout = 0; # Stays on screen until clicked
                     }}
                   fi
                 '';
