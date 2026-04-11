@@ -573,10 +573,12 @@ in
       }
     ) enabledJobs;
 
-    # clean up the rclone log files periodically
     systemd.tmpfiles.rules = [
-      # Type  Path               Mode  User        Group       Age  Argument
-      "d      /var/log/rclone    0755  ${username} root        30d  -"
+      # Type  Path                  Mode  User        Group       Age  Argument
+      # clean up the rclone log files periodically
+      "d      /var/log/rclone       0755  ${username} root        30d  -"
+      # failsafe to fix permissions if necessary (the script already creates the directory)
+      "d      /var/lib/restic-check 0700  root        root        -    -"
     ];
   };
 }
