@@ -164,7 +164,7 @@ let
       "--keep-yearly 10"
       "--group-by tags"
     ];
-    runCheck = true;
+    runCheck = false;
     # run backups when the removable disk is mounted, not on a schedule
     timerConfig = null;
   };
@@ -192,6 +192,11 @@ in
               type = bool;
               default = true;
               description = "Whether to enable this backup job";
+            };
+            checkParts = mkOption {
+              type = int;
+              default = 7;
+              description = "Number of subsets to divide the restic repo into for rotating checks (e.g. 7 for weekly, 365 for yearly)";
             };
             localConfig = mkOption {
               type = attrs;
@@ -403,7 +408,10 @@ in
             ExecCondition = if isDiskJob then "${diskPrepare}/bin/diskPrepare" else cloudPrepare;
           };
           # Universal notification triggers
-          onSuccess = [ "notify-backup-success-${name}.service" ];
+          onSuccess = [
+            "notify-backup-success-${name}.service"
+            "restic-check-${name}.service"
+          ];
           onFailure = [ "notify-backup-failed-${name}.service" ];
         }
       ) enabledJobs)
@@ -460,20 +468,50 @@ in
         }
       ) enabledJobs)
 
+      # LAYER 5: Rotating restic check (read-data-subset cycles through 1/7 ... 7/7)
+      (mapAttrs' (
+        name: job:
+        nameValuePair "restic-check-${name}" {
+          enable = true;
+          description = "Restic rotating integrity check for ${name}";
+          serviceConfig = {
+            Type = "oneshot";
+            User = job.user;
+          };
+          environment = {
+            RESTIC_REPOSITORY = "${job.repo}/${name}";
+          };
           script = ''
-            # Find the primary user's ID (assuming the one you defined in your module)
-            USER_ID=$(id -u ${username})
+            STATE_DIR="/var/lib/restic-check"
+            STATE_FILE="$STATE_DIR/${name}.index"
+            TOTAL=${toString job.checkParts}
 
-            # Run notify-send as that user, pointing to their DBus session
-            # This allows a system-root process to "talk" to your desktop
-            /run/wrappers/bin/sudo -u ${username} \
-            XDG_RUNTIME_DIR=/run/user/$USER_ID \
-            DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
-            ${pkgs.libnotify}/bin/notify-send --urgency=critical \
-              --icon=emblem-failure --app-name="Restic" \
-              "Backup failed" \
-              "$(journalctl -u restic-backups-${name} -n 5 -o cat)"
+            ${pkgs.coreutils}/bin/mkdir -p "$STATE_DIR"
+
+            # Read the last index, defaulting to 0 if file doesn't exist
+            if [ -f "$STATE_FILE" ]; then
+              LAST=$(${pkgs.coreutils}/bin/cat "$STATE_FILE")
+            else
+              LAST=0
+            fi
+
+            # Advance, wrapping back to 1 after TOTAL
+            NEXT=$(( (LAST % TOTAL) + 1 ))
+
+            echo "Running restic check --read-data-subset ''${NEXT}/''${TOTAL}"
+            # fail explicitly, even though "set -e" is auto-added by the nixos script wrapper
+            RESTIC_PASSWORD_FILE="${config.sops.secrets."users/${username}/restic-${name}".path}" \
+              ${pkgs.restic}/bin/restic check \
+                --with-cache \
+                --read-data-subset "''${NEXT}/''${TOTAL}" \
+                || { echo "restic check failed! Index not advanced."; exit 1; } 
+
+            # Only persist the new index if the check succeeded
+            echo "$NEXT" > "$STATE_FILE"
           '';
+          # For disk jobs: don't outlive the mount
+          bindsTo = lib.optional (job.vol_label != "") "${utils.escapeSystemdPath job.repo}.mount";
+          after = lib.optional (job.vol_label != "") "${utils.escapeSystemdPath job.repo}.mount";
         }
       ) enabledJobs)
 
