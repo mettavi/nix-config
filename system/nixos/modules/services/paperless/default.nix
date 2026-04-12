@@ -2,7 +2,6 @@
   config,
   hostname,
   lib,
-  pkgs,
   secrets_path,
   username,
   ...
@@ -57,15 +56,13 @@ in
         database.createLocally = true;
         dataDir = "${dataDir}";
         environmentFile = config.sops.secrets."users/${username}/paperless/ppless-${hostname}.env".path;
-        # enable automated daily backups
         exporter = {
-          enable = true;
+          enable = false; # restic already backs up the whole home directory
           directory = "${dataDir}/export";
           onCalendar = "01:30:00";
           settings = {
             compare-checksums = true;
-            # do not touch the database dumps in this directory
-            delete = mkForce false;
+            delete = true;
             no-color = true;
             no-progress-bar = true;
           };
@@ -115,13 +112,13 @@ in
       # postgresql.target.wantedBy = mkForce [ ];
     };
     # if the exporter schedule is missed, run it when the system is online
-    systemd.timers = {
-      paperless-exporter = {
-        timerConfig = {
-          Persistent = true;
-        };
-      };
-    };
+    # systemd.timers = {
+    #   paperless-exporter = {
+    #     timerConfig = {
+    #       Persistent = true;
+    #     };
+    #   };
+    # };
     # create the Trash directory
     systemd.tmpfiles.rules = [
       # type path mode user group (expiry) (argument)
