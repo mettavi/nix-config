@@ -50,6 +50,9 @@ in
       };
     };
 
+    # enable xwayland for compatibility with older apps
+    programs.xwayland.enable = true;
+
     services = {
       # install GNOME using wayland
       displayManager.gdm.enable = lib.mkDefault true;
