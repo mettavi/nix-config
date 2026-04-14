@@ -70,7 +70,7 @@ in
     };
 
     systemd.services.postgresql = {
-      # Allow postgres to write to the backup path
+      # IMPORTANT: Allow postgres to write to the backup path
       serviceConfig.ReadWritePaths = [ "/var/backup/postgresql/archive" ];
     };
 
