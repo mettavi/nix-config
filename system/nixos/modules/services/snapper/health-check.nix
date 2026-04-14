@@ -88,11 +88,11 @@ in
 
       # Run notify-send as that user, pointing to their DBus session
       # This allows a system-root process to "talk" to your desktop
-      sudo -u ${username} \
+      /run/wrappers/bin/sudo -u ${username} \
         DISPLAY=:0 \
         XDG_RUNTIME_DIR=/run/user/$USER_ID \
         DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
-        notify-send -u critical "Snapper Health Alert" \
+        ${pkgs.libnotify}/bin/notify-send -u critical "Snapper Health Alert" \
         "Snapshots have not been created in over 24 hours! Check 'journalctl -u snapper-health-check'"
     '';
   };
