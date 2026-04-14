@@ -39,7 +39,9 @@ in
             echo "Checking config: ${name}..."
 
             # Get the timestamp of the newest snapshot (last line of snapper list)
-            LAST_SNAP_TIME=$(snapper -c ${name} list | awk -F '|' '/^[ ]*[1-9]/ { print $4 }' | tail -n 1 | xargs)
+            # 1. LC_ALL=C forces standard ASCII pipes (|) and standard date formats
+            # 2. We split by the pipe and look for lines starting with a number
+            LAST_SNAP_TIME=$(LC_ALL=C snapper -c ${name} list | awk -F '|' '$1 ~ /[0-9]/ { print $4 }' | tail -n 1 | xargs)
 
             if [ -z "$LAST_SNAP_TIME" ]; then
               echo "ERROR: No snapshots found for ${name}!"
