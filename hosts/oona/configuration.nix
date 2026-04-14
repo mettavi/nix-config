@@ -222,6 +222,11 @@
                   mount = "/root";
                   paths = [ "." ];
                 };
+                "@vlpostgres" = {
+                  exclusions = [ ".Trash-0" ];
+                  mount = "/var/lib/postgresql";
+                  paths = [ "." ];
+                };
               };
             };
         };
@@ -243,7 +248,6 @@
             snapsvol = "@adminmedia-snaps";
           };
           vlpostgres = {
-            enable = false; # This subvolume is defined but won't be processed
             datadir = "/var/lib/postgresql";
             snapsvol = "@vlpostgres-snaps";
           };
