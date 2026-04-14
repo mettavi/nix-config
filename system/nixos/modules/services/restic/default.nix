@@ -262,14 +262,35 @@ in
         // {
           # NB: this command has been moved to serviceConfig.ExecCondition, see below
           # backupPrepareCommand = if isDiskJob then diskPrepare else cloudPrepare;
-          backupCleanupCommand = concatMapAttrsStringSep "\n" (
-            vol: pth:
-            let
-              # the escaped mount point of the pre-backup snapshot
-              subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
-            in
-            optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume delete ${subvolMount}"
-          ) job.volumes;
+          backupCleanupCommand =
+            "${pkgs.systemd}/bin/systemctl stop postgres-backup-session.service"
+            + "\n\n"
+            + concatMapAttrsStringSep "\n" (
+              vol: pth:
+              let
+                # the escaped mount point of the pre-backup snapshot
+                subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+              in
+              optionalString pth.enable ''
+                if [ -e ${subvolMount} ]; then 
+                 ${pkgs.btrfs-progs}/bin/btrfs subvolume delete ${subvolMount}
+                fi
+              ''
+            ) job.volumes
+            + "\n"
+            # bash
+            + ''
+              # WAL Archive Cleanup
+              # Keep the 5th most recent label, effectively keeping ~5 hours of logs
+              ARCHIVE_DIR="/var/backup/postgresql/archive"
+              OLDEST_BACKUP_FILE=$(ls -1t $ARCHIVE_DIR/*.backup 2>/dev/null | sed -n '5p')
+
+              if [ -n "$OLDEST_BACKUP_FILE" ]; then
+                # Extract just the filename for pg_archivecleanup
+                CLEANUP_TARGET=$(basename "$OLDEST_BACKUP_FILE")
+                ${config.services.postgresql.package}/bin/pg_archivecleanup -d "$ARCHIVE_DIR" "$CLEANUP_TARGET"
+              fi
+            '';
 
           # Patterns to exclude when backing up
           exclude = concatLists (
@@ -319,7 +340,18 @@ in
             in
             concatMapStringsSep "\n" (
               db: "${pkgs.systemd}/bin/systemctl start postgresqlBackup-${db}.service"
-            ) dbs;
+            ) dbs
+            # Tell Postgres to prepare for a physical backup
+            # This forces a checkpoint and ensures the files are ready for snapping.
+            # + "\n${config.services.postgresql.package}/bin/psql -U postgres -c \"SELECT pg_backup_start('restic-snapshot');\""
+            + "\n"
+            +
+              # bash
+              ''
+                ${pkgs.systemd}/bin/systemctl start postgres-backup-session.service
+                # Give Postgres 3-5 seconds to finish the backup_start checkpoint
+                sleep 5
+              '';
 
           # -r creates the snapshot read-only
           btrfsCommands = concatMapAttrsStringSep "\n" (
@@ -415,6 +447,51 @@ in
           onFailure = [ "notify-backup-failed-${name}.service" ];
         }
       ) enabledJobs)
+
+      {
+        "postgres-backup-session" = {
+          description = "Persistent PostgreSQL backup session";
+          # Ensure we only start after the main DB is ready
+          requires = [ "postgresql.service" ];
+          after = [ "postgresql.service" ];
+          serviceConfig = {
+            Type = "simple";
+            User = "postgres";
+            Group = "postgres";
+            # This ensures /run/postgresql-backup exists for our pipe
+            RuntimeDirectory = "postgresql-backup";
+            # This ensures the service can see the real Postgres socket
+            BindReadOnlyPaths = [ "/run/postgresql" ];
+
+            ExecStart = pkgs.writeShellScript "pg-session" ''
+              set -e
+
+              PIPE="/run/postgresql-backup/session.pipe"
+              [ -p "$PIPE" ] || mkfifo "$PIPE"
+
+              # Wait for the actual Postgres socket to appear before starting psql
+              until [ -S /run/postgresql/.s.PGSQL.5432 ]; do
+                echo "Waiting for postgres socket..."
+                sleep 1
+              done
+
+              # Start psql reading from the pipe
+              # We use 'tail -f' to feed 'psql' so the session stays open
+              ${pkgs.coreutils}/bin/tail -f "$PIPE" | ${config.services.postgresql.package}/bin/psql -U postgres &
+              PSQL_PID=$!
+
+              # Start the backup
+              sleep 1
+              echo "SELECT pg_backup_start('restic-session');" > "$PIPE"
+
+              # Keep the script running until systemd sends SIGTERM
+              trap "echo 'SELECT pg_backup_stop();' > \"$PIPE\"; kill $PSQL_PID; exit 0" SIGTERM SIGINT
+                    
+              wait $PSQL_PID
+            '';
+          };
+        };
+      }
 
       # LAYER 2: Extra "Mount Logic" specifically for USB disk jobs
       (mapAttrs' (
