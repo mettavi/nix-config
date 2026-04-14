@@ -8,6 +8,11 @@
 with lib;
 let
   cfg = config.mettavi.system.services.snapper;
+  pgPkg = config.services.postgresql.package;
+  # Helper to identify if we are snapshotting the postgres directory
+  isPostgresEnabled = any (mount: mount.datadir == "/var/lib/postgresql" && mount.enable) (
+    attrValues cfg.mounts
+  );
 
   # Filter only the mounts where 'enable = true'
   enabledMounts = filterAttrs (name: mount: mount.enable) cfg.mounts;
@@ -128,80 +133,133 @@ in
     # create services to create btrfs subvolumes and directories before they are mounted
     # We use mapAttrs' (the "prime" version) because we want to change the
     # key from the internal name (e.g. 'adminhome') to the snapsvol name.
-    systemd.services = mapAttrs' (
-      name: mount:
-      let
-        serviceName = "setup-snapper-${name}";
-        mountUnit = "${toUnitName mount.datadir}-.snapshots.mount";
-      in
-      nameValuePair serviceName {
-        description = "Ensure the subvolume ${mount.snapsvol} and directory ${mount.datadir}/.snapshots are created before they need to be mounted";
-        # NB: By default, coreutils, fundutils, gnugrep and gnused are automatically added to path.*
-        # See the systemd.services.<name>.enableDefaultPath option
-        path = with pkgs; [
-          btrfs-progs
-          util-linux # for the mount binary
-        ];
-        # create the subvolumes and directories BEFORE they are to be mounted
-        before = [ mountUnit ];
-        requiredBy = [ mountUnit ];
-        restartIfChanged = false;
-        script = ''
-          #!/usr/bin/env bash
-          # create TOP-LEVEL .snapshots btrfs subvolumes to store the snapshots taken by snapper
-          # see https://www.reddit.com/r/btrfs/comments/kkms59/snappers_snapshot_location/
-          # and https://www.reddit.com/r/btrfs/comments/rnl6j5/is_there_any_compelling_reason_to_not_use_nested/
-          # and https://bbs.archlinux.org/viewtopic.php?id=194491
-          # also create the corresponding directories to be mounted on them
-          # NB: For snapper, the .snapshots directory must be owned by root and must not be writable (eg. r-x) by anybody else.
-          # see https://discourse.nixos.org/t/snapper-should-snapshots-subvolumes-be-created-automatically/22329/11
+    systemd.services = mkMerge [
+      {
+        # Extend the Snapper Timeline service to be postgres-aware
+        snapper-timeline = mkIf isPostgresEnabled {
+          # 1. Add strict dependencies
+          unitConfig = {
+            # Ensures Snapper won't start until Postgres is fully 'Ready'
+            After = [ "postgresql.service" ];
+            # If Postgres stops/restarts, Snapper should stop too
+            BindsTo = [ "postgresql.service" ];
+          };
+          # We use 'ExecStart' overrides to wrap the snapper command in a single session
+          serviceConfig.ExecStart = lib.mkForce (
+            pkgs.writeShellScript "snapper-pg-wrapper" ''
+              set -e
 
-          # Check if the btrfs subvolume exists
-          if ! btrfs subvolume list / | grep -q ${mount.snapsvol}; then
-            if [ ! -d "/mnt/btrfs" ]; then
-              echo "Folder /mnt/btrfs does not exist. Creating it..."
-              mkdir -p /mnt/btrfs
-            else
-              echo "Folder /mnt/btrfs already exists"
-            fi
-            mount /dev/disk/by-label/nixos /mnt/btrfs
-            # Create the subvolume
-            btrfs subvolume create /mnt/btrfs/${mount.snapsvol}
-            echo "Subvolume created at ${mount.snapsvol}"
-            chown root:${username} /mnt/btrfs/${mount.snapsvol}
-            chmod 750 /mnt/btrfs/${mount.snapsvol}
-            umount /mnt/btrfs
-          else
-            echo "Subvolume already exists at ${mount.snapsvol}"
-          fi
+              # 2. Add a 'Wait' check just in case
+              # This prevents the "socket not found" error at boot
+              until ${pgPkg}/bin/pg_isready -U postgres; do
+                echo "Waiting for PostgreSQL socket..."
+                sleep 1
+              done
 
-          # Check if the directory exists
-          if [ ! -d "${mount.datadir}/.snapshots" ]; then
-            # Create the directory
-            echo "Folder ${mount.datadir}/.snapshots does not exist. Creating it..."
-            mkdir -p "${mount.datadir}/.snapshots" 
-            chown root:${username} "${mount.datadir}/.snapshots" 
-            chmod 750 "${mount.datadir}/.snapshots" 
-          else
-            echo "Folder ${mount.datadir}/.snapshots already exists."
-          fi 
-        '';
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
+              # 3. Create a FIFO (Named Pipe) to talk to a single psql session
+              pipe=$(mktemp -u)
+              mkfifo "$pipe"
+
+              # 4. Start psql in the background, reading from the pipe
+              # Use 'tail -f' here as well to make this more robust
+              ${pkgs.coreutils}/bin/tail -f "$pipe" | ${pgPkg}/bin/psql -U postgres &
+              PSQL_PID=$!
+
+              # Open the pipe for writing
+              # exec 3> "$pipe"
+
+              # 3. Start Backup
+              echo "SELECT pg_backup_start('snapper-hourly');" > "$pipe" 
+
+              # 4. Run Snapper
+              ${pkgs.snapper}/lib/snapper/systemd-helper --timeline
+                
+              # 5. Stop Backup
+              echo "SELECT pg_backup_stop();" > "$pipe"
+
+              # Clean up: Close pipe and wait for psql to exit
+              # exec 3>&-
+              wait $PSQL_PID
+              rm "$pipe"
+            ''
+          );
         };
-        unitConfig = {
-          # disable the defaults to prevent circular dependency errors
-          DefaultDependencies = false;
-          # only run after the parent directories have been mounted
-          RequiresMountsFor = [ "/run/systemd/generator/${toUnitName mount.datadir}.mount" ];
-        };
-        wantedBy = [
-          # set it up during the file mounting stage of system boot
-          "local-fs.target"
-        ];
       }
-    ) enabledMounts;
+      (mapAttrs' (
+        name: mount:
+        let
+          serviceName = "setup-snapper-${name}";
+          mountUnit = "${toUnitName mount.datadir}-.snapshots.mount";
+        in
+        nameValuePair serviceName {
+          description = "Ensure the subvolume ${mount.snapsvol} and directory ${mount.datadir}/.snapshots are created before they need to be mounted";
+          # NB: By default, coreutils, fundutils, gnugrep and gnused are automatically added to path.*
+          # See the systemd.services.<name>.enableDefaultPath option
+          path = with pkgs; [
+            btrfs-progs
+            util-linux # for the mount binary
+          ];
+          # create the subvolumes and directories BEFORE they are to be mounted
+          before = [ mountUnit ];
+          requiredBy = [ mountUnit ];
+          restartIfChanged = false;
+          script = ''
+            #!/usr/bin/env bash
+            # create TOP-LEVEL .snapshots btrfs subvolumes to store the snapshots taken by snapper
+            # see https://www.reddit.com/r/btrfs/comments/kkms59/snappers_snapshot_location/
+            # and https://www.reddit.com/r/btrfs/comments/rnl6j5/is_there_any_compelling_reason_to_not_use_nested/
+            # and https://bbs.archlinux.org/viewtopic.php?id=194491
+            # also create the corresponding directories to be mounted on them
+            # NB: For snapper, the .snapshots directory must be owned by root and must not be writable (eg. r-x) by anybody else.
+            # see https://discourse.nixos.org/t/snapper-should-snapshots-subvolumes-be-created-automatically/22329/11
+
+            # Check if the btrfs subvolume exists
+            if ! btrfs subvolume list / | grep -q ${mount.snapsvol}; then
+              if [ ! -d "/mnt/btrfs" ]; then
+                echo "Folder /mnt/btrfs does not exist. Creating it..."
+                mkdir -p /mnt/btrfs
+              else
+                echo "Folder /mnt/btrfs already exists"
+              fi
+              mount /dev/disk/by-label/nixos /mnt/btrfs
+              # Create the subvolume
+              btrfs subvolume create /mnt/btrfs/${mount.snapsvol}
+              echo "Subvolume created at ${mount.snapsvol}"
+              chown root:${username} /mnt/btrfs/${mount.snapsvol}
+              chmod 750 /mnt/btrfs/${mount.snapsvol}
+              umount /mnt/btrfs
+            else
+              echo "Subvolume already exists at ${mount.snapsvol}"
+            fi
+
+            # Check if the directory exists
+            if [ ! -d "${mount.datadir}/.snapshots" ]; then
+              # Create the directory
+              echo "Folder ${mount.datadir}/.snapshots does not exist. Creating it..."
+              mkdir -p "${mount.datadir}/.snapshots" 
+              chown root:${username} "${mount.datadir}/.snapshots" 
+              chmod 750 "${mount.datadir}/.snapshots" 
+            else
+              echo "Folder ${mount.datadir}/.snapshots already exists."
+            fi 
+          '';
+          serviceConfig = {
+            Type = "oneshot";
+            RemainAfterExit = true;
+          };
+          unitConfig = {
+            # disable the defaults to prevent circular dependency errors
+            DefaultDependencies = false;
+            # only run after the parent directories have been mounted
+            RequiresMountsFor = [ "/run/systemd/generator/${toUnitName mount.datadir}.mount" ];
+          };
+          wantedBy = [
+            # set it up during the file mounting stage of system boot
+            "local-fs.target"
+          ];
+        }
+      ) enabledMounts)
+    ];
 
     # mount the subvolumes on the .snaphosts directories
     # mapAttrs' is great here too to set the mount point as the key
