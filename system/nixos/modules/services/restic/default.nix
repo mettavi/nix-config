@@ -262,10 +262,8 @@ in
         // {
           # NB: this command has been moved to serviceConfig.ExecCondition, see below
           # backupPrepareCommand = if isDiskJob then diskPrepare else cloudPrepare;
-          backupCleanupCommand =
-            "${pkgs.systemd}/bin/systemctl stop postgres-backup-session.service"
-            + "\n\n"
-            + concatMapAttrsStringSep "\n" (
+          backupCleanupCommand = # bash
+            concatMapAttrsStringSep "\n" (
               vol: pth:
               let
                 # the escaped mount point of the pre-backup snapshot
@@ -278,11 +276,17 @@ in
               ''
             ) job.volumes
             + "\n"
+            # + ''
+            #   # 1. Stop the session first to generate the latest .backup label
+            #   ${pkgs.systemd}/bin/systemctl stop postgres-backup-session.service
+            # ''
             # bash
             + ''
+              # 2. NOW clean up the WAL archive
               # WAL Archive Cleanup
               # Keep the 5th most recent label, effectively keeping ~5 hours of logs
               ARCHIVE_DIR="/var/backup/postgresql/archive"
+              # This now sees the NEWEST .backup file created by the command above
               OLDEST_BACKUP_FILE=$(ls -1t $ARCHIVE_DIR/*.backup 2>/dev/null | sed -n '5p')
 
               if [ -n "$OLDEST_BACKUP_FILE" ]; then
@@ -334,34 +338,94 @@ in
         let
           isDiskJob = (job.vol_label != "");
 
-          pgCommands =
+          backupPrep =
             let
               dbs = config.services.postgresqlBackup.databases;
+              pgPkg = config.services.postgresql.package;
+              logFile = "/var/log/restic-pg-prep.log";
+              # Set your threshold (e.g., 90% full)
+              threshold = 90;
             in
-            concatMapStringsSep "\n" (
-              db: "${pkgs.systemd}/bin/systemctl start postgresqlBackup-${db}.service"
-            ) dbs
-            # Tell Postgres to prepare for a physical backup
-            # This forces a checkpoint and ensures the files are ready for snapping.
-            # + "\n${config.services.postgresql.package}/bin/psql -U postgres -c \"SELECT pg_backup_start('restic-snapshot');\""
-            + "\n"
-            +
-              # bash
-              ''
-                ${pkgs.systemd}/bin/systemctl start postgres-backup-session.service
-                # Give Postgres 3-5 seconds to finish the backup_start checkpoint
-                sleep 5
-              '';
+            # bash
+            ''
+                echo "--- Backup Prep Started $(date) ---" > ${logFile}
+                START_TIME=$(date +%s)
 
-          # -r creates the snapshot read-only
-          btrfsCommands = concatMapAttrsStringSep "\n" (
-            vol: pth:
-            let
-              # the escaped mount point of the subvolume snapshot
-              subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
-            in
-            optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r ${pth.mount} ${subvolMount}"
-          ) job.volumes;
+                # 1. DISK SPACE CHECK
+                # This checks the mount point of your USB drive
+                DISK_USAGE=$(df --output=pcent "${mountPath}" | tail -1 | tr -dc '0-9')
+                echo "USB Disk Usage: $DISK_USAGE%" >> ${logFile}
+
+                if [ "$DISK_USAGE" -gt ${toString threshold} ]; then
+                  echo "WARNING: USB Disk is $DISK_USAGE% full!" >> ${logFile}
+                  /run/wrappers/bin/sudo -u ${username} env $WAYLAND_ENV \
+                    ${pkgs.zenity}/bin/zenity --warning --title="Disk Space Warning" \
+                    --text="USB Drive is $DISK_USAGE% full. Backup may fail." --timeout=10 &
+                fi
+
+                  # 2. CLEANUP: Delete stale snapshots before starting
+                  echo "Cleaning up old snapshots..." >> ${logFile}
+                  ${concatMapAttrsStringSep "\n" (
+                    vol: pth:
+                    let
+                      subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+                    in
+                    optionalString pth.enable ''
+                      if [ -e "${subvolMount}" ]; then
+                        ${pkgs.btrfs-progs}/bin/btrfs subvolume delete "${subvolMount}" >> ${logFile} 2>&1
+                      fi
+                    ''
+                  ) job.volumes}
+
+                  # 2. ATOMIC DATABASE SESSION
+                  # We use 'set -o pipefail' so errors in psql are caught
+                  echo "Starting PostgreSQL backup session..." >> ${logFile}
+                  if ! ${pgPkg}/bin/psql -U postgres >> ${logFile} 2>&1 <<EOF
+              SELECT pg_backup_start('restic-snap'); 
+
+              -- \! tells psql to run a shell command
+              ${concatMapAttrsStringSep "\n" (
+                vol: pth:
+                let
+                  # the escaped mount point of the subvolume snapshot
+                  subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+                in
+                optionalString pth.enable "\\! ${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r ${pth.mount} ${subvolMount}"
+              ) job.volumes}
+
+              \! ${pkgs.restic}/bin/restic unlock
+
+              SELECT pg_backup_stop();
+              EOF
+                  then
+                    echo "ERROR: PostgreSQL session failed!" >> ${logFile}
+                    # Notify user on failure (using your existing WAYLAND_ENV logic)
+                    /run/wrappers/bin/sudo -u ${username} env $WAYLAND_ENV \
+                    ${pkgs.zenity}/bin/zenity --error --title="Backup Error" --text="PostgreSQL snapshot session failed. Check ${logFile}"
+                    exit 1
+                  fi
+
+                  # 4. VERIFICATION LOOP: Check if snapshots exist
+                  echo "Verifying new snapshots..." >> ${logFile}
+                  ${concatMapAttrsStringSep "\n" (
+                    vol: pth:
+                    let
+                      subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+                    in
+                    optionalString pth.enable ''
+                      [ -d "${subvolMount}" ] || { echo "ERROR: ${subvolMount} missing!" >> ${logFile}; exit 1; }
+                    ''
+                  ) job.volumes}
+
+                  # 5. Run logical dumps
+                  ${concatMapStringsSep "\n" (
+                    db: "${pkgs.systemd}/bin/systemctl start postgresqlBackup-${db}.service >> ${logFile} 2>&1"
+                  ) dbs}
+
+                  END_TIME=$(date +%s)
+                  DURATION=$((END_TIME - START_TIME))
+                  echo "Backup Prep Finished Successfully in $DURATION seconds." >> ${logFile}
+            '';
 
           # The actual mount point (parent of the repo folder)
           mountPath = "/run/media/${username}/${job.vol_label}";
@@ -413,9 +477,7 @@ in
                     echo "User clicked YES. Starting backup..."
                   fi
                   
-                  ${pgCommands}
-                  ${btrfsCommands}
-                  ${pkgs.restic}/bin/restic unlock
+                  ${backupPrep}
 
                 else
                   # If exit code is 1 (User clicked NO) or anything else (ESC/Closed window), exit with status 1
@@ -425,12 +487,7 @@ in
                 fi
               '';
           # Logic for Cloud/Other jobs (No popup, just snapshots)
-          cloudPrepare = # bash
-            ''
-              ${pgCommands}
-              ${btrfsCommands}
-              ${pkgs.restic}/bin/restic unlock
-            '';
+          cloudPrepare = "${backupPrep}";
         in
         nameValuePair "restic-backups-${name}" {
           serviceConfig = {
@@ -447,51 +504,6 @@ in
           onFailure = [ "notify-backup-failed-${name}.service" ];
         }
       ) enabledJobs)
-
-      {
-        "postgres-backup-session" = {
-          description = "Persistent PostgreSQL backup session";
-          # Ensure we only start after the main DB is ready
-          requires = [ "postgresql.service" ];
-          after = [ "postgresql.service" ];
-          serviceConfig = {
-            Type = "simple";
-            User = "postgres";
-            Group = "postgres";
-            # This ensures /run/postgresql-backup exists for our pipe
-            RuntimeDirectory = "postgresql-backup";
-            # This ensures the service can see the real Postgres socket
-            BindReadOnlyPaths = [ "/run/postgresql" ];
-
-            ExecStart = pkgs.writeShellScript "pg-session" ''
-              set -e
-
-              PIPE="/run/postgresql-backup/session.pipe"
-              [ -p "$PIPE" ] || mkfifo "$PIPE"
-
-              # Wait for the actual Postgres socket to appear before starting psql
-              until [ -S /run/postgresql/.s.PGSQL.5432 ]; do
-                echo "Waiting for postgres socket..."
-                sleep 1
-              done
-
-              # Start psql reading from the pipe
-              # We use 'tail -f' to feed 'psql' so the session stays open
-              ${pkgs.coreutils}/bin/tail -f "$PIPE" | ${config.services.postgresql.package}/bin/psql -U postgres &
-              PSQL_PID=$!
-
-              # Start the backup
-              sleep 1
-              echo "SELECT pg_backup_start('restic-session');" > "$PIPE"
-
-              # Keep the script running until systemd sends SIGTERM
-              trap "echo 'SELECT pg_backup_stop();' > \"$PIPE\"; kill $PSQL_PID; exit 0" SIGTERM SIGINT
-                    
-              wait $PSQL_PID
-            '';
-          };
-        };
-      }
 
       # LAYER 2: Extra "Mount Logic" specifically for USB disk jobs
       (mapAttrs' (
