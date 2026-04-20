@@ -253,7 +253,7 @@ with lib;
         export -f printServerLatency
 
         echo Fetching regions...
-        serverlist='https://serverlist.piaservers.net/vpninfo/servers/v4'
+        serverlist='https://serverlist.piaservers.net/vpninfo/servers/v7'
         allregions=$((curl --no-progress-meter -m 5 "$serverlist" || true) | head -1)
 
         region="$(echo $allregions |
