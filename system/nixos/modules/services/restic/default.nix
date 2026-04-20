@@ -99,7 +99,7 @@ let
       # bash
       ''
         export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus
-        eval ${notifyCmd}
+        ${notifyCmd}
       ''
     else
       # Version for root services needing to notify a user (e.g., restic)
