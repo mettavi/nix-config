@@ -72,6 +72,8 @@ in
         openMPThreadingWorkaround = true;
         passwordFile = config.sops.secrets."users/${username}/paperless/ppless-${hostname}-pw".path;
         port = 28981;
+        # NB: settings below take the place of paperless.conf
+        # and those not included here are saved to the database
         settings = {
           # PAPERLESS_CONSUMER_ENABLE_BARCODES = true;
           PAPERLESS_CONSUMER_RECURSIVE = true;
@@ -84,7 +86,8 @@ in
           # PAPERLESS_DBPASS is defined in the environmentFile (see above)
           # the folder needs to already exist (see systemd.tmpfiles below)
           PAPERLESS_EMPTY_TRASH_DIR = "/var/lib/paperless/Trash";
-          # PAPERLESS_FILENAME_FORMAT = "{{document_type}}/{{created_year}}/{{title}}_{{created}}";
+          # NB: The was implemented using a default storage path in the web GUI
+          # PAPERLESS_FILENAME_FORMAT = "{{document_type}}/{{created_year}}/{{correspondent}}_{{title}}";
           PAPERLESS_OAUTH_CALLBACK_BASE_URL = "http://localhost:28981";
           PAPERLESS_OCR_LANGUAGE = "eng";
           PAPERLESS_OCR_USER_ARGS = {
