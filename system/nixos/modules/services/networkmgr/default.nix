@@ -101,9 +101,9 @@ in
             uuid = "7765e74e-3662-4d35-870b-7ffd537bba20";
           };
           ipv4 = {
-            address1 = "10.17.232.25/24";
-            dns = "10.17.232.11";
-            gateway = "10.17.232.11";
+            address1 = "10.113.171.25/24";
+            dns = "10.113.171.135";
+            gateway = "10.113.171.135";
             method = "manual";
             never-default = "false";
           };
