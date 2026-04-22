@@ -91,6 +91,8 @@ in
           PAPERLESS_OAUTH_CALLBACK_BASE_URL = "http://localhost:28981";
           PAPERLESS_OCR_LANGUAGE = "eng";
           PAPERLESS_OCR_USER_ARGS = {
+            # when pdf importing fails, print to a new pdf or set the variable below
+            # continue_on_soft_render_error = true;
             optimize = 1;
             pdfa_image_compression = "lossless";
           };
