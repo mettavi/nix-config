@@ -342,6 +342,7 @@
     };
     mettavi = {
       apps = {
+        anki.enable = true;
         firefox.enable = true;
         ghostty.enable = true;
         obsidian.enable = true;
