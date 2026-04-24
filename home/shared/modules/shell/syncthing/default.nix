@@ -28,11 +28,14 @@ in
     services.syncthing = {
       enable = true;
       cert = "${config.sops.secrets.${cert_pem}.path}";
+      guiCredentials = {
+        # contains bcrypt hashed pw
+        passwordFile = "${config.sops.secrets.${gui_pw}.path}";
+        username = "mettavi";
+      };
       key = "${config.sops.secrets.${key_pem}.path}";
       overrideDevices = true;
       overrideFolders = true;
-      # contains bcrypt hashed pw
-      passwordFile = "${config.sops.secrets.${gui_pw}.path}";
       settings = {
         folders = {
           "koreader" = {
