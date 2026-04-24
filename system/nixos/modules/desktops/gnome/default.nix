@@ -87,6 +87,18 @@ in
             gnome-tweaks # Tool to customize advanced GNOME 3 options
             switcheroo # Gnome app for converting (and resizing) images between different formats (uses imagemagick)
             wl-clipboard # command line copy/paste utilities for Wayland
+            # workaround to force libgda5, due to bug with gda6
+            # see https://github.com/boerdereinar/copyous/issues/67#issuecomment-3983477333
+            # TODO: Follow up
+            (gnomeExtensions.copyous.overrideAttrs (oldAttrs: {
+              buildInputs = [
+                pkgs.libgda5
+              ];
+              preInstall = ''
+                sed -i "1i import GIRepository from 'gi://GIRepository';\nGIRepository.Repository.dup_default().prepend_search_path('${pkgs.libgda5}/lib/girepository-1.0');\nGIRepository.Repository.dup_default().prepend_search_path('${pkgs.gsound}/lib/girepository-1.0');\n" lib/preferences/dependencies/dependencies.js
+                sed -i "1i import GIRepository from 'gi://GIRepository';\nGIRepository.Repository.dup_default().prepend_search_path('${pkgs.libgda5}/lib/girepository-1.0');\n" lib/misc/db.js
+              '';
+            }))
           ])
           ++ (with pkgs.gnomeExtensions; [
             appindicator # Adds AppIndicator, KStatusNotifierItem and legacy tray icons support to the Shell.
@@ -133,6 +145,7 @@ in
             # auto-enable installed extensions (run `gnome-extensions list` for a list)
             enabled-extensions = [
               "appindicatorsupport@rgcjonas.gmail.com"
+              "copyous@boerdereinar.dev"
               "power-profile@fthx"
             ];
           };
