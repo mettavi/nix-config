@@ -31,7 +31,9 @@ in
         # IF using restic, default to managing it with resticprofile
         useRestProf = mkOption {
           type = types.bool;
-          default = true;
+          # TODO: Disable resticprofile until PR #508193 is merged
+          # See https://github.com/NixOS/nixpkgs/pull/508193
+          default = false;
           description = "Use resticprofile to manage restic using config files";
         };
       };
