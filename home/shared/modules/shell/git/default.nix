@@ -63,6 +63,8 @@ in
           weekly = "Mon 0:53:00";
         };
       };
+      # set to remove evaluation warning about the changed default value
+      signing.format = null;
       settings = {
         user = {
           email = inputs.secrets.email.gitHub;
