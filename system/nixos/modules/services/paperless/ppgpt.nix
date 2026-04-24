@@ -8,18 +8,13 @@
 }:
 with lib;
 let
-  cfg = config.mettavi.system.services.paperless-ngx.ppgpt;
-  paperlessSecrets = {
-    group = "${config.users.users.paperless.name}";
-    mode = "0440";
-    sopsFile = "${secrets_path}/secrets/apps/paperless.yaml";
-  };
+  cfg = config.mettavi.system.services.paperless-ngx;
 in
 {
   options.mettavi.system.services.paperless-ngx.ppgpt = {
     enable = mkOption {
       type = types.bool;
-      default = config.mettavi.system.services.paperless-ngx.withPaperlessGPT;
+      default = cfg.enable && cfg.withPaperlessGPT;
       description = "Enhance metadata and OCR scanning with the paperless-gpt addon";
     };
     llm = {
@@ -50,10 +45,10 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf cfg.ppgpt.enable {
     # enable the ollama module if required
     mettavi.system.services.ollama.enable = mkIf (
-      (cfg.llm.generic.provider == "ollama") || (cfg.llm.ocr.provider == "ollama")
+      (cfg.ppgpt.llm.generic.provider == "ollama") || (cfg.ppgpt.llm.ocr.provider == "ollama")
     ) true;
 
     # DEFINE NON-DEFAULT OPTIONS HERE IF REQUIRED
@@ -74,16 +69,24 @@ in
 
     # download LLMs with ollama if required
     services.ollama.loadModels =
-      optionalString (cfg.llm.generic.provider == "ollama") [
-        "${cfg.llm.generic.model}"
+      optionalString (cfg.ppgpt.llm.generic.provider == "ollama") [
+        "${cfg.ppgpt.llm.generic.model}"
       ]
-      ++ optionalString (cfg.llm.ocr.provider == "ollama") [
-        "${cfg.llm.ocr.model}"
+      ++ optionalString (cfg.ppgpt.llm.ocr.provider == "ollama") [
+        "${cfg.ppgpt.llm.ocr.model}"
       ];
 
-    sops.secrets = {
-      "users/${username}/paperless/ppless-gpt-${hostname}.env" = paperlessSecrets;
-    };
+    sops.secrets =
+      let
+        paperlessSecrets = {
+          group = "${config.users.users.paperless.name}";
+          mode = "0440";
+          sopsFile = "${secrets_path}/secrets/apps/paperless.yaml";
+        };
+      in
+      {
+        "users/${username}/paperless/ppless-gpt-${hostname}.env" = paperlessSecrets;
+      };
 
     systemd.services = {
       paperless-gpt = {
@@ -126,8 +129,8 @@ in
               AUTO_GENERATE_CREATED_DATE = "true";
 
               # LLM Configuration (for non-OCR features)
-              LLM_PROVIDER = "${cfg.llm.generic.provider}";
-              LLM_MODEL = "${cfg.llm.generic.model}";
+              LLM_PROVIDER = "${cfg.ppgpt.llm.generic.provider}";
+              LLM_MODEL = "${cfg.ppgpt.llm.generic.model}";
               LLM_LANGUAGE = "English";
 
               # Local LLM Configuration
@@ -141,8 +144,8 @@ in
 
               # OCR Configuration
               OCR_PROVIDER = "llm"; # llm, google_docai, azure or docling
-              VISION_LLM_PROVIDER = "${cfg.llm.ocr.provider}";
-              VISION_LLM_MODEL = "${cfg.llm.ocr.model}";
+              VISION_LLM_PROVIDER = "${cfg.ppgpt.llm.ocr.provider}";
+              VISION_LLM_MODEL = "${cfg.ppgpt.llm.ocr.model}";
 
               # OCR PROCESSING MODE
               # Optional, default: image, other options: pdf, whole_pdf (all pp in one operation)

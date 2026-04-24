@@ -8,3 +8,11 @@ nix-collect-garbage -d # Delete all user generations.
 sudo nix-collect-garbage -d # Delete all system generations.
 sudo /run/current-system/bin/switch-to-configuration boot # clear the boot menu
 ```
+
+## creating secrets
+
+```sh
+# This command will create a secret using the openssl package
+openssl rand -hex 32
+
+```

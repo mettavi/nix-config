@@ -24,21 +24,24 @@ in
     home.file = {
       ".gitconfig".source = ../../../dots/git/.gitconfig;
       ".gitignore_global".source = ../../../dots/git/.gitignore_global;
-      "${nix_repo}/.githooks/pre-commit".text = # bash
-        ''
-          #!/usr/bin/env bash
+      "${nix_repo}/.githooks/pre-commit" = {
+        executable = true;
+        text = # bash
+          ''
+            #!/usr/bin/env bash
 
-          # commit current version of nvim (Lazy) plugins catalogue
-          echo
-          echo "Checking for changes to lazy-lock.json..."
-          echo
-          git add home/shared/dots/nvim/lazy-lock.json
+            # commit current version of nvim (Lazy) plugins catalogue
+            echo
+            echo "Checking for changes to lazy-lock.json..."
+            echo
+            git add home/shared/dots/nvim/lazy-lock.json
 
-          # check staged files for secrets
-          echo "Checking for secrets..."
-          echo
-          gitleaks protect --staged -v
-        '';
+            # check staged files for secrets
+            echo "Checking for secrets..."
+            echo
+            gitleaks protect --staged -v
+          '';
+      };
     };
     programs.git = {
       enable = true;

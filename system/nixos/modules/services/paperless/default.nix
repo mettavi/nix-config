@@ -2,7 +2,6 @@
   config,
   hostname,
   lib,
-  pkgs,
   secrets_path,
   username,
   ...
@@ -57,15 +56,13 @@ in
         database.createLocally = true;
         dataDir = "${dataDir}";
         environmentFile = config.sops.secrets."users/${username}/paperless/ppless-${hostname}.env".path;
-        # enable automated daily backups
         exporter = {
-          enable = true;
+          enable = false; # restic already backs up the whole home directory
           directory = "${dataDir}/export";
           onCalendar = "01:30:00";
           settings = {
             compare-checksums = true;
-            # do not touch the database dumps in this directory
-            delete = mkForce false;
+            delete = true;
             no-color = true;
             no-progress-bar = true;
           };
@@ -75,6 +72,8 @@ in
         openMPThreadingWorkaround = true;
         passwordFile = config.sops.secrets."users/${username}/paperless/ppless-${hostname}-pw".path;
         port = 28981;
+        # NB: settings below take the place of paperless.conf
+        # and those not included here are saved to the database
         settings = {
           # PAPERLESS_CONSUMER_ENABLE_BARCODES = true;
           PAPERLESS_CONSUMER_RECURSIVE = true;
@@ -87,10 +86,13 @@ in
           # PAPERLESS_DBPASS is defined in the environmentFile (see above)
           # the folder needs to already exist (see systemd.tmpfiles below)
           PAPERLESS_EMPTY_TRASH_DIR = "/var/lib/paperless/Trash";
-          # PAPERLESS_FILENAME_FORMAT = "{{document_type}}/{{created_year}}/{{title}}_{{created}}";
+          # NB: The was implemented using a default storage path in the web GUI
+          # PAPERLESS_FILENAME_FORMAT = "{{document_type}}/{{created_year}}/{{correspondent}}_{{title}}";
           PAPERLESS_OAUTH_CALLBACK_BASE_URL = "http://localhost:28981";
           PAPERLESS_OCR_LANGUAGE = "eng";
           PAPERLESS_OCR_USER_ARGS = {
+            # when pdf importing fails, print to a new pdf or set the variable below
+            # continue_on_soft_render_error = true;
             optimize = 1;
             pdfa_image_compression = "lossless";
           };
@@ -115,13 +117,13 @@ in
       # postgresql.target.wantedBy = mkForce [ ];
     };
     # if the exporter schedule is missed, run it when the system is online
-    systemd.timers = {
-      paperless-exporter = {
-        timerConfig = {
-          Persistent = true;
-        };
-      };
-    };
+    # systemd.timers = {
+    #   paperless-exporter = {
+    #     timerConfig = {
+    #       Persistent = true;
+    #     };
+    #   };
+    # };
     # create the Trash directory
     systemd.tmpfiles.rules = [
       # type path mode user group (expiry) (argument)

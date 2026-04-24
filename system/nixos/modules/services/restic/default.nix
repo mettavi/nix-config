@@ -72,6 +72,49 @@ let
         ''
     );
 
+  # Reusable notification helper
+  mkNotify =
+    {
+      title,
+      msg,
+      urgency ? "normal",
+      icon ? "info",
+      runAsUser ? null,
+      action ? null, # e.g., "view_log=View Log"
+      timeout ? null,
+    }:
+    let
+      # Use a bash subshell to generate a timestamp (e.g., 20:45:10)
+      timestamp = "$(date +'%H:%M:%S')";
+
+      # Construct optional flags
+      actionFlag = if action != null then "--action='${action}'" else "";
+      timeoutFlag = if timeout != null then "-t ${toString timeout}" else "";
+
+      # We use double quotes for the title so Bash can expand the $(date) subshell
+      notifyCmd = "${pkgs.libnotify}/bin/notify-send ${actionFlag} ${timeoutFlag} --urgency=${urgency} --icon=${icon} --app-name='Restic' \"${title} [${timestamp}]\" '${msg}'";
+    in
+    if runAsUser == null then
+      # Version for services already running as the user (e.g., rclone)
+      # bash
+      ''
+        export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u)/bus
+        ${notifyCmd}
+      ''
+    else
+      # Version for root services needing to notify a user (e.g., restic)
+      # bash
+      ''
+        # Find the primary user's ID
+        USER_ID=$(id -u ${runAsUser})
+        # Run notify-send as that user, pointing to their DBus session
+        # This allows a system-root process to "talk" to your desktop
+        /run/wrappers/bin/sudo -u ${runAsUser} \
+          DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
+          XDG_RUNTIME_DIR=/run/user/$USER_ID \
+          /bin/sh -c ${lib.escapeShellArg notifyCmd}
+      '';
+
   # 3. Map the definitions into a list of packages
   customScripts = lib.mapAttrsToList (name: conf: makeCustomScript name conf) scriptDefinitions;
 
@@ -79,7 +122,6 @@ let
   commonConfig = {
     checkOpts = [
       "--with-cache" # just to make checks faster
-      "--read-data" # also check integrity of the actual data
     ];
     createWrapper = true;
     extraBackupArgs = [
@@ -122,7 +164,7 @@ let
       "--keep-yearly 10"
       "--group-by tags"
     ];
-    runCheck = true;
+    runCheck = false;
     # run backups when the removable disk is mounted, not on a schedule
     timerConfig = null;
   };
@@ -150,6 +192,11 @@ in
               type = bool;
               default = true;
               description = "Whether to enable this backup job";
+            };
+            checkParts = mkOption {
+              type = int;
+              default = 7;
+              description = "Number of subsets to divide the restic repo into for rotating checks (e.g. 7 for weekly, 365 for yearly)";
             };
             localConfig = mkOption {
               type = attrs;
@@ -215,14 +262,39 @@ in
         // {
           # NB: this command has been moved to serviceConfig.ExecCondition, see below
           # backupPrepareCommand = if isDiskJob then diskPrepare else cloudPrepare;
-          backupCleanupCommand = concatMapAttrsStringSep "\n" (
-            vol: pth:
-            let
-              # the escaped mount point of the pre-backup snapshot
-              subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
-            in
-            optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume delete ${subvolMount}"
-          ) job.volumes;
+          backupCleanupCommand = # bash
+            concatMapAttrsStringSep "\n" (
+              vol: pth:
+              let
+                # the escaped mount point of the pre-backup snapshot
+                subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+              in
+              optionalString pth.enable ''
+                if [ -e ${subvolMount} ]; then 
+                 ${pkgs.btrfs-progs}/bin/btrfs subvolume delete ${subvolMount}
+                fi
+              ''
+            ) job.volumes
+            + "\n"
+            # + ''
+            #   # 1. Stop the session first to generate the latest .backup label
+            #   ${pkgs.systemd}/bin/systemctl stop postgres-backup-session.service
+            # ''
+            # bash
+            + ''
+              # 2. NOW clean up the WAL archive
+              # WAL Archive Cleanup
+              # Keep the 5th most recent label, effectively keeping ~5 hours of logs
+              ARCHIVE_DIR="/var/backup/postgresql/archive"
+              # This now sees the NEWEST .backup file created by the command above
+              OLDEST_BACKUP_FILE=$(ls -1t $ARCHIVE_DIR/*.backup 2>/dev/null | sed -n '5p')
+
+              if [ -n "$OLDEST_BACKUP_FILE" ]; then
+                # Extract just the filename for pg_archivecleanup
+                CLEANUP_TARGET=$(basename "$OLDEST_BACKUP_FILE")
+                ${config.services.postgresql.package}/bin/pg_archivecleanup -d "$ARCHIVE_DIR" "$CLEANUP_TARGET"
+              fi
+            '';
 
           # Patterns to exclude when backing up
           exclude = concatLists (
@@ -266,33 +338,103 @@ in
         let
           isDiskJob = (job.vol_label != "");
 
-          pgCommands =
+          backupPrep =
             let
               dbs = config.services.postgresqlBackup.databases;
+              pgPkg = config.services.postgresql.package;
+              logFile = "/var/log/restic-pg-prep.log";
+              # Set your threshold (e.g., 90% full)
+              threshold = 90;
             in
-            concatMapStringsSep "\n" (
-              db: "${pkgs.systemd}/bin/systemctl start postgresqlBackup-${db}.service"
-            ) dbs;
+            # bash
+            ''
+                echo "--- Backup Prep Started $(date) ---" > ${logFile}
+                START_TIME=$(date +%s)
 
-          # -r creates the snapshot read-only
-          btrfsCommands = concatMapAttrsStringSep "\n" (
-            vol: pth:
-            let
-              # the escaped mount point of the subvolume snapshot
-              subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
-            in
-            optionalString pth.enable "${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r ${pth.mount} ${subvolMount}"
-          ) job.volumes;
+                # 1. DISK SPACE CHECK
+                # This checks the mount point of your USB drive
+                DISK_USAGE=$(df --output=pcent "${mountPath}" | tail -1 | tr -dc '0-9')
+                echo "USB Disk Usage: $DISK_USAGE%" >> ${logFile}
+
+                if [ "$DISK_USAGE" -gt ${toString threshold} ]; then
+                  echo "WARNING: USB Disk is $DISK_USAGE% full!" >> ${logFile}
+                  /run/wrappers/bin/sudo -u ${username} env $WAYLAND_ENV \
+                    ${pkgs.zenity}/bin/zenity --warning --title="Disk Space Warning" \
+                    --text="USB Drive is $DISK_USAGE% full. Backup may fail." --timeout=10 &
+                fi
+
+                  # 2. CLEANUP: Delete stale snapshots before starting
+                  echo "Cleaning up old snapshots..." >> ${logFile}
+                  ${concatMapAttrsStringSep "\n" (
+                    vol: pth:
+                    let
+                      subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+                    in
+                    optionalString pth.enable ''
+                      if [ -e "${subvolMount}" ]; then
+                        ${pkgs.btrfs-progs}/bin/btrfs subvolume delete "${subvolMount}" >> ${logFile} 2>&1
+                      fi
+                    ''
+                  ) job.volumes}
+
+                  # 2. ATOMIC DATABASE SESSION
+                  # We use 'set -o pipefail' so errors in psql are caught
+                  echo "Starting PostgreSQL backup session..." >> ${logFile}
+                  if ! ${pgPkg}/bin/psql -U postgres >> ${logFile} 2>&1 <<EOF
+              SELECT pg_backup_start('restic-snap'); 
+
+              -- \! tells psql to run a shell command
+              ${concatMapAttrsStringSep "\n" (
+                vol: pth:
+                let
+                  # the escaped mount point of the subvolume snapshot
+                  subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+                in
+                optionalString pth.enable "\\! ${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r ${pth.mount} ${subvolMount}"
+              ) job.volumes}
+
+              \! ${pkgs.restic}/bin/restic unlock
+
+              SELECT pg_backup_stop();
+              EOF
+                  then
+                    echo "ERROR: PostgreSQL session failed!" >> ${logFile}
+                    # Notify user on failure (using your existing WAYLAND_ENV logic)
+                    /run/wrappers/bin/sudo -u ${username} env $WAYLAND_ENV \
+                    ${pkgs.zenity}/bin/zenity --error --title="Backup Error" --text="PostgreSQL snapshot session failed. Check ${logFile}"
+                    exit 1
+                  fi
+
+                  # 4. VERIFICATION LOOP: Check if snapshots exist
+                  echo "Verifying new snapshots..." >> ${logFile}
+                  ${concatMapAttrsStringSep "\n" (
+                    vol: pth:
+                    let
+                      subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+                    in
+                    optionalString pth.enable ''
+                      [ -d "${subvolMount}" ] || { echo "ERROR: ${subvolMount} missing!" >> ${logFile}; exit 1; }
+                    ''
+                  ) job.volumes}
+
+                  # 5. Run logical dumps
+                  ${concatMapStringsSep "\n" (
+                    db: "${pkgs.systemd}/bin/systemctl start postgresqlBackup-${db}.service >> ${logFile} 2>&1"
+                  ) dbs}
+
+                  END_TIME=$(date +%s)
+                  DURATION=$((END_TIME - START_TIME))
+                  echo "Backup Prep Finished Successfully in $DURATION seconds." >> ${logFile}
+            '';
 
           # The actual mount point (parent of the repo folder)
           mountPath = "/run/media/${username}/${job.vol_label}";
 
           # Logic specifically for USB/Disk jobs
-          # 1. MOUNT GUARD: Check if the path is actually a mount point
           diskPrepare =
             pkgs.writeShellScriptBin "diskPrepare" # bash
               ''
-                # MOUNT GUARD
+                # 1. MOUNT GUARD: Check if the path is actually a mount point
                 if ! ${pkgs.util-linux}/bin/mountpoint -q "${mountPath}"; then
                   echo "ERROR: ${mountPath} is not a mount point. Aborting to save root partition."
                   # Exit with 255 so systemd "ExecCondition" knows the 'preparation' failed
@@ -335,9 +477,7 @@ in
                     echo "User clicked YES. Starting backup..."
                   fi
                   
-                  ${pgCommands}
-                  ${btrfsCommands}
-                  ${pkgs.restic}/bin/restic unlock
+                  ${backupPrep}
 
                 else
                   # If exit code is 1 (User clicked NO) or anything else (ESC/Closed window), exit with status 1
@@ -347,12 +487,7 @@ in
                 fi
               '';
           # Logic for Cloud/Other jobs (No popup, just snapshots)
-          cloudPrepare = # bash
-            ''
-              ${pgCommands}
-              ${btrfsCommands}
-              ${pkgs.restic}/bin/restic unlock
-            '';
+          cloudPrepare = "${backupPrep}";
         in
         nameValuePair "restic-backups-${name}" {
           serviceConfig = {
@@ -362,7 +497,10 @@ in
             ExecCondition = if isDiskJob then "${diskPrepare}/bin/diskPrepare" else cloudPrepare;
           };
           # Universal notification triggers
-          onSuccess = [ "notify-backup-success-${name}.service" ];
+          onSuccess = [
+            "notify-backup-success-${name}.service"
+            "restic-check-${name}.service"
+          ];
           onFailure = [ "notify-backup-failed-${name}.service" ];
         }
       ) enabledJobs)
@@ -388,22 +526,16 @@ in
             Type = "oneshot";
             User = "${username}";
           };
-          script = ''
-            USER_ID=$(id -u ${username})
-            /run/wrappers/bin/sudo -u ${username} \
-            XDG_RUNTIME_DIR=/run/user/$USER_ID \
-            DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
-            ${pkgs.libnotify}/bin/notify-send --urgency=normal \
-              --icon=emblem-success --app-name="Restic" \
-              "Restic Backup" \
-              "Job '${name}' finished successfully. You can unplug the drive."
-          '';
+          script = mkNotify {
+            runAsUser = username; # This triggers the sudo wrapper
+            title = "Restic Backup";
+            msg = "Job '${name}' finished successfully. You can unplug the drive.";
+          };
         }
       ) enabledJobs)
 
       # LAYER 4: The Failure Notification Service definition
       # send desktop notifications about failed backups using libnotify
-      # ref: https://www.arthurkoziel.com/restic-backups-b2-nixos/
       (mapAttrs' (
         name: job:
         nameValuePair "notify-backup-failed-${name}" {
@@ -413,20 +545,62 @@ in
             Type = "oneshot";
             User = "${username}";
           };
-          script = ''
-            # Find the primary user's ID (assuming the one you defined in your module)
-            USER_ID=$(id -u ${username})
+          script = mkNotify {
+            runAsUser = username; # This triggers the sudo wrapper
+            urgency = "critical";
+            icon = "error";
+            timeout = 0; # Stays on screen until clicked
+            title = "Backup failed";
+            # We use a subshell to grab the journal logs for the message
+            msg = "$(journalctl -u restic-backups-${name} -n 5 -o cat)";
+          };
+        }
+      ) enabledJobs)
 
-            # Run notify-send as that user, pointing to their DBus session
-            # This allows a system-root process to "talk" to your desktop
-            /run/wrappers/bin/sudo -u ${username} \
-            XDG_RUNTIME_DIR=/run/user/$USER_ID \
-            DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus \
-            ${pkgs.libnotify}/bin/notify-send --urgency=critical \
-              --icon=emblem-failure --app-name="Restic" \
-              "Backup failed" \
-              "$(journalctl -u restic-backups-${name} -n 5 -o cat)"
+      # LAYER 5: Rotating restic check (read-data-subset cycles through 1/7 ... 7/7)
+      (mapAttrs' (
+        name: job:
+        nameValuePair "restic-check-${name}" {
+          enable = true;
+          description = "Restic rotating integrity check for ${name}";
+          serviceConfig = {
+            Type = "oneshot";
+            User = job.user;
+          };
+          environment = {
+            RESTIC_REPOSITORY = "${job.repo}/${name}";
+          };
+          script = ''
+            STATE_DIR="/var/lib/restic-check"
+            STATE_FILE="$STATE_DIR/${name}.index"
+            TOTAL=${toString job.checkParts}
+
+            ${pkgs.coreutils}/bin/mkdir -p "$STATE_DIR"
+
+            # Read the last index, defaulting to 0 if file doesn't exist
+            if [ -f "$STATE_FILE" ]; then
+              LAST=$(${pkgs.coreutils}/bin/cat "$STATE_FILE")
+            else
+              LAST=0
+            fi
+
+            # Advance, wrapping back to 1 after TOTAL
+            NEXT=$(( (LAST % TOTAL) + 1 ))
+
+            echo "Running restic check --read-data-subset ''${NEXT}/''${TOTAL}"
+            # fail explicitly, even though "set -e" is auto-added by the nixos script wrapper
+            RESTIC_PASSWORD_FILE="${config.sops.secrets."users/${username}/restic-${name}".path}" \
+              ${pkgs.restic}/bin/restic check \
+                --with-cache \
+                --read-data-subset "''${NEXT}/''${TOTAL}" \
+                || { echo "restic check failed! Index not advanced."; exit 1; } 
+
+            # Only persist the new index if the check succeeded
+            echo "$NEXT" > "$STATE_FILE"
           '';
+          # For disk jobs: don't outlive the mount
+          bindsTo = lib.optional (job.vol_label != "") "${utils.escapeSystemdPath job.repo}.mount";
+          after = lib.optional (job.vol_label != "") "${utils.escapeSystemdPath job.repo}.mount";
         }
       ) enabledJobs)
 
@@ -435,9 +609,23 @@ in
         nameValuePair "rclone-sync-${name}" {
           enable = true;
           description = "Sync backups to the cloud with rclone";
-          # Only run if the repo config is actually reachable
-          unitConfig.ConditionPathExists = "${job.repo}/${name}/config";
           serviceConfig = {
+            # Only run if the repo config is actually reachable
+            ExecCondition = "${pkgs.coreutils}/bin/test -f ${job.repo}/${name}/config";
+            ExecStopPost =
+              pkgs.writeShellScript "notify-rclone-skipped" # bash
+                ''
+                  # SERVICE_RESULT is set to 'exec-condition' if ExecCondition fails
+                  if [ "$SERVICE_RESULT" = "exec-condition" ]; then
+                    ${mkNotify {
+                      title = "Backup Skipped";
+                      msg = "USB Drive not found at ${job.repo}. Sync cancelled.";
+                      icon = "drive-harddisk";
+                      urgency = "critical";
+                      timeout = 0; # Stays on screen until clicked
+                    }}
+                  fi
+                '';
             Type = "oneshot";
             User = "${username}";
             # Systemd creates /var/log/rclone and gives ${username} write access
@@ -450,10 +638,11 @@ in
               LOGFILE="/var/log/rclone/sync-$TIMESTAMP.log"
 
               # copy the local restic backup to the cloud (backblaze b2)
-              ${pkgs.rclone} --log-level INFO --log-file=$LOGFILE \
-                --verbose --b2-hard-delete --checkers 100 --transfers 100 \
+              # NB: checkers and transfers were decreased from 100 for better connectivity
+              ${pkgs.rclone}/bin/rclone --log-level INFO --log-file=$LOGFILE \
+                --b2-hard-delete --checkers 50 --transfers 50 \
                 --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
-                sync "${job.repo}/${name}" b2:${hostname}/restic/
+                sync "${job.repo}/${name}" b2:${hostname}-g14/restic/
             '';
         }
       ) enabledJobs)
@@ -474,10 +663,12 @@ in
       }
     ) enabledJobs;
 
-    # clean up the rclone log files periodically
     systemd.tmpfiles.rules = [
-      # Type  Path               Mode  User        Group       Age  Argument
-      "d      /var/log/rclone    0755  ${username} root        30d  -"
+      # Type  Path                  Mode  User        Group       Age  Argument
+      # clean up the rclone log files periodically
+      "d      /var/log/rclone       0755  ${username} root        30d  -"
+      # failsafe to fix permissions if necessary (the script already creates the directory)
+      "d      /var/lib/restic-check 0700  root        root        -    -"
     ];
   };
 }

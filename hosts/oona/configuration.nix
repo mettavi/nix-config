@@ -222,6 +222,11 @@
                   mount = "/root";
                   paths = [ "." ];
                 };
+                "@vlpostgres" = {
+                  exclusions = [ ".Trash-0" ];
+                  mount = "/var/lib/postgresql";
+                  paths = [ "." ];
+                };
               };
             };
         };
@@ -243,7 +248,6 @@
             snapsvol = "@adminmedia-snaps";
           };
           vlpostgres = {
-            enable = false; # This subvolume is defined but won't be processed
             datadir = "/var/lib/postgresql";
             snapsvol = "@vlpostgres-snaps";
           };
@@ -294,6 +298,7 @@
         # Simple GPU Profile switcher for ASUS laptops using Supergfxctl
         gnomeExtensions.gpu-supergfxctl-switch
         goldendict-ng # Advanced multi-dictionary lookup program
+        gramps # Genealogy software
       ];
       sessionVariables = {
         # required for electron apps, which don't read the mimeapps.list file

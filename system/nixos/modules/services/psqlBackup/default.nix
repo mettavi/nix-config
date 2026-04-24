@@ -16,9 +16,9 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf (cfg.enable && cfg.backup) {
     services = {
-      postgresqlBackup = mkIf cfg.backup {
+      postgresqlBackup = {
         enable = true;
         # uses pg_dumpall
         backupAll = config.services.postgresqlBackup.databases == [ ];
