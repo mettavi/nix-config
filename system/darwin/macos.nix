@@ -2,7 +2,6 @@
   config,
   hostname,
   lib,
-  nix_repo,
   username,
   ...
 }:
@@ -18,7 +17,6 @@
         "/System/Applications/App Store.app"
         "/Applications/iTerm.app"
         "/Applications/Microsoft Word.app"
-        "/Users/${username}/${nix_repo}/home/darwin/_files/calibre/CaliSync.app"
       ];
     };
     # check current setting with "defaults read NSGlobalDomain '<insert setting here>'"
