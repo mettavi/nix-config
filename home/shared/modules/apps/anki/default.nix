@@ -67,7 +67,7 @@ in
       theme = "dark";
       uiScale = 1.0; # between 1.0 and 2.0
       # NB: selecting "vulkan" caused rendering problems in the GUI
-      videoDriver = null;
+      videoDriver = null; # null or one of "opengl", "angle", "software", "metal", "vulkan", "d3d11"
     };
   };
 }
