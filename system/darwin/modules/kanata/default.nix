@@ -22,9 +22,9 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [
       macpkgs.karabiner-driverkit
-      # kanata # Cross-platform software keyboard remapper
+      kanata # Cross-platform software keyboard remapper
       # install from recent gh commit to get recent bugfix, see https://github.com/jtroo/kanata/issues/1539
-      macpkgs.kanata-head
+      # macpkgs.kanata-head
     ];
     launchd.daemons = {
       # NB: The daemon is not used in version <3.1.0 of karabiner-driverkit
