@@ -48,7 +48,9 @@
         sopsFile = "${secrets_path}/secrets/hosts/lady.yaml";
       };
       # wifi passwords to configure wireless networks
-      "users/${username}/wifi.env" = { };
+      "users/${username}/wifi.env" = {
+        owner = "${username}";
+      };
     };
   };
   # The containing folders are created as root and if this is the first ~/.config/ entry,
