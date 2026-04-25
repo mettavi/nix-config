@@ -272,9 +272,11 @@
       )
     '';
     extraDefCfg = ''
-      linux-dev-names-include (
-        "Asus Keyboard"
-      )
+      ;; disable this until kanata can detect the asus keyboard device again
+      ;; linux-dev-names-include (
+      ;;  "Asus Keyboard"
+      ;;  "Asus WMI hotkeys"
+      ;;)
       ;; Required for defchordsv2 (see above)
       concurrent-tap-hold yes
     '';
