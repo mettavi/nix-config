@@ -221,6 +221,9 @@ in
         # Ensure session variables are available in the GUI session (eg. Wayland, X11)
         # see https://www.reddit.com/r/NixOS/comments/18hdool/comment/kdbc7y1/
         systemd.user.sessionVariables = config.home.sessionVariables;
+
+        # install file to provide syntax highlighting in the copyous extension settings gui
+        xdg.dataFile."copyous@boerdereinar.dev/highlight.min.js".source = ./highlight.min.js;
       };
   };
 }
