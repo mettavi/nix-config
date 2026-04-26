@@ -51,7 +51,7 @@ with lib;
       default = "";
       description = ''
         Name of the region to connect to.
-        See https://serverlist.piaservers.net/vpninfo/servers/v4
+        See https://serverlist.piaservers.net/vpninfo/servers/v7
       '';
     };
 
