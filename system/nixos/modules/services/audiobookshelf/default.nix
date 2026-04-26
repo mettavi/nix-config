@@ -52,6 +52,10 @@ in
             volumes = [
               # bind mounts
               "${config.mettavi.system.services.audiobookshelf.abs_home}:/audiobooks"
+              "${config.users.users.${username}.home}/media/podcasts/Pali:/podcasts/pali"
+              "${config.users.users.${username}.home}/media/podcasts/Sutras:/podcasts/sutras"
+              "${config.users.users.${username}.home}/media/podcasts/Spiritual Talks:/podcasts/spiritual talks"
+              "${config.users.users.${username}.home}/media/podcasts/Miscellaneous:/podcasts/miscellaneous"
               "${config.users.users.${username}.home}/.config/audiobookshelf:/config"
               "${config.users.users.${username}.home}/.local/share/audiobookshelf/metadata:/metadata"
               # named volume mounts
