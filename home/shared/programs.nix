@@ -1,14 +1,9 @@
 {
   config,
   hostname,
-  inputs,
-  nix_repo,
   pkgs,
   ...
 }:
-let
-  homeDir = "${config.home.homeDirectory}";
-in
 {
   home.packages = with pkgs; [
     atuin
