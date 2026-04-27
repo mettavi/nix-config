@@ -28,6 +28,11 @@
             # NB: Set this only for specific hosts rather than globally
             # mutableUsers = false;
           };
+          environment.variables = {
+            # remove the default "S" to prevent truncated lines in journalctl output,
+            # which causes problems with scrollback in the (ghostty) terminal
+            SYSTEMD_LESS = "FRXMK";
+          };
           # Select internationalisation properties.
           time.timeZone = "Australia/Melbourne";
           i18n = {
