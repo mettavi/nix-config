@@ -23,6 +23,9 @@ in
       enableZshIntegration = true;
       # settings will be written to $XDG_CONFIG_HOME/ghostty/config
       settings = {
+        background-opacity = 0.8; # default is 1 (fully opaque)
+        # blur is not supported on gnome without the blur my shell extension
+        # background-blur = 20;
         font-size = "14";
         # make right_alt send an escape sequence in ghostty
         macos-option-as-alt = true;
