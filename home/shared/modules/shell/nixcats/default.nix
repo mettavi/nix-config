@@ -35,9 +35,6 @@ in
     #   packageNames = [ "nixCats" ]; # <- the packages you want installed
     #   <see :h nixCats.module for options>
     # }
-    # TODO: Upgrade to neovim 0.12 when it comes out, which is needed by tree-sitter 0.26.1,
-    # ?which is needed by render-markdown (and other TS-dependent plugins)
-    # see https://github.com/NixOS/nixpkgs/pull/482787
     nixCats = {
       enable = true;
       nixpkgs_version = if pkgs.stdenv.isLinux then inputs.nixos-pkgs else inputs.nixpkgs;
