@@ -42,6 +42,8 @@ in
     cowsay
     gitleaks
     gyb # a command line tool for backing up your Gmail messages
+    # allow running home-manager "standalone" using the nixosConfigurations namespace (see flake.nix)
+    home-manager
     nix-fast-build # speed-up your evaluation and building process
     nix-init # Generate Nix packages from URLs
     nix-tree # browse nix-store path dependencies
