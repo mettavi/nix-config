@@ -3,15 +3,16 @@ let
   inherit (pkgs) lib callPackage makeOverridable;
 
   buildZoteroXpiAddon = makeOverridable (
-    { stdenv ? pkgs.stdenv
-    , fetchurl ? pkgs.fetchurl
-    , pname
-    , version
-    , addonId
-    , url
-    , hash
-    , meta
-    , ...
+    {
+      stdenv ? pkgs.stdenv,
+      fetchurl ? pkgs.fetchurl,
+      pname,
+      version,
+      addonId,
+      url,
+      hash,
+      meta,
+      ...
     }:
     stdenv.mkDerivation {
       name = "${pname}-${version}";
@@ -197,7 +198,6 @@ in
       platforms = platforms.all;
     };
   };
-
 
   zotero-gpt = buildZoteroXpiAddon rec {
     pname = "zotero-gpt";
