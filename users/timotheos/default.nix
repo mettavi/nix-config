@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   ...
@@ -87,7 +88,7 @@ with lib;
       # gnome document viewer
       "application/pdf" = [ "org.gnome.Evince.desktop" ];
     }
-    // mkIf mettavi.apps.firefox.enable {
+    // mkIf config.mettavi.apps.firefox.enable {
       "default-web-browser" = [ "firefox.desktop" ];
       "text/html" = [ "firefox.desktop" ];
       "x-scheme-handler/http" = [ "firefox.desktop" ];
