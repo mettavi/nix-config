@@ -12,7 +12,7 @@ in
   mettavi.apps.zotero = {
     enable = false;
     profiles.default = {
-      extensions = with pkgs.zotero-addons; [
+      extensions = with pkgs.xpkgs.zotero-addons; [
         zotero-abstract-cleaner
         zotero-auto-index
         zotero-ocr

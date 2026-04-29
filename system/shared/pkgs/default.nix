@@ -1,4 +1,5 @@
 { pkgs, ... }:
 {
-  tmux-weather = (pkgs.callPackage ./tmux-weather { });
+  npmGlobals = (pkgs.callPackage ./npm_globals { });
+  zotero-addons = (pkgs.callPackage ./zotero-addons { });
 }
