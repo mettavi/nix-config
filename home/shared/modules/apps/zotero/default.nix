@@ -12,7 +12,7 @@ with lib;
 let
   inherit (pkgs.stdenv.hostPlatform) isDarwin;
 
-  cfg = config.programs.zotero;
+  cfg = config.mettavi.apps.zotero;
 
   jsonFormat = pkgs.formats.json { };
 
@@ -61,7 +61,7 @@ in
 {
   meta.maintainers = [ maintainers.somasis ];
 
-  options.programs.zotero = {
+  options.mettavi.apps.zotero = {
     enable = mkEnableOption "Zotero";
 
     package = mkOption {
