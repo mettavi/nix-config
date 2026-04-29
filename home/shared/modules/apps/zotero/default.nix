@@ -1,5 +1,6 @@
 # code borrowed from:
 # https://github.com/somasis/puter/blob/963795efe0991ffa32ffcc78a5397f90d3afdba2/modules/home-manager/programs/zotero.nix
+# and https://github.com/crisbour/nix-hm-config/blob/7de8636c67c65b42e66ba244dbdfaf5ced991a14/home/features/productivity/zotero/default.nix#L19
 {
   config,
   lib,
