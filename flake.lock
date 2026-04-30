@@ -496,7 +496,8 @@
         "secrets": "secrets",
         "sops-nix-darwin": "sops-nix-darwin",
         "sops-nixos": "sops-nixos",
-        "t2fanrd": "t2fanrd"
+        "t2fanrd": "t2fanrd",
+        "wrappers": "wrappers"
       }
     },
     "secrets": {
@@ -607,6 +608,26 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "wrappers": {
+      "inputs": {
+        "nixpkgs": [
+          "nixos-pkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1777489553,
+        "narHash": "sha256-zR4vCp+LXrfTOCrjEHrxhD8FAs8KdWqOUomJgF+ds08=",
+        "owner": "BirdeeHub",
+        "repo": "nix-wrapper-modules",
+        "rev": "d3e027abcbf37f6185b1e131836490ef8764ec68",
+        "type": "github"
+      },
+      "original": {
+        "owner": "BirdeeHub",
+        "repo": "nix-wrapper-modules",
         "type": "github"
       }
     }

@@ -101,6 +101,10 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    wrappers = {
+      url = "github:BirdeeHub/nix-wrapper-modules";
+      inputs.nixpkgs.follows = "nixos-pkgs";
+    };
     sops-nixos = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixos-pkgs";
