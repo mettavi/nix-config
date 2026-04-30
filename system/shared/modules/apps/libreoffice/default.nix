@@ -3,7 +3,6 @@
 {
   config,
   lib,
-  # nixConfig,
   pkgs,
   username,
   ...
@@ -126,7 +125,6 @@ in
           vista-fonts
         ];
 
-        # environment.sessionVariables = {
         home.sessionVariables = {
           PYTHONPATH = "${lo}/lib/libreoffice/program";
           URE_BOOTSTRAP = "vnd.sun.star.pathname:${lo}/lib/libreoffice/program/fundamentalrc";
@@ -141,5 +139,4 @@ in
         };
       };
   };
-  # };
 }
