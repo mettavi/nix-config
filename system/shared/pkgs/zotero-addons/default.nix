@@ -1,6 +1,7 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
+with lib;
 let
-  inherit (pkgs) lib makeOverridable;
+  inherit (pkgs) lib;
 
   buildZoteroXpiAddon = makeOverridable (
     {
@@ -33,6 +34,21 @@ let
   );
 in
 {
+  zotero-reading-list = buildZoteroXpiAddon rec {
+    pname = "zotero-reading-list";
+    version = "1.5.18";
+    addonId = "reading-list@hotmail.com";
+
+    url = "https://github.com/Dominic-DallOsto/zotero-reading-list/releases/download/v${version}/zotero-reading-list.xpi";
+    hash = "sha256-oq2kjm8MBE28R4kTWnHMKYGzLMsuLvze+tzhGVv/Wzs=";
+
+    meta = with lib; {
+      homepage = "https://github.com/retorquere/zotero-open-pdf";
+      license = [ licenses.gpl3 ];
+      platforms = platforms.all;
+    };
+  };
+
   zotero-open-pdf = buildZoteroXpiAddon rec {
     pname = "zotero-open-pdf";
     version = "0.0.11";
