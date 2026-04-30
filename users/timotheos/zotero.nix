@@ -10,7 +10,7 @@ let
 in
 {
   mettavi.apps.zotero = {
-    enable = false;
+    enable = true;
     profiles.default = {
       extensions = with pkgs.xpkgs.zotero-addons; [
         zotero-abstract-cleaner
@@ -32,7 +32,7 @@ in
         let
           # Chicago Manual of Style [latest] edition (note)
           style = "http://www.zotero.org/styles/chicago-note-bibliography";
-          locale = "en-US";
+          locale = "en-AU";
         in
         {
           # See <https://www.zotero.org/support/preferences/hidden_preferences> also.
@@ -87,7 +87,8 @@ in
           # Attachment settings
           "extensions.zotero.useDataDir" = true;
           "extensions.zotero.dataDir" = "${config.xdg.dataHome}/zotero";
-          "extensions.zotero.saveRelativeAttachmentPath" = true;
+          # linked attachments are not compatible with webdav syncing (see below)
+          "extensions.zotero.saveRelativeAttachmentPath" = false;
           "extensions.zotero.baseAttachmentPath" = "${study}/zotero";
 
           # Reading settings
@@ -99,7 +100,8 @@ in
           "extensions.zotero.sync.storage.url" = "https://app.koofr.net/dav/Koofr";
           "extensions.zotero.sync.storage.username" = "${inputs.secrets.email.personal}";
 
-          # "extensions.zotero.attachmentRenameFormatString" = "{%c - }%t{100}{ (%y)}"; # Set the file name format used by Zotero's internal stuff
+          "extensions.zotero.attachmentRenameFormatString" =
+            "{{ firstCreator suffix=\" - \" }}{{ year suffix=\" - \" }}{{ title truncate=\"100\" }}"; # Set the file name format used by Zotero's internal stuff
 
           "extensions.zotero.autoRenameFiles.fileTypes" = lib.concatStringsSep "," [
             "application/pdf"
@@ -200,12 +202,6 @@ in
 
         :root:not([legacytoolbar="true"]) {
             --tab-min-height: 36px;
-        }
-
-        /* Use Arc's style for toolbars */
-        #titlebar {
-            background: ${config.theme.colors.toolbarBackground} !important; /* config.theme.colors.background */
-            color: ${config.theme.colors.toolbarForeground} !important; /* config.theme.colors.foreground */
         }
       '';
       # };
