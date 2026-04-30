@@ -13,20 +13,26 @@ in
     enable = true;
     profiles.default = {
       extensions = with pkgs.xpkgs.zotero-addons; [
-        zotero-abstract-cleaner
-        zotero-auto-index
-        zotero-ocr
-        zotero-open-pdf
-        zotero-preview
-        zotero-robustlinks
-        zotero-storage-scanner
-        zotmoov
-        zotero-delitemwithatt
-        scite-zotero
-        cita
-        ai-research-assistant
+        # MY EXTENSIONS
+        # zotero-addon-market
+        # zotero-attanger
+        # zotero-better-bibtex
+        zotero-reading-list
+        # OTHER EXTENSIONS
+        # zotero-abstract-cleaner
+        # zotero-auto-index
+        # zotero-ocr
+        # zotero-open-pdf
+        # zotero-preview
+        # zotero-robustlinks
+        # zotero-storage-scanner
+        # zotmoov
+        # zotero-delitemwithatt
+        # scite-zotero
+        # cita
+        # ai-research-assistant
         #zotero-gpt
-        zotero-better-notes
+        # zotero-better-notes
       ];
       settings =
         let
@@ -111,16 +117,16 @@ in
           ];
 
           # Zotero OCR
-          "extensions.zotero.zoteroocr.pdftoppmPath" = "${pkgs.poppler-utils}/bin/pdftoppm";
-          "extensions.zotero.zoteroocr.ocrPath" = "${pkgs.tesseract}/bin/tesseract";
-          "extensions.zotero.zoteroocr.language" = "eng";
-
-          "extensions.zotero.zoteroocr.outputPDF" = true; # Output options > "Save output as a PDF with text layer"
-          "extensions.zotero.zoteroocr.overwritePDF" = true; # Output options > "Save output as a PDF with text layer" > "Overwrite the initial PDF with the output"
-
-          "extensions.zotero.zoteroocr.outputHocr" = false; # Output options > "Save output as a HTML/hocr file(s)"
-          "extensions.zotero.zoteroocr.outputNote" = false; # Output options > "Save output as a note"
-          "extensions.zotero.zoteroocr.outputPNG" = false; # Output options > "Save the intermediate PNGs as well in the folder"
+          # "extensions.zotero.zoteroocr.pdftoppmPath" = "${pkgs.poppler-utils}/bin/pdftoppm";
+          # "extensions.zotero.zoteroocr.ocrPath" = "${pkgs.tesseract}/bin/tesseract";
+          # "extensions.zotero.zoteroocr.language" = "eng";
+          #
+          # "extensions.zotero.zoteroocr.outputPDF" = true; # Output options > "Save output as a PDF with text layer"
+          # "extensions.zotero.zoteroocr.overwritePDF" = true; # Output options > "Save output as a PDF with text layer" > "Overwrite the initial PDF with the output"
+          #
+          # "extensions.zotero.zoteroocr.outputHocr" = false; # Output options > "Save output as a HTML/hocr file(s)"
+          # "extensions.zotero.zoteroocr.outputNote" = false; # Output options > "Save output as a note"
+          # "extensions.zotero.zoteroocr.outputPNG" = false; # Output options > "Save the intermediate PNGs as well in the folder"
 
           "ui.use_activity_cursor" = true;
 
@@ -143,17 +149,17 @@ in
           "extensions.zotero.autoRenameFiles.linked" = true;
 
           # <https://github.com/MuiseDestiny/zotero-attanger>
-          "extensions.zotero.zoteroattanger.sourceDir" = config.xdg.userDirs.download;
-          "extensions.zotero.zoteroattanger.readPDFtitle" = "always";
-          "extensions.zotero.zoteroattanger.attachType" = "importing";
-          "extensions.zotero.zoteroattanger.destDir" = "${config.xdg.userDirs.documents}/articles";
-          "extensions.zotero.zoteroattanger.autoRemoveEmptyFolder" = true;
-          "extensions.zotero.zoteroattanger.fileTypes" = lib.concatStringsSep "," [
-            "pdf"
-            "epub"
-            "docx"
-            "odt"
-          ];
+          # "extensions.zotero.zoteroattanger.sourceDir" = config.xdg.userDirs.download;
+          # "extensions.zotero.zoteroattanger.readPDFtitle" = "always";
+          # "extensions.zotero.zoteroattanger.attachType" = "importing";
+          # "extensions.zotero.zoteroattanger.destDir" = "${config.xdg.userDirs.documents}/articles";
+          # "extensions.zotero.zoteroattanger.autoRemoveEmptyFolder" = true;
+          # "extensions.zotero.zoteroattanger.fileTypes" = lib.concatStringsSep "," [
+          #   "pdf"
+          #   "epub"
+          #   "docx"
+          #   "odt"
+          # ];
 
           # Enable userChrome
           "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
