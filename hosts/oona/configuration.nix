@@ -128,6 +128,14 @@
   ];
 
   # SYSTEM MODULES SETTINGS
+
+  # home-manager apps that refer to system settings (located in system directory)
+  mettavi = {
+    apps = {
+      libreoffice.enable = true;
+    };
+  };
+
   mettavi.system = {
     apps = {
       bitwarden = {
@@ -139,7 +147,6 @@
         enable = true;
         cal_lib = "${config.users.users.${username}.home}/media/calibre";
       };
-      libreoffice.enable = true;
       qbittorrent.enable = true;
     };
     devices = {
