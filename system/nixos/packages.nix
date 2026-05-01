@@ -17,6 +17,7 @@
       hdparm # tool to get/set drive parameters
       libva-utils # utilities for VA-API (video acceleration API)
       lshw-gui # detailed hardware info (includes gui)
+      lnav # logfile navigator
       lsof # tool to list open files
       # Icons of the Nix logo, in Freedesktop Icon Directory Layout
       nixos-icons
