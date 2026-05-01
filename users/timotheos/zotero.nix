@@ -5,6 +5,7 @@
   pkgs,
   ...
 }:
+with lib;
 let
   study = "${config.home.homeDirectory}/study";
 in
@@ -213,6 +214,11 @@ in
       # };
     };
   };
+
+  # install the firefox extension
+  programs.firefox.profiles."mettavi".extensions.packages =
+    with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system};
+    optionals (config.mettavi.apps.firefox.enable) [ zotero-connector ];
 
   xdg.dataFile = {
     # "zotero/storage".source =
