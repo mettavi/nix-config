@@ -254,8 +254,13 @@ in
         EDITOR = nvimpath;
         MANPAGER = "${nvimpath} +Man!";
       };
+
     home.shellAliases = {
       nvw = "env NVIM_APPNAME='nvim-wrap' nvw";
+    };
+
+    xdg.configFile = {
+      "nvim-wrap".source = "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/nvim-wrap";
     };
   };
 }
