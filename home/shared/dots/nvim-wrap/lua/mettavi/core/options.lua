@@ -1,0 +1,93 @@
+--  configure builtin file manager for new install
+vim.cmd("let g:netrw_liststyle = 3")
+
+local opt = vim.opt -- for conciseness
+
+-- line numbers
+opt.relativenumber = true -- show relative line numbers
+opt.number = true -- shows absolute line number on cursor line (when relative number is on)
+
+-- tabs & indentation
+opt.tabstop = 2 -- 2 spaces for tabs (prettier default)
+opt.shiftwidth = 2 -- 2 spaces for indent width
+opt.expandtab = true -- expand tab to spaces
+opt.autoindent = true -- copy indent from current line when starting new one
+
+-- folding, see https://neovim.io/doc/user/fold/#_2.-fold-commands
+opt.foldenable = false -- all folds are open, but can be toggled closed with 'zi'
+
+-- line wrapping
+opt.wrap = false -- disable line wrapping
+
+-- search settings
+opt.ignorecase = true -- ignore case when searching
+opt.smartcase = true -- if you include mixed case in your search, assumes you want case-sensitive
+
+-- cursor line
+opt.cursorline = true -- highlight the current cursor line
+
+-- appearance
+
+-- turn on termguicolors for tokyonight colorscheme to work
+-- (have to use iterm2 or any other true color terminal)
+opt.termguicolors = true
+opt.background = "dark" -- colorschemes that can be light or dark will be made dark
+opt.signcolumn = "yes" -- show sign column so that text doesn't shift
+
+-- backspace
+opt.backspace = "indent,eol,start" -- allow backspace on indent, end of line or insert mode start position
+
+-- clipboard
+opt.clipboard:append("unnamedplus") -- use system clipboard as default register
+
+-- split windows
+opt.splitright = true -- split vertical window to the right
+opt.splitbelow = true -- split horizontal window to the bottom
+
+-- turn off swapfile
+opt.swapfile = false
+
+-- enable undofile
+opt.undofile = true
+
+-- recommended for the auto-session plugin (especially add "localoptions")
+opt.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
+-------------- CUSTOM OPTIONS -------------------
+
+-- open terminal in a split window
+vim.api.nvim_create_user_command(
+  "T",
+  "split | terminal <args>",
+  { bang = true, nargs = "*", desc = "Open terminal in a split window" }
+)
+
+opt.timeoutlen = 500 -- shorten delay when pressing first key of a mapping (default 1000)
+
+-- assign filetypes not based on extension
+vim.filetype.add({
+  filename = {
+    ["my.code-snippets"] = "jsonc",
+  },
+})
+--------------- AUTOCOMMANDS ---------------------
+
+-- Highlight when yanking (copying) text (config from kickstart.nvim)
+--  Try it with `yap` in normal mode
+--  See `:help vim.highlight.on_yank()`
+vim.api.nvim_create_autocmd("TextYankPost", {
+  desc = "Highlight when yanking (copying) text",
+  group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
+
+-- Autosave buffer when leaving or losing focus
+vim.api.nvim_create_autocmd({ "BufLeave", "FocusLost" }, {
+  callback = function()
+    if not vim.bo.readonly and vim.fn.expand("%") ~= "" and vim.bo.buftype == "" then
+      vim.api.nvim_command("silent update")
+    end
+  end,
+})
