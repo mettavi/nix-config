@@ -459,6 +459,54 @@
         "type": "github"
       }
     },
+    "plugins-lze": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1777332925,
+        "narHash": "sha256-jKADsx+893AjFfua++A/Py0Z5bZC6M8HJuXPVJdi+pA=",
+        "owner": "BirdeeHub",
+        "repo": "lze",
+        "rev": "d9425d09fc66f9529b29689852ec21d6aadf9fbc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "BirdeeHub",
+        "repo": "lze",
+        "type": "github"
+      }
+    },
+    "plugins-lzextras": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1777352146,
+        "narHash": "sha256-lPGTL68ghRgX9eKOgLjAc9rkhmhACVzwD/pxPaG+dAw=",
+        "owner": "BirdeeHub",
+        "repo": "lzextras",
+        "rev": "844c3e5c5b9ab857db948941c8c7dba4e8ddd0e3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "BirdeeHub",
+        "repo": "lzextras",
+        "type": "github"
+      }
+    },
+    "plugins-vim-maximizer": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1440196645,
+        "narHash": "sha256-+VPcMn4NuxLRpY1nXz7APaXlRQVZD3Y7SprB/hvNKww=",
+        "owner": "szw",
+        "repo": "vim-maximizer",
+        "rev": "2e54952fe91e140a2e69f35f22131219fcd9c5f1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "szw",
+        "repo": "vim-maximizer",
+        "type": "github"
+      }
+    },
     "quadlet-nix": {
       "locked": {
         "lastModified": 1770606362,
@@ -492,6 +540,9 @@
         "nixos-hardware": "nixos-hardware",
         "nixos-pkgs": "nixos-pkgs",
         "nixpkgs": "nixpkgs_2",
+        "plugins-lze": "plugins-lze",
+        "plugins-lzextras": "plugins-lzextras",
+        "plugins-vim-maximizer": "plugins-vim-maximizer",
         "quadlet-nix": "quadlet-nix",
         "secrets": "secrets",
         "sops-nix-darwin": "sops-nix-darwin",
