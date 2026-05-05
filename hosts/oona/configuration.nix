@@ -289,6 +289,14 @@
     '';
   };
 
+  # home-manager modules installed on this host only
+  home-manager.users."${username}" = {
+    home.packages = with pkgs; [
+      texliveBasic
+      texstudio
+    ];
+  };
+
   # experimental code for mapping the copilot key to sysrq, implemented instead with kanata
   # NB: kept for reference to the keyboard name/code on this host
   # services.udev = {
