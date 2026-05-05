@@ -129,13 +129,6 @@
 
   # SYSTEM MODULES SETTINGS
 
-  # home-manager apps that refer to system settings (located in system directory)
-  mettavi = {
-    apps = {
-      libreoffice.enable = true;
-    };
-  };
-
   mettavi.system = {
     apps = {
       bitwarden = {
@@ -289,12 +282,20 @@
     '';
   };
 
+  # includes system settings (located in system directory)
+  mettavi = {
+    apps = {
+      libreoffice.enable = true;
+    };
+  };
+
   # home-manager modules installed on this host only
-  home-manager.users."${username}" = {
-    home.packages = with pkgs; [
-      texliveBasic
-      texstudio
-    ];
+  home-manager.users.${username} = {
+    mettavi = {
+      apps = {
+        latex.enable = true;
+      };
+    };
   };
 
   # experimental code for mapping the copilot key to sysrq, implemented instead with kanata
