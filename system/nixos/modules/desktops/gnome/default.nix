@@ -26,6 +26,13 @@ in
 
   config = mkIf cfg.enable {
     environment = {
+      # prevent the error "GLib-GIO-ERROR Settings schema 'org.gtk.Settings.FileChooser' is not installed"
+      # in some apps, such as TexStudio
+      # see https://discourse.nixos.org/t/setting-schema-filechooser-is-not-installed-on-some-programs/66091/3, and
+      # https://discourse.nixos.org/t/gtk-file-dialog-causes-segfaults-glib-gio-error-settings-schema-org-gtk-settings-filechooser-does-not-contain-a-key-named-show-type-column/6853/8
+      extraInit = ''
+        export XDG_DATA_DIRS="$XDG_DATA_DIRS:${pkgs.gtk3}/share/gsettings-schemas/${pkgs.gtk3.name}"
+      '';
       gnome.excludePackages = with pkgs; [
         gnome-console # terminal emulator for the GNOME desktop
         gnome-tour
