@@ -289,11 +289,14 @@
     };
   };
 
-  # home-manager modules installed on this host only
+  # home-manager modules installed for the admin user ON THIS HOST ONLY
   home-manager.users.${username} = {
     mettavi = {
       apps = {
         latex.enable = true;
+      };
+      shell = {
+        nvim-wrap.enable = true;
       };
     };
   };
