@@ -10,6 +10,7 @@ let
   tex = (
     pkgs.texliveBasic.withPackages (
       ps: with ps; [
+        # recommended add-on packages for LaTeX which have widespread use
         collection-latexrecommended
       ]
     )
