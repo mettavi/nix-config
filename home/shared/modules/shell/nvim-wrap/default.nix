@@ -6,7 +6,7 @@
 }:
 with lib;
 let
-  cfg = config.mettavi.shell.nvim-lib;
+  cfg = config.mettavi.shell.nvim-wrap;
 in
 {
   # import the neovim wrapper module
@@ -17,7 +17,7 @@ in
     })
   ];
 
-  options.mettavi.shell.nvim-lib = {
+  options.mettavi.shell.nvim-wrap = {
     enable = mkEnableOption "set up and configure the nvim wrapper module";
     cats = lib.mkOption {
       readOnly = true;
