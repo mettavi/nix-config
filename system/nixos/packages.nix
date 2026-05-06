@@ -7,6 +7,7 @@
       cpuid # Linux tool to dump x86 CPUID information about the CPU
       cryptsetup # luks utility for dm-crypt (the "device mapper" kernel encryption system)
       evtest # simple tool for input event debugging
+      file # show the type of files
       # gcc, gnumake and unzip are required for nvim
       # GNU Compiler Collection (required for nvim treesitter)
       gcc
