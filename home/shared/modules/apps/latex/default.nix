@@ -12,6 +12,10 @@ let
       ps: with ps; [
         # recommended add-on packages for LaTeX which have widespread use
         collection-latexrecommended
+        # mf command line util for fonts (latex package ifsym)
+        metafont
+        # provides the fullpage package and others useful for preparing documents
+        preprint
       ]
     )
   );
@@ -30,5 +34,9 @@ in
       tex
       texstudio
     ];
+
+    xdg.mimeApps.defaultApplications = {
+      "text/x-tex" = "texstudio.desktop";
+    };
   };
 }
