@@ -19,11 +19,6 @@ in
 
   options.mettavi.shell.nvim-wrap = {
     enable = mkEnableOption "set up and configure the nvim wrapper module";
-    cats = lib.mkOption {
-      readOnly = true;
-      type = lib.types.attrsOf lib.types.bool;
-      default = builtins.mapAttrs (_: v: v.enable) config.specs;
-    };
   };
 
   config = mkIf cfg.enable {
@@ -38,7 +33,7 @@ in
         neovimPlugins = config.nvim-lib.pluginsFromPrefix "plugins-" inputs;
       in
       {
-        imports = [ ./extPlugins.nix ];
+        imports = [ ./helperOpts.nix ];
 
         enable = true;
         env.NVIM_APPNAME = "nvim-wrap";

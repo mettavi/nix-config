@@ -1,4 +1,13 @@
-{ config, lib, ... }: {
+{ config, lib, ... }:
+{
+  # Inform our lua of which top level specs are enabled
+  options.settings.cats = lib.mkOption {
+    readOnly = true;
+    type = lib.types.attrsOf lib.types.bool;
+    default = builtins.mapAttrs (_: v: v.enable) config.specs;
+  };
+
+  # build plugins from inputs set
   options.nvim-lib.pluginsFromPrefix = lib.mkOption {
     type = lib.types.raw;
     readOnly = true;
