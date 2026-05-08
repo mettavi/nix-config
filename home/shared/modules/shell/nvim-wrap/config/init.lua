@@ -124,6 +124,7 @@ nixInfo.lze.load({
   { import = "mettavi.plugins.telescope" },
   { import = "mettavi.plugins.todo-comments" },
   { import = "mettavi.plugins.treesitter" },
+  { import = "mettavi.plugins.ts-autotag" },
   { import = "mettavi.plugins.trouble" },
   { import = "mettavi.plugins.ts-context-commentstring" },
   {
@@ -141,29 +142,6 @@ nixInfo.lze.load({
       require("notify").setup()
     end,
   },
-  -- {
-  --   "nvim-ts-autotag",
-  --   auto_enable = true,
-  --   dep_of = "nvim-treesitter",
-  --   after = function(plugin)
-  --     require("nvim-ts-autotag").setup({
-  --       opts = {
-  --         -- Defaults
-  --         enable_close = true, -- Auto close tags
-  --         enable_rename = true, -- Auto rename pairs of tags
-  --         enable_close_on_slash = false, -- Auto close on trailing </
-  --       },
-  --       -- Also override individual filetype configs, these take priority.
-  --       -- Empty by default, useful if one of the "opts" global settings
-  --       -- doesn't work well in a specific filetype
-  --       per_filetype = {
-  --         ["html"] = {
-  --           enable_close = false,
-  --         },
-  --       },
-  --     })
-  --   end,
-  -- },
   {
     "nui.nvim",
     auto_enable = true,
