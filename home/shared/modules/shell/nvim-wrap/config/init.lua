@@ -117,6 +117,7 @@ nixInfo.lze.load({
   { import = "mettavi.plugins.lualine" },
   { import = "mettavi.plugins.noice" },
   { import = "mettavi.plugins.nvim-tree" },
+  { import = "mettavi.plugins.nvim-cmp" },
   { import = "mettavi.plugins.render-markdown" },
   { import = "mettavi.plugins.substitute" },
   { import = "mettavi.plugins.telescope" },
@@ -157,60 +158,6 @@ nixInfo.lze.load({
       { "<leader>sm", "<cmd>MaximizerToggle<CR>", desc = "Maximize/minimize a split" },
     },
   },
-  -- {
-  --   "gitsigns.nvim",
-  --   auto_enable = true,
-  --   event = { "BufReadPre", "BufNewFile" },
-  --   -- cmd = { "" },
-  --   -- ft = "",
-  --   -- keys = "",
-  --   -- colorscheme = "",
-  --   after = function(plugin)
-  --     require("gitsigns").setup({
-  --       on_attach = function(bufnr)
-  --         local gs = package.loaded.gitsigns
-  --
-  --         local function map(mode, l, r, desc)
-  --           vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
-  --         end
-  --
-  --         -- Navigation
-  --         map("n", "]h", gs.next_hunk, "Next Hunk")
-  --         map("n", "[h", gs.prev_hunk, "Prev Hunk")
-  --
-  --         -- Actions
-  --         map("n", "<leader>hs", gs.stage_hunk, "Stage hunk")
-  --         map("n", "<leader>hr", gs.reset_hunk, "Reset hunk")
-  --         map("v", "<leader>hs", function()
-  --           gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-  --         end, "Stage hunk")
-  --         map("v", "<leader>hr", function()
-  --           gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-  --         end, "Reset hunk")
-  --
-  --         map("n", "<leader>hS", gs.stage_buffer, "Stage buffer")
-  --         map("n", "<leader>hR", gs.reset_buffer, "Reset buffer")
-  --
-  --         map("n", "<leader>hu", gs.undo_stage_hunk, "Undo stage hunk")
-  --
-  --         map("n", "<leader>hp", gs.preview_hunk, "Preview hunk")
-  --
-  --         map("n", "<leader>hb", function()
-  --           gs.blame_line({ full = true })
-  --         end, "Blame line")
-  --         map("n", "<leader>hB", gs.toggle_current_line_blame, "Toggle line blame")
-  --
-  --         map("n", "<leader>hd", gs.diffthis, "Diff this")
-  --         map("n", "<leader>hD", function()
-  --           gs.diffthis("~")
-  --         end, "Diff this ~")
-  --
-  --         -- Text object
-  --         map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "Gitsigns select hunk")
-  --       end,
-  --     })
-  --   end,
-  -- },
   {
     -- lazydev makes your lua lsp load only the relevant definitions for a file.
     -- It also gives us a nice way to correlate globals we create with files.
@@ -253,111 +200,6 @@ nixInfo.lze.load({
   },
   { "luasnip", auto_enable = true, dep_of = "nvim-cmp" },
   { "lspkind.nvim", auto_enable = true, on_plugin = "nvim-cmp" },
-  {
-    "nvim-cmp",
-    auto_enable = true,
-    event = "InsertEnter",
-    after = function(plugin)
-      local cmp = require("cmp")
-      local luasnip = require("luasnip")
-      local lspkind = require("lspkind")
-      -- import nvim-autopairs completion functionality
-      local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-
-      -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
-      require("luasnip.loaders.from_vscode").lazy_load()
-
-      -- user-defined snippets
-      require("luasnip.loaders.from_vscode").load_standalone({ path = "./my.code-snippets" })
-
-      -- friendly-snippets - enable standardized comments snippets
-      require("luasnip").filetype_extend("sh", { "shelldoc" })
-
-      -- luasnip keybinds to interact with snippet nodes
-      -- jump to next node
-      vim.keymap.set({ "i", "s" }, "<Tab>", function()
-        luasnip.jump(1)
-      end, { silent = true })
-      -- jump back to previous node
-      vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
-        luasnip.jump(-1)
-      end, { silent = true })
-      -- choose option at node
-      vim.keymap.set({ "i", "s" }, "<C-E>", function()
-        if luasnip.choice_active() then
-          luasnip.change_choice(1)
-        end
-      end, { silent = true })
-
-      -- add vim style up and down navigation to cmp-cmdline with ctrl-k and ctrl-j
-      local cmdline_mappings = cmp.mapping.preset.cmdline({
-        ["<C-j>"] = { c = cmp.mapping.select_next_item() },
-        ["<C-k>"] = { c = cmp.mapping.select_prev_item() },
-      })
-
-      -- make autopairs and completion work together
-      cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-
-      -- `/` cmdline setup.
-      cmp.setup.cmdline("/", {
-        mapping = cmdline_mappings,
-        sources = {
-          { name = "buffer" },
-        },
-      })
-
-      -- `:` cmdline setup.
-      cmp.setup.cmdline(":", {
-        mapping = cmdline_mappings,
-        sources = cmp.config.sources({
-          { name = "path" },
-        }, {
-          {
-            name = "cmdline",
-            option = {
-              ignore_cmds = { "Man", "!" },
-            },
-          },
-        }),
-      })
-
-      cmp.setup({
-        completion = {
-          completeopt = "menu,menuone,preview,noselect",
-        },
-        snippet = { -- configure how nvim-cmp interacts with snippet engine
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
-        },
-        mapping = cmp.mapping.preset.insert({
-          ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
-          ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
-          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
-          ["<C-e>"] = cmp.mapping.abort(), -- close completion window
-          ["<CR>"] = cmp.mapping.confirm({ select = false }),
-        }),
-        -- sources for autocompletion
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "luasnip" }, -- snippets
-          { name = "buffer" }, -- text within current buffer
-          { name = "path" }, -- file system paths
-        }),
-        -- configure lspkind for vs-code like pictograms in completion menu
-        -- Suppress the warning: "Missing required fields in type `cmp.FormattingConfig`: `fields`, `expandable_indicator`"
-        ---@diagnostic disable: missing-fields
-        formatting = {
-          format = lspkind.cmp_format({
-            maxwidth = 50,
-            ellipsis_char = "...",
-          }),
-        },
-      })
-    end,
-  },
   {
     "cmp-buffer",
     auto_enable = true,

@@ -1,28 +1,13 @@
 return {
-  "hrsh7th/nvim-cmp", -- provides autocompletion (default omnifunc is not automatic)
+  "nvim-cmp",
+  auto_enable = true,
   event = "InsertEnter",
-  dependencies = {
-    "hrsh7th/cmp-buffer", -- source for text in buffer
-    "hrsh7th/cmp-path", -- source for file system paths
-    "hrsh7th/cmp-cmdline", -- source for vim's command line
-    "L3MON4D3/LuaSnip", -- snippet engine
-    "saadparwaiz1/cmp_luasnip", -- for autocompletion
-    "rafamadriz/friendly-snippets", -- useful snippets
-    "onsails/lspkind.nvim", -- vs-code like pictograms
-  },
-  opts = function(_, opts) -- completion source for require statements and module annotations
-    opts.sources = opts.sources or {}
-    table.insert(opts.sources, {
-      name = "lazydev",
-      group_index = 0, -- set group index to 0 to skip loading LuaLS completions
-    })
-  end,
-  config = function()
+  after = function(plugin)
     local cmp = require("cmp")
-
     local luasnip = require("luasnip")
-
     local lspkind = require("lspkind")
+    -- import nvim-autopairs completion functionality
+    local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 
     -- loads vscode style snippets from installed plugins (e.g. friendly-snippets)
     require("luasnip.loaders.from_vscode").lazy_load()
@@ -49,16 +34,14 @@ return {
       end
     end, { silent = true })
 
-    -- add markdown completions
-    require("render-markdown").setup({
-      completions = { lsp = { enabled = true } },
-    })
-
     -- add vim style up and down navigation to cmp-cmdline with ctrl-k and ctrl-j
     local cmdline_mappings = cmp.mapping.preset.cmdline({
       ["<C-j>"] = { c = cmp.mapping.select_next_item() },
       ["<C-k>"] = { c = cmp.mapping.select_prev_item() },
     })
+
+    -- make autopairs and completion work together
+    cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
     -- `/` cmdline setup.
     cmp.setup.cmdline("/", {
