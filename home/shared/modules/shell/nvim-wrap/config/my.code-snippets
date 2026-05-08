@@ -1,0 +1,34 @@
+{
+    // From https://discourse.nixos.org/t/optimize-flake-nix-code/29687
+    "mkSystem function": {
+      "prefix": "mkSystem",
+      "body": [ 
+        "mkSystem =", 
+          // use tab instead of enter to replace multiple instances of same tabstop
+          "\tfile_path:",
+          "\t${1|nixpkgs.lib.nixosSystem,nix-darwin.lib.darwinSystem|} {",
+          "\t\tsystem = \"x86_64-linux\";",
+          "\t\tmodules = [",
+            "\t\t\tfile_path",
+            "\t\t\t${2|home-manager.nixosModules.home-manager,home-manager.darwinModules.home-manager|}",
+            "\t\t\t{",
+              "\t\t\t\thome-manager = {",
+                "\t\t\t\t\tuseGlobalPkgs = true;",
+                "\t\t\t\t\tuseUserPackages = true;",
+              "\t\t\t\t};",
+            "\t\t\t}",
+          "\t\t];",
+        "\t};"
+      ],
+      "description": "A helper to wrap the nixosSystem call",
+      "scope": "nix"
+    },
+    "mkSystem call": {
+      "prefix": "mkSystem",
+      "body": [ 
+          "${1:hostname} = mkSystem ${2:file_path};"
+      ],
+      "description": "Call the mkSystem helper funtion",
+      "scope": "nix"
+    }
+}
