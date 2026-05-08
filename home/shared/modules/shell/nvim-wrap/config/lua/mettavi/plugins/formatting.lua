@@ -1,12 +1,22 @@
 return {
-  "stevearc/conform.nvim",
-  lazy = true,
+  "conform.nvim",
+  auto_enable = true,
+  -- cmd = { "" },
   event = { "BufReadPre", "BufNewFile" }, -- to disable, comment this out
-  config = function()
+  -- ft = "",
+  keys = {
+    { "<leader>mp", desc = "Format file or range (in visual mode)" },
+  },
+  -- colorscheme = "",
+  after = function(plugin)
     local conform = require("conform")
 
     conform.setup({
       formatters_by_ft = {
+        -- Conform will run multiple formatters sequentially
+        -- python = { "isort", "black" },
+        -- Use a sub-list to run only the first available formatter
+        -- javascript = { { "prettierd", "prettier" } },
         javascript = { "prettier" },
         typescript = { "prettier" },
         javascriptreact = { "prettier" },
@@ -17,7 +27,8 @@ return {
         json = { "prettier" },
         yaml = { "yamlfmt" },
         markdown = { "prettier" },
-        lua = { "stylua" },
+        -- lua = { "stylua" },
+        lua = nixInfo(nil, "settings", "cats", "lua") and { "stylua" } or nil,
         sh = { "shfmt" },
         toml = { "taplo" },
         nix = { "nixfmt" },
