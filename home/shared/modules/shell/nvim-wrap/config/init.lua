@@ -106,10 +106,12 @@ nixInfo.lze.load({
   { import = "mettavi.plugins.alpha" },
   { import = "mettavi.plugins.colorscheme" },
   { import = "mettavi.plugins.autopairs" },
+  { import = "mettavi.plugins.bufferline" },
   { import = "mettavi.plugins.comment" },
   { import = "mettavi.plugins.flash" },
   { import = "mettavi.plugins.indent-blankline" },
   { import = "mettavi.plugins.lazygit" },
+  { import = "mettavi.plugins.lualine" },
   { import = "mettavi.plugins.noice" },
   { import = "mettavi.plugins.nvim-tree" },
   { import = "mettavi.plugins.render-markdown" },
@@ -319,94 +321,6 @@ nixInfo.lze.load({
       },
     },
     -- also these are regular specs and you can use before and after and all the other normal fields
-  },
-  {
-    "lualine.nvim",
-    auto_enable = true,
-    -- cmd = { "" },
-    event = "DeferredUIEnter",
-    -- ft = "",
-    -- keys = "",
-    -- colorscheme = "",
-    after = function(plugin)
-      local lualine = require("lualine")
-
-      local colors = {
-        blue = "#65D1FF",
-        green = "#3EFFDC",
-        violet = "#FF61EF",
-        yellow = "#FFDA7B",
-        red = "#FF4A4A",
-        fg = "#c3ccdc",
-        bg = "#112638",
-        inactive_bg = "#2c3043",
-      }
-
-      local bgtrans = nil
-      if vim.env.ITERM_SESSION_ID ~= nil then
-        bgtrans = colors.none
-      else
-        bgtrans = colors.bg
-      end
-
-      local my_lualine_theme = {
-        normal = {
-          a = { bg = colors.blue, fg = colors.bg, gui = "bold" },
-          b = { bg = colors.bg, fg = colors.fg },
-          c = { bg = bgtrans, fg = colors.fg },
-        },
-        insert = {
-          a = { bg = colors.green, fg = colors.bg, gui = "bold" },
-          b = { bg = colors.bg, fg = colors.fg },
-          c = { bg = bgtrans, fg = colors.fg },
-        },
-        visual = {
-          a = { bg = colors.violet, fg = colors.bg, gui = "bold" },
-          b = { bg = colors.bg, fg = colors.fg },
-          c = { bg = bgtrans, fg = colors.fg },
-        },
-        command = {
-          a = { bg = colors.yellow, fg = colors.bg, gui = "bold" },
-          b = { bg = colors.bg, fg = colors.fg },
-          c = { bg = bgtrans, fg = colors.fg },
-        },
-        replace = {
-          a = { bg = colors.red, fg = colors.bg, gui = "bold" },
-          b = { bg = colors.bg, fg = colors.fg },
-          c = { bg = bgtrans, fg = colors.fg },
-        },
-        inactive = {
-          a = { bg = colors.inactive_bg, fg = colors.semilightgray, gui = "bold" },
-          b = { bg = colors.inactive_bg, fg = colors.semilightgray },
-          c = { bg = bgtrans, fg = colors.semilightgray },
-        },
-      }
-
-      require("lualine").setup({
-        options = {
-          theme = my_lualine_theme,
-          component_separators = "|",
-          section_separators = "",
-        },
-        sections = {
-          lualine_c = {
-            { "filename", path = 1, status = true },
-          },
-        },
-        inactive_sections = {
-          lualine_b = {
-            { "filename", path = 3, status = true },
-          },
-          lualine_x = { "filetype" },
-        },
-        tabline = {
-          lualine_a = { "buffers" },
-          -- if you use lualine-lsp-progress, I have mine here instead of fidget
-          -- lualine_b = { 'lsp_progress', },
-          lualine_z = { "tabs" },
-        },
-      })
-    end,
   },
   { "luasnip", auto_enable = true, dep_of = "nvim-cmp" },
   { "lspkind.nvim", auto_enable = true, on_plugin = "nvim-cmp" },
