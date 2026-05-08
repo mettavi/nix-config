@@ -271,8 +271,9 @@ in
         EDITOR = nvimpath;
         MANPAGER = "${nvimpath} +Man!";
       };
-    xdg.configFile = {
-      "nvim-wrap".source = ./config;
-    };
+    # this is already builtin to the wrapper
+    # xdg.configFile = {
+    #   "nvim-wrap".source = ./config;
+    # };
   };
 }
