@@ -103,8 +103,12 @@ require("mettavi.core")
 
 nixInfo.lze.load({
   -- { require("lze").load("mettavi.plugins") },
+  { import = "mettavi.plugins.colorscheme" },
   { import = "mettavi.plugins.autopairs" },
+  { import = "mettavi.plugins.comment" },
+  { import = "mettavi.plugins.flash" },
   { import = "mettavi.plugins.nvim-tree" },
+  { import = "mettavi.plugins.ts-context-commentstring" },
   {
     "auto-session",
     auto_enable = true,
