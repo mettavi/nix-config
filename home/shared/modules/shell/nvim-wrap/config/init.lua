@@ -111,6 +111,7 @@ nixInfo.lze.load({
   { import = "mettavi.plugins.lazygit" },
   { import = "mettavi.plugins.noice" },
   { import = "mettavi.plugins.nvim-tree" },
+  { import = "mettavi.plugins.substitute" },
   { import = "mettavi.plugins.telescope" },
   { import = "mettavi.plugins.todo-comments" },
   { import = "mettavi.plugins.trouble" },
