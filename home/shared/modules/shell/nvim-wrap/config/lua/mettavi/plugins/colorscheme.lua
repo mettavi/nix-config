@@ -7,10 +7,12 @@ return {
   --     vim.cmd([[colorscheme nightfly]])
   --   end,
   -- },
-  {
-    "folke/tokyonight.nvim",
-    priority = 1000, -- make sure to load this before all the other start plugins
-    config = function()
+  "tokyonight.nvim",
+  auto_enable = true,
+  -- priority only affects startup plugins
+  -- unless otherwise specified by a particular handler
+  priority = 1000,
+  after = function(_)
       local bg = "#011628"
       local bg_dark = "#011423"
       local bg_highlight = "#143652"
@@ -23,16 +25,16 @@ return {
 
       -- only enable transparency in nvim when using iTerm2
       -- NB: also need to enable it in iTerm2, including the "keep background colors opaque" setting
-      local transbool = nil
-      local styles = nil
-      local trans = nixCats.extra("isItermTrans")
-      if vim.env.ITERM_SESSION_ID ~= nil and trans then
-        transbool = true
-        styles = { sidebars = "transparent", floats = "transparent" } -- "dark", "transparent" or "normal"
-      else
-        transbool = false
-        styles = { sidebars = "dark", floats = "dark" }
-      end
+      -- local transbool = nil
+      -- local styles = nil
+      -- local trans = nixCats.extra("isItermTrans")
+      -- if vim.env.ITERM_SESSION_ID ~= nil and trans then
+      --   transbool = true
+      --   styles = { sidebars = "transparent", floats = "transparent" } -- "dark", "transparent" or "normal"
+      -- else
+      --   transbool = false
+      --   styles = { sidebars = "dark", floats = "dark" }
+      -- end
 
       require("tokyonight").setup({
         style = "night",
@@ -83,5 +85,4 @@ return {
       -- load the colorscheme here
       vim.cmd("colorscheme tokyonight")
     end,
-  },
 }
