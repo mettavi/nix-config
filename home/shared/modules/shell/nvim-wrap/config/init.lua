@@ -107,6 +107,7 @@ nixInfo.lze.load({
   { import = "mettavi.plugins.autopairs" },
   { import = "mettavi.plugins.comment" },
   { import = "mettavi.plugins.flash" },
+  { import = "mettavi.plugins.indent-blankline" },
   { import = "mettavi.plugins.nvim-tree" },
   { import = "mettavi.plugins.ts-context-commentstring" },
   {
