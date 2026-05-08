@@ -1,25 +1,40 @@
 return {
-  "folke/flash.nvim",
-  event = "VeryLazy",
-  ---@type Flash.Config
-  opts = {
-    modes = {
-      search = {
-        -- use flash in search mode (/ or ?) by default
-        enabled = true,
+  "flash.nvim",
+  auto_enable = true,
+  event = "DeferredUIEnter",
+  after = function()
+    ---@type Flash.Config
+    vim.keymap.set({ "n", "x", "o" }, "s", function()
+      require("flash").jump()
+    end, { noremap = true, silent = true, desc = "Yank to clipboard" })
+
+    vim.keymap.set({ "n", "x", "o" }, "S", function()
+      require("flash").treesitter()
+    end, { desc = "Flash treesitter" })
+
+    vim.keymap.set({ "o" }, "<leader>s", function()
+      require("flash").remote()
+    end, { desc = "Flash remote" })
+
+    vim.keymap.set({ "o", "x" }, "<leader>S", function()
+      require("flash").treesitter_search()
+    end, { desc = "Flash treesitter remote" })
+
+    vim.keymap.set({ "c" }, "<S>s", function()
+      require("flash").toggle()
+    end, { desc = "Toggle flash search" })
+
+    require("flash").setup({
+      modes = {
+        search = {
+          -- use flash in search mode (/ or ?) by default
+          enabled = true,
+        },
+        char = {
+          -- add labels when using f/F and t/T
+          jump_labels = true,
+        },
       },
-      char = {
-        -- add labels when using f/F and t/T
-        jump_labels = true,
-      },
-    },
-  },
-  -- stylua: ignore
-  keys = {
-    { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-    { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-    { "<leader>s", mode = "o", function() require("flash").remote() end, desc = "Flash Remote" },
-    { "<leader>S", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Flash Treesitter Remote" },
-    { "<S-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-  },
+    })
+  end,
 }
