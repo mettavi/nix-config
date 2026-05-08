@@ -1,10 +1,10 @@
 return {
-  "numToStr/Comment.nvim",
+  "comment-nvim",
+  auto_enable = true,
   event = { "BufReadPre", "BufNewFile" },
-  dependencies = {
-    "JoosepAlviste/nvim-ts-context-commentstring",
-  },
-  config = function()
+  -- on_plugin = "nvim-ts-context-commentstring",
+
+  after = function(_)
     -- import comment plugin safely
     local comment = require("Comment")
 
