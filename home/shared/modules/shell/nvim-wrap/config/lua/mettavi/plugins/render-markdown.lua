@@ -1,11 +1,15 @@
 -- Plugin to improve viewing Markdown files in Neovim
 return {
-  "MeanderingProgrammer/render-markdown.nvim",
-  dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+  "render-markdown.nvim",
+  auto_enable = true,
   ---@module 'render-markdown'
   ---@type render.md.UserConfig
   ft = { "markdown", "quarto" },
-  opts = {
-    latex = { enabled = false },
-  },
+  after = function(_)
+    require("render-markdown").setup({
+      -- add markdown completions
+      completions = { lsp = { enabled = true } },
+      latex = { enabled = false },
+    })
+  end,
 }

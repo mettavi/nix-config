@@ -111,6 +111,7 @@ nixInfo.lze.load({
   { import = "mettavi.plugins.lazygit" },
   { import = "mettavi.plugins.noice" },
   { import = "mettavi.plugins.nvim-tree" },
+  { import = "mettavi.plugins.render-markdown" },
   { import = "mettavi.plugins.substitute" },
   { import = "mettavi.plugins.telescope" },
   { import = "mettavi.plugins.todo-comments" },
@@ -443,11 +444,6 @@ nixInfo.lze.load({
           luasnip.change_choice(1)
         end
       end, { silent = true })
-
-      -- add markdown completions
-      require("render-markdown").setup({
-        completions = { lsp = { enabled = true } },
-      })
 
       -- add vim style up and down navigation to cmp-cmdline with ctrl-k and ctrl-j
       local cmdline_mappings = cmp.mapping.preset.cmdline({
@@ -787,10 +783,6 @@ nixInfo.lze.load({
     after = function(plugin)
       require("nvim-web-devicons").setup()
     end,
-  },
-  {
-    "render-markdown.nvim",
-    auto_enable = true,
   },
   {
     "which-key.nvim",
