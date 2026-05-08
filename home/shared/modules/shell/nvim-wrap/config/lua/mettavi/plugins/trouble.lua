@@ -1,7 +1,7 @@
 return {
-  "folke/trouble.nvim",
-  dependencies = { "nvim-tree/nvim-web-devicons", "folke/todo-comments.nvim" },
-  opts = {}, -- for default options, refer to the configuration section for custom setup.
+  "trouble.nvim",
+  auto_enable = true,
+  on_plugin = "telescope.nvim",
   cmd = "Trouble",
   keys = {
     {
@@ -36,4 +36,21 @@ return {
     },
     { "<leader>xt", "<cmd>TodoTrouble<CR>", desc = "Open todos in trouble" },
   },
+  after = function()
+    local telescope = require("telescope")
+    local open_with_trouble = require("trouble.sources.telescope").open
+    -- Use this to add more results without clearing the trouble list
+    local add_to_trouble = require("trouble.sources.telescope").add
+
+    require("trouble").setup()
+
+    telescope.setup({
+      defaults = {
+        mappings = {
+          i = { ["<c-t>"] = open_with_trouble },
+          n = { ["<c-t>"] = open_with_trouble },
+        },
+      },
+    })
+  end,
 }

@@ -108,8 +108,34 @@ nixInfo.lze.load({
   { import = "mettavi.plugins.comment" },
   { import = "mettavi.plugins.flash" },
   { import = "mettavi.plugins.indent-blankline" },
+  { import = "mettavi.plugins.lazygit" },
+  { import = "mettavi.plugins.noice" },
   { import = "mettavi.plugins.nvim-tree" },
+  { import = "mettavi.plugins.telescope" },
+  { import = "mettavi.plugins.todo-comments" },
+  { import = "mettavi.plugins.trouble" },
   { import = "mettavi.plugins.ts-context-commentstring" },
+  {
+    "telescope-fzf-native.nvim",
+    auto_enable = true,
+    on_plugin = "telescope.nvim",
+    after = function(plugin)
+      require("telescope").load_extension("fzf")
+    end,
+  },
+  {
+    "nvim-notify",
+    auto_enable = true,
+    dep_of = "noice.nvim",
+    after = function(plugin)
+      require("notify").setup()
+    end,
+  },
+  {
+    "nui.nvim",
+    auto_enable = true,
+    dep_of = "noice.nvim",
+  },
   {
     "auto-session",
     auto_enable = true,
@@ -194,85 +220,55 @@ nixInfo.lze.load({
   {
     "gitsigns.nvim",
     auto_enable = true,
-    event = "DeferredUIEnter",
+    event = { "BufReadPre", "BufNewFile" },
     -- cmd = { "" },
     -- ft = "",
     -- keys = "",
     -- colorscheme = "",
     after = function(plugin)
       require("gitsigns").setup({
-        -- See `:help gitsigns.txt`
-        signs = {
-          add = { text = "+" },
-          change = { text = "~" },
-          delete = { text = "_" },
-          topdelete = { text = "‾" },
-          changedelete = { text = "~" },
-        },
         on_attach = function(bufnr)
           local gs = package.loaded.gitsigns
 
-          local function map(mode, l, r, opts)
-            opts = opts or {}
-            opts.buffer = bufnr
-            vim.keymap.set(mode, l, r, opts)
+          local function map(mode, l, r, desc)
+            vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
           end
 
           -- Navigation
-          map({ "n", "v" }, "]c", function()
-            if vim.wo.diff then
-              return "]c"
-            end
-            vim.schedule(function()
-              gs.next_hunk()
-            end)
-            return "<Ignore>"
-          end, { expr = true, desc = "Jump to next hunk" })
-
-          map({ "n", "v" }, "[c", function()
-            if vim.wo.diff then
-              return "[c"
-            end
-            vim.schedule(function()
-              gs.prev_hunk()
-            end)
-            return "<Ignore>"
-          end, { expr = true, desc = "Jump to previous hunk" })
+          map("n", "]h", gs.next_hunk, "Next Hunk")
+          map("n", "[h", gs.prev_hunk, "Prev Hunk")
 
           -- Actions
-          -- visual mode
+          map("n", "<leader>hs", gs.stage_hunk, "Stage hunk")
+          map("n", "<leader>hr", gs.reset_hunk, "Reset hunk")
           map("v", "<leader>hs", function()
             gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-          end, { desc = "stage git hunk" })
+          end, "Stage hunk")
           map("v", "<leader>hr", function()
             gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-          end, { desc = "reset git hunk" })
-          -- normal mode
-          map("n", "<leader>gs", gs.stage_hunk, { desc = "git stage hunk" })
-          map("n", "<leader>gr", gs.reset_hunk, { desc = "git reset hunk" })
-          map("n", "<leader>gS", gs.stage_buffer, { desc = "git Stage buffer" })
-          map("n", "<leader>gu", gs.undo_stage_hunk, { desc = "undo stage hunk" })
-          map("n", "<leader>gR", gs.reset_buffer, { desc = "git Reset buffer" })
-          map("n", "<leader>gp", gs.preview_hunk, { desc = "preview git hunk" })
-          map("n", "<leader>gb", function()
-            gs.blame_line({ full = false })
-          end, { desc = "git blame line" })
-          map("n", "<leader>gd", gs.diffthis, { desc = "git diff against index" })
-          map("n", "<leader>gD", function()
-            gs.diffthis("~")
-          end, { desc = "git diff against last commit" })
+          end, "Reset hunk")
 
-          -- Toggles
-          map("n", "<leader>gtb", gs.toggle_current_line_blame, { desc = "toggle git blame line" })
-          map("n", "<leader>gtd", gs.toggle_deleted, { desc = "toggle git show deleted" })
+          map("n", "<leader>hS", gs.stage_buffer, "Stage buffer")
+          map("n", "<leader>hR", gs.reset_buffer, "Reset buffer")
+
+          map("n", "<leader>hu", gs.undo_stage_hunk, "Undo stage hunk")
+
+          map("n", "<leader>hp", gs.preview_hunk, "Preview hunk")
+
+          map("n", "<leader>hb", function()
+            gs.blame_line({ full = true })
+          end, "Blame line")
+          map("n", "<leader>hB", gs.toggle_current_line_blame, "Toggle line blame")
+
+          map("n", "<leader>hd", gs.diffthis, "Diff this")
+          map("n", "<leader>hD", function()
+            gs.diffthis("~")
+          end, "Diff this ~")
 
           -- Text object
-          map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", { desc = "select git hunk" })
+          map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "Gitsigns select hunk")
         end,
       })
-      vim.cmd([[hi GitSignsAdd guifg=#04de21]])
-      vim.cmd([[hi GitSignsChange guifg=#83fce6]])
-      vim.cmd([[hi GitSignsDelete guifg=#fa2525]])
     end,
   },
   {
