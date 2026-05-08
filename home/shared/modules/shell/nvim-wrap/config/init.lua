@@ -104,6 +104,7 @@ require("mettavi.core")
 nixInfo.lze.load({
   -- { require("lze").load("mettavi.plugins") },
   { import = "mettavi.plugins.alpha" },
+  { import = "mettavi.plugins.better-escape" },
   { import = "mettavi.plugins.colorscheme" },
   { import = "mettavi.plugins.autopairs" },
   { import = "mettavi.plugins.bufferline" },
@@ -153,29 +154,6 @@ nixInfo.lze.load({
     keys = {
       { "<leader>sm", "<cmd>MaximizerToggle<CR>", desc = "Maximize/minimize a split" },
     },
-  },
-  {
-    "better-escape.nvim",
-    auto_enable = true,
-    after = function(plugin)
-      require("better_escape").setup({
-        timeout = vim.o.timeoutlen, -- after `timeout` passes, you can press the escape key and the plugin will ignore it
-        default_mappings = true, -- setting this to false removes all the default mappings
-        mappings = {
-          -- i for insert, other modes are the first letter too
-          i = {
-            -- map kj to exit insert mode
-            k = {
-              j = "<Esc>",
-            },
-            -- map jk to exit insert mode
-            j = {
-              k = "<Esc>",
-            },
-          },
-        },
-      })
-    end,
   },
   {
     "conform.nvim",
