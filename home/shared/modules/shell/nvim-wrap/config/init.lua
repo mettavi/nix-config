@@ -117,11 +117,10 @@ nixInfo.lze.load({
   { import = "mettavi.plugins.trouble" },
   { import = "mettavi.plugins.ts-context-commentstring" },
   {
-    "telescope-fzf-native.nvim",
+    "auto-session",
     auto_enable = true,
-    on_plugin = "telescope.nvim",
     after = function(plugin)
-      require("telescope").load_extension("fzf")
+      require("auto-session").setup({})
     end,
   },
   {
@@ -138,11 +137,18 @@ nixInfo.lze.load({
     dep_of = "noice.nvim",
   },
   {
-    "auto-session",
+    "telescope-fzf-native.nvim",
     auto_enable = true,
+    on_plugin = "telescope.nvim",
     after = function(plugin)
-      require("auto-session").setup({})
+      require("telescope").load_extension("fzf")
     end,
+  },
+  {
+    "vim-maximizer",
+    keys = {
+      { "<leader>sm", "<cmd>MaximizerToggle<CR>", desc = "Maximize/minimize a split" },
+    },
   },
   {
     "better-escape.nvim",
