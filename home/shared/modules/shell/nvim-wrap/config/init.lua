@@ -111,6 +111,7 @@ nixInfo.lze.load({
   { import = "mettavi.plugins.comment" },
   { import = "mettavi.plugins.flash" },
   { import = "mettavi.plugins.formatting" },
+  { import = "mettavi.plugins.gitsigns" },
   { import = "mettavi.plugins.indent-blankline" },
   { import = "mettavi.plugins.lazygit" },
   { import = "mettavi.plugins.lualine" },
@@ -156,60 +157,60 @@ nixInfo.lze.load({
       { "<leader>sm", "<cmd>MaximizerToggle<CR>", desc = "Maximize/minimize a split" },
     },
   },
-  {
-    "gitsigns.nvim",
-    auto_enable = true,
-    event = { "BufReadPre", "BufNewFile" },
-    -- cmd = { "" },
-    -- ft = "",
-    -- keys = "",
-    -- colorscheme = "",
-    after = function(plugin)
-      require("gitsigns").setup({
-        on_attach = function(bufnr)
-          local gs = package.loaded.gitsigns
-
-          local function map(mode, l, r, desc)
-            vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
-          end
-
-          -- Navigation
-          map("n", "]h", gs.next_hunk, "Next Hunk")
-          map("n", "[h", gs.prev_hunk, "Prev Hunk")
-
-          -- Actions
-          map("n", "<leader>hs", gs.stage_hunk, "Stage hunk")
-          map("n", "<leader>hr", gs.reset_hunk, "Reset hunk")
-          map("v", "<leader>hs", function()
-            gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-          end, "Stage hunk")
-          map("v", "<leader>hr", function()
-            gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-          end, "Reset hunk")
-
-          map("n", "<leader>hS", gs.stage_buffer, "Stage buffer")
-          map("n", "<leader>hR", gs.reset_buffer, "Reset buffer")
-
-          map("n", "<leader>hu", gs.undo_stage_hunk, "Undo stage hunk")
-
-          map("n", "<leader>hp", gs.preview_hunk, "Preview hunk")
-
-          map("n", "<leader>hb", function()
-            gs.blame_line({ full = true })
-          end, "Blame line")
-          map("n", "<leader>hB", gs.toggle_current_line_blame, "Toggle line blame")
-
-          map("n", "<leader>hd", gs.diffthis, "Diff this")
-          map("n", "<leader>hD", function()
-            gs.diffthis("~")
-          end, "Diff this ~")
-
-          -- Text object
-          map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "Gitsigns select hunk")
-        end,
-      })
-    end,
-  },
+  -- {
+  --   "gitsigns.nvim",
+  --   auto_enable = true,
+  --   event = { "BufReadPre", "BufNewFile" },
+  --   -- cmd = { "" },
+  --   -- ft = "",
+  --   -- keys = "",
+  --   -- colorscheme = "",
+  --   after = function(plugin)
+  --     require("gitsigns").setup({
+  --       on_attach = function(bufnr)
+  --         local gs = package.loaded.gitsigns
+  --
+  --         local function map(mode, l, r, desc)
+  --           vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
+  --         end
+  --
+  --         -- Navigation
+  --         map("n", "]h", gs.next_hunk, "Next Hunk")
+  --         map("n", "[h", gs.prev_hunk, "Prev Hunk")
+  --
+  --         -- Actions
+  --         map("n", "<leader>hs", gs.stage_hunk, "Stage hunk")
+  --         map("n", "<leader>hr", gs.reset_hunk, "Reset hunk")
+  --         map("v", "<leader>hs", function()
+  --           gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+  --         end, "Stage hunk")
+  --         map("v", "<leader>hr", function()
+  --           gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+  --         end, "Reset hunk")
+  --
+  --         map("n", "<leader>hS", gs.stage_buffer, "Stage buffer")
+  --         map("n", "<leader>hR", gs.reset_buffer, "Reset buffer")
+  --
+  --         map("n", "<leader>hu", gs.undo_stage_hunk, "Undo stage hunk")
+  --
+  --         map("n", "<leader>hp", gs.preview_hunk, "Preview hunk")
+  --
+  --         map("n", "<leader>hb", function()
+  --           gs.blame_line({ full = true })
+  --         end, "Blame line")
+  --         map("n", "<leader>hB", gs.toggle_current_line_blame, "Toggle line blame")
+  --
+  --         map("n", "<leader>hd", gs.diffthis, "Diff this")
+  --         map("n", "<leader>hD", function()
+  --           gs.diffthis("~")
+  --         end, "Diff this ~")
+  --
+  --         -- Text object
+  --         map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "Gitsigns select hunk")
+  --       end,
+  --     })
+  --   end,
+  -- },
   {
     -- lazydev makes your lua lsp load only the relevant definitions for a file.
     -- It also gives us a nice way to correlate globals we create with files.
