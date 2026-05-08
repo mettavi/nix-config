@@ -4,9 +4,6 @@ return {
   -- cmd = { "" },
   event = { "BufReadPre", "BufNewFile" }, -- to disable, comment this out
   -- ft = "",
-  keys = {
-    { "<leader>mp", desc = "Format file or range (in visual mode)" },
-  },
   -- colorscheme = "",
   after = function(plugin)
     local conform = require("conform")

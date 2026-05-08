@@ -7,7 +7,6 @@ return { -- lze specs need a name
   -- keys = "",
   -- colorscheme = "",
   after = function(_)
-    -- configure nvim-tree
     local alpha = require("alpha")
     local dashboard = require("alpha.themes.dashboard")
     -- Set header
