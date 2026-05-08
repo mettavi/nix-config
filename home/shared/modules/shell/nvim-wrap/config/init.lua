@@ -103,6 +103,7 @@ require("mettavi.core")
 
 nixInfo.lze.load({
   -- { require("lze").load("mettavi.plugins") },
+  { import = "mettavi.plugins.alpha" },
   { import = "mettavi.plugins.colorscheme" },
   { import = "mettavi.plugins.autopairs" },
   { import = "mettavi.plugins.comment" },
