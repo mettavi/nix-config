@@ -1,8 +1,9 @@
 return {
-  "nvim-treesitter/nvim-treesitter-textobjects",
-  branch = "main",
-  lazy = true,
-  init = function()
+  "nvim-treesitter-textobjects",
+  auto_enable = true,
+  lazy = false,
+  before = function()
+    -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects/tree/main?tab=readme-ov-file#using-a-package-manager
     -- Disable entire built-in ftplugin mappings to avoid conflicts.
     -- See https://github.com/neovim/neovim/tree/master/runtime/ftplugin for built-in ftplugins.
     vim.g.no_plugin_maps = true
@@ -13,40 +14,37 @@ return {
     -- vim.g.no_rust_maps = true
     -- vim.g.no_go_maps = true
   end,
-  config = function()
-    ---@diagnostic disable-next-line: missing-fields
+  after = function()
     require("nvim-treesitter-textobjects").setup({
-      textobjects = {
-        select = {
-          -- Automatically jump forward to textobj, similar to targets.vim
-          lookahead = true,
-          -- You can choose the select mode (default is charwise 'v')
-          --
-          -- Can also be a function which gets passed a table with the keys
-          -- * query_string: eg '@function.inner'
-          -- * method: eg 'v' or 'o'
-          -- and should return the mode ('v', 'V', or '<c-v>') or a table
-          -- mapping query_strings to modes.
-          selection_modes = {
-            ["@parameter.outer"] = "v", -- charwise
-            ["@function.outer"] = "V", -- linewise
-            -- ['@class.outer'] = '<c-v>', -- blockwise
-          },
-          -- If you set this to `true` (default is `false`) then any textobject is
-          -- extended to include preceding or succeeding whitespace. Succeeding
-          -- whitespace has priority in order to act similarly to eg the built-in
-          -- `ap`.
-          --
-          -- Can also be a function which gets passed a table with the keys
-          -- * query_string: eg '@function.inner'
-          -- * selection_mode: eg 'v'
-          -- and should return true of false
-          include_surrounding_whitespace = false,
+      select = {
+        -- Automatically jump forward to textobj, similar to targets.vim
+        lookahead = true,
+        -- You can choose the select mode (default is charwise 'v')
+        --
+        -- Can also be a function which gets passed a table with the keys
+        -- * query_string: eg '@function.inner'
+        -- * method: eg 'v' or 'o'
+        -- and should return the mode ('v', 'V', or '<c-v>') or a table
+        -- mapping query_strings to modes.
+        selection_modes = {
+          ["@parameter.outer"] = "v", -- charwise
+          ["@function.outer"] = "V", -- linewise
+          -- ['@class.outer'] = '<c-v>', -- blockwise
         },
-        move = {
-          -- whether to set jumps in the jumplist
-          set_jumps = true,
-        },
+        -- If you set this to `true` (default is `false`) then any textobject is
+        -- extended to include preceding or succeeding whitespace. Succeeding
+        -- whitespace has priority in order to act similarly to eg the built-in
+        -- `ap`.
+        --
+        -- Can also be a function which gets passed a table with the keys
+        -- * query_string: eg '@function.inner'
+        -- * selection_mode: eg 'v'
+        -- and should return true of false
+        include_surrounding_whitespace = false,
+      },
+      move = {
+        -- whether to set jumps in the jumplist
+        set_jumps = true,
       },
     })
 
@@ -68,16 +66,12 @@ return {
     vim.keymap.set({ "x", "o" }, "as", function()
       require("nvim-treesitter-textobjects.select").select_textobject("@local.scope", "locals")
     end)
-
     vim.keymap.set("n", "<leader>a", function()
       require("nvim-treesitter-textobjects.swap").swap_next("@parameter.inner")
     end)
     vim.keymap.set("n", "<leader>A", function()
       require("nvim-treesitter-textobjects.swap").swap_previous("@parameter.outer")
     end)
-
-    -- keymaps
-    -- You can use the capture groups defined in `textobjects.scm`
     vim.keymap.set({ "n", "x", "o" }, "]m", function()
       require("nvim-treesitter-textobjects.move").goto_next_start("@function.outer", "textobjects")
     end)
@@ -95,7 +89,6 @@ return {
     vim.keymap.set({ "n", "x", "o" }, "]z", function()
       require("nvim-treesitter-textobjects.move").goto_next_start("@fold", "folds")
     end)
-
     vim.keymap.set({ "n", "x", "o" }, "]M", function()
       require("nvim-treesitter-textobjects.move").goto_next_end("@function.outer", "textobjects")
     end)
@@ -154,5 +147,9 @@ return {
     vim.keymap.set({ "n", "x", "o" }, "<end>", function()
       ts_repeat_move.repeat_last_move({ forward = true, start = false })
     end)
+
+    -- NOTE: for more textobjects options, see the following link.
+    -- This template is using the new `main` branch of the repo.
+    -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects/tree/main
   end,
 }
