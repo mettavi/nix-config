@@ -116,6 +116,7 @@ in
             vim-tmux-navigator
           ];
           extraPackages = with pkgs; [
+            eslint_d
             lazygit
             prettier
             taplo
