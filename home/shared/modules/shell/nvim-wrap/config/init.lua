@@ -115,6 +115,13 @@ nixInfo.lze.load({
   { import = "mettavi.plugins.indent-blankline" },
   { import = "mettavi.plugins.lazygit" },
   { import = "mettavi.plugins.linting" },
+  { import = "mettavi.plugins.lsp.lspconfig" },
+  { import = "mettavi.plugins.lsp.lsp-file-operations" },
+  { import = "mettavi.plugins.lsp.bash_ls" },
+  { import = "mettavi.plugins.lsp.lua_ls" },
+  { import = "mettavi.plugins.lsp.nixd" },
+  { import = "mettavi.plugins.lsp.ts_ls" },
+  { import = "mettavi.plugins.lsp.yaml_ls" },
   { import = "mettavi.plugins.lualine" },
   { import = "mettavi.plugins.noice" },
   { import = "mettavi.plugins.nvim-tree" },
@@ -150,6 +157,11 @@ nixInfo.lze.load({
     dep_of = "noice.nvim",
   },
   {
+    "Schemastore.nvim",
+    auto_enable = true,
+    dep_of = "yaml-language-server",
+  },
+  {
     "telescope-fzf-native.nvim",
     auto_enable = true,
     on_plugin = "telescope.nvim",
@@ -179,30 +191,6 @@ nixInfo.lze.load({
       })
     end,
   },
-  {
-    -- name of the lsp
-    "lua_ls",
-    for_cat = "lua",
-    -- provide a table containing filetypes,
-    -- and then whatever your functions defined in the function type specs expect.
-    -- in our case, it just expects the normal lspconfig setup options,
-    -- but with a default on_attach and capabilities
-    lsp = {
-      -- if you provide the filetypes it doesn't ask lspconfig for the filetypes
-      -- (meaning it doesn't call the callback function we defined in the main init.lua)
-      filetypes = { "lua" },
-      settings = {
-        Lua = {
-          signatureHelp = { enabled = true },
-          diagnostics = {
-            globals = { "nixInfo", "vim" },
-            disable = { "missing-fields" },
-          },
-        },
-      },
-    },
-    -- also these are regular specs and you can use before and after and all the other normal fields
-  },
   { "luasnip", auto_enable = true, dep_of = "nvim-cmp" },
   { "lspkind.nvim", auto_enable = true, on_plugin = "nvim-cmp" },
   {
@@ -215,6 +203,12 @@ nixInfo.lze.load({
     "cmp-cmdline",
     auto_enable = true,
     on_plugin = { "nvim-cmp" },
+    load = nixInfo.lze.loaders.with_after,
+  },
+  {
+    "cmp-nvim-lsp",
+    auto_enable = true,
+    dep_of = { "nvim-lspconfig" },
     load = nixInfo.lze.loaders.with_after,
   },
   {
@@ -235,78 +229,6 @@ nixInfo.lze.load({
     dep_of = { "nvim-cmp" },
   },
   {
-    "nvim-lspconfig",
-    auto_enable = true,
-    -- NOTE: define a function for lsp,
-    -- and it will run for all specs with type(plugin.lsp) == table
-    -- when their filetype trigger loads them
-    lsp = function(plugin)
-      vim.lsp.config(plugin.name, plugin.lsp or {})
-      vim.lsp.enable(plugin.name)
-    end,
-    -- set up our on_attach function once before the spec loads
-    before = function(_)
-      vim.lsp.config("*", {
-        on_attach = function(_, bufnr)
-          -- we create a function that lets us more easily define mappings specific
-          -- for LSP related items. It sets the mode, buffer and description for us each time.
-          local nmap = function(keys, func, desc)
-            if desc then
-              desc = "LSP: " .. desc
-            end
-            vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
-          end
-
-          nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-          nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
-          nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-          nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
-
-          -- See `:help K` for why this keymap
-          nmap("K", vim.lsp.buf.hover, "Hover Documentation")
-          nmap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
-
-          -- Lesser used LSP functionality
-          nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-          nmap("<leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd Folder")
-          nmap("<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove Folder")
-          nmap("<leader>wl", function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-          end, "[W]orkspace [L]ist Folders")
-
-          -- Create a command `:Format` local to the LSP buffer
-          vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
-            vim.lsp.buf.format()
-          end, { desc = "Format current buffer with LSP" })
-        end,
-      })
-    end,
-  },
-  {
-    "nixd",
-    enabled = nixInfo.isNix, -- mason doesn't have nixd
-    for_cat = "nix",
-    lsp = {
-      filetypes = { "nix" },
-      settings = {
-        nixd = {
-          nixpkgs = {
-            expr = [[import <nixpkgs> {}]],
-          },
-          options = {},
-          formatting = {
-            command = { "nixfmt" },
-          },
-          diagnostic = {
-            suppress = {
-              "sema-escaping-with",
-            },
-          },
-        },
-      },
-    },
-  },
-  {
     "nvim-surround",
     auto_enable = true,
     event = "DeferredUIEnter",
@@ -321,5 +243,13 @@ nixInfo.lze.load({
     after = function(plugin)
       require("nvim-web-devicons").setup()
     end,
+  },
+  {
+    "taplo",
+    lsp = {
+      -- if you provide the filetypes it doesn't ask lspconfig for the filetypes
+      -- (meaning it doesn't call the callback function we defined in the main init.lua)
+      filetypes = { "toml" },
+    },
   },
 })
