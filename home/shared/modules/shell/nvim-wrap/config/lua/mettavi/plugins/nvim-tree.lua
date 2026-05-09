@@ -1,6 +1,7 @@
 return { -- lze specs need a name
   "nvim-tree.lua",
   auto_enable = true,
+  dep_of = "nvim-lsp-file-operations",
   lazy = false,
   after = function(_)
     -- recommended settings from nvim-tree documentation
