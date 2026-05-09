@@ -1,5 +1,5 @@
 return {
-  -- name of the lsp
+  -- name of the lsp (NB: not the name in nixpkgs)
   "bashls",
   for_cat = "bash",
   -- provide a table containing filetypes,

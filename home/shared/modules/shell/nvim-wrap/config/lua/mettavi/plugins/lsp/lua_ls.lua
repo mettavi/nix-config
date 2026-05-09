@@ -1,5 +1,5 @@
 return {
-  -- name of the lsp
+  -- name of the lsp (NB: not the name in nixpkgs)
   "lua_ls",
   for_cat = "lua",
   -- provide a table containing filetypes,

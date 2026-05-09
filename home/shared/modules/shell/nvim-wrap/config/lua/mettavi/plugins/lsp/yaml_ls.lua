@@ -1,5 +1,5 @@
 return {
-  -- name of the lsp
+  -- name of the lsp (NB: not the name in nixpkgs)
   "yamlls",
   -- provide a table containing filetypes,
   -- and then whatever your functions defined in the function type specs expect.
