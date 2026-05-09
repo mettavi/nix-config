@@ -22,30 +22,30 @@ in
     # see https://gist.github.com/hoyhoy/1c675f6f02118f6e0db7616c070917ac for example settings
     environment.etc."/brave/policies/managed/GroupPolicy.json".source = ./policies.json;
 
-      # prevent brave phoning home to the following urls
-      networking.hosts = {
-        "0.0.0.0" = [
-          "p3a.brave.com"
-          "rewards.brave.com"
-          "api.rewards.brave.com"
-          "grant.rewards.brave.com"
-          "variations.brave.com"
-          "laptop-updates.brave.com"
-          "static1.brave.com"
-          "crlsets.brave.com"
-          "static.brave.com"
-          "ads.brave.com"
-          "ads-admin.brave.com"
-          "ads-help.brave.com"
-          "referrals.brave.com"
-          "analytics.brave.com"
-          "search.anonymous.ads.brave.com"
-          "star-randsrv.bsg.brave.com"
-          "usage-ping.brave.com"
-          "sync-v2.brave.com"
-          "redirector.brave.com"
-        ];
-      };
+    # prevent brave phoning home to the following urls
+    networking.hosts = {
+      "0.0.0.0" = [
+        "p3a.brave.com"
+        "rewards.brave.com"
+        "api.rewards.brave.com"
+        "grant.rewards.brave.com"
+        "variations.brave.com"
+        "laptop-updates.brave.com"
+        "static1.brave.com"
+        "crlsets.brave.com"
+        "static.brave.com"
+        "ads.brave.com"
+        "ads-admin.brave.com"
+        "ads-help.brave.com"
+        "referrals.brave.com"
+        "analytics.brave.com"
+        "search.anonymous.ads.brave.com"
+        "star-randsrv.bsg.brave.com"
+        "usage-ping.brave.com"
+        "sync-v2.brave.com"
+        "redirector.brave.com"
+      ];
+    };
 
     home-manager.users.${username} = {
       programs.brave = {
