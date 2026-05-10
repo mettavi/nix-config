@@ -6,7 +6,7 @@ return {
   -- ft = "",
   -- keys = "",
   -- colorscheme = "",
-  after = function(plugin)
+  after = function()
     require("gitsigns").setup({
       on_attach = function(bufnr)
         local gs = package.loaded.gitsigns

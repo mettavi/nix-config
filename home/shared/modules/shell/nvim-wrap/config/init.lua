@@ -152,7 +152,7 @@ nixInfo.lze.load({
     "nvim-notify",
     auto_enable = true,
     dep_of = "noice.nvim",
-    after = function(plugin)
+    after = function()
       require("notify").setup()
     end,
   },
@@ -170,7 +170,7 @@ nixInfo.lze.load({
     "telescope-fzf-native.nvim",
     auto_enable = true,
     on_plugin = "telescope.nvim",
-    after = function(plugin)
+    after = function()
       require("telescope").load_extension("fzf")
     end,
   },
@@ -238,14 +238,14 @@ nixInfo.lze.load({
     auto_enable = true,
     event = "DeferredUIEnter",
     -- keys = "",
-    after = function(plugin)
+    after = function()
       require("nvim-surround").setup()
     end,
   },
   {
     "nvim-web-devicons",
     auto_enable = true,
-    after = function(plugin)
+    after = function()
       require("nvim-web-devicons").setup()
     end,
   },

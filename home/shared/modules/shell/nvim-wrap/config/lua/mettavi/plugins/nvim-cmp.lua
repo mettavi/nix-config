@@ -2,7 +2,7 @@ return {
   "nvim-cmp",
   auto_enable = true,
   event = "InsertEnter",
-  after = function(plugin)
+  after = function()
     local cmp = require("cmp")
     local luasnip = require("luasnip")
     local lspkind = require("lspkind")

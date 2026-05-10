@@ -5,7 +5,7 @@ return {
   event = { "BufReadPre", "BufNewFile" }, -- to disable, comment this out
   -- ft = "",
   -- colorscheme = "",
-  after = function(plugin)
+  after = function()
     local conform = require("conform")
 
     conform.setup({
