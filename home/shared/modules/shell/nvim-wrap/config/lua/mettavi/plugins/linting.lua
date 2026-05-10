@@ -6,7 +6,7 @@ return {
   -- ft = "",
   -- keys = "",
   -- colorscheme = "",
-  after = function(plugin)
+  after = function()
     local lint = require("lint")
     lint.linters_by_ft = {
       javascript = { "eslint_d" },
@@ -14,7 +14,6 @@ return {
       javascriptreact = { "eslint_d" },
       typescriptreact = { "eslint_d" },
       svelte = { "eslint_d" },
-      python = { "pylint" },
       nix = { "nix" },
       yaml = { "yamllint" },
     }
