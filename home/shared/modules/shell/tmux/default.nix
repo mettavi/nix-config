@@ -142,6 +142,7 @@ in
       zsh.shellAliases = {
         tm = "tmux";
         tkw = "tmux kill-window";
+        tks = "tmux kill-server";
       };
     };
     # link config files for tmux plugins
