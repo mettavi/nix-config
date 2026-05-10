@@ -127,6 +127,8 @@ in
               # set -g @tmux-which-key-xdg-enable=1
             '';
           }
+          # move from a tmux to a vim split without the prefix
+          vim-tmux-navigator
         ];
         # pkg path in nix store + "bin" + name of shell = path to binary
         shell = "${sh_path}/bin/${sh_name}";

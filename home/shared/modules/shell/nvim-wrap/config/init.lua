@@ -135,6 +135,7 @@ nixInfo.lze.load({
   { import = "mettavi.plugins.ts-autotag" },
   { import = "mettavi.plugins.trouble" },
   { import = "mettavi.plugins.ts-context-commentstring" },
+  { import = "mettavi.plugins.vim-tmux-navigator" },
   { import = "mettavi.plugins.which-key" },
   {
     "auto-session",
