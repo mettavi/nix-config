@@ -35,7 +35,8 @@ in
         # NB: this module writes tmux.conf to ~/.config/tmux
         enable = true;
         baseIndex = 1;
-        # this still requires the vim-tmux-navigator plugin in vim/neovim?
+        # NB: to use TWO-WAY hjkl navigation between (n)vim-tmux WITHOUT THE PREFIX,
+        # the vim-tmux-navigator plugin is required on both sides (see below)
         customPaneNavigationAndResize = true;
         # override default (500) with a better value, see https://github.com/tmux/tmux/issues/3844 for a discussion
         escapeTime = 10;
@@ -135,6 +136,7 @@ in
         # remap the prefix key
         shortcut = "a";
         terminal = "tmux-256color";
+        # install the tmuxp package
         tmuxp.enable = true;
       };
       zsh.shellAliases = {
