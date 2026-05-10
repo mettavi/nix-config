@@ -32,6 +32,7 @@ in
   config = mkIf cfg.enable {
     programs = {
       tmux = {
+        # NB: this module writes tmux.conf to ~/.config/tmux
         enable = true;
         baseIndex = 1;
         # this still requires the vim-tmux-navigator plugin in vim/neovim?
