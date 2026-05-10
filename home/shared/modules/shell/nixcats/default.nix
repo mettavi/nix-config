@@ -20,7 +20,7 @@ in
   options.mettavi.shell.nixcats = {
     enable = mkOption {
       type = types.bool;
-      default = true;
+      default = false;
       description = "Install and configure neovim using the nixCats system";
     };
   };
