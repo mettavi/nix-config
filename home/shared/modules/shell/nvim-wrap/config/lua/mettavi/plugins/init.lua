@@ -21,7 +21,7 @@ return {
   -- { import = "plugins.lualine" },
   -- { import = "plugins.noice" },
   -- { import = "plugins.nvim-cmp" },
-  { import = "plugins.nvim-tree" },
+  -- { import = "plugins.nvim-tree" },
   -- { import = "plugins.nvim-treesitter-text-objects" },
   -- { import = "plugins.render-markdown" },
   -- { import = "plugins.substitute" },
