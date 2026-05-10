@@ -31,12 +31,5 @@ export NH_FLAKE="$NIXFILES"
 
 export ZSH_CACHE_DIR="$XDG_CACHE_HOME/zsh"
 
-# VISUAL is default for modern editors, EDITOR is historical fallback
-export VISUAL="nvim"
-export EDITOR="nvim"
-
-# open man pages from terminal with neovim
-export MANPAGER="nvim +Man!"
-
 # notify about new mail from postfix MTA (eg. for mail bounces from bitwarden backup script)
 export MAIL="/var/mail/timotheos"

@@ -270,7 +270,10 @@ in
       in
       {
         EDITOR = nvimpath;
+        # open man pages from terminal with neovim
         MANPAGER = "${nvimpath} +Man!";
+        # VISUAL is default for modern editors, EDITOR is historical fallback
+        VISUAL = nvimpath;
       };
     # this is already builtin to the wrapper
     # xdg.configFile = {
