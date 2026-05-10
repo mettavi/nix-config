@@ -9,6 +9,7 @@ return {
   -- },
   "tokyonight.nvim",
   auto_enable = true,
+  lazy = false,
   -- priority only affects startup plugins
   -- unless otherwise specified by a particular handler
   priority = 1000,
