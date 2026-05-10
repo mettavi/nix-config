@@ -1,11 +1,10 @@
 session_name: nvim-zsh
 start_directory: $NIXFILES
 windows:
-  - window_name: nvim
+  - window_name: nvim-wrap
     panes:
-      - shell_command: nvim
-
-  - window_name: zsh
+      - shell_command: nvw
+  - window_name: nix-files
     panes:
-      - shell_command: 
-        - git status 
+      - shell_command:
+          - git status
