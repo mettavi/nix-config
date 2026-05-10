@@ -132,6 +132,7 @@ in
         ];
         # pkg path in nix store + "bin" + name of shell = path to binary
         shell = "${sh_path}/bin/${sh_name}";
+        # remap the prefix key
         shortcut = "a";
         terminal = "tmux-256color";
         tmuxp.enable = true;
