@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   osConfig,
   pkgs,
@@ -12,19 +13,22 @@ let
   sh_name = osConfig.mettavi.system.userConfig.${config.home.username}.shell;
 
   # EXAMPLE USE OF mkTmuxPlugin function to install plugins directly from GitHub
-  tpm = pkgs.tmuxPlugins.mkTmuxPlugin rec {
-    pluginName = "tpm";
-    version = "3.1.0";
-    rtpFilePath = "tpm";
-    src = pkgs.fetchFromGitHub {
-      owner = "tmux-plugins";
-      repo = "tpm";
-      rev = "v${version}";
-      hash = "sha256-CeI9Wq6tHqV68woE11lIY4cLoNY8XWyXyMHTDmFKJKI=";
-    };
-  };
+  # tpm = pkgs.tmuxPlugins.mkTmuxPlugin rec {
+  #   pluginName = "tpm";
+  #   version = "3.1.0";
+  #   rtpFilePath = "tpm";
+  #   src = pkgs.fetchFromGitHub {
+  #     owner = "tmux-plugins";
+  #     repo = "tpm";
+  #     rev = "v${version}";
+  #     hash = "sha256-CeI9Wq6tHqV68woE11lIY4cLoNY8XWyXyMHTDmFKJKI=";
+  #   };
+  # };
 in
 {
+
+  imports = [ inputs.tmux-which-key.homeManagerModules.default ];
+
   options.mettavi.shell.tmux = {
     enable = mkEnableOption "Install and configure tmux";
   };
@@ -34,6 +38,10 @@ in
       tmux = {
         # NB: this module writes tmux.conf to ~/.config/tmux
         enable = true;
+        tmux-which-key = {
+          enable = true;
+          settings = import ./tm-which-key-config.nix;
+        };
         baseIndex = 1;
         # NB: to use TWO-WAY hjkl navigation between (n)vim-tmux WITHOUT THE PREFIX,
         # the vim-tmux-navigator plugin is required on both sides (see below)
@@ -114,18 +122,6 @@ in
               set -g @prefix_highlight_show_sync_mode 'on'
               set -g @prefix_highlight_copy_mode_attr 'fg=black,bg=white'
               set -g @prefix_highlight_sync_mode_attr 'fg=black,bg=green'
-            '';
-          }
-          {
-            plugin = tpm;
-            extraConfig = ''
-              set -g @plugin 'tmux-plugins/tpm'
-              # NB: tmux-which-key would only install to a subdirectory of tpm
-              set-environment -g TMUX_PLUGIN_MANAGER_PATH '${config.xdg.dataHome}/tmux/plugins/tpm'
-              set -g @plugin 'alexwforsythe/tmux-which-key'
-              # there is a bug preventing this option from working, config will have to load from plugin directory
-              # see https://github.com/alexwforsythe/tmux-which-key/issues/15 for details
-              # set -g @tmux-which-key-xdg-enable=1
             '';
           }
           # move from a tmux to a vim split without the prefix

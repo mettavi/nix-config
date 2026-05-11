@@ -122,6 +122,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    tmux-which-key = {
+      url = "github:higherorderfunctor/tmux-which-key/71b119ddf46342fd49699722c50fdfe054722ab0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     wrappers = {
       url = "github:BirdeeHub/nix-wrapper-modules";
       inputs.nixpkgs.follows = "nixos-pkgs";
