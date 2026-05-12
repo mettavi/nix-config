@@ -42,11 +42,13 @@ in
     ];
 
     # enable the firefox-gnome-theme via a flake input (also see userChrome and userContent below)
-    home.file.".mozilla/firefox/${config.programs.firefox.profiles.mettavi.name}/chrome/firefox-gnome-theme".source =
+    xdg.configFile."mozilla/firefox/${config.programs.firefox.profiles.mettavi.name}/chrome/firefox-gnome-theme".source =
       inputs.firefox-gnome-theme;
 
     programs.firefox = {
       enable = true;
+      # explicitly set the config path because home.stateVersion` is less than "26.05"
+      configPath = "${config.xdg.configHome}/mozilla/firefox";
       languagePacks = [
         "en_AU"
         "en-US"
