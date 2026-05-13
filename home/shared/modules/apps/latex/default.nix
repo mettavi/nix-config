@@ -14,6 +14,8 @@ let
         collection-latexrecommended
         # mf command line util for fonts (latex package ifsym)
         metafont
+        # Create normal/logarithmic plots in two and three dimensions
+        # pgfplots
         # provides the fullpage package and others useful for preparing documents
         preprint
       ]
