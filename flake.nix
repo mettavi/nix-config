@@ -123,8 +123,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     tmux-which-key = {
-      url = "github:higherorderfunctor/tmux-which-key/71b119ddf46342fd49699722c50fdfe054722ab0";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:mettavi/tmux-which-key/d02a3280352d27164354355e78ad20284de46b07";
+      inputs.nixpkgs.follows = "nixos-pkgs";
     };
     wrappers = {
       url = "github:BirdeeHub/nix-wrapper-modules";
