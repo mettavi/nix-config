@@ -76,7 +76,9 @@ fi
 # NB: Once there are > 12 backups, "mtime +12w" will remove all backups older than 12 weeks
 NUM_FILES=$(find "$EXPORT_PATH" -type f | wc -l)
 if [ "$NUM_FILES" -gt 12 ]; then
-  find "$EXPORT_PATH" -type f -mtime +12w -exec rm {} \;
+  # keep backups from the last 12 weeks (7*12=84)
+  # NB: linux find does not allow "-mtime +12w" etc, only "-mtime +n" where n is the no. of days
+  find "$EXPORT_PATH" -type f -mtime +84 -exec rm {} \;
 fi
 
 echo "Export completed!"
