@@ -45,10 +45,14 @@ in
           # required by the script being scheduled
           path = with pkgs; [
             bash
-            bitwarden-cli
+            # bitwarden-cli
+            # install version 2026.4.2 directly from github
+            xpkgs.bitwarden-cli
             mailutils
             openssl
           ];
+          # TODO: Script fails due to bug in binary, fixed in version v2026.4.2
+          # See https://github.com/bitwarden/clients/issues/20720
           serviceConfig = {
             ExecStart = "${inputs.self}/home/shared/bin/bw_backup.sh";
             # do not start the service when running 'nixos-rebuild switch'
