@@ -147,6 +147,7 @@
     devices = {
       logitech.enable = true;
       nvidia.enable = true;
+      t7ssd.enable = true;
       # wdssd.enable = true;
     };
     desktops = {
