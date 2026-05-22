@@ -81,7 +81,7 @@
       flake = false;
     };
     jellarr = {
-      url = "github:venkyr77/jellarr";
+      url = "github:venkyr77/jellarr/faeb5c70999592cb7763e68a93924503df0ada9e";
       inputs.nixpkgs.follows = "nixos-pkgs";
     };
     nixCats = {
