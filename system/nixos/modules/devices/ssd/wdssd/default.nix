@@ -22,7 +22,7 @@ in
   config = mkIf cfg.enable {
     # automatically unlock the luks-encrypted disk with a keyfile
     # NB: Linux uses the mapper name to refer to the unlocked LUKS
-    # disk (e.g. sdb)/partition (e.g. sdb1) (see /dev/mapper)
+    # disk/partition (eg. sdb[1]) (see /dev/mapper)
     environment.etc.crypttab = {
       mode = "0600";
       text = ''
