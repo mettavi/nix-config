@@ -158,25 +158,19 @@ with lib;
           ];
       };
       "/var/lib/libvirt/images" = {
-        inherit device;
-        fsType = "btrfs";
-        options =
-          commonOptions
-          ++ btrfsOptions
-          ++ [
-            "subvol=@libvirtimgs"
-          ];
+        inherit device fsType;
+        options = commonOptions ++ [
+          "subvol=@libvirtimgs"
+        ];
       };
       "/var/lib/postgresql" = {
         inherit device fsType;
         options = commonOptions ++ [
-          "compress=zstd"
           "subvol=@vlpostgres"
         ];
       };
       "/var/log" = {
-        inherit device;
-        fsType = "btrfs";
+        inherit device fsType;
         options =
           commonOptions
           ++ btrfsOptions
