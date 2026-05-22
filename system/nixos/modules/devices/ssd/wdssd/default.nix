@@ -37,8 +37,9 @@ in
     # Then add it to the device with: cryptsetup luksAddKey /dev/sdX /path/to/keyfile
 
     # NB: In order to encrypt a binary file, the example command on the sops-nix repo did not work
-    # This is the successful command:
-    # cat secrets/wdssd.key | sops encrypt --filename-override secrets/wdssd.luks.key \
+    # This is the successful procedure:
+    # 1. add a rule to .sops.yaml, eg. - path_regex: secrets/t7ssd\.luks\.key$
+    # 2. execute command: cat secrets/wdssd.key | sops encrypt --filename-override secrets/wdssd.luks.key \
     # --input-type binary /dev/stdin > secrets/wdssd.luks.key
     sops.secrets = {
       "users/${username}/wdssd.luks.key" = {
