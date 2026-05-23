@@ -348,40 +348,40 @@ in
             in
             # bash
             ''
-                echo "--- Backup Prep Started $(date) ---" > ${logFile}
-                START_TIME=$(date +%s)
+              echo "--- Backup Prep Started $(date) ---" > ${logFile}
+              START_TIME=$(date +%s)
 
-                # 1. DISK SPACE CHECK
-                # This checks the mount point of your USB drive
-                DISK_USAGE=$(df --output=pcent "${mountPath}" | tail -1 | tr -dc '0-9')
-                echo "USB Disk Usage: $DISK_USAGE%" >> ${logFile}
+              # 1. DISK SPACE CHECK
+              # This checks the mount point of your USB drive
+              DISK_USAGE=$(df --output=pcent "${mountPath}" | tail -1 | tr -dc '0-9')
+              echo "USB Disk Usage: $DISK_USAGE%" >> ${logFile}
 
-                if [ "$DISK_USAGE" -gt ${toString threshold} ]; then
-                  echo "WARNING: USB Disk is $DISK_USAGE% full!" >> ${logFile}
-                  /run/wrappers/bin/sudo -u ${username} env $WAYLAND_ENV \
-                    ${pkgs.zenity}/bin/zenity --warning --title="Disk Space Warning" \
-                    --text="USB Drive is $DISK_USAGE% full. Backup may fail." --timeout=10 &
-                fi
+              if [ "$DISK_USAGE" -gt ${toString threshold} ]; then
+                echo "WARNING: USB Disk is $DISK_USAGE% full!" >> ${logFile}
+                /run/wrappers/bin/sudo -u ${username} env $WAYLAND_ENV \
+                  ${pkgs.zenity}/bin/zenity --warning --title="Disk Space Warning" \
+                  --text="USB Drive is $DISK_USAGE% full. Backup may fail." --timeout=10 &
+              fi
 
-                  # 2. CLEANUP: Delete stale snapshots before starting
-                  echo "Cleaning up old snapshots..." >> ${logFile}
-                  ${concatMapAttrsStringSep "\n" (
-                    vol: pth:
-                    let
-                      subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
-                    in
-                    optionalString pth.enable ''
-                      if [ -e "${subvolMount}" ]; then
-                        ${pkgs.btrfs-progs}/bin/btrfs subvolume delete "${subvolMount}" >> ${logFile} 2>&1
-                      fi
-                    ''
-                  ) job.volumes}
+              # 2. CLEANUP: Delete stale snapshots before starting
+              echo "Cleaning up old snapshots..." >> ${logFile}
+              ${concatMapAttrsStringSep "\n" (
+                vol: pth:
+                let
+                  subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+                in
+                optionalString pth.enable ''
+                  if [ -e "${subvolMount}" ]; then
+                    ${pkgs.btrfs-progs}/bin/btrfs subvolume delete "${subvolMount}" >> ${logFile} 2>&1
+                  fi
+                ''
+              ) job.volumes}
 
-                  # 2. ATOMIC DATABASE SESSION
-                  # We use 'set -o pipefail' so errors in psql are caught
-                  echo "Starting PostgreSQL backup session..." >> ${logFile}
-                  if ! ${pgPkg}/bin/psql -U postgres >> ${logFile} 2>&1 <<EOF
-              SELECT pg_backup_start('restic-snap'); 
+              # 3. ATOMIC DATABASE SESSION
+              # We use 'set -o pipefail' so errors in psql are caught
+              echo "Starting PostgreSQL backup session..." >> ${logFile}
+              if ! ${pgPkg}/bin/psql -U postgres >> ${logFile} 2>&1 <<EOF
+                SELECT pg_backup_start('restic-snap'); 
 
               -- \! tells psql to run a shell command
               ${concatMapAttrsStringSep "\n" (
@@ -397,34 +397,34 @@ in
 
               SELECT pg_backup_stop();
               EOF
-                  then
-                    echo "ERROR: PostgreSQL session failed!" >> ${logFile}
-                    # Notify user on failure (using your existing WAYLAND_ENV logic)
-                    /run/wrappers/bin/sudo -u ${username} env $WAYLAND_ENV \
-                    ${pkgs.zenity}/bin/zenity --error --title="Backup Error" --text="PostgreSQL snapshot session failed. Check ${logFile}"
-                    exit 1
-                  fi
+                then
+                  echo "ERROR: PostgreSQL session failed!" >> ${logFile}
+                  # Notify user on failure (using your existing WAYLAND_ENV logic)
+                  /run/wrappers/bin/sudo -u ${username} env $WAYLAND_ENV \
+                  ${pkgs.zenity}/bin/zenity --error --title="Backup Error" --text="PostgreSQL snapshot session failed. Check ${logFile}"
+                  exit 1
+                fi
 
-                  # 4. VERIFICATION LOOP: Check if snapshots exist
-                  echo "Verifying new snapshots..." >> ${logFile}
-                  ${concatMapAttrsStringSep "\n" (
-                    vol: pth:
-                    let
-                      subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
-                    in
-                    optionalString pth.enable ''
-                      [ -d "${subvolMount}" ] || { echo "ERROR: ${subvolMount} missing!" >> ${logFile}; exit 1; }
-                    ''
-                  ) job.volumes}
+                # 4. VERIFICATION LOOP: Check if snapshots exist
+                echo "Verifying new snapshots..." >> ${logFile}
+                ${concatMapAttrsStringSep "\n" (
+                  vol: pth:
+                  let
+                    subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+                  in
+                  optionalString pth.enable ''
+                    [ -d "${subvolMount}" ] || { echo "ERROR: ${subvolMount} missing!" >> ${logFile}; exit 1; }
+                  ''
+                ) job.volumes}
 
-                  # 5. Run logical dumps
-                  ${concatMapStringsSep "\n" (
-                    db: "${pkgs.systemd}/bin/systemctl start postgresqlBackup-${db}.service >> ${logFile} 2>&1"
-                  ) dbs}
+                # 5. Run logical dumps
+                ${concatMapStringsSep "\n" (
+                  db: "${pkgs.systemd}/bin/systemctl start postgresqlBackup-${db}.service >> ${logFile} 2>&1"
+                ) dbs}
 
-                  END_TIME=$(date +%s)
-                  DURATION=$((END_TIME - START_TIME))
-                  echo "Backup Prep Finished Successfully in $DURATION seconds." >> ${logFile}
+                END_TIME=$(date +%s)
+                DURATION=$((END_TIME - START_TIME))
+                echo "Backup Prep Finished Successfully in $DURATION seconds." >> ${logFile}
             '';
 
           # The actual mount point (parent of the repo folder)
@@ -441,11 +441,11 @@ in
                   exit 255
                 fi
 
-                # 1. Identify the user's environment
+                # 2. Identify the user's environment
                 # We need to tell Zenity WHERE to show up.
                 USER_ID=$(id -u ${username})
 
-                # 2. AUTO-DETECT WAYLAND SOCKET
+                # 3. AUTO-DETECT WAYLAND SOCKET
                 # This finds wayland-0, wayland-1, etc., dynamically
                 WAYLAND_SOCKET=$(ls /run/user/$USER_ID/wayland-* | head -n 1 | xargs basename)
 
@@ -454,21 +454,21 @@ in
                 # We add DBUS_SESSION_BUS_ADDRESS explicitly to fix the "Transport" error
                 WAYLAND_ENV="WAYLAND_DISPLAY=$WAYLAND_SOCKET XDG_RUNTIME_DIR=/run/user/$USER_ID XDG_CURRENT_DESKTOP=GNOME GDK_BACKEND=wayland XDG_SESSION_TYPE=wayland DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$USER_ID/bus"
 
-                # 2. Run Zenity as the user and capture the exit code
+                # 4. Run Zenity as the user and capture the exit code
                 # --question: creates a Yes/No dialog
                 # --timeout: automatically continues after 30 seconds
                 # NB: USE THE SUDO WRAPPER ON NIXOS, because "sudo needs setuid to work, 
                 # but the package itself in nixpkgs can’t have it"
                 if /run/wrappers/bin/sudo -u ${username} env $WAYLAND_ENV \
-                   ${pkgs.zenity}/bin/zenity --question --title="Backup: ${name}" \
-                   --text="USB Disk '${job.vol_label}' detected. Start backup?" --timeout=30; then
+                  ${pkgs.zenity}/bin/zenity --question --title="Backup: ${name}" \
+                  --text="USB Disk '${job.vol_label}' detected. Start backup?" --timeout=30; then
 
                   ZEN_EXIT=$?
                 else
                   ZEN_EXIT=$?
                 fi  
 
-                # 3. Evaluate the Exit Code
+                # 5. Evaluate the Exit Code
                 # 0 = Yes, 5 = Timeout. We proceed for both.
                 if [ "$ZEN_EXIT" -eq 0 ] || [ "$ZEN_EXIT" -eq 5 ]; then
                   if [ "$ZEN_EXIT" -eq 5 ]; then
