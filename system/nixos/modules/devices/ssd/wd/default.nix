@@ -44,7 +44,7 @@ in
     sops.secrets = {
       "users/${username}/wdssd.luks.key" = {
         format = "binary";
-        sopsFile = "${secrets_path}/secrets/wdssd.luks.key";
+        sopsFile = "${secrets_path}/secrets/devices/wdssd.luks.key";
       };
     };
   };
