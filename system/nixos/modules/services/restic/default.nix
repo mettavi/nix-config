@@ -405,26 +405,26 @@ in
                   exit 1
                 fi
 
-                # 4. VERIFICATION LOOP: Check if snapshots exist
-                echo "Verifying new snapshots..." >> ${logFile}
-                ${concatMapAttrsStringSep "\n" (
-                  vol: pth:
-                  let
-                    subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
-                  in
-                  optionalString pth.enable ''
-                    [ -d "${subvolMount}" ] || { echo "ERROR: ${subvolMount} missing!" >> ${logFile}; exit 1; }
-                  ''
-                ) job.volumes}
+              # 4. VERIFICATION LOOP: Check if snapshots exist
+              echo "Verifying new snapshots..." >> ${logFile}
+              ${concatMapAttrsStringSep "\n" (
+                vol: pth:
+                let
+                  subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+                in
+                optionalString pth.enable ''
+                  [ -d "${subvolMount}" ] || { echo "ERROR: ${subvolMount} missing!" >> ${logFile}; exit 1; }
+                ''
+              ) job.volumes}
 
-                # 5. Run logical dumps
-                ${concatMapStringsSep "\n" (
-                  db: "${pkgs.systemd}/bin/systemctl start postgresqlBackup-${db}.service >> ${logFile} 2>&1"
-                ) dbs}
+              # 5. Run logical dumps
+              ${concatMapStringsSep "\n" (
+                db: "${pkgs.systemd}/bin/systemctl start postgresqlBackup-${db}.service >> ${logFile} 2>&1"
+              ) dbs}
 
-                END_TIME=$(date +%s)
-                DURATION=$((END_TIME - START_TIME))
-                echo "Backup Prep Finished Successfully in $DURATION seconds." >> ${logFile}
+              END_TIME=$(date +%s)
+              DURATION=$((END_TIME - START_TIME))
+              echo "Backup Prep Finished Successfully in $DURATION seconds." >> ${logFile}
             '';
 
           # The actual mount point (parent of the repo folder)
