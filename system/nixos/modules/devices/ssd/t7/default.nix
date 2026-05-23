@@ -3,6 +3,7 @@
   lib,
   secrets_path,
   username,
+  utils,
   ...
 }:
 with lib;
@@ -47,21 +48,34 @@ in
     # 2. execute command: cat secrets/wdssd.key | sops encrypt --filename-override secrets/wdssd.luks.key \
     # --input-type binary /dev/stdin > secrets/wdssd.luks.key
     sops.secrets = {
+      # key file to automatically decrypt the drive when plugged in
       "users/${username}/t7ssd.luks.key" = {
         format = "binary";
-        sopsFile = "${secrets_path}/secrets/t7ssd.luks.key";
+        sopsFile = "${secrets_path}/secrets/devices/t7ssd/t7ssd.luks.key";
+      };
+      # password to encrypt the luks-header backup with openssl
+      "users/${username}/t7-ssl-encpass" = {
+        sopsFile = "${secrets_path}/secrets/devices/t7ssd/t7-ssl-encpass.yaml";
       };
     };
-    systemd.services.backup-luks-header = # The actual mount point (parent of the repo folder)
+    systemd.services.backup-luks-headers =
       let
-        mountPath = "/run/media/${username}/${job.vol_label}";
+        mountPath = "/run/media/${username}/backup";
       in
       mkIf cfg.backup-header {
         description = "Backup luks headers on encrypted Samsung T7 disk";
         # bindsTo tells systemd: "The thing I depend on is gone, I should stop immediately."
-        bindsTo = [ "${utils.escapeSystemdPath job.repo}.mount" ];
-        after = [ "${utils.escapeSystemdPath job.repo}.mount" ];
-        wantedBy = [ "${utils.escapeSystemdPath job.repo}.mount" ];
+        bindsTo = [ "${utils.escapeSystemdPath "${mountPath}"}.mount" ];
+        after = [ "${utils.escapeSystemdPath "${mountPath}"}.mount" ];
+        wantedBy = [ "${utils.escapeSystemdPath "${mountPath}"}.mount" ];
+        before = [ "restic-backups-oona" ];
+        requiredBy = [ "restic-backups-oona" ];
+        path = with pkgs; [
+          coreutils
+          findutils
+          openssl
+          util-linux
+        ];
         serviceConfig = {
           Type = "oneshot";
         };
@@ -69,37 +83,65 @@ in
           # MOUNT GUARD: Check if the path is actually a mount point
           if ! ${pkgs.util-linux}/bin/mountpoint -q "${mountPath}"; then
             echo "ERROR: ${mountPath} is not a mount point. Aborting to save root partition."
-            # Exit with 255 so systemd "ExecCondition" knows the 'preparation' failed
             exit 255
           fi
-          BACKUP_DIR="/root/luks-backups"
+
+          BACKUP_DIR="/var/backup/luks-backups"
           DATE=$(date +%Y%m%d)
           RETENTION_DAYS=90
           mkdir -p "$BACKUP_DIR"
 
           # Back up all LUKS devices
           for dev in $(blkid -t TYPE=crypto_LUKS -o device 2>/dev/null); do
-              SAFE_NAME=$(echo "$dev" | tr '/' '_')
-              BACKUP_FILE="${BACKUP_DIR}/luks-header${SAFE_NAME}-${DATE}.img"
+            SAFE_NAME=$(echo "$dev" | tr '/' '_')
+            BACKUP_FILE="''${BACKUP_DIR}/luks-header''${SAFE_NAME}-''${DATE}.img"
+            INFO_FILE="''${BACKUP_DIR}/luks-info''${SAFE_NAME}-''${DATE}.txt"
 
-              cryptsetup luksHeaderBackup "$dev" \
-                  --header-backup-file "$BACKUP_FILE" 2>/dev/null
+            echo "Backing up and encrypting header for $dev..."
 
-              if [ $? -eq 0 ]; then
-                  # Encrypt the backup
-                  gpg --batch --yes --pinentry-mode loopback \
-                      --symmetric --cipher-algo AES256 \
-                      --passphrase-file /root/.luks-backup-passphrase \
-                      "$BACKUP_FILE" 2>/dev/null
-                  shred -u "$BACKUP_FILE"
-                  logger -t luks-backup "Backed up LUKS header for $dev"
-              else
-                  logger -t luks-backup -p err "Failed to back up LUKS header for $dev"
-              fi
+            cryptsetup luksHeaderBackup "$dev" \
+            | openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -pass file:${
+              config.sops.secrets."users/${username}/t7-ssl-encpass".path
+            } -out "$BACKUP_FILE"
+
+              # Save device information
+            {
+              echo "LUKS Header Backup Information"
+              echo "=============================="
+              echo "Date: $(date)"
+              echo "Device: $dev"
+              echo "Hostname: $(hostname)"
+              echo ""
+              echo "--- blkid output ---"
+              blkid "$dev"
+              echo ""
+              echo "--- LUKS Dump ---"
+              cryptsetup luksDump "$dev"
+              echo ""
+              echo "--- lsblk output ---"
+              lsblk "$dev"
+            } > "$INFO_FILE"
+
+            echo "  Header: $BACKUP_FILE"
+            echo "  Info:   $INFO_FILE"
+
+            if [ $? -eq 0 ]; then
+              # gpg --batch --yes --pinentry-mode loopback \
+              # --symmetric --cipher-algo AES256 \
+              # --passphrase-file /root/.luks-backup-passphrase \
+              # "$BACKUP_FILE" 2>/dev/null
+              # shred -u "$BACKUP_FILE"
+              logger -t luks-backup "Backed up LUKS header for $dev"
+            else
+              logger -t luks-backup -p err "Failed to back up LUKS header for $dev"
+            fi
           done
 
+          echo ""
+          echo "All LUKS headers backed up to $BACKUP_DIR"
+
           # Clean up old backups
-          find "$BACKUP_DIR" -name "luks-header*.img.gpg" -mtime +${RETENTION_DAYS} -delete
+          find "$BACKUP_DIR" -name "luks-header*.img.gpg" -mtime +''${RETENTION_DAYS} -delete
         '';
       };
   };
