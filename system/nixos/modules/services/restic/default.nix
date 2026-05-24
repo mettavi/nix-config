@@ -378,10 +378,9 @@ in
               ) job.volumes}
 
               # 3. ATOMIC DATABASE SESSION
-              # We use 'set -o pipefail' so errors in psql are caught
               echo "Starting PostgreSQL backup session..." >> ${logFile}
               if ! ${pgPkg}/bin/psql -U postgres >> ${logFile} 2>&1 <<EOF
-                SELECT pg_backup_start('restic-snap'); 
+              SELECT pg_backup_start('restic-snap'); 
 
               -- \! tells psql to run a shell command
               ${concatMapAttrsStringSep "\n" (
@@ -417,10 +416,65 @@ in
                 ''
               ) job.volumes}
 
-              # 5. Run logical dumps
+              # 5. RUN LOGICAL PSQL DUMPS
               ${concatMapStringsSep "\n" (
                 db: "${pkgs.systemd}/bin/systemctl start postgresqlBackup-${db}.service >> ${logFile} 2>&1"
               ) dbs}
+
+              # 6. BACKUP AND ENCRYPT LUKS HEADERS
+              # code adapted from https://oneuptime.com/blog/post/2026-03-04-backup-restore-luks-headers-rhel-9/view
+              LUKS_DIR="/var/backup/luks"
+              DATE=$(date +%Y%m%d)
+              RETENTION_DAYS=90
+              mkdir -p "$LUKS_DIR"
+
+              # Back up headers for all LUKS devices
+              for dev in $(blkid -t TYPE=crypto_LUKS -o device 2>/dev/null); do
+                SAFE_NAME=$(echo "$dev" | tr '/' '_')
+                HEADER_FILE="''${LUKS_DIR}/luks-header''${SAFE_NAME}-''${DATE}.img.enc"
+                INFO_FILE="''${LUKS_DIR}/luks-info''${SAFE_NAME}-''${DATE}.txt"
+
+                echo "Backing up and encrypting header for $dev..."
+
+                # backup and encrypt the luks headers using openssl
+                cryptsetup luksHeaderBackup "$dev" --header-backup-file - | openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -pass file:${
+                  config.sops.secrets."users/${username}/t7-ssl-encpass".path
+                } -out "$HEADER_FILE"
+
+                if [ $? -eq 0 ]; then
+                  logger -t luks-backup "Backed up LUKS header for $dev"
+                else
+                  logger -t luks-backup -p err "Failed to back up LUKS header for $dev"
+                fi
+
+                # Save device information
+                {
+                  echo "LUKS Header Backup Information"
+                  echo "=============================="
+                  echo "Date: $(date)"
+                  echo "Device: $dev"
+                  echo "Hostname: $(hostname)"
+                  echo ""
+                  echo "--- blkid output ---"
+                  blkid "$dev"
+                  echo ""
+                  echo "--- LUKS Dump ---"
+                  cryptsetup luksDump "$dev"
+                  echo ""
+                  echo "--- lsblk output ---"
+                  lsblk "$dev"
+                } > "$INFO_FILE"
+
+                echo "  Header: $HEADER_FILE"
+                echo "  Info:   $INFO_FILE"
+
+              done
+
+              echo ""
+              echo "All LUKS headers backed up to $LUKS_DIR"
+
+              # Clean up old luks header backups
+              find "$LUKS_DIR" -name "luks-header*.img.gpg" -mtime +''${RETENTION_DAYS} -delete
 
               END_TIME=$(date +%s)
               DURATION=$((END_TIME - START_TIME))
@@ -476,7 +530,7 @@ in
                   else
                     echo "User clicked YES. Starting backup..."
                   fi
-                  
+
                   ${backupPrep}
 
                 else
@@ -502,6 +556,14 @@ in
             "restic-check-${name}.service"
           ];
           onFailure = [ "notify-backup-failed-${name}.service" ];
+          path = with pkgs; [
+            coreutils
+            cryptsetup
+            findutils
+            hostname-debian
+            openssl
+            util-linux
+          ];
         }
       ) enabledJobs)
 
