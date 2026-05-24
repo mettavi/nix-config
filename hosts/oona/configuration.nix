@@ -213,7 +213,7 @@
                     "etc/ssh/ssh_${hostname}_ed25519_key*"
                     "etc/subgid"
                     "var/backup/postgresql"
-                    "/var/backup/luks-backups"
+                    "var/backup/luks"
                     # includes the important /var/lib/nixos
                     "var/lib"
                   ];
