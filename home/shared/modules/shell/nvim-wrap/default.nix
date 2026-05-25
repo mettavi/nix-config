@@ -62,15 +62,15 @@ in
             ...
           }:
           {
-            options.extraPackages = lib.mkOption {
+            options.runtimePkgs = lib.mkOption {
               type = lib.types.listOf wlib.types.stringable;
               default = [ ];
-              description = "an extraPackages spec field to put packages to suffix to the PATH";
+              description = "an runtimePkgs spec field to put packages to suffix to the PATH";
             };
           };
 
-        # get extraPackages as sub-options under specs.<name>.extraPackages, rather than at the top level
-        extraPackages = config.specCollect (acc: v: acc ++ (v.extraPackages or [ ])) [ ];
+        # get runtimePkgs as sub-options under specs.<name>.runtimePkgs, rather than at the top level
+        runtimePkgs = config.specCollect (acc: v: acc ++ (v.runtimePkgs or [ ])) [ ];
 
         specs.general = {
           data = with pkgs.vimPlugins; [
@@ -115,7 +115,7 @@ in
             treesitter-modules-nvim
             vim-tmux-navigator
           ];
-          extraPackages = with pkgs; [
+          runtimePkgs = with pkgs; [
             eslint_d
             lazygit
             prettier
@@ -224,14 +224,14 @@ in
           data = with pkgs.vimPlugins; [
             lazydev-nvim
           ];
-          extraPackages = with pkgs; [
+          runtimePkgs = with pkgs; [
             lua-language-server
             stylua
           ];
         };
         specs.nix = {
           data = null;
-          extraPackages = with pkgs; [
+          runtimePkgs = with pkgs; [
             nixd
             nixfmt
           ];
@@ -239,14 +239,14 @@ in
 
         specs.bash = {
           data = null;
-          extraPackages = with pkgs; [
+          runtimePkgs = with pkgs; [
             bash-language-server
             shfmt
           ];
         };
         specs.yaml = {
           data = null;
-          extraPackages = with pkgs; [
+          runtimePkgs = with pkgs; [
             yaml-language-server
             yamlfmt
             yamllint
