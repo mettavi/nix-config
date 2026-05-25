@@ -56,8 +56,13 @@
       };
       mettavi = {
         shell = {
+          bash.enable = true;
           # enable scheduled bitwarden backup task
           bw_backup.enable = true;
+          nh.enable = true;
+          nixcats.enable = true;
+          tmux.enable = true;
+          yazi.enable = true;
         };
       };
     };
