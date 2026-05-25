@@ -60,6 +60,8 @@ let
   '';
 in
 {
+  imports = [ ./zot_conf.nix ];
+
   meta.maintainers = [ maintainers.somasis ];
 
   options.mettavi.apps.zotero = {

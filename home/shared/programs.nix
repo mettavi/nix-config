@@ -12,6 +12,9 @@
     fzf-git-sh
   ];
 
+  # install the HTML manual and "home-manager-help" command
+  manual.html.enable = true;
+
   programs = {
     # ensure home-manager itself is installed
     home-manager.enable = true;
