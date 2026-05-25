@@ -76,7 +76,6 @@ in
             ../../../../../home/shared/sops-home.nix
             ../../../../../home/shared/modules
             ../../../../../home/${platform}
-            ../../../../../users/${usrCfg.username}
           ];
           home = {
             # username and homeDirectory are set automatically when using home-manager as a system module
