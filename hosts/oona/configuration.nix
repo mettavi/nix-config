@@ -129,6 +129,21 @@ with lib;
     })
   ];
 
+  # enable appimage apps on this host
+  programs.appimage = {
+    # enable appimage-run wrapper script for executing appimages
+    enable = true;
+    # enable binfmt registration to run appimages via appimage-run seamlessly
+    binfmt = true;
+    package = pkgs.appimage-run.override {
+      extraPkgs =
+        pkgs: with pkgs; [
+          libepoxy
+          sqlite
+        ];
+    };
+  };
+
   # SYSTEM MODULES SETTINGS
 
   mettavi.system = {
@@ -337,6 +352,7 @@ with lib;
           gnomeExtensions.gpu-supergfxctl-switch
           goldendict-ng # Advanced multi-dictionary lookup program
           gramps # Genealogy software
+          linpkgs.tipitaka_pali_reader
         ];
         sessionVariables = {
           # required for electron apps, which don't read the mimeapps.list file

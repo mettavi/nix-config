@@ -24,6 +24,7 @@
       inputs.cachyos-kernel.overlays.pinned
 
       # Only use one of the two overlays!
+      (import ../overlays/nixos)
     ];
   };
   nix = {
