@@ -17,6 +17,8 @@ let
 
   appimageContents = pkgs.appimageTools.extract { inherit pname version src; };
 in
+# this function creates a wrapped package 'tipitaka_pali_reader' to run the app directly (including via GUI)
+# NB: the programs.appimage options instead allow to run the app with the 'appimage-run' command
 pkgs.appimageTools.wrapType2 {
   inherit
     pname

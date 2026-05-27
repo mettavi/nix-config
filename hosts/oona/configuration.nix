@@ -135,6 +135,7 @@ with lib;
     enable = true;
     # enable binfmt registration to run appimages via appimage-run seamlessly
     binfmt = true;
+    # wrap additional dependencies into the appimage-run wrapper script
     package = pkgs.appimage-run.override {
       extraPkgs =
         pkgs: with pkgs; [
