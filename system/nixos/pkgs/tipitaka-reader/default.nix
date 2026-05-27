@@ -10,6 +10,10 @@ let
     url = "https://github.com/bksubhuti/tipitaka-pali-reader/releases/download/v${version}/tipitaka_pali_reader.AppImage";
     hash = "sha256-R4j0iMIGmPY7+Gzd0MbMWX1MFyfVLE4cemy7Gh6mr58=";
   };
+  getIcon = builtins.fetchurl {
+    url = "file:///home/timotheos/.nix-config/system/nixos/pkgs/tipitaka-reader/logo-128.png";
+    sha256 = "sha256:0hyk3nw70nyx0avkhxq8kxv1y24vmp29mq2bgpryxaxkz4fsr599";
+  };
 
   appimageContents = pkgs.appimageTools.extract { inherit pname version src; };
 in
@@ -19,35 +23,20 @@ pkgs.appimageTools.wrapType2 {
     version
     src
     ;
-  pkgs = pkgs;
+
   extraInstallCommands = # bash
     ''
       install -m 444 -D ${appimageContents}/${pname}.desktop -t $out/share/applications/
-      # substituteInPlace $out/share/applications/${pname}.desktop \
-      #   --replace-fail 'Exec=${pname}' 'Exec=${pname}'
-      install -m 444 -D ${appimageContents}/logo.png $out/share/icons/hicolor/1024x1024/apps/${pname}.png
-
-      # unless linked, the binary is placed in $out/bin/name-someVersion
-      # ln -s $out/bin/${pname}-${version} $out/bin/${pname}
+      install -m 444 -D ${getIcon} $out/share/icons/hicolor/128x128/apps/${pname}.png
+      substituteInPlace $out/share/applications/${pname}.desktop \
+        --replace-fail 'Icon=logo' 'Icon=tipitaka_pali_reader'
     '';
 
-  # extraBwrapArgs = [
-  #   "--bind-try /etc/nixos/ /etc/nixos/"
-  # ];
-
-  # vscode likes to kill the parent so that the
-  # gui application isn't attached to the terminal session
-
-  # dieWithParent = false;
-
-  # extraPkgs =
-  #   pkgs: with pkgs; [
-  # unzip
-  # autoPatchelfHook
-  # asar
-  # # override doesn't preserve splicing https://github.com/NixOS/nixpkgs/issues/132651
-  # (buildPackages.wrapGAppsHook3.override { inherit (buildPackages) makeWrapper; })
-  # ];
+  extraPkgs =
+    pkgs: with pkgs; [
+      libepoxy
+      sqlite
+    ];
 
   meta = {
     description = "A Pali Reading app made in Flutter";
