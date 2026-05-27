@@ -689,7 +689,8 @@ in
                   fi
                 '';
             Type = "oneshot";
-            User = "${username}";
+            # User = "${username}";
+            User = "root";
             # Systemd creates /var/log/rclone and gives ${username} write access
             LogsDirectory = "rclone";
           };
@@ -701,7 +702,8 @@ in
 
               # copy the local restic backup to the cloud (backblaze b2)
               # NB: checkers and transfers were decreased from 100 for better connectivity
-              ${pkgs.rclone}/bin/rclone --log-level INFO --log-file=$LOGFILE \
+              ${pkgs.rclone}/bin/rclone --config="/home/${username}/.config/rclone/rclone.conf" \
+                --log-level INFO --log-file=$LOGFILE \
                 --b2-hard-delete --checkers 50 --transfers 50 \
                 --stats 2m --order-by size,mixed,75 --max-backlog 10000 --progress --retries 1 --fast-list \
                 sync "${job.repo}/${name}" b2:${hostname}-g14/restic/
