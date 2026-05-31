@@ -109,7 +109,6 @@ in
           ])
           ++ (with pkgs.gnomeExtensions; [
             appindicator # Adds AppIndicator, KStatusNotifierItem and legacy tray icons support to the Shell.
-            power-profile-indicator-2 # Add current power profile in panel's system icons.
           ]);
         # Use `dconf watch /` to track stateful changes you are doing, then set them here
         dconf.settings = {
@@ -153,7 +152,6 @@ in
             enabled-extensions = [
               "appindicatorsupport@rgcjonas.gmail.com"
               "copyous@boerdereinar.dev"
-              "power-profile@fthx"
             ];
           };
           # to prevent "gvfsd-wsdd[4350]: Failed to spawn the wsdd daemon" log errors
