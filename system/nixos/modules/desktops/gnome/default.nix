@@ -95,7 +95,7 @@ in
             switcheroo # Gnome app for converting (and resizing) images between different formats (uses imagemagick)
             wl-clipboard # command line copy/paste utilities for Wayland
             # workaround to force libgda5, due to bug with gda6
-            # see https://github.com/boerdereinar/copyous/issues/67#issuecomment-3983477333
+            # see https://github.com/boerdereinar/copyous/issues/67#issuecomment-3983477333 (the code was updated for gnome 50)
             # TODO: Follow up
             (gnomeExtensions.copyous.overrideAttrs (oldAttrs: {
               buildInputs = [
