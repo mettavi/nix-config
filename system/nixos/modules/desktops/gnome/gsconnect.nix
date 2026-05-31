@@ -9,6 +9,10 @@
 with lib;
 let
   cfg = config.mettavi.system.desktops.gnome;
+  # TODO: Remove the nixpkgs input for the gsconnect package when nixpkgs PR
+  # https://nixpk.gs/pr-tracker.html?pr=524726 is merged to nixos-unstable
+  # See https://github.com/NixOS/nixpkgs/pull/524726/ for details
+  nixpkgs = inputs.nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
 in
 {
   options.mettavi.system.desktops.gnome = {
@@ -30,7 +34,7 @@ in
       allowedUDPPortRanges = allowedTCPPortRanges;
     };
     home-manager.users.${username} = {
-      home.packages = with pkgs.gnomeExtensions; [
+      home.packages = with nixpkgs.gnomeExtensions; [
         gsconnect # KDE Connect implementation for GNOME
       ];
       dconf.settings = {

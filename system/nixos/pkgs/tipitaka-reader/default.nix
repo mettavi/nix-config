@@ -29,6 +29,7 @@ pkgs.appimageTools.wrapType2 {
   extraInstallCommands = # bash
     ''
       install -m 444 -D ${appimageContents}/${pname}.desktop -t $out/share/applications/
+      # gnome menus require a smaller app icon
       install -m 444 -D ${getIcon} $out/share/icons/hicolor/128x128/apps/${pname}.png
       substituteInPlace $out/share/applications/${pname}.desktop \
         --replace-fail 'Icon=logo' 'Icon=tipitaka_pali_reader'
