@@ -116,5 +116,18 @@ in
       # this option adds pkgs.nvidia-vaapi-driver but no configuration (see above)
       videoAcceleration = true; # default = true
     };
+
+    # build packages with CUDA support by default while building nixpkgs packages
+    nixpkgs.config.cudaSupport = true;
+
+    # enable the CUDA binary cache (eg. prefetch packages like ollama which require CUDA to prevent re-compiling from source)
+    nix.settings = {
+      substituters = [
+        "https://cache.nixos-cuda.org"
+      ];
+      trusted-public-keys = [
+        "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+      ];
+    };
   };
 }
