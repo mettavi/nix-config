@@ -16,6 +16,23 @@
   inputs = {
     ####################### MAIN INPUTS ##########################
 
+    ######### NIXOS #########
+    nixos-pkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # Do not override cachyos-kernel nixpkgs input, otherwise there can
+    # be mismatch between patches and kernel version
+    cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
+    # fan daemon for T2 macs (for host lady on MBP)
+    t2fanrd.url = "github:GnomedDev/T2FanRD";
+    # Manages Podman containers and networks on NixOS via Quadlet
+    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
+
+    ####### HOME_MANAGER #########
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixos-pkgs";
+    };
+
     ######## NIX-DARWIN ########
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable"; # for nix-darwin
     # migrate to this input when 26.05 stable is released, which is the last version to support intel darwin
@@ -38,23 +55,6 @@
     homebrew-cask = {
       url = "github:homebrew/homebrew-cask";
       flake = false;
-    };
-
-    ######### NIXOS #########
-    nixos-pkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # Do not override cachyos-kernel nixpkgs input, otherwise there can
-    # be mismatch between patches and kernel version
-    cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
-    # fan daemon for T2 macs
-    t2fanrd.url = "github:GnomedDev/T2FanRD";
-    # Manages Podman containers and networks on NixOS via Quadlet
-    quadlet-nix.url = "github:SEIAROTg/quadlet-nix";
-
-    ####### HOME_MANAGER #########
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     ####################### PERSONAL REPOS #######################
