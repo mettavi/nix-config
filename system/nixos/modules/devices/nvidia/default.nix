@@ -118,7 +118,9 @@ in
     };
 
     # build packages with CUDA support by default while building nixpkgs packages
-    nixpkgs.config.cudaSupport = true;
+    # WARNING: enabling this option caused the IR emitter to fail when using howdy authentication via the GUI
+    # Workaround: enable for individual packages instead
+    # nixpkgs.config.cudaSupport = true;
 
     # enable the CUDA binary cache (eg. prefetch packages like ollama which require CUDA to prevent re-compiling from source)
     nix.settings = {
