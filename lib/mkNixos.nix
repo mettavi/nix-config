@@ -7,7 +7,7 @@
   # Function for NixOS system configuration
   mkNixosConfiguration =
     hostname: system:
-    inputs.nixos-pkgs.lib.nixosSystem rec {
+    inputs.nixpkgs.lib.nixosSystem rec {
       inherit system;
       specialArgs = {
         inherit

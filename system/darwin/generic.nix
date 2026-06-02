@@ -14,7 +14,7 @@
     channel.enable = false;
     # this ensures $NIX_PATH is set to an immutable location in the nix-store
     nixPath = options.nix.nixPath.default ++ [
-      "nixpkgs=${inputs.nixpkgs}"
+      "nixpkgs=${inputs.nixpkgs-darwin}"
       "nixpkgs-overlays=${config.users.users.${username}.home}/${nix_repo}/system/overlays/shared"
       "darwin-config=${
         config.users.users.${username}.home

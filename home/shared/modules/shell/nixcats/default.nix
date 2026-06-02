@@ -37,7 +37,7 @@ in
     # }
     nixCats = {
       enable = true;
-      nixpkgs_version = if pkgs.stdenv.isLinux then inputs.nixos-pkgs else inputs.nixpkgs;
+      nixpkgs_version = if pkgs.stdenv.isLinux then inputs.nixpkgs else inputs.nixpkgs-darwin;
       # this will add the overlays from ./overlays and also,
       # add any plugins in inputs named "plugins-pluginName" to pkgs.neovimPlugins
       # It will not apply to overall system, just nixCats.

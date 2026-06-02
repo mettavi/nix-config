@@ -17,7 +17,7 @@
     ####################### MAIN INPUTS ##########################
 
     ######### NIXOS #########
-    nixos-pkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     # Do not override cachyos-kernel nixpkgs input, otherwise there can
     # be mismatch between patches and kernel version
     cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
@@ -30,21 +30,21 @@
     ####### HOME_MANAGER #########
     home-manager = {
       url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixos-pkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     ######## NIX-DARWIN ########
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable"; # for nix-darwin
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-unstable"; # for nix-darwin
     # migrate to this input when 26.05 stable is released, which is the last version to support intel darwin
     # nixpkgs-26_05.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
     # HOMEBREW
     nix-homebrew = {
       url = "github:zhaofengli/nix-homebrew";
-      # inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
     # if mutableTaps is disabled in homebrew.nix, these taps must be declared here AND in homebrew.nix
     # NB: do not use the brew "shorthand" which excludes the "homebrew-" part of the GH url
@@ -56,6 +56,11 @@
       url = "github:homebrew/homebrew-cask";
       flake = false;
     };
+    # Removed due to bug with sbcl dependency on intel darwin, see https://github.com/hraban/mac-app-util/issues/20
+    # mac-app-util = {
+    #   url = "github:hraban/mac-app-util";
+    #   inputs.nixpkgs.follows = "nixpkgs-darwin";
+    # };
 
     ####################### PERSONAL REPOS #######################
     secrets = {
@@ -72,9 +77,14 @@
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    dove = {
+      url = "git+https://gitlab.com/celenityy/Dove.git?ref=pages";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.phoenix.follows = "phoenix";
+    };
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-      inputs.nixpkgs.follows = "nixos-pkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     firefox-gnome-theme = {
       url = "github:rafaelmardojai/firefox-gnome-theme";
@@ -82,16 +92,11 @@
     };
     jellarr = {
       url = "github:venkyr77/jellarr/faeb5c70999592cb7763e68a93924503df0ada9e";
-      inputs.nixpkgs.follows = "nixos-pkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixCats = {
       url = "github:BirdeeHub/nixCats-nvim";
     };
-    # Removed due to bug with sbcl dependency on intel darwin, see https://github.com/hraban/mac-app-util/issues/20
-    # mac-app-util = {
-    #   url = "github:hraban/mac-app-util";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
     nix-vscode-extensions = {
       url = "github:nix-community/nix-vscode-extensions";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -103,6 +108,10 @@
     };
     nur = {
       url = "github:nix-community/NUR";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    phoenix = {
+      url = "git+https://gitlab.com/celenityy/Phoenix.git?ref=pages";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     # These 2 are already in nixpkgs, however this ensures you always fetch the most up to date version!
@@ -120,19 +129,19 @@
     };
     sops-nixos = {
       url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixos-pkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix-darwin = {
       url = "github:Mic92/sops-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
     tmux-which-key = {
       url = "github:mettavi/tmux-which-key/d02a3280352d27164354355e78ad20284de46b07";
-      inputs.nixpkgs.follows = "nixos-pkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     wrappers = {
       url = "github:BirdeeHub/nix-wrapper-modules";
-      inputs.nixpkgs.follows = "nixos-pkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     # install a pinned version of a nix package with:
     # specific_package.url = "github:nixos/nixpkgs/specific_commit_hash_from_nixhub.io";

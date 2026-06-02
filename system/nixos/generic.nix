@@ -46,7 +46,7 @@
     # for traditional nix commands like nix-shell, this sets <nixpkgs> AND points it to the local nix store
     # NB: this value must be set explicitly because nix.channel = false (which will default nixPath to null)
     nixPath = options.nix.nixPath.default ++ [
-      "nixpkgs=${inputs.nixos-pkgs}"
+      "nixpkgs=${inputs.nixpkgs}"
       "nixpkgs-overlays=${config.users.users.${username}.home}/${nix_repo}/system/overlays/shared"
       "home-manager=${inputs.home-manager}"
     ];
