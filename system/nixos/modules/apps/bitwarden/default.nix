@@ -10,6 +10,14 @@
 with lib;
 let
   cfg = config.mettavi.system.apps.bitwarden;
+  # TODO: remove pinned package when problems with bitwarden-desktop version 2026.5.0 are resolved
+  # This will pin bitwarden-desktop to version 2026.3.1
+  nixpkgs-26_05 = import inputs.nixpkgs-26_05 {
+    system = "x86_64-linux";
+    config = {
+      permittedInsecurePackages = [ "electron-39.8.10" ];
+    };
+  };
 in
 {
   options.mettavi.system.apps.bitwarden = {
@@ -25,7 +33,7 @@ in
     environment.systemPackages = with pkgs; [
       # to get authentication-related functionality, currently this cannot be installed by home-manager
       # see https://github.com/NixOS/nixpkgs/pull/339384#issuecomment-2372065297
-      bitwarden-desktop
+      nixpkgs-26_05.bitwarden-desktop
       # Cryptographic library that implements the SSL and TLS protocols (required for the bash script)
       openssl_3
     ];
