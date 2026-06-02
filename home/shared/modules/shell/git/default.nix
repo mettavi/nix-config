@@ -30,11 +30,12 @@ in
           ''
             #!/usr/bin/env bash
 
+            # comment out lines, no longer using lazy-nvim plugin manager for neovim
             # commit current version of nvim (Lazy) plugins catalogue
-            echo
-            echo "Checking for changes to lazy-lock.json..."
-            echo
-            git add home/shared/dots/nvim/lazy-lock.json
+            # echo
+            # echo "Checking for changes to lazy-lock.json..."
+            # echo
+            # git add home/shared/dots/nvim/lazy-lock.json
 
             # check staged files for secrets
             echo "Checking for secrets..."
