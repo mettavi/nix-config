@@ -30,6 +30,11 @@ in
       openssl_3
     ];
 
+    # TODO: Remove when bitwarden removes its dependency on electron 39
+    nixpkgs.config.permittedInsecurePackages = [
+      "electron-39.8.10" # required for bitwarden-desktop-2026.5.0
+    ];
+
     # the backup option relies on an email module to enable email notification of failed backups
     mettavi.system.services.postfix.enable = mkIf cfg.backup true;
 
