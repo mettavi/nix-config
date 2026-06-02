@@ -1,12 +1,15 @@
 {
   config,
+  hostname,
   inputs,
   lib,
+  secrets_path,
   ...
 }:
 with lib;
 let
   cfg = config.mettavi.apps.anki;
+  username = config.home.username;
 in
 {
   options.mettavi.apps.anki = {
@@ -18,6 +21,12 @@ in
   };
 
   config = mkIf cfg.enable {
+    sops.secrets = {
+      "users/${username}/anki_syncKey" = {
+        sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
+      };
+    };
+
     programs.anki = {
       enable = true;
       addons = [ ];
@@ -46,12 +55,12 @@ in
       language = "en_AU"; # display language
       minimalistMode = false; # Minimalist user interface mode
       profiles = {
-        "${config.home.username}" = {
+        "${username}" = {
           default = true;
           sync = {
             autoSync = true;
             autoSyncMediaMinutes = 0; # set to 0 to disable
-            keyFile = null; # Path to a file containing the sync account sync key
+            keyFile = "${config.sops.secrets."users/${username}/anki_syncKey".path}"; # Path to a file containing the sync account sync key
             networkTimeout = 60; # secs
             syncMedia = true;
             url = null; # custom sync server
