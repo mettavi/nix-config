@@ -21,6 +21,8 @@
       };
       modules = [
         inputs.disko.nixosModules.disko
+        # Adds the NUR overlay
+        inputs.nur.modules.nixos.default
         ../hosts/${hostname}/configuration.nix
         {
           users = {
