@@ -126,6 +126,18 @@ with lib;
           ./aura_support_ga403w.patch
         ];
       });
+      # TODO: Remove this overlay when v6.0.8 hits nixos-unstable branch
+      # install a newer version for bugfix https://github.com/gramps-project/gramps/pull/2204
+      # (and other updates added to v6.0.8)
+      gramps = prev.gramps.overrideAttrs (oldAttrs: {
+        version = "6.0.8";
+        src = prev.fetchFromGitHub {
+          owner = "gramps-project";
+          repo = "gramps";
+          rev = "v6.0.8";
+          hash = "sha256-Kq+QyhghBmUzl+ooCYSl2yNMvrBDnQS6Zg3nBI1jbRo=";
+        };
+      });
     })
   ];
 
