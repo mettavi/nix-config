@@ -119,6 +119,9 @@ with lib;
   # NB: git clone the repo, add the new lines and then run 'git diff > ../aura_support_ga403w.patch
   nixpkgs.overlays = [
     (final: prev: {
+      # TODO: Support has now been added,
+      # see https://github.com/OpenGamingCollective/asusctl/commit/8bf37ed1b2f3da34b2a6047267958f365ce8e131
+      # This fix will ship with the next version 6.3.8
       asusctl = prev.asusctl.overrideAttrs (oldAttrs: {
         # Append your new patch to the existing list of patches
         patches = (oldAttrs.patches or [ ]) ++ [
