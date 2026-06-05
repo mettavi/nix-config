@@ -120,6 +120,8 @@ in
           hunspellDicts.en_AU
           hunspellDicts.en_US
           hyphenDicts.en_US
+          # tools for reading and converting Apple iWork documents
+          libetonyek
           # MS fonts
           corefonts
           vista-fonts
