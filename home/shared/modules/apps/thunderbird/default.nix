@@ -443,7 +443,7 @@ in
             }:
             let
               finalEnable =
-                if flavor == "davmail" && !config.khanelinix.services.davmail.enable then
+                if flavor == "davmail" && !config.mettavi.services.davmail.enable then
                   lib.warn "Davmail account '${address}' is disabled because davmail service is not enabled." false
                 else
                   enable;
