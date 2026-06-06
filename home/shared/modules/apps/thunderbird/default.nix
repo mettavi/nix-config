@@ -91,13 +91,7 @@ in
           };
         in
         lib.types.attrsOf accountType;
-      default = {
-        "US Holidays" = {
-          url = "https://apidata.googleusercontent.com/caldav/v2/cln2stbjc4hmgrrcd5i62ua0ctp6utbg5pr2sor1dhimsp31e8n6errfctm6abj3dtmg%40virtual/events/";
-          type = "caldav";
-          color = "#92cfe1";
-        };
-      };
+      default = { };
       description = "Extra calendar accounts to configure.";
     };
     extraEmailAccounts = lib.mkOption {
@@ -112,6 +106,7 @@ in
                 "gmail.com"
                 "runbox.com"
                 "fastmail.com"
+                "mailbox.org"
                 "yandex.com"
                 "outlook.office365.com"
                 "davmail"
@@ -320,7 +315,6 @@ in
           "gmail-personal"
         ];
       };
-      # 2) Declare the main mail account and link it to the profile
       accounts = {
         contacts.accounts =
           let
@@ -333,7 +327,7 @@ in
               {
                 remote = {
                   inherit type url;
-                  userName = config.khanelinix.user.email;
+                  userName = inputs.secrets.email.personal;
                 };
                 local = {
                   inherit color;
@@ -341,24 +335,24 @@ in
                 thunderbird = {
                   enable = true;
                   profiles = [
-                    config.khanelinix.user.name
+                    username
                   ];
                   inherit color;
                 };
               };
           in
           {
-            "${config.khanelinix.user.email}" = {
+            "${inputs.secrets.email.personal}" = {
               remote = {
                 type = "carddav";
-                url = "https://apidata.googleusercontent.com/caldav/v2/khaneliman12%40gmail.com/events/";
-                userName = config.khanelinix.user.email;
+                url = "https://www.googleapis.com/carddav/v1/principals/${username}/";
+                userName = inputs.secrets.email.personal;
               };
               primary = true;
               thunderbird = {
                 enable = true;
                 profiles = [
-                  config.khanelinix.user.name
+                  username
                 ];
                 color = "#16a765";
               };
@@ -376,7 +370,7 @@ in
               {
                 remote = {
                   inherit type url;
-                  userName = config.khanelinix.user.email;
+                  userName = inputs.secrets.email.personal;
                 };
                 local = {
                   inherit color;
@@ -384,24 +378,24 @@ in
                 thunderbird = {
                   enable = true;
                   profiles = [
-                    config.khanelinix.user.name
+                    username
                   ];
                   inherit color;
                 };
               };
           in
           {
-            "${config.khanelinix.user.email}" = {
+            "${inputs.secrets.email.personal}" = {
               remote = {
                 type = "caldav";
                 url = "https://apidata.googleusercontent.com/caldav/v2/khaneliman12%40gmail.com/events/";
-                userName = config.khanelinix.user.email;
+                userName = inputs.secrets.email.personal;
               };
               primary = true;
               thunderbird = {
                 enable = true;
                 profiles = [
-                  config.khanelinix.user.name
+                  username
                 ];
                 color = "#16a765";
               };
@@ -449,12 +443,12 @@ in
                   flavor
                   primary
                   ;
-                realName = config.khanelinix.user.fullName;
+                realName = inputs.secrets.name;
                 userName = lib.mkIf (flavor == "davmail") address;
                 thunderbird = {
                   enable = finalEnable;
                   profiles = [
-                    config.khanelinix.user.name
+                    username
                   ];
                   settings = _id: {
                   };
@@ -462,8 +456,8 @@ in
               };
           in
           {
-            "${config.khanelinix.user.email}" = mkEmailConfig {
-              address = config.khanelinix.user.email;
+            "${inputs.secrets.email.personal}" = mkEmailConfig {
+              address = inputs.secrets.email.personal;
               primary = true;
               flavor = "gmail.com";
             };
