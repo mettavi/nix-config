@@ -319,12 +319,9 @@ in
             # "toolkit.telemetry.enabled" = false;
           };
         };
-        # optional: order accounts in the folder pane
-        accountsOrder = [
-          "gmail-personal"
-        ];
       };
     };
+
     accounts = {
       calendar.accounts =
         let
