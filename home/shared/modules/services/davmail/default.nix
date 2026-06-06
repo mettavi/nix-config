@@ -16,8 +16,7 @@ in
     services.davmail = {
       enable = true;
       imitateOutlook = true;
-
-      # NOTE: https://davmail.sourceforge.net/serversetup.html
+      # See: https://davmail.sourceforge.net/serversetup.html
       settings = {
         "davmail.mode" = "O365Interactive";
       };
