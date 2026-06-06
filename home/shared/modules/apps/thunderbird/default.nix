@@ -455,8 +455,16 @@ in
                 ;
               realName = inputs.secrets.name;
               userName = lib.mkIf (flavor == "davmail") address;
+              # aliases = [
+              #   "mettavihari2021@gmail.com"
+              # ];
+              # signature = {
+              #   showSignature = "append";
+              #   text = (builtins.readFile ./cobalt_signature.html);
+              # };
               thunderbird = {
                 enable = finalEnable;
+                messageFilters = thunderbirdFilters;
                 profiles = [
                   username
                 ];
@@ -476,18 +484,9 @@ in
     };
     # accounts = {
     #   "gmail-personal" = {
-    #     aliases = [
-    #       "mettavihari2021@gmail.com"
-    #     ];
     #     # A command, which when run writes the account password on standard output
     #     passwordCommand = "cat ${config.sops.secrets."users/${username}/gmail_personal".path}";
-    #     signature = {
-    #       showSignature = "append";
-    #       text = (builtins.readFile ./cobalt_signature.html);
-    #     };
     #     thunderbird = {
-    #       messageFilters = thunderbirdFilters;
-    #       profiles = [ "mettavi" ]; # attach to that profile
     #       settings = id: {
     #         # Enable HTML in signature
     #         "mail.identity.id_${id}.htmlSigFormat" = true;
