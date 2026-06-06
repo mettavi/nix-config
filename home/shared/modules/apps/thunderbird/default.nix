@@ -350,6 +350,8 @@ in
             };
         in
         {
+          # NOTE: to add new google calendars, go to the calendar's "settings and sharing" page and grab the
+          # calendar ID. Then interpolate: "https://apidata.googleusercontent.com/caldav/v2/${calendar_id}/events/"
           "${inputs.secrets.email.personal}" = {
             remote = {
               type = "caldav";
@@ -501,8 +503,6 @@ in
     #   };
     # };
   };
-  # NOTE: to add new google calendars, go to the calendar's "settings and sharing" page and grab the
-  # calendar ID. Then interpolate: "https://apidata.googleusercontent.com/caldav/v2/${calendar_id}/events/"
 
   # define sops secrets for email accounts
   sops.secrets = {
