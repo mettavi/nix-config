@@ -1,3 +1,5 @@
+# Code adapted with thanks from:
+# https://github.com/khaneliman/khanelinix/blob/0bff25ee02bc35540093118bff7106b460b9aad8/modules/home/programs/graphical/apps/thunderbird/default.nix
 {
   config,
   inputs,
