@@ -88,9 +88,11 @@ in
               }
             ];
           };
+          # list available addons with "nix-env -f '<nixpkgs>' -qaP -A nur.repos.rycee.firefox-addons"
           extensions = {
             force = true;
-            packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
+            # NB: the nur module is imported in mkNixos, this the input prefix is not required
+            packages = with pkgs.nur.repos.rycee.firefox-addons; [
               bitwarden
               darkreader
               privacy-badger
