@@ -9,7 +9,7 @@ let
 in
 {
   options.mettavi.services.davmail = {
-    enable = mkEnableOption "davmail";
+    enable = mkEnableOption "Set up a davmail bridge to connect to a MS Exchange server from a 3rd-party client";
   };
 
   config = mkIf cfg.enable {
