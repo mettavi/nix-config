@@ -130,6 +130,7 @@ in
       enable = true;
       languagePacks = [
         "en-US"
+        "en-AU"
       ];
       # settings applied to ALL profiles (optional)
       settings = {
