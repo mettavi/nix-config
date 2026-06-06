@@ -65,8 +65,15 @@ in
         in
         lib.types.attrsOf accountType;
       default = {
-        "US Holidays" = {
-          url = "https://apidata.googleusercontent.com/caldav/v2/cln2stbjc4hmgrrcd5i62ua0ctp6utbg5pr2sor1dhimsp31e8n6errfctm6abj3dtmg%40virtual/events/";
+        "Australian Holidays" = {
+          # or use the public ical address?
+          url = "https://apidata.googleusercontent.com/caldav/v2/en.australian#holiday@group.v.calendar.google.com/events/";
+          type = "caldav";
+          color = "#92cfe1";
+        };
+        "Uposatha Moondays" = {
+          # or use the public ical address?
+          url = "https://apidata.googleusercontent.com/caldav/v2/od6acogo4ggp07rpj17km08kdddutj8u@import.calendar.google.com/events/";
           type = "caldav";
           color = "#92cfe1";
         };
