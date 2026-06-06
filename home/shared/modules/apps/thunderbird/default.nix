@@ -11,6 +11,7 @@
 with lib;
 let
   cfg = config.mettavi.apps.thunderbird;
+  themeCfg = cfg.theme;
 in
 {
   imports = [ inputs.dove.nixosModules.default ];
@@ -127,6 +128,9 @@ in
 
     programs.thunderbird = {
       enable = true;
+      languagePacks = [
+        "en-US"
+      ];
       # settings applied to ALL profiles (optional)
       settings = {
       };
@@ -317,212 +321,188 @@ in
           "gmail-personal"
         ];
       };
-      accounts = {
-        contacts.accounts =
-          let
-            mkContactsConfig =
-              {
-                url,
-                type,
-                color ? "#9a9cff",
-              }:
-              {
-                remote = {
-                  inherit type url;
-                  userName = inputs.secrets.email.personal;
-                };
-                local = {
-                  inherit color;
-                };
-                thunderbird = {
-                  enable = true;
-                  profiles = [
-                    username
-                  ];
-                  inherit color;
-                };
-              };
-          in
-          {
-            "${inputs.secrets.email.personal}" = {
-              remote = {
-                type = "carddav";
-                url = "https://www.googleapis.com/carddav/v1/principals/${username}/";
-                userName = inputs.secrets.email.personal;
-              };
-              primary = true;
-              thunderbird = {
-                enable = true;
-                profiles = [
-                  username
-                ];
-                color = "#16a765";
-              };
-            };
-          }
-          // lib.mapAttrs (_name: mkContactsConfig) cfg.extraContactsAccounts;
-        calendar.accounts =
-          let
-            mkCalendarConfig =
-              {
-                url,
-                type,
-                color ? "#9a9cff",
-              }:
-              {
-                remote = {
-                  inherit type url;
-                  userName = inputs.secrets.email.personal;
-                };
-                local = {
-                  inherit color;
-                };
-                thunderbird = {
-                  enable = true;
-                  profiles = [
-                    username
-                  ];
-                  inherit color;
-                };
-              };
-          in
-          {
-            "${inputs.secrets.email.personal}" = {
-              remote = {
-                type = "caldav";
-                url = "https://apidata.googleusercontent.com/caldav/v2/khaneliman12%40gmail.com/events/";
-                userName = inputs.secrets.email.personal;
-              };
-              primary = true;
-              thunderbird = {
-                enable = true;
-                profiles = [
-                  username
-                ];
-                color = "#16a765";
-              };
-            };
-          }
-          // lib.mapAttrs (_name: mkCalendarConfig) cfg.extraCalendarAccounts;
-        email.accounts =
-          let
-            thunderbirdFilters = [
-              {
-                name = "Tag Github Emails";
-                enabled = true;
-                type = "81";
-                action = "AddTag";
-                actionValue = "github";
-                condition = "AND (all addresses,contains,github)";
-              }
-              {
-                name = "Tag Personal Emails";
-                enabled = true;
-                type = "81";
-                action = "AddTag";
-                actionValue = "personal";
-                condition = "OR (all addresses,contains,jhiller@ccn-law.com) OR (all addresses,contains,samovepros@live.com) OR (all addresses,contains,avidgolfer@me.com) OR (all addresses,contains,sunnydays352@yahoo.com)";
-              }
-            ];
-            mkEmailConfig =
-              {
-                address,
-                primary ? false,
-                enable ? true,
-                flavor,
-              }:
-              let
-                finalEnable =
-                  if flavor == "davmail" && !config.khanelinix.services.davmail.enable then
-                    lib.warn "Davmail account '${address}' is disabled because davmail service is not enabled." false
-                  else
-                    enable;
-              in
-              {
-                enable = finalEnable;
-                inherit
-                  address
-                  flavor
-                  primary
-                  ;
-                realName = inputs.secrets.name;
-                userName = lib.mkIf (flavor == "davmail") address;
-                thunderbird = {
-                  enable = finalEnable;
-                  profiles = [
-                    username
-                  ];
-                  settings = _id: {
-                  };
-                };
-              };
-          in
-          {
-            "${inputs.secrets.email.personal}" = mkEmailConfig {
-              address = inputs.secrets.email.personal;
-              primary = true;
-              flavor = "gmail.com";
-            };
-          }
-          // lib.mapAttrs (_name: mkEmailConfig) cfg.extraEmailAccounts;
-      };
-      # accounts = {
-      #   "gmail-personal" = {
-      #     primary = true;
-      #     realName = "${inputs.secrets.name}";
-      #     address = "${inputs.secrets.email.personal}";
-      #     userName = "${inputs.secrets.email.personal}";
-      #     aliases = [
-      #       "mettavihari2021@gmail.com"
-      #     ];
-      #
-      #     imap = {
-      #       host = "imap.gmail.com";
-      #       port = 993;
-      #       tls.enable = true;
-      #     };
-      #
-      #     smtp = {
-      #       host = "smtp.gmail.com";
-      #       port = 587;
-      #       tls = {
-      #         enable = true;
-      #         useStartTls = true;
-      #       };
-      #     };
-      #     # A command, which when run writes the account password on standard output
-      #     passwordCommand = "cat ${config.sops.secrets."users/${username}/gmail_personal".path}";
-      #
-      #     signature = {
-      #       showSignature = "append";
-      #       text = (builtins.readFile ./cobalt_signature.html);
-      #     };
-      #
-      #     thunderbird = {
-      #       enable = true; # enable thunderbird mail client for this account
-      #       messageFilters = thunderbirdFilters;
-      #       profiles = [ "mettavi" ]; # attach to that profile
-      #       # set OAuth as the method (with value=10) for both in/out servers
-      #       # (id will be automatically generated)
-      #       settings = id: {
-      #         "mail.server.server_${id}.authMethod" = 10;
-      #         "mail.smtpserver.smtp_${id}.authMethod" = 10;
-      #         # Enable HTML in signature
-      #         "mail.identity.id_${id}.htmlSigFormat" = true;
-      #         # Include signature on forwards
-      #         "mail.identity.id_${id}.sig_on_fwd" = true;
-      #         # Reply before the quoted text (gmail style)
-      #         "mail.identity.id_${id}.reply_on_top" = 1;
-      #         # Signature before the quoted text (gmail style)
-      #         "mail.identity.id_${id}.sig_bottom" = false;
-      #       };
-      #     };
-      #   };
-      # };
     };
-    # NOTE: to add new google calendars, go to the calendar's "settings and sharing" page and grab the
-    # calendar ID. Then interpolate: "https://apidata.googleusercontent.com/caldav/v2/${calendar_id}/events/"
+    accounts = {
+      calendar.accounts =
+        let
+          mkCalendarConfig =
+            {
+              url,
+              type,
+              color ? "#9a9cff",
+            }:
+            {
+              remote = {
+                inherit type url;
+                userName = inputs.secrets.email.personal;
+              };
+              local = {
+                inherit color;
+              };
+              thunderbird = {
+                enable = true;
+                profiles = [
+                  username
+                ];
+                inherit color;
+              };
+            };
+        in
+        {
+          "${inputs.secrets.email.personal}" = {
+            remote = {
+              type = "caldav";
+              url = "https://apidata.googleusercontent.com/caldav/v2/${inputs.secrets.email.personal}/events/";
+              userName = inputs.secrets.email.personal;
+            };
+            primary = true;
+            thunderbird = {
+              enable = true;
+              profiles = [
+                username
+              ];
+              color = "#16a765";
+            };
+          };
+        }
+        // lib.mapAttrs (_name: mkCalendarConfig) cfg.extraCalendarAccounts;
+
+      contacts.accounts =
+        let
+          mkContactsConfig =
+            {
+              url,
+              type,
+              color ? "#9a9cff",
+            }:
+            {
+              remote = {
+                inherit type url;
+                userName = inputs.secrets.email.personal;
+              };
+              local = {
+                inherit color;
+              };
+              thunderbird = {
+                enable = true;
+                profiles = [
+                  username
+                ];
+                inherit color;
+              };
+            };
+        in
+        {
+          "${inputs.secrets.email.personal}" = {
+            remote = {
+              type = "carddav";
+              url = "https://www.googleapis.com/carddav/v1/principals/${inputs.secrets.email.personal}/";
+              userName = inputs.secrets.email.personal;
+            };
+            primary = true;
+            thunderbird = {
+              enable = true;
+              profiles = [
+                username
+              ];
+              color = "#16a765";
+            };
+          };
+        }
+        // lib.mapAttrs (_name: mkContactsConfig) cfg.extraContactsAccounts;
+
+      email.accounts =
+        let
+          thunderbirdFilters = [
+            {
+              name = "Tag Github Emails";
+              enabled = true;
+              type = "81";
+              action = "AddTag";
+              actionValue = "github";
+              condition = "AND (all addresses,contains,github)";
+            }
+            {
+              name = "Tag Personal Emails";
+              enabled = true;
+              type = "81";
+              action = "AddTag";
+              actionValue = "personal";
+              condition = "OR (all addresses,contains,jhiller@ccn-law.com) OR (all addresses,contains,samovepros@live.com) OR (all addresses,contains,avidgolfer@me.com) OR (all addresses,contains,sunnydays352@yahoo.com)";
+            }
+          ];
+          mkEmailConfig =
+            {
+              address,
+              primary ? false,
+              enable ? true,
+              flavor,
+            }:
+            let
+              finalEnable =
+                if flavor == "davmail" && !config.khanelinix.services.davmail.enable then
+                  lib.warn "Davmail account '${address}' is disabled because davmail service is not enabled." false
+                else
+                  enable;
+            in
+            {
+              enable = finalEnable;
+              inherit
+                address
+                flavor
+                primary
+                ;
+              realName = inputs.secrets.name;
+              userName = lib.mkIf (flavor == "davmail") address;
+              thunderbird = {
+                enable = finalEnable;
+                profiles = [
+                  username
+                ];
+                settings = _id: {
+                };
+              };
+            };
+        in
+        {
+          "${inputs.secrets.email.personal}" = mkEmailConfig {
+            address = inputs.secrets.email.personal;
+            primary = true;
+            flavor = "gmail.com";
+          };
+        }
+        // lib.mapAttrs (_name: mkEmailConfig) cfg.extraEmailAccounts;
+    };
+    # accounts = {
+    #   "gmail-personal" = {
+    #     aliases = [
+    #       "mettavihari2021@gmail.com"
+    #     ];
+    #     # A command, which when run writes the account password on standard output
+    #     passwordCommand = "cat ${config.sops.secrets."users/${username}/gmail_personal".path}";
+    #     signature = {
+    #       showSignature = "append";
+    #       text = (builtins.readFile ./cobalt_signature.html);
+    #     };
+    #     thunderbird = {
+    #       messageFilters = thunderbirdFilters;
+    #       profiles = [ "mettavi" ]; # attach to that profile
+    #       settings = id: {
+    #         # Enable HTML in signature
+    #         "mail.identity.id_${id}.htmlSigFormat" = true;
+    #         # Include signature on forwards
+    #         "mail.identity.id_${id}.sig_on_fwd" = true;
+    #         # Reply before the quoted text (gmail style)
+    #         "mail.identity.id_${id}.reply_on_top" = 1;
+    #         # Signature before the quoted text (gmail style)
+    #         "mail.identity.id_${id}.sig_bottom" = false;
+    #       };
+    #     };
+    #   };
+    # };
   };
+  # NOTE: to add new google calendars, go to the calendar's "settings and sharing" page and grab the
+  # calendar ID. Then interpolate: "https://apidata.googleusercontent.com/caldav/v2/${calendar_id}/events/"
 
   # define sops secrets for email accounts
   sops.secrets = {
