@@ -14,15 +14,13 @@
           hostname
           inputs
           ;
+        mylib = import ../lib;
         inherit (self)
           nix_repo
           secrets_path
           ;
       };
       modules = [
-        inputs.disko.nixosModules.disko
-        # Adds the NUR overlay
-        inputs.nur.modules.nixos.default
         ../hosts/${hostname}/configuration.nix
         {
           users = {
@@ -60,15 +58,24 @@
           # The Git revision of the top-level flake from which this configuration was built
           system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
         }
+
         # Include the results of the hardware scan
         ../hosts/${hostname}/hardware-configuration.nix
         ../system/nixos
         ../system/nixos/modules
         ../system/shared
         ../system/shared/modules
-        inputs.sops-nixos.nixosModules.sops
+
+        # MODULES FROM FLAKE INPUTS
+        inputs.disko.nixosModules.disko
+        inputs.dove.nixosModules.default
         # this provides a wrapper for the nix-index package (no need to install the package separately)
         inputs.nix-index-database.nixosModules.nix-index
+        # Adds the NUR overlay
+        inputs.nur.modules.nixos.default
+        inputs.sops-nixos.nixosModules.sops
+
+        # HOME-MANAGER MODULE
         inputs.home-manager.nixosModules.home-manager
         {
           home-manager = {

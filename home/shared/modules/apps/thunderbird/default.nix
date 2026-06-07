@@ -14,8 +14,6 @@ let
   themeCfg = cfg.theme;
 in
 {
-  imports = [ inputs.dove.nixosModules.default ];
-
   options.mettavi.apps.thunderbird = {
     enable = mkOption {
       type = types.bool;
@@ -131,6 +129,17 @@ in
   };
 
   config = mkIf cfg.enable {
+    catppuccin = {
+      enable = true;
+      # don't autoenable all the module's ports
+      autoEnable = false;
+      thunderbird = {
+        enable = true;
+        flavor = "mocha";
+        accent = "mauve";
+      };
+    };
+
     home.packages = with pkgs; [ birdtray ];
 
     programs.thunderbird = {
