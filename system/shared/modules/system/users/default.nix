@@ -76,6 +76,7 @@ in
             ../../../../../home/shared/sops-home.nix
             ../../../../../home/shared/modules
             ../../../../../home/${platform}
+            inputs.catppuccin.homeModules.catppuccin
           ];
           home = {
             # username and homeDirectory are set automatically when using home-manager as a system module
