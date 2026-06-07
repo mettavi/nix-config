@@ -51,7 +51,7 @@ in
           gsconnect
         ];
         profiles."mettavi".extensions = {
-          packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [ gsconnect ];
+          packages = with pkgs.nur.repos.rycee.firefox-addons; [ gsconnect ];
         };
       };
     };

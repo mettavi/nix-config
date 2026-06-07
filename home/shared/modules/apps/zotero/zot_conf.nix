@@ -217,7 +217,7 @@ in
 
   # install the firefox extension
   programs.firefox.profiles."mettavi".extensions.packages =
-    with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system};
+    with pkgs.nur.repos.rycee.firefox-addons;
     optionals (config.mettavi.apps.firefox.enable) [ zotero-connector ];
 
   xdg.dataFile = {
