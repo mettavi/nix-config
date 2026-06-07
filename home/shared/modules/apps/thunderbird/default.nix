@@ -4,14 +4,16 @@
   config,
   inputs,
   lib,
+  mylib,
   secrets_path,
-  username,
   ...
 }:
 with lib;
 let
+  inherit (lib) mkIf;
+  inherit (mylib.module) mkOpt;
   cfg = config.mettavi.apps.thunderbird;
-  themeCfg = cfg.theme;
+  username = config.home.username;
 in
 {
   options.mettavi.apps.thunderbird = {
@@ -518,19 +520,19 @@ in
     #     };
     #   };
     # };
-  };
 
-  # define sops secrets for email accounts
-  sops.secrets = {
-    "users/${username}/gmail_personal" = {
-      sopsFile = "${secrets_path}/secrets/common.yaml";
+    # define sops secrets for email accounts
+    sops.secrets = {
+      "users/${username}/gmail_personal" = {
+        sopsFile = "${secrets_path}/secrets/common.yaml";
+      };
     };
-  };
 
-  xdg.mimeApps = {
-    enable = true;
-    defaultApplications = {
-      "x-scheme-handler/mailto" = "thunderbird.desktop";
+    xdg.mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "x-scheme-handler/mailto" = "thunderbird.desktop";
+      };
     };
   };
 }
