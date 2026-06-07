@@ -102,7 +102,7 @@ in
         in
         lib.types.attrsOf accountType;
       default = { };
-      description = "Extra calendar accounts to configure.";
+      description = "Extra contacts accounts to configure.";
     };
     extraEmailAccounts = lib.mkOption {
       type =
@@ -377,7 +377,7 @@ in
         }
         // lib.mapAttrs (_name: mkCalendarConfig) cfg.extraCalendarAccounts;
 
-      contacts.accounts =
+      contact.accounts =
         let
           mkContactsConfig =
             {
