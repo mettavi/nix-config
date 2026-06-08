@@ -562,6 +562,7 @@ in
     # define sops secrets for email accounts
     sops.secrets = {
       "users/${username}/email/${inputs.secrets.email.personal}" = emailSecrets;
+      "users/${username}/email/${inputs.secrets.email.burner}" = emailSecrets;
     };
 
     xdg.mimeApps = {
