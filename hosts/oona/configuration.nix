@@ -408,6 +408,29 @@ with lib;
           ghostty.enable = true;
           latex.enable = true;
           obsidian.enable = true;
+          thunderbird =
+            let
+              personal = inputs.secrets.email.personal;
+              monk = inputs.secrets.email.monk;
+              # NB: leave "accountFilters" unassigned in extraEmailAccounts to use all filters
+            in
+            {
+              enable = false;
+              accountsOrder = [
+                personal
+                monk
+              ];
+              extraEmailAccounts = {
+                ${monk} = {
+                  accountFilters = [
+                    "tagGH"
+                    "tagPers"
+                  ];
+                  address = monk;
+                  aliases = [ personal ];
+                };
+              };
+            };
         };
         shell = {
           bash.enable = true;
