@@ -530,7 +530,7 @@ in
         {
           "${inputs.secrets.email.personal}" = mkEmailConfig {
             address = inputs.secrets.email.personal;
-            aliases = [ "mettavihari2021@gmail.com" ];
+            aliases = [ inputs.secrets.email.monk ];
             primary = true;
             flavor = "gmail.com";
             passwordCommand = "cat ${
