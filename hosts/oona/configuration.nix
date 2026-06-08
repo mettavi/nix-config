@@ -423,7 +423,8 @@ in
               burner = inputs.secrets.email.burner;
               monk = inputs.secrets.email.monk;
               personal = inputs.secrets.email.personal;
-              # NB: leave "accountFilters" unassigned in extraEmailAccounts to use all filters
+              # NB: 1. leave "accountFilters" unassigned in extraEmailAccounts to use all filters
+              # 2. the default "flavor" is "gmail.com"
             in
             {
               enable = false;
