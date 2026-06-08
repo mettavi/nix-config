@@ -129,6 +129,41 @@ in
       default = { };
       description = "Extra email accounts to configure.";
     };
+    filters = lib.mkOption {
+      type =
+        let
+          filterType = lib.types.submodule {
+            options = {
+              enabled = mkOpt types.bool true "Whether this filter is currently active.";
+              name = mkOpt types.str null "Descriptive filter name";
+              type = mkOpt types.str null "Numeric code for filter type";
+              action = mkOpt types.str null "Action to perform on matched messages.";
+              actionValue = mkOpt types.str null "Argument passed to the filter action, e.g. a folder path.";
+              condition = mkOpt types.str null "Condition to match messages against.";
+            };
+          };
+        in
+        lib.types.attrsOf filterType;
+      default = {
+        tagGH = {
+          enabled = true;
+          name = "Tag Github Emails";
+          type = "81";
+          action = "AddTag";
+          actionValue = "github";
+          condition = "AND (all addresses,contains,github)";
+        };
+        tagPers = {
+          enabled = true;
+          name = "Tag Personal Emails";
+          type = "81";
+          action = "AddTag";
+          actionValue = "personal";
+          condition = "OR (all addresses,contains,jhiller@ccn-law.com) OR (all addresses,contains,samovepros@live.com) OR (all addresses,contains,avidgolfer@me.com) OR (all addresses,contains,sunnydays352@yahoo.com)";
+        };
+      };
+      description = "List of message filters to add to this Thunderbird account configuration.";
+    };
   };
 
   config = mkIf cfg.enable {
