@@ -433,16 +433,16 @@ in
                 burner
               ];
               extraEmailAccounts = {
+                ${monk} = {
+                  address = monk;
+                  aliases = [ personal ];
+                };
                 ${burner} = {
                   accountFilters = [
                     "tagGH"
                     "tagPers"
                   ];
                   address = burner;
-                };
-                ${monk} = {
-                  address = monk;
-                  aliases = [ personal ];
                 };
               };
             };
