@@ -559,10 +559,10 @@ in
     #   };
     # };
 
-    # define sops secrets for email accounts
+    # define sops secrets for these main email accounts on all hosts
     sops.secrets = {
+      "users/${username}/email/${inputs.secrets.email.monk}" = emailSecrets;
       "users/${username}/email/${inputs.secrets.email.personal}" = emailSecrets;
-      "users/${username}/email/${inputs.secrets.email.burner}" = emailSecrets;
     };
 
     xdg.mimeApps = {

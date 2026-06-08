@@ -3,10 +3,14 @@
   hostname,
   lib,
   pkgs,
+  secrets_path,
   username,
   ...
 }:
 with lib;
+let
+  emailSecrets.sopsFile = "${secrets_path}/secrets/apps/email.yaml";
+in
 {
   imports = [
     # customise the hardware scan config
@@ -376,6 +380,12 @@ with lib;
         };
         stateVersion = "25.11";
       };
+
+      # define sops secrets for email accounts used specifically on this host
+      sops.secrets = {
+        "users/${username}/email/${inputs.secrets.email.burner}" = emailSecrets;
+      };
+
       xdg.mimeApps = {
         enable = true;
         /*
@@ -410,8 +420,9 @@ with lib;
           obsidian.enable = true;
           thunderbird =
             let
-              personal = inputs.secrets.email.personal;
+              burner = inputs.secrets.email.burner;
               monk = inputs.secrets.email.monk;
+              personal = inputs.secrets.email.personal;
               # NB: leave "accountFilters" unassigned in extraEmailAccounts to use all filters
             in
             {
@@ -419,13 +430,17 @@ with lib;
               accountsOrder = [
                 personal
                 monk
+                burner
               ];
               extraEmailAccounts = {
-                ${monk} = {
+                ${burner} = {
                   accountFilters = [
                     "tagGH"
                     "tagPers"
                   ];
+                  address = burner;
+                };
+                ${monk} = {
                   address = monk;
                   aliases = [ personal ];
                 };
