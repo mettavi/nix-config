@@ -111,7 +111,11 @@ in
           accountType = lib.types.submodule {
             options = {
               enable = mkOpt lib.types.bool true "Enable this account";
+              accountFilters =
+                mkOpt lib.types.listOf lib.types.str builtins.attrNames cfg.filters
+                  "Filters to use for a specific account";
               address = mkOpt lib.types.str null "Email address";
+              aliases = mkOpt lib.types.listOf lib.types.str null "Send-as aliases for this account";
               flavor = mkOpt (lib.types.enum [
                 "plain"
                 "gmail.com"
@@ -122,6 +126,7 @@ in
                 "outlook.office365.com"
                 "davmail"
               ]) null "Email flavor";
+              realName = mkOpt lib.types.str null "Personal name of the account";
             };
           };
         in
@@ -470,32 +475,19 @@ in
 
       email.accounts =
         let
-          thunderbirdFilters = [
-            {
-              name = "Tag Github Emails";
-              enabled = true;
-              type = "81";
-              action = "AddTag";
-              actionValue = "github";
-              condition = "AND (all addresses,contains,github)";
-            }
-            {
-              name = "Tag Personal Emails";
-              enabled = true;
-              type = "81";
-              action = "AddTag";
-              actionValue = "personal";
-              condition = "OR (all addresses,contains,jhiller@ccn-law.com) OR (all addresses,contains,samovepros@live.com) OR (all addresses,contains,avidgolfer@me.com) OR (all addresses,contains,sunnydays352@yahoo.com)";
-            }
-          ];
           mkEmailConfig =
             {
-              address,
-              primary ? false,
               enable ? true,
-              flavor,
+              address,
+              aliases,
+              flavor ? "gmail.com",
+              primary ? false,
+              realName ? inputs.secrets.name,
             }:
             let
+              filterNames = lib.filterAttrs (
+                name: value: builtins.elem name cfg.extraEmailAccounts."${address}".accountFilters
+              ) cfg.filters;
               finalEnable =
                 if flavor == "davmail" && !config.mettavi.services.davmail.enable then
                   lib.warn "Davmail account '${address}' is disabled because davmail service is not enabled." false
@@ -506,24 +498,30 @@ in
               enable = finalEnable;
               inherit
                 address
+                aliases
                 flavor
                 primary
+                realName
                 ;
-              realName = inputs.secrets.name;
+              passwordCommand = "cat ${config.sops.secrets."users/email/${username}/${address}".path}";
+              signature = {
+                delimiter = ''
+                  ~*~*~*~*~*~*~*~*~*~*~*~
+                '';
+                showSignature = "append";
+                text = ''
+                  ${realName}
+                  ${address}
+                '';
+              };
               userName = lib.mkIf (flavor == "davmail") address;
-              # aliases = [
-              #   "mettavihari2021@gmail.com"
-              # ];
-              # signature = {
-              #   showSignature = "append";
-              #   text = (builtins.readFile ./cobalt_signature.html);
-              # };
               thunderbird = {
                 enable = finalEnable;
-                messageFilters = thunderbirdFilters;
+                messageFilters = builtins.attrValues filterNames;
                 profiles = [
                   username
                 ];
+                perIdentitySettings = _id: { };
                 settings = _id: {
                 };
               };
@@ -532,8 +530,12 @@ in
         {
           "${inputs.secrets.email.personal}" = mkEmailConfig {
             address = inputs.secrets.email.personal;
+            aliases = [ "mettavihari2021@gmail.com" ];
             primary = true;
             flavor = "gmail.com";
+            passwordCommand = "cat ${
+              config.sops.secrets."users/${username}/${inputs.secrets.email.personal}".path
+            }";
           };
         }
         // lib.mapAttrs (_name: mkEmailConfig) cfg.extraEmailAccounts;
