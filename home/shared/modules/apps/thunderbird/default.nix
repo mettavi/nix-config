@@ -14,6 +14,7 @@ let
   inherit (mylib.module) mkOpt;
   cfg = config.mettavi.apps.thunderbird;
   username = config.home.username;
+  emailSecrets.sopsFile = "${secrets_path}/secrets/apps/email.yaml";
 in
 {
   options.mettavi.apps.thunderbird = {
@@ -523,9 +524,7 @@ in
 
     # define sops secrets for email accounts
     sops.secrets = {
-      "users/${username}/gmail_personal" = {
-        sopsFile = "${secrets_path}/secrets/common.yaml";
-      };
+      "users/${username}/email/${inputs.secrets.email.personal}" = emailSecrets;
     };
 
     xdg.mimeApps = {
