@@ -91,9 +91,13 @@
       url = "github:rafaelmardojai/firefox-gnome-theme";
       flake = false;
     };
+    flake-parts = {
+      url = "github:hercules-ci/flake-parts";
+      # essential library functions from the nixpkgs collection
+      inputs.nixpkgs-lib.follows = "nixpkgs";
+    };
     jellarr = {
       url = "github:venkyr77/jellarr/faeb5c70999592cb7763e68a93924503df0ada9e";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
     nixCats = {
       url = "github:BirdeeHub/nixCats-nvim";
@@ -153,38 +157,46 @@
       self,
       ...
     }:
-    let
-      mkDarwin = import ./lib/mkDarwin.nix { inherit inputs self; };
-      mkNixos = import ./lib/mkNixos.nix { inherit inputs self; };
-      # initNixos = import ./lib/initNixos.nix { inherit inputs; };
-    in
-    {
-      nix_repo = ".nix-config";
-      secrets_path = toString inputs.secrets;
 
-      # DARWIN-REBUILD BUILDS
-      # Build darwin flake using:
-      # $ darwin-rebuild build --flake .#hostname
-      darwinConfigurations = {
-        "mack" = mkDarwin.mkDarwinConfiguration "mack" "x86_64-darwin";
-      };
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      systems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
+      flake =
+        let
+          mkDarwin = import ./lib/mkDarwin.nix { inherit inputs self; };
+          mkNixos = import ./lib/mkNixos.nix { inherit inputs self; };
+          # initNixos = import ./lib/initNixos.nix { inherit inputs; };
+        in
+        {
+          nix_repo = ".nix-config";
+          secrets_path = toString inputs.secrets;
 
-      # NIXOS-REBUILD BUILDS
-      # Build nixos flake using:
-      # nixos-rebuild build --flake .#hostname
-      nixosConfigurations = {
-        "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux";
-        "lady" = mkNixos.mkNixosConfiguration "lady" "x86_64-linux";
-      };
+          # DARWIN-REBUILD BUILDS
+          # Build darwin flake using:
+          # $ darwin-rebuild build --flake .#hostname
+          darwinConfigurations = {
+            "mack" = mkDarwin.mkDarwinConfiguration "mack" "x86_64-darwin";
+          };
 
-      ################################  NIXOS-ANYWHERE BUILDS  ######################################
+          # NIXOS-REBUILD BUILDS
+          # Build nixos flake using:
+          # nixos-rebuild build --flake .#hostname
+          nixosConfigurations = {
+            "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux";
+            "lady" = mkNixos.mkNixosConfiguration "lady" "x86_64-linux";
+          };
 
-      # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
-      # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on remote \
-      # --print-build-log --target-host username@<ip address>
-      # nixosConfigurations = {
-      # "oona" = initNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
-      # };
+          ################################  NIXOS-ANYWHERE BUILDS  ######################################
 
+          # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
+          # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on remote \
+          # --print-build-log --target-host username@<ip address>
+          # nixosConfigurations = {
+          # "oona" = initNixos.mkNixosConfiguration "oona" "x86_64-linux" "timotheos";
+          # };
+
+        };
     };
 }
