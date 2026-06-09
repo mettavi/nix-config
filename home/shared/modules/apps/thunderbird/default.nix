@@ -55,12 +55,22 @@ in
         let
           accountType = lib.types.submodule {
             options = {
-              url = mkOpt lib.types.str null "Calendar url";
-              type = mkOpt (lib.types.enum [
-                "caldav"
-                "http"
-              ]) null "Calendar flavor";
-              color = mkOpt lib.types.str null "color";
+              url = mkOption {
+                type = lib.types.str;
+                default = null;
+                description = "Calendar url";
+              };
+              type = mkOption {
+                type = (
+                  lib.types.enum [
+                    "caldav"
+                    "http"
+                  ]
+                );
+                default = null;
+                description = "Calendar flavor";
+              };
+              # color = mkOpt lib.types.str null "color";
             };
           };
         in
@@ -91,13 +101,23 @@ in
         let
           accountType = lib.types.submodule {
             options = {
-              url = mkOpt lib.types.str null "Contacts url";
-              type = mkOpt (lib.types.enum [
-                "carddav"
-                "http"
-                "google_contacts"
-              ]) null "Contacts flavor";
-              color = mkOpt lib.types.str null "color";
+              url = mkOption {
+                type = lib.types.str;
+                default = null;
+                description = "Contacts url";
+              };
+              type = mkOption {
+                type = (
+                  lib.types.enum [
+                    "carddav"
+                    "http"
+                    "google_contacts"
+                  ]
+                );
+                default = null;
+                description = "Contacts flavor";
+              };
+              # color = mkOpt lib.types.str null "color";
             };
           };
         in
@@ -110,23 +130,47 @@ in
         let
           accountType = lib.types.submodule {
             options = {
-              enable = mkOpt lib.types.bool true "Enable this account";
-              accountFilters =
-                mkOpt lib.types.listOf lib.types.str builtins.attrNames cfg.filters
-                  "Filters to use for a specific account";
-              address = mkOpt lib.types.str null "Email address";
-              aliases = mkOpt lib.types.listOf lib.types.str null "Send-as aliases for this account";
-              flavor = mkOpt (lib.types.enum [
-                "plain"
-                "gmail.com"
-                "runbox.com"
-                "fastmail.com"
-                "mailbox.org"
-                "yandex.com"
-                "outlook.office365.com"
-                "davmail"
-              ]) null "Email flavor";
-              realName = mkOpt lib.types.str null "Personal name of the account";
+              enable = mkOption {
+                type = lib.types.bool;
+                default = true;
+                description = "Enable this account";
+              };
+              accountFilters = mkOption {
+                type = lib.types.listOf lib.types.str;
+                default = builtins.attrNames cfg.filters;
+                description = "Filters to use for a specific account";
+              };
+              address = mkOption {
+                type = lib.types.str;
+                default = null;
+                description = "Email address";
+              };
+              aliases = mkOption {
+                type = lib.types.listOf lib.types.str;
+                default = [ ];
+                description = "Send-as aliases for this account";
+              };
+              flavor = mkOption {
+                type = (
+                  lib.types.enum [
+                    "plain"
+                    "gmail.com"
+                    "runbox.com"
+                    "fastmail.com"
+                    "mailbox.org"
+                    "yandex.com"
+                    "outlook.office365.com"
+                    "davmail"
+                  ]
+                );
+                default = "gmail.com";
+                description = "Email flavor";
+              };
+              realName = mkOption {
+                type = lib.types.str;
+                default = inputs.secrets.name;
+                description = "Personal name of the account";
+              };
             };
           };
         in
@@ -139,12 +183,36 @@ in
         let
           filterType = lib.types.submodule {
             options = {
-              enabled = mkOpt types.bool true "Whether this filter is currently active.";
-              name = mkOpt types.str null "Descriptive filter name";
-              type = mkOpt types.str null "Numeric code for filter type";
-              action = mkOpt types.str null "Action to perform on matched messages.";
-              actionValue = mkOpt types.str null "Argument passed to the filter action, e.g. a folder path.";
-              condition = mkOpt types.str null "Condition to match messages against.";
+              enabled = mkOption {
+                type = types.bool;
+                default = true;
+                description = "Whether this filter is currently active.";
+              };
+              name = mkOption {
+                type = types.str;
+                default = null;
+                description = "Descriptive filter name";
+              };
+              type = mkOption {
+                type = types.str;
+                default = null;
+                description = "Numeric code for filter type";
+              };
+              action = mkOption {
+                type = types.str;
+                default = null;
+                description = "Action to perform on matched messages.";
+              };
+              actionValue = mkOption {
+                type = types.str;
+                default = null;
+                description = "Argument passed to the filter action, e.g. a folder path.";
+              };
+              condition = mkOption {
+                type = types.str;
+                default = null;
+                description = "Condition to match messages against.";
+              };
             };
           };
         in
