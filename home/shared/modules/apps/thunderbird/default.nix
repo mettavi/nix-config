@@ -4,14 +4,13 @@
   config,
   inputs,
   lib,
-  mylib,
+  pkgs,
   secrets_path,
   ...
 }:
 with lib;
 let
   inherit (lib) mkIf;
-  inherit (mylib.module) mkOpt;
   cfg = config.mettavi.apps.thunderbird;
   username = config.home.username;
   emailSecrets.sopsFile = "${secrets_path}/secrets/apps/email.yaml";
