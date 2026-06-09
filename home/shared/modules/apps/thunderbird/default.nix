@@ -222,7 +222,7 @@ in
           name = "Tag Github Emails";
           type = "81";
           action = "AddTag";
-          actionValue = "github";
+          actionValue = "Github";
           condition = "AND (all addresses,contains,github)";
         };
         tagPers = {
@@ -230,7 +230,7 @@ in
           name = "Tag Personal Emails";
           type = "81";
           action = "AddTag";
-          actionValue = "personal";
+          actionValue = "Personal";
           condition = "OR (all addresses,contains,jhiller@ccn-law.com) OR (all addresses,contains,samovepros@live.com) OR (all addresses,contains,avidgolfer@me.com) OR (all addresses,contains,sunnydays352@yahoo.com)";
         };
       };
