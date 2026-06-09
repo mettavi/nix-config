@@ -428,7 +428,7 @@ in
               # 2. the default "flavor" is "gmail.com"
             in
             {
-              enable = false;
+              enable = true;
               accountsOrder = [
                 personal
                 monk
