@@ -68,6 +68,7 @@
 
         # MODULES FROM FLAKE INPUTS
         inputs.disko.nixosModules.disko
+        # thunderbird privacy and security
         inputs.dove.nixosModules.default
         # this provides a wrapper for the nix-index package (no need to install the package separately)
         inputs.nix-index-database.nixosModules.nix-index
