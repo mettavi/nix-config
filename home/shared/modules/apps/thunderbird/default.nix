@@ -250,7 +250,7 @@ in
       };
     };
 
-    home.packages = with pkgs; [ birdtray ];
+    home.packages = lib.optionals pkgs.stdenv.hostPlatform.isLinux (with pkgs; [ birdtray ]);
 
     programs.thunderbird = {
       enable = true;
