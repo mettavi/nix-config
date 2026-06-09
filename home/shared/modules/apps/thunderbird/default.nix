@@ -427,6 +427,9 @@ in
             # "mailnews.default_sort_type" = 18;
             # "mailnews.message_display.disable_remote_image" = false; # OVERRIDE?
             # "mailnews.start_page.enabled" = false; # already set in dove
+            # Add a new tag to be used in the message filter
+            "mailnews.tags.github.color" = "#BB40BF";
+            "mailnews.tags.github.tag" = "Github";
             # https://superuser.com/a/13551
             # "mailnews.wraplength" = 80;
             # "messenger.startup.action" = 0;
