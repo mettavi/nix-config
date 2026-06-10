@@ -14,7 +14,6 @@
           hostname
           inputs
           ;
-        mylib = import ../lib;
         inherit (self)
           nix_repo
           secrets_path
