@@ -107,6 +107,18 @@ in
     })
   ];
 
+  #####################################################################
+  # USEFUL FUNCTIONS
+
+  lib.getExe and lib.getExe'
+
+  lib.getExe is a function that retrieves the path to the main executable of a 
+  package based on its meta.mainProgram, while lib.getExe' allows you to specify the 
+  name of the executable explicitly as a second argument. The latter provides more 
+  control and avoids assumptions about the executable's name.
+
+  "getExe pkgs.hello" returns the path to the hello executable.
+  'getExe' pkgs.imagemagick "convert"' returns the path to the convert executable explicitly.
 
   #####################################################################
   # LOOPS
