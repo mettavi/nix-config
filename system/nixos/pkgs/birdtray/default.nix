@@ -1,0 +1,50 @@
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  cmake,
+  nix-update-script,
+  pkg-config,
+  qt6,
+  wrapGAppsHook3,
+}:
+stdenv.mkDerivation {
+  pname = "birdtray";
+  version = "1.12.4-dev";
+  src = fetchFromGitHub {
+    owner = "gyunaev";
+    repo = "birdtray";
+    rev = "7e35be6e3e59b252ded2eef32f7947b63b4028a9";
+    hash = "sha256-RFK32dr2SGCXUsVRuqslLBsKqwwY1M86lGpgWUwUyec=";
+  };
+  buildInputs = with qt6; [
+    qtbase
+    qttools
+  ];
+  nativeBuildInputs = [
+    cmake
+    pkg-config
+    qt6.wrapQtAppsHook
+    wrapGAppsHook3
+  ];
+  meta = {
+    description = "Mail system tray notification icon for Thunderbird";
+    mainProgram = "birdtray";
+    homepage = "https://github.com/gyunaev/birdtray";
+    license = lib.licenses.gpl3Plus;
+    maintainers =
+      with lib.maintainers;
+      [ Flakebi ]
+      ++ [
+        {
+          email = "marcus@melange.works";
+          github = "marcusjang";
+          githubId = 10116562;
+          name = "Marcus Jang";
+        }
+      ];
+    platforms = lib.platforms.linux;
+  };
+
+  passthru.updateScript = nix-update-script { };
+}
