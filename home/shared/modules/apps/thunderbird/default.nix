@@ -646,29 +646,48 @@ in
         }
         // lib.mapAttrs (_name: mkEmailConfig) cfg.extraEmailAccounts;
     };
-    # accounts = {
-    #   "gmail-personal" = {
-    #     # A command, which when run writes the account password on standard output
-    #     passwordCommand = "cat ${config.sops.secrets."users/${username}/gmail_personal".path}";
-    #     thunderbird = {
-    #       settings = id: {
-    #         # Enable HTML in signature
-    #         "mail.identity.id_${id}.htmlSigFormat" = true;
-    #         # Include signature on forwards
-    #         "mail.identity.id_${id}.sig_on_fwd" = true;
-    #         # Reply before the quoted text (gmail style)
-    #         "mail.identity.id_${id}.reply_on_top" = 1;
-    #         # Signature before the quoted text (gmail style)
-    #         "mail.identity.id_${id}.sig_bottom" = false;
-    #       };
-    #     };
-    #   };
-    # };
 
     # define sops secrets for these main email accounts on all hosts
     sops.secrets = {
       "users/${username}/email/${inputs.secrets.email.monk}" = emailSecrets;
       "users/${username}/email/${inputs.secrets.email.personal}" = emailSecrets;
+    };
+
+    xdg.configFile."birdtray-config.json".source = ./birdtray-config.json;
+
+    # https://github.com/gyunaev/birdtray/issues/426
+    # This fixes birdtray not being able to see if thunderbird is running, because birdtray doesn't
+    #  have good wayland support.
+    xdg.desktopEntries.thunderbird = {
+      name = "Thunderbird";
+      actions = {
+        "profile-manager-window" = {
+          exec = "env GDK_BACKEND=x11 thunderbird -ProfileManager";
+        };
+      };
+      categories = [
+        "Network"
+        "Chat"
+        "Email"
+        "Feed"
+        "GTK"
+        "News"
+      ];
+      comment = "Read and write e-mails or RSS feeds, or manage tasks on calendars.";
+      exec = "env GDK_BACKEND=x11 thunderbird --name thunderbird %U";
+      genericName = "Email Client";
+      icon = "thunderbird";
+      mimeType = [
+        "message/rfc822"
+        "x-scheme-handler/mailto"
+        "text/calendar"
+        "text/x-vcard"
+      ];
+      settings = {
+        Keywords = "mail;email;e-mail;messages;rss;calendar;address book;addressbook;chat";
+        StartupWMClass = "thunderbird";
+      };
+      startupNotify = true;
     };
 
     xdg.mimeApps = {
