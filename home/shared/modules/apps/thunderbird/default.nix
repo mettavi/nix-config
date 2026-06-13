@@ -505,9 +505,6 @@ in
                 inherit type url;
                 userName = inputs.secrets.email.personal;
               };
-              local = {
-                inherit color;
-              };
               thunderbird = {
                 enable = true;
                 profiles = [
@@ -544,22 +541,17 @@ in
             {
               url,
               type,
-              color ? "#9a9cff",
             }:
             {
               remote = {
                 inherit type url;
                 userName = inputs.secrets.email.personal;
               };
-              local = {
-                inherit color;
-              };
               thunderbird = {
                 enable = true;
                 profiles = [
                   username
                 ];
-                inherit color;
               };
             };
         in
@@ -567,16 +559,14 @@ in
           "${inputs.secrets.email.personal}" = {
             remote = {
               type = "carddav";
-              url = "https://www.googleapis.com/carddav/v1/principals/${inputs.secrets.email.personal}/";
+              url = "https://www.googleapis.com/carddav/v1/principals/${inputs.secrets.email.personal}/lists/default/";
               userName = inputs.secrets.email.personal;
             };
-            primary = true;
             thunderbird = {
               enable = true;
               profiles = [
                 username
               ];
-              color = "#16a765";
             };
           };
         }
@@ -588,15 +578,14 @@ in
             {
               enable ? true,
               address,
-              aliases,
+              accountFilters ? builtins.attrNames cfg.filters,
+              aliases ? [ ],
               flavor ? "gmail.com",
               primary ? false,
               realName ? inputs.secrets.name,
             }:
             let
-              filterNames = lib.filterAttrs (
-                name: value: builtins.elem name cfg.extraEmailAccounts."${address}".accountFilters
-              ) cfg.filters;
+              filterNames = lib.filterAttrs (name: value: builtins.elem name accountFilters) cfg.filters;
               finalEnable =
                 if flavor == "davmail" && !config.mettavi.services.davmail.enable then
                   lib.warn "Davmail account '${address}' is disabled because davmail service is not enabled." false
