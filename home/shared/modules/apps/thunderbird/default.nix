@@ -587,6 +587,27 @@ in
       "users/${username}/email/${inputs.secrets.email.personal}" = emailSecrets;
     };
 
+    systemd.user.services = {
+      birdtray = {
+        Install = {
+          WantedBy = [ "graphical-session.target" ];
+        };
+
+        Service = {
+          ExecStart = "${pkgs.birdtray}/bin/birdtray";
+          Restart = "on-failure";
+          RestartSec = 3;
+        };
+
+        Unit = {
+          After = "graphical-session-pre.target";
+          Description = "Free system tray notification for new mail for Thunderbird.";
+          Documentation = [ "https://github.com/gyunaev/birdtray" ];
+          PartOf = "graphical-session.target";
+        };
+      };
+    };
+
     xdg.configFile."birdtray-config.json".source = ./birdtray-config.json;
 
     # https://github.com/gyunaev/birdtray/issues/426
