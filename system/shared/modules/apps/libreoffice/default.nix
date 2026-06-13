@@ -113,7 +113,7 @@ in
             translate = false;
           };
         };
-        # environment.systemPackages = with pkgs; [
+
         home.packages = with pkgs; [
           loWrapped
           hunspell
