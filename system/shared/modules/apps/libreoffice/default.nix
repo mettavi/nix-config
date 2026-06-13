@@ -134,6 +134,7 @@ in
 
         xdg = {
           configFile = {
+            "libreoffice/jre".source = lo.unwrapped.jdk;
             "LanguageTool/LibreOffice/.keep".source = builtins.toFile "keep" "";
           };
 
