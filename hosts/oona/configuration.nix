@@ -331,7 +331,6 @@ in
 
   # home-manager modules installed for the admin user ON THIS HOST ONLY
   home-manager.users.${username} =
-    { config, ... }:
     {
       dconf.settings = {
         # add custom keybindings for ASUS linux utilities
@@ -402,14 +401,6 @@ in
           "image/jpeg" = [ "org.gnome.Loupe.desktop" ];
           # gnome document viewer
           "application/pdf" = [ "org.gnome.Evince.desktop" ];
-        }
-        // mkIf config.mettavi.apps.firefox.enable {
-          "default-web-browser" = [ "firefox.desktop" ];
-          "text/html" = [ "firefox.desktop" ];
-          "x-scheme-handler/http" = [ "firefox.desktop" ];
-          "x-scheme-handler/https" = [ "firefox.desktop" ];
-          "x-scheme-handler/about" = [ "firefox.desktop" ];
-          "x-scheme-handler/unknown" = [ "firefox.desktop" ];
         };
       };
       mettavi = {

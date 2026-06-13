@@ -527,5 +527,29 @@ in
         };
       };
     };
+
+    xdg = {
+      # enable the firefox-gnome-theme via a flake input (also see userChrome and userContent below)
+      configFile."mozilla/firefox/${config.programs.firefox.profiles.mettavi.name}/chrome/firefox-gnome-theme".source =
+        inputs.firefox-gnome-theme;
+      mimeApps = {
+        enable = true;
+        /*
+          To list all .desktop files, run:
+          ls /run/current-system/sw/share/applications # for global packages
+          ls /etc/profiles/per-user/$(id -n -u)/share/applications # for user packages
+          To find out the mimetype of a file, run:
+          file --mime-type filename
+        */
+        defaultApplications = {
+          "default-web-browser" = [ "firefox.desktop" ];
+          "text/html" = [ "firefox.desktop" ];
+          "x-scheme-handler/http" = [ "firefox.desktop" ];
+          "x-scheme-handler/https" = [ "firefox.desktop" ];
+          "x-scheme-handler/about" = [ "firefox.desktop" ];
+          "x-scheme-handler/unknown" = [ "firefox.desktop" ];
+        };
+      };
+    };
   };
 }
