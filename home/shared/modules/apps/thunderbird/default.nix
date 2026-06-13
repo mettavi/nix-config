@@ -285,9 +285,9 @@ in
           # Extra preferences to add to file user.js.
           extraConfig = "";
           # RSS or Atom feeds
-          feedAccounts = {
-            ${username} = { };
-          };
+          # feedAccounts = {
+          #   ${username} = { };
+          # };
           # search = {
           #   force = true;
           #   default = "ddg";
