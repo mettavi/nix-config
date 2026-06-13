@@ -399,6 +399,9 @@ in
         defaultApplications = {
           # gnome image viewer
           "image/jpeg" = [ "org.gnome.Loupe.desktop" ];
+          # do not add jpg, as it is not a valid mimetype
+          # see https://stackoverflow.com/questions/33692835/is-the-mime-type-image-jpg-the-same-as-image-jpeg
+          # "image/jpg" = [ "org.gnome.Loupe.desktop" ];
           # gnome document viewer
           "application/pdf" = [ "org.gnome.Evince.desktop" ];
         };
