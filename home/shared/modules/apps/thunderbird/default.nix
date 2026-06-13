@@ -221,39 +221,8 @@ in
       };
     };
 
-    # https://github.com/gyunaev/birdtray/issues/426
-    # This fixes birdtray not being able to see if thunderbird is running, because birdtray doesn't
-    #  have good wayland support.
-    xdg.desktopEntries.thunderbird = {
-      name = "Thunderbird";
-      categories = [
-        "Network"
-        "Chat"
-        "Email"
-        "Feed"
-        "GTK"
-        "News"
-      ];
-      comment = "Read and write e-mails or RSS feeds, or manage tasks on calendars.";
-      genericName = "Email Client";
-      icon = "thunderbird";
-      mimeType = [
-        "message/rfc822"
-        "x-scheme-handler/mailto"
-        "text/calendar"
-        "text/x-vcard"
-      ];
-      settings = {
-        Keywords = "mail;email;e-mail;messages;rss;calendar;address book;addressbook;chat";
-        StartupWMClass = "thunderbird";
-      };
-      startupNotify = true;
-      actions = {
-        "profile-manager-window" = {
-          exec = "env GDK_BACKEND=x11 thunderbird --name thunderbird %U";
-        };
-      };
-      exec = "env GDK_BACKEND=x11 thunderbird --name thunderbird %U";
+    home = {
+      packages = lib.optionals pkgs.stdenv.hostPlatform.isLinux (with pkgs; [ linpkgs.birdtray ]);
     };
 
     programs.thunderbird = {
