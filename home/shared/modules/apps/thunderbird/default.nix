@@ -22,28 +22,6 @@ in
       default = false;
       description = "Install and configure the email client thunderbird";
     };
-    theme = lib.mkOption {
-      type = lib.types.submodule {
-        options = {
-          enable = lib.mkEnableOption "Thunderbird theme palette";
-          isDark = mkOpt lib.types.bool true "Whether the Thunderbird theme uses dark chrome.";
-          colors = {
-            bg = mkOpt (lib.types.nullOr lib.types.str) null "Main Thunderbird background color.";
-            surface = mkOpt (lib.types.nullOr lib.types.str) null "Toolbar and sidebar surface color.";
-            surfaceAlt = mkOpt (lib.types.nullOr lib.types.str) null "Raised control surface color.";
-            fg = mkOpt (lib.types.nullOr lib.types.str) null "Primary Thunderbird foreground color.";
-            accent = mkOpt (lib.types.nullOr lib.types.str) null "Selection and active accent color.";
-            accentSoft = mkOpt (lib.types.nullOr lib.types.str) null "Secondary accent color.";
-            accentFg =
-              mkOpt (lib.types.nullOr lib.types.str) null
-                "Foreground color used on accent backgrounds.";
-            border = mkOpt (lib.types.nullOr lib.types.str) null "Border and separator color.";
-          };
-        };
-      };
-      default = { };
-      description = "Theme palette used to generate Thunderbird chrome CSS.";
-    };
     accountsOrder = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
@@ -79,18 +57,11 @@ in
           # or use the public ical address?
           url = "https://apidata.googleusercontent.com/caldav/v2/en.australian#holiday@group.v.calendar.google.com/events/";
           type = "caldav";
-          color = "#92cfe1";
         };
         "Uposatha Moondays" = {
           # or use the public ical address?
           url = "https://apidata.googleusercontent.com/caldav/v2/od6acogo4ggp07rpj17km08kdddutj8u@import.calendar.google.com/events/";
           type = "caldav";
-          color = "#92cfe1";
-        };
-        "Green Bay Packers" = {
-          url = "https://sports.yahoo.com/nfl/teams/gnb/ical.ics";
-          type = "http";
-          color = "#F9BC12";
         };
       };
       description = "Extra calendar accounts to configure.";
@@ -498,7 +469,6 @@ in
             {
               url,
               type,
-              color ? "#9a9cff",
             }:
             {
               remote = {
@@ -510,7 +480,6 @@ in
                 profiles = [
                   username
                 ];
-                inherit color;
               };
             };
         in
@@ -529,7 +498,6 @@ in
               profiles = [
                 username
               ];
-              color = "#16a765";
             };
           };
         }
@@ -639,10 +607,6 @@ in
             address = inputs.secrets.email.personal;
             aliases = [ inputs.secrets.email.monk ];
             primary = true;
-            flavor = "gmail.com";
-            passwordCommand = "cat ${
-              config.sops.secrets."users/${username}/${inputs.secrets.email.personal}".path
-            }";
           };
         }
         // lib.mapAttrs (_name: mkEmailConfig) cfg.extraEmailAccounts;
