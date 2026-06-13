@@ -413,6 +413,8 @@ in
             # "mailnews.wraplength" = 80;
             # "messenger.startup.action" = 0;
             # "network.cookie.cookieBehavior" = 1;
+            # override the dove settings; do not prompt before going online on launch
+            "offline.startup_state" = 0;
             # "pdfjs.enabledCache.state" = true;
             # "privacy.donottrackheader.enabled" = true;
             # "privacy.fingerprintingProtection" = true;
