@@ -437,6 +437,9 @@ in
             # "mail.compose.big_attachments.notify" = false;
             # "mail.compose.default_to_paragraph" = false;
             # "mail.compose.double_line_spacing" = false;
+            # compact imap mail folders regularly without asking first
+            # see https://support.mozilla.org/en-US/kb/compacting-folders
+            "mail.purge.ask" = false;
             # "mail.shell.checkDefaultClient" = false; # already set in dove
             # "mail.spam.manualMark" = true;
             # "mail.tabs.drawInTitlebar" = true; # already set in dove
