@@ -137,15 +137,52 @@ in
       # TODO: Remove this overlay when v6.0.8 hits nixos-unstable branch
       # install a newer version for bugfix https://github.com/gramps-project/gramps/pull/2204
       # (and other updates added to v6.0.8)
-      gramps = prev.gramps.overrideAttrs (oldAttrs: {
-        version = "6.0.8";
-        src = prev.fetchFromGitHub {
-          owner = "gramps-project";
-          repo = "gramps";
-          rev = "v6.0.8";
-          hash = "sha256-Kq+QyhghBmUzl+ooCYSl2yNMvrBDnQS6Zg3nBI1jbRo=";
-        };
-      });
+      gramps =
+        let
+          # 1. Compile the exact version of the missing Python library
+          my-gedcomx = final.python3Packages.buildPythonPackage rec {
+            pname = "gedcomx_v1";
+            version = "1.0.24";
+            src = final.fetchPypi {
+              inherit pname version;
+              hash = "sha256-C8wKaNY3aG8PAVqN/b/417KeBw5SSj62sbKqhHbjx9o=";
+            };
+            pyproject = true;
+            build-system = [ final.python3Packages.setuptools ];
+            propagatedBuildInputs = [ final.python3Packages.requests ];
+            doCheck = false;
+          };
+
+        in
+        prev.gramps.overrideAttrs (oldAttrs: {
+          version = "6.0.8";
+          src = prev.fetchFromGitHub {
+            owner = "gramps-project";
+            repo = "gramps";
+            rev = "v6.0.8";
+            hash = "sha256-Kq+QyhghBmUzl+ooCYSl2yNMvrBDnQS6Zg3nBI1jbRo=";
+          };
+
+          # 2. Append extra modules to the core pythonPath wrapper target
+          # This safely extends the path without breaking baseline GTK/GDK layers
+          pythonPath = (oldAttrs.pythonPath or [ ]) ++ [
+            final.python3Packages.requests
+            final.python3Packages.pygobject3
+            my-gedcomx
+          ];
+
+          # 3. Retain your original map window canvas variables
+          qtWrapperArgs = (oldAttrs.qtWrapperArgs or [ ]) ++ [
+            "--prefix"
+            "GI_TYPELIB_PATH"
+            ":"
+            "${final.osm-gps-map}/lib/girepository-1.0:${final.gtk3}/lib/girepository-1.0"
+            "--prefix"
+            "GSETTINGS_SCHEMAS_PATH"
+            ":"
+            "${final.gtk3}/share/gsettings-schemas/${final.gtk3.name}"
+          ];
+        });
     })
   ];
 
@@ -371,6 +408,9 @@ in
         gnomeExtensions.gpu-supergfxctl-switch
         goldendict-ng # Advanced multi-dictionary lookup program
         gramps # Genealogy software
+        # these two are required for the PersonFS plugin in gramps
+        gobject-introspection
+        osm-gps-map
         linpkgs.tipitaka_pali_reader
       ];
       sessionVariables = {
