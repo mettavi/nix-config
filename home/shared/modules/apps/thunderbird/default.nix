@@ -414,7 +414,8 @@ in
             # "messenger.startup.action" = 0;
             # "network.cookie.cookieBehavior" = 1;
             # override the dove settings; do not prompt before going online on launch
-            "offline.startup_state" = 0;
+            # 0 = remember previous, 1 = ask, 2 = online, 3 = offline
+            "offline.startup_state" = 2;
             # "pdfjs.enabledCache.state" = true;
             # "privacy.donottrackheader.enabled" = true;
             # "privacy.fingerprintingProtection" = true;
