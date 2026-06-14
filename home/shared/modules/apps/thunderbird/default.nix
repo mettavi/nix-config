@@ -584,6 +584,7 @@ in
     };
 
     # define sops secrets for these main email accounts on all hosts
+    # other accounts are specified in the host config
     sops.secrets = {
       "users/${username}/email/${inputs.secrets.email.monk}" = emailSecrets;
       "users/${username}/email/${inputs.secrets.email.personal}" = emailSecrets;
