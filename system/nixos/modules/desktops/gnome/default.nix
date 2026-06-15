@@ -20,6 +20,7 @@ in
 
   imports = [
     ./gsconnect.nix # sub-module to install the gsconnect extension
+    ./nautilus.nix
     ./nvidia-suspend.nix # sub-module with code to workaround resume from sleep nvidia freeze problems
     ./xdg.nix # configure xdg portals for gnome
   ];
