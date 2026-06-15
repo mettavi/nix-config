@@ -1,6 +1,6 @@
 { username, ... }:
 {
-  # override the nautilus .desktop file to change the default directory
+  # override the nautilus .desktop file (it overrides the whole final, not individual entries)
   home-manager.users.${username} =
     { config, ... }:
     {
