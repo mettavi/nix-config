@@ -33,6 +33,7 @@
             SYSTEMD_LESS = "FRXMK";
           };
           # Select internationalisation properties.
+          # view available values with "timedatectl list-timezones | grep <America/Australia/...>"
           time.timeZone = "Australia/Melbourne";
           i18n = {
             defaultLocale = "en_AU.UTF-8";
