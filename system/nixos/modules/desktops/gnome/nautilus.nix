@@ -1,5 +1,6 @@
 { username, ... }:
 {
+  # override the nautilus .desktop file to change the default directory
   home-manager.users.${username} =
     { config, ... }:
     {
@@ -13,6 +14,7 @@
             "FileManager"
           ];
           comment = "Access and organize files";
+          # open the Downloads directory by default
           exec = "nautilus --new-window ${config.home.homeDirectory}/Downloads";
           icon = "org.gnome.Nautilus";
           mimeType = [
