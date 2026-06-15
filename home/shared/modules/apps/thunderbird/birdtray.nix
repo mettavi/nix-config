@@ -1,82 +1,52 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
 }:
 let
-  username = config.home.username;
-  home = config.home.homeDirectory;
-  profile = "${home}/.thunderbird/${username}";
-  email_personal = "1b51d8295e29eab0a872524fa3f9e0a604a20f656f2ec548545c5e87bf264ac4";
-  email_monk = "5c92cf12d34c1be0fdb49cd06e1d7266c27c3d25f16142afd11652839dcaa46c";
-  email_burner = "bcd089cb94dc0ab34f9ec8482de11a65236ed6ba94a3dc2061b69252b141aefc";
-in
-{
-  home = {
-    packages = lib.optionals pkgs.stdenv.hostPlatform.isLinux (with pkgs; [ birdtray ]);
-  };
+  # Define the JSON formatting utility (produces 2-space indented JSON)
+  jsonFormat = pkgs.formats.json { };
 
-  # systemd.user.services = {
-  #   birdtray = {
-  #     Install = {
-  #       WantedBy = [ "graphical-session.target" ];
-  #     };
-  #
-  #     Service = {
-  #       ExecStart = "${pkgs.birdtray}/bin/birdtray";
-  #       Restart = "on-failure";
-  #       RestartSec = 3;
-  #     };
-  #
-  #     Unit = {
-  #       After = "graphical-session-pre.target";
-  #       Description = "Free system tray notification for new mail for Thunderbird.";
-  #       Documentation = [ "https://github.com/gyunaev/birdtray" ];
-  #       PartOf = "graphical-session.target";
-  #     };
-  #   };
-  # };
+  profileName = config.home.username;
+  # home = config.home.homeDirectory;
+  profileDir = "${config.home.homeDirectory}/.thunderbird/${profileName}";
 
-  xdg.configFile."birdtray-config.json" = builtins.toJSON {
-    accounts = [
-      {
-        color = "#e01b24";
-        path = "${profile}/ImapMail/${email_personal}/INBOX.msf";
-      }
-      {
-        color = "#e01b24";
-        path = "${profile}/ImapMail/${email_personal}/INBOX-1.msf";
-      }
-      {
-        color = "#e01b24";
-        path = "${profile}/ImapMail/${email_personal}/INBOX-2.msf";
-      }
-      {
-        color = "#0000ff";
-        path = "${profile}/ImapMail/${email_monk}/INBOX.msf";
-      }
-      {
-        color = "#0000ff";
-        path = "${profile}/ImapMail/${email_monk}/INBOX-1.msf";
-      }
-      {
-        color = "#0000ff";
-        path = "${profile}/ImapMail/${email_monk}/INBOX-2.msf";
-      }
-      {
-        color = "#33d17a";
-        path = "${profile}/ImapMail/${email_burner}/INBOX.msf";
-      }
-      {
-        color = "#33d17a";
-        path = "${profile}/ImapMail/${email_burner}/INBOX-1.msf";
-      }
-      {
-        color = "#33d17a";
-        path = "${profile}/ImapMail/${email_burner}/INBOX-2.msf";
-      }
-    ];
+  # Gather the precise email addresses from your existing configuration
+  personalEmail = inputs.secrets.email.personal;
+  monkEmail = inputs.secrets.email.monk;
+  burnerEmail = inputs.secrets.email.burner;
+
+  # Helper function to extract the local part of the email address (before the @)
+  # Example: "timotheos@personal.com" -> "timotheos"
+  getEmailPrefix = emailStr: builtins.head (lib.splitString "@" emailStr);
+
+  # Helper function to generate INBOX, INBOX-1, and INBOX-2 paths automatically
+  mkBirdtrayAccountList =
+    color: emailAddress:
+    let
+      folderName = getEmailPrefix emailAddress;
+    in
+    map
+      (suffix: {
+        inherit color;
+        path = "${profileDir}/ImapMail/${folderName}/INBOX${suffix}.msf";
+      })
+      [
+        ""
+        "-1"
+        "-2"
+      ];
+
+  # Combine all the configured accounts together
+  birdtrayAccounts =
+    (mkBirdtrayAccountList "#e01b24" personalEmail)
+    ++ (mkBirdtrayAccountList "#0000ff" monkEmail)
+    ++ (mkBirdtrayAccountList "#33d17a" burnerEmail);
+
+  birdtrayConfig = {
+    accounts = birdtrayAccounts;
     "advanced/blinkingusealpha" = false;
     "advanced/forcedRereadInterval" = 0;
     "advanced/horizontalUnreadCountOffset" = 0;
@@ -124,4 +94,35 @@ in
     "common/showunreademailcount" = true;
     "common/startClosedThunderbird" = true;
   };
+in
+{
+  home = {
+    # install a more recent version from github
+    packages = lib.optionals pkgs.stdenv.hostPlatform.isLinux (with pkgs; [ linpkgs.birdtray ]);
+  };
+
+  systemd.user.services = {
+    birdtray = {
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
+
+      Service = {
+        ExecStart = "birdtray";
+        Restart = "on-failure";
+        RestartSec = 3;
+      };
+
+      Unit = {
+        After = "graphical-session-pre.target";
+        Description = "Free system tray notification for new mail for Thunderbird.";
+        Documentation = [ "https://github.com/gyunaev/birdtray" ];
+        PartOf = "graphical-session.target";
+      };
+    };
+  };
+
+  xdg.configFile."birdtray-config.json".source =
+    jsonFormat.generate "birdtray-config.json" birdtrayConfig;
+
 }

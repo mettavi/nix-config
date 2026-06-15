@@ -4,7 +4,6 @@
   config,
   inputs,
   lib,
-  pkgs,
   secrets_path,
   ...
 }:
@@ -16,6 +15,8 @@ let
   emailSecrets.sopsFile = "${secrets_path}/secrets/apps/email.yaml";
 in
 {
+  imports = [ ./birdtray.nix ];
+
   options.mettavi.apps.thunderbird = {
     enable = mkOption {
       type = types.bool;
@@ -225,11 +226,6 @@ in
         flavor = "mocha";
         accent = "mauve";
       };
-    };
-
-    home = {
-      # install a more recent version from github
-      packages = lib.optionals pkgs.stdenv.hostPlatform.isLinux (with pkgs; [ linpkgs.birdtray ]);
     };
 
     programs.thunderbird = {
@@ -570,6 +566,12 @@ in
                 ];
                 perIdentitySettings = id: { };
                 settings = id: {
+                  # Explicitly lock friendly paths based on the email address username
+                  "mail.server.server_${id}.directory" =
+                    "/home/${username}/.thunderbird/${username}/ImapMail/${builtins.head (lib.splitString "@" address)}";
+                  "mail.server.server_${id}.directory-rel" =
+                    "[ProfD]ImapMail/${builtins.head (lib.splitString "@" address)}";
+
                   "mail.server.server_${id}.autosync_max_age_days" = 30;
                   # Reply before the quoted text (gmail style)
                   "mail.identity.id_${id}.reply_on_top" = 1;
@@ -599,29 +601,6 @@ in
       "users/${username}/email/${inputs.secrets.email.monk}" = emailSecrets;
       "users/${username}/email/${inputs.secrets.email.personal}" = emailSecrets;
     };
-
-    systemd.user.services = {
-      birdtray = {
-        Install = {
-          WantedBy = [ "graphical-session.target" ];
-        };
-
-        Service = {
-          ExecStart = "${pkgs.birdtray}/bin/birdtray";
-          Restart = "on-failure";
-          RestartSec = 3;
-        };
-
-        Unit = {
-          After = "graphical-session-pre.target";
-          Description = "Free system tray notification for new mail for Thunderbird.";
-          Documentation = [ "https://github.com/gyunaev/birdtray" ];
-          PartOf = "graphical-session.target";
-        };
-      };
-    };
-
-    xdg.configFile."birdtray-config.json".source = ./birdtray-config.json;
 
     # https://github.com/gyunaev/birdtray/issues/426
     # This fixes birdtray not being able to see if thunderbird is running, because birdtray doesn't
