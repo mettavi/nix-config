@@ -108,7 +108,7 @@ in
       };
 
       Service = {
-        ExecStart = "birdtray";
+        ExecStart = "/etc/profiles/per-user/timotheos/bin/birdtray";
         Restart = "on-failure";
         RestartSec = 3;
       };
