@@ -37,6 +37,11 @@ in
                 default = null;
                 description = "Calendar url";
               };
+              readOnly = mkOption {
+                type = lib.types.bool;
+                default = false;
+                description = "Mark calendar as read-only";
+              };
               type = mkOption {
                 type = (
                   lib.types.enum [
@@ -47,7 +52,6 @@ in
                 default = null;
                 description = "Calendar flavor";
               };
-              # color = mkOpt lib.types.str null "color";
             };
           };
         in
@@ -56,11 +60,13 @@ in
         "Australian Holidays" = {
           # or use the public ical address?
           url = "https://apidata.googleusercontent.com/caldav/v2/en.australian#holiday@group.v.calendar.google.com/events/";
+          readOnly = true;
           type = "caldav";
         };
         "Uposatha Moondays" = {
           # or use the public ical address?
           url = "https://apidata.googleusercontent.com/caldav/v2/od6acogo4ggp07rpj17km08kdddutj8u@import.calendar.google.com/events/";
+          readOnly = true;
           type = "caldav";
         };
       };
@@ -441,6 +447,7 @@ in
           mkCalendarConfig =
             {
               url,
+              readOnly,
               type,
             }:
             {
@@ -449,6 +456,7 @@ in
                 userName = inputs.secrets.email.personal;
               };
               thunderbird = {
+                inherit readOnly;
                 enable = true;
                 profiles = [
                   username
