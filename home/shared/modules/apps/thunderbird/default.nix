@@ -60,15 +60,15 @@ in
       default = {
         "Australian Holidays" = {
           # or use the public ical address?
-          url = "https://apidata.googleusercontent.com/caldav/v2/en.australian#holiday@group.v.calendar.google.com/events/";
+          url = "https://calendar.google.com/calendar/ical/en.australian%23holiday%40group.v.calendar.google.com/public/basic.ics";
           readOnly = true;
-          type = "caldav";
+          type = "http";
         };
         "Uposatha Moondays" = {
           # or use the public ical address?
-          url = "https://apidata.googleusercontent.com/caldav/v2/od6acogo4ggp07rpj17km08kdddutj8u@import.calendar.google.com/events/";
+          url = "http://splendidmoons.github.io/ical/mahanikaya.ical";
           readOnly = true;
-          type = "caldav";
+          type = "http";
         };
       };
       description = "Extra calendar accounts to configure.";
@@ -466,7 +466,7 @@ in
           "${inputs.secrets.email.personal}" = {
             remote = {
               type = "caldav";
-              url = "https://apidata.googleusercontent.com/caldav/v2/${inputs.secrets.email.personal}/events/";
+              url = "https://apidata.googleusercontent.com/caldav/v2/${inputs.secrets.email.personal}/events";
               userName = inputs.secrets.email.personal;
             };
             primary = true;
