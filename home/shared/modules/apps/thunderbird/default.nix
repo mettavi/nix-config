@@ -222,6 +222,7 @@ in
     };
 
     home = {
+      # install a more recent version from github
       packages = lib.optionals pkgs.stdenv.hostPlatform.isLinux (with pkgs; [ linpkgs.birdtray ]);
     };
 
