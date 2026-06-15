@@ -461,12 +461,13 @@ in
             };
         in
         {
-          # NOTE: to add new google calendars, go to the calendar's "settings and sharing" page and grab the
-          # calendar ID. Then interpolate: "https://apidata.googleusercontent.com/caldav/v2/${calendar_id}/events"
+          # To add new google calendars, go to the calendar's "settings and sharing" page and grab the
+          # calendar ID. Then interpolate: "https://apidata.googleusercontent.com/caldav/v2/${calendar_id}/events/"
+          # NB: The trailing slash is required
           "${inputs.secrets.email.personal}" = {
             remote = {
               type = "caldav";
-              url = "https://apidata.googleusercontent.com/caldav/v2/${inputs.secrets.email.personal}/events";
+              url = "https://apidata.googleusercontent.com/caldav/v2/${inputs.secrets.email.personal}/events/";
               userName = inputs.secrets.email.personal;
             };
             primary = true;
