@@ -622,6 +622,7 @@ in
       actions = {
         "profile-manager-window" = {
           exec = "env GDK_BACKEND=x11 thunderbird -ProfileManager";
+          name = "Profile Manager";
         };
       };
       categories = [
