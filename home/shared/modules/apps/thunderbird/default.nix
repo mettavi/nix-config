@@ -274,7 +274,7 @@ in
         SearchBar = "unified";
         TranslateEnabled = true;
       };
-      # profiles are saved to ~/,thunderbird on nixos and not to XDG_CONFIG_HOME by default,
+      # profiles are saved to ~/.thunderbird on nixos and not to XDG_CONFIG_HOME by default,
       # and there is currently no easy setting to change it
       # See https://github.com/nix-community/home-manager/pull/8456
       profiles = {
