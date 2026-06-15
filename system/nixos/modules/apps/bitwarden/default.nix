@@ -78,7 +78,9 @@ in
       timers = {
         "bitwarden-backup" = {
           timerConfig = {
-            OnCalendar = [ "Mon *-*-* 00:00:00 Australia/Melbourne" ];
+            # temporarily change the timezone for this systemd timer
+            # OnCalendar = [ "Mon *-*-* 00:00:00 Australia/Melbourne" ];
+            OnCalendar = [ "Mon *-*-* 00:00:00 US/Los_Angeles" ];
             # execute immediately it resumes if the last time was missed
             Persistent = true;
             Unit = "bitwarden-backup.service";
