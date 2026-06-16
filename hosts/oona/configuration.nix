@@ -469,13 +469,14 @@ in
             ];
             extraEmailAccounts = {
               ${monk} = {
+                accountFilters = [
+                  "tagGH"
+                ];
                 address = monk;
                 aliases = [ personal ];
               };
               ${burner} = {
                 accountFilters = [
-                  "tagGH"
-                  "tagPers"
                 ];
                 address = burner;
               };
