@@ -5,6 +5,7 @@
   inputs,
   lib,
   nix_repo,
+  pkgs,
   secrets_path,
   ...
 }:
@@ -15,6 +16,8 @@ let
   cfg = config.mettavi.apps.thunderbird;
   username = config.home.username;
   emailSecrets.sopsFile = "${secrets_path}/secrets/apps/email.yaml";
+  # Quick utility functions used inside the modules
+  getEmailPrefix = emailStr: builtins.head (lib.splitString "@" emailStr);
 in
 {
   imports = [ ./birdtray.nix ];
@@ -533,12 +536,15 @@ in
               realName ? inputs.secrets.name,
             }:
             let
-              filterNames = lib.filterAttrs (name: value: builtins.elem name accountFilters) cfg.filters;
               finalEnable =
                 if flavor == "davmail" && !config.mettavi.services.davmail.enable then
                   lib.warn "Davmail account '${address}' is disabled because davmail service is not enabled." false
                 else
                   enable;
+
+              # Dynamically calculate the same folder name used for your mail
+              folderName = getEmailPrefix address;
+
             in
             {
               enable = finalEnable;
@@ -563,7 +569,6 @@ in
               userName = lib.mkIf (flavor == "davmail") address;
               thunderbird = {
                 enable = finalEnable;
-                messageFilters = builtins.attrValues filterNames;
                 profiles = [
                   username
                 ];
@@ -571,9 +576,8 @@ in
                 settings = id: {
                   # Explicitly lock friendly paths based on the email address username
                   "mail.server.server_${id}.directory" =
-                    "/home/${username}/.thunderbird/${username}/ImapMail/${builtins.head (lib.splitString "@" address)}";
-                  "mail.server.server_${id}.directory-rel" =
-                    "[ProfD]ImapMail/${builtins.head (lib.splitString "@" address)}";
+                    "/home/${username}/.thunderbird/${username}/ImapMail/${folderName}";
+                  "mail.server.server_${id}.directory-rel" = "[ProfD]ImapMail/${folderName}";
 
                   "mail.server.server_${id}.autosync_max_age_days" = 30;
                   # Reply before the quoted text (gmail style)
@@ -597,6 +601,66 @@ in
         }
         // lib.mapAttrs (_name: mkEmailConfig) cfg.extraEmailAccounts;
     };
+
+    # Write mutable, writable filter files during Home Manager generation switches
+    home.activation =
+      let
+        allAccounts = config.accounts.email.accounts;
+
+        # Script generator that writes an ordinary writable file for each account
+        generateFilterCommands =
+          name: value:
+          let
+            folderName = getEmailPrefix value.address;
+
+            accountFilters =
+              if value.address == inputs.secrets.email.personal then
+                builtins.attrNames cfg.filters
+              else
+                (cfg.extraEmailAccounts.${value.address}.accountFilters or (builtins.attrNames cfg.filters));
+
+            filterNames = lib.filterAttrs (n: v: builtins.elem n accountFilters) cfg.filters;
+
+            # 1. FIXED: Build a clean, raw text block that perfectly matches legacy Thunderbird syntax
+            filterTextContent = ''
+              version="9"
+              logging="no"
+            ''
+            + lib.concatStringsSep "\n" (
+              lib.concatMap (f: [
+                "name=\"${f.name}\""
+                "enabled=\"${if f.enabled then "yes" else "no"}\""
+                "type=\"${f.type}\""
+                "action=\"${f.action}\""
+                "actionValue=\"${f.actionValue}\""
+                "condition=\"${f.condition}\""
+              ]) (builtins.attrValues filterNames)
+            )
+            + "\n";
+
+            # Pass the raw string payload directly to writeText
+            filterContentFile = pkgs.writeText "msgFilterRules.dat" filterTextContent;
+
+            targetDir = "$HOME/.thunderbird/${username}/ImapMail/${folderName}";
+          in
+          lib.optionalString value.enable ''
+            # Ensure the destination folder exists before writing to it
+            mkdir -p "${targetDir}"
+
+            # Copy the compiled template into a local, normal, writable file
+            cp -f "${filterContentFile}" "${targetDir}/msgFilterRules.dat"
+
+            # Explicitly grant owner read/write permissions so Thunderbird can edit it freely
+            chmod 600 "${targetDir}/msgFilterRules.dat"
+          '';
+      in
+      {
+        # Injects the script securely into Home Manager's standard generation process
+        setupThunderbirdFilters = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          echo "Declaratively setting up writable Thunderbird filters..."
+          ${lib.concatStringsSep "\n" (lib.mapAttrsToList generateFilterCommands allAccounts)}
+        '';
+      };
 
     # link without copying to nix store (manage externally) - must use absolute paths
     home.file.".thunderbird/${username}/persdict.dat" = {
