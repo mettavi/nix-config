@@ -4,12 +4,14 @@
   config,
   inputs,
   lib,
+  nix_repo,
   secrets_path,
   ...
 }:
 with lib;
 let
   inherit (lib) mkIf;
+  inherit (config.lib.file) mkOutOfStoreSymlink;
   cfg = config.mettavi.apps.thunderbird;
   username = config.home.username;
   emailSecrets.sopsFile = "${secrets_path}/secrets/apps/email.yaml";
@@ -594,6 +596,11 @@ in
           };
         }
         // lib.mapAttrs (_name: mkEmailConfig) cfg.extraEmailAccounts;
+    };
+
+    # link without copying to nix store (manage externally) - must use absolute paths
+    home.file.".thunderbird/${username}/persdict.dat" = {
+      source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/modules/apps/thunderbird/persdict.dat";
     };
 
     # define sops secrets for these main email accounts on all hosts
