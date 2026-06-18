@@ -138,14 +138,15 @@ in
               # NB: the following two parameters are used for metadata processing, not OCR
               # Sets Ollama NumCtx (context window); if unset, model default is used
               # NB: If you hit "context length exceeded" or memory issues, reduce or choose a smaller model/context size
-              # OLLAMA_CONTEXT_LENGTH = "8192";
+              OLLAMA_CONTEXT_LENGTH = "16384";
               # NB: Lower this value if you see truncated or incomplete responses
-              TOKEN_LIMIT = "2000"; # recommended for smaller models
+              TOKEN_LIMIT = "4096"; # recommended for smaller models
 
               # OCR Configuration
               OCR_PROVIDER = "llm"; # llm, google_docai, azure or docling
               VISION_LLM_PROVIDER = "${cfg.ppgpt.llm.ocr.provider}";
               VISION_LLM_MODEL = "${cfg.ppgpt.llm.ocr.model}";
+              VISION_LLM_MAX_TOKENS = "2048";
 
               # OCR PROCESSING MODE
               # Optional, default: image, other options: pdf, whole_pdf (all pp in one operation)
