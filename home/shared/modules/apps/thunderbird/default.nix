@@ -99,7 +99,6 @@ in
                 default = null;
                 description = "Contacts flavor";
               };
-              # color = mkOpt lib.types.str null "color";
             };
           };
         in
