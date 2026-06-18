@@ -127,6 +127,7 @@ in
               AUTO_GENERATE_CORRESPONDENTS = "true";
               AUTO_GENERATE_DOCUMENT_TYPE = "true"; # Only existing document types will be used
               AUTO_GENERATE_CREATED_DATE = "true";
+              # CREATE_NEW_TAGS = "true";
 
               # LLM Configuration (for non-OCR features)
               LLM_PROVIDER = "${cfg.ppgpt.llm.generic.provider}";
@@ -141,12 +142,14 @@ in
               OLLAMA_CONTEXT_LENGTH = "16384";
               # NB: Lower this value if you see truncated or incomplete responses
               TOKEN_LIMIT = "4096"; # recommended for smaller models
+              # LLM_LANGUAGE: "English" # Optional, default: English
 
               # OCR Configuration
               OCR_PROVIDER = "llm"; # llm, google_docai, azure or docling
               VISION_LLM_PROVIDER = "${cfg.ppgpt.llm.ocr.provider}";
               VISION_LLM_MODEL = "${cfg.ppgpt.llm.ocr.model}";
               VISION_LLM_MAX_TOKENS = "2048";
+              # VISION_LLM_TEMPERATURE = ;
 
               # OCR PROCESSING MODE
               # Optional, default: image, other options: pdf, whole_pdf (all pp in one operation)
@@ -169,7 +172,8 @@ in
               PDF_OCR_TAGGING = "true"; # Optional, add tag to processed documents
               PDF_OCR_COMPLETE_TAG = "paperless-gpt-ocr-complete"; # Optional, tag name
               OCR_LIMIT_PAGES = "0"; # Optional, default: 5. Set to 0 for no limit.
-              LOG_LEVEL = "info"; # Optional: debug, info, warn, error
+              # NB: View the logs with 'journalctl -u paperless-gpt.service -f'
+              LOG_LEVEL = "debug"; # Optional: debug, info, warn, error
             };
             # pull from the github container registry (ghcr)
             image = "ghcr.io/icereed/paperless-gpt:latest";
