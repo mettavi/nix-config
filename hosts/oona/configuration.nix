@@ -425,6 +425,14 @@ in
       "users/${username}/email/${inputs.secrets.email.burner}" = emailSecrets;
     };
 
+    # create a symlink to the paperless genealogy media directory for gramps (not possible with home.file)
+    systemd.user.tmpfiles.rules = [
+      # type path mode user group (expiry) (argument)
+      "L+ ${
+        config.users.users.${username}.home
+      }/media/gramps/allen/documents - - - - /var/lib/paperless/media/documents/archive/Genealogy Record"
+    ];
+
     xdg.mimeApps = {
       enable = true;
       /*
