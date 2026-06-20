@@ -111,11 +111,33 @@ in
       "users/${username}/paperless/ppless-${hostname}-pw" = paperlessSecrets;
     };
     systemd.services = {
-      # don't autostart these services
-      paperless-scheduler.wantedBy = mkForce [ ];
+      paperless-consumer = {
+        # allow the paperless group (which includes the admin user) to read media files
+        serviceConfig = {
+          # create files with 640 and directories with 751 permissions
+          UMask = mkForce "0026";
+          # override 'ProtectHome = true' and ensure 751 access to /var/lib/paperless
+          StateDirectoryMode = mkForce "0751";
+        };
+      };
+      paperless-scheduler = {
+        serviceConfig = {
+          UMask = mkForce "0026";
+          StateDirectoryMode = mkForce "0751";
+        };
+        # don't autostart these services
+        wantedBy = mkForce [ ];
+      };
+      paperless-web = {
+        serviceConfig = {
+          UMask = mkForce "0026";
+          StateDirectoryMode = mkForce "0751";
+        };
+      };
       redis-paperless.wantedBy = mkForce [ ];
       # postgresql.target.wantedBy = mkForce [ ];
     };
+
     # if the exporter schedule is missed, run it when the system is online
     # systemd.timers = {
     #   paperless-exporter = {
@@ -129,6 +151,7 @@ in
       # type path mode user group (expiry) (argument)
       "d /var/lib/paperless/Trash 0770 paperless paperless -"
     ];
+
     # add the admin user to the paperless group
     users.users.${username}.extraGroups = [ "paperless" ];
   };
