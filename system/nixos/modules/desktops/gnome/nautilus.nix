@@ -1,6 +1,6 @@
 { username, ... }:
 {
-  # override the nautilus .desktop file (it overrides the whole final, not individual entries)
+  # override the nautilus .desktop file (it overrides the whole file, not individual entries)
   home-manager.users.${username} =
     { config, ... }:
     {
@@ -14,7 +14,9 @@
             "FileManager"
           ];
           comment = "Access and organize files";
-          # open the Downloads directory by default
+          # open the Downloads directory by default, see
+          # https://discourse.gnome.org/t/change-the-default-directory-nautilus-start-a-new-window-with/24448
+          # and https://askubuntu.com/questions/706672/how-to-set-default-opening-folder-for-nautilus-file-manager
           exec = "nautilus --new-window ${config.home.homeDirectory}/Downloads";
           icon = "org.gnome.Nautilus";
           mimeType = [
@@ -57,6 +59,7 @@
           };
           settings = {
             Keywords = "folder;manager;explore;disk;filesystem;nautilus;";
+            # set to false to change the default opening folder
             DBusActivatable = "false";
             X-GNOME-UsesNotifications = "true";
             X-Purism-FormFactor = "Workstation;Mobile;";
