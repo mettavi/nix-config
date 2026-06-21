@@ -244,7 +244,8 @@ in
       networkmanager.enable = true;
       openssh.enable = true;
       # also enables the ollama module
-      paperless-ngx.enable = true;
+      paperless-ngx.enable = false;
+      paperless-redux.enable = true;
       pia-vpn-netmanager.enable = true;
       restic = {
         enable = true;

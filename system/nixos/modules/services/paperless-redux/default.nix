@@ -77,7 +77,7 @@ in
     users.users.paperless = {
       isSystemUser = true;
       group = "paperless";
-      uid = 981;
+      uid = 315;
     };
     users.groups.paperless = { };
     users.users.${username}.extraGroups = [ "paperless" ];
@@ -147,13 +147,13 @@ in
             image = "ghcr.io/paperless-ngx/paperless-ngx:latest";
             autoUpdate = "registry";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
-            ports = [ "127.0.0.1:${toString inst.appPort}:8000" ];
+            publishPorts = [ "127.0.0.1:${toString inst.appPort}:8000" ];
 
             environmentFiles = [
               config.sops.secrets."users/${username}/paperless/ppless-${hostname}.env".path
             ];
 
-            environment = {
+            environments = {
               PAPERLESS_REDIS = "redis://paperless-redis:6379/${toString inst.redisDbIndex}";
               PAPERLESS_TIME_ZONE = "Australia/Melbourne";
               PAPERLESS_OCR_LANGUAGE = "eng";
@@ -177,63 +177,66 @@ in
       ) instances)
 
       # Dynamically inject the generated GPT instances into the container list (if enabled)
-      // (mkIf cfg.ppgpt.enable (
-        mapAttrs' (
-          name: inst:
-          nameValuePair "paperless-gpt-${name}" {
-            containerConfig = {
-              image = "ghcr.io/icereed/paperless-gpt:latest";
-              autoUpdate = "registry";
-              noNewPrivileges = true;
-              networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
-              ports = [ "127.0.0.1:${toString inst.gptPort}:8080" ];
+      // (
+        if cfg.ppgpt.enable then
+          (mapAttrs' (
+            name: inst:
+            nameValuePair "paperless-gpt-${name}" {
+              containerConfig = {
+                image = "ghcr.io/icereed/paperless-gpt:latest";
+                autoUpdate = "registry";
+                noNewPrivileges = true;
+                networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
+                publishPorts = [ "127.0.0.1:${toString inst.gptPort}:8080" ];
 
-              environmentFiles = [
-                config.sops.secrets."users/${username}/paperless/ppless-gpt-${hostname}.env".path
-              ];
+                environmentFiles = [
+                  config.sops.secrets."users/${username}/paperless/ppless-gpt-${hostname}.env".path
+                ];
 
-              environment = {
-                TZ = "Australia/Melbourne";
-                UMASK = "0007"; # Retained to align metadata files
-                PAPERLESS_BASE_URL = "http://paperless-${name}:8000";
-                OLLAMA_HOST = "http://10.88.0.1:11434";
-                OLLAMA_CONTEXT_LENGTH = "16384";
-                TOKEN_LIMIT = "4096";
-                MANUAL_TAG = "paperless-gpt-manual";
-                AUTO_TAG = "paperless-gpt-auto";
-                AUTO_GENERATE_TITLE = "true";
-                AUTO_GENERATE_TAGS = "true";
-                AUTO_GENERATE_CORRESPONDENTS = "true";
-                AUTO_GENERATE_DOCUMENT_TYPE = "true";
-                AUTO_GENERATE_CREATED_DATE = "true";
-                LLM_PROVIDER = "${cfg.ppgpt.llm.generic.provider}";
-                LLM_MODEL = "${cfg.ppgpt.llm.generic.model}";
-                LLM_LANGUAGE = "English";
-                OCR_PROVIDER = "llm";
-                VISION_LLM_PROVIDER = "${cfg.ppgpt.llm.ocr.provider}";
-                VISION_LLM_MODEL = "${cfg.ppgpt.llm.ocr.model}";
-                VISION_LLM_MAX_TOKENS = "2048";
-                OCR_PROCESS_MODE = "image";
-                PDF_SKIP_EXISTING_OCR = "false";
+                environments = {
+                  TZ = "Australia/Melbourne";
+                  UMASK = "0007"; # Retained to align metadata files
+                  PAPERLESS_BASE_URL = "http://paperless-${name}:8000";
+                  OLLAMA_HOST = "http://10.88.0.1:11434";
+                  OLLAMA_CONTEXT_LENGTH = "16384";
+                  TOKEN_LIMIT = "4096";
+                  MANUAL_TAG = "paperless-gpt-manual";
+                  AUTO_TAG = "paperless-gpt-auto";
+                  AUTO_GENERATE_TITLE = "true";
+                  AUTO_GENERATE_TAGS = "true";
+                  AUTO_GENERATE_CORRESPONDENTS = "true";
+                  AUTO_GENERATE_DOCUMENT_TYPE = "true";
+                  AUTO_GENERATE_CREATED_DATE = "true";
+                  LLM_PROVIDER = "${cfg.ppgpt.llm.generic.provider}";
+                  LLM_MODEL = "${cfg.ppgpt.llm.generic.model}";
+                  LLM_LANGUAGE = "English";
+                  OCR_PROVIDER = "llm";
+                  VISION_LLM_PROVIDER = "${cfg.ppgpt.llm.ocr.provider}";
+                  VISION_LLM_MODEL = "${cfg.ppgpt.llm.ocr.model}";
+                  VISION_LLM_MAX_TOKENS = "2048";
+                  OCR_PROCESS_MODE = "image";
+                  PDF_SKIP_EXISTING_OCR = "false";
+                };
+
+                volumes = [
+                  "/var/lib/paperless/${name}/paperless-gpt/prompts:/app/prompts"
+                  "/var/lib/paperless/${name}/paperless-gpt/hocr:/app/hocr"
+                  "/var/lib/paperless/${name}/paperless-gpt/pdf:/app/pdf"
+                  "/var/lib/paperless/${name}/paperless-gpt/config:/app/config"
+                  "/var/lib/paperless/${name}/media:/app/media:z"
+                ];
               };
-
-              volumes = [
-                "/var/lib/paperless/${name}/paperless-gpt/prompts:/app/prompts"
-                "/var/lib/paperless/${name}/paperless-gpt/hocr:/app/hocr"
-                "/var/lib/paperless/${name}/paperless-gpt/pdf:/app/pdf"
-                "/var/lib/paperless/${name}/paperless-gpt/config:/app/config"
-                "/var/lib/paperless/${name}/media:/app/media:z"
-              ];
-            };
-            serviceConfig = {
-              Group = "paperless";
-              RestartSec = "10";
-              Restart = "on-failure";
-              UMask = "0007";
-            };
-          }
-        ) instances
-      ));
+              serviceConfig = {
+                Group = "paperless";
+                RestartSec = "10";
+                Restart = "on-failure";
+                UMask = "0007";
+              };
+            }
+          ) instances)
+        else
+          { }
+      );
     };
   };
 }
