@@ -116,7 +116,7 @@ in
         serviceConfig = {
           # create files with 640 and directories with 751 permissions
           UMask = mkForce "0026";
-          # override 'ProtectHome = true' and ensure 751 access to /var/lib/paperless
+          # override 'ProtectHome = true' to ensure 751 access to /var/lib/paperless
           StateDirectoryMode = mkForce "0751";
         };
       };
