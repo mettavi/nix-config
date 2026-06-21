@@ -63,6 +63,10 @@ in
               "pp"
               28981
             ]
+            [
+              "ppg"
+              28982
+            ]
           ];
           configgen = (
             host: xs:
