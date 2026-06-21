@@ -3,6 +3,7 @@
   environment.systemPackages =
     with pkgs;
     [
+      acl # library and tools for acess control lists (ACLs)
       bind # Domain name server with utilities like dig and nslookup
       cpuid # Linux tool to dump x86 CPUID information about the CPU
       cryptsetup # luks utility for dm-crypt (the "device mapper" kernel encryption system)
