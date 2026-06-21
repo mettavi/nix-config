@@ -146,9 +146,13 @@ in
     #     };
     #   };
     # };
-    # create the Trash directory
     systemd.tmpfiles.rules = [
       # type path mode user group (expiry) (argument)
+      # append active read/write (rw) ACLs for the paperless group on existing items (& capital X execute for directories only)
+      "a+ /var/lib/paperless/media/documents/archive - - - - g:paperless:rwX"
+      # append a default (d:) ACL rule so all future created items inherit group rwX access
+      "a+ /var/lib/paperless/media/documents/archive - - - - d:g:paperless:rwX"
+      # create the Trash directory
       "d /var/lib/paperless/Trash 0770 paperless paperless -"
     ];
 

@@ -117,6 +117,8 @@ in
             ];
             environments = {
               TZ = "Australia/Melbourne";
+              # tell the application runtime (inside the container) what umask to respect
+              UMASK = "0026";
               # PAPERLESS_API_TOKEN  and OPENAI_API_KEY are loaded from the environment file "ppless-gpt-${hostname}.env"
               PAPERLESS_BASE_URL = "http://localhost:28981";
               # PAPERLESS_PUBLIC_URL = "http://paperless.mydomain.com";
@@ -187,11 +189,16 @@ in
               "${config.services.paperless.dataDir}/paperless-gpt/hocr:/app/hocr" # Only if CREATE_LOCAL_HOCR is true
               "${config.services.paperless.dataDir}/paperless-gpt/pdf:/app/pdf" # Only if CREATE_LOCAL_PDF is true
               "${config.services.paperless.dataDir}/paperless-gpt/config:/app/config"
+              "${config.services.paperless.mediaDir}:/app/media:z"
             ];
           };
           serviceConfig = {
+            # force podman to apply a group ownership overlay onto the mounted files
+            Group = "paperless";
             RestartSec = "10";
             Restart = "on-failure";
+            # get systemd to mount the host with group permissions
+            UMask = "0026";
           };
         };
       };
