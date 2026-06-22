@@ -160,6 +160,8 @@ in
               PAPERLESS_DATE_PARSER_LANGUAGES = "en-AU";
               PAPERLESS_CONSUMER_RECURSIVE = "true";
               PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS = "true";
+              # where documents are deleted (after emptying the trash)
+              PAPERLESS_EMPTY_TRASH_DIR = "/var/lib/paperless/Trash";
 
               # --- CRITICAL PERMISSION WRAPPER OVERRIDES ---
               PAPERLESS_UMASK = "0007"; # Forces internal paperless workers to spawn files/directories with 660/770 permissions
