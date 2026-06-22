@@ -238,6 +238,11 @@ in
                   VISION_LLM_MAX_TOKENS = "2048";
                   OCR_PROCESS_MODE = "image";
                   PDF_SKIP_EXISTING_OCR = "false";
+                  PDF_OCR_TAGGING = "true"; # Optional, add tag to processed documents
+                  PDF_OCR_COMPLETE_TAG = "paperless-gpt-ocr-complete"; # Optional, tag name
+                  OCR_LIMIT_PAGES = "0"; # Optional, default: 5. Set to 0 for no limit.
+                  # NB: View the logs with 'journalctl -u paperless-gpt.service -f'
+                  LOG_LEVEL = "info"; # Optional: debug, info, warn, error
                 };
 
                 volumes = [
