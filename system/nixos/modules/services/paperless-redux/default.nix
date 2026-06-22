@@ -84,6 +84,8 @@ in
     # add the admin user to the paperless group
     users.users.${username}.extraGroups = [ "paperless" ];
 
+    networking.firewall.trustedInterfaces = [ "podman1" ];
+
     mettavi.system.services.podman.enable = true;
     mettavi.system.services.ollama.enable = mkIf (
       (cfg.ppgpt.llm.generic.provider == "ollama") || (cfg.ppgpt.llm.ocr.provider == "ollama")
