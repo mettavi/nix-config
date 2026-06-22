@@ -261,7 +261,6 @@ in
                 ];
               };
               serviceConfig = {
-                Group = "paperless";
                 RestartSec = "10";
                 Restart = "on-failure";
                 UMask = "0007";
