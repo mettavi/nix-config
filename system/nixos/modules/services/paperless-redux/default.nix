@@ -203,7 +203,7 @@ in
                   TZ = "Australia/Melbourne";
                   UMASK = "0007"; # Retained to align metadata files
                   PAPERLESS_BASE_URL = "http://paperless-${name}:8000";
-                  OLLAMA_HOST = "http://10.88.0.1:11434";
+                  OLLAMA_HOST = "http://10.89.0.1:11434";
                   OLLAMA_CONTEXT_LENGTH = "16384";
                   TOKEN_LIMIT = "4096";
                   MANUAL_TAG = "paperless-gpt-manual";
