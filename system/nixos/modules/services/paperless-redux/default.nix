@@ -200,6 +200,7 @@ in
               "/var/lib/paperless/${name}/data:/usr/src/paperless/data"
               "/var/lib/paperless/${name}/media:/usr/src/paperless/media"
               "/var/lib/paperless/${name}/consume:/usr/src/paperless/consume"
+              "/var/lib/paperless/Trash:/usr/src/paperless/Trash"
             ];
           };
         }
