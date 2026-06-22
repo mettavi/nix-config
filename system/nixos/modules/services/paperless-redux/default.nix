@@ -166,6 +166,7 @@ in
               USERMAP_UID = toString config.users.users.paperless.uid;
               USERMAP_GID = toString config.users.groups.paperless.gid;
 
+              # configure the postgres DB
               PAPERLESS_DBENGINE = "postgresql";
               PAPERLESS_DBHOST = "10.89.0.1"; # Routes directly out to the host system
               PAPERLESS_DBPORT = "5432";
