@@ -171,6 +171,11 @@ in
               PAPERLESS_DBPORT = "5432";
               PAPERLESS_DBNAME = "paperless_${name}";
               PAPERLESS_DBUSER = "paperless";
+
+              # use Tika and Gotenberg for parsing and converting "Office" documents
+              PAPERLESS_TIKA_ENABLED = "true";
+              PAPERLESS_TIKA_ENDPOINT = "http://localhost:9998";
+              PAPERLESS_TIKA_GOTENBERG_ENDPOINT = "http://localhost:3000";
             };
 
             volumes = [
