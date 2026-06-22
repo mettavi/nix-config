@@ -80,6 +80,8 @@ in
       uid = 315;
     };
     users.groups.paperless = { };
+
+    # add the admin user to the paperless group
     users.users.${username}.extraGroups = [ "paperless" ];
 
     mettavi.system.services.podman.enable = true;
