@@ -164,8 +164,8 @@ in
               PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS = "true";
               # where documents are deleted (after emptying the trash)
               PAPERLESS_EMPTY_TRASH_DIR = "/var/lib/paperless/Trash";
-              # ARGUMENTS YOU WISH TO PASS TO OCRMYPDF.
-              # other options for USER_ARGS (below):
+              # ARGUMENTS TO PASS TO OCRMYPDF (requires a json object):
+              # other options for USER_ARGS (see below):
               # when pdf importing fails, print to a new pdf or set the variable below
               # continue_on_soft_render_error = true;
               PAPERLESS_OCR_USER_ARGS = ''
