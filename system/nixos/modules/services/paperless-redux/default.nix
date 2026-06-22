@@ -165,6 +165,12 @@ in
               PAPERLESS_UMASK = "0007"; # Forces internal paperless workers to spawn files/directories with 660/770 permissions
               USERMAP_UID = toString config.users.users.paperless.uid;
               USERMAP_GID = toString config.users.groups.paperless.gid;
+
+              PAPERLESS_DBENGINE = "postgresql";
+              PAPERLESS_DBHOST = "10.89.0.1"; # Routes directly out to the host system
+              PAPERLESS_DBPORT = "5432";
+              PAPERLESS_DBNAME = "paperless_${name}";
+              PAPERLESS_DBUSER = "paperless";
             };
 
             volumes = [
