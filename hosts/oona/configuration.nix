@@ -215,6 +215,7 @@ in
         enable = true;
         cal_lib = "${config.users.users.${username}.home}/media/calibre";
       };
+      liboffice-lite.enable = true;
       qbittorrent.enable = true;
     };
     devices = {
@@ -363,7 +364,7 @@ in
   # includes system settings (located in system directory)
   mettavi = {
     apps = {
-      libreoffice.enable = true;
+      libreoffice.enable = false;
     };
   };
 
