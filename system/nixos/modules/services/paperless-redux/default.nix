@@ -164,14 +164,13 @@ in
               PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS = "true";
               # where documents are deleted (after emptying the trash)
               PAPERLESS_EMPTY_TRASH_DIR = "/var/lib/paperless/Trash";
-              # arguments you wish to pass to OCRmyPDF.
-              PAPERLESS_OCR_USER_ARGS = {
-                # when pdf importing fails, print to a new pdf or set the variable below
-                # continue_on_soft_render_error = true;
-                deskew = true;
-                optimize = 1;
-                pdfa_image_compression = "lossless";
-              };
+              # ARGUMENTS YOU WISH TO PASS TO OCRMYPDF.
+              # other options for USER_ARGS (below):
+              # when pdf importing fails, print to a new pdf or set the variable below
+              # continue_on_soft_render_error = true;
+              PAPERLESS_OCR_USER_ARGS = ''
+                {"deskew": true, "optimize": 1, "pdfa_image_compression": "lossless"}
+              '';
 
               # --- CRITICAL PERMISSION WRAPPER OVERRIDES ---
               UMASK = "0007"; # Forces internal paperless workers to spawn files/directories with 660/770 permissions
