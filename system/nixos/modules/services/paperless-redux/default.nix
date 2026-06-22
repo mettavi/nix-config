@@ -172,7 +172,8 @@ in
               };
 
               # --- CRITICAL PERMISSION WRAPPER OVERRIDES ---
-              PAPERLESS_UMASK = "0007"; # Forces internal paperless workers to spawn files/directories with 660/770 permissions
+              UMASK = "0007"; # Forces internal paperless workers to spawn files/directories with 660/770 permissions
+              UMASK_SET = "007";
               USERMAP_UID = toString config.users.users.paperless.uid;
               USERMAP_GID = toString config.users.groups.paperless.gid;
 
