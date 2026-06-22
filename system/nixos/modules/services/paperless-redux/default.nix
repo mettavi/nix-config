@@ -77,9 +77,11 @@ in
     users.users.paperless = {
       isSystemUser = true;
       group = "paperless";
-      uid = 315;
+      uid = config.ids.uids.paperless;
     };
-    users.groups.paperless = { };
+    users.groups.paperless = {
+      gid = config.ids.gids.paperless;
+    };
 
     # add the admin user to the paperless group
     users.users.${username}.extraGroups = [ "paperless" ];
@@ -115,6 +117,7 @@ in
         "d /var/lib/paperless/${name}/consume 0770 paperless paperless -"
         "d /var/lib/paperless/${name}/media 0770 paperless paperless -"
         "d /var/lib/paperless/${name}/data 0700 paperless paperless -"
+        "d /var/lib/paperless/${name}/export 0770 paperless paperless -"
         "d /var/lib/paperless/${name}/paperless-gpt 0770 paperless paperless -"
         "d /var/lib/paperless/${name}/paperless-gpt/prompts 0770 paperless paperless -"
         "d /var/lib/paperless/${name}/paperless-gpt/hocr 0770 paperless paperless -"
