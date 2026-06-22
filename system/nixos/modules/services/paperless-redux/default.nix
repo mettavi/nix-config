@@ -167,7 +167,8 @@ in
               PAPERLESS_CONSUMER_RECURSIVE = "true";
               PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS = "true";
               # where documents are deleted (after emptying the trash)
-              PAPERLESS_EMPTY_TRASH_DIR = "/var/lib/paperless/Trash";
+              # NB: this is the path in the container, see https://github.com/paperless-ngx/paperless-ngx/discussions/2131
+              PAPERLESS_EMPTY_TRASH_DIR = "/usr/src/paperless/Trash";
               # ARGUMENTS TO PASS TO OCRMYPDF (requires a json object):
               # other options for USER_ARGS (see below):
               # when pdf importing fails, print to a new pdf or set the variable below
