@@ -8,7 +8,7 @@ return {
     { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
     { "<leader>s", mode = "o", function() require("flash").remote() end, desc = "Flash Remote" },
     { "<leader>S", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Flash Treesitter Remote" },
-    { "<S-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    { "<leader>st", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
   },
   after = function()
     ---@type Flash.Config
