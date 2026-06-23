@@ -432,7 +432,7 @@ in
       # type path mode user group (expiry) (argument)
       "L+ ${
         config.users.users.${username}.home
-      }/media/gramps/allen/documents - - - - /var/lib/paperless/media/documents/archive/Genealogy Record"
+      }/media/gramps/allen/documents - - - - /var/lib/paperless/personal/media/documents/archive/Genealogy Record"
     ];
 
     xdg.mimeApps = {
