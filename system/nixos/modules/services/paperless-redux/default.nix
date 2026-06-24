@@ -284,5 +284,14 @@ in
           { }
       );
     };
+    home-manager.users.${username} =
+      { nixosConfig, ... }:
+      {
+        gtk.gtk3.bookmarks = optionals nixosConfig.mettavi.system.services.paperless-redux.enable flatten (
+          mapAttrsToList (name: _: [
+            "file:///var/lib/paperless/${name}/consume pp-${name}"
+          ]) instances
+        );
+      };
   };
 }

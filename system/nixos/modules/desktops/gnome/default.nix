@@ -199,10 +199,7 @@ in
           gtk3 = {
             # configure bookmarks in nautilus/files left-menu
             bookmarks =
-              optionals nixosConfig.mettavi.system.services.paperless-ngx.enable [
-                "file://${nixosConfig.services.paperless.consumptionDir} paperless"
-              ]
-              ++ [
+              [
                 "file://${config.xdg.userDirs.documents}"
                 "file://${config.xdg.userDirs.download}"
                 "file://${config.xdg.userDirs.music}"
