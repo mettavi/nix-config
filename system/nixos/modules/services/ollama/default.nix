@@ -18,7 +18,8 @@ in
       enable = true;
       package = mkIf (config.mettavi.system.devices.nvidia.enable) pkgs.ollama-cuda; # nividia GPU acceleration
       home = "/var/lib/ollama";
-      host = "127.0.0.1";
+      # bind to all local interfaces, allowing podman bridges to access LLM endpoints
+      host = "0.0.0.0";
       # Optional: preload models, see https://ollama.com/library
       # loadModels = [
       # ];
