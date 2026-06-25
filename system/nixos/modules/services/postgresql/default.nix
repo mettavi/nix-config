@@ -21,21 +21,40 @@ in
     services = {
       postgresql = {
         enable = true;
+        # CRITICAL: Forces Postgres to actually bind network sockets globally
+        enableTCPIP = mkForce true;
+        # --- THE DEFINITIVE FIX ---
+        # This forces PostgreSQL to append this setting to the absolute bottom of the generated
+        # .conf file, successfully overriding the hardcoded 'localhost' logic above it.
+        extraConfig = lib.mkForce ''
+          listen_addresses = '*'
+        '';
         # eg. "/var/lib/postgresql/17"
         dataDir = "/var/lib/postgresql/${config.services.postgresql.package.psqlSchema}";
+
+        # Authorize the specific 10.89 subnet pool (for podman paperless) to log in
+        authentication = mkForce ''
+          # TYPE  DATABASE        USER            ADDRESS                 METHOD
+          local   all             all                                     trust
+          host    all             all             127.0.0.1/32            scram-sha-256
+          host    all             all             10.89.0.0/24            password
+        '';
+
         # peer authentication map, see pg_ident.conf in the nix store
         # NB: use "sudo -u postgres/immich psql -U postgres/immich" etc. to login with the default users
         identMap = # bash
-          ''
+          mkForce ''
             # map the root user to the pgsql "postgres" user (eg. allow "sudo psql -U postgres")
             postgres root postgres
+            postgres paperless paperless
           '';
         # configure the postgresql.conf file
         settings = {
+          listen_addresses = lib.mkForce "*";
           log_connections = true;
           logging_collector = true; # Enable capturing of stderr and csvlog into log file
           log_disconnections = true;
-          log_destination = lib.mkForce "syslog"; # stderr, csvlog, syslog, and eventlog
+          log_destination = mkForce "syslog"; # stderr, csvlog, syslog, and eventlog
           log_statement = "all"; # none, ddl, mod, all
           log_min_messages = "debug1"; # error, warning, notice, info, debug 1..5
           port = 5432;
@@ -70,8 +89,10 @@ in
     };
 
     systemd.services.postgresql = {
-      # IMPORTANT: Allow postgres to write to the backup path
-      serviceConfig.ReadWritePaths = [ "/var/backup/postgresql/archive" ];
+      serviceConfig = {
+        # IMPORTANT: Allow postgres to write to the backup path
+        ReadWritePaths = [ "/var/backup/postgresql/archive" ];
+      };
     };
 
     systemd.services.monitor-pg-archive = {
