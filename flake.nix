@@ -19,6 +19,7 @@
     ######### NIXOS #########
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-26_05.url = "github:NixOS/nixpkgs/release-26.05";
+    nixpkgs-25_11.url = "github:NixOS/nixpkgs/nixos-25.11";
     # Do not override cachyos-kernel nixpkgs input, otherwise there can
     # be mismatch between patches and kernel version
     cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";

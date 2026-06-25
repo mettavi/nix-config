@@ -14,7 +14,7 @@ let
   # see https://github.com/bitwarden/clients/pull/20448
   # This will pin bitwarden-desktop to version 2026.3.1
   # NB: Fixed in version 2026.6.1
-  nixpkgs-26_05 = import inputs.nixpkgs-26_05 {
+  nixpkgs-25_11 = import inputs.nixpkgs-25_11 {
     system = "x86_64-linux";
     config = {
       permittedInsecurePackages = [ "electron-39.8.10" ];
@@ -35,7 +35,7 @@ in
     environment.systemPackages = with pkgs; [
       # to get authentication-related functionality, currently this cannot be installed by home-manager
       # see https://github.com/NixOS/nixpkgs/pull/339384#issuecomment-2372065297
-      nixpkgs-26_05.bitwarden-desktop
+      nixpkgs-25_11.bitwarden-desktop
       # Cryptographic library that implements the SSL and TLS protocols (required for the bash script)
       openssl_3
     ];
