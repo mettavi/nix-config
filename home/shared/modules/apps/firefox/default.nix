@@ -93,7 +93,7 @@ in
               darkreader
               privacy-badger
               sponsorblock
-              tabliss
+              tablissng
               tab-session-manager
               ublock-origin
               violentmonkey
