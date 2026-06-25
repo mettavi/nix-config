@@ -476,7 +476,8 @@ in
             };
             primary = true;
             thunderbird = {
-              enable = true;
+              # the calendar for the primary email account is already added
+              enable = false;
               profiles = [
                 username
               ];
@@ -513,7 +514,8 @@ in
               userName = inputs.secrets.email.personal;
             };
             thunderbird = {
-              enable = true;
+              # the contacts for the primary email account are already added
+              enable = false;
               profiles = [
                 username
               ];
