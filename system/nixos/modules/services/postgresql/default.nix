@@ -23,12 +23,6 @@ in
         enable = true;
         # CRITICAL: Forces Postgres to actually bind network sockets globally
         enableTCPIP = mkForce true;
-        # --- THE DEFINITIVE FIX ---
-        # This forces PostgreSQL to append this setting to the absolute bottom of the generated
-        # .conf file, successfully overriding the hardcoded 'localhost' logic above it.
-        extraConfig = lib.mkForce ''
-          listen_addresses = '*'
-        '';
         # eg. "/var/lib/postgresql/17"
         dataDir = "/var/lib/postgresql/${config.services.postgresql.package.psqlSchema}";
 
