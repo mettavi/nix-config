@@ -27,7 +27,6 @@ in
         compressionLevel = 6;
         databases = [
           "immich"
-          "paperless"
         ];
         location = "/var/backup/postgresql";
         pgdumpOptions = "--clean --if-exists";

@@ -97,6 +97,13 @@ in
       optionalString (cfg.ppgpt.llm.generic.provider == "ollama") [ "${cfg.ppgpt.llm.generic.model}" ]
       ++ optionalString (cfg.ppgpt.llm.ocr.provider == "ollama") [ "${cfg.ppgpt.llm.ocr.model}" ];
 
+    # add paperless databases to the postgresqlBackup module
+    services.postgresqlBackup.databases = flatten (
+      mapAttrsToList (name: _: [
+        "paperless_${name}"
+      ]) instances
+    );
+
     sops.secrets = {
       "users/${username}/paperless/ppless-${hostname}.env" = paperlessSecrets;
     }
