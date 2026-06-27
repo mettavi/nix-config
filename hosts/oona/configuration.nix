@@ -248,6 +248,7 @@ in
       paperless-ngx.enable = false;
       paperless-redux.enable = true;
       pia-vpn-netmanager.enable = true;
+      postgresql.enable = true;
       restic = {
         enable = true;
         jobs = {
