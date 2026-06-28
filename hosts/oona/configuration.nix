@@ -44,8 +44,9 @@ in
   # NB: "pciutils -c lspci -D -d ::03xx" outputs the values in hex, convert them to decimal below
   hardware.nvidia = {
     prime = {
-      nvidiaBusId = "PCI:100:0:0";
-      amdgpuBusId = "PCI:101:0:0";
+      # the nixos wikil now recommends including the @
+      nvidiaBusId = "PCI:100@0:0:0";
+      amdgpuBusId = "PCI:101@0:0:0";
     };
   };
 
