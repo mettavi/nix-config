@@ -346,12 +346,6 @@ in
 
   # KEYBOARD CONFIG
   services.kanata.keyboards."home-keys" = {
-    config = ''
-      ;; Remap Copilot key to sysrq
-      (defchordsv2
-       (lsft lmet f23) ssrq 10 all-released ()
-      )
-    '';
     extraDefCfg = ''
       ;; disable this until kanata can detect the asus keyboard device again
       ;; linux-dev-names-include (
@@ -370,6 +364,10 @@ in
     };
   };
 
+  # directly drop a physical hardware database override onto the drive
+  environment.etc."udev/hwdb.d/99-local.hwdb".text =
+    "evdev:input:b0003v0B05p*\n" + " KEYBOARD_KEY_70045=sysrq\n";
+
   # home-manager modules installed for the admin user ON THIS HOST ONLY
   home-manager.users.${username} = {
     dconf.settings = {
@@ -380,6 +378,8 @@ in
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
         ];
+        # ensure standard window screenshot triggers are fully cleared
+        screenshot-window = [ ];
       };
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
         name = "ROG Control Center";
@@ -405,7 +405,12 @@ in
           "gpu-switcher-supergfxctl@chikobara.github.io"
         ];
       };
+      "org/gnome/shell/keybindings" = {
+        # strip Alt+PrintScreen from taking a window screenshot
+        screenshot-window = [ "<Super><Alt>S" ];
+      };
     };
+
     home = {
       packages = with pkgs; [
         # Simple GPU Profile switcher for ASUS laptops using Supergfxctl
