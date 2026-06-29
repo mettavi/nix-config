@@ -364,7 +364,9 @@ in
     };
   };
 
-  # directly drop a physical hardware database override onto the drive
+  # map the F12 key to the SYSRQ function
+  # NB: to test, run "sudo evtest", select the keyboard (no. 13) and then tap Alt+F12+h
+  # to see the sysrq help output (keep Alt held down, not necessary for F12)
   environment.etc."udev/hwdb.d/99-local.hwdb".text =
     "evdev:input:b0003v0B05p*\n" + " KEYBOARD_KEY_70045=sysrq\n";
 
