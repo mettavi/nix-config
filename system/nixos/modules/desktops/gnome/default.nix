@@ -198,14 +198,13 @@ in
           # colorScheme = "dark";
           gtk3 = {
             # configure bookmarks in nautilus/files left-menu
-            bookmarks =
-              [
-                "file://${config.xdg.userDirs.documents}"
-                "file://${config.xdg.userDirs.download}"
-                "file://${config.xdg.userDirs.music}"
-                "file://${config.xdg.userDirs.pictures}"
-                "file://${config.xdg.userDirs.videos}"
-              ];
+            bookmarks = [
+              "file://${config.xdg.userDirs.documents}"
+              "file://${config.xdg.userDirs.download}"
+              "file://${config.xdg.userDirs.music}"
+              "file://${config.xdg.userDirs.pictures}"
+              "file://${config.xdg.userDirs.videos}"
+            ];
             # disable this option which generates the error:
             # “Using GtkSettings:gtk-application-prefer-dark-theme together with HdyStyleManager is unsupported.
             # Please use HdyStyleManager:color-scheme instead.”
