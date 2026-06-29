@@ -19,8 +19,20 @@ with lib;
     "usbhid"
     "rtsx_pci_sdmmc"
   ];
+
+  boot.blacklistedKernelModules = [
+    # block the telemetry chip and the experimental nova module from hijacking the GPU
+    "i2c_nvidia_gpu"
+    "nova_core"
+  ];
+
   # Set of modules that are ALWAYS loaded by the initrd
-  boot.initrd.kernelModules = [ ];
+  # load these modules early to let the kernel handle GPU registers during shutdown or soft-boot routines
+  boot.initrd.kernelModules = [
+    "nvidia"
+    "nvidia_modeset"
+    "nvidia_drm"
+  ];
   # Set of kernel modules to be loaded in the second stage of the boot process
   boot.kernelModules = [
     "kvm-amd" # kernel-based VM support for AMD
