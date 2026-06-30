@@ -78,8 +78,6 @@ in
       enable = true;
       # option is unstable and deprecated, see https://gitlab.com/asus-linux/asusctl/-/issues/532#note_2879912217
       # enableUserService = true;
-      # explicitly set to use the package patched locally with an overlay
-      package = pkgs.asusctl;
     };
     # do not install this with the asusd module as it is now deprecated
     supergfxd.enable = false;
@@ -125,16 +123,6 @@ in
   # NB: git clone the repo, add the new lines and then run 'git diff > ../aura_support_ga403w.patch
   nixpkgs.overlays = [
     (final: prev: {
-      # TODO: Support has now been added,
-      # see https://github.com/OpenGamingCollective/asusctl/commit/8bf37ed1b2f3da34b2a6047267958f365ce8e131
-      # This fix will ship with the next version 6.3.8
-      asusctl = prev.asusctl.overrideAttrs (oldAttrs: {
-        # Append your new patch to the existing list of patches
-        patches = (oldAttrs.patches or [ ]) ++ [
-          # Path to your patch file (it will be copied to the Nix store)
-          ./aura_support_ga403w.patch
-        ];
-      });
       # TODO: Remove this overlay when v6.0.8 hits nixos-unstable branch
       # install a newer version for bugfix https://github.com/gramps-project/gramps/pull/2204
       # (and other updates added to v6.0.8)
