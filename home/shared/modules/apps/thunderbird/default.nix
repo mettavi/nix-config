@@ -282,162 +282,187 @@ in
       # and there is currently no easy setting to change it
       # See https://github.com/nix-community/home-manager/pull/8456
       profiles = {
-        "${username}" = {
-          isDefault = true;
-          inherit (cfg) accountsOrder;
-          # list available addons with "nix-env -f '<nixpkgs>' -qaP -A nur.repos.rycee.thunderbird-addons"
-          # see https://github.com/nix-community/home-manager/pull/6033 for instructions on using
-          # the buildFirefoxXpiAddon function to install addons not available there
-          # extensions = with pkgs.nur.repos.rycee.thunderbird-addons; [ ];
-          # Extra preferences to add to file user.js.
-          extraConfig = "";
-          # RSS or Atom feeds
-          # feedAccounts = {
-          #   ${username} = { };
-          # };
-          # search = {
-          #   force = true;
-          #   default = "ddg";
-          #   privateDefault = "google";
-          #   engines =
-          #     let
-          #       nixSnowflakeIcon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
-          #     in
-          #     {
-          #       "Nix Packages" = {
-          #         urls = [
-          #           {
-          #             template = "https://search.nixos.org/packages";
-          #             params = [
-          #               {
-          #                 name = "type";
-          #                 value = "packages";
-          #               }
-          #               {
-          #                 name = "channel";
-          #                 value = "unstable";
-          #               }
-          #               {
-          #                 name = "query";
-          #                 value = "{searchTerms}";
-          #               }
-          #             ];
-          #           }
-          #         ];
-          #         icon = nixSnowflakeIcon;
-          #         definedAliases = [ "@nixp" ];
-          #       };
-          #       "Nix Options" = {
-          #         urls = [
-          #           {
-          #             template = "https://search.nixos.org/options";
-          #             params = [
-          #               {
-          #                 name = "channel";
-          #                 value = "unstable";
-          #               }
-          #               {
-          #                 name = "query";
-          #                 value = "{searchTerms}";
-          #               }
-          #             ];
-          #           }
-          #         ];
-          #         icon = nixSnowflakeIcon;
-          #         definedAliases = [ "@nixo" ];
-          #       };
-          #       "Home Manager Options" = {
-          #         urls = [
-          #           {
-          #             template = "https://home-manager-options.extranix.com/";
-          #             params = [
-          #               {
-          #                 name = "query";
-          #                 value = "{searchTerms}";
-          #               }
-          #               {
-          #                 name = "release";
-          #                 value = "master"; # unstable
-          #               }
-          #             ];
-          #           }
-          #         ];
-          #         icon = nixSnowflakeIcon;
-          #         definedAliases = [ "@hmo" ];
-          #       };
-          #     };
-          # };
-          settings = {
-            "extensions.autoDisableScopes" = 0; # automatically enable extensions
-            # "browser.display.use_system_colors" = true;
-            # "browser.theme.dark-toolbar-theme" = true;
-            # "calendar.timezone.useSystemTimezone" = true;
-            # "datareporting.healthreport.uploadEnabled" = false;
-            # "font.name.sans-serif.x-western" = "Rubik";
-            # "font.size.variable.x-western" = 17;
-            # "gfx.webrender.all" = true;
-            # "gfx.webrender.enabled" = true;
-            # "intl.regional_prefs.use_os_locales" = true; # Date and Time Formatting: Regional settings locale
-            # "layers.acceleration.force-enabled" = true;
-            # "mail.accounthub.enabled" = false; # OVERRIDE?
-            # "mail.biff.play_sound" = false;
-            # "mail.compose.big_attachments.notify" = false;
-            # "mail.compose.default_to_paragraph" = false;
-            # "mail.compose.double_line_spacing" = false;
-            # compact imap mail folders regularly without asking first
-            # see https://support.mozilla.org/en-US/kb/compacting-folders
-            "mail.purge.ask" = false;
-            # "mail.shell.checkDefaultClient" = false; # already set in dove
-            # "mail.spam.manualMark" = true;
-            # "mail.tabs.drawInTitlebar" = true; # already set in dove
-            "mailnews.default_sort_order" = 2; # descending, 1 for ascending
-            # 17 = None
-            # 18 = Date
-            # 19 = Subject
-            # 20 = Author
-            # 21 = ID (Order Received)
-            # 22 = Thread
-            # 23 = Priority
-            # 24 = Status
-            # 25 = Size
-            # 26 = Flagged
-            # 27 = Unread
-            # 28 = Recipient
-            # 29 = Location
-            # 30 = Label
-            # 31 = Junk Status
-            # 32 = Attachments
-            # 33 = Account
-            # 34 = Custom
-            # 35 = Received
-            # "mailnews.default_sort_type" = 18;
-            # "mailnews.message_display.disable_remote_image" = false; # OVERRIDE?
-            # "mailnews.start_page.enabled" = false; # already set in dove
-            # Add a new tag to be used in the message filter
-            "mailnews.tags.github.color" = "#BB40BF";
-            "mailnews.tags.github.tag" = "Github";
-            # https://superuser.com/a/13551
-            # "mailnews.wraplength" = 80;
-            # "messenger.startup.action" = 0;
-            # "network.cookie.cookieBehavior" = 1;
-            # override the dove settings; do not prompt before going online on launch
-            # 0 = remember previous, 1 = ask, 2 = online, 3 = offline
-            "offline.startup_state" = 2;
-            # "pdfjs.enabledCache.state" = true;
-            # "privacy.donottrackheader.enabled" = true;
-            # "privacy.fingerprintingProtection" = true;
-            # "privacy.firstparty.isolate" = true;
-            # "privacy.purge_trackers.date_in_cookie_database" = "0";
-            # "privacy.resistFingerprinting" = true;
-            # "privacy.trackingprotection.emailtracking.enabled" = true;
-            # "privacy.trackingprotection.enabled" = true;
-            # "privacy.trackingprotection.fingerprinting.enabled" = true;
-            # "privacy.trackingprotection.socialtracking.enabled" = true;
-            # "svg.context-properties.content.enabled" = true;
-            # "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-            # "toolkit.telemetry.enabled" = false;
+        "${username}" =
+          let
+            inherit (pkgs.nur.repos.rycee.firefox-addons) buildFirefoxXpiAddon;
+
+            allow_html_temp = buildFirefoxXpiAddon rec {
+              pname = "allow-html-tmp";
+              version = "10.2.1";
+              addonId = "{532269cf-a10e-4396-8613-b5d9a9a516d4}";
+              url = "https://addons.thunderbird.net/user-media/addons/_attachments/1556/allow_html_temp-${version}-tb.xpi";
+              sha256 = "sha256-L/rxwgTpxS2i8BQrvfaTKLMxWUTvP+5g78MY0yQ4bUg=";
+              meta = with lib; {
+                homepage = "https://www.thunderbird-mail.de/lexicon/entry/226-allow-html-temp-add-on-to-allow-html-only-temporarily";
+                description = "Allows to have HTML temporarily enabled (and displayed) in the currently selected message by only one click.";
+                license = licenses.mpl20;
+                mozPermissions = [
+                  "accountsRead"
+                  "messagesRead"
+                  "activeTab"
+                  "storage"
+                ];
+                platforms = platforms.all;
+              };
+            };
+
+          in
+          {
+            isDefault = true;
+            inherit (cfg) accountsOrder;
+            # list available addons with "nix-env -f '<nixpkgs>' -qaP -A nur.repos.rycee.thunderbird-addons"
+            # see https://github.com/nix-community/home-manager/pull/6033 for instructions on using
+            # the buildFirefoxXpiAddon function to install addons not available there
+            extensions = with pkgs.nur.repos.rycee.thunderbird-addons; [ allow_html_temp ];
+            # Extra preferences to add to file user.js.
+            extraConfig = "";
+            # RSS or Atom feeds
+            # feedAccounts = {
+            #   ${username} = { };
+            # };
+            # search = {
+            #   force = true;
+            #   default = "ddg";
+            #   privateDefault = "google";
+            #   engines =
+            #     let
+            #       nixSnowflakeIcon = "${pkgs.nixos-icons}/share/icons/hicolor/scalable/apps/nix-snowflake.svg";
+            #     in
+            #     {
+            #       "Nix Packages" = {
+            #         urls = [
+            #           {
+            #             template = "https://search.nixos.org/packages";
+            #             params = [
+            #               {
+            #                 name = "type";
+            #                 value = "packages";
+            #               }
+            #               {
+            #                 name = "channel";
+            #                 value = "unstable";
+            #               }
+            #               {
+            #                 name = "query";
+            #                 value = "{searchTerms}";
+            #               }
+            #             ];
+            #           }
+            #         ];
+            #         icon = nixSnowflakeIcon;
+            #         definedAliases = [ "@nixp" ];
+            #       };
+            #       "Nix Options" = {
+            #         urls = [
+            #           {
+            #             template = "https://search.nixos.org/options";
+            #             params = [
+            #               {
+            #                 name = "channel";
+            #                 value = "unstable";
+            #               }
+            #               {
+            #                 name = "query";
+            #                 value = "{searchTerms}";
+            #               }
+            #             ];
+            #           }
+            #         ];
+            #         icon = nixSnowflakeIcon;
+            #         definedAliases = [ "@nixo" ];
+            #       };
+            #       "Home Manager Options" = {
+            #         urls = [
+            #           {
+            #             template = "https://home-manager-options.extranix.com/";
+            #             params = [
+            #               {
+            #                 name = "query";
+            #                 value = "{searchTerms}";
+            #               }
+            #               {
+            #                 name = "release";
+            #                 value = "master"; # unstable
+            #               }
+            #             ];
+            #           }
+            #         ];
+            #         icon = nixSnowflakeIcon;
+            #         definedAliases = [ "@hmo" ];
+            #       };
+            #     };
+            # };
+            settings = {
+              "extensions.autoDisableScopes" = 0; # automatically enable extensions
+              # "browser.display.use_system_colors" = true;
+              # "browser.theme.dark-toolbar-theme" = true;
+              # "calendar.timezone.useSystemTimezone" = true;
+              # "datareporting.healthreport.uploadEnabled" = false;
+              # "font.name.sans-serif.x-western" = "Rubik";
+              # "font.size.variable.x-western" = 17;
+              # "gfx.webrender.all" = true;
+              # "gfx.webrender.enabled" = true;
+              # "intl.regional_prefs.use_os_locales" = true; # Date and Time Formatting: Regional settings locale
+              # "layers.acceleration.force-enabled" = true;
+              # "mail.accounthub.enabled" = false; # OVERRIDE?
+              # "mail.biff.play_sound" = false;
+              # "mail.compose.big_attachments.notify" = false;
+              # "mail.compose.default_to_paragraph" = false;
+              # "mail.compose.double_line_spacing" = false;
+              # compact imap mail folders regularly without asking first
+              # see https://support.mozilla.org/en-US/kb/compacting-folders
+              "mail.purge.ask" = false;
+              # "mail.shell.checkDefaultClient" = false; # already set in dove
+              # "mail.spam.manualMark" = true;
+              # "mail.tabs.drawInTitlebar" = true; # already set in dove
+              "mailnews.default_sort_order" = 2; # descending, 1 for ascending
+              # 17 = None
+              # 18 = Date
+              # 19 = Subject
+              # 20 = Author
+              # 21 = ID (Order Received)
+              # 22 = Thread
+              # 23 = Priority
+              # 24 = Status
+              # 25 = Size
+              # 26 = Flagged
+              # 27 = Unread
+              # 28 = Recipient
+              # 29 = Location
+              # 30 = Label
+              # 31 = Junk Status
+              # 32 = Attachments
+              # 33 = Account
+              # 34 = Custom
+              # 35 = Received
+              # "mailnews.default_sort_type" = 18;
+              # "mailnews.message_display.disable_remote_image" = false; # OVERRIDE?
+              # "mailnews.start_page.enabled" = false; # already set in dove
+              # Add a new tag to be used in the message filter
+              "mailnews.tags.github.color" = "#BB40BF";
+              "mailnews.tags.github.tag" = "Github";
+              # https://superuser.com/a/13551
+              # "mailnews.wraplength" = 80;
+              # "messenger.startup.action" = 0;
+              # "network.cookie.cookieBehavior" = 1;
+              # override the dove settings; do not prompt before going online on launch
+              # 0 = remember previous, 1 = ask, 2 = online, 3 = offline
+              "offline.startup_state" = 2;
+              # "pdfjs.enabledCache.state" = true;
+              # "privacy.donottrackheader.enabled" = true;
+              # "privacy.fingerprintingProtection" = true;
+              # "privacy.firstparty.isolate" = true;
+              # "privacy.purge_trackers.date_in_cookie_database" = "0";
+              # "privacy.resistFingerprinting" = true;
+              # "privacy.trackingprotection.emailtracking.enabled" = true;
+              # "privacy.trackingprotection.enabled" = true;
+              # "privacy.trackingprotection.fingerprinting.enabled" = true;
+              # "privacy.trackingprotection.socialtracking.enabled" = true;
+              # "svg.context-properties.content.enabled" = true;
+              # "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+              # "toolkit.telemetry.enabled" = false;
+            };
           };
-        };
       };
     };
 
