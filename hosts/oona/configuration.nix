@@ -353,10 +353,11 @@ in
   };
 
   # map the F12 key to the SYSRQ function
-  # NB: to test, run "sudo evtest", select the keyboard (no. 13) and then tap Alt+F12+h
-  # to see the sysrq help output (keep Alt held down, not necessary for F12)
+  # NB: to test, run "sudo evtest", select the keyboard (no. 13) and then tap F12
+  # to see sysrq help output, run "sudo journalctl -kf" and tap LAlt+F12+h,
+  # (keep Alt held down, not necessary for F12)
   environment.etc."udev/hwdb.d/99-local.hwdb".text =
-    "evdev:input:b0003v0B05p*\n" + " KEYBOARD_KEY_70045=sysrq\n";
+    "evdev:input:b0003v0B05p*\n" + " KEYBOARD_KEY_00070045=sysrq\n";
 
   # home-manager modules installed for the admin user ON THIS HOST ONLY
   home-manager.users.${username} = {
