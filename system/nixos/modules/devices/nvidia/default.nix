@@ -81,8 +81,8 @@ in
 
     # NB: the module below adds boot.blacklistedKernelModules = [ "nouveau" ];
     hardware.nvidia = {
-      # this adds the nvidia-powerd service
-      dynamicBoost.enable = true;
+      # this adds the nvidia-powerd service (disabled for stability)
+      dynamicBoost.enable = false;
       # Kernel mode setting (KMS) allows native video resolution during boot and in tty's
       # On wayland, KMS is also required for the offloading mode (see below)
       # to ensure the iGPU is used as the primary display
