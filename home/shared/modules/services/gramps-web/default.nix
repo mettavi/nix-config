@@ -55,8 +55,9 @@ in
                 vols = "config.virtualisation.quadlet.volumes";
               in
               [
-                # bind mount
+                # bind mounts
                 "${config.home.homeDirectory}/media/gramps/allen/:/app/media"
+                "${config.xdg.configHome}/gramps/allen.cfg/:/app/config/config.cfg"
                 # volume mounts
                 "${vols.gramps_users.ref}:/app/users" # persist user database
                 "${vols.gramps_index.ref}:/app/indexdir" # persist search index
