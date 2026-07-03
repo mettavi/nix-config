@@ -51,9 +51,6 @@ in
     mettavi.system.services.podman.enable = true;
     networking.firewall.allowedTCPPorts = [ 5000 ];
 
-    # Ensure NVIDIA Container Toolkit is enabled at the OS level so Podman can pass the GPU
-    hardware.nvidia-container-toolkit.enable = true;
-
     home-manager.users."${username}" = {
       imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
 
