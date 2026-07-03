@@ -3,6 +3,7 @@
   inputs,
   lib,
   pkgs,
+  username,
   ...
 }:
 let
@@ -46,8 +47,6 @@ in
     enable = lib.mkEnableOption "Install and set up the gramps-web service";
   };
 
-  imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
-
   config = lib.mkIf cfg.enable {
     mettavi.system.services.podman.enable = true;
     networking.firewall.allowedTCPPorts = [ 5000 ];
@@ -55,96 +54,100 @@ in
     # Ensure NVIDIA Container Toolkit is enabled at the OS level so Podman can pass the GPU
     hardware.nvidia-container-toolkit.enable = true;
 
-    virtualisation.quadlet = {
-      # Create a shared network so the containers can resolve 'grampsweb_redis'
-      networks = {
-        gramps_net = { };
-      };
+    home-manager.users."${username}" = {
+      imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
 
-      # Define the image build process
-      images = {
-        grampsweb_cuda = {
-          imageConfig = {
-            File = "${grampsCudaContainerfile}";
-            ImageTag = "grampsweb:cuda";
-          };
+      virtualisation.quadlet = {
+        # Create a shared network so the containers can resolve 'grampsweb_redis'
+        networks = {
+          gramps_net = { };
         };
-      };
 
-      containers = {
-        grampsweb = {
-          containerConfig = {
-            # Use the image we built above
-            image = "localhost/grampsweb:cuda";
-            environments = sharedContainerEnv;
-            volumes = sharedVolumes;
-            publishPorts = [ "5000:5000" ];
-            network = [ "gramps_net.network" ]; # Attach to shared network
-            noNewPrivileges = true;
-
-            # Pass the NVIDIA GPU to the container
-            devices = [ "nvidia.com/gpu=all" ];
-          };
-          serviceConfig = {
-            Restart = "always";
-          };
-          unitConfig = {
-            # Ensure the image is built and redis is running first
-            After = [
-              "grampsweb_redis.container"
-              "grampsweb_cuda.image"
-            ];
-            Requires = [
-              "grampsweb_redis.container"
-              "grampsweb_cuda.image"
-            ];
+        # Define the image build process
+        images = {
+          grampsweb_cuda = {
+            imageConfig = {
+              File = "${grampsCudaContainerfile}";
+              ImageTag = "grampsweb:cuda";
+            };
           };
         };
 
-        grampsweb_celery = {
-          containerConfig = {
-            image = "localhost/grampsweb:cuda";
-            exec = "celery -A gramps_webapi.celery worker --loglevel=INFO --concurrency=2";
-            environments = sharedContainerEnv;
-            volumes = sharedVolumes;
-            network = [ "gramps_net.network" ];
-            devices = [ "nvidia.com/gpu=all" ]; # Celery likely needs the GPU for embedding tasks too
+        containers = {
+          grampsweb = {
+            containerConfig = {
+              # Use the image we built above
+              image = "localhost/grampsweb:cuda";
+              environments = sharedContainerEnv;
+              volumes = sharedVolumes;
+              publishPorts = [ "5000:5000" ];
+              network = [ "gramps_net.network" ]; # Attach to shared network
+              noNewPrivileges = true;
+
+              # Pass the NVIDIA GPU to the container
+              devices = [ "nvidia.com/gpu=all" ];
+            };
+            serviceConfig = {
+              Restart = "always";
+            };
+            unitConfig = {
+              # Ensure the image is built and redis is running first
+              After = [
+                "grampsweb_redis.container"
+                "grampsweb_cuda.image"
+              ];
+              Requires = [
+                "grampsweb_redis.container"
+                "grampsweb_cuda.image"
+              ];
+            };
           };
-          serviceConfig = {
-            Restart = "always";
+
+          grampsweb_celery = {
+            containerConfig = {
+              image = "localhost/grampsweb:cuda";
+              exec = "celery -A gramps_webapi.celery worker --loglevel=INFO --concurrency=2";
+              environments = sharedContainerEnv;
+              volumes = sharedVolumes;
+              network = [ "gramps_net.network" ];
+              devices = [ "nvidia.com/gpu=all" ]; # Celery likely needs the GPU for embedding tasks too
+            };
+            serviceConfig = {
+              Restart = "always";
+            };
+            unitConfig = {
+              After = [
+                "grampsweb.container"
+                "grampsweb_redis.container"
+              ];
+              Requires = [
+                "grampsweb.container"
+                "grampsweb_redis.container"
+              ];
+            };
           };
-          unitConfig = {
-            After = [
-              "grampsweb.container"
-              "grampsweb_redis.container"
-            ];
-            Requires = [
-              "grampsweb.container"
-              "grampsweb_redis.container"
-            ];
+
+          grampsweb_redis = {
+            containerConfig = {
+              image = "docker.io/valkey/valkey:8-alpine";
+              network = [ "gramps_net.network" ];
+            };
+            serviceConfig = {
+              Restart = "always";
+            };
           };
         };
 
-        grampsweb_redis = {
-          containerConfig = {
-            image = "docker.io/valkey/valkey:8-alpine";
-            network = [ "gramps_net.network" ];
-          };
-          serviceConfig = {
-            Restart = "always";
-          };
+        # Define named volumes normally (letting Podman manage the storage backend)
+        volumes = {
+          gramps_users = { };
+          gramps_index = { };
+          gramps_thumb_cache = { };
+          gramps_cache = { };
+          gramps_secret = { };
+          gramps_db = { };
+          gramps_tmp = { };
         };
-      };
-
-      # Define named volumes normally (letting Podman manage the storage backend)
-      volumes = {
-        gramps_users = { };
-        gramps_index = { };
-        gramps_thumb_cache = { };
-        gramps_cache = { };
-        gramps_secret = { };
-        gramps_db = { };
-        gramps_tmp = { };
       };
     };
   };
