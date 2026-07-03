@@ -28,6 +28,7 @@ in
 
     # --- HOME MANAGER (USER-LEVEL) CONFIGURATIONS ---
     home-manager.users."${username}" =
+      { config, ... }:
       let
         # 1. Define a standard Containerfile to build the GPU-enabled image
         # This avoids the Nix-store/FHS mismatch by using standard pip in the container.
