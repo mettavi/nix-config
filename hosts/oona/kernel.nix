@@ -51,6 +51,6 @@ with lib;
   boot.kernelParams = [ ];
 
   # SysRq shortcuts can be used to trigger a more graceful reboot
-  boot.kernel.sysctl."kernel.sysrq" = mkDefault 1;
+  boot.kernel.sysctl."kernel.sysrq" = 1;
 
 }
