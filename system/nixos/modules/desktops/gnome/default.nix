@@ -63,8 +63,14 @@ in
 
     services = {
       # install GNOME using wayland
-      displayManager.gdm.enable = lib.mkDefault true;
-      desktopManager.gnome.enable = true;
+      displayManager.gdm = {
+        enable = lib.mkDefault true;
+        # debug = true;
+      };
+      desktopManager.gnome = {
+        enable = true;
+        # debug = true;
+      };
       gnome = {
         # allow to install GNOME Shell extensions from a web browser
         gnome-browser-connector.enable = true;
