@@ -97,27 +97,37 @@ in
   # AUTOSTARTING THE ROG_CONTROL_CENTRE APP
 
   # this option is not working reliably, see https://github.com/NixOS/nixpkgs/issues/455932
-  # programs.rog-control-center = {
-  #   enable = true;
-  #   autoStart = true;
-  # };
-  # so manually define a service instead
-  systemd.user.services.rog-control-center = {
-    description = "rog-control-center";
-    after = [ "graphical-session.target" ];
-    partOf = [ "graphical-session.target" ];
-    startLimitBurst = 5;
-    startLimitIntervalSec = 120;
-    wantedBy = [ "graphical-session.target" ];
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = lib.getExe' pkgs.asusctl "rog-control-center";
-      Restart = "on-failure";
-      RestartSec = 1;
-      TimeoutStopSec = 10;
-      ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
-    };
+  programs.rog-control-center = {
+    enable = true;
+    # Disable the un-delayed built-in autostart item
+    autoStart = false;
   };
+
+  # Manually create the autostart desktop entry with an explicit 4-second delay wrapper
+  environment.etc."xdg/autostart/rog-control-center.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=ROG Control Center
+    Comment=ASUS ROG Laptop Control Center
+    Exec=sh -c "sleep 4 && ${lib.getExe' pkgs.asusctl "rog-control-center"}"
+    Icon=rog-control-center
+    Terminal=false
+    Categories=Settings;HardwareSettings;
+    X-GNOME-Autostart-enabled=true
+  '';
+
+  services.dbus.packages = [
+    (pkgs.writeTextDir "share/dbus-1/system.d/org.asuslinux.Daemon.conf" ''
+      <!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
+       "http://freedesktop.org">
+      <busconfig>
+        <policy group="wheel">
+          <allow send_destination="org.asuslinux.Daemon"/>
+          <allow receive_sender="org.asuslinux.Daemon"/>
+        </policy>
+      </busconfig>
+    '')
+  ];
 
   # patch the asusctl package to include "aura" keyboard lighting definitions for this model laptop
   # NB: git clone the repo, add the new lines and then run 'git diff > ../aura_support_ga403w.patch
