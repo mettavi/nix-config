@@ -33,8 +33,10 @@ in
         # This avoids the Nix-store/FHS mismatch by using standard pip in the container.
         grampsCudaContainerfile = pkgs.writeText "Containerfile" ''
           FROM ghcr.io/gramps-project/grampsweb:latest
-          # Install PyTorch with CUDA 12.1 support directly into the container's environment
-          RUN pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+          # Uninstall the built-in CPU versions first to guarantee a clean slate,
+          # then install the CUDA-enabled versions.
+          RUN pip uninstall -y torch torchvision && \
+            pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
         '';
 
         # 2. Extract shared configuration so both grampsweb and celery can inherit it properly
