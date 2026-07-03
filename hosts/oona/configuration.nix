@@ -379,8 +379,6 @@ in
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
         ];
-        # ensure standard window screenshot triggers are fully cleared
-        screenshot-window = [ ];
       };
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
         name = "ROG Control Center";
@@ -407,8 +405,11 @@ in
         ];
       };
       "org/gnome/shell/keybindings" = {
-        # strip Alt+PrintScreen from taking a window screenshot
-        screenshot-window = [ "<Super><Alt>S" ];
+        # SCREENSHOT KEYBINDINGS
+        show-screenshot-ui = [ "<Shift><Super>F23" ]; # equivalent to the Copilot key
+        show-screen-recording-ui = [ "<Shift><Control>F12" ];
+        screenshot = [ "<Shift>F12" ];
+        screenshot-window = [ "<Control>F12" ];
       };
     };
 
