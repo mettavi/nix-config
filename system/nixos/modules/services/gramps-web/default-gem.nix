@@ -18,9 +18,6 @@ in
     mettavi.system.services.podman.enable = true;
     networking.firewall.allowedTCPPorts = [ 5000 ];
 
-    home-manager.users."${username}" = {
-      imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
-
     home-manager.users."${username}" =
       let
         # 1. Define a standard Containerfile to build the GPU-enabled image
