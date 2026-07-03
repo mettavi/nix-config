@@ -15,9 +15,18 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+
+    # --- SYSTEM-LEVEL CONFIGURATIONS ---
     mettavi.system.services.podman.enable = true;
     networking.firewall.allowedTCPPorts = [ 5000 ];
 
+    # Explicitly assign SubUID/SubGID ranges and enable linger for auto-start
+    users.users."${username}" = {
+      autoSubUidGidRange = true;
+      linger = true;
+    };
+
+    # --- HOME MANAGER (USER-LEVEL) CONFIGURATIONS ---
     home-manager.users."${username}" =
       let
         # 1. Define a standard Containerfile to build the GPU-enabled image
@@ -82,6 +91,9 @@ in
                 network = [ "gramps_net.network" ]; # Attach to shared network
                 noNewPrivileges = true;
 
+                # Keep user ID mapping the same as the host to fix bind mount permissions
+                # this requires not using any privileged ports (above 1024)
+                userns = "keep-id";
                 # Pass the NVIDIA GPU to the container
                 devices = [ "nvidia.com/gpu=all" ];
               };
