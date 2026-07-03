@@ -95,7 +95,7 @@ in
                 environments = sharedContainerEnv;
                 volumes = sharedVolumes;
                 publishPorts = [ "5000:5000" ];
-                network = [ "gramps_net.network" ]; # Attach to shared network
+                networks = [ "gramps_net.network" ]; # Attach to shared network
                 noNewPrivileges = true;
 
                 # Keep user ID mapping the same as the host to fix bind mount permissions
@@ -126,7 +126,7 @@ in
                 exec = "celery -A gramps_webapi.celery worker --loglevel=INFO --concurrency=2";
                 environments = sharedContainerEnv;
                 volumes = sharedVolumes;
-                network = [ "gramps_net.network" ];
+                networks = [ "gramps_net.network" ];
                 devices = [ "nvidia.com/gpu=all" ]; # Celery likely needs the GPU for embedding tasks too
               };
               serviceConfig = {
@@ -147,7 +147,7 @@ in
             grampsweb_redis = {
               containerConfig = {
                 image = "docker.io/valkey/valkey:8-alpine";
-                network = [ "gramps_net.network" ];
+                networks = [ "gramps_net.network" ];
               };
               serviceConfig = {
                 Restart = "always";

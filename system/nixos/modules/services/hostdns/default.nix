@@ -48,6 +48,11 @@ in
               "abs"
               13378
             ]
+            # gramps-web
+            [
+              "gw"
+              5000
+            ]
             # immich
             [
               "imm"
@@ -58,11 +63,12 @@ in
               "jf"
               8096
             ]
-            # paperless-ngx
+            # paperless-personal
             [
               "pp"
               28981
             ]
+            # paperless-genealogy
             [
               "ppg"
               28982
