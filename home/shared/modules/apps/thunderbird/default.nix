@@ -501,8 +501,7 @@ in
             };
             primary = true;
             thunderbird = {
-              # the calendar for the primary email account is already added
-              enable = false;
+              enable = true;
               profiles = [
                 username
               ];
