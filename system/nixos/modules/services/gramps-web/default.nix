@@ -48,6 +48,12 @@ in
           GRAMPSWEB_CELERY_CONFIG__result_backend = "redis://grampsweb_redis:6379/0";
           GRAMPSWEB_RATELIMIT_STORAGE_URI = "redis://grampsweb_redis:6379/1";
           GRAMPSWEB_VECTOR_EMBEDDING_MODEL = "sentence-transformers/distiluse-base-multilingual-cased-v2";
+          # Use Podman's special DNS name to reach the host, and add /v1 for the OpenAI API format
+          LLM_BASE_URL = "http://host.containers.internal:11434/v1";
+          # Replace this with whichever model you pulled via `ollama run <model>`
+          LLM_MODEL = "qwen3:8b";
+          # Ollama doesn't use authentication, but the Gramps client requires this field to not be empty
+          OPENAI_API_KEY = "dummy-key-for-ollama";
         };
 
         sharedVolumes = [
