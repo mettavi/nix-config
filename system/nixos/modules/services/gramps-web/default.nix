@@ -43,7 +43,6 @@ in
         sharedContainerEnv = {
           TZ = "Australia/Melbourne";
           GRAMPSWEB_TREE = "Allen";
-          GRAMPSWEB_TREE_ID = "${config.xdg.dataHome}/gramps/grampsdb/69db313a";
           GRAMPSWEB_CELERY_CONFIG__broker_url = "redis://grampsweb_redis:6379/0";
           GRAMPSWEB_CELERY_CONFIG__result_backend = "redis://grampsweb_redis:6379/0";
           GRAMPSWEB_RATELIMIT_STORAGE_URI = "redis://grampsweb_redis:6379/1";
