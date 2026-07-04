@@ -360,6 +360,9 @@ in
     apps = {
       libreoffice.enable = false;
     };
+    services = {
+      gramps-web.enable = true;
+    };
   };
 
   # map the F12 key to the SYSRQ function
