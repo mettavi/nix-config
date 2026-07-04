@@ -2,6 +2,7 @@
   config,
   inputs,
   lib,
+  username,
   ...
 }:
 with lib;
@@ -22,6 +23,14 @@ in
   };
 
   config = mkIf cfg.enable {
+    users.users."${username}" = {
+      extraGroups = [
+        "podman"
+        "video" # Required for /dev/nvidia* access from rootless containers
+        "render" # Required for /dev/dri/* access from rootless containers
+      ];
+    };
+
     # Enable common container config files in /etc/containers
     virtualisation.containers.enable = true;
     virtualisation.podman = {
