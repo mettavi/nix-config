@@ -38,6 +38,11 @@ in
       # see https://github.com/paperless-ngx/paperless-ngx/discussions/11159
       proxyTimeout = "600m";
       recommendedProxySettings = true;
+      commonHttpConfig = ''
+        client_header_buffer_size 64k;
+        large_client_header_buffers 4 64k;
+      '';
+
       # Code adapted from https://jiaxiaodong.com/posts/computing/server/nix/nginx-reverse-proxy
       virtualHosts =
         let
@@ -87,6 +92,11 @@ in
                   proxyPass = "http://localhost:${port}";
                   # required for audiobookshelf
                   proxyWebsockets = true;
+                  extraConfig = ''
+                    proxy_buffer_size          128k;
+                    proxy_buffers              4 256k;
+                    proxy_busy_buffers_size    256k;
+                  '';
                 };
               };
             }
