@@ -35,6 +35,13 @@ in
         # This avoids the Nix-store/FHS mismatch by using standard pip in the container.
         grampsCudaContainerfile = pkgs.writeText "Containerfile" ''
           FROM ghcr.io/gramps-project/grampsweb:latest
+          # Force the container to pull down the Linux PDF thumbnail extraction binaries
+          USER root
+          RUN apt-get update && apt-get install -y poppler-utils ghostscript fontconfig --no-install-recommends && apt-get clean
+
+          # Initialize the font configuration cache layer inside the container layout
+          RUN fc-cache -f -v
+
           # Uninstall the built-in CPU versions first to guarantee a clean slate,
           # then install the CUDA-enabled versions.
           RUN pip uninstall -y torch torchvision && \
@@ -46,21 +53,49 @@ in
           TZ = "Australia/Melbourne";
           GRAMPSWEB_TREE = "Allen";
 
+          # PATHS AND NETWORK DOMAIN CONFIGURATIONS
+          # force the api to translate absolute desktop paths to internal app paths
+          GRAMPSWEB_DATA_DIR = "/root/.gramps/grampsdb";
+          GRAMPSWEB_MEDIA_BASE_DIR = "/app/media";
+          GRAMPSWEB_BASE_URL = "http://gw.oona";
+          GRAMPSWEB_CORS_ORIGINS = "*";
+          GRAMPSWEB_INDEX_DIR = "/app/indexdir";
+          GRAMPSWEB_THUMBNAIL_CACHE_DIR = "/app/thumbnail_cache";
+
+          # Database Connection Brokers
           GRAMPSWEB_CELERY_CONFIG__broker_url = "redis://grampsweb_redis:6379/0";
           GRAMPSWEB_CELERY_CONFIG__result_backend = "redis://grampsweb_redis:6379/0";
           GRAMPSWEB_RATELIMIT_STORAGE_URI = "redis://grampsweb_redis:6379/1";
-          GRAMPSWEB_VECTOR_EMBEDDING_MODEL = "sentence-transformers/distiluse-base-multilingual-cased-v2";
 
+          # --- CELERY WORKER OPTIMIZATIONS ---
+          # Force the background worker to fetch exactly one task at a time
+          GRAMPSWEB_CELERY_CONFIG__worker_prefetch_multiplier = "1";
+          # Automatically recycle threads after 50 tasks to clear memory caches
+          GRAMPSWEB_CELERY_CONFIG__worker_max_tasks_per_child = "50";
+          GRAMPSWEB_CELERY_CONFIG__task_acks_late = "true"; # Ensure task safety if a container cycles
+
+          # AI and LLM parameters
+          GRAMPSWEB_VECTOR_EMBEDDING_MODEL = "sentence-transformers/distiluse-base-multilingual-cased-v2";
           # Use Podman's special DNS name to reach the host, and add /v1 for the OpenAI API format
-          LLM_BASE_URL = "http://host.containers.internal:11434/v1";
-          # Replace this with whichever model you pulled via `ollama run <model>`
-          LLM_MODEL = "qwen3:8b";
-          # Ollama doesn't use authentication, but the Gramps client requires this field to not be empty
-          OPENAI_API_KEY = "dummy-key-for-ollama";
+          GRAMPSWEB_LLM_BASE_URL = "http://host.containers.internal:11434/v1";
+          # This tells pydantic-ai's core router which model to launch
+          GRAMPSWEB_LLM_MODEL = "ollama:qwen3:8b";
+
+          # DIRECT ENTRYPOINT Injects the missing path token straight to the driver
+          OLLAMA_BASE_URL = "http://host.containers.internal:11434/v1";
+
+          OPENAI_API_KEY = "ollama";
         };
 
         sharedVolumes = [
-          "${config.home.homeDirectory}/media/gramps/allen:/app/media"
+          # 1. Mount your local host media folders (pictures and videos)
+          "${config.home.homeDirectory}/media/gramps/allen/pictures:/app/media/pictures"
+          "${config.home.homeDirectory}/media/gramps/allen/videos:/app/media/videos"
+
+          # 2. BIND MOUNT THE TRUE PAPERLESS REPOSITORY DIRECTLY OVER THE DOCUMENTS DESTINATION
+          # This forces all PDFs to appear inside the approved /app/media boundary!
+          "/var/lib/paperless/genealogy/media/documents/archive:/app/media/documents:ro"
+
           "${config.xdg.configHome}/gramps-web/allen.cfg:/app/config/config.cfg"
           # Replaced raw device mounts with standard named volume references
           "${volumes.gramps_users.ref}:/app/users"
@@ -70,6 +105,8 @@ in
           "${volumes.gramps_secret.ref}:/app/secret"
           "${volumes.gramps_db.ref}:/root/.gramps/grampsdb"
           "${volumes.gramps_tmp.ref}:/tmp"
+          # PERSIST THE TRUE GDK GRAPHICS WORKSPACE CACHE LOCATION
+          "${volumes.gramps_home_cache.ref}:/root/.cache"
         ];
       in
       {
@@ -200,6 +237,7 @@ in
               gramps_secret = { };
               gramps_db = { };
               gramps_tmp = { };
+              gramps_home_cache = { };
             };
           };
       };
