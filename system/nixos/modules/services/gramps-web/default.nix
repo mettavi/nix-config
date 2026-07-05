@@ -109,7 +109,10 @@ in
 
                   # COMPLETELY REMOVE the networks key
                   # Use ONLY podmanArgs to pass the explicit rootless string flag
-                  podmanArgs = [ "--network=gramps_net" ];
+                  podmanArgs = [
+                    "--network=gramps_net"
+                    "--group-add=keep-groups"
+                  ];
 
                   noNewPrivileges = true;
 
@@ -145,7 +148,10 @@ in
                   volumes = sharedVolumes;
 
                   # Use ONLY podmanArgs here too
-                  podmanArgs = [ "--network=gramps_net" ];
+                  podmanArgs = [
+                    "--network=gramps_net"
+                    "--group-add=keep-groups"
+                  ];
 
                 };
                 serviceConfig = {
