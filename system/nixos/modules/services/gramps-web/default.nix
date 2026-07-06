@@ -1,8 +1,10 @@
 {
   config,
+  hostname,
   inputs,
   lib,
   pkgs,
+  secrets_path,
   username,
   ...
 }:
@@ -62,6 +64,14 @@ in
           GRAMPSWEB_INDEX_DIR = "/app/indexdir";
           GRAMPSWEB_THUMBNAIL_CACHE_DIR = "/app/thumbnail_cache";
 
+          # SYSTEM EMAIL ACCOUNT (eg. for sending password reset emails)
+          GRAMPSWEB_EMAIL_HOST = "smtp.gmail.com";
+          GRAMPSWEB_EMAIL_PORT = "587";
+          GRAMPSWEB_EMAIL_HOST_USER = inputs.secrets.email.personal;
+          GRAMPSWEB_EMAIL_USE_SSL = "false";
+          GRAMPSWEB_EMAIL_USE_STARTTLS = "true";
+          GRAMPSWEB_DEFAULT_FROM_EMAIL = inputs.secrets.name;
+
           # Database Connection Brokers
           GRAMPSWEB_CELERY_CONFIG__broker_url = "redis://grampsweb_redis:6379/0";
           GRAMPSWEB_CELERY_CONFIG__result_backend = "redis://grampsweb_redis:6379/0";
@@ -112,6 +122,12 @@ in
       {
         imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
 
+        sops.secrets = {
+          "users/${username}/grampsweb-${hostname}.env" = {
+            sopsFile = "${secrets_path}/secrets/apps/grampsweb.yaml";
+          };
+        };
+
         virtualisation.quadlet =
           let
             inherit (config.virtualisation.quadlet) builds containers;
@@ -140,6 +156,9 @@ in
                 containerConfig = {
                   # Use the image we built above
                   image = builds.grampsweb_cuda.ref;
+                  environmentFiles = [
+                    config.sops.secrets."users/${username}/grampsweb-${hostname}.env".path
+                  ];
                   environments = sharedContainerEnv;
                   volumes = sharedVolumes;
                   publishPorts = [ "0.0.0.0:5000:5000" ];
@@ -181,6 +200,9 @@ in
                 containerConfig = {
                   image = "localhost/grampsweb:cuda";
                   exec = "celery -A gramps_webapi.celery worker --loglevel=INFO --concurrency=2";
+                  environmentFiles = [
+                    config.sops.secrets."users/${username}/grampsweb-${hostname}.env".path
+                  ];
                   environments = sharedContainerEnv;
                   volumes = sharedVolumes;
 
