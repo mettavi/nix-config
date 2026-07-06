@@ -168,6 +168,8 @@ in
             final.python3Packages.requests
             final.python3Packages.pygobject3
             my-gedcomx
+            final.python3Packages.keyring
+            final.python3Packages.secretstorage # SecretService/gnome-keyring backend
           ];
 
           # 3. Retain your original map window canvas variables
@@ -514,17 +516,6 @@ in
       };
     };
   };
-
-  # experimental code for mapping the copilot key to sysrq, implemented instead with kanata
-  # NB: kept for reference to the keyboard name/code on this host
-  # services.udev = {
-  #   extraHwdb = ''
-  # choose one of the following two lines to identify the keyboard
-  #     evdev:name:Asus Keyboard:*
-  #     evdev:input:b0003v0B05p19B6e0110*
-  #      KEYBOARD_KEY_70072=sysrq # original KEY_F23 (copilot key)
-  #   '';
-  # };
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
