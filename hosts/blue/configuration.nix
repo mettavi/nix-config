@@ -1,6 +1,6 @@
 {
   modulesPath,
-  pkgs,
+  # pkgs,
   username,
   ...
 }:
@@ -11,11 +11,11 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disk-config.nix
-    ./hardware-configuration.nix
+    # ./hardware-configuration.nix
   ];
 
   # install the ghostty terminfo (which is missing from current versions of terminfo) for ssh sessions to this host
-  environment.systemPackages = with pkgs; [ ghostty.terminfo ];
+  # environment.systemPackages = with pkgs; [ ghostty.terminfo ];
 
   ########## IMPORTANT SETTINGS ###########
 
@@ -69,7 +69,7 @@
     profiles = {
       # oracle cloud vps (eg. ssh hardening)
       vps = {
-        enable = true;
+        enable = false;
       };
     };
     system = {
