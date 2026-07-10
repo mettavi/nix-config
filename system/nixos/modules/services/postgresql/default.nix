@@ -48,9 +48,16 @@ in
           log_connections = true;
           logging_collector = true; # Enable capturing of stderr and csvlog into log file
           log_disconnections = true;
-          log_destination = mkForce "syslog"; # stderr, csvlog, syslog, and eventlog
-          log_statement = "all"; # none, ddl, mod, all
-          log_min_messages = "debug1"; # error, warning, notice, info, debug 1..5
+          # none, ddl (schema changes), mod (plus data modifications), all
+          log_statement = "none";
+          log_min_messages = "warning"; # error, warning, notice, info, debug 1..5
+          # stderr = Let PostgreSQL handle its own files instead of pushing to syslog
+          log_destination = "stderr"; # stderr, csvlog, syslog, and eventlog
+          # rotate the postgresql logs (if logging to stderr rather than syslog)
+          log_filename = "postgresql-%Y-%m-%d_%H%M%S.log";
+          log_truncate_on_rotation = true;
+          log_rotation_age = 1440; # Rotate daily (1440 minutes)
+          log_rotation_size = 10240; # Rotate if file reaches 10MB
           port = 5432;
           # WAL ARCHIVING
           # 'replica' or higher is required for archiving
