@@ -1,4 +1,3 @@
-# WAS: host "salina"
 {
   modulesPath,
   pkgs,
@@ -63,7 +62,7 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion).
-  system.stateVersion = "25.05";
+  system.stateVersion = "26.05";
 
   # SYSTEM MODULES SETTINGS
   mettavi = {
@@ -87,7 +86,7 @@
   home-manager.users.${username} = {
     home = {
       # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-      stateVersion = "25.05";
+      stateVersion = "26.05";
     };
   };
 }
