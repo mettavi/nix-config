@@ -15,11 +15,13 @@ let
   # =========================================================================
   instances = {
     personal = {
+      alias = "pp";
       appPort = 28981;
       gptPort = 8081;
       redisDbIndex = 1;
     };
     genealogy = {
+      alias = "ppg";
       appPort = 28982;
       gptPort = 8082;
       redisDbIndex = 2;
@@ -175,11 +177,14 @@ in
             ];
 
             environments = {
+              # required when using a reverse proxy (eg. nginx)
+              PAPERLESS_URL = "http://${inst.alias}.${hostname}";
               # also requires PAPERLESS_ADMIN_PASSWORD to be set (in the env file)
               PAPERLESS_ADMIN_USER = "admin";
               PAPERLESS_APP_TITLE = lib.toSentenceCase "${name}" + " Archive";
               PAPERLESS_REDIS = "redis://paperless-redis:6379/${toString inst.redisDbIndex}";
-              PAPERLESS_TIME_ZONE = "Australia/Melbourne";
+              # PAPERLESS_TIME_ZONE = "Australia/Melbourne";
+              PAPERLESS_TIME_ZONE = "America/Los_Angeles";
               PAPERLESS_OCR_LANGUAGE = "eng";
               PAPERLESS_DATE_PARSER_LANGUAGES = "en-AU";
               PAPERLESS_CONSUMER_RECURSIVE = "true";
@@ -194,6 +199,8 @@ in
               PAPERLESS_OCR_USER_ARGS = ''
                 {"deskew": true, "optimize": 1, "pdfa_image_compression": "lossless"}
               '';
+
+              PAPERLESS_OAUTH_CALLBACK_BASE_URL = "http://localhost:${toString inst.appPort}";
 
               # --- CRITICAL PERMISSION WRAPPER OVERRIDES ---
               UMASK = "0007"; # Forces internal paperless workers to spawn files/directories with 660/770 permissions
