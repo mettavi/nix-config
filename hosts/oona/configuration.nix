@@ -363,7 +363,7 @@ in
       libreoffice.enable = false;
     };
     services = {
-      gramps-web.enable = true;
+      gramps-web.enable = false;
     };
   };
 
