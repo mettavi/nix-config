@@ -39,7 +39,7 @@ in
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = "Create and configure a btrfs partition using disko";
+      description = "Create (on initial install) and mount btrfs subvolumes with disko";
     };
     commonMountOptions = mkOption {
       type = listOf str;
