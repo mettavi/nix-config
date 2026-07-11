@@ -56,10 +56,6 @@ in
               default = true;
               description = "Enable this btrfs subvolume";
             };
-            label = mkOption {
-              type = str;
-              description = "The name of the btrfs subvolume";
-            };
             mountpoint = mkOption {
               type = path;
               description = "Where to mount the btrfs subvolume";
@@ -71,6 +67,84 @@ in
             };
           };
         });
+      default = {
+        "@root" = {
+          enable = true;
+          mountpoint = "/";
+        };
+        # A nested subvolume doesn't need a mountpoint as its parent is mounted
+        "@root/tmp" = {
+          enable = true;
+        };
+        "@root/var/cache" = {
+          enable = true;
+        };
+        "@nix" = {
+          enable = true;
+          mountpoint = "/nix";
+        };
+        "@roothome" = {
+          enable = true;
+          mountpoint = "/root";
+        };
+        "@roothome/.cache" = {
+          enable = true;
+        };
+        "@vlcontainers" = {
+          enable = true;
+          mountpoint = "/var/lib/containers";
+        };
+        "@libvirtimgs" = {
+          enable = true;
+          mountpoint = "/var/lib/libvirt/images";
+        };
+        "@vlpostgres" = {
+          enable = true;
+          mountpoint = "/var/lib/postgresql";
+        };
+        "@varlog" = {
+          enable = true;
+          mountpoint = "/var/log";
+        };
+        "@vartmp" = {
+          enable = true;
+          mountpoint = "/var/tmp";
+        };
+        "@home" = {
+          enable = true;
+          mountpoint = "/home";
+        };
+        "@adminhome" = {
+          enable = true;
+          mountpoint = "/home/${username}";
+        };
+        "@adminhome/.cache" = {
+          enable = true;
+        };
+        "@admincontainers" = {
+          enable = true;
+          mountpoint = "/home/${username}/.local/share/containers";
+          mountOptions = optionals config.mettavi.system.desktops.gnome.enable [
+            "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
+          ];
+        };
+        "@admindownloads" = {
+          enable = true;
+          mountpoint = "/home/${username}/Downloads";
+          mountOptions = optionals config.mettavi.system.desktops.gnome.enable [
+            "x-gvfs-hide" # hide the subvolume from the Files (Nautilus) devices menu
+            "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
+          ];
+        };
+        "@adminmedia" = {
+          enable = true;
+          mountpoint = "/home/${username}/media";
+          mountOptions = optionals config.mettavi.system.desktops.gnome.enable [
+            "x-gvfs-hide"
+            "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
+          ];
+        };
+      };
     };
   };
 
