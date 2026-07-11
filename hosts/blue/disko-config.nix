@@ -49,19 +49,6 @@ in
                 ];
               };
             };
-            cachyos = {
-              label = "cachyos";
-              name = "cachyos";
-              content = {
-                type = "filesystem";
-                format = "btrfs";
-                mountpoint = "/mnt/cachyos";
-                mountOptions = [
-                  "nofail"
-                  "compress=zstd"
-                ];
-              };
-            };
             nixos = {
               # end = "-32G";
               content =
