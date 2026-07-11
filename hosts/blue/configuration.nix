@@ -10,7 +10,7 @@
     # subsequently the disko config will configure fstab
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
-    ./disk-config.nix
+    ./disko-config.nix
     # ./hardware-configuration.nix
   ];
 
