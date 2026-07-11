@@ -75,9 +75,7 @@
     system = {
       # enable system users
       userConfig = {
-        timotheos = {
-          enable = true;
-        };
+        timotheos.enable = true;
       };
     };
   };
