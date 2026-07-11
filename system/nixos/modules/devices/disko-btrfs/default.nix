@@ -44,7 +44,7 @@ in
     commonMountOptions = mkOption {
       type = listOf str;
       default = [ "compression=zstd" ];
-      description = "Mountpoint options common to all subvolumes";
+      description = "Mountpoint options common to all btrfs subvolumes";
     };
     subvolumes = mkOption {
       type =
