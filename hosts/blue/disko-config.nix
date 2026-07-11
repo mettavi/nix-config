@@ -30,8 +30,6 @@ with lib;
           nixos = {
             # end = "-32G";
             content = {
-              # passwordFile = "/tmp/secret.key";
-              # settings.allowDiscards = true;
               type = "btrfs";
               extraArgs = [ "-f" ]; # Override existing partition
               subvolumes = {
