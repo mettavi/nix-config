@@ -32,7 +32,8 @@
     extraOptions = # bash
       ''
         warn-dirty = false
-        # import this file into nix.conf (set "access-tokens" key to my GitHub token to get a higher API threshold for rate-limiting)
+        # import this file into nix.conf (set "access-tokens" key to my GitHub token 
+        # to authenticate with github and get a higher API threshold for rate-limiting)
         # see https://github.com/NixOS/nix/issues/6536 for more details
         !include ${config.home-manager.users.${username}.sops.secrets."users/${username}/github_token".path}
       '';
