@@ -2,14 +2,7 @@
 # It is best suited to remote servers or VMs where the whole disk can be dedicated to nixos.
 { config, lib, ... }:
 with lib;
-let
-  cfg = config.mettavi.system.devices.disko;
-in
 {
-  options.mettavi.system.devices.disko = {
-    enable = mkEnableOption "Use disko to set up and configure this host";
-  };
-
   # NB: See https://wiki.archlinux.org/title/GPT_fdisk#Partition_type for a list of disk type codes
   config = mkIf cfg.enable {
     disko.devices.disk = {
