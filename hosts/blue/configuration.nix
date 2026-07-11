@@ -8,10 +8,10 @@
   imports = [
     # imports for initial install with nixos-anywhere and disko
     # subsequently the disko config will configure fstab
+    # NB: hardware-configuration.nix is auto-generated during install and is imported in the mkNixos function
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disko-config.nix
-    # ./hardware-configuration.nix
   ];
 
   # install the ghostty terminfo (which is missing from current versions of terminfo) for ssh sessions to this host
