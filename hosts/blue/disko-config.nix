@@ -13,9 +13,9 @@ in
   # NB: See https://wiki.archlinux.org/title/GPT_fdisk#Partition_type for a list of disk type codes
   config = mkIf cfg.enable {
     disko.devices.disk = {
-      nvme0n1 = {
+      sda1 = {
         type = "disk";
-        device = "/dev/nvme0n1";
+        device = "/dev/sda1";
         content = {
           type = "gpt";
           partitions = {
