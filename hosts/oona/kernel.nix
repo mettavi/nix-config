@@ -1,6 +1,5 @@
 # NB: nvidia config is in a separate module
-{ lib, pkgs, ... }:
-with lib;
+{ pkgs, ... }:
 {
   # override the Linux kernel (and hence its kernel modules) used by NixOS
   # Use the cachyos kernel for the latest asus g14 kernel patches (using custom flake input and overlay)
