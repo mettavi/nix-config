@@ -1,6 +1,9 @@
 {
+  config,
   inputs,
+  lib,
   pkgs,
+  secrets_path,
   username,
   ...
 }:
@@ -161,6 +164,12 @@
       };
     };
   };
+
+  sops.secrets."users/${username}/jellyfin_admin-lady" =
+    lib.mkIf config.mettavi.system.services.jellar.enable
+      {
+        sopsFile = "${secrets_path}/secrets/hosts/lady.yaml";
+      };
 
   # this config is disabling the trackpad for some reason, so disabling
   # services.kanata.keyboards."home-keys".extraDefCfg = ''

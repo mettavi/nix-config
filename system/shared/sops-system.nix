@@ -44,9 +44,6 @@
         neededForUsers = true;
         sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
       };
-      "users/${username}/jellyfin_admin-lady" = {
-        sopsFile = "${secrets_path}/secrets/hosts/lady.yaml";
-      };
       # wifi passwords to configure wireless networks
       "users/${username}/wifi.env" = {
         owner = "${username}";
