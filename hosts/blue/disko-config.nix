@@ -34,21 +34,6 @@ in
                 ];
               };
             };
-            nix-boot = {
-              label = "EFI";
-              name = "nix-boot";
-              size = "1024M";
-              type = "EA00";
-              content = {
-                type = "filesystem";
-                format = "vfat";
-                mountpoint = "/boot";
-                mountOptions = [
-                  "fmask=0077"
-                  "dmask=0077"
-                ];
-              };
-            };
             nixos = {
               # end = "-32G";
               content =
