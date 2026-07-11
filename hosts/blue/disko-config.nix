@@ -44,7 +44,7 @@ in
                   # passwordFile = "/tmp/secret.key";
                   # settings.allowDiscards = true;
                   type = "btrfs";
-                  extraArgs = [ "-f" ];
+                  extraArgs = [ "-f" ]; # Override existing partition
                   subvolumes = mapAttrs (
                     subvol: subvolCfg:
                     mkIf subvolCfg.enable {
