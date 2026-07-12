@@ -144,7 +144,6 @@ in
           mountpoint = "/home/${username}/Downloads";
           mountOptions =
             optionals (config.mettavi.system.desktops.gnome.enable) [
-              "x-gvfs-hide" # hide the subvolume from the Files (Nautilus) devices menu
               "x-gvfs-trash"
             ]
             ++ commonOptions
@@ -155,7 +154,7 @@ in
           mountpoint = "/home/${username}/media";
           mountOptions =
             optionals (config.mettavi.system.desktops.gnome.enable) [
-              "x-gvfs-hide"
+              "x-gvfs-hide" # hide the subvolume from the Files (Nautilus) devices menu
               "x-gvfs-trash"
             ]
             ++ commonOptions
