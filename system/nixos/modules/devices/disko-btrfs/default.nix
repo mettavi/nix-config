@@ -71,6 +71,9 @@ in
               default = [ ];
               # Most btrfs mount options apply to the whole filesystem and only options
               # in the first mounted subvolume will take effect
+              # The exception is options that are handled by the VFS layer
+              # such as noatime/relatime/…, nodev, nosuid, ro, rw, dirsync
+              # See https://btrfs.readthedocs.io/en/latest/ch-subvolume-intro.html#mount-options for details
               description = "Mount options specific to a subvolume";
             };
           };
