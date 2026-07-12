@@ -20,7 +20,6 @@ let
   btrfsOptions = [ "compress=zstd" ];
   commonOptions = [
     "defaults"
-    "discard"
     "noatime"
   ];
   mountUnits = [
