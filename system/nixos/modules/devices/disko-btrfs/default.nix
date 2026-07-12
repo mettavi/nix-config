@@ -105,6 +105,8 @@ in
           enable = true;
           mountpoint = "/var/lib/containers";
         };
+        # the nodatacow attribute (see below) will disable zstd compression
+        # on special subvolumes such as @libvirtimgs and @vlpostgres
         "@libvirtimgs" = {
           enable = true;
           mountpoint = "/var/lib/libvirt/images";
