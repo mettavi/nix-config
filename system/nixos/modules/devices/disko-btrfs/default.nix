@@ -145,7 +145,7 @@ in
           mountOptions =
             optionals (config.mettavi.system.desktops.gnome.enable) [
               "x-gvfs-hide" # hide the subvolume from the Files (Nautilus) devices menu
-              "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
+              "x-gvfs-trash"
             ]
             ++ commonOptions
             ++ btrfsOptions;
@@ -156,7 +156,7 @@ in
           mountOptions =
             optionals (config.mettavi.system.desktops.gnome.enable) [
               "x-gvfs-hide"
-              "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
+              "x-gvfs-trash"
             ]
             ++ commonOptions
             ++ btrfsOptions;
