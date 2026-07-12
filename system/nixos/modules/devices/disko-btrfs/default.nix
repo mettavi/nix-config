@@ -69,6 +69,8 @@ in
             mountOptions = mkOption {
               type = listOf str;
               default = [ ];
+              # Most btrfs mount options apply to the whole filesystem and only options
+              # in the first mounted subvolume will take effect
               description = "Mount options specific to a subvolume";
             };
           };
@@ -103,12 +105,10 @@ in
         "@libvirtimgs" = {
           enable = true;
           mountpoint = "/var/lib/libvirt/images";
-          mountOptions = commonOptions;
         };
         "@vlpostgres" = {
           enable = true;
           mountpoint = "/var/lib/postgresql";
-          mountOptions = commonOptions;
         };
         "@varlog" = {
           enable = true;
