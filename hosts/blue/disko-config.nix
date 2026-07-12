@@ -9,9 +9,9 @@ with lib;
   };
 
   disko.devices.disk = {
-    sda1 = {
+    sda = {
       type = "disk";
-      device = "/dev/sda1";
+      device = "/dev/sda";
       content = {
         type = "gpt";
         partitions = {
