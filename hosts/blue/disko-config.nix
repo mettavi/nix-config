@@ -3,6 +3,11 @@
 { lib, ... }:
 with lib;
 {
+  mettavi.system.devices.disko-btrfs.subvolumes = {
+    # not currently running VMs on host blue
+    "@libvirtimgs".enable = false;
+  };
+
   disko.devices.disk = {
     sda1 = {
       type = "disk";
