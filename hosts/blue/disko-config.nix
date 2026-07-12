@@ -18,7 +18,8 @@ with lib;
           ESP = {
             label = "EFI";
             name = "ESP";
-            size = "200M";
+            start = "1M";
+            end = "1024M";
             # NB: See https://wiki.archlinux.org/title/GPT_fdisk#Partition_type
             # for a list of disk type codes
             type = "EF00";
