@@ -74,67 +74,67 @@ in
         });
       default = {
         "@root" = {
-          enable = mkDefault true;
+          enable = true;
           mountpoint = "/";
         };
         # A nested subvolume doesn't need a mountpoint as its parent is mounted
         "@root/tmp" = {
-          enable = mkDefault true;
+          enable = true;
         };
         "@root/var/cache" = {
-          enable = mkDefault true;
+          enable = true;
         };
         "@nix" = {
-          enable = mkDefault true;
+          enable = true;
           mountpoint = "/nix";
         };
         "@roothome" = {
-          enable = mkDefault true;
+          enable = true;
           mountpoint = "/root";
         };
         "@roothome/.cache" = {
-          enable = mkDefault true;
+          enable = true;
         };
         "@vlcontainers" = {
-          enable = mkDefault true;
+          enable = true;
           mountpoint = "/var/lib/containers";
         };
         "@libvirtimgs" = {
-          enable = mkDefault true;
+          enable = true;
           mountpoint = "/var/lib/libvirt/images";
         };
         "@vlpostgres" = {
-          enable = mkDefault true;
+          enable = true;
           mountpoint = "/var/lib/postgresql";
         };
         "@varlog" = {
-          enable = mkDefault true;
+          enable = true;
           mountpoint = "/var/log";
         };
         "@vartmp" = {
-          enable = mkDefault true;
+          enable = true;
           mountpoint = "/var/tmp";
         };
         "@home" = {
-          enable = mkDefault true;
+          enable = true;
           mountpoint = "/home";
         };
         "@adminhome" = {
-          enable = mkDefault true;
+          enable = true;
           mountpoint = "/home/${username}";
         };
         "@adminhome/.cache" = {
-          enable = mkDefault true;
+          enable = true;
         };
         "@admincontainers" = {
-          enable = mkDefault true;
+          enable = true;
           mountpoint = "/home/${username}/.local/share/containers";
           mountOptions = optionals (config.mettavi.system.desktops.gnome.enable) [
             "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
           ];
         };
         "@admindownloads" = {
-          enable = mkDefault true;
+          enable = true;
           mountpoint = "/home/${username}/Downloads";
           mountOptions = optionals (config.mettavi.system.desktops.gnome.enable) [
             "x-gvfs-hide" # hide the subvolume from the Files (Nautilus) devices menu
@@ -142,7 +142,7 @@ in
           ];
         };
         "@adminmedia" = {
-          enable = mkDefault true;
+          enable = true;
           mountpoint = "/home/${username}/media";
           mountOptions = optionals (config.mettavi.system.desktops.gnome.enable) [
             "x-gvfs-hide"
