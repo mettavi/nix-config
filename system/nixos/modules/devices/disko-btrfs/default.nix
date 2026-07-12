@@ -166,14 +166,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    # CHECK BTRFS FILE CONSISTENCY
-    # check the status of the last scrub with "btrfs scrub status /" or in the journal
-    services.btrfs.autoScrub = {
-      enable = true;
-      interval = "monthly";
-      fileSystems = [ "/" ];
-    };
-
     fileSystems = {
       "/var/lib/postgresql" = {
         device = "/dev/disk/by-label/nixos";
