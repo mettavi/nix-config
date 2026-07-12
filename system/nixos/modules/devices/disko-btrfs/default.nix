@@ -180,9 +180,11 @@ in
         # Ensures /var/lib is mounted first
         depends = [ "/var/lib" ];
       };
-      # ensure the home subvolume is mounted early for sops-nix
       "/home" = {
         device = "/dev/disk/by-label/nixos";
+        # required on home directories for sops-nix to work with btrfs
+        # See https://github.com/Mic92/sops-nix/issues/721
+        # ensure the home subvolume is mounted early for sops-nix
         neededForBoot = true;
       };
       "/home/${username}" = {
