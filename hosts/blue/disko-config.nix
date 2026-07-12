@@ -3,7 +3,6 @@
 { lib, ... }:
 with lib;
 {
-  # NB: See https://wiki.archlinux.org/title/GPT_fdisk#Partition_type for a list of disk type codes
   disko.devices.disk = {
     sda1 = {
       type = "disk";
@@ -15,6 +14,8 @@ with lib;
             label = "EFI";
             name = "ESP";
             size = "200M";
+            # NB: See https://wiki.archlinux.org/title/GPT_fdisk#Partition_type
+            # for a list of disk type codes
             type = "EF00";
             content = {
               type = "filesystem";
