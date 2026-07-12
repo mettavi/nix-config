@@ -17,6 +17,12 @@
 }:
 with lib;
 let
+  btrfsOptions = [ "compress=zstd" ];
+  commonOptions = [
+    "defaults"
+    "discard"
+    "noatime"
+  ];
   mountUnits = [
     "-.mount"
     "nix.mount"
@@ -43,12 +49,7 @@ in
     };
     commonMountOptions = mkOption {
       type = listOf str;
-      default = [
-        "defaults"
-        "discard"
-        "noatime"
-        "compression=zstd"
-      ];
+      default = commonOptions ++ btrfsOptions;
       description = "Mountpoint options common to all btrfs subvolumes";
     };
     subvolumes = mkOption {
@@ -102,10 +103,12 @@ in
         "@libvirtimgs" = {
           enable = true;
           mountpoint = "/var/lib/libvirt/images";
+          mountOptions = commonOptions;
         };
         "@vlpostgres" = {
           enable = true;
           mountpoint = "/var/lib/postgresql";
+          mountOptions = commonOptions;
         };
         "@varlog" = {
           enable = true;
@@ -129,25 +132,34 @@ in
         "@admincontainers" = {
           enable = true;
           mountpoint = "/home/${username}/.local/share/containers";
-          mountOptions = optionals (config.mettavi.system.desktops.gnome.enable) [
-            "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
-          ];
+          mountOptions =
+            optionals (config.mettavi.system.desktops.gnome.enable) [
+              "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
+            ]
+            ++ commonOptions
+            ++ btrfsOptions;
         };
         "@admindownloads" = {
           enable = true;
           mountpoint = "/home/${username}/Downloads";
-          mountOptions = optionals (config.mettavi.system.desktops.gnome.enable) [
-            "x-gvfs-hide" # hide the subvolume from the Files (Nautilus) devices menu
-            "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
-          ];
+          mountOptions =
+            optionals (config.mettavi.system.desktops.gnome.enable) [
+              "x-gvfs-hide" # hide the subvolume from the Files (Nautilus) devices menu
+              "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
+            ]
+            ++ commonOptions
+            ++ btrfsOptions;
         };
         "@adminmedia" = {
           enable = true;
           mountpoint = "/home/${username}/media";
-          mountOptions = optionals (config.mettavi.system.desktops.gnome.enable) [
-            "x-gvfs-hide"
-            "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
-          ];
+          mountOptions =
+            optionals (config.mettavi.system.desktops.gnome.enable) [
+              "x-gvfs-hide"
+              "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
+            ]
+            ++ commonOptions
+            ++ btrfsOptions;
         };
       };
     };
