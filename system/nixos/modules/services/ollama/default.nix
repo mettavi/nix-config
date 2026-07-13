@@ -26,7 +26,7 @@ in
       # Optional: preload models, see https://ollama.com/library
       # loadModels = [
       # ];
-      models = "${config.services.ollama.home}/models";
+      modelsDir = "${config.services.ollama.home}/models";
       # for conectivity with podman container networks
       openFirewall = true;
       port = 11434;
