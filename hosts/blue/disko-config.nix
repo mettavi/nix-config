@@ -41,6 +41,7 @@ with lib;
               {
                 type = "btrfs";
                 extraArgs = [ "-f" ]; # Override existing partition
+                mountpoint = "/";
                 subvolumes = mapAttrs (
                   subvol: subvolCfg:
                   mkIf subvolCfg.enable {
