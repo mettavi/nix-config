@@ -142,6 +142,8 @@ Note how the key/name is transformed using the input parameter, rather than bein
 
   mapAttrs
 
+  mapAttrsToList
+
   listToAttrs
 
   map
