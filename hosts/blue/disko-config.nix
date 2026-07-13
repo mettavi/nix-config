@@ -33,7 +33,7 @@ with lib;
             };
           };
           nixos = {
-            # end = "-32G";
+            size = "100%";
             content =
               let
                 cfg = config.mettavi.system.devices.disko-btrfs;
