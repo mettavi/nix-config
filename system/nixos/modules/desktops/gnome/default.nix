@@ -47,10 +47,9 @@ in
           # GSTREAMER PLUGINS
           gst-plugins-base
           gst-plugins-good
-          gst-plugins-bad
+          gst-plugins-bad # includes gstVA which has replaced the gst-vaapi package
           gst-plugins-ugly
           gst-libav # FFmpeg plugin for GStreamer
-          gst-vaapi # Set of VAAPI GStreamer Plug-ins
         ]);
       variables = {
         # Allow apps such as Gnome Files (Nautilus) to detect gstreamer plugins
