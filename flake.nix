@@ -209,6 +209,15 @@
             "lady" = mkNixos.mkNixosConfiguration "lady" "x86_64-linux";
           };
 
+          # run "nix build -L .#nixosConfigurations.nix-guest.config.system.build.vm" to create the guest vm
+          # launch the vm with "QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-nixos-vm -nographic; reset"
+          nixosConfigurations.nix-guest = inputs.nixpkgs-26_05.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [
+              ./hosts/nix-guest/configuration.nix
+            ];
+          };
+
           ################################  NIXOS-ANYWHERE BUILDS  ######################################
 
           # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
