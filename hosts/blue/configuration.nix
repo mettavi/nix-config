@@ -12,6 +12,8 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disko-config.nix
+    # import the disko-btrfs module for initial install with nixos-anywhere
+    ../../system/nixos/modules/devices/disko-btrfs/default.nix
   ];
 
   # install the ghostty terminfo (which is missing from current versions of terminfo) for ssh sessions to this host
