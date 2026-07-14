@@ -631,11 +631,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783758939,
-        "narHash": "sha256-YZrOYusE14lUnvlNElT4lVSeAUK7H4LxMG/b/l6uMWo=",
+        "lastModified": 1783993774,
+        "narHash": "sha256-H6KyLUuKJGP+PjHtwiIJ033z51tja3v5dXDVYbiUu1I=",
         "ref": "pages",
-        "rev": "f6c56eafc51c1f78a5941717d8fdb947ab4b61bc",
-        "revCount": 3161,
+        "rev": "0331899e5023e671bb66bb565189ca9d764ec018",
+        "revCount": 3163,
         "type": "git",
         "url": "https://gitlab.com/celenityy/Phoenix.git"
       },
