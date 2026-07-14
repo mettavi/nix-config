@@ -238,7 +238,9 @@ in
       # uses resolved, dnsmasq and nginx to map localhost IP:port urls to hostnames
       hostdns.enable = true;
       # enable authentication via face recognition
-      howdy.enable = true;
+      # TODO: Currently disabled due to a problem with building the face-recognition package
+      # See https://github.com/NixOS/nixpkgs/issues/541849 for details
+      howdy.enable = false;
       immich.enable = true;
       # this also enables the jellyfin module
       jellarr.enable = true;
