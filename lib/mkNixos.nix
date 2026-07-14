@@ -69,9 +69,7 @@
         # MODULES FROM FLAKE INPUTS
         inputs.disko.nixosModules.disko
         # thunderbird privacy and security
-        # TODO: Disable this module for now, getting an "phoenix/scripts/fly.sh: line 119: /bin/tar: No such file or directory" error
-        # See https://codeberg.org/celenity/Dove/issues/81 for details
-        # inputs.dove.nixosModules.default
+        inputs.dove.nixosModules.default
 
         # this provides a wrapper for the nix-index package (no need to install the package separately)
         inputs.nix-index-database.nixosModules.nix-index
