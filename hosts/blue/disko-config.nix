@@ -48,6 +48,26 @@ with lib;
                     mountpoint = "${subvolCfg.mountpoint}";
                     mountOptions = subvolCfg.mountOptions ++ cfg.commonMountOptions;
                   }
+                  // {
+                    # Subvolume for the swapfile
+                    "@swap" = {
+                      mountpoint = "/swap";
+                      mountOptions = [
+                        "defaults"
+                        "noatime"
+                      ];
+                      # although it is possible to set up the swapfile on the root subvolume,
+                      # it is recommended to create a dedicated subvolume for it
+                      swap = {
+                        # Size of the swap file (e.g. 2G)
+                        swapfile = {
+                          size = "4G";
+                          # Path to the swap file (relative to the mountpoint, defaults to the attribute name)
+                          # path = "swapfile";
+                        };
+                      };
+                    };
+                  }
                 ) cfg.subvolumes;
               };
           };
