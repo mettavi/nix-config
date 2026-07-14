@@ -75,6 +75,10 @@
       };
     };
     system = {
+      devices = {
+        # create and mount btrfs subvolumes using disko
+        disko-btrfs.enable = false;
+      };
       # enable system users
       userConfig = {
         timotheos.enable = true;
