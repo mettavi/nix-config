@@ -252,7 +252,7 @@ in
           in
           map (nocowVol: if subvol.enable then subvol.mountpoint else [ ]) nocowVols;
         # type path mode user group (expiry) (argument)
-        nocowRules = path: "h path - - - - +C";
+        nocowRules = path: "h ${path} - - - - +C";
       in
       lib.lists.forEach nocowPaths nocowRules;
 
