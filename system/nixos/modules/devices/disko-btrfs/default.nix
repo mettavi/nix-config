@@ -237,11 +237,31 @@ in
     #     2) This is best used on an empty directory as it only applies to NEW files.
     #     3) Nodatacow implies nodatasum (no data checksumming), and disables compression.
 
-    systemd.tmpfiles.rules = [
-      # type path mode user group (expiry) (argument)
-      "h /var/lib/libvirt/images - - - - +C"
-      "h /var/lib/postgresql - - - - +C"
-    ];
+    systemd.tmpfiles.rules =
+      let
+        # set the swap subvolume to no COW even though the swap file will be set up correctly
+        # see https://github.com/nix-community/disko/issues/493 for details
+        nocowVols = [
+          "@libvirtimgs"
+          "@swap"
+          "@vlpostgres"
+        ];
+        nocowPaths =
+          let
+            subvol = cfg.subvolumes."${nocowVol}";
+          in
+          map (nocowVol: if subvol.enable then subvol.mountpoint else [ ]) nocowVols;
+        # type path mode user group (expiry) (argument)
+        nocowRules = path: "h path - - - - +C";
+      in
+      lib.lists.forEach nocowPaths nocowRules;
+
+    # systemd.tmpfiles.rules = [
+    #   # type path mode user group (expiry) (argument)
+    #   "h /var/lib/libvirt/images - - - - +C"
+    #   "h /var/lib/postgresql - - - - +C"
+    #   "h /swap/swapfile - - - - +C"
+    # ];
 
     # make it certain that the above systemd tmpfiles rules are executed
     # AFTER the btrfs subvolumes have been mounted
