@@ -13,7 +13,7 @@ let
   # TODO: remove pinned package when problems with bitwarden-desktop version 2026.5.0 are resolved
   # see https://github.com/bitwarden/clients/pull/20448
   # This will pin bitwarden-desktop to version 2026.2.1
-  # NB: Fixed in version 2026.6.1
+  # NB: Fixed in version 2026.6.2?
   nixpkgs-25_11 = import inputs.nixpkgs-25_11 {
     system = "x86_64-linux";
     config = {
