@@ -19,7 +19,8 @@ with lib;
             # a value between 0 and 32767. Higher numbers indicate higher priority.
             # null lets the kernel choose a priority, which will show up as a negative value.
             priority = 1;
-            # Generated using: uuidgen -r
+            # The UUID (also known as GUID) of the PARTITION. Note that this is distinct from the UUID of the filesystem.
+            # You can generate a UUID with the command `uuidgen -r`.
             uuid = "ca8cf1b5-61e9-43b0-8402-acf1edb1bcfd";
             name = "ESP";
             start = "1M";
