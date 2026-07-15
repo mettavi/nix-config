@@ -22,21 +22,6 @@ let
     "defaults"
     "noatime"
   ];
-  mountUnits = [
-    "-.mount"
-    "nix.mount"
-    "root.mount"
-    "var-lib-containers.mount"
-    "var-lib-libvirt-images.mount"
-    "var-lib-postgresql.mount"
-    "var-log.mount"
-    "var-tmp.mount"
-    "home.mount"
-    "home-${username}.mount"
-    "home-${username}-.local-share-containers.mount"
-    "home-${username}-Downloads.mount"
-    "home-${username}-media.mount"
-  ];
   cfg = config.mettavi.system.devices.disko-btrfs;
 in
 {
@@ -186,48 +171,6 @@ in
         device = "/dev/disk/by-label/nixos";
         neededForBoot = true;
       };
-    };
-
-    # WARNING: Do NOT make important systemd directories immutable,
-    # otherwise the system will not be able to boot!
-
-    # MAKE UNDERLYING DIRECTORIES IMMUTABLE
-    systemd = {
-      services."pre-btrfs-mount" = {
-        # DISABLE THIS SERVICE, UNTIL A SAFE ALTERNATIVE IS FOUND
-        enable = false;
-        description = "Set immutable attribute on mount point";
-        # ensure this is set BEFORE the btrfs subvolume is mounted
-        before = mountUnits;
-        requiredBy = mountUnits;
-        path = with pkgs; [
-          e2fsprogs # contains the chattr binary
-        ];
-        script = ''
-          # see https://serverfault.com/a/570271
-          chattr +i / /nix /root /home \
-          /var/lib/containers /var/lib/libvirt/images /var/lib/postgresql /var/log /var/tmp \ 
-          /home/${username} /home/${username}/.local/share/containers /home/${username}/Downloads /home/${username}/media
-        '';
-        serviceConfig = {
-          RemainAfterExit = true;
-          Type = "oneshot";
-        };
-        unitConfig = {
-          DefaultDependencies = false;
-        };
-        wantedBy = [ "multi-user.target" ];
-      };
-      # DISABLE THESE MOUNT UNITS, UNTIL A SAFE ALTERNATIVE IS FOUND
-      # ensure all btrfs subvolumes are mounted AFTER the chattr service (see above)
-      #   mounts = map (munit: {
-      #     after = [ "pre-btrfs-mount.service" ];
-      #     requires = [ "pre-btrfs-mount.service" ];
-      #     where = builtins.replaceStrings [ "//" ] [ "/" ] (
-      #       "/" + builtins.replaceStrings [ "-" ".mount" ] [ "/" "" ] "${munit}"
-      #     );
-      #     what = "/dev/disk/by-label/nixos";
-      #   }) mountUnits;
     };
 
     ######################################################
