@@ -16,7 +16,11 @@ with lib;
         type = "gpt";
         partitions = {
           ESP = {
-            label = "EFI";
+            # a value between 0 and 32767. Higher numbers indicate higher priority.
+            # null lets the kernel choose a priority, which will show up as a negative value.
+            priority = 1;
+            # Generated using: uuidgen -r
+            uuid = "ca8cf1b5-61e9-43b0-8402-acf1edb1bcfd";
             name = "ESP";
             start = "1M";
             end = "1024M";
@@ -41,7 +45,11 @@ with lib;
               {
                 type = "btrfs";
                 extraArgs = [ "-f" ]; # Override existing partition
+                # A path to mount the BTRFS filesystem to
                 mountpoint = "/";
+                # A list of options to pass to mount
+                mountOptions = [ "defaults" ];
+                # Subvolumes to define for BTRFS
                 subvolumes = mapAttrs (
                   subvol: subvolCfg:
                   mkIf subvolCfg.enable {
