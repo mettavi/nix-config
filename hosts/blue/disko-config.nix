@@ -52,33 +52,26 @@ with lib;
                 # A list of options to pass to mount
                 mountOptions = [ "defaults" ];
                 # Subvolumes to define for BTRFS
-                subvolumes = mapAttrs (
-                  subvol: subvolCfg:
-                  mkIf subvolCfg.enable {
-                    mountpoint = "${subvolCfg.mountpoint}";
+                subvolumes =
+                  (mapAttrs (subvol: subvolCfg: {
+                    mountpoint = subvolCfg.mountpoint;
                     mountOptions = subvolCfg.mountOptions ++ cfg.commonMountOptions;
-                  }
+                  }) (lib.filterAttrs (subvol: subvolCfg: subvolCfg.enable) cfg.subvolumes))
                   // {
                     # Subvolume for the swapfile
                     "@swap" = {
-                      mountpoint = "/.swapvol";
+                      mountpoint = cfg.subvolumes."@swap".mountpoint;
                       mountOptions = [
                         "defaults"
                         "noatime"
                       ];
-                      # although it is possible to set up the swapfile on the root subvolume,
-                      # it is recommended to create a dedicated subvolume for it
                       swap = {
-                        # Size of the swap file (e.g. 2G)
                         swapfile = {
                           size = "4G";
-                          # Path to the swap file (relative to the mountpoint, defaults to the attribute name)
-                          # path = "swapfile";
                         };
                       };
                     };
-                  }
-                ) cfg.subvolumes;
+                  };
               };
           };
         };
