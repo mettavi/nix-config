@@ -205,7 +205,7 @@ in
     #   "h /swap/swapfile - - - - +C"
     # ];
 
-    # execute the systemd tmpfiles rules abover AFTER the btrfs subvolumes have been mounted
+    # execute the systemd tmpfiles rules above AFTER the btrfs subvolumes have been mounted
     systemd.services.systemd-tmpfiles-setup = {
       requires = [
         "var-lib-libvirt-images.mount"
