@@ -79,14 +79,6 @@ with lib;
                 ) cfg.subvolumes;
               };
           };
-          swap = {
-            size = "8G";
-            content = {
-              type = "swap";
-              randomEncryption = true;
-              resumeDevice = true;
-            };
-          };
         };
       };
     };
