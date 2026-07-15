@@ -17,8 +17,7 @@ with lib;
         type = "gpt";
         partitions = {
           ESP = {
-            # a value between 0 and 32767. Higher numbers indicate higher priority.
-            # null lets the kernel choose a priority, which will show up as a negative value.
+            # Priority of the partition, smaller values are created first
             # Attempt to boot from this partition first
             priority = 1;
             # The UUID (also known as GUID) of the PARTITION. Note that this is distinct from the UUID of the filesystem.
