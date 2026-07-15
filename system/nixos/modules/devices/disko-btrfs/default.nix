@@ -187,8 +187,6 @@ in
     # execute the systemd tmpfiles rules below AFTER the btrfs subvolumes have been mounted
     systemd =
       let
-        # set the swap subvolume to no COW even though the swap file will be set up correctly
-        # see https://github.com/nix-community/disko/issues/493 for details
         nocowVols = [
           "@libvirtimgs"
           "@swap"
