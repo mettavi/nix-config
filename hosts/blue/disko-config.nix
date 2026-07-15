@@ -23,7 +23,7 @@ with lib;
             priority = 1;
             # The UUID (also known as GUID) of the PARTITION. Note that this is distinct from the UUID of the filesystem.
             # You can generate a UUID with the command `uuidgen -r`.
-            uuid = "ca8cf1b5-61e9-43b0-8402-acf1edb1bcfd";
+            uuid = "6feb6d11-47b2-400e-927f-a6c4e1089101";
             name = "ESP";
             start = "1M";
             end = "1024M";
@@ -41,6 +41,7 @@ with lib;
           };
           nixos = {
             size = "100%";
+            uuid = "d679c570-aded-494f-8090-b3c465ddaad8";
             content =
               let
                 cfg = config.mettavi.system.devices.disko-btrfs;
