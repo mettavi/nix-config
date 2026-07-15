@@ -3,6 +3,7 @@
 { lib, ... }:
 with lib;
 {
+  # select which btrfs subvols to exclude from the defaults set in the disko-btrfs module
   mettavi.system.devices.disko-btrfs.subvolumes = {
     # not currently running VMs on host blue
     "@libvirtimgs".enable = false;
