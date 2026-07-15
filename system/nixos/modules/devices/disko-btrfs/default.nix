@@ -217,24 +217,5 @@ in
         # type path mode user group (expiry) (argument)
         tmpfiles.rules = map (path: "h ${path} - - - - +C") nocowPaths;
       };
-
-    # systemd.tmpfiles.rules = [
-    #   # type path mode user group (expiry) (argument)
-    #   "h /var/lib/libvirt/images - - - - +C"
-    #   "h /var/lib/postgresql - - - - +C"
-    #   "h /swap/swapfile - - - - +C"
-    # ];
-
-    # execute the systemd tmpfiles rules above AFTER the btrfs subvolumes have been mounted
-    systemd.services.systemd-tmpfiles-setup = {
-      requires = [
-        "var-lib-libvirt-images.mount"
-        "var-lib-postgresql.mount"
-      ];
-      after = [
-        "var-lib-libvirt-images.mount"
-        "var-lib-postgresql.mount"
-      ];
-    };
   };
 }
