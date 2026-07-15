@@ -61,7 +61,7 @@ with lib;
                   // {
                     # Subvolume for the swapfile
                     "@swap" = {
-                      mountpoint = "/swap";
+                      mountpoint = "/.swapvol";
                       mountOptions = [
                         "defaults"
                         "noatime"
