@@ -115,19 +115,19 @@ in
     (mkIf cfg.enable {
       fileSystems = {
         "/var/lib/postgresql" = {
-          device = "/dev/disk/by-label/nixos";
+          device = mkDefault "/dev/disk/by-label/nixos";
           # Ensures /var/lib is mounted first
           depends = [ "/var/lib" ];
         };
         "/home" = {
-          device = "/dev/disk/by-label/nixos";
+          device = mkDefault "/dev/disk/by-label/nixos";
           # required on home directories for sops-nix to work with btrfs
           # See https://github.com/Mic92/sops-nix/issues/721
           # ensure the home subvolume is mounted early for sops-nix
           neededForBoot = true;
         };
         "/home/${username}" = {
-          device = "/dev/disk/by-label/nixos";
+          device = mkDefault "/dev/disk/by-label/nixos";
           neededForBoot = true;
         };
       };
