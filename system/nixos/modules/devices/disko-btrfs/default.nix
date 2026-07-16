@@ -25,9 +25,9 @@ let
   cfg = config.mettavi.system.devices.disko-btrfs;
 in
 {
-  options.mettavi.system.devices.disko-btrfs = {
+  options.mettavi.system.devices.disko-btrfs = with lib.types; {
     enable = mkOption {
-      type = types.bool;
+      type = bool;
       default = false;
       description = "Create (on initial install) and mount btrfs subvolumes with disko";
     };
@@ -37,183 +37,139 @@ in
       description = "Mountpoint options common to all btrfs subvolumes";
     };
     subvolumes = mkOption {
-      type =
-        with lib.types;
-        attrsOf (submodule {
-          options = {
-            enable = mkOption {
-              type = bool;
-              default = true;
-              description = "Enable this btrfs subvolume";
-            };
-            mountpoint = mkOption {
-              type = path;
-              description = "Where to mount the btrfs subvolume";
-            };
-            mountOptions = mkOption {
-              type = listOf str;
-              default = [ ];
-              # Most btrfs mount options apply to the whole filesystem and only options
-              # in the first mounted subvolume will take effect
-              # The exception is options that are handled by the VFS layer
-              # such as noatime/relatime/…, nodev, nosuid, ro, rw, dirsync
-              # See https://btrfs.readthedocs.io/en/latest/ch-subvolume-intro.html#mount-options for details
-              description = "Mount options specific to a subvolume";
-            };
+      type = attrsOf (submodule {
+        options = {
+          enable = mkOption {
+            type = bool;
+            default = true;
+            description = "Enable this btrfs subvolume";
           };
-        });
-      default = {
-        "@root" = {
-          enable = true;
-          mountpoint = "/";
+          mountpoint = mkOption {
+            type = nullOr path;
+            default = null;
+            description = "Where to mount the btrfs subvolume (null for a nested subvolume that isn't mounted separately)";
+          };
+          mountOptions = mkOption {
+            type = listOf str;
+            default = [ ];
+            # Most btrfs mount options apply to the whole filesystem and only options
+            # in the first mounted subvolume will take effect
+            # The exception is options that are handled by the VFS layer
+            # such as noatime/relatime/…, nodev, nosuid, ro, rw, dirsync
+            # See https://btrfs.readthedocs.io/en/latest/ch-subvolume-intro.html#mount-options for details
+            description = "Mount options specific to a subvolume";
+          };
         };
-        # A nested subvolume doesn't need a mountpoint as its parent is mounted
-        "@root/tmp" = {
-          enable = true;
-        };
-        "@root/var/cache" = {
-          enable = true;
-        };
-        "@nix" = {
-          enable = true;
-          mountpoint = "/nix";
-        };
-        "@roothome" = {
-          enable = true;
-          mountpoint = "/root";
-        };
-        "@roothome/.cache" = {
-          enable = true;
-        };
-        "@vlcontainers" = {
-          enable = true;
-          mountpoint = "/var/lib/containers";
-        };
-        # the nodatacow attribute (see below) will disable zstd compression
-        # on special subvolumes such as @libvirtimgs and @vlpostgres
-        "@libvirtimgs" = {
-          enable = true;
-          mountpoint = "/var/lib/libvirt/images";
-        };
-        "@vlpostgres" = {
-          enable = true;
-          mountpoint = "/var/lib/postgresql";
-        };
-        "@varlog" = {
-          enable = true;
-          mountpoint = "/var/log";
-        };
-        "@vartmp" = {
-          enable = true;
-          mountpoint = "/var/tmp";
-        };
-        "@home" = {
-          enable = true;
-          mountpoint = "/home";
-        };
-        "@adminhome" = {
-          enable = true;
-          mountpoint = "/home/${username}";
-        };
-        "@adminhome/.cache" = {
-          enable = true;
-        };
+      });
+      default = { };
+    };
+  };
+
+  config = mkMerge [
+    {
+      mettavi.system.devices.disko-btrfs.subvolumes = {
+        "@root".mountpoint = mkDefault "/";
+        "@root/tmp" = { };
+        "@root/var/cache" = { };
+        "@nix".mountpoint = mkDefault "/nix";
+        "@roothome".mountpoint = mkDefault "/root";
+        "@roothome/.cache" = { };
+        "@vlcontainers".mountpoint = mkDefault "/var/lib/containers";
+        "@libvirtimgs".mountpoint = mkDefault "/var/lib/libvirt/images";
+        "@vlpostgres".mountpoint = mkDefault "/var/lib/postgresql";
+        "@varlog".mountpoint = mkDefault "/var/log";
+        "@vartmp".mountpoint = mkDefault "/var/tmp";
+        "@home".mountpoint = mkDefault "/home";
+        "@adminhome".mountpoint = mkDefault "/home/${username}";
+        "@adminhome/.cache" = { };
         "@admincontainers" = {
-          enable = true;
-          mountpoint = "/home/${username}/.local/share/containers";
-          mountOptions =
-            optionals (config.mettavi.system.desktops.gnome.enable) [
-              "x-gvfs-trash" # Enables trash functionality in Files (Nautilus) for the mounted filesystem
-            ]
+          mountpoint = mkDefault "/home/${username}/.local/share/containers";
+          mountOptions = mkDefault (
+            optionals config.mettavi.system.desktops.gnome.enable [ "x-gvfs-trash" ]
             ++ commonOptions
-            ++ btrfsOptions;
+            ++ btrfsOptions
+          );
         };
         "@admindownloads" = {
-          enable = true;
-          mountpoint = "/home/${username}/Downloads";
-          mountOptions =
-            optionals (config.mettavi.system.desktops.gnome.enable) [
-              "x-gvfs-trash"
-            ]
+          mountpoint = mkDefault "/home/${username}/Downloads";
+          mountOptions = mkDefault (
+            optionals config.mettavi.system.desktops.gnome.enable [ "x-gvfs-trash" ]
             ++ commonOptions
-            ++ btrfsOptions;
+            ++ btrfsOptions
+          );
         };
         "@adminmedia" = {
-          enable = true;
-          mountpoint = "/home/${username}/media";
-          mountOptions =
-            optionals (config.mettavi.system.desktops.gnome.enable) [
-              "x-gvfs-hide" # hide the subvolume from the Files (Nautilus) devices menu
+          mountpoint = mkDefault "/home/${username}/media";
+          mountOptions = mkDefault (
+            optionals config.mettavi.system.desktops.gnome.enable [
+              "x-gvfs-hide"
               "x-gvfs-trash"
             ]
             ++ commonOptions
-            ++ btrfsOptions;
+            ++ btrfsOptions
+          );
         };
-        "@swap" = {
-          enable = true;
-          mountpoint = "/.swapvol";
+        "@swap".mountpoint = mkDefault "/.swapvol";
+      };
+    }
+    (mkIf cfg.enable {
+      fileSystems = {
+        "/var/lib/postgresql" = {
+          device = "/dev/disk/by-label/nixos";
+          # Ensures /var/lib is mounted first
+          depends = [ "/var/lib" ];
+        };
+        "/home" = {
+          device = "/dev/disk/by-label/nixos";
+          # required on home directories for sops-nix to work with btrfs
+          # See https://github.com/Mic92/sops-nix/issues/721
+          # ensure the home subvolume is mounted early for sops-nix
+          neededForBoot = true;
+        };
+        "/home/${username}" = {
+          device = "/dev/disk/by-label/nixos";
+          neededForBoot = true;
         };
       };
-    };
-  };
 
-  config = mkIf cfg.enable {
-    fileSystems = {
-      "/var/lib/postgresql" = {
-        device = "/dev/disk/by-label/nixos";
-        # Ensures /var/lib is mounted first
-        depends = [ "/var/lib" ];
-      };
-      "/home" = {
-        device = "/dev/disk/by-label/nixos";
-        # required on home directories for sops-nix to work with btrfs
-        # See https://github.com/Mic92/sops-nix/issues/721
-        # ensure the home subvolume is mounted early for sops-nix
-        neededForBoot = true;
-      };
-      "/home/${username}" = {
-        device = "/dev/disk/by-label/nixos";
-        neededForBoot = true;
-      };
-    };
+      ######################################################
+      # SET NO COPY-ON-WRITE (NODATACOW) ON SPECIAL BTRFS SUBVOLUMES
+      # NB: 1) Setting this by a mount option will apply the option to ALL subvolumes on the partition.
+      #        This method (using systemd tmpfiles) allows it to be set per subvolume.
+      #     2) This is best used on an empty directory as it only applies to NEW files.
+      #     3) Nodatacow implies nodatasum (no data checksumming), and disables compression.
 
-    ######################################################
-    # SET NO COPY-ON-WRITE (NODATACOW) ON SPECIAL BTRFS SUBVOLUMES
-    # NB: 1) Setting this by a mount option will apply the option to ALL subvolumes on the partition.
-    #        This method (using systemd tmpfiles) allows it to be set per subvolume.
-    #     2) This is best used on an empty directory as it only applies to NEW files.
-    #     3) Nodatacow implies nodatasum (no data checksumming), and disables compression.
+      # execute the systemd tmpfiles rules below AFTER the btrfs subvolumes have been mounted
+      systemd =
+        let
+          nocowVols = [
+            "@libvirtimgs"
+            "@swap"
+            "@vlpostgres"
+          ];
+          # resolve to mountpoints, dropping any disabled (or missing) subvolumes
+          nocowPaths = lib.filter (p: p != null) (
+            map (
+              nocowVol:
+              let
+                subvol = cfg.subvolumes.${nocowVol} or null;
+              in
+              if subvol != null && subvol.enable then subvol.mountpoint else null
+            ) nocowVols
+          );
 
-    # execute the systemd tmpfiles rules below AFTER the btrfs subvolumes have been mounted
-    systemd =
-      let
-        nocowVols = [
-          "@libvirtimgs"
-          "@swap"
-          "@vlpostgres"
-        ];
-        # resolve to mountpoints, dropping any disabled (or missing) subvolumes
-        nocowPaths = lib.filter (p: p != null) (
-          map (
-            nocowVol:
-            let
-              subvol = cfg.subvolumes.${nocowVol} or null;
-            in
-            if subvol != null && subvol.enable then subvol.mountpoint else null
-          ) nocowVols
-        );
-
-        nocowSysMounts = path: "${utils.escapeSystemdPath path}.mount";
-      in
-      {
-        services.systemd-tmpfiles-setup = {
-          requires = map nocowSysMounts nocowPaths;
-          after = map nocowSysMounts nocowPaths;
+          nocowSysMounts = path: "${utils.escapeSystemdPath path}.mount";
+        in
+        {
+          services.systemd-tmpfiles-setup = {
+            requires = map nocowSysMounts nocowPaths;
+            after = map nocowSysMounts nocowPaths;
+          };
+          # set the swap subvolume to no COW even though the swap file will be set up correctly
+          # see https://github.com/nix-community/disko/issues/493 for details
+          # type path mode user group (expiry) (argument)
+          tmpfiles.rules = map (path: "h ${path} - - - - +C") nocowPaths;
         };
-        # set the swap subvolume to no COW even though the swap file will be set up correctly
-        # see https://github.com/nix-community/disko/issues/493 for details
-        # type path mode user group (expiry) (argument)
-        tmpfiles.rules = map (path: "h ${path} - - - - +C") nocowPaths;
-      };
-  };
+    })
+  ];
 }
