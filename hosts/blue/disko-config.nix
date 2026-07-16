@@ -62,7 +62,7 @@ with lib;
                   // {
                     # Subvolume for the swapfile
                     "@swap" = {
-                      mountpoint = builtins.trace (builtins.attrNames cfg.subvolumes) cfg.subvolumes."@swap".mountpoint;
+                      mountpoint = cfg.subvolumes."@swap".mountpoint;
                       mountOptions = [
                         "defaults"
                         "noatime"
