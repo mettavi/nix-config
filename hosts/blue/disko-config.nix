@@ -54,10 +54,10 @@ with lib;
                 subvolumes =
                   (mapAttrs (
                     subvol: subvolCfg:
-                    {
+                    lib.optionalAttrs (subvolCfg.mountpoint != null) {
+                      mountpoint = subvolCfg.mountpoint;
                       mountOptions = subvolCfg.mountOptions ++ cfg.commonMountOptions;
                     }
-                    // lib.optionalAttrs (subvolCfg.mountpoint != null) { mountpoint = subvolCfg.mountpoint; }
                   ) (lib.filterAttrs (subvol: subvolCfg: subvolCfg.enable) cfg.subvolumes))
                   // {
                     # Subvolume for the swapfile
