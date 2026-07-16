@@ -24,7 +24,7 @@
   # SETUP INITIAL ACCESS
   # set up root access to prevent initial password problems for the primary user
   users.users.root = {
-    hashedPassword = "$y$j9T$kD6Saa3hxt3U5YCkHGtBp/$ybiLXiDq1f6EitKgQTPB8Nyw2BzvI2QOI0IlR.TKyf1";
+    # hashedPassword = "$y$j9T$kD6Saa3hxt3U5YCkHGtBp/$ybiLXiDq1f6EitKgQTPB8Nyw2BzvI2QOI0IlR.TKyf1";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos@oona"
     ];
@@ -63,29 +63,29 @@
 
   # SYSTEM MODULES SETTINGS
   mettavi = {
-    profiles = {
-      # oracle cloud vps (eg. ssh hardening)
-      vps = {
-        enable = false;
-      };
-    };
+    # profiles = {
+    #   # oracle cloud vps (eg. ssh hardening)
+    #   vps = {
+    #     enable = false;
+    #   };
+    # };
     system = {
       devices = {
         # create and mount btrfs subvolumes using disko
-        disko-btrfs.enable = false;
+        disko-btrfs.enable = true;
       };
       # enable system users
-      userConfig = {
-        timotheos.enable = true;
-      };
+      # userConfig = {
+      #   timotheos.enable = true;
+      # };
     };
   };
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
-  home-manager.users.${username} = {
-    home = {
-      # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-      stateVersion = "26.05";
-    };
-  };
+  # home-manager.users.${username} = {
+  #   home = {
+  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+  #   stateVersion = "26.05";
+  # };
+  # };
 }

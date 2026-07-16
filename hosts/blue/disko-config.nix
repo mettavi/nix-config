@@ -1,13 +1,11 @@
 # NOTE: Disko is not supported on multi-boot systems.
 # It is best suited to remote servers or VMs where the whole disk can be dedicated to nixos.
-{ lib, ... }:
+{ config, lib, ... }:
 with lib;
 {
   # select which btrfs subvols to exclude from the defaults set in the disko-btrfs module
-  mettavi.system.devices.disko-btrfs.subvolumes = {
-    # not currently running VMs on host blue
-    "@libvirtimgs".enable = false;
-  };
+  # not currently running VMs on host blue
+  mettavi.system.devices.disko-btrfs.subvolumes."@libvirtimgs".enable = false;
 
   disko.devices.disk = {
     sda = {
@@ -54,14 +52,17 @@ with lib;
                 mountOptions = [ "defaults" ];
                 # Subvolumes to define for BTRFS
                 subvolumes =
-                  (mapAttrs (subvol: subvolCfg: {
-                    mountpoint = subvolCfg.mountpoint;
-                    mountOptions = subvolCfg.mountOptions ++ cfg.commonMountOptions;
-                  }) (lib.filterAttrs (subvol: subvolCfg: subvolCfg.enable) cfg.subvolumes))
+                  (mapAttrs (
+                    subvol: subvolCfg:
+                    {
+                      mountOptions = subvolCfg.mountOptions ++ cfg.commonMountOptions;
+                    }
+                    // lib.optionalAttrs (subvolCfg.mountpoint != null) { mountpoint = subvolCfg.mountpoint; }
+                  ) (lib.filterAttrs (subvol: subvolCfg: subvolCfg.enable) cfg.subvolumes))
                   // {
                     # Subvolume for the swapfile
                     "@swap" = {
-                      mountpoint = cfg.subvolumes."@swap".mountpoint;
+                      mountpoint = builtins.trace (builtins.attrNames cfg.subvolumes) cfg.subvolumes."@swap".mountpoint;
                       mountOptions = [
                         "defaults"
                         "noatime"
