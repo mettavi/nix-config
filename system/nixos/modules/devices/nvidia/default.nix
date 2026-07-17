@@ -75,6 +75,11 @@ in
       nvtopPackages.nvidia # htop-like task monitor for nvidia GPUs
     ];
 
+    # Enable dynamic container device interface (CDI) configuration for Nvidia devices
+    hardware.nvidia-container-toolkit = {
+      enable = true;
+    };
+
     # NB: the module below adds boot.blacklistedKernelModules = [ "nouveau" ];
     hardware.nvidia = {
       # this adds the nvidia-powerd service (disabled for stability)
