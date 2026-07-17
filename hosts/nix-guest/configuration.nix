@@ -1,5 +1,4 @@
 {
-  config,
   modulesPath,
   pkgs,
   ...
@@ -11,6 +10,12 @@
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  users.users.root = {
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILLefqc5FD0nZQLMUF6xfUTSZItumpd7AWPe0MP2JzoI timotheos@oona"
+    ];
+  };
 
   users.users.timotheos = {
     isNormalUser = true;
