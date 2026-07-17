@@ -106,7 +106,7 @@ in
         enable = true;
         # experimental power management of prime offload (turns off GPU when not in use)
         # NB: this option will add NVreg_DynamicPowerManagement=0x02 to boot.kernelParams
-        finegrained = true;
+        finegrained = false;
       };
       # prime sync and reverse sync modes only work on X11
       # NB: the bus ID settings are in the host-specific configuration.nix
