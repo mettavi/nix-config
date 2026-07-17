@@ -26,12 +26,7 @@
   ];
 
   # Set of modules that are ALWAYS loaded by the initrd
-  # load these modules early to let the kernel handle GPU registers during shutdown or soft-boot routines
-  boot.initrd.kernelModules = [
-    "nvidia"
-    "nvidia_modeset"
-    "nvidia_drm"
-  ];
+  boot.initrd.kernelModules = [ ];
   # Set of kernel modules to be loaded in the second stage of the boot process
   boot.kernelModules = [
     "kvm-amd" # kernel-based VM support for AMD
