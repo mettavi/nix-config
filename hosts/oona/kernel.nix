@@ -50,8 +50,8 @@
     # and the acpi_osi override were bundled in from the same (bad) source and
     # have no clear justification here, so leaving them out too pending actual need.
     # "amd_iommu=off"
-    # Prevents the hotplug semaphore locks that freeze your apps
     # ''acpi_osi="!Windows 2025"''
+    # Prevents the hotplug semaphore locks that freeze your apps
     # "pcie_aspm=force"
     # "pciehp.pciehp_force=1"
   ];
