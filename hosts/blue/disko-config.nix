@@ -1,6 +1,11 @@
 # NOTE: Disko is not supported on multi-boot systems.
 # It is best suited to remote servers or VMs where the whole disk can be dedicated to nixos.
-{ config, lib, ... }:
+{
+  config,
+  hostname,
+  lib,
+  ...
+}:
 with lib;
 {
   # select which btrfs subvols to exclude from the defaults set in the disko-btrfs module
@@ -8,7 +13,8 @@ with lib;
   mettavi.system.devices.disko-btrfs.subvolumes."@libvirtimgs".enable = false;
 
   disko.devices.disk = {
-    sda = {
+    ${hostname} = {
+
       type = "disk";
       device = "/dev/sda";
       content = {
@@ -19,7 +25,9 @@ with lib;
             # Attempt to boot from this partition first
             priority = 1;
             # The UUID (also known as GUID) of the PARTITION. Note that this is distinct from the UUID of the filesystem.
-            # You can generate a UUID with the command `uuidgen -r`.
+            # See /dev/disk/by-partuuid/. You can generate a UUID with the command `uuidgen -r`.
+            # NB: The PARTLABEL is generated with "disk-<disk-attr>-<part-attr>"
+            # (eg. "disk-<hostname>-ESP"), unless it is set directly with "label ="
             uuid = "6feb6d11-47b2-400e-927f-a6c4e1089101";
             start = "1M";
             end = "1024M";
