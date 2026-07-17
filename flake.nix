@@ -213,7 +213,7 @@
           # launch the vm with "QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-nixos-vm -nographic; reset"
           # for ssh connections, add QEMU_NET_OPTS="hostfwd=tcp:127.0.0.1:2222-:22"
           # to set up port fowarding to the guest and add the "-p 2222" flag to ssh
-          nixosConfigurations.nix-guest = inputs.nixpkgs-26_05.lib.nixosSystem {
+          nixosConfigurations."nix-guest" = inputs.nixpkgs-26_05.lib.nixosSystem {
             system = "x86_64-linux";
             modules = [
               ./hosts/nix-guest/configuration.nix
