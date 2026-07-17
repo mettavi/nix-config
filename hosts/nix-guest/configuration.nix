@@ -32,7 +32,6 @@
 
   networking.firewall.allowedTCPPorts = [
     22
-    80
   ];
 
   services.openssh.enable = true;
