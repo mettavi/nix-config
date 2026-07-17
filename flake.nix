@@ -213,22 +213,14 @@
           # launch the vm with "QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-nixos-vm -nographic; reset"
           # for ssh connections, add QEMU_NET_OPTS="hostfwd=tcp:127.0.0.1:2222-:22"
           # to set up port fowarding to the guest and add the "-p 2222" flag to ssh
+          # See https://nix.dev/tutorials/nixos/nixos-configuration-on-vm and
+          # https://dev.to/vst/running-nixos-guests-on-qemu-3lpa
           nixosConfigurations."nix-guest" = inputs.nixpkgs-26_05.lib.nixosSystem {
             system = "x86_64-linux";
             modules = [
               ./hosts/nix-guest/configuration.nix
             ];
           };
-
-          ################################  NIXOS-ANYWHERE BUILDS  ######################################
-
-          # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
-          # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on remote \
-          # --print-build-log --target-host username@<ip address>
-          # nixosConfigurations = {
-          #   "blue" = initNixos.mkNixosConfiguration "blue" "x86_64-linux" "timotheos" "nixpkgs-26_05";
-          # };
-
         };
     };
 }
