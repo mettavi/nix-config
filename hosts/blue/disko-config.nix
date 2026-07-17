@@ -21,7 +21,6 @@ with lib;
             # The UUID (also known as GUID) of the PARTITION. Note that this is distinct from the UUID of the filesystem.
             # You can generate a UUID with the command `uuidgen -r`.
             uuid = "6feb6d11-47b2-400e-927f-a6c4e1089101";
-            name = "ESP";
             start = "1M";
             end = "1024M";
             # NB: See https://wiki.archlinux.org/title/GPT_fdisk#Partition_type
