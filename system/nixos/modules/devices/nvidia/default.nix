@@ -45,6 +45,10 @@ in
       # "nvidia.NVreg_PreserveVideoMemoryAllocations=0"
       # allows nvidia to manage the frame buffer device (experimental status)
       # "nvidia-drm.fbdev=0"
+      # this parameter enforces proper auto-wake and sleep loops
+      # changing 0x02 to 0x01 forces the GPU to stay in stable D3hot instead of crashing in D3cold
+      # (0x02 = fine-grained/dynamic, 0x01 = coarse-grained, 0x00 = disabled entirely)
+      "nvidia.NVreg_DynamicPowerManagement=0x00"
     ];
 
     # USERSPACE LIBRARIES FOR NVIDIA (propietary, required for nvidia-produced kernel modules)
