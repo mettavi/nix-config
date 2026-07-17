@@ -20,16 +20,12 @@ in
   config = mkIf cfg.enable {
 
     # KERNEL MODULES
+    # NB: the nvidia module is usually not needed in the boot stages
+    # see https://discourse.nixos.org/t/nvidia-drm-fails-to-load/69582/4
     # modules that are ALWAYS loaded by the initrd
-    boot.initrd.kernelModules = [
-      # nvidia module is not needed in the initrd
-      # see https://discourse.nixos.org/t/nvidia-drm-fails-to-load/69582/4
-      # "nvidia"
-    ];
+    boot.initrd.kernelModules = [ ];
     # kernel modules to be loaded in the second stage of the boot process
-    boot.kernelModules = [
-      "nvidia"
-    ];
+    boot.kernelModules = [ ];
 
     # kernel module or builtin options to be added to /etc/modprobe.d/
     boot.extraModprobeConfig = # bash
