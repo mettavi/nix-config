@@ -365,7 +365,7 @@ in
       libreoffice.enable = false;
     };
     services = {
-      gramps-web.enable = false;
+      gramps-web.enable = true;
     };
   };
 
