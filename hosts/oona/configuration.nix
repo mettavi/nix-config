@@ -376,6 +376,16 @@ in
   environment.etc."udev/hwdb.d/99-local.hwdb".text =
     "evdev:input:b0003v0B05p*\n" + " KEYBOARD_KEY_00070045=sysrq\n";
 
+  # experimental code for mapping the copilot key to sysrq, implemented instead with kanata
+  # NB: kept for reference to the keyboard name/code on this host
+  # services.udev = {
+  #   extraHwdb = ''
+  # choose one of the following two lines to identify the keyboard
+  #     evdev:name:Asus Keyboard:*
+  #     evdev:input:b0003v0B05p19B6e0110*
+  #      KEYBOARD_KEY_70072=sysrq # original KEY_F23 (copilot key)
+  #   '';
+  # };
   # home-manager modules installed for the admin user ON THIS HOST ONLY
   home-manager.users.${username} = {
     dconf.settings = {
