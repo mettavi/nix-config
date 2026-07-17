@@ -45,6 +45,17 @@ in
       # "nvidia.NVreg_PreserveVideoMemoryAllocations=0"
       # allows nvidia to manage the frame buffer device (experimental status)
       # "nvidia-drm.fbdev=0"
+      # REMOVED 2026-07: these four params were traced to the system hard-freezes.
+      # pcie_aspm=force and pciehp.pciehp_force=1 are well-documented causes of
+      # unrecoverable hard freezes on hardware where ASPM/hotplug isn't fully
+      # supported (see ArchWiki Power_management, RHEL ASPM docs). amd_iommu=off
+      # and the acpi_osi override were bundled in from the same (bad) source and
+      # have no clear justification here, so leaving them out too pending actual need.
+      # "amd_iommu=off"
+      # Prevents the hotplug semaphore locks that freeze your apps
+      # ''acpi_osi="!Windows 2025"''
+      # "pcie_aspm=force"
+      # "pciehp.pciehp_force=1"
     ];
 
     # USERSPACE LIBRARIES FOR NVIDIA (propietary, required for nvidia-produced kernel modules)
@@ -97,8 +108,6 @@ in
       open = true;
       # KERNEL MODULES FOR NVIDIA
       # use config.boot to use the module from the installed kernel
-      # CHANGED 2026-07: use the standard option so the nvidia module always
-      # matches whatever kernel is actually booting, avoiding ABI mismatches.
       package = config.boot.kernelPackages.nvidiaPackages.stable;
       powerManagement = {
         # this adds the nvidia-{suspend,hibernate,resume} services
@@ -106,7 +115,7 @@ in
         enable = true;
         # experimental power management of prime offload (turns off GPU when not in use)
         # NB: this option will add NVreg_DynamicPowerManagement=0x02 to boot.kernelParams
-        finegrained = false;
+        finegrained = true;
       };
       # prime sync and reverse sync modes only work on X11
       # NB: the bus ID settings are in the host-specific configuration.nix

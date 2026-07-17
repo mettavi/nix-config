@@ -42,7 +42,19 @@
       options asus_wmi fnlock_default=N
     '';
   # Parameters added to the kernel command line (can only be used for built-in modules)
-  boot.kernelParams = [ ];
+  boot.kernelParams = [
+    # REMOVED 2026-07: these four params were traced to the system hard-freezes.
+    # pcie_aspm=force and pciehp.pciehp_force=1 are well-documented causes of
+    # unrecoverable hard freezes on hardware where ASPM/hotplug isn't fully
+    # supported (see ArchWiki Power_management, RHEL ASPM docs). amd_iommu=off
+    # and the acpi_osi override were bundled in from the same (bad) source and
+    # have no clear justification here, so leaving them out too pending actual need.
+    # "amd_iommu=off"
+    # Prevents the hotplug semaphore locks that freeze your apps
+    # ''acpi_osi="!Windows 2025"''
+    # "pcie_aspm=force"
+    # "pciehp.pciehp_force=1"
+  ];
 
   # SysRq shortcuts can be used to trigger a more graceful reboot
   boot.kernel.sysctl."kernel.sysrq" = 1;
