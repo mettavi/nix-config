@@ -97,6 +97,8 @@ in
       open = true;
       # KERNEL MODULES FOR NVIDIA
       # use config.boot to use the module from the installed kernel
+      # CHANGED 2026-07: use the standard option so the nvidia module always
+      # matches whatever kernel is actually booting, avoiding ABI mismatches.
       package = config.boot.kernelPackages.nvidiaPackages.stable;
       powerManagement = {
         # this adds the nvidia-{suspend,hibernate,resume} services
