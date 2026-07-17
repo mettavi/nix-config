@@ -159,6 +159,11 @@
       ...
     }:
 
+    let
+      mkDarwin = import ./lib/mkDarwin.nix { inherit inputs self; };
+      mkNixos = import ./lib/mkNixos.nix { inherit inputs self; };
+      initNixos = import ./lib/initNixos.nix { inherit inputs; };
+    in
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
         # To import an internal flake module: ./other.nix
@@ -185,11 +190,6 @@
         # The usual flake attributes can be defined here, including system-
         # agnostic ones like nixosModule and system-enumerating ones, although
         # those are more easily expressed in perSystem.
-        let
-          mkDarwin = import ./lib/mkDarwin.nix { inherit inputs self; };
-          mkNixos = import ./lib/mkNixos.nix { inherit inputs self; };
-          initNixos = import ./lib/initNixos.nix { inherit inputs; };
-        in
         {
           nix_repo = ".nix-config";
           secrets_path = toString inputs.secrets;
