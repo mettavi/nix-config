@@ -63,6 +63,7 @@ in
       };
       # required under wayland
       home.pointerCursor = {
+        enable = true;
         gtk.enable = true;
         # Style neutral scalable cursor theme
         package = pkgs.vanilla-dmz;
