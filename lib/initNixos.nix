@@ -52,6 +52,7 @@ let
                 type = "ed25519";
               }
             ];
+            settings.PermitRootLogin = "prohibit-password";
           };
         };
         # The Git revision of the top-level flake from which this configuration was built
