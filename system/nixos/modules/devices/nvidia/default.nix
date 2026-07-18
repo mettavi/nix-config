@@ -45,6 +45,9 @@ in
       # "nvidia.NVreg_PreserveVideoMemoryAllocations=0"
       # allows nvidia to manage the frame buffer device (experimental status)
       # "nvidia-drm.fbdev=0"
+      # configure power management here rather than using the powerManagement.enable option
+      # (works better for on-demand offload triggers for newer chips)
+      "nvidia.NVreg_EnableS0ixPowerManagement=1"
       # this parameter enforces proper auto-wake and sleep loops
       # changing 0x02 to 0x01 forces the GPU to stay in stable D3hot instead of crashing in D3cold
       # (0x02 = fine-grained/dynamic, 0x01 = coarse-grained, 0x00 = disabled entirely)
@@ -101,6 +104,8 @@ in
       open = true;
       # KERNEL MODULES FOR NVIDIA
       # use config.boot to use the module from the installed kernel
+      # CHANGED 2026-07: use the standard option so the nvidia module always
+      # matches whatever kernel is actually booting, avoiding ABI mismatches.
       package = config.boot.kernelPackages.nvidiaPackages.stable;
       powerManagement = {
         # this adds the nvidia-{suspend,hibernate,resume} services
@@ -108,7 +113,7 @@ in
         enable = true;
         # experimental power management of prime offload (turns off GPU when not in use)
         # NB: this option will add NVreg_DynamicPowerManagement=0x02 to boot.kernelParams
-        finegrained = true;
+        finegrained = false;
       };
       # prime sync and reverse sync modes only work on X11
       # NB: the bus ID settings are in the host-specific configuration.nix
