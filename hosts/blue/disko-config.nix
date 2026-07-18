@@ -29,8 +29,7 @@ with lib;
             # NB: The PARTLABEL is generated with "disk-<disk-attr>-<part-attr>"
             # (eg. "disk-<hostname>-ESP"), unless it is set directly with "label ="
             uuid = "6feb6d11-47b2-400e-927f-a6c4e1089101";
-            start = "1M";
-            end = "1024M";
+            size = "1G";
             # NB: See https://wiki.archlinux.org/title/GPT_fdisk#Partition_type
             # for a list of disk type codes
             type = "EF00";
