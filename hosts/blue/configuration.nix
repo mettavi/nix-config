@@ -12,6 +12,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disko-config.nix
+    ./hardware-configuration.nix
     # import the disko-btrfs module for initial install with nixos-anywhere
     ../../system/nixos/modules/devices/disko-btrfs/default.nix
   ];
