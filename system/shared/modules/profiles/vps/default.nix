@@ -20,6 +20,11 @@ in
       default = false;
       description = "Whether the use DHCP on the VPS host";
     };
+    devName = mkOption {
+      type = str;
+      default = "sda";
+      description = "The device name (/dev/<devName>)";
+    };
     netInterface = mkOption {
       type = str;
       description = "The name of the main network interface on the system";
@@ -70,7 +75,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    # Ensure kernel output goes to both the web VNC display (eg. in the hostinger panel) and the serial console
+    # Ensure kernel output goes to both the web VNC display (eg. in the VPS panel terminal) and the serial console
     boot.kernelParams = [
       "console=tty1"
       "console=ttyS0,115200"
@@ -82,7 +87,7 @@ in
       grub = {
         # grub works on both BIOS and UEFI
         enable = true;
-        device = "/dev/sda"; # Install GRUB to the MBR
+        device = "/dev/${cfg.devName}"; # Install GRUB to the MBR
         efiSupport = true; # Support UEFI just in case
         # Crucial for VPS: Installs bootloader to a fallback path
         # so it boots even if NVRAM variables are reset by the host.
