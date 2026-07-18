@@ -63,7 +63,20 @@
       };
       profiles = {
         # hostinger vps (eg. ssh hardening)
-        vps.enable = true;
+        vps = {
+          enable = true;
+          netInterface = "ens18";
+          ip4 = {
+            addr = "187.127.105.244";
+            prefix = "24";
+            gateway = "187.127.105.254";
+          };
+          ip6 = {
+            addr = "2a02:4780:5e:616::1";
+            prefix = "48";
+            gateway = "2a02:4780:5e::1";
+          };
+        };
       };
       # enable system users
       # userConfig = {

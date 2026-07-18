@@ -108,22 +108,22 @@ in
       useDHCP = cfg.useDHCP;
       ipv4.addresses = [
         {
-          address = "187.127.105.244";
-          prefixLength = 24; # Verify in Hostinger panel (usually 24 or 32)
+          address = "${cfg.ip4.addr}";
+          prefixLength = "${cfg.ip4.prefix}"; # Verify in Hostinger panel (usually 24 or 32)
         }
       ];
       ipv6.addresses = [
         {
-          address = "2a02:4780:5e:616::1";
-          prefixLength = 48; # Verify in Hostinger panel
+          address = "${cfg.ip6.addr}";
+          prefixLength = "${cfg.ip6.prefix}"; # Verify in Hostinger panel
         }
       ];
     };
 
     # Set your routing (FIND THESE IN THE HOSTINGER PANEL)
-    networking.defaultGateway = "187.127.105.254";
+    networking.defaultGateway = "${cfg.ip4.gateway}";
     networking.defaultGateway6 = {
-      address = "2a02:4780:5e::1";
+      address = "${cfg.ip6.gateway}";
       interface = "${cfg.netInterface}";
     };
 
