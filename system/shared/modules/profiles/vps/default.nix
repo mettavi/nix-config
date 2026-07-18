@@ -27,6 +27,7 @@ in
   };
 
   config = mkIf cfg.enable {
+    # Ensure kernel output goes to both the web VNC display (eg. in the hostinger panel) and the serial console
     boot.kernelParams = [
       "console=tty1"
       "console=ttyS0,115200"
@@ -68,7 +69,7 @@ in
     networking.useDHCP = cfg.useDHCP;
 
     # Explicitly configure your network interface
-    networking.interfaces.ens18 = {
+    networking.interfaces.${cfg.netInterface} = {
       useDHCP = cfg.useDHCP;
       ipv4.addresses = [
         {
@@ -88,7 +89,7 @@ in
     networking.defaultGateway = "187.127.105.254";
     networking.defaultGateway6 = {
       address = "2a02:4780:5e::1";
-      interface = "ens18";
+      interface = "${cfg.netInterface}";
     };
 
     # Set DNS resolvers
