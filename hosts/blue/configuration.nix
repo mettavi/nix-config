@@ -64,16 +64,14 @@
 
   # SYSTEM MODULES SETTINGS
   mettavi = {
-    # profiles = {
-    #   # oracle cloud vps (eg. ssh hardening)
-    #   vps = {
-    #     enable = false;
-    #   };
-    # };
     system = {
       devices = {
         # create and mount btrfs subvolumes using disko
         disko-btrfs.enable = true;
+      };
+      profiles = {
+        # hostinger vps (eg. ssh hardening)
+        vps.enable = true;
       };
       # enable system users
       # userConfig = {
