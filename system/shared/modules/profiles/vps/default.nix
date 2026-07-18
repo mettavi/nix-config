@@ -92,21 +92,13 @@ in
       systemd-boot.enable = false;
     };
 
-    services.openssh =
-      if pkgs.stdenv.isLinux then
-        {
-          settings = {
-            # options to harden openssh, especially for servers
-            # forbid the use of ssh password authentication
-            PasswordAuthentication = false;
-          };
-        }
-      else
-        {
-          extraConfig = ''
-            PasswordAuthentication no
-          '';
-        };
+    services.openssh = {
+      settings = {
+        # options to harden openssh, especially for servers
+        # forbid the use of ssh password authentication
+        PasswordAuthentication = false;
+      };
+    };
 
     # Many VPS services use static networking
     networking.useDHCP = cfg.useDHCP;
