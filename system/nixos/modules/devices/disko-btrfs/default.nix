@@ -139,7 +139,6 @@ in
       #     2) This is best used on an empty directory as it only applies to NEW files.
       #     3) Nodatacow implies nodatasum (no data checksumming), and disables compression.
 
-      # execute the systemd tmpfiles rules below AFTER the btrfs subvolumes have been mounted
       systemd =
         let
           nocowVols = [
@@ -161,6 +160,7 @@ in
           nocowSysMounts = path: "${utils.escapeSystemdPath path}.mount";
         in
         {
+          # execute the systemd tmpfiles rules below AFTER the btrfs subvolumes have been mounted
           services.systemd-tmpfiles-setup = {
             requires = map nocowSysMounts nocowPaths;
             after = map nocowSysMounts nocowPaths;
