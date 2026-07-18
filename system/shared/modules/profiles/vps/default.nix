@@ -109,18 +109,18 @@ in
       ipv4.addresses = [
         {
           address = "${cfg.ip4.addr}";
-          prefixLength = "${cfg.ip4.prefix}"; # Verify in Hostinger panel (usually 24 or 32)
+          prefixLength = "${cfg.ip4.prefix}"; # Verify in VPS (usually 24 or 32)
         }
       ];
       ipv6.addresses = [
         {
           address = "${cfg.ip6.addr}";
-          prefixLength = "${cfg.ip6.prefix}"; # Verify in Hostinger panel
+          prefixLength = "${cfg.ip6.prefix}"; # Verify in VPS
         }
       ];
     };
 
-    # Set your routing (FIND THESE IN THE HOSTINGER PANEL)
+    # Set your routing (FIND THESE IN THE VPS)
     networking.defaultGateway = "${cfg.ip4.gateway}";
     networking.defaultGateway6 = {
       address = "${cfg.ip6.gateway}";
