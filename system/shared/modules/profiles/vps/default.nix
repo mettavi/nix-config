@@ -39,7 +39,7 @@ in
                 "32"
               ]
             );
-            default = 24;
+            default = "24";
             description = "The prefix of the IP (v4)";
           };
           gateway = mkOption {
