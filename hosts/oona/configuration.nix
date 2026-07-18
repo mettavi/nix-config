@@ -386,6 +386,13 @@ in
   #      KEYBOARD_KEY_70072=sysrq # original KEY_F23 (copilot key)
   #   '';
   # };
+
+  # force kill hung drivers during shutdown phase
+  systemd.settings.Manager = {
+    DefaultTimeoutStopSec = "10s";
+    DefaultTimeoutStartSec = "10s";
+  };
+
   # home-manager modules installed for the admin user ON THIS HOST ONLY
   home-manager.users.${username} = {
     dconf.settings = {
