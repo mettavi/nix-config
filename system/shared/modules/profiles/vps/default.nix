@@ -9,20 +9,63 @@ let
   cfg = config.mettavi.system.profiles.vps;
 in
 {
-  options.mettavi.system.profiles.vps = {
+  options.mettavi.system.profiles.vps = with lib.types; {
     enable = mkOption {
-      type = types.bool;
+      type = bool;
       default = false;
       description = "A profile for a virtual private/cloud server";
     };
     useDHCP = mkOption {
-      type = types.bool;
+      type = bool;
       default = false;
       description = "Whether the use DHCP on the VPS host";
     };
     netInterface = mkOption {
-      type = types.str;
+      type = str;
       description = "The name of the main network interface on the system";
+    };
+    ip4 = mkOption {
+      type = attrsOf (submodule {
+        options = {
+          addr = mkOption {
+            type = str;
+            description = "The static IP (v4) of the network interface";
+          };
+          prefix = mkOption {
+            type = (
+              lib.types.enum [
+                "16"
+                "24"
+                "32"
+              ]
+            );
+            default = 24;
+            description = "The prefix of the IP (v4)";
+          };
+          gateway = mkOption {
+            type = str;
+            description = "The default gateway IP (v4)";
+          };
+        };
+      });
+    };
+    ip6 = mkOption {
+      type = attrsOf (submodule {
+        options = {
+          addr = mkOption {
+            type = str;
+            description = "The static IP (v6) of the network interface";
+          };
+          prefix = mkOption {
+            type = ints.unsigned;
+            description = "The prefix of the IP (v6)";
+          };
+          gateway = mkOption {
+            type = str;
+            description = "The default gateway IP (v6)";
+          };
+        };
+      });
     };
   };
 
