@@ -132,8 +132,5 @@ in
       "8.8.8.8"
       "1.1.1.1"
     ];
-
-    systemd.tmpfiles.rules = [ "L+ /var/lib/qemu/firmware - - - - ${pkgs.qemu}/share/qemu/firmware" ];
-
   };
 }
