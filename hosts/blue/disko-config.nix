@@ -14,12 +14,17 @@ with lib;
 
   disko.devices.disk = {
     ${hostname} = {
-
       type = "disk";
       device = "/dev/sda";
       content = {
         type = "gpt";
         partitions = {
+          # add a BIOS boot partition for grub, required on a GPT system without UEFI
+          biosBoot = {
+            size = "1M";
+            type = "EF02"; # Type code for BIOS boot partition
+            priority = 0;
+          };
           ESP = {
             # Priority of the partition, smaller values are created first
             # Attempt to boot from this partition first
