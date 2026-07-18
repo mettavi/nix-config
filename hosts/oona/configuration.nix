@@ -439,6 +439,7 @@ in
         # these two are required for the PersonFS plugin in gramps
         gobject-introspection
         osm-gps-map
+        poppler-utils # PDF rendering library tools
         linpkgs.tipitaka_pali_reader
       ];
       sessionVariables = {
