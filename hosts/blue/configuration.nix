@@ -12,8 +12,6 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disko-config.nix
     ./hardware-configuration.nix
-    # import the disko-btrfs module for initial install with nixos-anywhere
-    ../../system/nixos/modules/devices/disko-btrfs/default.nix
   ];
 
   # install the ghostty terminfo (which is missing from current versions of terminfo) for ssh sessions to this host
@@ -78,17 +76,17 @@
         };
       };
       # enable system users
-      # userConfig = {
-      #   timotheos.enable = true;
-      # };
+      userConfig = {
+        timotheos.enable = true;
+      };
     };
   };
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
-  # home-manager.users.${username} = {
-  #   home = {
-  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  #   stateVersion = "26.05";
-  # };
-  # };
+  home-manager.users.${username} = {
+    home = {
+      # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+      stateVersion = "26.05";
+    };
+  };
 }
