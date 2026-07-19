@@ -7,7 +7,7 @@
 with lib;
 let
   cfg = config.mettavi.system.services.ollama;
-  currentVersion = builtins.fromJSON config.system.stateVersion;
+  currentVersion = builtins.fromJSON config.system.nixos.release;
   modelsAttr = if currentVersion <= 26.05 then "models" else "modelsDir";
 in
 {
