@@ -28,7 +28,7 @@ in
       type = str;
       description = "The name of the main network interface on the system";
     };
-    ip4 = mkOption {
+    ip4 = {
       addr = mkOption {
         type = str;
         description = "The static IP (v4) of the network interface";
@@ -49,7 +49,7 @@ in
         description = "The default gateway IP (v4)";
       };
     };
-    ip6 = mkOption {
+    ip6 = {
       addr = mkOption {
         type = str;
         description = "The static IP (v6) of the network interface";
