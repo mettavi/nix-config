@@ -34,6 +34,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    home-manager-26_05 = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-26_05";
+    };
 
     ######## NIX-DARWIN ########
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-unstable"; # for nix-darwin
@@ -205,9 +209,9 @@
           # Build nixos flake using:
           # nixos-rebuild build --flake .#hostname
           nixosConfigurations = {
-            "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux" "nixpkgs";
-            "lady" = mkNixos.mkNixosConfiguration "lady" "x86_64-linux" "nixpkgs";
-            "blue" = mkNixos.mkNixosConfiguration "blue" "x86_64-linux" "nixpkgs-26_05";
+            "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux" "";
+            "lady" = mkNixos.mkNixosConfiguration "lady" "x86_64-linux" "";
+            "blue" = mkNixos.mkNixosConfiguration "blue" "x86_64-linux" "-26_05";
           };
 
           ################################  NIXOS-ANYWHERE BUILDS  ######################################

@@ -7,7 +7,7 @@
   # Function for NixOS system configuration
   mkNixosConfiguration =
     hostname: system: nixinput:
-    inputs.${nixinput}.lib.nixosSystem rec {
+    inputs."nixpkgs${nixinput}".lib.nixosSystem rec {
       inherit system;
       specialArgs = {
         inherit
@@ -78,7 +78,7 @@
         inputs.sops-nixos.nixosModules.sops
 
         # HOME-MANAGER MODULE
-        inputs.home-manager.nixosModules.home-manager
+        inputs."home-manager${nixinput}".nixosModules.home-manager
         {
           home-manager = {
             useGlobalPkgs = true;
