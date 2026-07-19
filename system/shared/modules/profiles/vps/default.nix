@@ -39,9 +39,9 @@ in
           prefix = mkOption {
             type = (
               lib.types.enum [
-                "16"
-                "24"
-                "32"
+                16
+                24
+                32
               ]
             );
             default = "24";
