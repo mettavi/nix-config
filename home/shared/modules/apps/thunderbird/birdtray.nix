@@ -98,33 +98,34 @@ let
   };
 in
 {
-  home = {
-    # install a more recent version from github
-    packages = lib.optionals pkgs.stdenv.hostPlatform.isLinux (with pkgs; [ linpkgs.birdtray ]);
-  };
+  config = lib.mkIf config.mettavi.apps.thunderbird.enableBirdtray {
+    home = {
+      # install a more recent version from github
+      packages = lib.optionals pkgs.stdenv.hostPlatform.isLinux (with pkgs; [ linpkgs.birdtray ]);
+    };
 
-  systemd.user.services = {
-    birdtray = {
-      Install = {
-        WantedBy = [ "graphical-session.target" ];
-      };
+    systemd.user.services = {
+      birdtray = {
+        Install = {
+          WantedBy = [ "graphical-session.target" ];
+        };
 
-      Service = {
-        ExecStart = "/etc/profiles/per-user/timotheos/bin/birdtray";
-        Restart = "on-failure";
-        RestartSec = 3;
-      };
+        Service = {
+          ExecStart = "/etc/profiles/per-user/timotheos/bin/birdtray";
+          Restart = "on-failure";
+          RestartSec = 3;
+        };
 
-      Unit = {
-        After = "graphical-session-pre.target";
-        Description = "Free system tray notification for new mail for Thunderbird.";
-        Documentation = [ "https://github.com/gyunaev/birdtray" ];
-        PartOf = "graphical-session.target";
+        Unit = {
+          After = "graphical-session-pre.target";
+          Description = "Free system tray notification for new mail for Thunderbird.";
+          Documentation = [ "https://github.com/gyunaev/birdtray" ];
+          PartOf = "graphical-session.target";
+        };
       };
     };
+
+    xdg.configFile."birdtray-config.json".source =
+      jsonFormat.generate "birdtray-config.json" birdtrayConfig;
   };
-
-  xdg.configFile."birdtray-config.json".source =
-    jsonFormat.generate "birdtray-config.json" birdtrayConfig;
-
 }

@@ -28,6 +28,11 @@ in
       default = false;
       description = "Install and configure the email client thunderbird";
     };
+    enableBirdtray = mkOption {
+      type = types.bool;
+      default = cfg.enable;
+      description = "Install and setup the birdtray notifications addon for thunderbird";
+    };
     accountsOrder = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [ ];
