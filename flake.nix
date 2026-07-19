@@ -207,7 +207,7 @@
           nixosConfigurations = {
             "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux" "nixpkgs";
             "lady" = mkNixos.mkNixosConfiguration "lady" "x86_64-linux" "nixpkgs";
-            "blue" = mkNixos.mkNixosConfiguration "blue" "x86_64-linux" "nixpkgs-26_05.url";
+            "blue" = mkNixos.mkNixosConfiguration "blue" "x86_64-linux" "nixpkgs-26_05";
           };
 
           ################################  NIXOS-ANYWHERE BUILDS  ######################################
