@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  pkgs,
   ...
 }:
 with lib;
@@ -30,47 +29,39 @@ in
       description = "The name of the main network interface on the system";
     };
     ip4 = mkOption {
-      type = attrsOf (submodule {
-        options = {
-          addr = mkOption {
-            type = str;
-            description = "The static IP (v4) of the network interface";
-          };
-          prefix = mkOption {
-            type = (
-              lib.types.enum [
-                16
-                24
-                32
-              ]
-            );
-            default = "24";
-            description = "The prefix of the IP (v4)";
-          };
-          gateway = mkOption {
-            type = str;
-            description = "The default gateway IP (v4)";
-          };
-        };
-      });
+      addr = mkOption {
+        type = str;
+        description = "The static IP (v4) of the network interface";
+      };
+      prefix = mkOption {
+        type = (
+          lib.types.enum [
+            16
+            24
+            32
+          ]
+        );
+        default = "24";
+        description = "The prefix of the IP (v4)";
+      };
+      gateway = mkOption {
+        type = str;
+        description = "The default gateway IP (v4)";
+      };
     };
     ip6 = mkOption {
-      type = attrsOf (submodule {
-        options = {
-          addr = mkOption {
-            type = str;
-            description = "The static IP (v6) of the network interface";
-          };
-          prefix = mkOption {
-            type = ints.unsigned;
-            description = "The prefix of the IP (v6)";
-          };
-          gateway = mkOption {
-            type = str;
-            description = "The default gateway IP (v6)";
-          };
-        };
-      });
+      addr = mkOption {
+        type = str;
+        description = "The static IP (v6) of the network interface";
+      };
+      prefix = mkOption {
+        type = ints.unsigned;
+        description = "The prefix of the IP (v6)";
+      };
+      gateway = mkOption {
+        type = str;
+        description = "The default gateway IP (v6)";
+      };
     };
   };
 
