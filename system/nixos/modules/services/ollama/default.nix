@@ -7,6 +7,8 @@
 with lib;
 let
   cfg = config.mettavi.system.services.ollama;
+  currentVersion = builtins.fromJSON config.system.stateVersion;
+  modelsAttr = if currentVersion <= 26.05 then "models" else "modelsDir";
 in
 {
   options.mettavi.system.services.ollama = {
@@ -26,7 +28,7 @@ in
       # Optional: preload models, see https://ollama.com/library
       # loadModels = [
       # ];
-      modelsDir = "${config.services.ollama.home}/models";
+      ${modelsAttr} = "${config.services.ollama.home}/models";
       # for conectivity with podman container networks
       openFirewall = true;
       port = 11434;
