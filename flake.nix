@@ -18,7 +18,7 @@
 
     ######### NIXOS #########
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-26_05.url = "github:NixOS/nixpkgs/release-26.05";
+    nixpkgs-26_05.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-25_11.url = "github:NixOS/nixpkgs/nixos-25.11";
     # Do not override cachyos-kernel nixpkgs input, otherwise there can
     # be mismatch between patches and kernel version
@@ -205,8 +205,9 @@
           # Build nixos flake using:
           # nixos-rebuild build --flake .#hostname
           nixosConfigurations = {
-            "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux";
-            "lady" = mkNixos.mkNixosConfiguration "lady" "x86_64-linux";
+            "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux" "nixpkgs";
+            "lady" = mkNixos.mkNixosConfiguration "lady" "x86_64-linux" "nixpkgs";
+            "blue" = mkNixos.mkNixosConfiguration "blue" "x86_64-linux" "nixpkgs-26_05.url";
           };
 
           ################################  NIXOS-ANYWHERE BUILDS  ######################################
