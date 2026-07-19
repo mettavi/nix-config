@@ -41,7 +41,7 @@ in
             32
           ]
         );
-        default = "24";
+        default = 24;
         description = "The prefix of the IP (v4)";
       };
       gateway = mkOption {
@@ -105,13 +105,13 @@ in
       ipv4.addresses = [
         {
           address = "${cfg.ip4.addr}";
-          prefixLength = "${cfg.ip4.prefix}"; # Verify in VPS (usually 24 or 32)
+          prefixLength = cfg.ip4.prefix; # Verify in VPS (usually 24 or 32)
         }
       ];
       ipv6.addresses = [
         {
           address = "${cfg.ip6.addr}";
-          prefixLength = "${cfg.ip6.prefix}"; # Verify in VPS
+          prefixLength = cfg.ip6.prefix; # Verify in VPS
         }
       ];
     };
