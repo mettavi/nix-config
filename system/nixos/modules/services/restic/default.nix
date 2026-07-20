@@ -680,6 +680,7 @@ in
                   # SERVICE_RESULT is set to 'exec-condition' if ExecCondition fails
                   if [ "$SERVICE_RESULT" = "exec-condition" ]; then
                     ${mkNotify {
+                      runAsUser = username; # This triggers the sudo wrapper
                       title = "Backup Skipped";
                       msg = "USB Drive not found at ${job.repo}. Sync cancelled.";
                       icon = "drive-harddisk";
