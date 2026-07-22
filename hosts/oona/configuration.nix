@@ -240,6 +240,7 @@ in
       # enable authentication via face recognition
       # TODO: Currently disabled due to a problem with building the face-recognition package
       # See https://github.com/NixOS/nixpkgs/issues/541849 for details
+      # Fixed by https://github.com/NixOS/nixpkgs/pull/541758
       howdy.enable = false;
       immich.enable = true;
       # this also enables the jellyfin module
