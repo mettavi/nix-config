@@ -19,6 +19,7 @@ in
     services.ollama = {
       enable = true;
       environmentVariables = {
+        # set to 2 for even more debug output
         # OLLAMA_DEBUG = "1";
       };
       package = mkIf (config.mettavi.system.devices.nvidia.enable) pkgs.ollama-cuda; # nividia GPU acceleration
