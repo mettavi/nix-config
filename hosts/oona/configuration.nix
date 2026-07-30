@@ -20,7 +20,7 @@ in
     ./kernel.nix
   ];
 
-  time.timeZone = lib.mkForce "America/Los_Angeles";
+  time.timeZone = lib.mkForce "Asia/Colombo";
 
   users.users.${username} = {
     # authorize remote login using ssh key
