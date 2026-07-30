@@ -155,6 +155,7 @@
     };
     # install a pinned version of a nix package with:
     # specific_package.url = "github:nixos/nixpkgs/specific_commit_hash_from_nixhub.io";
+    # Then add the following to environment.systemPackages or an overlay:
     # inputs.specific_package.legacyPackages.${pkgs.stdenv.hostPlatform.system}.package_name_from_nixhub.io
   };
   outputs =
