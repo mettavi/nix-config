@@ -229,22 +229,6 @@
         "type": "github"
       }
     },
-    "fontconfigPinned": {
-      "locked": {
-        "lastModified": 1783475452,
-        "narHash": "sha256-3S92fSuv32mjJz2Qb2F4405c21J55F4NIphz5K6hxco=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "05988b07fb05cbcb50be6bce197b4b5f75b5e61b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "05988b07fb05cbcb50be6bce197b4b5f75b5e61b",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -719,7 +703,6 @@
         "dove": "dove",
         "firefox-gnome-theme": "firefox-gnome-theme",
         "flake-parts": "flake-parts_2",
-        "fontconfigPinned": "fontconfigPinned",
         "home-manager": "home-manager",
         "home-manager-26_05": "home-manager-26_05",
         "homebrew-cask": "homebrew-cask",
