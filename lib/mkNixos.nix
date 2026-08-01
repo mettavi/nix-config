@@ -50,6 +50,10 @@
             };
           };
           networking.hostName = "${hostname}";
+          networking.nameservers = [
+            "1.1.1.1"
+            "8.8.8.8"
+          ];
           nixpkgs = {
             # Allow unfree packages
             config.allowUnfree = true;
