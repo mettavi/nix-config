@@ -53,6 +53,10 @@ in
         # make an encrypted backup weekly
         "bitwarden-backup" = {
           enable = true;
+          environment = {
+            NODE_OPTIONS = "--dns-result-order=ipv4first";
+            SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+          };
           # Ensures the service starts after the network is available
           after = [ "network.target" ];
           description = "Backup the bitwarden database";
@@ -60,19 +64,29 @@ in
           path = with pkgs; [
             bash
             bitwarden-cli
+            cacert # Explicitly ensure core CA certificates are visible in the path
             mailutils
             openssl
+            networkmanager # Keeps nm-online available for ExecStartPre
           ];
           serviceConfig = {
+            # Block execution until the internet is actively reachable
+            ExecStartPre = "${pkgs.networkmanager}/bin/nm-online -q --timeout=30";
             ExecStart = "${inputs.self}/home/shared/bin/bw_backup.sh";
             # do not start the service when running 'nixos-rebuild switch'
             RemainAfterExit = true;
             Restart = "on-failure";
+            # prevent being spammed with failure notifications when the bitwarden network is down
+            # restart a maximum of 5 times within a 10-second interval
             Type = "oneshot";
+            RestartSec = "30s"; # Wait 30 seconds before retrying
+            # Force Node.js/Bitwarden CLI to prioritize stable IPv4 connections
           };
           unitConfig = {
             # enable the service only for the main admin user
             ConditionUser = "${username}";
+            StartLimitIntervalSec = "300s"; # 5 minute window
+            StartLimitBurst = 3; # Give up after 3 total tries
           };
         };
       };
