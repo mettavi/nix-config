@@ -46,6 +46,8 @@ in
 
     # configure the jellarr module
     services.jellarr = {
+      # currently disabled due to multiple problems
+      # see https://github.com/venkyr77/jellarr/issues/76 and https://github.com/venkyr77/jellarr/issues/65
       enable = false;
       # Bootstrap: automatically inserts API key into Jellyfin's database
       # NB: bootstrap only works if jellarr and jellyfin are on the same host
