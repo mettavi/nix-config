@@ -35,6 +35,11 @@ in
         options nvidia NVreg_EnableS0ixPowerManagement=1
         # see https://wiki.nixos.org/wiki/NVIDIA re this option
         options nvidia NVreg_TemporaryFilePath=/var/tmp
+        # Fully disable GPU runtime power management (D3cold) so the dGPU is
+        # never hot-removed/re-added from the PCIe bus via pciehp while running.
+        # Added 2026-08-01 after tracing app-launch hangs + unrecoverable reboot
+        # freezes to nvidia-modeset waiting on a GPU wedged mid pciehp transition.
+        options nvidia NVreg_DynamicPowerManagement=0x00
       '';
 
     # Parameters added to the kernel command line (can only be used for built-in modules)
