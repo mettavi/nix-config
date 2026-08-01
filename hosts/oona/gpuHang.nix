@@ -1,6 +1,6 @@
 {
   pkgs,
-  # username,
+  username,
   ...
 }:
 let
@@ -11,12 +11,14 @@ let
     TS=$(date +%Y%m%d-%H%M%S)
     OUT="$OUTDIR/gpu-hang-$TS.log"
 
+    KERNEL_LOG=$(journalctl -k -n 500 --no-pager 2>&1)
+    XID_LINES=$(echo "$KERNEL_LOG" | grep -iE "NVRM: Xid")
+
     {
       echo "=== GPU hang capture: $TS ==="
       echo
-      echo "--- Recent Xid / nvidia-modeset / pciehp kernel messages ---"
-      journalctl -k -n 500 --no-pager 2>&1 | \
-        grep -iE "xid|nvidia-modeset|pciehp|semaphore|blocked for more than"
+      echo "--- Relevant kernel messages (modeset/pciehp/semaphore/blocked) ---"
+      echo "$KERNEL_LOG" | grep -iE "nvidia-modeset|pciehp|semaphore|blocked for more than|NVRM: Xid"
       echo
       echo "--- nvidia-smi (5s timeout, in case GPU is already wedged) ---"
       timeout 5 nvidia-smi -q
