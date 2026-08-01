@@ -215,7 +215,9 @@ in
         enable = true;
         backup = true; # this also enables the postfix module
       };
-      brave.enable = true;
+      # disable brave due to an error "attribute override missing",
+      # see https://github.com/nix-community/home-manager/issues/9755
+      brave.enable = false;
       calibre = {
         enable = true;
         cal_lib = "${config.users.users.${username}.home}/media/calibre";
