@@ -34,6 +34,7 @@
           };
           # Select internationalisation properties.
           # view available values with "timedatectl list-timezones | grep <America/Australia/...>"
+          # this is only a fallback value, to be overridden with the automatic tzupdate service
           time.timeZone = "Australia/Melbourne";
           i18n = {
             defaultLocale = "en_AU.UTF-8";
