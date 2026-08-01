@@ -183,8 +183,6 @@ in
               PAPERLESS_ADMIN_USER = "admin";
               PAPERLESS_APP_TITLE = lib.toSentenceCase "${name}" + " Archive";
               PAPERLESS_REDIS = "redis://paperless-redis:6379/${toString inst.redisDbIndex}";
-              # PAPERLESS_TIME_ZONE = "Australia/Melbourne";
-              PAPERLESS_TIME_ZONE = "America/Los_Angeles";
               PAPERLESS_OCR_LANGUAGE = "eng";
               PAPERLESS_DATE_PARSER_LANGUAGES = "en-AU";
               PAPERLESS_CONSUMER_RECURSIVE = "true";
