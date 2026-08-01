@@ -157,5 +157,10 @@ in
         ];
       };
     };
+    # workaround for "error: hash mismatch in fixed-output derivation"
+    # see https://github.com/venkyr77/jellarr/issues/65#issuecomment-5141883418
+    # systemd.services.jellarr.serviceConfig.ExecStart = lib.mkForce (
+    #   lib.getExe inputs.jellarr.packages.${system}.default
+    # );
   };
 }
