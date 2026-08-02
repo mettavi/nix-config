@@ -92,7 +92,7 @@ in
       # gnome only uses xkb config for initial set up, configure in dconf instead
       # see https://discourse.nixos.org/t/strange-xkboptions-behavior-gnome/33535/5
       xkb = {
-        # Despite the xserver attribute, this might still be used by Wayland
+        # xkb (X keyboard extension), despite the misnomer, is also compatible with Wayland
         layout = "us";
         model = "asus_laptop";
       };
@@ -229,6 +229,7 @@ in
     devices = {
       logitech.enable = true;
       nvidia.enable = true;
+      pali.enable = true;
       t7ssd.enable = true;
       # wdssd.enable = true;
     };
