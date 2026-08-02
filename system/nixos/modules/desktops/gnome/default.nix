@@ -6,6 +6,7 @@
   ...
 }:
 with lib;
+with lib.gvariant;
 let
   cfg = config.mettavi.system.desktops.gnome;
 in
@@ -145,6 +146,20 @@ in
               "home-manager-manual.desktop"
             ];
             translate = false;
+          };
+          "org/gnome/desktop/input-sources" = {
+            show-all-sources = true;
+            # NB: Use <Super><Space> to switch between multiple keyboard layouts
+            sources = [
+              (mkTuple [
+                "xkb"
+                "us+altgr-intl"
+              ])
+              (mkTuple [
+                "xkb"
+                "au"
+              ])
+            ];
           };
           "org/gnome/desktop/interface" = {
             # set the system to dark mode
