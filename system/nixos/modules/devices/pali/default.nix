@@ -27,7 +27,8 @@ in
     ];
 
     # install a custom keyboard layout for Pali
-    # See https://discourse.suttacentral.net/t/insert-pali-and-sanskrit-characters-with-diacritical-marks-on-discourse-and-operating-systems/311/50
+    # See https://nixos.org/manual/nixos/stable/#custom-xkb-layouts
+    # and https://discourse.suttacentral.net/t/insert-pali-and-sanskrit-characters-with-diacritical-marks-on-discourse-and-operating-systems/311/50
     services.xserver.xkb.extraLayouts = {
       pps = {
         description = "English, with Pali, Prakrit and Sanskrit";
