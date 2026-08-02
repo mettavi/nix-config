@@ -138,7 +138,12 @@ in
             "LanguageTool/LibreOffice/.keep".source = builtins.toFile "keep" "";
           };
 
-          mimeApps.associations.removed = lib.genAttrs [ "text/plain" ] (_: "libreoffice.desktop");
+          mimeApps = {
+            associations.removed = lib.genAttrs [ "text/plain" ] (_: "libreoffice.desktop");
+            defaultApplications = {
+              "application/vnd.oasis.opendocument.text" = [ "writer.desktop" ];
+            };
+          };
         };
       };
   };
