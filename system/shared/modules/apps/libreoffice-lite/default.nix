@@ -37,6 +37,9 @@ in
           translate = false;
         };
       };
+      xdg.mimeApps.defaultApplications = {
+        "application/vnd.oasis.opendocument.text" = [ "writer.desktop" ];
+      };
     };
     environment.systemPackages = with pkgs; [
       # gtk version (the kdeIntegration variable defaults to false)
