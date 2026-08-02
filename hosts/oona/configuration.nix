@@ -216,7 +216,7 @@ in
         enable = true;
         backup = true; # this also enables the postfix module
       };
-      # disable brave due to an error "attribute override missing",
+      # TODO: disable brave due to an error "attribute override missing",
       # see https://github.com/nix-community/home-manager/issues/9755
       brave.enable = false;
       calibre = {
