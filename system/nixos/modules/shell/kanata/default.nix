@@ -51,7 +51,7 @@ in
             ;; see https://github.com/jtroo/kanata/blob/main/parser/src/keys/mod.rs for a list of keys
             (defsrc
              esc
-             caps a s d f h j k l ;
+             caps a s d f h j k l scln
             )
 
             (defvar
@@ -74,11 +74,12 @@ in
              s (tap-hold-except-keys $tap-time $hold-time s rmet (q w e r t a s d f g z x c v b))
              d (tap-hold-except-keys $tap-time $hold-time d lsft (q w e r t a s d f g z x c v b))
              f (tap-hold-except-keys $tap-time $hold-time f lctl (q w e r t a s d f g z x c v b))
-             j (tap-hold-except-keys $tap-time $hold-time j rctl (y u i o p h j k l ; n m , . /))
-             k (tap-hold-except-keys $tap-time $hold-time k rsft (y u i o p h j k l ; n m , . /))
-             l (tap-hold-except-keys $tap-time $hold-time l rmet (y u i o p h j k l ; n m , . /))
+             j (tap-hold-except-keys $tap-time $hold-time j rctl (y u i o p h j k l scln n m , . /))
+             k (tap-hold-except-keys $tap-time $hold-time k rsft (y u i o p h j k l scln n m , . /))
+             l (tap-hold-except-keys $tap-time $hold-time l rmet (y u i o p h j k l scln n m , . /))
              ;; Renamed ';' to 'semi' to avoid Lisp comment parsing errors
-             semi (tap-hold-except-keys $tap-time $hold-time ; ralt (y u i o p h j k l ; n m , . /))
+             ;; Semicolon home-row mod (uses 'scln' key name to avoid comment syntax errors)
+             semi (tap-hold-except-keys $tap-time $hold-time ; ralt (y u i o p h j k l scln n m , . /))
             )
 
             (deflayer base
