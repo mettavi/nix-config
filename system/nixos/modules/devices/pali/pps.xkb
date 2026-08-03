@@ -6,61 +6,33 @@ xkb_symbols "pps" {
 
     name[Group1]= "English, with Pali, Prakrit and Sanskrit";
 
-    key <AD03> {        [         e,    E,      U0113, U0112]   };
+    // 1. Right Windows key (<RWIN> / rmet) acts as Level 3 Switch for Pali
+    key <RWIN> { [ ISO_Level3_Shift ] };
+    modifier_map Mod5 { ISO_Level3_Shift };
 
-// ṭ Ṭ
-    key <AD05> {        [         t,    T,      U1E6D, U1E6C]   };
+    // 2. Physical Left Super (<LWIN>) stays strictly Super_L (Mod4) for OS shortcuts
+    key <LWIN> { [ Super_L ] };
+    modifier_map Mod4 { Super_L };
 
-// ū Ū
-    key <AD07> {        [         u,    U,      U016B, U016A]   };
+    // 3. Right Alt (<RALT>) stays strictly Alt_R (Mod1) for Terminal navigation
+    key <RALT> { [ Alt_R, Meta_R ] };
+    modifier_map Mod1 { Alt_L, Alt_R };
 
-// ī Ī
-    key <AD08> {        [         i,    I,      U012B, U012A]   };
-
-// ā Ā
-    key <AC01> {        [         a,    A,      U0101, U0100]   };
-
-// ṣ Ṣ
-    key <AC02> {        [         s,    S,      U1E63, U1E62]   };
-
-// ḍ Ḍ
-    key <AC03> {        [         d,    D,      U1E0D, U1E0C]   };
-
-// ñ Ñ (Palatal)
-    key <AC05> {        [         g,    G,      UF1, UD1]   };
-
-// ṅ Ṅ (Gutteral)
-    key <AC06> {        [         h,    H,      U1E45, U1E44]   };
-
-// ṁ Ṁ ("Niggahīta", as used in Bhikkhu Manuals, etc.)
-    key <AC07> {        [         j,    J,      U1E41, U1E40]   };
-
-// ŋ Ŋ ("Niggahīta", as used in some chanting books, etc.)
-    key <AC08> {        [         k,    K,      U14B, U14A]  };
-
-// ḷ Ḷ
-    key <AC09> {        [         l,    L,      U1E37, U1E36]   };
-
-// ś Ś
-    key <AB01> {        [         z,    Z,      U015B, U015A]   };
-
-// ñ Ñ (Palatal)
-    key <AB04> {        [         v,    V,      UF1, UD1]   };
-
-// ṅ Ṅ (Gutteral)
-    key <AB05> {        [         b,    B,      U1E45, U1E44]   };
-
-// ṇ Ṇ (Retroflex/Cerebral)
-    key <AB06> {        [         n,    N,      U1E47, U1E46]   };
-
-// ṃ Ṃ ("Niggahīta", as used in Wisdom Publications, etc.)
-    key <AB07> {        [         m,    M,      U1E43, U1E42]   };
-
-// ṁ Ṁ ("Niggahīta", as used in Bhikkhu Manuals, etc.)
-    key <AB08> {        [         comma,    less,      U1E41, U1E40]   };
-
-// ŋ Ŋ ("Niggahīta", as used in some chanting books, etc.)
-    key <AB09> {        [         period,    greater,      U14B, U14A]   };
-
-    include "level3(ralt_switch)"
+    // 4. Pali Character Definitions
+    key <AD03> { [ e, E, U0113, U0112 ] }; // ē Ē
+    key <AD05> { [ t, T, U1E6D, U1E6C ] }; // ṭ Ṭ
+    key <AD07> { [ u, U, U016B, U016A ] }; // ū Ū
+    key <AD08> { [ i, I, U012B, U012A ] }; // ī Ī
+    key <AC01> { [ a, A, U0101, U0100 ] }; // ā Ā
+    key <AC02> { [ s, S, U1E63, U1E62 ] }; // ṣ Ṣ
+    key <AC03> { [ d, D, U1E0D, U1E0C ] }; // ḍ Ḍ
+    key <AC05> { [ g, G, U1E45, U1E44 ] }; // ṅ Ṅ
+    key <AC06> { [ h, H, U1E45, U1E44 ] }; // ṅ Ṅ
+    key <AC09> { [ l, L, U1E37, U1E36 ] }; // ḷ Ḷ
+    key <AB01> { [ z, Z, U015B, U015A ] }; // ś Ś
+    key <AB04> { [ v, V, U00F1, U00D1 ] }; // ñ Ñ
+    key <AB06> { [ n, N, U1E47, U1E46 ] }; // ṇ Ṇ
+    key <AB07> { [ m, M, U1E43, U1E42 ] }; // ṃ Ṃ
+    key <AB08> { [ comma, less, U1E41, U1E40 ] }; // ṁ Ṁ
+    key <AB09> { [ period, greater, U014B, U014A ] }; // ŋ Ŋ
 };
