@@ -41,7 +41,8 @@ in
       dconf.settings = {
         "org/gnome/desktop/input-sources" = {
           # enable the custom pps keyboard layout above as an input source in gnome
-          sources = [
+          # Force "pps" to always be prepended at the top of the input sources list
+          sources = lib.mkBefore [
             (mkTuple [
               "xkb"
               "pps"

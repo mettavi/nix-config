@@ -149,7 +149,9 @@ in
           };
           "org/gnome/desktop/input-sources" = {
             show-all-sources = true;
+            per-window = false; # "Use the same source for all windows"
             # NB: Use <Super><Space> to switch between multiple keyboard layouts
+            # These will follow "pps" from pali/default.nix in the final merged list
             sources = [
               (mkTuple [
                 "xkb"
