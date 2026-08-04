@@ -113,6 +113,7 @@ in
       };
     }
     (mkIf cfg.enable {
+      # these subvols require extra config not currently available through disko
       fileSystems = {
         "/var/lib/postgresql" = {
           device = mkDefault "/dev/disk/by-label/nixos";
