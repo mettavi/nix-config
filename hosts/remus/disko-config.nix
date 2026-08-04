@@ -94,7 +94,7 @@ with lib;
                       ];
                       swap = {
                         swapfile = {
-                          size = "4G";
+                          size = "1G";
                         };
                       };
                     };
