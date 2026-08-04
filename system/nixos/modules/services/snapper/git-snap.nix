@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   nix_repo,
   pkgs,
