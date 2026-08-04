@@ -13,6 +13,7 @@ with lib;
     let
       exclVols = [
         "@adminmedia"
+        "@admindownloads"
         "@libvirtimgs"
       ];
     in
