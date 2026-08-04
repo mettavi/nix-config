@@ -46,7 +46,7 @@ with lib;
             # See /dev/disk/by-partuuid/. You can generate a UUID with the command `uuidgen -r`.
             # NB: The PARTLABEL is generated with "disk-<disk-attr>-<part-attr>"
             # (eg. "disk-<hostname>-ESP"), unless it is set directly with "label ="
-            uuid = "6feb6d11-47b2-400e-927f-a6c4e1089101";
+            uuid = "cb238f38-6f99-4172-ae78-11b9fc464833";
             size = "1G";
             # NB: See https://wiki.archlinux.org/title/GPT_fdisk#Partition_type
             # for a list of disk type codes
@@ -62,7 +62,7 @@ with lib;
           };
           nixos = {
             size = "100%";
-            uuid = "d679c570-aded-494f-8090-b3c465ddaad8";
+            uuid = "7d245138-5881-471e-86f9-6397e449150b";
             content =
               let
                 cfg = config.mettavi.system.devices.disko-btrfs;
