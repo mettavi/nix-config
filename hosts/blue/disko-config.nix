@@ -10,7 +10,22 @@ with lib;
 {
   # select which btrfs subvols to exclude from the defaults set in the disko-btrfs module
   # not currently running VMs on host blue
-  mettavi.system.devices.disko-btrfs.subvolumes."@libvirtimgs".enable = false;
+  # mettavi.system.devices.disko-btrfs.subvolumes."@libvirtimgs".enable = false;
+
+  mettavi.system.devices.disko-btrfs.subvolumes =
+    let
+      exclVols = [
+        "@libvirtimgs"
+      ];
+    in
+    builtins.listToAttrs (
+      map (vol: {
+        name = vol;
+        value = {
+          enable = false;
+        };
+      }) exclVols
+    );
 
   disko.devices.disk = {
     ${hostname} = {
