@@ -72,6 +72,11 @@ in
       "console=ttyS0,115200"
     ];
 
+    boot.kernel.sysctl = {
+      # 10 is recommended for servers (default is 60)
+      "vm.swappiness" = 10;
+    };
+
     # set up a hyrbid boot, with BIOS and a UEFI fallback
     # many VPS VMs default to a legacy BIOS mode
     boot.loader = {
