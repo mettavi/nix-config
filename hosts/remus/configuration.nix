@@ -11,6 +11,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disko-config.nix
+    ../../system/nixos/modules/devices/disko-btrfs
     # ./hardware-configuration.nix
   ];
 
@@ -62,14 +63,14 @@
         # hostinger vps (eg. ssh hardening)
         vps = {
           enable = true;
-          netInterface = "ens18";
+          netInterface = "eth0";
           ip4 = {
-            addr = "187.127.105.244";
+            addr = "72.62.193.208";
             prefix = 24;
-            gateway = "187.127.105.254";
+            gateway = "72.62.193.254";
           };
           ip6 = {
-            addr = "2a02:4780:5e:616::1";
+            addr = "2a02:4780:5e:a648::1";
             prefix = 48;
             gateway = "2a02:4780:5e::1";
           };
