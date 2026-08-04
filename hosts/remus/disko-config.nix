@@ -16,7 +16,6 @@ with lib;
         "@libvirtimgs"
       ];
     in
-    # {
     builtins.listToAttrs (
       map (vol: {
         name = vol;
@@ -25,10 +24,6 @@ with lib;
         };
       }) exclVols
     );
-  # "@adminmedia".enable = false;
-  # not currently running VMs on host remus
-  # "@libvirtimgs".enable = false;
-  # };
 
   disko.devices.disk = {
     ${hostname} = {
