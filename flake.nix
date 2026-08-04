@@ -221,7 +221,7 @@
           # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on remote \
           # --print-build-log --target-host username@<ip address>
           # nixosConfigurations = {
-          #   "blue" = initNixos.mkNixosConfiguration "blue" "x86_64-linux" "timotheos" "nixpkgs-26_05";
+          #   "remus" = initNixos.mkNixosConfiguration "remus" "x86_64-linux" "timotheos" "nixpkgs-26_05";
           # };
 
           ################################# NIXOS QEMU VMS #############################################
