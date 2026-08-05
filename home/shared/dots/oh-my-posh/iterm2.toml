@@ -73,6 +73,23 @@ version = 4
   type = "prompt"
 
   [[blocks.segments]]
+    type = 'executiontime'
+    style = 'plain'
+    foreground = 'yellow'
+    background = 'transparent'
+    template = '{{ .FormattedMs }}'
+
+    [blocks.segments.properties]
+      threshold = 5000
+
+  [[blocks.segments]]
+    type = 'text'
+    style = 'plain'
+    background = 'transparent'
+    force = true
+    template = ' '
+
+  [[blocks.segments]]
     background = "#f36943"
     background_templates = [
       "{{if eq \"Charging\" .State.String}}#33DD2D{{end}}",
