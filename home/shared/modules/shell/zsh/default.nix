@@ -36,7 +36,7 @@ in
     };
     programs.oh-my-posh = mkIf (cfg.prompt == "oh-my-posh") {
       enable = true;
-      configFile = ../../../dots/oh-my-posh/gruvbox.json;
+      configFile = ../../../dots/oh-my-posh/iterm2.toml;
       enableZshIntegration = true;
     };
     programs.zsh = {
