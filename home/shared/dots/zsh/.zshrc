@@ -40,6 +40,9 @@ setopt HIST_FIND_NO_DUPS  # Do not display previously found event
 # (implies INC_APPEND_HISTORY and incompatible with EXTENDED_HISTORY)
 setopt SHARE_HISTORY
 
+# show expanded history before running
+setopt HIST_VERIFY
+
 
 #################### LOAD PLUGINS & CONFIGS #################### 
 
