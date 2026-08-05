@@ -29,9 +29,7 @@ in
           background-opacity = 0.85;
           # blur is not supported on gnome without the blur my shell extension
           # background-blur = 20;
-          font-size = "14";
-          # make right_alt send an escape sequence in ghostty
-          # macos-option-as-alt = true;
+          font-size = "16";
           # start windows maximized
           maximize = true;
           shell-integration-features = "sudo";
