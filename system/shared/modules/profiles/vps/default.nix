@@ -14,6 +14,11 @@ in
       default = false;
       description = "A profile for a virtual private/cloud server";
     };
+    isQemuGuest = mkOption {
+      type = bool;
+      default = true;
+      description = "Whether the VPS is a qemu guest vm";
+    };
     useDHCP = mkOption {
       type = bool;
       default = false;
@@ -100,6 +105,8 @@ in
         PasswordAuthentication = false;
       };
     };
+
+    services.qemuGuest.enable = cfg.isQemuGuest;
 
     # Many VPS services use static networking
     networking.useDHCP = cfg.useDHCP;
