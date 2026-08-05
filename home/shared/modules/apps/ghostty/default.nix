@@ -36,6 +36,7 @@ in
           # See https://ghostty.org/docs/features/ssh#shell-integration
           shell-integration-features = "sudo,ssh-env,ssh-terminfo";
           theme = "iTerm2 Pastel Dark Background";
+          working-directory = "~/.nix-config";
         }
         (mkIf pkgs.stdenv.isDarwin {
           # make right_alt send an escape sequence in ghostty
