@@ -32,7 +32,9 @@ in
           font-size = "16";
           # start windows maximized
           maximize = true;
-          shell-integration-features = "sudo";
+          # ssh-env,ssh-terminfo: set up the remote terminal environment
+          # See https://ghostty.org/docs/features/ssh#shell-integration
+          shell-integration-features = "sudo,ssh-env,ssh-terminfo";
           theme = "iTerm2 Pastel Dark Background";
         }
         (mkIf pkgs.stdenv.isDarwin {
