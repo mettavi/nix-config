@@ -25,7 +25,8 @@ in
       # settings will be written to $XDG_CONFIG_HOME/ghostty/config
       settings = mkMerge [
         {
-          background-opacity = 0.8; # default is 1 (fully opaque)
+          # 0.0 (invisible) -> 1.0 (opaque, default)
+          background-opacity = 0.85;
           # blur is not supported on gnome without the blur my shell extension
           # background-blur = 20;
           font-size = "14";
