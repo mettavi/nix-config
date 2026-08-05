@@ -20,9 +20,10 @@ in
     prompt = mkOption {
       type = types.enum [
         "manual"
+        "oh-my-posh"
         "p10k"
       ];
-      default = "p10k";
+      default = "oh-my-posh";
       description = "Set the shell prompt";
     };
   };
@@ -33,9 +34,10 @@ in
       ".p10k.zsh".source =
         mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/zsh/.p10k.zsh";
     };
-    xdg.configFile = {
-      "zsh/.zsh_aliases".source = ../../../dots/zsh/.zsh_aliases;
-      "zsh/.zsh_functions".source = ../../../dots/zsh/.zsh_functions;
+    programs.oh-my-posh = mkIf (cfg.prompt == "oh-my-posh") {
+      enable = true;
+      configFile = ../../../dots/oh-my-posh/gruvbox.json;
+      enableZshIntegration = true;
     };
     programs.zsh = {
       enable = true;
@@ -76,6 +78,10 @@ in
       };
       syntaxHighlighting.enable = true;
       zsh-abbr.enable = true;
+    };
+    xdg.configFile = {
+      "zsh/.zsh_aliases".source = ../../../dots/zsh/.zsh_aliases;
+      "zsh/.zsh_functions".source = ../../../dots/zsh/.zsh_functions;
     };
   };
 }
