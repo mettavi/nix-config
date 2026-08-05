@@ -22,7 +22,7 @@ in
     useDHCP = mkOption {
       type = bool;
       default = false;
-      description = "Whether the use DHCP on the VPS host";
+      description = "Whether to use DHCP on the VPS host";
     };
     devName = mkOption {
       type = str;
