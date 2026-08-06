@@ -42,6 +42,7 @@ in
           enable = true;
           settings = import ./tm-which-key-config.nix;
         };
+        aggressiveResize = true;
         baseIndex = 1;
         # NB: to use TWO-WAY hjkl navigation between (n)vim-tmux WITHOUT THE PREFIX,
         # the vim-tmux-navigator plugin is required on both sides (see below)
