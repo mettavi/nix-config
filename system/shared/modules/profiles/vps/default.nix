@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  username,
   ...
 }:
 with lib;
@@ -128,6 +129,11 @@ in
       ];
     };
 
+    # keep terminal sessions alive on the server
+    home-manager.users.${username} = {
+      mettavi.shell.tmux.enable = true;
+    };
+
     # Set your routing (FIND THESE IN THE VPS)
     networking.defaultGateway = "${cfg.ip4.gateway}";
     networking.defaultGateway6 = {
@@ -140,5 +146,12 @@ in
       "8.8.8.8"
       "1.1.1.1"
     ];
+
+    programs = {
+      # Enable Mosh (MObile SHell) server side and auto-configure firewall rules
+      mosh = {
+        enable = true;
+      };
+    };
   };
 }
