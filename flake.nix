@@ -213,6 +213,7 @@
             "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux" "";
             "lady" = mkNixos.mkNixosConfiguration "lady" "x86_64-linux" "";
             "blue" = mkNixos.mkNixosConfiguration "blue" "x86_64-linux" "-26_05";
+            "remus" = mkNixos.mkNixosConfiguration "remus" "x86_64-linux" "-26_05";
           };
 
           ################################  NIXOS-ANYWHERE BUILDS  ######################################
