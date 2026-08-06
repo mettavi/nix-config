@@ -452,6 +452,7 @@ in
         # these two are required for the PersonFS plugin in gramps
         gobject-introspection
         osm-gps-map
+        mosh # Mobile shell (ssh replacement)
         poppler-utils # PDF rendering library tools
         linpkgs.tipitaka_pali_reader
       ];
@@ -460,6 +461,17 @@ in
         DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox";
       };
       stateVersion = "25.11";
+    };
+
+    programs.zsh = {
+      enable = true;
+      shellAliases = {
+        # Connects via mosh and automatically attaches to a tmux session named "main"
+        # If the session doesn't exist, it creates it automatically.
+        # The "-a/--predict=always" flag forces Mosh to always execute instant local echo
+        mpangolin = "mosh --predict=always timotheos@pangolin.mettavi.cloud -- tmux new-session -A -s main";
+        mcloud = "mosh --predict=always timotheos@mettavi.cloud -- tmux new-session -A -s main";
+      };
     };
 
     # define sops secrets for email accounts used specifically on this host
