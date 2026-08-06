@@ -734,19 +734,17 @@
     },
     "secrets": {
       "locked": {
-        "lastModified": 1785996585,
-        "narHash": "sha256-ilOL+nSjnv1wM/Wtpw/X7xT0PZEEjuqZ83Cw0yrH6TA=",
-        "ref": "main",
-        "rev": "8a27b387596fb7193fd2d66a5c432e978e1f7825",
-        "shallow": true,
-        "type": "git",
-        "url": "ssh://git@github.com/mettavi/nix-secrets.git"
+        "lastModified": 1786007830,
+        "narHash": "sha256-ZkYFdSbI/90g2O9GkrlVd8cfmETJOubnVF+/Ll3fv80=",
+        "owner": "mettavi",
+        "repo": "nix-secrets",
+        "rev": "b3fb186f237989e7924cc9e7af7a15a8232a22d6",
+        "type": "github"
       },
       "original": {
-        "ref": "main",
-        "shallow": true,
-        "type": "git",
-        "url": "ssh://git@github.com/mettavi/nix-secrets.git"
+        "owner": "mettavi",
+        "repo": "nix-secrets",
+        "type": "github"
       }
     },
     "sops-nix-darwin": {
