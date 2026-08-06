@@ -29,6 +29,7 @@ in
           type = "ed25519";
         }
       ];
+      openFirewall = true; # default = true
       settings = {
         # forbid root login through SSH (may wish to override this for initial system setup)
         PermitRootLogin = "prohibit-password";
