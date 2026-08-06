@@ -66,6 +66,14 @@
       settings = {
         "github.com" = {
           identityFile = "${config.home.homeDirectory}/.ssh/${config.home.username}-${hostname}_ed25519";
+          # Completely decouple GitHub from multiplexing rules
+          controlMaster = "no";
+        };
+        "*.mettavi.cloud" = {
+          # Speeds up high-latency setups by compressing text streams
+          compression = true;
+          # Stops slow cellular DNS lookups from stalling connection handshakes
+          addressFamily = "inet";
         };
         "*" = {
           forwardAgent = false;
@@ -80,8 +88,12 @@
           controlPath = "~/.ssh/master-%C";
           controlPersist = "10m";
           hashKnownHosts = false;
-          serverAliveInterval = 0;
-          serverAliveCountMax = 3;
+          # Send a background ping every 15 seconds to keep a cellular tunnel open
+          serverAliveInterval = 15;
+          # Allow up to 4 missed pings (1 minute total) before giving up on a dead socket
+          serverAliveCountMax = 4;
+          # Let the OS track TCP connections alongside OpenSSH protocols
+          tcpKeepAlive = true;
           userKnownHostsFile = "~/.ssh/known_hosts";
         };
       };
