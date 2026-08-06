@@ -11,9 +11,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disko-config.nix
-    ../../system/nixos/modules/devices/disko-btrfs
-    ../../system/shared/modules/profiles/vps
-    # ./hardware-configuration.nix
+    ./hardware-configuration.nix
   ];
 
   ########## IMPORTANT SETTINGS ###########
