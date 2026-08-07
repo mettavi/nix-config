@@ -1,17 +1,12 @@
 {
   config,
   hostname,
-  inputs,
   lib,
   pkgs,
-  secrets_path,
   username,
   ...
 }:
 with lib;
-let
-  emailSecrets.sopsFile = "${secrets_path}/secrets/apps/email.yaml";
-in
 {
   imports = [
     # customise the hardware scan config
@@ -345,7 +340,7 @@ in
     };
     shell = {
       # see the host-specific keyboard config below
-      kanata.enable = true;
+      # kanata.enable = true;
     };
     userConfig = {
       timotheos.enable = true;
@@ -369,6 +364,10 @@ in
   mettavi = {
     apps = {
       libreoffice.enable = false;
+    };
+    profiles = {
+      # install software for my "everyday use" desktop system
+      dailydriver.enable = true;
     };
     services = {
       gramps-web.enable = true;
@@ -447,19 +446,12 @@ in
       packages = with pkgs; [
         # Simple GPU Profile switcher for ASUS laptops using Supergfxctl
         gnomeExtensions.gpu-supergfxctl-switch
-        goldendict-ng # Advanced multi-dictionary lookup program
         gramps # Genealogy software
         # these two are required for the PersonFS plugin in gramps
         gobject-introspection
         osm-gps-map
         mosh # Mobile shell (ssh replacement)
-        poppler-utils # PDF rendering library tools
-        linpkgs.tipitaka_pali_reader
       ];
-      sessionVariables = {
-        # required for electron apps, which don't read the mimeapps.list file
-        DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox";
-      };
       stateVersion = "25.11";
     };
 
@@ -472,11 +464,6 @@ in
         mpangolin = "mosh --predict=always timotheos@pangolin.mettavi.cloud -- tmux new-session -A -s main";
         mcloud = "mosh --predict=always timotheos@mettavi.cloud -- tmux new-session -A -s main";
       };
-    };
-
-    # define sops secrets for email accounts used specifically on this host
-    sops.secrets = {
-      "users/${username}/email/${inputs.secrets.email.burner}" = emailSecrets;
     };
 
     # create a symlink to the paperless genealogy media directory for gramps (not possible with home.file)
@@ -507,52 +494,6 @@ in
         "application/pdf" = [ "org.gnome.Evince.desktop" ];
       };
     };
-    mettavi = {
-      apps = {
-        anki.enable = true;
-        firefox.enable = true;
-        ghostty.enable = true;
-        latex.enable = true;
-        obsidian.enable = true;
-        thunderbird =
-          let
-            burner = inputs.secrets.email.burner;
-            monk = inputs.secrets.email.monk;
-            personal = inputs.secrets.email.personal;
-            # NB: 1. leave "accountFilters" unassigned in extraEmailAccounts to use all filters
-            # 2. the default "flavor" is "gmail.com"
-          in
-          {
-            enable = true;
-            accountsOrder = [
-              personal
-              monk
-              burner
-            ];
-            extraEmailAccounts = {
-              ${monk} = {
-                accountFilters = [
-                  "tagGH"
-                ];
-                address = monk;
-                aliases = [ personal ];
-              };
-              ${burner} = {
-                accountFilters = [
-                ];
-                address = burner;
-              };
-            };
-          };
-      };
-      shell = {
-        bash.enable = true;
-        nh.enable = true;
-        nvim-wrap.enable = true;
-        tmux.enable = true;
-        yazi.enable = true;
-      };
-    };
   };
 
   # Copy the NixOS configuration file and link it from the resulting system
@@ -568,5 +509,4 @@ in
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.11"; # Did you read the comment?
-
 }

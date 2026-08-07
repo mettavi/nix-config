@@ -1,13 +1,16 @@
 {
   config,
+  inputs,
   lib,
   pkgs,
+  secrets_path,
   username,
   ...
 }:
 with lib;
 let
   cfg = config.mettavi.profiles.dailydriver;
+  emailSecrets.sopsFile = "${secrets_path}/secrets/apps/email.yaml";
 in
 {
   options.mettavi.profiles.dailydriver = {
@@ -23,8 +26,13 @@ in
       with pkgs;
       with pkgs.xpkgs;
       [
-        localsend # Open source cross-platform alternative to AirDrop
-        obsidian
+        karere # Gtk4 WhatsApp client
+        kdePackages.okular # KDE document viewer
+        mpv # General-purpose media player, fork of MPlayer and mplayer2
+        pdfarranger # python-gtk application to merge/split/rotate/crop/rearrange PDFs
+        picard # offical musicbrainz tagger
+        variety # wallpaper manager
+        # localsend # Open source cross-platform alternative to AirDrop
         zoom-us # video conferencing applications
       ]
       ++
@@ -45,9 +53,73 @@ in
       };
     };
     home-manager.users.${username} = {
-      mettavi.shell = {
-        restic.enable = true;
-        syncthing.enable = true;
+      home = {
+        packages = with pkgs; [
+          goldendict-ng # Advanced multi-dictionary lookup program
+          poppler-utils # PDF rendering library tools
+          linpkgs.tipitaka_pali_reader
+        ];
+        sessionVariables = {
+          # required for electron apps, which don't read the mimeapps.list file
+          DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox";
+        };
+      };
+      mettavi = {
+        apps = {
+          anki.enable = true;
+          firefox.enable = true;
+          ghostty.enable = true;
+          latex.enable = true;
+          obsidian.enable = true;
+          thunderbird =
+            let
+              burner = inputs.secrets.email.burner;
+              monk = inputs.secrets.email.monk;
+              personal = inputs.secrets.email.personal;
+              # NB: 1. leave "accountFilters" unassigned in extraEmailAccounts to use all filters
+              # 2. the default "flavor" is "gmail.com"
+            in
+            {
+              enable = true;
+              accountsOrder = [
+                personal
+                monk
+                burner
+              ];
+              extraEmailAccounts = {
+                ${monk} = {
+                  accountFilters = [
+                    "tagGH"
+                  ];
+                  address = monk;
+                  aliases = [ personal ];
+                };
+                ${burner} = {
+                  accountFilters = [
+                  ];
+                  address = burner;
+                };
+              };
+            };
+          zotero.enable = true;
+        };
+        shell = {
+          bash.enable = true;
+          nh.enable = true;
+          nvim-wrap.enable = true;
+          tmux.enable = true;
+          yazi.enable = true;
+        };
+      };
+      # define sops secrets for email accounts used specifically on my daily system
+      sops.secrets = {
+        "users/${username}/email/${inputs.secrets.email.burner}" = emailSecrets;
+      };
+      xdg.autostart = {
+        enable = true;
+        entries = [
+          "${pkgs.variety}/share/applications/variety.desktop"
+        ];
       };
     };
   };
