@@ -33,6 +33,9 @@
 
   ########## SYSTEM ARCHITECTURE ###########
 
+  # lower the unprivileged port floor so rootless containers can bind under port 1024
+  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = 0;
+
   # enable in-memory compressed devices and swap space
   zramSwap = {
     enable = true;
