@@ -171,10 +171,10 @@ in
                 # "ee" is the enterprise edition (free for personal use)
                 image = "docker.io/fosrl/pangolin:ee-latest";
                 autoUpdate = "registry";
-                environments = [
-                  "PANGOLIN_DOMAIN=https://pangolin.mettavi.cloud"
-                  "DB_TYPE=sqlite"
-                ];
+                environments = {
+                  PANGOLIN_DOMAIN = "https://pangolin.mettavi.cloud";
+                  DB_TYPE = "sqlite";
+                };
                 environmentFiles = [
                   config.sops.secrets."users/${username}/pangolin.env".path
                 ];
