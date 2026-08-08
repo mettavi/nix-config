@@ -1,4 +1,5 @@
 {
+  config,
   inputs,
   lib,
   secrets_path,
