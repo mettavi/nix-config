@@ -283,6 +283,7 @@ in
               domains:
                 domain1:
                   base_domain: "mettavi.cloud"
+                  cert_resolver: "letsencrypt"
 
               email:
                 smtp_host: "smtp.gmail.com"
