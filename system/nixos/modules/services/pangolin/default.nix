@@ -49,6 +49,10 @@ in
           enable = true;
           dataDir = "${config.users.users.${username}.home}/.config/containers/systemd/config/traefik";
           staticConfigOptions = {
+            accessLog = {
+              filePath = "/var/log/traefik/access.log";
+              format = "json";
+            };
             api = {
               dashboard = true;
               # Access the Traefik dashboard on <Traefik IP>:8080 of your server
@@ -84,9 +88,15 @@ in
                 transport.respondingTimeouts.readTimeout = "30m";
               };
             };
-            experimental.plugins.badger = {
-              moduleName = "github.com/fosrl/badger";
-              version = "v1.4.0"; # Check github.com/fosrl/badger for the latest release.
+            experimental.plugins = {
+              badger = {
+                moduleName = "github.com/fosrl/badger";
+                version = "v1.4.0"; # Check github.com/fosrl/badger for the latest release.
+              };
+              bouncer = {
+                moduleName = "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin";
+                version = "v1.7.1"; # check the plugin catalog for the latest release
+              };
             };
             log = {
               compress = true;
@@ -111,11 +121,21 @@ in
               middlewares = {
                 badger.plugin.badger.disableForwardAuth = true;
                 redirect-to-https.redirectScheme.scheme = "https";
+                crowdsec.plugin.bouncer = {
+                  enabled = true;
+                  crowdsecMode = "stream"; # recommended: syncs the ban list every 60s, fastest per-request path
+                  crowdsecLapiScheme = "http";
+                  crowdsecLapiHost = "127.0.0.1:8080"; # reaches the host via pasta's loopback passthrough
+                  crowdsecLapiKeyFile = "/etc/traefik/crowdsec-lapi.key";
+                };
               };
               routers = {
                 api-router = {
                   entryPoints = [ "websecure" ];
-                  middlewares = [ "badger" ];
+                  middlewares = [
+                    "badger"
+                    "crowdsec"
+                  ];
                   rule = "Host(`pangolin.mettavi.cloud`) && PathPrefix(`/api/v1`)";
                   service = "api-service";
                   tls.certResolver = "letsencrypt";
@@ -124,6 +144,7 @@ in
                   entryPoints = [ "web" ];
                   middlewares = [
                     "badger"
+                    "crowdsec"
                     "redirect-to-https"
                   ];
                   rule = "Host(`pangolin.mettavi.cloud`)";
@@ -131,14 +152,20 @@ in
                 };
                 next-router = {
                   entryPoints = [ "websecure" ];
-                  middlewares = [ "badger" ];
+                  middlewares = [
+                    "badger"
+                    "crowdsec"
+                  ];
                   rule = "Host(`pangolin.mettavi.cloud`) && !PathPrefix(`/api/v1`)";
                   service = "next-service";
                   tls.certResolver = "letsencrypt";
                 };
                 ws-router = {
                   entryPoints = [ "websecure" ];
-                  middlewares = [ "badger" ];
+                  middlewares = [
+                    "badger"
+                    "crowdsec"
+                  ];
                   rule = "Host(`pangolin.mettavi.cloud`)";
                   service = "api-service";
                   tls.certResolver = "letsencrypt";
@@ -159,6 +186,9 @@ in
         };
 
         sops.secrets = {
+          "users/${username}/crowdsec-lapi.key" = {
+            sopsFile = "${secrets_path}/secrets/hosts/remus.yaml";
+          };
           "users/${username}/pangolin.env" = {
             sopsFile = "${secrets_path}/secrets/hosts/remus.yaml";
           };
@@ -229,7 +259,10 @@ in
                 volumes = [
                   "${configHome}/traefik:/etc/traefik:ro"
                   "${configHome}/letsencrypt:/letsencrypt"
-                  "${configHome}/traefik/logs:/var/log/traefik"
+                  "/var/log/traefik:/var/log/traefik"
+                  "${
+                    config.sops.secrets."users/${username}/crowdsec-lapi.key".path
+                  }:/etc/traefik/crowdsec-lapi.key:ro"
                 ];
               };
               serviceConfig = {
