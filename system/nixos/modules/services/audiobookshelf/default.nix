@@ -36,7 +36,6 @@ in
           containerConfig = {
             autoUpdate = "registry";
             environments = {
-              TZ = "Australia/Melbourne";
             };
             # pull from the github container registry (ghcr)
             image = "ghcr.io/advplyr/audiobookshelf:latest";

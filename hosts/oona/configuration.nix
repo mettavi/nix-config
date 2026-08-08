@@ -16,12 +16,6 @@ with lib;
     ./kernel.nix
   ];
 
-  # Set the timezone to null with mkForce to allow the service to claim it
-  time.timeZone = lib.mkForce null;
-
-  # 2. Enable the automatic geo-timezone daemon
-  services.tzupdate.enable = true;
-
   users.users.${username} = {
     # authorize remote login using ssh key
     openssh.authorizedKeys.keys = [

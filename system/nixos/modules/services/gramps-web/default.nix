@@ -30,7 +30,7 @@ in
 
     # --- HOME MANAGER (USER-LEVEL) CONFIGURATIONS ---
     home-manager.users."${username}" =
-      { config, ... }:
+      { config, nixosConfig, ... }:
       let
         inherit (config.virtualisation.quadlet) volumes;
         # 1. Define a standard Containerfile to build the GPU-enabled image
@@ -52,7 +52,6 @@ in
 
         # 2. Extract shared configuration so both grampsweb and celery can inherit it properly
         sharedContainerEnv = {
-          TZ = "Australia/Melbourne";
           GRAMPSWEB_TREE = "Allen";
 
           # PATHS AND NETWORK DOMAIN CONFIGURATIONS
@@ -131,6 +130,7 @@ in
         virtualisation.quadlet =
           let
             inherit (config.virtualisation.quadlet) builds containers;
+            mkContainer = nixosConfig.mettavi.system.services.podman.mkContainer;
           in
           {
             # Create a shared network so the containers can resolve 'grampsweb_redis'
@@ -151,7 +151,7 @@ in
             };
 
             containers = {
-              grampsweb = {
+              grampsweb = mkContainer {
                 autoStart = true;
                 containerConfig = {
                   # Use the image we built above
@@ -196,7 +196,7 @@ in
                 };
               };
 
-              grampsweb_celery = {
+              grampsweb_celery = mkContainer {
                 containerConfig = {
                   image = "localhost/grampsweb:cuda";
                   exec = "celery -A gramps_webapi.celery worker --loglevel=INFO --concurrency=2";
@@ -230,7 +230,7 @@ in
                 };
               };
 
-              grampsweb_redis = {
+              grampsweb_redis = mkContainer {
                 containerConfig = {
                   image = "docker.io/valkey/valkey:8-alpine";
 

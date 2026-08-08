@@ -52,6 +52,20 @@ in
         kanata.enable = true;
       };
     };
+
+    # Force override the global UTC default to let systemd handle it dynamically
+    time.timeZone = lib.mkForce null;
+    # Enable the dynamic tracking daemon
+    services.automatic-timezoned.enable = true;
+    services.geoclue2 = {
+      geoProviderUrl = "https://api.beacondb.net/v1/geolocate";
+      # Allow the system daemon to read surrounding Wi-Fi signals
+      enableWifi = true;
+      # Optional: Submit data back to beaconDB to build out regional maps
+      # (Requires a working GPS antenna if true, change to false if you lack one)
+      submitData = false;
+    };
+
     home-manager.users.${username} = {
       home = {
         packages = with pkgs; [

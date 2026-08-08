@@ -20,6 +20,17 @@ in
       description = "Configure podman using quadlets with a flake service";
       default = true;
     };
+    # 🌟 NEW: We export our wrapper helper function as an option
+    # so you can use it anywhere in your codebase!
+    mkContainer = mkOption {
+      type = types.functionTo types.attrs;
+      description = "Helper function to inject shared timezone volumes into quadlets";
+      default =
+        containerConfig:
+        lib.recursiveUpdate containerConfig {
+          containerConfig.timezone = "local";
+        };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -47,6 +58,12 @@ in
     virtualisation.quadlet = mkIf cfg.quadlet {
       enable = true;
       autoUpdate.enable = true;
+    };
+    home-manager.users.${username} = {
+      # If using the 'quadlet-nix' home manager module syntax:
+      virtualisation.quadlet = lib.mkIf cfg.quadlet {
+        enable = true;
+      };
     };
   };
 }
