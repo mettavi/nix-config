@@ -47,5 +47,16 @@ in
         }
       ];
     };
+    services.crowdsec-firewall-bouncer = {
+      enable = true;
+
+      # Auto-registers with the local `crowdsec` service and manages its own
+      # API key — no manual `cscli bouncers add` step required.
+      registerBouncer.enable = true;
+
+      # `mode` defaults to "nftables" if networking.nftables.enable is true,
+      # else "iptables" — leave unset unless you want to force one.
+      # `api_url` defaults to the local LAPI (http://127.0.0.1:8080) automatically.
+    };
   };
 }
