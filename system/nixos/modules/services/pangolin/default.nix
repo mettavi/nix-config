@@ -215,8 +215,8 @@ in
                 Restart = "always";
               };
               unitConfig = {
-                After = [ pangolin.service ];
-                Requires = [ pangolin.service ];
+                After = [ "pangolin.service" ];
+                Requires = [ "pangolin.service" ];
               };
             };
             traefik = {
@@ -235,8 +235,8 @@ in
                 Restart = "always";
               };
               unitConfig = {
-                After = [ pangolin.service ];
-                Requires = [ pangolin.service ];
+                After = [ "pangolin.service" ];
+                Requires = [ "pangolin.service" ];
               };
             };
           };
@@ -258,9 +258,9 @@ in
                 Restart = "always";
               };
               unitConfig = {
-                description = "Pangolin Pod";
-                After = [ network-online.target ];
-                Wants = [ network-online.target ];
+                Description = "Pangolin Pod";
+                After = [ "network-online.target" ];
+                Wants = [ "network-online.target" ];
               };
             };
           };
