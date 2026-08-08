@@ -7,7 +7,13 @@
   # Function for NixOS system configuration
   mkNixosConfiguration =
     hostname: system: nixinput:
-    inputs."nixpkgs${nixinput}".lib.nixosSystem rec {
+    let
+      # Introspect the specific nixpkgs instance requested by this host
+      # This completely eliminates the need to pass 'lib' from flake.nix!
+      hostNixpkgs = inputs."nixpkgs${nixinput}";
+      lib = hostNixpkgs.lib;
+    in
+    hostNixpkgs.lib.nixosSystem rec {
       inherit system;
       specialArgs = {
         inherit
@@ -35,7 +41,7 @@
           # Select internationalisation properties.
           # view available values with "timedatectl list-timezones | grep <America/Australia/...>"
           # this is only a fallback value, to be overridden with the automatic tzupdate service
-          time.timeZone = "Australia/Melbourne";
+          time.timeZone = lib.mkDefault "UTC";
           i18n = {
             defaultLocale = "en_AU.UTF-8";
             extraLocaleSettings = {

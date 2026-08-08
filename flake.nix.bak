@@ -1,6 +1,18 @@
 {
   description = "Metta's Nix system flake";
 
+  # Binary cache
+  # this setting allows untrusted users of this flake to approve substituters interactively
+  # it is only useful in a multi-user system
+  # nixConfig = {
+  # will be appended to the system-level substituters
+  # extra-substituters = [
+  # ];
+  # will be appended to the system-level trusted-public-keys
+  #   extra-trusted-public-keys = [
+  #   ];
+  # };
+
   inputs = {
     ####################### MAIN INPUTS ##########################
 
@@ -146,23 +158,104 @@
     # Then add the following to environment.systemPackages or an overlay:
     # inputs.specific_package.legacyPackages.${pkgs.stdenv.hostPlatform.system}.package_name_from_nixhub.io
   };
-
   outputs =
-    inputs@{ self, flake-parts, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } {
+    inputs@{
+      self,
+      ...
+    }:
+
+    # let
+    #   mkDarwin = import ./lib/mkDarwin.nix { inherit inputs self; };
+    #   mkNixos = import ./lib/mkNixos.nix { inherit inputs lib self; };
+    #   initNixos = import ./lib/initNixos.nix { inherit inputs; };
+    # in
+    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        # To import an internal flake module: ./other.nix
+        # To import an external flake module:
+        #   1. Add foo to inputs
+        #   2. Add foo as a parameter to the outputs function
+        #   3. Add here: foo.flakeModule
+      ];
       systems = [
         "x86_64-linux"
         "aarch64-darwin"
       ];
 
-      # Import separate files to keep flake.nix clean
-      imports = [
-        ./hosts.nix
-      ];
+      # perSystem = { config, self', inputs', pkgs, system, ... }: {
+      # Per-system attributes can be defined here. The self' and inputs'
+      # module parameters provide easy access to attributes of the same
+      # system.
 
-      flake = {
-        nix_repo = ".nix-config";
-        secrets_path = toString inputs.secrets;
-      };
+      # Equivalent to  inputs'.nixpkgs.legacyPackages.hello;
+      #   packages.default = pkgs.hello;
+      # };
+
+      flake =
+        # The usual flake attributes can be defined here, including system-
+        # agnostic ones like nixosModule and system-enumerating ones, although
+        # those are more easily expressed in perSystem.
+        {
+          nix_repo = ".nix-config";
+          secrets_path = toString inputs.secrets;
+
+          # DARWIN-REBUILD BUILDS
+          # Build darwin flake using:
+          # $ darwin-rebuild build --flake .#hostname
+          darwinConfigurations =
+            let
+              # We import mkNixos as a clean local attribute function
+              mkDarwin = import ./lib/mkDarwin.nix { inherit inputs self; };
+            in
+            {
+              "mack" = mkDarwin.mkDarwinConfiguration "mack" "x86_64-darwin";
+            };
+
+          # NIXOS-REBUILD BUILDS
+          # Build nixos flake using:
+          # nixos-rebuild build --flake .#hostname
+          # nixosConfigurations = {
+          #   "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux" "";
+          #   "lady" = mkNixos.mkNixosConfiguration "lady" "x86_64-linux" "";
+          #   "blue" = mkNixos.mkNixosConfiguration "blue" "x86_64-linux" "-26_05";
+          #   "remus" = mkNixos.mkNixosConfiguration "remus" "x86_64-linux" "-26_05";
+          # };
+
+          # We pass self and inputs down to our builder module here
+          nixosConfigurations =
+            let
+              # We import mkNixos as a clean local attribute function
+              mkNixos = import ./lib/mkNixos.nix { inherit inputs self; };
+            in
+            {
+              "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux" "";
+              "lady" = mkNixos.mkNixosConfiguration "lady" "x86_64-linux" "";
+              "blue" = mkNixos.mkNixosConfiguration "blue" "x86_64-linux" "-26_05";
+              "remus" = mkNixos.mkNixosConfiguration "remus" "x86_64-linux" "-26_05";
+            };
+
+          ################################  NIXOS-ANYWHERE BUILDS  ######################################
+
+          # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
+          # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on remote \
+          # --print-build-log --target-host username@<ip address>
+          # nixosConfigurations = {
+          #   "remus" = initNixos.mkNixosConfiguration "remus" "x86_64-linux" "timotheos" "nixpkgs-26_05";
+          # };
+
+          ################################# NIXOS QEMU VMS #############################################
+          # run "nix build -L .#nixosConfigurations.nix-guest.config.system.build.vm" to create the guest vm
+          # launch the vm with "QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-nixos-vm -nographic; reset"
+          # for ssh connections, add QEMU_NET_OPTS="hostfwd=tcp:127.0.0.1:2222-:22"
+          # to set up port fowarding to the guest and add the "-p 2222" flag to ssh
+          # See https://nix.dev/tutorials/nixos/nixos-configuration-on-vm and
+          # https://dev.to/vst/running-nixos-guests-on-qemu-3lpa
+          # nixosConfigurations."nix-guest" = inputs.nixpkgs-26_05.lib.nixosSystem {
+          #   system = "x86_64-linux";
+          #   modules = [
+          #     ./hosts/nix-guest/configuration.nix
+          #   ];
+          # };
+        };
     };
 }
