@@ -169,7 +169,7 @@ in
               autoStart = "default.target";
               containerConfig = {
                 # "ee" is the enterprise edition (free for personal use)
-                image = "ghcr.io/fosrl/pangolin:ee-latest";
+                image = "docker.io/fosrl/pangolin:ee-latest";
                 autoUpdate = "registry";
                 environments = [
                   "PANGOLIN_DOMAIN=https://pangolin.mettavi.cloud"
