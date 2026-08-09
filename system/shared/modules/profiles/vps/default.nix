@@ -107,6 +107,7 @@ in
       };
     };
 
+    # enable the qemu guest agent if required
     services.qemuGuest.enable = cfg.isQemuGuest;
 
     # Many VPS services use static networking
