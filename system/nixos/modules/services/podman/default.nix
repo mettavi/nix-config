@@ -54,14 +54,13 @@ in
       defaultNetwork.settings.dns_enabled = true;
     };
 
-    # enable podman & podman systemd generator using the podman quadlet flake
+    # enable podman & podman systemd generator using the podman quadlet-nix flake
     virtualisation.quadlet = mkIf cfg.quadlet {
       enable = true;
       autoUpdate.enable = true;
     };
     home-manager.users.${username} = {
-      # If using the 'quadlet-nix' home manager module syntax:
-      virtualisation.quadlet = lib.mkIf cfg.quadlet {
+      virtualisation.quadlet = mkIf cfg.quadlet {
         enable = true;
       };
     };
