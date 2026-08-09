@@ -54,6 +54,7 @@ in
     };
 
     # Force override the global UTC default to let systemd handle it dynamically
+    # view available values with "timedatectl list-timezones | grep <America/Australia/...>"
     time.timeZone = lib.mkForce null;
     # Enable the dynamic tracking daemon
     services.automatic-timezoned.enable = true;
