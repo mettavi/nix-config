@@ -129,7 +129,7 @@ in
       "1.1.1.1"
     ];
 
-    # Many VPS services use static networking (default is disabled)
+    # Many VPS services use static networking (default to static)
     networking.useDHCP = cfg.useDHCP;
 
     programs = {
