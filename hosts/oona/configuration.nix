@@ -277,6 +277,8 @@ with lib;
                   exclusions = [
                     ".Trash-0"
                     "/var/backup/postgresql/*.prev.sql"
+                    # do not backup temporary VMs
+                    "/var/lib/libvirt/images/test"
                   ];
                   mount = "/";
                   paths = [
