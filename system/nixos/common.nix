@@ -26,7 +26,7 @@
   ];
 
   environment.variables = {
-    # remove the default "S" to prevent truncated lines in journalctl output,
+    # remove the default "S" to prevent truncated lines in journalctl output (wraps instead),
     # which causes problems with scrollback in the (eg. ghostty) terminal
     SYSTEMD_LESS = "FRXMK";
   };
