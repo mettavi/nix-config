@@ -14,23 +14,20 @@
     ../shared
     ../shared/modules
 
+    # MODULES FROM FLAKE INPUTS
     inputs.disko.nixosModules.disko
+    # thunderbird privacy and security
     inputs.dove.nixosModules.default
+    # this provides a wrapper for the nix-index package (no need to install the package separately)
     inputs.nix-index-database.nixosModules.nix-index
+    # Adds the NUR overlay
     inputs.nur.modules.nixos.default
     inputs.sops-nixos.nixosModules.sops
   ];
 
-  # The safe global default timezone you wanted to apply
-  time.timeZone = lib.mkDefault "UTC";
-
-  networking.hostName = hostname;
-  networking.nameservers = [
-    "1.1.1.1"
-    "8.8.8.8"
-  ];
-
   environment.variables = {
+    # remove the default "S" to prevent truncated lines in journalctl output,
+    # which causes problems with scrollback in the (eg. ghostty) terminal
     SYSTEMD_LESS = "FRXMK";
   };
 
@@ -42,12 +39,24 @@
     };
   };
 
+  networking.hostName = hostname;
+  networking.nameservers = [
+    "1.1.1.1"
+    "8.8.8.8"
+  ];
+
   nixpkgs = {
+    # Allow unfree packages
     config.allowUnfree = true;
     hostPlatform = "${system}";
   };
 
+  # The Git revision of the top-level flake from which this configuration was built
   system.configurationRevision = self.rev or self.dirtyRev or null;
+
+  # Set a safe global timezone for servers, which can be overriden on laptops etc.
+  # view available values with "timedatectl list-timezones | grep <America/Australia/...>"
+  time.timeZone = lib.mkDefault "UTC";
 
   # Centralized Home Manager orchestration
   home-manager = {
