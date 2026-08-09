@@ -75,7 +75,7 @@ in
           acceptedAudioCodecs = [
             "aac"
             "mp3"
-            "libopus"
+            "opus"
           ];
           acceptedContainers = [
             "mov"
