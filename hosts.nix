@@ -158,6 +158,7 @@ in
         ./system/shared
         ./system/shared/modules
 
+        # this provides a wrapper for the nix-index package (no need to install separately)
         inputs.nix-index-database.darwinModules.nix-index
         inputs.sops-nix-darwin.darwinModules.sops
         inputs.home-manager-darwin.darwinModules.home-manager
