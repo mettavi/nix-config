@@ -26,6 +26,10 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs-26_05";
     };
+    home-manager-darwin = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
+    };
 
     ######## NIX-DARWIN ########
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-unstable"; # for nix-darwin
