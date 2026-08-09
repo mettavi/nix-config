@@ -92,11 +92,13 @@ in
             networking.hostName = initAttrs.targetHost;
             nixpkgs.hostPlatform = initAttrs.system;
             nixpkgs.config.allowUnfree = true;
+            # The Git revision of the top-level flake from which this configuration was built
             system.configurationRevision = self.rev or self.dirtyRev or null;
 
             users.users.${initAttrs.username} = {
               isNormalUser = true;
               home = "/home/${initAttrs.username}";
+              # allow the admin user to configure networking and use sudo
               extraGroups = [
                 "networkmanager"
                 "wheel"
@@ -109,7 +111,9 @@ in
             programs.git.enable = true;
             programs.vim.enable = true;
             services.openssh = {
+              # Enable the OpenSSH daemon
               enable = true;
+              # create a host key
               hostKeys = [
                 {
                   comment = "root@${initAttrs.targetHost}";
