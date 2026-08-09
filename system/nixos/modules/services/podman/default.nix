@@ -15,6 +15,7 @@ in
 
   options.mettavi.system.services.podman = {
     enable = lib.mkEnableOption "Install and set up the nixos podman server";
+    # configure podman using quadlet-nix at https://github.com/SEIAROTg/quadlet-nix
     quadlet = mkOption {
       type = types.bool;
       description = "Configure podman using quadlets with a flake service";
