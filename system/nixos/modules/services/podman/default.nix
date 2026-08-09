@@ -20,8 +20,7 @@ in
       description = "Configure podman using quadlets with a flake service";
       default = true;
     };
-    # 🌟 NEW: We export our wrapper helper function as an option
-    # so you can use it anywhere in your codebase!
+    # export a wrapper helper function as an option to use it anywhere
     mkContainer = mkOption {
       type = types.functionTo types.attrs;
       description = "Helper function to inject shared timezone volumes into quadlets";
