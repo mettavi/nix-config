@@ -1,4 +1,9 @@
-{ inputs, self, ... }:
+{
+  inputs,
+  lib,
+  self,
+  ...
+}:
 let
   # -------------------------------------------------------------
   # 1. DATA MATRICES: Centralized configurations list
@@ -7,19 +12,43 @@ let
     oona = {
       system = "x86_64-linux";
       channel = "nixpkgs";
+      profile = "physical";
     };
     lady = {
       system = "x86_64-linux";
       channel = "nixpkgs";
+      profile = "physical";
     };
     blue = {
       system = "x86_64-linux";
       channel = "nixpkgs-26_05";
+      profile = "physical";
     };
     remus = {
       system = "x86_64-linux";
       channel = "nixpkgs-26_05";
+      profile = "physical";
     };
+    ################################# NIXOS QEMU VMS #############################################
+    # run "nix build -L .#nixosConfigurations.nix-guest.config.system.build.vm" to create the guest vm
+    # launch the vm with "QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-nixos-vm -nographic; reset"
+    # For ssh connections, add QEMU_NET_OPTS="hostfwd=tcp:127.0.0.1:2222-:22"...
+    # to set up port fowarding to the guest and add the "-p 2222" flag to ssh.
+    # See https://nix.dev/tutorials/nixos/nixos-configuration-on-vm and
+    # https://dev.to/vst/running-nixos-guests-on-qemu-3lpa
+    # 🌟 Fully-Equipped VM (Inherits common.nix, home-manager, users, etc.)
+    nix-guest-full = {
+      system = "x86_64-linux";
+      channel = "nixpkgs-26_05";
+      profile = "equipped-vm";
+    };
+    # 🌟 Barebones Experimental VMs (Completely clean, no global overrides)
+    nix-guest = {
+      system = "x86_64-linux";
+      channel = "nixpkgs-26_05";
+      profile = "barebones-vm";
+    };
+    # test-vm2   = { system = "x86_64-linux"; channel = "nixpkgs"; profile = "barebones-vm"; }; # Easy to add more!
   };
 
   darwinHosts = {
@@ -28,6 +57,10 @@ let
     };
   };
 
+  ################################  NIXOS-ANYWHERE BUILDS  ######################################
+  # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
+  # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on remote \
+  # --print-build-log --target-host username@<ip address>
   initHosts = {
     # Nixos-anywhere bootstrap environment targets
     remus-init = {
@@ -58,24 +91,35 @@ in
   # -------------------------------------------------------------
 
   # --- Standard NixOS Configs ---
+  # Build nixos flake using: sudo nixos-rebuild switch --flake .#hostname
   flake.nixosConfigurations =
     (builtins.mapAttrs (
       hostname: hostAttrs:
-      inputs."${hostAttrs.channel}".lib.nixosSystem {
+      let
+        hostNixpkgs = inputs."${hostAttrs.channel}";
+      in
+      hostNixpkgs.lib.nixosSystem {
         inherit (hostAttrs) system;
         specialArgs = sharedArgs hostAttrs.system hostname;
         modules = [
           ./hosts/${hostname}/configuration.nix
-          ./hosts/${hostname}/hardware-configuration.nix
+        ]
+        # If the host is physical, it gets the hardware scan
+        ++ (lib.optional (hostAttrs.profile == "physical") ./hosts/${hostname}/hardware-configuration.nix)
+        # If the host is NOT a barebones VM, it inherits your whole global setup
+        ++ (lib.optionals (hostAttrs.profile != "barebones-vm") [
           ./system/nixos/common.nix
           inputs."home-manager${
             if hostAttrs.channel == "nixpkgs" then "" else "-26_05"
           }".nixosModules.home-manager
-        ];
+        ]);
       }
     ) nixosHosts)
 
-    # --- 🌟 Bootstrapping NixOS Profiles (initNixos replacement) ---
+    # --- 🌟 Bootstrapping NixOS Profiles ---
+    # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
+    # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on remote \
+    # --print-build-log --target-host username@<ip address>
     // (builtins.mapAttrs (
       initName: initAttrs:
       inputs."${initAttrs.channel}".lib.nixosSystem {
@@ -129,7 +173,8 @@ in
       }
     ) initHosts);
 
-  # --- 🌟 Darwin Profiles (mkDarwin replacement) ---
+  # --- 🌟 Darwin Profiles ---
+  # Build darwin flake using: sudo darwin-rebuild switch --flake .#hostname
   flake.darwinConfigurations = builtins.mapAttrs (
     hostname: hostAttrs:
     inputs.nix-darwin.lib.darwinSystem {
