@@ -207,7 +207,7 @@ with lib;
       };
       # TODO: disable brave due to an error "attribute override missing",
       # see https://github.com/nix-community/home-manager/issues/9755
-      brave.enable = false;
+      brave.enable = true;
       calibre = {
         enable = true;
         cal_lib = "${config.users.users.${username}.home}/media/calibre";
