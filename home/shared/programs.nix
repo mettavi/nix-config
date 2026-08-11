@@ -39,11 +39,6 @@
         shellIntegrationOptions = [ "-p 80%,60%" ];
       };
     };
-    java = {
-      # Certified builds of OpenJDK (with JavaFX included for Pali Platform app)
-      enable = true;
-      package = pkgs.zulu.override { enableJavaFX = true; };
-    };
     jq.enable = true;
     # manage ssh-agent and ssh-add automatically and extend caching to once per system login
     # NB: this works cross-platform and doesn't depend on macOS-specific "UseKeyChain" option in ssh config
