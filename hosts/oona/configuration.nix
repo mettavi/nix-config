@@ -262,14 +262,19 @@ with lib;
                 "@adminhome" = {
                   exclusions = [
                     ".Trash-0"
+                    ".Trash-1000"
                     ".local/share/Trash"
+                    ".local/share/containers/.Trash-1000"
                     ".npm"
                   ];
                   mount = "/home/${username}";
                   paths = [ "." ];
                 };
                 "@adminmedia" = {
-                  exclusions = [ ".Trash-0" ];
+                  exclusions = [
+                    ".Trash-0"
+                    ".Trash-1000"
+                  ];
                   mount = "/home/${username}/media";
                   paths = [ "." ];
                 };
