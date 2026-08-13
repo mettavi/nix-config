@@ -1,12 +1,5 @@
 { lib, pkgs, ... }:
 {
-  # use Avahi’s service discovery facilities
-  services.avahi = {
-    enable = true;
-    nssmdns4 = true; # allows applications to resolve names in the .local domain
-    openFirewall = true; # open UDP port 5353
-  };
-
   # Enable sound with pipewire.
   services.pipewire = {
     enable = true;

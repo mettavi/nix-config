@@ -53,6 +53,19 @@ in
       };
     };
 
+    # use Avahi’s service discovery facilities
+    services.avahi = {
+      enable = true;
+      nssmdns4 = true; # allows applications to resolve names in the .local domain
+      openFirewall = true; # open UDP port 5353
+      publish = {
+        # advertise the connection to other devices
+        enable = true;
+        addresses = true;
+        workstation = true;
+      };
+    };
+
     # Force override the global UTC default to let systemd handle it dynamically
     # view available values with "timedatectl list-timezones | grep <America/Australia/...>"
     time.timeZone = lib.mkForce null;
