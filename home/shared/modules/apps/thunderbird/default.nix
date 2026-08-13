@@ -603,20 +603,26 @@ in
                   username
                 ];
                 perIdentitySettings = id: { };
+                settings =
+                  id:
+                  let
+                    escAddress = replaceStrings [ "@" ] [ "%40" ] address;
+                    # 1. Define your base/generic settings
+                    baseSettings = {
+                      # disable the "friendly" directory names with the ${folderName} variable (unreliable)
                       # "mail.server.server_${id}.directory" =
                       #   "/home/${username}/.thunderbird/${username}/ImapMail/${folderName}";
                       # "mail.server.server_${id}.directory-rel" = "[ProfD]ImapMail/${folderName}";
 
-                  "mail.server.server_${id}.autosync_max_age_days" = 30;
-                  # Reply before the quoted text (gmail style)
-                  "mail.identity.id_${id}.reply_on_top" = 1;
-                  # Signature before the quoted text (gmail style)
-                  "mail.identity.id_${id}.sig_bottom" = false;
-                  # Include signature on forwards
-                  "mail.identity.id_${id}.sig_on_fwd" = true;
-                  # Enable HTML in signature
-                  "mail.identity.id_${id}.htmlSigFormat" = false;
-                };
+                      "mail.server.server_${id}.autosync_max_age_days" = 30;
+
+                      "mail.identity.id_${id}.reply_on_top" = 1;
+                      "mail.identity.id_${id}.sig_bottom" = false;
+                      "mail.identity.id_${id}.sig_on_fwd" = true;
+                      "mail.identity.id_${id}.htmlSigFormat" = false;
+
+                    };
+
                     # 2. Define conditional Gmail overrides
                     gmailSettings = lib.optionalAttrs (flavor == "gmail.com") {
                       "mail.identity.id_${id}.fcc" = false;
@@ -625,7 +631,16 @@ in
                       "mail.identity.id_${id}.archive_folder" = "imap://${escAddress}@imap.gmail.com/[Gmail]/All Mail";
                       "mail.server.server_${id}.delete_model" = 0;
                       "mail.server.server_${id}.spamLevel" = 0;
+                      # FORCE GLOBAL DEFAULT FALLBACKS TO FALSE
+                      # "mail.server.default.autosync_offline_stores" = false;
+                      # "mail.server.default.offline_download" = false;
+                      # Now safely unchecked globally per account
+                      # "mail.server.server_${id}.autosync_offline_stores" = false;
+                      # "mail.server.server_${id}.offline_download" = false;
                     };
+                  in
+                  # 3. Perform a safe deep merge instead of a list concatenation or shallow replacement
+                  lib.recursiveUpdate baseSettings gmailSettings;
               };
             };
         in
