@@ -678,17 +678,22 @@ in
             # Pass the raw string payload directly to writeText
             filterContentFile = pkgs.writeText "msgFilterRules.dat" filterTextContent;
 
-            targetDir = "$HOME/.thunderbird/${username}/ImapMail/${folderName}";
+            # disable the friendly ${folderName} config
+            # targetDir = "$HOME/.thunderbird/${username}/ImapMail/${folderName}";
           in
           lib.optionalString value.enable ''
-            # Ensure the destination folder exists before writing to it
-            mkdir -p "${targetDir}"
-
-            # Copy the compiled template into a local, normal, writable file
-            cp -f "${filterContentFile}" "${targetDir}/msgFilterRules.dat"
-
-            # Explicitly grant owner read/write permissions so Thunderbird can edit it freely
-            chmod 600 "${targetDir}/msgFilterRules.dat"
+            PROFILE_IMAP="$HOME/.thunderbird/${username}/ImapMail"
+            if [ -d "$PROFILE_IMAP" ]; then
+            # Find the active directory mapping on disk by matching files or directories
+            # If a folderName fragment or directory matching hash exists, inject rules into it
+              for target in "$PROFILE_IMAP"/*"${folderName}"* "$PROFILE_IMAP"/????????????????????????????????????????????????????????????????; do
+                if [ -d "$target" ]; then
+                  echo "Injecting filter rules safely into active directory: $target"
+                  cp -f "${filterContentFile}" "$target/msgFilterRules.dat"
+                  chmod 600 "$target/msgFilterRules.dat"
+                fi
+              done
+            fi
           '';
       in
       {
