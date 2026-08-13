@@ -338,6 +338,7 @@ with lib;
           };
         };
       };
+      tailscale.enable = true;
     };
     shell = {
       # see the host-specific keyboard config below
