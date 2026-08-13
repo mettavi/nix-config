@@ -619,6 +619,15 @@ in
                   # Enable HTML in signature
                   "mail.identity.id_${id}.htmlSigFormat" = false;
                 };
+                    # 2. Define conditional Gmail overrides
+                    gmailSettings = lib.optionalAttrs (flavor == "gmail.com") {
+                      "mail.identity.id_${id}.fcc" = false;
+                      "mail.identity.id_${id}.archive_enabled" = true;
+                      "mail.identity.id_${id}.archives_folder_picker_mode" = 1;
+                      "mail.identity.id_${id}.archive_folder" = "imap://${escAddress}@imap.gmail.com/[Gmail]/All Mail";
+                      "mail.server.server_${id}.delete_model" = 0;
+                      "mail.server.server_${id}.spamLevel" = 0;
+                    };
               };
             };
         in
