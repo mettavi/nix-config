@@ -603,11 +603,9 @@ in
                   username
                 ];
                 perIdentitySettings = id: { };
-                settings = id: {
-                  # Explicitly lock friendly paths based on the email address username
-                  "mail.server.server_${id}.directory" =
-                    "/home/${username}/.thunderbird/${username}/ImapMail/${folderName}";
-                  "mail.server.server_${id}.directory-rel" = "[ProfD]ImapMail/${folderName}";
+                      # "mail.server.server_${id}.directory" =
+                      #   "/home/${username}/.thunderbird/${username}/ImapMail/${folderName}";
+                      # "mail.server.server_${id}.directory-rel" = "[ProfD]ImapMail/${folderName}";
 
                   "mail.server.server_${id}.autosync_max_age_days" = 30;
                   # Reply before the quoted text (gmail style)
