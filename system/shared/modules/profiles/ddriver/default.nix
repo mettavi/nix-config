@@ -81,6 +81,14 @@ in
     };
 
     home-manager.users.${username} = {
+      # soothing pastel themes
+      catppuccin = {
+        # see color demos at https://github.com/catppuccin/catppuccin
+        enable = true;
+        # don't autoenable all the module's ports
+        autoEnable = false;
+        };
+
       home = {
         packages = with pkgs; [
           goldendict-ng # Advanced multi-dictionary lookup program

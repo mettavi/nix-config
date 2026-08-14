@@ -76,6 +76,7 @@ in
             ../../../../../home/shared/sops-home.nix
             ../../../../../home/shared/modules
             ../../../../../home/${platform}
+            # see color demos at https://github.com/catppuccin/catppuccin
             inputs.catppuccin.homeModules.catppuccin
           ];
           home = {
