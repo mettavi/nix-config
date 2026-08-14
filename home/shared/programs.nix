@@ -6,10 +6,7 @@
 }:
 {
   home.packages = with pkgs; [
-    atuin
     fastfetch # neofetch-like sys info tool
-    # Bash and zsh key bindings for Git objects, powered by fzf
-    fzf-git-sh
   ];
 
   # install the HTML manual and "home-manager-help" command
@@ -19,7 +16,6 @@
     # ensure home-manager itself is installed
     home-manager.enable = true;
     aria2.enable = true;
-    # atuin.enable = true;
     bat.enable = true;
     delta = {
       enable = true;
@@ -30,15 +26,6 @@
       enableZshIntegration = false;
     };
     fd.enable = true;
-    fzf = {
-      enable = true;
-      tmux = {
-        # Sets FZF_TMUX=1, enabling fzf in tmux popups
-        enableShellIntegration = true;
-        # open in popup windows in 80% width, 60% height
-        shellIntegrationOptions = [ "-p 80%,60%" ];
-      };
-    };
     jq.enable = true;
     # manage ssh-agent and ssh-add automatically and extend caching to once per system login
     # NB: this works cross-platform and doesn't depend on macOS-specific "UseKeyChain" option in ssh config

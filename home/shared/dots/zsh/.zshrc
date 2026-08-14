@@ -54,12 +54,6 @@ fi
 # source additional zsh configurations
 [[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
 
-# source the script for loading and configuring fzf
-source ~/.config/fzf/.fzfrc
-
-# source the script for loading and configuring atuin
-source ~/.config/atuin/.atuinrc
-
 # make sure these custom functions are sourced last
 [[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions
 

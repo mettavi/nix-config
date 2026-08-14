@@ -14,6 +14,14 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    catppuccin = mkIf config.catppuccin.enable {
+      fzf = {
+        enable = true;
+        flavor = "macchiato";
+        # accent = "sapphire";
+      };
+    };
+
     home.packages = with pkgs; [
       # Bash and zsh key bindings for Git objects, powered by fzf
       # see below for zsh source

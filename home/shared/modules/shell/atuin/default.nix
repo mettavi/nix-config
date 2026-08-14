@@ -2,9 +2,7 @@
   config,
   hostname,
   lib,
-  osConfig,
   secrets_path,
-  username,
   ...
 }:
 with lib;
@@ -17,11 +15,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    catppuccin = {
-      # see color demos at https://github.com/catppuccin/catppuccin
-      enable = true;
-      # don't autoenable all the module's ports
-      autoEnable = false;
+    catppuccin = mkIf config.catppuccin.enable {
       atuin = {
         enable = true;
         flavor = "macchiato";
@@ -61,8 +55,9 @@ in
           "directory"
           "session-preload"
         ];
-        session_path = config.sops.secrets."users/${username}/atuin/atuin_session_${hostname}".path;
-        key_path = config.sops.secrets."users/${username}/atuin/atuin_key_${hostname}".path;
+        session_path =
+          config.sops.secrets."users/${config.home.username}/atuin/atuin_session_${hostname}".path;
+        key_path = config.sops.secrets."users/${config.home.username}/atuin/atuin_key_${hostname}".path;
         ## how often to sync history. note that this is only triggered when a command
         ## is run, so sync intervals may well be longer
         ## set it to 0 to sync after every command
@@ -78,12 +73,10 @@ in
         atuinSecrets.sopsFile = "${secrets_path}/secrets/apps/atuin.yaml";
       in
       {
-        "users/${username}/atuin/atuin_key_${hostname}" = atuinSecrets;
-        "users/${username}/atuin/atuin_session_${hostname}" = atuinSecrets;
+        "users/${config.home.username}/atuin/atuin_key_${hostname}" = atuinSecrets;
+        "users/${config.home.username}/atuin/atuin_session_${hostname}" = atuinSecrets;
       };
     # zsh function to search atuin shell history with fzf
-    # xdg.configFile = {
-    #   ".atuinrc".source = ../../../dots/atuin/.atuinrc;
-    # };
+    # programs.zsh.initContent = (builtins.readFile ./.atuinrc);
   };
 }

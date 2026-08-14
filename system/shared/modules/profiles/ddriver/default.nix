@@ -140,7 +140,9 @@ in
           zotero.enable = true;
         };
         shell = {
+          atuin.enable = true;
           bash.enable = true;
+          fzf.enable = true;
           nh.enable = true;
           nvim-wrap.enable = true;
           tmux.enable = true;
