@@ -226,10 +226,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    catppuccin = {
-      enable = true;
-      # don't autoenable all the module's ports
-      autoEnable = false;
+    catppuccin = mkIf config.catppuccin.enable {
       thunderbird = {
         enable = true;
         flavor = "mocha";
