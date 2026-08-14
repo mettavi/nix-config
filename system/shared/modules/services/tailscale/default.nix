@@ -1,6 +1,9 @@
 {
   config,
+  hostname,
   lib,
+  secrets_path,
+  username,
   ...
 }:
 with lib;
@@ -19,9 +22,19 @@ in
   config = mkIf cfg.enable {
     services.tailscale = {
       enable = true;
+      # If you would like to use a preauthorized key, set
+      # Note: maximum expire time is 90 days
+      authKeyFile = config.sops.secrets."users/${username}/tailscale_key_${hostname}".path;
       # Optional: pin a friendly hostname for this device on the tailnet
       # (otherwise it defaults to your system hostname).
       # extraUpFlags = [ "--hostname=laptop" ];
+    };
+
+    sops.secrets = {
+      "users/${username}/tailscale_key_${hostname}" = {
+        # login automatically using an auth key
+        sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
+      };
     };
 
     # Trust traffic arriving over the tailscale0 interface — this only
