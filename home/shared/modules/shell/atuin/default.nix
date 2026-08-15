@@ -42,29 +42,38 @@ in
         ## If enabled, upon hitting enter Atuin will immediately execute the command,
         ## whereas tab will put the command in the prompt for editing.
         ## If set to false, both enter and tab will place the command in the prompt for editing.
-        ## This applies for new installs. Old installs will keep the old behaviour unless configured otherwise.
         enter_accept = true;
-        ## The list of enabled filter modes, in order of priority.
-        ## The "workspace" mode is skipped when not in a workspace or workspaces = false.
-        ## Default filter mode can be overridden with the filter_mode setting.
-        filters = [
-          "host"
-          "global"
-          "session"
-          "workspace"
-          "directory"
-          "session-preload"
-        ];
-        session_path =
-          config.sops.secrets."users/${config.home.username}/atuin/atuin_session_${hostname}".path;
-        key_path = config.sops.secrets."users/${config.home.username}/atuin/atuin_key_${hostname}".path;
-        ## how often to sync history. note that this is only triggered when a command
-        ## is run, so sync intervals may well be longer
-        ## set it to 0 to sync after every command
-        sync_frequency = "5m";
+        ## which filter mode to use for interactive search
+        ## possible values: "global", "host", "session", "session-preload", "directory", "workspace"
+        ## consider using search.filters to customize the enablement and order of filter modes
+        filter_mode = "host";
+        keymap_mode = "vim-normal";
         ## which search mode to use for interactive search
         ## possible values: prefix, fulltext, fuzzy, daemon-fuzzy
         search_mode = "daemon-fuzzy";
+        ## The list of enabled filter modes, in order of priority.
+        ## The "workspace" mode is skipped when not in a workspace or workspaces = false.
+        ## Default filter mode can be overridden with the filter_mode setting.
+        # NB: Toggle the filter mode using CTRL-r
+        search = {
+          filters = [
+            "host"
+            "global"
+            "session"
+            "workspace"
+            "directory"
+            "session-preload"
+          ];
+        };
+        session_path =
+          config.sops.secrets."users/${config.home.username}/atuin/atuin_session_${hostname}".path;
+        key_path = config.sops.secrets."users/${config.home.username}/atuin/atuin_key_${hostname}".path;
+        deamon = {
+          ## how often to sync history. note that this is only triggered when a command
+          ## is run, so sync intervals may well be longer
+          ## set it to 0 to sync after every command
+          sync_frequency = "5m";
+        };
       };
     };
     # set up automatic server sync using atuin key and session tokens
