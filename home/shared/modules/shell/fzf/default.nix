@@ -18,6 +18,7 @@ in
       fzf = {
         enable = true;
         flavor = "macchiato";
+        # NB: A accent for fzf is not supported
         # accent = "sapphire";
       };
     };
