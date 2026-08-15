@@ -202,7 +202,6 @@ in
     # as a static xdg.configFile symlink — the account paths depend on
     # runtime-only info (Thunderbird's hashed ImapMail directories) that
     # Nix can't know at eval time.
-
     # xdg.configFile."birdtray-config.json".source =
     #   jsonFormat.generate "birdtray-config.json" birdtrayConfig;
   };
