@@ -39,6 +39,12 @@ in
       settings = {
         ## enable or disable automatic sync
         auto_sync = true;
+        daemon = {
+          ## how often to sync history. note that this is only triggered when a command
+          ## is run, so sync intervals may well be longer
+          ## set it to 0 to sync after every command
+          sync_frequency = "5m";
+        };
         ## If enabled, upon hitting enter Atuin will immediately execute the command,
         ## whereas tab will put the command in the prompt for editing.
         ## If set to false, both enter and tab will place the command in the prompt for editing.
@@ -68,11 +74,10 @@ in
         session_path =
           config.sops.secrets."users/${config.home.username}/atuin/atuin_session_${hostname}".path;
         key_path = config.sops.secrets."users/${config.home.username}/atuin/atuin_key_${hostname}".path;
-        deamon = {
-          ## how often to sync history. note that this is only triggered when a command
-          ## is run, so sync intervals may well be longer
-          ## set it to 0 to sync after every command
-          sync_frequency = "5m";
+        tmux = {
+          # Enable using atuin with tmux popup (requires tmux >= 3.2)
+          # When enabled and running inside tmux, Atuin will use a popup window for interactive search.
+          enabled = true;
         };
       };
     };
