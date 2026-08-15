@@ -6,9 +6,6 @@
   ...
 }:
 let
-  # Define the JSON formatting utility (produces 2-space indented JSON)
-  jsonFormat = pkgs.formats.json { };
-
   profileName = config.home.username;
   # home = config.home.homeDirectory;
   profileDir = "${config.home.homeDirectory}/.thunderbird/${profileName}";
@@ -18,31 +15,25 @@ let
   monkEmail = inputs.secrets.email.monk;
   burnerEmail = inputs.secrets.email.burner;
 
-  # Helper function to extract the local part of the email address (before the @)
-  # Example: "timotheos@personal.com" -> "timotheos"
-  getEmailPrefix = emailStr: builtins.head (lib.splitString "@" emailStr);
+  # Account metadata used to build the config. "email" must be the FULL
+  # address, since that's what Thunderbird stores as
+  # mail.server.serverN.userName for Gmail IMAP — not just the local part.
+  birdtrayAccountsMeta = [
+    {
+      color = "#e01b24";
+      email = personalEmail;
+    }
+    {
+      color = "#0000ff";
+      email = monkEmail;
+    }
+    {
+      color = "#33d17a";
+      email = burnerEmail;
+    }
+  ];
 
-  # Helper function to generate paths to INBOX.msf files
-  mkBirdtrayAccountList =
-    color: emailAddress:
-    let
-      folderName = getEmailPrefix emailAddress;
-    in
-    [
-      {
-        inherit color;
-        path = "${profileDir}/ImapMail/${folderName}/INBOX.msf";
-      }
-    ];
-
-  # Combine all the configured accounts together
-  birdtrayAccounts =
-    (mkBirdtrayAccountList "#e01b24" personalEmail)
-    ++ (mkBirdtrayAccountList "#0000ff" monkEmail)
-    ++ (mkBirdtrayAccountList "#33d17a" burnerEmail);
-
-  birdtrayConfig = {
-    accounts = birdtrayAccounts;
+  birdtrayConfigBase = {
     "advanced/blinkingusealpha" = false;
     "advanced/forcedRereadInterval" = 0;
     "advanced/horizontalUnreadCountOffset" = 0;
@@ -96,6 +87,86 @@ let
     "common/showunreademailcount" = true;
     "common/startClosedThunderbird" = true;
   };
+
+  finalConfigPath = "${config.home.homeDirectory}/.config/birdtray-config.json";
+
+  # This script runs right before Birdtray starts each time. It reads
+  # Thunderbird's own prefs.js to find the *current* hashed ImapMail
+  # directory for each account, and writes out the final config. Because
+  # it re-reads prefs.js on every service start, it automatically stays
+  # correct even if Thunderbird renames the directories after an upgrade
+  # or reinstall - no hardcoded hash, ever.
+  birdtrayConfigGenerator =
+    pkgs.writers.writePython3 "birdtray-generate-config"
+      {
+        flakeIgnore = [
+          "E501" # line too long — expected for embedded JSON literals
+          "E221" # multiple spaces before operator — used deliberately for alignment
+        ];
+      } # python
+      ''
+        import json
+        import re
+        import pathlib
+        import sys
+
+        profile_dir = pathlib.Path("""${profileDir}""")
+        prefs_path = profile_dir / "prefs.js"
+        output_path = pathlib.Path("""${finalConfigPath}""")
+
+        base_config = json.loads(r"""${builtins.toJSON birdtrayConfigBase}""")
+        accounts_meta = json.loads(r"""${builtins.toJSON birdtrayAccountsMeta}""")
+
+        if not prefs_path.exists():
+            print(f"birdtray-generate-config: {prefs_path} not found", file=sys.stderr)
+            text = ""
+        else:
+            text = prefs_path.read_text()
+
+        username_re = re.compile(
+            r'user_pref\("mail\.server\.(server[\w]+)\.userName",\s*"([^"]*)"\);'
+        )
+        dir_abs_re = re.compile(
+            r'user_pref\("mail\.server\.(server[\w]+)\.directory",\s*"([^"]*)"\);'
+        )
+        dir_rel_re = re.compile(
+            r'user_pref\("mail\.server\.(server[\w]+)\.directory-rel",\s*"([^"]*)"\);'
+        )
+
+        usernames = dict(username_re.findall(text))
+        dirs_abs = dict(dir_abs_re.findall(text))
+        dirs_rel = dict(dir_rel_re.findall(text))
+
+        username_to_dir = {}
+        for server, username in usernames.items():
+            if server in dirs_rel:
+                rel = dirs_rel[server].replace("[ProfD]", "").lstrip("/")
+                username_to_dir[username] = str(profile_dir / rel)
+            elif server in dirs_abs:
+                username_to_dir[username] = dirs_abs[server]
+
+        accounts = []
+        for meta in accounts_meta:
+            email = meta["email"]
+            color = meta["color"]
+            directory = username_to_dir.get(email)
+            if directory is None:
+                print(
+                    f"birdtray-generate-config: no directory for {email}",
+                    file=sys.stderr,
+                )
+                continue
+            accounts.append({"color": color, "path": f"{directory}/INBOX.msf"})
+
+        base_config["accounts"] = accounts
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(json.dumps(base_config, indent=2))
+        print(
+            f"birdtray-generate-config: wrote {len(accounts)} account(s)",
+            file=sys.stderr,
+        )
+      '';
+
 in
 {
   config = lib.mkIf config.mettavi.apps.thunderbird.enableBirdtray {
@@ -111,6 +182,7 @@ in
         };
 
         Service = {
+          ExecStartPre = "${birdtrayConfigGenerator}";
           ExecStart = "/etc/profiles/per-user/timotheos/bin/birdtray";
           Restart = "on-failure";
           RestartSec = 3;
@@ -125,7 +197,13 @@ in
       };
     };
 
-    xdg.configFile."birdtray-config.json".source =
-      jsonFormat.generate "birdtray-config.json" birdtrayConfig;
+    # birdtray-config.json is now generated at runtime by
+    # birdtrayConfigGenerator (see ExecStartPre above), NOT declared here
+    # as a static xdg.configFile symlink — the account paths depend on
+    # runtime-only info (Thunderbird's hashed ImapMail directories) that
+    # Nix can't know at eval time.
+
+    # xdg.configFile."birdtray-config.json".source =
+    #   jsonFormat.generate "birdtray-config.json" birdtrayConfig;
   };
 }
