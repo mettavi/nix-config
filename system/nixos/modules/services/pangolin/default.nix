@@ -212,23 +212,9 @@ in
                 # Access the Traefik dashboard on <Traefik IP>:8080 of your server
                 insecure: true
 
-              # certificatesResolvers.letsencrypt.acme = {
-              #   caServer = "https://acme-v02.api.letsencrypt.org/directory";
-              #   email = inputs.secrets.email.personal;
-              #   storage = "/letsencrypt/acme.json";
-              #   httpChallenge.entryPoint = "web"; # cannot issue wildcard certs
-              # };
               certificatesResolvers:
-                # letsencrypt:
-                #   acme:
-                #     caServer: "https://acme-v02.api.letsencrypt.org/directory" 
-                #     email: "${inputs.secrets.email.personal}"
-                #     storage: "/letsencrypt/acme.json"
-                #     httpChallenge:
-                #       entryPoint: "web" # cannot issue wildcard certs
                 cloudflare:
                   acme:
-                  # Email is also read by Traefik from env if provided (CF_API_EMAIL).
                     caServer: "https://acme-v02.api.letsencrypt.org/directory"
                     email: "${inputs.secrets.email.personal}"
                     storage: "/letsencrypt/acme.json"
