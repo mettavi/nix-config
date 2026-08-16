@@ -184,10 +184,10 @@ in
                   prefer_wildcard_cert: true
 
               email:
-                smtp_host: "smtp.gmail.com"
+                smtp_host: "9wmsrvh2zzw2.jd2m.mail-manager-smtp.amazonaws.com"
                 smtp_port: 587
-                smtp_user: "${inputs.secrets.email.cloud}"
-                no_reply: "${inputs.secrets.email.cloud}"
+                smtp_secure: true
+                no_reply: ${inputs.secrets.email.cloud}
 
               server:
                 cors:
