@@ -199,7 +199,7 @@ in
               flags:
                 require_email_verification: true
                 disable_signup_without_invite: true
-                disable_user_create_org: false
+                disable_user_create_org: true
                 allow_raw_resources: true 
             '';
           "containers/systemd/config/traefik/traefik_config.yml".text = # yaml
