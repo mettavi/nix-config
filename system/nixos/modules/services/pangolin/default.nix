@@ -206,7 +206,6 @@ in
             ''
               # Static (install-time) configuration.
               # https://doc.traefik.io/traefik/getting-started/configuration-overview/
-
               api:
                 dashboard: true
                 # Access the Traefik dashboard on <Traefik IP>:8080 of your server
@@ -218,7 +217,7 @@ in
                     caServer: "https://acme-v02.api.letsencrypt.org/directory"
                     email: "${inputs.secrets.email.personal}"
                     storage: "/letsencrypt/acme.json"
-                    # required for wildcard certs
+                    # required for wildcard certs, see https://docs.pangolin.net/self-host/advanced/wild-card-domains
                     dnsChallenge:
                       provider: "cloudflare"
                       # disablePropagationCheck: true # optional, speeds up in labs 
