@@ -1,5 +1,6 @@
 {
   config,
+  hostname,
   lib,
   secrets_path,
   ...
@@ -19,7 +20,7 @@ in
 
   config = mkIf cfg.enable {
     sops.secrets."newt.env" = {
-      sopsFile = "${secrets_path}/secrets/hosts/<app-host>.yaml"; # adjust to your app VPS's sops file
+      sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
       owner = "newt";
       group = "newt";
     };
