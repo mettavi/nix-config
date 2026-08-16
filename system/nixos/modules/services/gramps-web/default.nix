@@ -64,12 +64,11 @@ in
           GRAMPSWEB_THUMBNAIL_CACHE_DIR = "/app/thumbnail_cache";
 
           # SYSTEM EMAIL ACCOUNT (eg. for sending password reset emails)
-          GRAMPSWEB_EMAIL_HOST = "smtp.gmail.com";
+          GRAMPSWEB_EMAIL_HOST = "9wmsrvh2zzw2.jd2m.mail-manager-smtp.amazonaws.com";
           GRAMPSWEB_EMAIL_PORT = "587";
-          GRAMPSWEB_EMAIL_HOST_USER = inputs.secrets.email.personal;
           GRAMPSWEB_EMAIL_USE_SSL = "false";
           GRAMPSWEB_EMAIL_USE_STARTTLS = "true";
-          GRAMPSWEB_DEFAULT_FROM_EMAIL = inputs.secrets.name;
+          GRAMPSWEB_DEFAULT_FROM_EMAIL = inputs.secrets.email.cloud;
 
           # Database Connection Brokers
           GRAMPSWEB_CELERY_CONFIG__broker_url = "redis://grampsweb_redis:6379/0";
