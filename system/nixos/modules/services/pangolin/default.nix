@@ -180,7 +180,8 @@ in
               domains:
                 domain1:
                   base_domain: "mettavi.cloud"
-                  cert_resolver: "letsencrypt"
+                  cert_resolver: "cloudflare"
+                  prefer_wildcard_cert: true
 
               email:
                 smtp_host: "smtp.gmail.com"
