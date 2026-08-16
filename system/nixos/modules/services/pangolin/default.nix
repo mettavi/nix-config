@@ -186,8 +186,8 @@ in
               email:
                 smtp_host: "smtp.gmail.com"
                 smtp_port: 587
-                smtp_user: "${inputs.secrets.email.personal}"
-                no_reply: "${inputs.secrets.email.personal}"
+                smtp_user: "${inputs.secrets.email.cloud}"
+                no_reply: "${inputs.secrets.email.cloud}"
 
               server:
                 cors:
