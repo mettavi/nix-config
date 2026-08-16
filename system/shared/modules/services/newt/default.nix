@@ -27,6 +27,7 @@ in
 
     services.newt = {
       enable = true;
+      # See https://docs.pangolin.net/manage/blueprints
       blueprint = {
         "public-resources" = {
           vaultwarden = {
