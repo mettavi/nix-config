@@ -112,6 +112,9 @@ in
             traefik = {
               autoStart = "default.target";
               containerConfig = {
+                environmentFiles = [
+                  config.sops.secrets."users/${username}/traefik.env".path
+                ];
                 exec = "--configFile=/etc/traefik/traefik_config.yml";
                 image = "docker.io/traefik:latest";
                 pod = "services.pod";
