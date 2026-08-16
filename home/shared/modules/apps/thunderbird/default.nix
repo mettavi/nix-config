@@ -569,9 +569,6 @@ in
                 else
                   enable;
 
-              # Dynamically calculate the same folder name used for your mail
-              folderName = getEmailPrefix address;
-
             in
             {
               enable = finalEnable;
