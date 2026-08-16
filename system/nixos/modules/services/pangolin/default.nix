@@ -1,5 +1,6 @@
 {
   config,
+  hostname,
   inputs,
   lib,
   secrets_path,
@@ -9,6 +10,7 @@
 with lib;
 let
   cfg = config.mettavi.system.services.pangolin;
+  hostSecrets.sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
 in
 {
   options.mettavi.system.services.pangolin = {
@@ -45,153 +47,10 @@ in
       {
         imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
 
-        services.traefik = {
-          enable = true;
-          dataDir = "${config.users.users.${username}.home}/.config/containers/systemd/config/traefik";
-          staticConfigOptions = {
-            accessLog = {
-              filePath = "/var/log/traefik/access.log";
-              format = "json";
-            };
-            api = {
-              dashboard = true;
-              # Access the Traefik dashboard on <Traefik IP>:8080 of your server
-              insecure = true;
-            };
-            certificatesResolvers.letsencrypt.acme = {
-              caServer = "https://acme-v02.api.letsencrypt.org/directory";
-              email = inputs.secrets.email.personal;
-              storage = "/letsencrypt/acme.json";
-              httpChallenge.entryPoint = "web";
-            };
-            entryPoints = {
-              web = {
-                address = ":80";
-                # asDefault = true;
-                # http.redirections.entrypoint = {
-                #   to = "websecure";
-                #   scheme = "https";
-                # };
-              };
-              websecure = {
-                address = ":443";
-                # asDefault = true;
-                http = {
-                  encodedCharacters = {
-                    allowEncodedQuestionMark = true;
-                    allowEncodedSlash = true;
-                  };
-                  tls.certResolver = "letsencrypt";
-                };
-                # Uncomment to enable HTTP/3. You must also expose 443/udp in services.pod.
-                # http3.advertisedPort = 443;
-                transport.respondingTimeouts.readTimeout = "30m";
-              };
-            };
-            experimental.plugins = {
-              badger = {
-                moduleName = "github.com/fosrl/badger";
-                version = "v1.4.0"; # Check github.com/fosrl/badger for the latest release.
-              };
-              bouncer = {
-                moduleName = "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin";
-                version = "v1.7.1"; # check the plugin catalog for the latest release
-              };
-            };
-            log = {
-              compress = true;
-              level = "INFO";
-              format = "common";
-              maxAge = 3;
-              maxBackups = 3;
-              maxSize = 100;
-            };
-            ping.entryPoint = "web";
-            providers = {
-              file.filename = "/etc/traefik/dynamic_config.yml";
-              http = {
-                endpoint = "http://localhost:3001/api/v1/traefik-config";
-                pollInterval = "5s";
-              };
-            };
-            serversTransport.insecureSkipVerify = true;
-          };
-          dynamicConfigOptions = {
-            http = {
-              middlewares = {
-                badger.plugin.badger.disableForwardAuth = true;
-                redirect-to-https.redirectScheme.scheme = "https";
-                crowdsec.plugin.bouncer = {
-                  enabled = true;
-                  crowdsecMode = "stream"; # recommended: syncs the ban list every 60s, fastest per-request path
-                  crowdsecLapiScheme = "http";
-                  crowdsecLapiHost = "127.0.0.1:8080"; # reaches the host via pasta's loopback passthrough
-                  crowdsecLapiKeyFile = "/etc/traefik/crowdsec-lapi.key";
-                };
-              };
-              routers = {
-                api-router = {
-                  entryPoints = [ "websecure" ];
-                  middlewares = [
-                    "badger"
-                    "crowdsec"
-                  ];
-                  rule = "Host(`pangolin.mettavi.cloud`) && PathPrefix(`/api/v1`)";
-                  service = "api-service";
-                  tls.certResolver = "letsencrypt";
-                };
-                main-app-router-redirect = {
-                  entryPoints = [ "web" ];
-                  middlewares = [
-                    "badger"
-                    "crowdsec"
-                    "redirect-to-https"
-                  ];
-                  rule = "Host(`pangolin.mettavi.cloud`)";
-                  service = "next-service";
-                };
-                next-router = {
-                  entryPoints = [ "websecure" ];
-                  middlewares = [
-                    "badger"
-                    "crowdsec"
-                  ];
-                  rule = "Host(`pangolin.mettavi.cloud`) && !PathPrefix(`/api/v1`)";
-                  service = "next-service";
-                  tls.certResolver = "letsencrypt";
-                };
-                ws-router = {
-                  entryPoints = [ "websecure" ];
-                  middlewares = [
-                    "badger"
-                    "crowdsec"
-                  ];
-                  rule = "Host(`pangolin.mettavi.cloud`)";
-                  service = "api-service";
-                  tls.certResolver = "letsencrypt";
-                };
-              };
-              services = {
-                api-service.loadBalancer.servers.url = "http://localhost:3000";
-                next-service.loadBalancer.servers.url = "http://localhost:3002";
-              };
-              tcp = {
-                serversTransports = {
-                  pp-transport-v1.proxyProtocol.version = 1;
-                  pp-transport-v2.proxyProtocol.version = 2;
-                };
-              };
-            };
-          };
-        };
-
         sops.secrets = {
-          "users/${username}/crowdsec-lapi.key" = {
-            sopsFile = "${secrets_path}/secrets/hosts/remus.yaml";
-          };
-          "users/${username}/pangolin.env" = {
-            sopsFile = "${secrets_path}/secrets/hosts/remus.yaml";
-          };
+          "users/${username}/crowdsec-lapi.key" = hostSecrets;
+          "users/${username}/pangolin.env" = hostSecrets;
+          "users/${username}/traefik.env" = hostSecrets;
         };
 
         virtualisation.quadlet = {
