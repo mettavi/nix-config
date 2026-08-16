@@ -162,7 +162,8 @@ in
           };
         };
         xdg.configFile = {
-          "${configHome}/config.yml".text = # yaml
+          # pangolin config file
+          "containers/systemd/config/config.yml".text = # yaml
             ''
               # To see all available options, please visit the docs:
               # https://docs.pangolin.net/
