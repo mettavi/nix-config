@@ -48,6 +48,7 @@ in
         imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
 
         sops.secrets = {
+          # generate with `crowdsec cscli bouncers add myBouncerName`
           "users/${username}/crowdsec-lapi.key" = hostSecrets;
           "users/${username}/pangolin.env" = hostSecrets;
           "users/${username}/traefik.env" = hostSecrets;
