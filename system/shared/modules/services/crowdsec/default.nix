@@ -13,7 +13,7 @@ in
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = "Install and set up the CrowdSec detection engine, watching Traefik access logs";
+      description = "Install and set up the CrowdSec detection engine";
     };
   };
 
