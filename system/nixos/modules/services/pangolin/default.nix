@@ -162,193 +162,469 @@ in
             };
           };
         };
-        xdg.configFile = {
-          # pangolin config file
-          "containers/systemd/config/config.yml".text = # yaml
-            ''
-              # To see all available options, please visit the docs:
-              # https://docs.pangolin.net/
-              gerbil:
-                start_port: 51820
-                base_endpoint: "pangolin.mettavi.cloud"
+        # xdg.configFile = {
+        #   # pangolin config file
+        #   "containers/systemd/config/config.yml".text = # yaml
+        #     ''
+        # To see all available options, please visit the docs:
+        # https://docs.pangolin.net/
+        #       gerbil:
+        #         start_port: 51820
+        #         base_endpoint: "pangolin.mettavi.cloud"
+        #
+        #       app:
+        #         dashboard_url: "https://pangolin.mettavi.cloud"
+        #         log_level: "info"
+        #         telemetry:
+        #           anonymous_usage: true
+        #
+        #       domains:
+        #         domain1:
+        #           base_domain: "mettavi.cloud"
+        #           cert_resolver: "cloudflare"
+        #           prefer_wildcard_cert: true
+        #
+        #       email:
+        #         smtp_host: "9wmsrvh2zzw2.jd2m.mail-manager-smtp.amazonaws.com"
+        #         smtp_port: 587
+        #         smtp_secure: true
+        #         no_reply: ${inputs.secrets.email.cloud}
+        #
+        #       server:
+        #         cors:
+        #           origins: ["https://pangolin.mettavi.cloud"]
+        #           methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
+        #           allowed_headers: ["X-CSRF-Token", "Content-Type"]
+        #           credentials: false
+        #
+        #       flags:
+        #         require_email_verification: true
+        #         disable_signup_without_invite: true
+        #         disable_user_create_org: true
+        #         allow_raw_resources: true
+        #     '';
+        #   "containers/systemd/config/traefik/traefik_config.yml".text = # yaml
+        #     ''
+        #       # Static (install-time) configuration.
+        #       # https://doc.traefik.io/traefik/getting-started/configuration-overview/
+        #       api:
+        #         dashboard: true
+        #         # Access the Traefik dashboard on <Traefik IP>:8080 of your server
+        #         insecure: true
+        #
+        #       certificatesResolvers:
+        #         cloudflare:
+        #           acme:
+        #             caServer: "https://acme-v02.api.letsencrypt.org/directory"
+        #             email: "${inputs.secrets.email.personal}"
+        #             storage: "/letsencrypt/acme.json"
+        #             # required for wildcard certs, see https://docs.pangolin.net/self-host/advanced/wild-card-domains
+        #             dnsChallenge:
+        #               provider: "cloudflare"
+        #               disablePropagationCheck: true # optional, speeds up in labs
+        #
+        #       entryPoints:
+        #         web:
+        #           address: ":80"
+        #           http:
+        #             redirections:
+        #               entrypoint:
+        #                 to: "websecure"
+        #                 scheme: "https"
+        #         websecure:
+        #           address: ":443"
+        #           http:
+        #             encodedCharacters:
+        #               allowEncodedQuestionMark: true
+        #               allowEncodedSlash: true
+        #             tls:
+        #               certResolver: "cloudflare"
+        #         # Uncomment to enable HTTP/3. You must also expose 443/udp in services.pod.
+        #           # http3:
+        #             #advertisedPort = 443;
+        #           transport:
+        #             respondingTimeouts:
+        #               readTimeout: "30m"
+        #
+        #       experimental:
+        #         plugins:
+        #           badger:
+        #             moduleName: "github.com/fosrl/badger"
+        #             version: "v1.4.0"
+        #           bouncer:
+        #             moduleName: "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
+        #             version: "v1.7.1"
+        #
+        #       accessLog:
+        #         filePath: "/var/log/traefik/access.log"
+        #         format: "json"
+        #
+        #       log:
+        #         compress: true
+        #         level: "INFO"
+        #         format: "common"
+        #         maxAge: 3
+        #         maxBackups: 3
+        #         maxSize: 100
+        #
+        #       ping:
+        #         entryPoint: "web"
+        #
+        #       providers:
+        #         file:
+        #           filename: "/etc/traefik/dynamic_config.yml"
+        #         http:
+        #           endpoint: "http://localhost:3001/api/v1/traefik-config"
+        #           pollInterval: "5s"
+        #
+        #       serversTransport:
+        #         insecureSkipVerify: true
+        #     '';
+        #
+        #   "containers/systemd/config/traefik/dynamic_config.yml".text = # yaml
+        #     ''
+        #       # Dynamic (routing) configuration.
+        #
+        #       http:
+        #         middlewares:
+        #           badger:
+        #             plugin:
+        #               badger:
+        #                 disableForwardAuth: true
+        #           crowdsec:
+        #             plugin:
+        #               bouncer:
+        #                 enabled: true
+        #                 # recommended: syncs the ban list every 60s, fastest per-request path
+        #                 crowdsecMode: "stream"
+        #                 crowdsecLapiScheme: "http"
+        #                 # reaches the host via pasta's loopback passthrough
+        #                 crowdsecLapiHost: "127.0.0.1:8080"
+        #                 crowdsecLapiKeyFile: "/etc/traefik/crowdsec-lapi.key"
+        #
+        #         routers:
+        #           api-router:
+        #             entryPoints: ["websecure"]
+        #             middlewares: ["badger", "crowdsec"]
+        #             rule: "Host(`pangolin.mettavi.cloud`) && PathPrefix(`/api/v1`)"
+        #             service: "api-service"
+        #             tls:
+        #               certResolver: "cloudflare"
+        #           next-router:
+        #             entryPoints: ["websecure"]
+        #             middlewares: ["badger", "crowdsec"]
+        #             rule: "Host(`pangolin.mettavi.cloud`) && !PathPrefix(`/api/v1`)"
+        #             service: "next-service"
+        #             tls:
+        #               certResolver: "cloudflare"
+        #               domains:
+        #                 - main: "mettavi.cloud"
+        #                   sans:
+        #                   - "*.mettavi.cloud"
+        #           ws-router:
+        #             entryPoints: ["websecure"]
+        #             middlewares: ["badger", "crowdsec"]
+        #             rule: "Host(`pangolin.mettavi.cloud`)"
+        #             service: "api-service"
+        #             tls:
+        #               certResolver: "cloudflare"
+        #
+        #         services:
+        #           api-service:
+        #             loadBalancer:
+        #               servers:
+        #                 - url: "http://localhost:3000"
+        #           next-service:
+        #             loadBalancer:
+        #               servers:
+        #                 - url: "http://localhost:3002"
+        #
+        #         tcp:
+        #           serversTransports:
+        #             pp-transport-v1:
+        #               proxyProtocol:
+        #                 version: 1
+        #             pp-transport-v2:
+        #               proxyProtocol:
+        #                 version: 2
+        #     '';
+        # };
+        xdg.configFile =
+          let
+            yamlFormat = pkgs.formats.yaml { };
+          in
+          {
+            # pangolin config file
+            # To see all available options, please visit the docs:
+            # https://docs.pangolin.net/
+            "containers/systemd/config/config.yml".source = yamlFormat.generate "pangolin-config.yml" {
+              gerbil = {
+                start_port = 51820;
+                base_endpoint = "pangolin.mettavi.cloud";
+              };
 
-              app:
-                dashboard_url: "https://pangolin.mettavi.cloud"
-                log_level: "info"
-                telemetry:
-                  anonymous_usage: true
+              app = {
+                dashboard_url = "https://pangolin.mettavi.cloud";
+                log_level = "info";
+                telemetry = {
+                  anonymous_usage = true;
+                };
+              };
 
-              domains:
-                domain1:
-                  base_domain: "mettavi.cloud"
-                  cert_resolver: "cloudflare"
-                  prefer_wildcard_cert: true
+              domains = {
+                domain1 = {
+                  base_domain = "mettavi.cloud";
+                  cert_resolver = "cloudflare";
+                  prefer_wildcard_cert = true;
+                };
+              };
 
-              email:
-                smtp_host: "9wmsrvh2zzw2.jd2m.mail-manager-smtp.amazonaws.com"
-                smtp_port: 587
-                smtp_secure: true
-                no_reply: ${inputs.secrets.email.cloud}
+              email = {
+                smtp_host = "9wmsrvh2zzw2.jd2m.mail-manager-smtp.amazonaws.com";
+                smtp_port = 587;
+                smtp_secure = true;
+                no_reply = inputs.secrets.email.cloud;
+              };
 
-              server:
-                cors:
-                  origins: ["https://pangolin.mettavi.cloud"]
-                  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"]
-                  allowed_headers: ["X-CSRF-Token", "Content-Type"]
-                  credentials: false
+              server = {
+                cors = {
+                  origins = [ "https://pangolin.mettavi.cloud" ];
+                  methods = [
+                    "GET"
+                    "POST"
+                    "PUT"
+                    "DELETE"
+                    "PATCH"
+                  ];
+                  allowed_headers = [
+                    "X-CSRF-Token"
+                    "Content-Type"
+                  ];
+                  credentials = false;
+                };
+              };
 
-              flags:
-                require_email_verification: true
-                disable_signup_without_invite: true
-                disable_user_create_org: true
-                allow_raw_resources: true 
-            '';
-          "containers/systemd/config/traefik/traefik_config.yml".text = # yaml
-            ''
-              # Static (install-time) configuration.
-              # https://doc.traefik.io/traefik/getting-started/configuration-overview/
-              api:
-                dashboard: true
-                # Access the Traefik dashboard on <Traefik IP>:8080 of your server
-                insecure: true
+              flags = {
+                require_email_verification = true;
+                disable_signup_without_invite = true;
+                disable_user_create_org = true;
+                allow_raw_resources = true;
+              };
+            };
 
-              certificatesResolvers:
-                cloudflare:
-                  acme:
-                    caServer: "https://acme-v02.api.letsencrypt.org/directory"
-                    email: "${inputs.secrets.email.personal}"
-                    storage: "/letsencrypt/acme.json"
-                    # required for wildcard certs, see https://docs.pangolin.net/self-host/advanced/wild-card-domains
-                    dnsChallenge:
-                      provider: "cloudflare"
-                      # disablePropagationCheck: true # optional, speeds up in labs 
+            # Traefik static (install-time) configuration.
+            # https://doc.traefik.io/traefik/getting-started/configuration-overview/
+            "containers/systemd/config/traefik/traefik_config.yml".source =
+              yamlFormat.generate "traefik-config.yml"
+                {
+                  api = {
+                    dashboard = true;
+                    # Access the Traefik dashboard on <Traefik IP>:8080 of your server
+                    insecure = true;
+                  };
 
-              entryPoints:
-                web:
-                  address: ":80"
-                  http:
-                    redirections:
-                      entrypoint:
-                        to: "websecure"
-                        scheme: "https"
-                websecure:
-                  address: ":443"
-                  http:
-                    encodedCharacters:
-                      allowEncodedQuestionMark: true
-                      allowEncodedSlash: true
-                    tls:
-                      certResolver: "cloudflare"
-                # Uncomment to enable HTTP/3. You must also expose 443/udp in services.pod.
-                  # http3:
-                    #advertisedPort = 443;
-                  transport:
-                    respondingTimeouts:
-                      readTimeout: "30m"
+                  certificatesResolvers = {
+                    cloudflare = {
+                      acme = {
+                        caServer = "https://acme-v02.api.letsencrypt.org/directory";
+                        email = inputs.secrets.email.personal;
+                        storage = "/letsencrypt/acme.json";
+                        # required for wildcard certs, see https://docs.pangolin.net/self-host/advanced/wild-card-domains
+                        dnsChallenge = {
+                          provider = "cloudflare";
+                          # disablePropagationCheck: true # optional, speeds up in labs
+                        };
+                      };
+                    };
+                  };
 
-              experimental:
-                plugins:
-                  badger:
-                    moduleName: "github.com/fosrl/badger"
-                    version: "v1.4.0"
-                  bouncer:
-                    moduleName: "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin"
-                    version: "v1.7.1"
+                  entryPoints = {
+                    web = {
+                      address = ":80";
+                      http = {
+                        redirections = {
+                          entrypoint = {
+                            to = "websecure";
+                            scheme = "https";
+                          };
+                        };
+                      };
+                    };
+                    websecure = {
+                      address = ":443";
+                      http = {
+                        encodedCharacters = {
+                          allowEncodedQuestionMark = true;
+                          allowEncodedSlash = true;
+                        };
+                        tls = {
+                          certResolver = "cloudflare";
+                        };
+                      };
+                      # Uncomment to enable HTTP/3. You must also expose 443/udp in services.pod.
+                      # http3:
+                      #advertisedPort = 443;
+                      transport = {
+                        respondingTimeouts = {
+                          readTimeout = "30m";
+                        };
+                      };
+                    };
+                  };
 
-              accessLog:
-                filePath: "/var/log/traefik/access.log"
-                format: "json"
+                  experimental = {
+                    plugins = {
+                      badger = {
+                        moduleName = "github.com/fosrl/badger";
+                        version = "v1.4.0";
+                      };
+                      bouncer = {
+                        moduleName = "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin";
+                        version = "v1.7.1";
+                      };
+                    };
+                  };
 
-              log:
-                compress: true
-                level: "INFO"
-                format: "common"
-                maxAge: 3
-                maxBackups: 3
-                maxSize: 100
+                  accessLog = {
+                    filePath = "/var/log/traefik/access.log";
+                    format = "json";
+                  };
 
-              ping:
-                entryPoint: "web"
+                  log = {
+                    compress = true;
+                    level = "INFO";
+                    format = "common";
+                    maxAge = 3;
+                    maxBackups = 3;
+                    maxSize = 100;
+                  };
 
-              providers:
-                file:
-                  filename: "/etc/traefik/dynamic_config.yml"
-                http:
-                  endpoint: "http://localhost:3001/api/v1/traefik-config"
-                  pollInterval: "5s"
+                  ping = {
+                    entryPoint = "web";
+                  };
 
-              serversTransport:
-                insecureSkipVerify: true
-            '';
+                  providers = {
+                    file = {
+                      filename = "/etc/traefik/dynamic_config.yml";
+                    };
+                    http = {
+                      endpoint = "http://localhost:3001/api/v1/traefik-config";
+                      pollInterval = "5s";
+                    };
+                  };
 
-          "containers/systemd/config/traefik/dynamic_config.yml".text = # yaml
-            ''
-              # Dynamic (routing) configuration.
+                  serversTransport = {
+                    insecureSkipVerify = true;
+                  };
+                };
 
-              http:
-                middlewares:
-                  badger:
-                    plugin:
-                      badger:
-                        disableForwardAuth: true
-                  crowdsec:
-                    plugin:
-                      bouncer:
-                        enabled: true
-                        # recommended: syncs the ban list every 60s, fastest per-request path
-                        crowdsecMode: "stream"
-                        crowdsecLapiScheme: "http"
-                        # reaches the host via pasta's loopback passthrough
-                        crowdsecLapiHost: "127.0.0.1:8080"
-                        crowdsecLapiKeyFile: "/etc/traefik/crowdsec-lapi.key"
+            # Traefik dynamic (routing) configuration.
+            "containers/systemd/config/traefik/dynamic_config.yml".source =
+              yamlFormat.generate "traefik-dynamic-config.yml"
+                {
+                  http = {
+                    middlewares = {
+                      badger = {
+                        plugin = {
+                          badger = {
+                            disableForwardAuth = true;
+                          };
+                        };
+                      };
+                      crowdsec = {
+                        plugin = {
+                          bouncer = {
+                            enabled = true;
+                            # recommended: syncs the ban list every 60s, fastest per-request path
+                            crowdsecMode = "stream";
+                            crowdsecLapiScheme = "http";
+                            # reaches the host via pasta's loopback passthrough
+                            crowdsecLapiHost = "127.0.0.1:8080";
+                            crowdsecLapiKeyFile = "/etc/traefik/crowdsec-lapi.key";
+                          };
+                        };
+                      };
+                    };
 
-                routers:
-                  api-router:
-                    entryPoints: ["websecure"]
-                    middlewares: ["badger", "crowdsec"]
-                    rule: "Host(`pangolin.mettavi.cloud`) && PathPrefix(`/api/v1`)"
-                    service: "api-service"
-                    tls:
-                      certResolver: "cloudflare"
-                  next-router:
-                    entryPoints: ["websecure"]
-                    middlewares: ["badger", "crowdsec"]
-                    rule: "Host(`pangolin.mettavi.cloud`) && !PathPrefix(`/api/v1`)"
-                    service: "next-service"
-                    tls:
-                      certResolver: "cloudflare"
-                      domains:
-                        - main: "mettavi.cloud"
-                          sans:
-                          - "*.mettavi.cloud"
-                  ws-router:
-                    entryPoints: ["websecure"]
-                    middlewares: ["badger", "crowdsec"]
-                    rule: "Host(`pangolin.mettavi.cloud`)"
-                    service: "api-service"
-                    tls:
-                      certResolver: "cloudflare"
+                    routers = {
+                      api-router = {
+                        entryPoints = [ "websecure" ];
+                        middlewares = [
+                          "badger"
+                          "crowdsec"
+                        ];
+                        rule = "Host(`pangolin.mettavi.cloud`) && PathPrefix(`/api/v1`)";
+                        service = "api-service";
+                        tls = {
+                          certResolver = "cloudflare";
+                        };
+                      };
+                      next-router = {
+                        entryPoints = [ "websecure" ];
+                        middlewares = [
+                          "badger"
+                          "crowdsec"
+                        ];
+                        rule = "Host(`pangolin.mettavi.cloud`) && !PathPrefix(`/api/v1`)";
+                        service = "next-service";
+                        tls = {
+                          certResolver = "cloudflare";
+                          domains = [
+                            {
+                              main = "mettavi.cloud";
+                              sans = [ "*.mettavi.cloud" ];
+                            }
+                          ];
+                        };
+                      };
+                      ws-router = {
+                        entryPoints = [ "websecure" ];
+                        middlewares = [
+                          "badger"
+                          "crowdsec"
+                        ];
+                        rule = "Host(`pangolin.mettavi.cloud`)";
+                        service = "api-service";
+                        tls = {
+                          certResolver = "cloudflare";
+                        };
+                      };
+                    };
 
-                services:
-                  api-service:
-                    loadBalancer:
-                      servers:
-                        - url: "http://localhost:3000"
-                  next-service:
-                    loadBalancer:
-                      servers:
-                        - url: "http://localhost:3002"
+                    services = {
+                      api-service = {
+                        loadBalancer = {
+                          servers = [
+                            { url = "http://localhost:3000"; }
+                          ];
+                        };
+                      };
+                      next-service = {
+                        loadBalancer = {
+                          servers = [
+                            { url = "http://localhost:3002"; }
+                          ];
+                        };
+                      };
+                    };
 
-                tcp:
-                  serversTransports:
-                    pp-transport-v1:
-                      proxyProtocol:
-                        version: 1
-                    pp-transport-v2:
-                      proxyProtocol:
-                        version: 2
-            '';
-        };
+                    tcp = {
+                      serversTransports = {
+                        pp-transport-v1 = {
+                          proxyProtocol = {
+                            version = 1;
+                          };
+                        };
+                        pp-transport-v2 = {
+                          proxyProtocol = {
+                            version = 2;
+                          };
+                        };
+                      };
+                    };
+                  };
+                };
+          };
       };
   };
 }
