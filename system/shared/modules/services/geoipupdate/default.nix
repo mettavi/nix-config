@@ -23,8 +23,10 @@ in
     services = {
       geoipupdate = {
         enable = true;
+        interval = "weekly";
         settings = {
           AccountID = 1395964;
+          DatabaseDirectory = "/var/lib/GeoIP";
           EditionIDs = [
             "GeoLite2-ASN"
             "GeoLite2-City"
