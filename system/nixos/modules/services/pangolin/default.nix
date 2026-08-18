@@ -49,7 +49,7 @@ in
 
         sops.secrets = {
           # generate with `crowdsec cscli bouncers add myBouncerName`
-          "users/${username}/crowdsec-lapi.key" = hostSecrets;
+          # "users/${username}/crowdsec-lapi.key" = hostSecrets;
           "users/${username}/pangolin.env" = hostSecrets;
           "users/${username}/traefik.env" = hostSecrets;
         };
@@ -123,9 +123,9 @@ in
                   "${configHome}/traefik:/etc/traefik:ro"
                   "${configHome}/letsencrypt:/letsencrypt"
                   "/var/log/traefik:/var/log/traefik"
-                  "${
-                    config.sops.secrets."users/${username}/crowdsec-lapi.key".path
-                  }:/etc/traefik/crowdsec-lapi.key:ro"
+                  # "${
+                  #   config.sops.secrets."users/${username}/crowdsec-lapi.key".path
+                  # }:/etc/traefik/crowdsec-lapi.key:ro"
                 ];
               };
               serviceConfig = {
