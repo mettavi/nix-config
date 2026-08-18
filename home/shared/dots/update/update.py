@@ -1,5 +1,5 @@
 #! /usr/bin/env nix-shell
-#! nix-shell -i python3 -p python3Minimal
+#! nix-shell -i python3 -p python3
 
 import argparse
 import os
@@ -19,7 +19,7 @@ def main(args):
     update_nix = os.path.join(nixpkgs, 'maintainers/scripts/update.nix')
 
     nix_args = [update_nix]
-    nix_args += ['--arg', 'include-overlays', f'[(import {path}/system/overlays/darwin/default.nix)]']
+    nix_args += ['--arg', 'include-overlays', f'[(import {path}/system/overlays/nixos/default.nix)]']
 
     if args.maintainer:
         nix_args += ['--argstr', 'maintainer', args.maintainer]
