@@ -412,7 +412,7 @@ in
               };
             };
 
-            # Traefik static (install-time) configuration.
+            # Traefik "static" (install-time) configuration.
             # https://doc.traefik.io/traefik/getting-started/configuration-overview/
             "containers/systemd/config/traefik/traefik_config.yml".source =
               yamlFormat.generate "traefik-config.yml"
@@ -521,7 +521,7 @@ in
                   };
                 };
 
-            # Traefik dynamic (routing) configuration.
+            # Traefik "dynamic" (routing) configuration.
             "containers/systemd/config/traefik/dynamic_config.yml".source =
               yamlFormat.generate "traefik-dynamic-config.yml"
                 {
