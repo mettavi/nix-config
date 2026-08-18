@@ -75,6 +75,10 @@
           };
         };
       };
+      services = {
+        newt.enable = false;
+        vaultwarden.enable = false;
+      };
       # enable system users
       userConfig = {
         timotheos.enable = true;
