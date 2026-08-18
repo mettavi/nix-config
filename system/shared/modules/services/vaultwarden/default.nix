@@ -1,5 +1,6 @@
 {
   config,
+  hostname,
   lib,
   secrets_path,
   username,
@@ -19,8 +20,8 @@ in
   };
 
   config = mkIf cfg.enable {
-    sops.secrets."vaultwarden.env" = {
-      sopsFile = "${secrets_path}/secrets/hosts/<app-host>.yaml"; # adjust to your app VPS's sops file
+    sops.secrets."users/${username}/vaultwarden-${hostname}.env" = {
+      sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
       owner = "vaultwarden";
       group = "vaultwarden";
     };
