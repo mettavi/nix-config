@@ -31,6 +31,7 @@ in
       443
     ];
     networking.firewall.allowedUDPPorts = [
+      443 # for HTTP/3
       21820
       51820
     ];
@@ -146,7 +147,7 @@ in
                   "80:80"
                   "443:443"
                   # uncomment if you enable HTTP/3 in Traefik
-                  # "443:443/udp"
+                  "443:443/udp"
                   "21820:21820/udp"
                   "51820:51820/udp"
                 ];
@@ -461,8 +462,9 @@ in
                         };
                       };
                       # Uncomment to enable HTTP/3. You must also expose 443/udp in services.pod.
-                      # http3:
-                      #advertisedPort = 443;
+                      http3 = {
+                        advertisedPort = 443;
+                      };
                       transport = {
                         respondingTimeouts = {
                           readTimeout = "30m";
