@@ -13,7 +13,7 @@ jobs:
         with:
           nix_path: nixpkgs=channel:nixos-unstable
       - name: Run update script
-        run: ./home/shared/dots/update/update.py -a $1
+        run: ./home/shared/dots/update/update.py -a linpkgs
       - name: Open PR if anything changed
         uses: peter-evans/create-pull-request@v7
         with:
