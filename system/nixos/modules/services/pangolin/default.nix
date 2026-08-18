@@ -61,8 +61,9 @@ in
               autoStart = "default.target";
               containerConfig = {
                 # "ee" is the enterprise edition (free for personal use)
-                image = "docker.io/fosrl/pangolin:ee-latest";
-                autoUpdate = "registry";
+                image = "docker.io/fosrl/pangolin:ee-1.21.1";
+                # use the renovate GitHub workflow to check for version updates
+                # autoUpdate = "registry";
                 environments = {
                   PANGOLIN_DOMAIN = "https://pangolin.mettavi.cloud";
                   DB_TYPE = "sqlite";
