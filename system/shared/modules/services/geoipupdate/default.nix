@@ -20,7 +20,6 @@ in
   };
 
   config = mkIf cfg.enable {
-
     services = {
       geoipupdate = {
         enable = true;
@@ -40,7 +39,6 @@ in
           sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
         };
       };
-
     };
   };
 }
