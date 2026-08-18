@@ -40,7 +40,7 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@v8
         with:
           diagnostic-endpoint: ""
-      - uses: cachix/cachix-action@v15
+      - uses: cachix/cachix-action@v17
         with:
           name: mettavi
           # If you chose API tokens for write access OR if you have a private cache
