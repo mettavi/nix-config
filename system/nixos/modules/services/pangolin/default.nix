@@ -352,6 +352,7 @@ in
         # };
         xdg.configFile =
           let
+            crowdsec = config.mettavi.system.services.crowdsec;
             yamlFormat = pkgs.formats.yaml { };
           in
           {
@@ -403,6 +404,7 @@ in
                   ];
                   credentials = false;
                 };
+                maxmind_db_path = optionalString config.mettavi.system.services.geoipupdate.enable "/var/lib/GeoIP/GeoLite2-Country.mmdb";
               };
 
               flags = {
@@ -480,7 +482,7 @@ in
                         moduleName = "github.com/fosrl/badger";
                         version = "v1.4.0";
                       };
-                      bouncer = {
+                      bouncer = mkIf crowdsec.enable {
                         moduleName = "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin";
                         version = "v1.7.1";
                       };
@@ -535,7 +537,7 @@ in
                           };
                         };
                       };
-                      crowdsec = {
+                      crowdsec = mkIf crowdsec.enable {
                         plugin = {
                           bouncer = {
                             enabled = true;
@@ -555,6 +557,8 @@ in
                         entryPoints = [ "websecure" ];
                         middlewares = [
                           "badger"
+                          optionalString
+                          crowdsec.enable
                           "crowdsec"
                         ];
                         rule = "Host(`pangolin.mettavi.cloud`) && PathPrefix(`/api/v1`)";
@@ -567,6 +571,8 @@ in
                         entryPoints = [ "websecure" ];
                         middlewares = [
                           "badger"
+                          optionalString
+                          crowdsec.enable
                           "crowdsec"
                         ];
                         rule = "Host(`pangolin.mettavi.cloud`) && !PathPrefix(`/api/v1`)";
@@ -585,6 +591,8 @@ in
                         entryPoints = [ "websecure" ];
                         middlewares = [
                           "badger"
+                          optionalString
+                          crowdsec.enable
                           "crowdsec"
                         ];
                         rule = "Host(`pangolin.mettavi.cloud`)";
