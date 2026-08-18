@@ -7,6 +7,7 @@
 with lib;
 let
   cfg = config.mettavi.system.services.crowdsec;
+  pangolin-traefik = config.mettavi.system.services.pangolin;
 in
 {
   options.mettavi.system.services.crowdsec = {
@@ -23,6 +24,8 @@ in
     # Kept outside the home directory so permissions aren't blocked by a
     # 0700 $HOME.
     systemd.tmpfiles.rules = [
+      optionalString
+      pangolin-traefik.enable
       "d /var/log/traefik 0750 ${username} crowdsec -"
     ];
 
@@ -35,17 +38,25 @@ in
       };
 
       hub.collections = [
+        optionalString
+        pangolin-traefik.enable
         "crowdsecurity/traefik" # parsers + scenarios for Traefik access logs
         # Add more later, e.g. "crowdsecurity/http-cve"
       ];
 
-      localConfig.acquisitions = [
-        {
-          source = "file";
-          filenames = [ "/var/log/traefik/access.log" ];
-          labels.type = "traefik";
-        }
-      ];
+      # configuration for a crowdsec security engine
+      localConfig = {
+        # list of data sources to be parsed
+        acquisitions = [
+          mkIf
+          pangolin-traefik.enable
+          {
+            source = "file";
+            filenames = [ "/var/log/traefik/access.log" ];
+            labels.type = "traefik";
+          }
+        ];
+      };
     };
     services.crowdsec-firewall-bouncer = {
       enable = true;

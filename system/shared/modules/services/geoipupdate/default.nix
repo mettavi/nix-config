@@ -12,6 +12,7 @@ let
   inherit (lib)
     mkEnableOption
     mkIf
+    optionalString
     ;
 in
 {
@@ -24,6 +25,7 @@ in
       geoipupdate = {
         enable = true;
         interval = "weekly";
+        # See https://github.com/maxmind/geoipupdate/blob/main/doc/GeoIP.conf.md for available options
         settings = {
           AccountID = 1395964;
           DatabaseDirectory = "/var/lib/GeoIP";
@@ -41,6 +43,17 @@ in
           sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
         };
       };
+
+      systemd.tmpfiles.rules = [
+        # Shared directories: Geo-IP-Update (a separate system service) writes here;
+        # Pangolin (rootless podman, running as `username`) reads from here;
+        # Kept outside the home directory so permissions aren't blocked by a
+        # 0700 $HOME.
+        optionalString
+        config.mettavi.system.services.pangolin.enable
+        "d /var/lib/GeoIP 0750 root ${username} -"
+      ];
+
     };
   };
 }
