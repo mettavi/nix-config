@@ -472,6 +472,7 @@ in
                     };
                   };
 
+                  # includes local plugins that can be used without publishing them to the Traefik plugin catalog
                   experimental = {
                     plugins = {
                       badger = {
@@ -485,11 +486,13 @@ in
                     };
                   };
 
+                  # log for analyzing traffic and debugging requests
                   accessLog = {
                     filePath = "/var/log/traefik/access.log";
                     format = "json";
                   };
 
+                  # log for monitoring the proxy's operation
                   log = {
                     compress = true;
                     level = "INFO";
@@ -592,6 +595,7 @@ in
                     };
 
                     services = {
+                      # the pangolin API
                       api-service = {
                         loadBalancer = {
                           servers = [
@@ -599,6 +603,7 @@ in
                           ];
                         };
                       };
+                      # the pangolin web interface (written in next js)
                       next-service = {
                         loadBalancer = {
                           servers = [
