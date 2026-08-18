@@ -75,6 +75,11 @@
           };
         };
       };
+      services = {
+        crowdsec.enable = false;
+        geoipupdate.enable = false;
+        pangolin.enable = false;
+      };
       # enable system users
       userConfig = {
         timotheos.enable = true;
