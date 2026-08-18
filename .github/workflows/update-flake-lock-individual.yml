@@ -1,3 +1,4 @@
+# yamllint disable-file
 name: update-flake-lock-individual
 # This workflow is intended for individual updates of the inputs,
 # in case the update-flake-lock action fails.
@@ -5,7 +6,6 @@ on:
   workflow_dispatch: # allows manual triggering
   schedule:
     - cron: "0 7 * * SUN" # runs weekly on sunday at 07:00
-
 jobs:
   input-lockfile-nixpkgs:
     runs-on: macos-13
