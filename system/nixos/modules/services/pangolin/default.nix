@@ -432,7 +432,6 @@ in
                         # required for wildcard certs, see https://docs.pangolin.net/self-host/advanced/wild-card-domains
                         dnsChallenge = {
                           provider = "cloudflare";
-                          # disablePropagationCheck: true # optional, speeds up in labs
                         };
                       };
                     };
