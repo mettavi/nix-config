@@ -38,7 +38,11 @@ in
 
       config = {
         DOMAIN = "https://vault.mettavi.cloud"; # must match the resource hostname you create in Pangolin
+        EMERGENCY_ACCESS_ALLOWED = true;
+        SENDS_ALLOWED = true;
         SIGNUPS_ALLOWED = false;
+        SIGNUPS_VERIFY = true;
+        WEB_VAULT_ENABLED = true;
 
         # Bind to loopback only — Pangolin/Traefik is the only thing that
         # should ever be able to reach this, via the site tunnel
