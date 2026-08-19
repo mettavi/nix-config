@@ -59,5 +59,6 @@ stdenv.mkDerivation {
     platforms = lib.platforms.linux;
   };
 
-  passthru.updateScript = nix-update-script { };
+  # Disable the update script as the version is currently pinned
+  # passthru.updateScript = nix-update-script { };
 }
