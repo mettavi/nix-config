@@ -19,7 +19,8 @@ def main(args):
     update_nix = os.path.join(nixpkgs, 'maintainers/scripts/update.nix')
 
     nix_args = [update_nix]
-    nix_args += ['--arg', 'include-overlays', f'[(import {path}/system/overlays/nixos/default.nix)]']
+    overlay_paths = ' '.join(f'(import {path}/system/overlays/{o}/default.nix)' for o in args.overlays)
+    nix_args += ['--arg', 'include-overlays', f'[{overlay_paths}]']
 
     if args.maintainer:
         nix_args += ['--argstr', 'maintainer', args.maintainer]
@@ -48,6 +49,7 @@ if __name__ == '__main__':
     req.add_argument('-p', '--predicate', dest='predicate', help='Update all packages matching given predicate')
     parser.add_argument('-c', '--commit', help='Commit the changes', action='store_true')
     parser.add_argument('-n', '--nixpkgs', dest='nixpkgs', help='Override the nixpkgs flake input with this path', nargs='?')
+    parser.add_argument('-o', '--overlays', dest='overlays', nargs='+', default=['nixos', 'shared'], help='Overlay names (under system/overlays/) to include')
 
     args = parser.parse_args()
 
