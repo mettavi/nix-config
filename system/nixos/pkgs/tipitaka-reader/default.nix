@@ -49,7 +49,9 @@ pkgs.appimageTools.wrapType2 {
     platforms = [ "x86_64-linux" ];
   };
 
-  # TODO: update is failing due to a missing package on the source repo
-  # Enable the update script again when this is fixed
-  # passthru.updateScript = nix-update-script { };
+  passthru.updateScript = nix-update-script {
+    extraArgs = [
+      "--version-regex=^v(\\d+\\.\\d+\\.\\d+(?:\\+\\d+)?)$"
+    ];
+  };
 }
