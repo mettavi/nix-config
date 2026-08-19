@@ -5,10 +5,10 @@
 }:
 let
   pname = "tipitaka_pali_reader";
-  version = "2.7.8+108";
+  version = "2.8.7+117";
   src = pkgs.fetchurl {
     url = "https://github.com/bksubhuti/tipitaka-pali-reader/releases/download/v${version}/tipitaka_pali_reader.AppImage";
-    hash = "sha256-R4j0iMIGmPY7+Gzd0MbMWX1MFyfVLE4cemy7Gh6mr58=";
+    hash = "sha256-+caCya527FQ4EMuUrzFhC9FTNbn6uZgs25402ai/bIg=";
   };
   getIcon = builtins.fetchurl {
     url = "file:///home/timotheos/.nix-config/system/nixos/pkgs/tipitaka-reader/logo-128.png";
