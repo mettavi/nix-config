@@ -83,8 +83,9 @@
         "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
       ];
       trusted-users = [
-        "@staff"
         "root"
+        "@wheel"
+        "${username}"
       ];
     };
   };
