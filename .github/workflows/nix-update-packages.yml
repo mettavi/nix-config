@@ -18,7 +18,7 @@ jobs:
           ./update.py -a xpkgs
         continue-on-error: true
       - name: Open PR if anything changed
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8.1.1
         with:
           commit-message: "chore(pkgs): automated package version updates"
           branch: automated/nix-update-packages
