@@ -31,7 +31,7 @@ jobs:
       fail-fast: false
       matrix:
         # Replace these with your actual NixOS hostname attributes from flake.nix
-        host: [framework, server]
+        host: [oona, remus, blue]
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v30
