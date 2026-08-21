@@ -19,37 +19,50 @@ in
   };
 
   config = mkIf cfg.enable {
+    # 2. Whitelist Parser Rule
+    environment.etc."crowdsec/parsers/s02-enrich/my-whitelists.yaml".text = ''
+      stage: s02-enrich
+      name: my-ip-whitelists
+      description: "Whitelist my home IP"
+      whitelist:
+        reason: "Admin home IP"
+        ip:
+          - "175.157.84.137"
+        # cidr:
+        #   - "175.157.84.0/24"
+    '';
+
     # Shared log directory: Traefik (rootless podman, running as `username`)
     # writes here; CrowdSec (a separate system service) reads from here.
     # Kept outside the home directory so permissions aren't blocked by a
     # 0700 $HOME.
-    systemd.tmpfiles.rules = [
-      optionalString
-      pangolin-traefik.enable
+    systemd.tmpfiles.rules = optionals pangolin-traefik.enable [
       "d /var/log/traefik 0750 ${username} crowdsec -"
     ];
 
     services.crowdsec = {
       enable = true;
 
-      settings.general.api.server = {
-        enable = true; # required — module fails without an explicit api client section
-        listen_uri = "127.0.0.1:8080";
+      settings = {
+        general.api.server = {
+          enable = true; # required — module fails without an explicit api client section
+          listen_uri = "0.0.0.0:8085";
+        };
+        lapi.credentialsFile = optionalString pangolin-traefik.enable "/var/lib/crowdsec/lapi-machine-credentials.yml";
       };
 
       hub.collections = [
-        optionalString
-        pangolin-traefik.enable
+        "crowdsecurity/linux" # baseline collection, always installed
+      ]
+      ++ lib.optionals pangolin-traefik.enable [
         "crowdsecurity/traefik" # parsers + scenarios for Traefik access logs
-        # Add more later, e.g. "crowdsecurity/http-cve"
       ];
+      # Add more later, e.g. "crowdsecurity/http-cve"
 
       # configuration for a crowdsec security engine
       localConfig = {
         # list of data sources to be parsed
-        acquisitions = [
-          mkIf
-          pangolin-traefik.enable
+        acquisitions = lib.optionals pangolin-traefik.enable [
           {
             source = "file";
             filenames = [ "/var/log/traefik/access.log" ];
@@ -58,16 +71,19 @@ in
         ];
       };
     };
-    services.crowdsec-firewall-bouncer = {
-      enable = true;
 
-      # Auto-registers with the local `crowdsec` service and manages its own
-      # API key — no manual `cscli bouncers add` step required.
-      registerBouncer.enable = true;
+    systemd.services.crowdsec.serviceConfig.StateDirectory = "crowdsec";
 
-      # `mode` defaults to "nftables" if networking.nftables.enable is true,
-      # else "iptables" — leave unset unless you want to force one.
-      # `api_url` defaults to the local LAPI (http://127.0.0.1:8080) automatically.
-    };
+    # services.crowdsec-firewall-bouncer = {
+    #   enable = true;
+
+    # Auto-registers with the local `crowdsec` service and manages its own
+    # API key — no manual `cscli bouncers add` step required.
+    # registerBouncer.enable = true;
+
+    # `mode` defaults to "nftables" if networking.nftables.enable is true,
+    # else "iptables" — leave unset unless you want to force one.
+    # `api_url` defaults to the local LAPI (http://127.0.0.1:8080) automatically.
+    # };
   };
 }
