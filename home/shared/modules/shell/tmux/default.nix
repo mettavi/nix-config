@@ -58,6 +58,8 @@ in
             bind a send-prefix
             # Allow programs to bypass tmux using a terminal escape sequence (eg for image rendering)
             set -g allow-passthrough on
+            set -s set-clipboard on
+            set -as terminal-features 'xterm*:clipboard'
             # recommended by yazi to enable proper image rendering
             set -ga update-environment TERM
             set -ga update-environment TERM_PROGRAM
