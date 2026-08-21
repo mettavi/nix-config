@@ -631,6 +631,27 @@ in
                       # Now safely unchecked globally per account
                       # "mail.server.server_${id}.autosync_offline_stores" = false;
                       # "mail.server.server_${id}.offline_download" = false;
+
+                      # Disable standard Thunderbird archiving for this identity
+                      "mail.identity.id_${id}.archive_enabled" = false;
+
+                      # Force immediate background label synchronization on deletion
+                      "mail.server.server_${id}.download_on_biff" = true;
+                      "mail.server.server_${id}.expunge_after_delete" = true;
+
+                      # Clean-up duplicate management rules for this specific account
+                      "mail.server.server_${id}.show_only_subscribed_folders" = true;
+                      "mail.server.server_${id}.using_subscription" = true;
+                      "mail.server.server_${id}.check_all_folders_for_new" = false;
+                      "mail.server.server_${id}.biff_minus_download" = true;
+
+                      # UK ENGLISH LOCALIZATION OVERRIDE:
+                      # This forces Thunderbird to map its trash functions to Gmail's "Bin" folder
+                      "mail.server.server_${id}.trash_folder_name" = "[Gmail]/Bin";
+
+                      # Force Drafts to save straight into Gmail's server-side Drafts folder
+                      "mail.identity.id_${id}.draft_folder" = "imap://${escAddress}@imap.gmail.com/[Gmail]/Drafts";
+                      "mail.identity.id_${id}.drafts_folder_picker_mode" = "0";
                     };
                   in
                   # 3. Perform a safe deep merge instead of a list concatenation or shallow replacement
