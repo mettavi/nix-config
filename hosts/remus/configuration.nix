@@ -76,9 +76,9 @@
         };
       };
       services = {
-        crowdsec.enable = false;
-        geoipupdate.enable = false;
-        pangolin.enable = false;
+        crowdsec.enable = true;
+        geoipupdate.enable = true;
+        pangolin.enable = true;
       };
       # enable system users
       userConfig = {
