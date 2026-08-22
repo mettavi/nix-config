@@ -68,7 +68,6 @@ in
         configHome = "${config.xdg.configHome}/containers/systemd/config";
         crowdsec = nixosConfig.mettavi.system.services.crowdsec;
         geoIPUpdate = nixosConfig.mettavi.system.services.geoipupdate;
-        # yamlFormat = pkgs.formats.yaml { };
         pangolinConfigAttrs = {
           gerbil = {
             start_port = 51820;
@@ -329,6 +328,7 @@ in
                 };
               };
             };
+            # if the tcp is not being used, the config below will cause an error
             # tcp = {
             #   serversTransports = {
             #     pp-transport-v1 = {
@@ -372,7 +372,7 @@ in
 
         sops.secrets = {
           # generate with `crowdsec cscli bouncers add myBouncerName`
-          # "users/${username}/crowdsec-lapi.key" = hostSecrets;
+          "users/${username}/traefik-bouncer.key" = hostSecrets;
           "users/${username}/pangolin.env" = hostSecrets;
           "users/${username}/traefik.env" = hostSecrets;
         };
@@ -448,9 +448,10 @@ in
                   "${configHome}/traefik:/etc/traefik:ro"
                   "${configHome}/letsencrypt:/letsencrypt"
                   "/var/log/traefik:/var/log/traefik"
-                  # "${
-                  #   config.sops.secrets."users/${username}/crowdsec-lapi.key".path
-                  # }:/etc/traefik/crowdsec-lapi.key:ro"
+                  # NB: do not use a symlink (path=... in sops) because the container cannot see the nix store
+                  "${
+                    config.sops.secrets."users/${username}/traefik-bouncer.key".path
+                  }:/etc/traefik/traefik-bouncer.key:ro"
                 ];
               };
               serviceConfig = {
