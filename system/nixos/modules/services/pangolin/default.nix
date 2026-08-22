@@ -114,6 +114,7 @@ in
           };
           flags = {
             require_email_verification = true;
+            # this is required for the initial admin setup
             disable_signup_without_invite = true;
             disable_user_create_org = false;
             allow_raw_resources = true;
