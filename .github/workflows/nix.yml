@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: SSH Auth to Private Repo
-        uses: ./composite/ssh-repo.yml
+        uses: ./.github/workflows/composite/ssh-repo.yml
       - uses: cachix/install-nix-action@v30
         with:
           extra_nix_config: |
@@ -37,7 +37,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: SSH Auth to Private Repo
-        uses: ./composite/ssh-repo.yml
+        uses: ./.github/workflows/composite/ssh-repo.yml
       - uses: cachix/install-nix-action@v30
         with:
           extra_nix_config: |
