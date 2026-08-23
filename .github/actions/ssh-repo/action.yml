@@ -1,0 +1,13 @@
+# yamllint disable-file
+# Source - https://stackoverflow.com/a/75279262
+# Posted by Fcmam5
+# Retrieved 2026-08-23, License - CC BY-SA 4.0
+steps:
+  - name: Set up SSH agent
+    uses: webfactory/ssh-agent@v0.9.0
+    with:
+      ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+  - name: Add known hosts
+    run: |
+      mkdir -p ~/.ssh
+      ssh-keyscan github.com >> ~/.ssh/known_hosts
