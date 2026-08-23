@@ -147,40 +147,20 @@ in
           # We use 'ExecStart' overrides to wrap the snapper command in a single session
           serviceConfig.ExecStart = lib.mkForce (
             pkgs.writeShellScript "snapper-pg-wrapper" ''
-              set -e
+              set -uo pipefail # note: no -e — we want pg_backup_stop to always run, see below
 
-              # 2. Add a 'Wait' check just in case
+              # Add a 'Wait' check just in case
               # This prevents the "socket not found" error at boot
               until ${pgPkg}/bin/pg_isready -U postgres; do
                 echo "Waiting for PostgreSQL socket..."
                 sleep 1
               done
 
-              # 3. Create a FIFO (Named Pipe) to talk to a single psql session
-              pipe=$(mktemp -u)
-              mkfifo "$pipe"
-
-              # 4. Start psql in the background, reading from the pipe
-              # Use 'tail -f' here as well to make this more robust
-              ${pkgs.coreutils}/bin/tail -f "$pipe" | ${pgPkg}/bin/psql -U postgres &
-              PSQL_PID=$!
-
-              # Open the pipe for writing
-              # exec 3> "$pipe"
-
-              # 3. Start Backup
-              echo "SELECT pg_backup_start('snapper-hourly');" > "$pipe" 
-
-              # 4. Run Snapper
-              ${pkgs.snapper}/lib/snapper/systemd-helper --timeline
-                
-              # 5. Stop Backup
-              echo "SELECT pg_backup_stop();" > "$pipe"
-
-              # Clean up: Close pipe and wait for psql to exit
-              # exec 3>&-
-              wait $PSQL_PID
-              rm "$pipe"
+              ${pgPkg}/bin/psql -U postgres <<'EOF'
+                SELECT pg_backup_start('snapper-hourly');
+                \! ${pkgs.snapper}/lib/snapper/systemd-helper --timeline
+                SELECT pg_backup_stop();
+              EOF
             ''
           );
         };
