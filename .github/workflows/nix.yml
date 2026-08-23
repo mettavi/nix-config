@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: SSH Auth to Private Repo
+        uses: ./composite/ssh-repo.yml
       - uses: cachix/install-nix-action@v30
         with:
           extra_nix_config: |
@@ -34,14 +36,8 @@ jobs:
         host: [oona, remus, blue]
     steps:
       - uses: actions/checkout@v4
-      - name: Set up SSH agent
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Add known hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - name: SSH Auth to Private Repo
+        uses: ./composite/ssh-repo.yml
       - uses: cachix/install-nix-action@v30
         with:
           extra_nix_config: |
