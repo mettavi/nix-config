@@ -3,7 +3,6 @@
 # Posted by Fcmam5
 # Retrieved 2026-08-23, License - CC BY-SA 4.0
 steps:
-  - uses: actions/checkout@v4
   - name: Set up SSH agent
     uses: webfactory/ssh-agent@v0.9.0
     with:
