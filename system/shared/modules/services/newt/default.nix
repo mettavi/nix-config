@@ -22,8 +22,6 @@ in
   config = mkIf cfg.enable {
     sops.secrets."users/${username}/newt.env" = {
       sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
-      owner = "newt";
-      group = "newt";
     };
 
     services.newt = {
