@@ -3,6 +3,7 @@
   hostname,
   lib,
   secrets_path,
+  username,
   ...
 }:
 with lib;
@@ -19,7 +20,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    sops.secrets."newt.env" = {
+    sops.secrets."users/${username}/newt.env" = {
       sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
       owner = "newt";
       group = "newt";
@@ -46,7 +47,7 @@ in
       # };
 
       # NEWT_ID and NEWT_SECRET live here, never in settings/CLI args or the Nix store
-      environmentFile = config.sops.secrets."newt.env".path;
+      environmentFile = config.sops.secrets."users/${username}/newt.env".path;
 
       settings = {
         endpoint = "https://pangolin.mettavi.cloud";
