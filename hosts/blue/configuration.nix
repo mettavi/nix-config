@@ -76,7 +76,7 @@
         };
       };
       services = {
-        newt.enable = false;
+        newt.enable = true;
         vaultwarden.enable = false;
       };
       # enable system users
