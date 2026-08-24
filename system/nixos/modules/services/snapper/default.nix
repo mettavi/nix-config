@@ -149,6 +149,11 @@ in
             pkgs.writeShellScript "snapper-pg-wrapper" ''
               set -uo pipefail # note: no -e — we want pg_backup_stop to always run, see below
 
+              PG_BIN=${pgPkg}/bin
+              SNAPPER_HELPER=${pkgs.snapper}/lib/snapper/systemd-helper
+              PGCONFIG=vlpostgres    # your snapper config name for the postgres data dir
+              PGDATA_MOUNT=/var/lib/postgresql   # the mountpoint that config snapshots
+
               # Add a 'Wait' check just in case
               # This prevents the "socket not found" error at boot
               until ${pgPkg}/bin/pg_isready -U postgres; do
@@ -156,11 +161,35 @@ in
                 sleep 1
               done
 
-              ${pgPkg}/bin/psql -U postgres <<'EOF'
-                SELECT pg_backup_start('snapper-hourly');
-                \! ${pkgs.snapper}/lib/snapper/systemd-helper --timeline
-                SELECT pg_backup_stop();
+              label_file=$(mktemp)
+              spcmap_file=$(mktemp)
+
+              "$PG_BIN/psql" -U postgres <<EOF
+              SELECT pg_backup_start('snapper-hourly');
+              \! $SNAPPER_HELPER --timeline
+              SELECT * FROM pg_backup_stop() \gset bkp_
+              \o $label_file
+              \echo :'bkp_labelfile'
+              \o
+              \o $spcmap_file
+              \echo :'bkp_spcmapfile'
+              \o
               EOF
+
+              # Find the snapshot that was just created for the postgres config
+              snap_num=$(snapper -c "$PGCONFIG" list --columns number | tail -n1 | tr -d ' ')
+              snap_path="''${PGDATA_MOUNT}/.snapshots/''${snap_num}/snapshot"
+
+              if [ -d "$snap_path" ]; then
+              btrfs property set -f "$snap_path" ro false
+              install -m 0600 -o postgres -g postgres "$label_file" "$snap_path/backup_label"
+              install -m 0600 -o postgres -g postgres "$spcmap_file" "$snap_path/tablespace_map"
+              btrfs property set -f "$snap_path" ro true
+              else
+              echo "WARNING: could not find snapshot path $snap_path — backup_label not written" >&2
+              fi
+
+              rm -f "$label_file" "$spcmap_file"
             ''
           );
         };
