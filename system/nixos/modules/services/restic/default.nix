@@ -342,6 +342,8 @@ in
             let
               dbs = config.services.postgresqlBackup.databases;
               pgPkg = config.services.postgresql.package;
+              pgVolumeName = "@vlpostgres";
+              pgVolumeMount = "/var/lib/postgresql";
               logFile = "/var/log/restic-pg-prep.log";
               # Set your threshold (e.g., 90% full)
               threshold = 90;
@@ -379,10 +381,13 @@ in
 
               # 3. ATOMIC DATABASE SESSION
               echo "Starting PostgreSQL backup session..." >> ${logFile}
+
+              label_file=$(mktemp)
+              spcmap_file=$(mktemp)
+
               if ! ${pgPkg}/bin/psql -U postgres >> ${logFile} 2>&1 <<EOF
               SELECT pg_backup_start('restic-snap'); 
 
-              -- \! tells psql to run a shell command
               ${concatMapAttrsStringSep "\n" (
                 vol: pth:
                 let
@@ -392,17 +397,43 @@ in
                 optionalString pth.enable "\\! ${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r ${pth.mount} ${subvolMount}"
               ) job.volumes}
 
+              -- \! tells psql to run a shell command
               \! ${pkgs.restic}/bin/restic unlock
 
-              SELECT pg_backup_stop();
+              SELECT * FROM pg_backup_stop() \gset bkp_
+              \o $label_file
+              \qecho :bkp_labelfile
+              \o
+              \o $spcmap_file
+              \qecho :bkp_spcmapfile
+              \o
               EOF
                 then
                   echo "ERROR: PostgreSQL session failed!" >> ${logFile}
+                  rm -f "$label_file" "$spcmap_file"
                   # Notify user on failure (using your existing WAYLAND_ENV logic)
                   /run/wrappers/bin/sudo -u ${username} env $WAYLAND_ENV \
                   ${pkgs.zenity}/bin/zenity --error --title="Backup Error" --text="PostgreSQL snapshot session failed. Check ${logFile}"
                   exit 1
                 fi
+
+              # Write backup_label / tablespace_map into the PGDATA snapshot only
+              pg_snap_path="${replaceStrings [ "//" ] [ "/" ] "${pgVolumeMount}/${pgVolumeName}"}"
+
+              if [ -d "$pg_snap_path" ]; then
+                ${pkgs.btrfs-progs}/bin/btrfs property set -f "$pg_snap_path" ro false
+                install -m 0600 -o postgres -g postgres "$label_file" "$pg_snap_path/backup_label"
+                install -m 0600 -o postgres -g postgres "$spcmap_file" "$pg_snap_path/tablespace_map"
+                if ! ${pkgs.btrfs-progs}/bin/btrfs property set -f "$pg_snap_path" ro true; then
+                  echo "ERROR: failed to re-lock $pg_snap_path as read-only!" >> ${logFile}
+                  logger -t postgres-backup -p err "Snapshot $pg_snap_path left writable after backup_label write"
+                fi
+                echo "backup_label written to $pg_snap_path" >> ${logFile}
+              else
+                echo "WARNING: PGDATA snapshot not found at $pg_snap_path — backup_label not written" >> ${logFile}
+              fi
+
+              rm -f "$label_file" "$spcmap_file"
 
               # 4. VERIFICATION LOOP: Check if snapshots exist
               echo "Verifying new snapshots..." >> ${logFile}
