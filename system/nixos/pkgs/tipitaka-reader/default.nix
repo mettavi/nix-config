@@ -10,10 +10,7 @@ let
     url = "https://github.com/bksubhuti/tipitaka-pali-reader/releases/download/v${version}/tipitaka_pali_reader.AppImage";
     hash = "sha256-+caCya527FQ4EMuUrzFhC9FTNbn6uZgs25402ai/bIg=";
   };
-  getIcon = builtins.fetchurl {
-    url = "file:///./logo-128.png";
-    sha256 = "sha256:0hyk3nw70nyx0avkhxq8kxv1y24vmp29mq2bgpryxaxkz4fsr599";
-  };
+  getIcon = ./logo-128.png;
 
   appimageContents = pkgs.appimageTools.extract { inherit pname version src; };
 in
