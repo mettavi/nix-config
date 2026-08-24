@@ -1,6 +1,7 @@
 # yamllint disable-file
 name: "nix"
 on:
+  workflow_dispatch: # allows manual triggering
   pull_request:
     branches: [main]
   push:
