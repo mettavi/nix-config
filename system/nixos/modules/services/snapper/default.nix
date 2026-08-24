@@ -169,6 +169,7 @@ in
               \! $SNAPPER_HELPER --timeline
               SELECT * FROM pg_backup_stop() \gset bkp_
               \o $label_file
+              # `echo` does not work
               \qecho :bkp_labelfile
               \o
               \o $spcmap_file
