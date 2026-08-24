@@ -619,10 +619,11 @@ in
 
                     # 2. Define conditional Gmail overrides
                     gmailSettings = lib.optionalAttrs (flavor == "gmail.com") {
+                      # Disables Thunderbird's local "Sent" copy tool
+                      # This lets Gmail's server natively handle the sent indexing without duplicates
                       "mail.identity.id_${id}.fcc" = false;
-                      "mail.identity.id_${id}.archive_enabled" = true;
-                      "mail.identity.id_${id}.archives_folder_picker_mode" = 1;
-                      "mail.identity.id_${id}.archive_folder" = "imap://${escAddress}@imap.gmail.com/[Gmail]/All Mail";
+                      # Gmail treats deletion differently based on model preferences
+                      # Value 0 tells Thunderbird to simply mark it deleted locally (stripping Inbox label)
                       "mail.server.server_${id}.delete_model" = 0;
                       "mail.server.server_${id}.spamLevel" = 0;
                       # FORCE GLOBAL DEFAULT FALLBACKS TO FALSE
