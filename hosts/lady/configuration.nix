@@ -177,7 +177,7 @@
         sopsFile = "${secrets_path}/secrets/hosts/lady.yaml";
       };
 
-  # this config is disabling the trackpad for some reason, so disabling
+  # commented out because this config is disabling the trackpad for some reason
   # services.kanata.keyboards."home-keys".extraDefCfg = ''
   #   linux-dev-names-include (
   #     "Apple Inc. Apple Internal Keyboard / Trackpad"
