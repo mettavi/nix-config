@@ -134,7 +134,6 @@
       apps = {
         brave.enable = true;
         calibre.enable = true;
-        libreoffice.enable = true;
         qbittorrent.enable = true;
       };
       desktops = {
@@ -162,6 +161,13 @@
           enable = true;
         };
       };
+    };
+  };
+
+  # includes system settings (located in system directory)
+  mettavi = {
+    apps = {
+      libreoffice.enable = false;
     };
   };
 
