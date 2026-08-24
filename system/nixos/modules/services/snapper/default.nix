@@ -169,22 +169,22 @@ in
               \! $SNAPPER_HELPER --timeline
               SELECT * FROM pg_backup_stop() \gset bkp_
               \o $label_file
-              \echo :'bkp_labelfile'
+              \qecho :bkp_labelfile
               \o
               \o $spcmap_file
-              \echo :'bkp_spcmapfile'
+              \qecho :bkp_spcmapfile
               \o
               EOF
 
               # Find the snapshot that was just created for the postgres config
-              snap_num=$(snapper -c "$PGCONFIG" list --columns number | tail -n1 | tr -d ' ')
+              snap_num=$(${pkgs.snapper}/bin/snapper -c "$PGCONFIG" list --columns number | tail -n1 | tr -d ' ')
               snap_path="''${PGDATA_MOUNT}/.snapshots/''${snap_num}/snapshot"
 
               if [ -d "$snap_path" ]; then
-              btrfs property set -f "$snap_path" ro false
+              ${pkgs.btrfs-progs}/bin/btrfs property set -f "$snap_path" ro false
               install -m 0600 -o postgres -g postgres "$label_file" "$snap_path/backup_label"
               install -m 0600 -o postgres -g postgres "$spcmap_file" "$snap_path/tablespace_map"
-              btrfs property set -f "$snap_path" ro true
+              ${pkgs.btrfs-progs}/bin/btrfs property set -f "$snap_path" ro true
               else
               echo "WARNING: could not find snapshot path $snap_path — backup_label not written" >&2
               fi
