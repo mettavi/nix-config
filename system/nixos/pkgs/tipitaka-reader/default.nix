@@ -11,7 +11,7 @@ let
     hash = "sha256-+caCya527FQ4EMuUrzFhC9FTNbn6uZgs25402ai/bIg=";
   };
   getIcon = builtins.fetchurl {
-    url = "file:///home/timotheos/.nix-config/system/nixos/pkgs/tipitaka-reader/logo-128.png";
+    url = "file:///./logo-128.png";
     sha256 = "sha256:0hyk3nw70nyx0avkhxq8kxv1y24vmp29mq2bgpryxaxkz4fsr599";
   };
 
