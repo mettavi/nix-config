@@ -3,15 +3,16 @@
   stdenv,
   fetchFromGitHub,
   cmake,
-  nix-update-script,
+  # nix-update-script,
   pkg-config,
   qt6,
   wrapGAppsHook3,
 }:
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
   pname = "birdtray";
   version = "1.12.4-dev";
   src = fetchFromGitHub {
+    name = "birdtray-${version}";
     owner = "gyunaev";
     repo = "birdtray";
     rev = "7e35be6e3e59b252ded2eef32f7947b63b4028a9";
