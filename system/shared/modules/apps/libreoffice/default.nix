@@ -11,7 +11,6 @@ with lib;
 let
   # gtk version (the kdeIntegration variable defaults to false)
   lo = pkgs.libreoffice-fresh;
-  # cfg = config.mettavi.system.apps.libreoffice;
   cfg = config.mettavi.apps.libreoffice;
 
   loExtensions = [
