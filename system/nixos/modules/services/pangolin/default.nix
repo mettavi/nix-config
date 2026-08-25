@@ -109,9 +109,12 @@ in
               ];
               credentials = false;
             };
+            integration_port = 3003;
             maxmind_db_path = if geoIPUpdate.enable then "/var/lib/GeoIP/GeoLite2-Country.mmdb" else "";
           };
           flags = {
+            # provides programmatic access to Pangolin functionality
+            enable_integration_api = true;
             require_email_verification = true;
             # this is required for the initial admin setup
             disable_signup_without_invite = true;
@@ -271,6 +274,22 @@ in
                   certResolver = "cloudflare";
                 };
               };
+              int-api-router = {
+                entryPoints = [ "websecure" ];
+                middlewares =
+                  if crowdsec.enable then
+                    [
+                      "badger"
+                      "crowdsec"
+                    ]
+                  else
+                    [ "badger" ];
+                rule = "Host(`api.mettavi.cloud`)";
+                service = "int-api-service";
+                tls = {
+                  certResolver = "cloudflare";
+                };
+              };
               next-router = {
                 entryPoints = [ "websecure" ];
                 middlewares =
@@ -311,11 +330,20 @@ in
               };
             };
             services = {
-              # the pangolin API
+              # the REST API
               api-service = {
                 loadBalancer = {
                   servers = [
                     { url = "http://localhost:3000"; }
+                  ];
+                };
+              };
+              # the integration API
+              int-api-service = {
+                loadBalancer = {
+                  servers = [
+                    # localhost, not "pangolin:3003" — matches your existing services, since containers share the pod's network namespace
+                    { url = "http://localhost:3003"; }
                   ];
                 };
               };
