@@ -53,8 +53,6 @@ in
       # Pangolin (rootless podman, running as `username`) reads from here;
       # Kept outside the home directory so permissions aren't blocked by a
       # 0700 $HOME.
-      # optionalString
-      # config.mettavi.system.services.pangolin.enable
       "d /var/lib/GeoIP 0750 root ${username} -"
     ];
 
