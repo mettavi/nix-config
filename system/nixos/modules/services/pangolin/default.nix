@@ -69,10 +69,6 @@ in
         crowdsec = nixosConfig.mettavi.system.services.crowdsec;
         geoIPUpdate = nixosConfig.mettavi.system.services.geoipupdate;
         pangolinConfigAttrs = {
-          gerbil = {
-            start_port = 51820;
-            base_endpoint = "pangolin.mettavi.cloud";
-          };
           app = {
             dashboard_url = "https://pangolin.mettavi.cloud";
             log_level = "info";
@@ -92,6 +88,10 @@ in
             smtp_port = 587;
             smtp_secure = true;
             no_reply = inputs.secrets.email.cloud;
+          };
+          gerbil = {
+            start_port = 51820;
+            base_endpoint = "pangolin.mettavi.cloud";
           };
           server = {
             cors = {
