@@ -77,7 +77,7 @@
       };
       services = {
         newt.enable = true;
-        vaultwarden.enable = false;
+        vaultwarden.enable = true;
       };
       # enable system users
       userConfig = {
