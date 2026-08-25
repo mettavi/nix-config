@@ -27,6 +27,7 @@ in
     services.newt = {
       enable = true;
       # See https://docs.pangolin.net/manage/blueprints
+      # NB: These do not require the integration API to be enabled
       blueprint = {
         # public-resources = {
         #   example = {
