@@ -34,7 +34,7 @@ in
 
       # sqlite is the default dbBackend, no need to set it explicitly
 
-      backupDir = "/var/lib/vaultwarden-backup";
+      backupDir = "/var/backup/vaultwarden";
 
       config = {
         DOMAIN = "https://vault.mettavi.cloud"; # must match the resource hostname you create in Pangolin
