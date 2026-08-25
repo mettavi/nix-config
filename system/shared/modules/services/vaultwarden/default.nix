@@ -30,7 +30,7 @@ in
       enable = true;
 
       # Injects ADMIN_TOKEN (and anything else you don't want in the Nix store)
-      environmentFile = config.sops.secrets."vaultwarden.env".path;
+      environmentFile = config.sops.secrets."users/${username}/vaultwarden-${hostname}.env".path;
 
       # sqlite is the default dbBackend, no need to set it explicitly
 
