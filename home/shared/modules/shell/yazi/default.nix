@@ -17,7 +17,7 @@ let
   yazi-flavors = pkgs.fetchFromGitHub {
     owner = "yazi-rs";
     repo = "flavors";
-    # pin to a a specific commit to prevent regular errors
+    # pin to a a specific commit to prevent regular hash mismatch errors
     rev = "20b47bfd78880c2674899597fd26bc01b21ff48c";
     hash = "sha256-NGnfrQdsnQITKCZ0oh6DCxeCR2ozJoPAZetsi3ghHAI=";
   };
