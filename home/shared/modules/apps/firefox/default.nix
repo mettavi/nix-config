@@ -282,7 +282,7 @@ in
               "network.auth.subresource-http-auth-allow" = 1;
 
               # Trusted DNS (TRR) https://wiki.mozilla.org/Trusted_Recursive_Resolver
-              # 0 for off, 2 for TRR first (using DoH with a standard fallback), and 3 for TRR only (only using DoH).
+              # 2 for TRR first (using DoH with a standard fallback), 3 for TRR only (only using DoH), 5 for off
               "network.trr.mode" = 2;
               "network.trr.uri" = "https://mozilla.cloudflare-dns.com/dns-query";
               "network.dns.skipTRR-when-parental-control-enabled" = false;
