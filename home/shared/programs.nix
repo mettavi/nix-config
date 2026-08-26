@@ -1,6 +1,7 @@
 {
   config,
   hostname,
+  inputs,
   pkgs,
   ...
 }:
@@ -51,7 +52,7 @@
           # Completely decouple GitHub from multiplexing rules
           controlMaster = "no";
         };
-        "*.mettavi.cloud" = {
+        "*.${inputs.secrets.domain.primary}" = {
           # Speeds up high-latency setups by compressing text streams
           compression = true;
           # Stops slow cellular DNS lookups from stalling connection handshakes
