@@ -20,6 +20,11 @@ in
       default = false;
       description = "Install and set up pangolin";
     };
+    baseDomain = mkOption {
+      type = types.str;
+      default = inputs.secrets.domain.primary;
+      description = "The main domain for the pangolin stack";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -70,7 +75,7 @@ in
         geoIPUpdate = nixosConfig.mettavi.system.services.geoipupdate;
         pangolinConfigAttrs = {
           app = {
-            dashboard_url = "https://pangolin.mettavi.cloud";
+            dashboard_url = "https://pangolin.${cfg.baseDomain}";
             log_level = "info";
             telemetry = {
               anonymous_usage = true;
@@ -78,7 +83,7 @@ in
           };
           domains = {
             domain1 = {
-              base_domain = "mettavi.cloud";
+              base_domain = cfg.baseDomain;
               cert_resolver = "cloudflare";
               prefer_wildcard_cert = true;
             };
@@ -91,11 +96,11 @@ in
           };
           gerbil = {
             start_port = 51820;
-            base_endpoint = "pangolin.mettavi.cloud";
+            base_endpoint = "pangolin.${cfg.baseDomain}";
           };
           server = {
             cors = {
-              origins = [ "https://pangolin.mettavi.cloud" ];
+              origins = [ "https://pangolin.${cfg.baseDomain}" ];
               methods = [
                 "GET"
                 "POST"
@@ -212,7 +217,6 @@ in
             maxBackups = 3;
             maxSize = 100;
           };
-
           ping = {
             entryPoint = "web";
           };
@@ -268,7 +272,7 @@ in
                     ]
                   else
                     [ "badger" ];
-                rule = "Host(`pangolin.mettavi.cloud`) && PathPrefix(`/api/v1`)";
+                rule = "Host(`pangolin.${cfg.baseDomain}`) && PathPrefix(`/api/v1`)";
                 service = "api-service";
                 tls = {
                   certResolver = "cloudflare";
@@ -284,7 +288,7 @@ in
                     ]
                   else
                     [ "badger" ];
-                rule = "Host(`api.mettavi.cloud`)";
+                rule = "Host(`api.${cfg.baseDomain}`)";
                 service = "int-api-service";
                 tls = {
                   certResolver = "cloudflare";
@@ -300,14 +304,14 @@ in
                     ]
                   else
                     [ "badger" ];
-                rule = "Host(`pangolin.mettavi.cloud`) && !PathPrefix(`/api/v1`)";
+                rule = "Host(`pangolin.${cfg.baseDomain}`) && !PathPrefix(`/api/v1`)";
                 service = "next-service";
                 tls = {
                   certResolver = "cloudflare";
                   domains = [
                     {
-                      main = "mettavi.cloud";
-                      sans = [ "*.mettavi.cloud" ];
+                      main = cfg.baseDomain;
+                      sans = [ "*.${cfg.baseDomain}" ];
                     }
                   ];
                 };
@@ -322,7 +326,7 @@ in
                     ]
                   else
                     [ "badger" ];
-                rule = "Host(`pangolin.mettavi.cloud`)";
+                rule = "Host(`pangolin.${cfg.baseDomain}`)";
                 service = "api-service";
                 tls = {
                   certResolver = "cloudflare";
@@ -415,7 +419,7 @@ in
                 # use the renovate GitHub workflow to check for version updates
                 # autoUpdate = "registry";
                 environments = {
-                  PANGOLIN_DOMAIN = "https://pangolin.mettavi.cloud";
+                  PANGOLIN_DOMAIN = "https://pangolin.${cfg.baseDomain}";
                   DB_TYPE = "sqlite";
                 };
                 environmentFiles = [
