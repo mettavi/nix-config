@@ -1,6 +1,7 @@
 {
   config,
   hostname,
+  inputs,
   lib,
   pkgs,
   username,
@@ -463,8 +464,8 @@ with lib;
         # Connects via mosh and automatically attaches to a tmux session named "main"
         # If the session doesn't exist, it creates it automatically.
         # The "-a/--predict=always" flag forces Mosh to always execute instant local echo
-        mpangolin = "mosh --predict=always timotheos@pangolin.mettavi.cloud -- tmux new-session -A -s main";
-        mcloud = "mosh --predict=always timotheos@mettavi.cloud -- tmux new-session -A -s main";
+        mpangolin = "mosh --predict=always timotheos@pangolin.${inputs.secrets.domain.primary} -- tmux new-session -A -s main";
+        mcloud = "mosh --predict=always timotheos@apps.${inputs.secrets.domain.primary} -- tmux new-session -A -s main";
       };
     };
 
