@@ -48,6 +48,9 @@ in
           # npmGlobals.zeal-user-contrib
         ];
     mettavi.system = {
+      services = {
+        pangolin-cli.enable = true;
+      };
       shell = {
         kanata.enable = true;
       };
@@ -87,7 +90,7 @@ in
         enable = true;
         # don't autoenable all the module's ports
         autoEnable = false;
-        };
+      };
 
       home = {
         packages = with pkgs; [
