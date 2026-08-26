@@ -1,6 +1,7 @@
 {
   config,
   hostname,
+  inputs,
   lib,
   secrets_path,
   username,
@@ -37,7 +38,7 @@ in
       backupDir = "/var/backup/vaultwarden";
 
       config = {
-        DOMAIN = "https://vault.mettavi.cloud"; # must match the resource hostname you create in Pangolin
+        DOMAIN = "https://vault.${inputs.secrets.domain.primary}"; # must match the resource hostname you create in Pangolin
         EMERGENCY_ACCESS_ALLOWED = true;
         SENDS_ALLOWED = true;
         SIGNUPS_ALLOWED = false;

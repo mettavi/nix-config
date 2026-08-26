@@ -1,6 +1,7 @@
 {
   config,
   hostname,
+  inputs,
   lib,
   secrets_path,
   username,
@@ -9,6 +10,7 @@
 with lib;
 let
   cfg = config.mettavi.system.services.newt;
+  baseDomain = inputs.secrets.domain.primary;
 in
 {
   options.mettavi.system.services.newt = {
@@ -33,7 +35,7 @@ in
         #   example = {
         #     name = "Vaultwarden";
         #     mode = "http";
-        #     "full-domain" = "vault.mettavi.cloud";
+        #     "full-domain" = "vault.${baseDomain}";
         #     targets = [
         #       {
         #         hostname = "127.0.0.1";
@@ -49,7 +51,7 @@ in
             name = "Vaultwarden";
             destination = "127.0.0.1";
             destination-port = 8222;
-            full-domain = "vault.mettavi.cloud";
+            full-domain = "vault.${baseDomain}";
             # the admin role is not valid here
             roles = [ "Member" ];
             mode = "http";
@@ -70,7 +72,7 @@ in
       environmentFile = config.sops.secrets."users/${username}/newt.env".path;
 
       settings = {
-        endpoint = "https://pangolin.mettavi.cloud";
+        endpoint = "https://pangolin.${baseDomain}";
       };
     };
   };
