@@ -282,8 +282,10 @@ in
               "network.auth.subresource-http-auth-allow" = 1;
 
               # Trusted DNS (TRR) https://wiki.mozilla.org/Trusted_Recursive_Resolver
-              # 2 for TRR first (using DoH with a standard fallback), 3 for TRR only (only using DoH), 5 for off
-              "network.trr.mode" = 2;
+              # 2 for TRR first (using DNS over HTTPS/DoH with a standard fallback),
+              # 3 for TRR only (only using DoH), 5 for off
+              # NB: Disable to prevent the pangolin VPS being overriden
+              "network.trr.mode" = 5;
               "network.trr.uri" = "https://mozilla.cloudflare-dns.com/dns-query";
               "network.dns.skipTRR-when-parental-control-enabled" = false;
 
