@@ -54,7 +54,8 @@ in
             full-domain = "vault.${baseDomain}";
             # the admin role is not valid here
             roles = [ "Member" ];
-            machines = [ "Oona" ];
+            # Oona machine
+            machines = [ "similar-ichthyophis-mindanaoensis" ];
             mode = "http";
             scheme = "https";
             sites = [ "Services" ];
