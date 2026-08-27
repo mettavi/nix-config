@@ -59,8 +59,9 @@ in
       enable = true;
       autoUpdate.enable = true;
     };
-    home-manager.users.${username} = {
-      virtualisation.quadlet = mkIf cfg.quadlet {
+    home-manager.users.${username} = mkIf cfg.quadlet {
+      imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
+      virtualisation.quadlet = {
         enable = true;
       };
     };
