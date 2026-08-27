@@ -3,6 +3,7 @@
   hostname,
   inputs,
   lib,
+  pkgs,
   secrets_path,
   username,
   ...
@@ -30,6 +31,8 @@ in
 
     services.newt = {
       enable = true;
+      # upgrade newt from unstable to prevent a serialization db mismatch with pangolin
+      package = inputs.nixpkgs.legacyPackages.${pkgs.system}.fosrl-newt;
       # See https://docs.pangolin.net/manage/blueprints
       # NB: These do not require the integration API to be enabled
       blueprint = {
