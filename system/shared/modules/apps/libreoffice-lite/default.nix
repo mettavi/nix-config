@@ -6,7 +6,7 @@
   ...
 }:
 let
-  office = pkgs.libreoffice-fresh-unwrapped;
+  office = pkgs.libreoffice-stable-unwrapped;
   cfg = config.mettavi.system.apps.liboffice-lite;
 in
 {
