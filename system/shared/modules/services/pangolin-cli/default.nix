@@ -26,6 +26,14 @@ in
       pangolin-cli # Pangolin cli tool and VPS client
     ];
 
+    networking.firewall = {
+      enable = true;
+      # Allow traffic on the pangolin virtual interface
+      trustedInterfaces = [ "pangolin" ];
+      # Essential for WireGuard / overlay mesh routing
+      checkReversePath = "loose";
+    };
+
     sops.secrets."users/${username}/pangolin-cli-${hostname}.env" = {
       # Optional: specify path or restart systemd service on secret change
       restartUnits = [ "pangolin-cli.service" ];
