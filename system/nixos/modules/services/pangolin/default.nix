@@ -142,6 +142,11 @@ in
                 storage = "/letsencrypt/acme.json";
                 # required for wildcard certs, see https://docs.pangolin.net/self-host/advanced/wild-card-domains
                 dnsChallenge = {
+                  # NB: Despite the advisory, these settings are not working yet
+                  # progagation = {
+                  #   delayBeforeCheck = "60s";
+                  #   disableChecks = true;
+                  # };
                   provider = "cloudflare";
                   delayBeforeCheck = "60s";
                   # prevent Traefik from trying to query DNS resolvers, avoiding local timeouts
