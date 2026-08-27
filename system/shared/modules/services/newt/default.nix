@@ -11,6 +11,8 @@ with lib;
 let
   cfg = config.mettavi.system.services.newt;
   baseDomain = inputs.secrets.domain.primary;
+  format = pkgs.formats.yaml { };
+  blueprint-file = format.generate "blueprint.yml" config.services.newt.blueprint;
 in
 {
   options.mettavi.system.services.newt = {
