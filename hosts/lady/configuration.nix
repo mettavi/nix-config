@@ -172,7 +172,7 @@
   };
 
   sops.secrets."users/${username}/jellyfin_admin-lady" =
-    lib.mkIf config.mettavi.system.services.jellar.enable
+    lib.mkIf config.mettavi.system.services.jellarr.enable
       {
         sopsFile = "${secrets_path}/secrets/hosts/lady.yaml";
       };
