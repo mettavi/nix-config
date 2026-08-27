@@ -149,8 +149,8 @@ in
                   # };
                   provider = "cloudflare";
                   delayBeforeCheck = "60s";
-                  # prevent Traefik from trying to query DNS resolvers, avoiding local timeouts
                   disablePropagationCheck = true;
+                  # prevent Traefik from trying to query DNS resolvers, avoiding local timeouts
                   resolvers = [
                     "1.1.1.1:53"
                     "1.0.0.1:53"
