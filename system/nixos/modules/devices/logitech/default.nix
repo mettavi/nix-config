@@ -27,6 +27,13 @@ in
         enableGraphical = true; # installs solaar gui and command for extra functionality (eg. bolt connector devices)
       };
     };
+    # TODO: Comment out the new (very recent) options for solaar until the next flake update picks them up
+    # programs.solaar = {
+    #   enable = true;
+    #   userService = {
+    #     enable = true;
+    #   };
+    # };
     home-manager.users.${username} =
       { config, nixosConfig, ... }:
       let
