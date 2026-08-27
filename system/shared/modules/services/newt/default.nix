@@ -75,6 +75,8 @@ in
 
       settings = {
         endpoint = "https://pangolin.${baseDomain}";
+        # log-level = "DEBUG";
+        provisioning-blueprint-file = "${blueprint-file}";
       };
     };
   };
