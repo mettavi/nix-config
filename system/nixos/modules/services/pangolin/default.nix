@@ -135,7 +135,7 @@ in
             insecure = true;
           };
           certificatesResolvers = {
-            cloudflare = {
+            letsencrypt = {
               acme = {
                 caServer = "https://acme-v02.api.letsencrypt.org/directory";
                 email = inputs.secrets.email.personal;
@@ -179,7 +179,7 @@ in
                   allowEncodedSlash = true;
                 };
                 tls = {
-                  certResolver = "cloudflare";
+                  certResolver = "letsencrypt";
                 };
               };
               # Uncomment to enable HTTP/3. You must also expose 443/udp in services.pod.
@@ -280,7 +280,7 @@ in
                 rule = "Host(`pangolin.${cfg.baseDomain}`) && PathPrefix(`/api/v1`)";
                 service = "api-service";
                 tls = {
-                  certResolver = "cloudflare";
+                  certResolver = "letsencrypt";
                 };
               };
               int-api-router = {
@@ -296,7 +296,7 @@ in
                 rule = "Host(`api.${cfg.baseDomain}`)";
                 service = "int-api-service";
                 tls = {
-                  certResolver = "cloudflare";
+                  certResolver = "letsencrypt";
                 };
               };
               next-router = {
@@ -312,7 +312,7 @@ in
                 rule = "Host(`pangolin.${cfg.baseDomain}`) && !PathPrefix(`/api/v1`)";
                 service = "next-service";
                 tls = {
-                  certResolver = "cloudflare";
+                  certResolver = "letsencrypt";
                   domains = [
                     {
                       main = cfg.baseDomain;
@@ -334,7 +334,7 @@ in
                 rule = "Host(`pangolin.${cfg.baseDomain}`)";
                 service = "api-service";
                 tls = {
-                  certResolver = "cloudflare";
+                  certResolver = "letsencrypt";
                 };
               };
             };
