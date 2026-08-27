@@ -84,7 +84,7 @@ in
           domains = {
             domain1 = {
               base_domain = cfg.baseDomain;
-              cert_resolver = "cloudflare";
+              cert_resolver = "letsencrypt";
               prefer_wildcard_cert = true;
             };
           };
