@@ -65,6 +65,7 @@ in
             scheme = "http";
             sites = [ "Services" ];
             ssl = true;
+            users = [ inputs.secrets.email.personal ];
           };
         };
         sites = {
