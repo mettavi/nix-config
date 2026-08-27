@@ -57,7 +57,7 @@ in
             # Oona machine
             machines = [ "similar-ichthyophis-mindanaoensis" ];
             mode = "http";
-            scheme = "https";
+            scheme = "http";
             sites = [ "Services" ];
             ssl = true;
           };
