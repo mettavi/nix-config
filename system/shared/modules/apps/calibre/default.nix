@@ -21,10 +21,11 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    # skip calibre tests in GitHub workflows (see nix.yml)
     nixpkgs.overlays = [
       (final: prev: {
         calibre = prev.calibre.overrideAttrs (old: {
-          doCheck = !builtins.getEnv "SKIP_CALIBRE_TESTS" == "1";
+          doCheck = (builtins.getEnv "SKIP_CALIBRE_TESTS") != "1";
         });
       })
     ];
