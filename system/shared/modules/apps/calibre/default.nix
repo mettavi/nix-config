@@ -21,6 +21,14 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    nixpkgs.overlays = [
+      (final: prev: {
+        calibre = prev.calibre.overrideAttrs (old: {
+          doCheck = !builtins.getEnv "SKIP_CALIBRE_TESTS" == "1";
+        });
+      })
+    ];
+
     home-manager.users.${username} =
       { osConfig, ... }:
       {

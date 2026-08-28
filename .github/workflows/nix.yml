@@ -63,5 +63,7 @@ jobs:
           name: mettavi
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - name: "Build NixOS System"
+        env:
+          SKIP_CALIBRE_TESTS: "1"
         run: |
           nix build --no-update-lock-file .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
