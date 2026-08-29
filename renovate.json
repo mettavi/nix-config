@@ -25,7 +25,7 @@
       "description": "Update container images in quadlet-nix definitions",
       "fileMatch": ["^hosts/.*\\.nix$", "^services/.*\\.nix$"],
       "matchStrings": [
-        "image\\s*=\\s*\"(?<depName>[a-zA-Z0-9./_-]+):(?<currentValue>[a-zA-Z0-9._-]+)(@(?<currentDigest>sha256:[a-f0-9]+))?\""
+        "image\\s*=\\s*\"(?<depName>[a-zA-Z0-9./_:-]+):(?<currentValue>[a-zA-Z0-9._-]+)(@(?<currentDigest>sha256:[a-f0-9]+))?\""
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "docker"
