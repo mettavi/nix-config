@@ -238,7 +238,8 @@ in
             name: inst:
             nameValuePair "paperless-gpt-${name}" {
               containerConfig = {
-                image = "ghcr.io/icereed/paperless-gpt:0.27.0";
+                # NB: you can browse ghcr images at https://github.com/icereed/paperless-gpt/pkgs/container/paperless-gpt/
+                image = "ghcr.io/icereed/paperless-gpt:v0.27.0";
                 autoUpdate = "registry";
                 noNewPrivileges = true;
                 networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
