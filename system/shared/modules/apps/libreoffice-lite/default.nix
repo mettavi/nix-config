@@ -7,7 +7,6 @@
   ...
 }:
 let
-  office = pkgs.libreoffice-stable-unwrapped;
   cfg = config.mettavi.system.apps.liboffice-lite;
 in
 {
@@ -57,9 +56,5 @@ in
       corefonts
       vista-fonts
     ];
-    environment.sessionVariables = {
-      PYTHONPATH = "${office}/lib/libreoffice/program";
-      URE_BOOTSTRAP = "vnd.sun.star.pathname:${office}/lib/libreoffice/program/fundamentalrc";
-    };
   };
 }
