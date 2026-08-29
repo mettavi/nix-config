@@ -12,8 +12,11 @@
       "commitMessagePrefix": "feat(containers):"
     },
     {
-      "matchUpdateTypes": ["digest"],
-      "automerge": true
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["digest", "patch", "minor"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
     }
   ],
   "customManagers": [
