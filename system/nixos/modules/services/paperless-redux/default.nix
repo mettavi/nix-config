@@ -157,6 +157,7 @@ in
         # Shared Caching Engine
         paperless-redis = {
           containerConfig = {
+            # a Redis-compatible broker (a current release of Valkey or Redis)
             image = "docker.io/library/redis:7-alpine";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
           };
@@ -167,7 +168,7 @@ in
         name: inst:
         nameValuePair "paperless-${name}" {
           containerConfig = {
-            image = "ghcr.io/paperless-ngx/paperless-ngx:latest";
+            image = "ghcr.io/paperless-ngx/paperless-ngx:3.1.0";
             autoUpdate = "registry";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
             publishPorts = [ "127.0.0.1:${toString inst.appPort}:8000" ];
@@ -237,7 +238,7 @@ in
             name: inst:
             nameValuePair "paperless-gpt-${name}" {
               containerConfig = {
-                image = "ghcr.io/icereed/paperless-gpt:latest";
+                image = "ghcr.io/icereed/paperless-gpt:0.27.0";
                 autoUpdate = "registry";
                 noNewPrivileges = true;
                 networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
