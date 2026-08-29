@@ -31,6 +31,12 @@
     vim
   ];
 
+  mettavi.system = {
+    userConfig = {
+      timotheos.enable = true;
+    };
+  };
+
   networking.firewall.allowedTCPPorts = [
     22
   ];
