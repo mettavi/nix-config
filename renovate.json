@@ -20,7 +20,7 @@
     {
       "customType": "regex",
       "description": "Update container images in quadlet-nix definitions",
-      "managerFilePatterns": ["/hosts/.*\\.nix$/", "/services/.*\\.nix$/"],
+      "fileMatch": ["^hosts/.*\\.nix$", "^services/.*\\.nix$"],
       "matchStrings": [
         "image\\s*=\\s*\"(?<depName>[a-zA-Z0-9./_-]+):(?<currentValue>[a-zA-Z0-9._-]+)(@(?<currentDigest>sha256:[a-f0-9]+))?\""
       ],
