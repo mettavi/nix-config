@@ -26,7 +26,7 @@ in
   home.file = {
     ".npmrc".source = ./dots/node/.npmrc;
     # "Library/Preferences/com.plexapp.plexmediaserver.plist".source =
-    #  if pkgs.stdenv.isDarwin then ./dots/plex/com.plexapp.plexmediaserver.plist else "";
+    #  if pkgs.stdenv.hostPlatform.isDarwin then ./dots/plex/com.plexapp.plexmediaserver.plist else "";
   };
 
   xdg = {

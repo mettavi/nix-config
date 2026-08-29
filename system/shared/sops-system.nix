@@ -39,7 +39,7 @@
         path = "${config.users.users.${username}.home}/.config/sops/age/keys.txt";
       };
       # nixos hashed user passwords
-      "users/${username}/${username}-${hostname}-hashpw" = lib.mkIf pkgs.stdenv.isLinux {
+      "users/${username}/${username}-${hostname}-hashpw" = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
         neededForUsers = true;
         sopsFile = "${secrets_path}/secrets/hosts/${hostname}.yaml";
       };
@@ -56,7 +56,7 @@
     let
       ageFolder = "${config.users.users.${username}.home}/.config/sops/age";
       user = config.users.users.${username}.name;
-      group = if pkgs.stdenv.isDarwin then "staff" else "users";
+      group = if pkgs.stdenv.hostPlatform.isDarwin then "staff" else "users";
     in
     ''
       mkdir -p ${ageFolder} || true

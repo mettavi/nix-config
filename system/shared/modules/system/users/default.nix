@@ -7,7 +7,7 @@
 }:
 with lib;
 let
-  platform = if pkgs.stdenv.isDarwin then "darwin" else "nixos";
+  platform = if pkgs.stdenv.hostPlatform.isDarwin then "darwin" else "nixos";
   # Get all users defined for your nix systems
   cfg = config.mettavi.system;
 in
@@ -39,7 +39,7 @@ in
     ) cfg.userConfig;
 
     users.users =
-      if pkgs.stdenv.isLinux then
+      if pkgs.stdenv.hostPlatform.isLinux then
         # nixos config
         mapAttrs (
           name: usrCfg:
@@ -83,7 +83,7 @@ in
             # username and homeDirectory are set automatically when using home-manager as a system module
             # username = "${usrCfg.username}";
             # homeDirectory =
-            #   if pkgs.stdenv.isDarwin then "/Users/${usrCfg.username}" else "/home/${usrCfg.username}";
+            #   if pkgs.stdenv.hostPlatform.isDarwin then "/Users/${usrCfg.username}" else "/home/${usrCfg.username}";
             # make programs use XDG directories whenever supported
             preferXdgDirectories = true;
           };

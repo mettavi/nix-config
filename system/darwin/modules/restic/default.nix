@@ -57,7 +57,7 @@ in
         };
     };
 
-  launchd.daemons = mkIf (pkgs.stdenv.isDarwin && cfg.enable) {
+  launchd.daemons = mkIf (pkgs.stdenv.hostPlatform.isDarwin && cfg.enable) {
     resticprofile-backup = {
       serviceConfig = {
         EnvironmentVariables = {

@@ -19,7 +19,7 @@ rustPlatform.buildRustPackage rec {
 
   cargoHash = "sha256-WycyxpSc56DMwrvE/rYg5tv0BKIE59KpSFE+1FZPTQw=";
   buildType = "debug";
-  buildInputs = lib.optionals stdenv.isDarwin [
+  buildInputs = lib.optionals stdenv.hostPlatform.isDarwin [
     darwin.apple_sdk.frameworks.CoreGraphics
   ];
 

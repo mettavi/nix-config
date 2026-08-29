@@ -16,7 +16,7 @@ in
     programs.nh = {
       enable = true;
     };
-    home.sessionVariables = lib.mkIf pkgs.stdenv.isDarwin {
+    home.sessionVariables = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
       # prevent nh from checking for flakes "experimental features" on darwin (which it can't read from determinate nix.conf)
       NH_NO_CHECKS = "1";
     };

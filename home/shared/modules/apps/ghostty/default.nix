@@ -38,7 +38,7 @@ in
           theme = "iTerm2 Pastel Dark Background";
           working-directory = "~/.nix-config";
         }
-        (mkIf pkgs.stdenv.isDarwin {
+        (mkIf pkgs.stdenv.hostPlatform.isDarwin {
           # make right_alt send an escape sequence in ghostty
           macos-option-as-alt = true;
         })
