@@ -458,7 +458,7 @@ in
                   "--generateAndSaveKeyTo=/var/config/key"
                   "--remoteConfig=http://localhost:3001/api/v1/"
                 ];
-                image = "docker.io/fosrl/gerbil:latest";
+                image = "docker.io/fosrl/gerbil:1.5.0";
                 pod = "services.pod";
                 volumes = [
                   "${configHome}:/var/config"
@@ -479,7 +479,7 @@ in
                   config.sops.secrets."users/${username}/traefik.env".path
                 ];
                 exec = "--configFile=/etc/traefik/traefik_config.yml";
-                image = "docker.io/traefik:latest";
+                image = "docker.io/traefik:3.7.12";
                 pod = "services.pod";
                 volumes = [
                   "${configHome}/traefik:/etc/traefik:ro"
