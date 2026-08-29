@@ -1,6 +1,7 @@
 {
   modulesPath,
   pkgs,
+  username,
   ...
 }:
 {
@@ -37,4 +38,11 @@
   services.openssh.enable = true;
 
   system.stateVersion = "26.05";
+
+  home-manager.users.${username} = {
+    home = {
+      # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+      stateVersion = "26.05";
+    };
+  };
 }
