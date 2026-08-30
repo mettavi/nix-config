@@ -63,12 +63,12 @@ let
   # --print-build-log --target-host username@<ip address>
   initHosts = {
     # Nixos-anywhere bootstrap environment targets
-    remus-init = {
-      system = "x86_64-linux";
-      channel = "nixpkgs-26_05";
-      targetHost = "remus";
-      username = "timotheos";
-    };
+    # remus-init = {
+    #   system = "x86_64-linux";
+    #   channel = "nixpkgs-26_05";
+    #   targetHost = "remus";
+    #   username = "timotheos";
+    # };
   };
 
   # -------------------------------------------------------------
