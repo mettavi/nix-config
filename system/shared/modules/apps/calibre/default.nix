@@ -53,10 +53,12 @@ in
         };
         home.packages = with pkgs; [
           # Comprehensive e-book software
-          (calibre.override {
-            # to open .cbr and .cbz files
-            unrarSupport = true;
-          })
+          # (calibre.override {
+          # to open .cbr and .cbz files
+          #   unrarSupport = true;
+          # })
+          calibre
+          unrar # Install unrar alongside calibre
         ];
         xdg.mimeApps = {
           enable = true;
