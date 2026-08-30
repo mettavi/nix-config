@@ -29,7 +29,7 @@ jobs:
         uses: DeterminateSystems/update-flake-lock@v24
         with:
           path-to-flake-dir: '.'
-          token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           pr-labels: |
             dependencies
             automated
