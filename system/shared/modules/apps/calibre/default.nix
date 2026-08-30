@@ -56,6 +56,7 @@ in
           (calibre.override {
             # to open .cbr and .cbz files
             unrarSupport = true;
+            unrar = unrar;  # Explicitly pass unrar to ensure headers are available
           })
         ];
         xdg.mimeApps = {
