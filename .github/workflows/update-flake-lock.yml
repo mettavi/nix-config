@@ -1,4 +1,5 @@
 # yamllint disable-file
+# Use SSH for git operations, and an HTTPS token for API calls (eg. PRs)
 name: update-flake-lock
 on:
   workflow_dispatch: # allows manual triggering
@@ -26,7 +27,7 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v22
       - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@v24
+        uses: DeterminateSystems/update-flake-lock@v28
         with:
           path-to-flake-dir: '.'
           token: ${{ secrets.GITHUB_TOKEN }}
