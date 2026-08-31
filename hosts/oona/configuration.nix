@@ -494,7 +494,7 @@ with lib;
         # see https://stackoverflow.com/questions/33692835/is-the-mime-type-image-jpg-the-same-as-image-jpeg
         # "image/jpg" = [ "org.gnome.Loupe.desktop" ];
         # gnome document viewer
-        "application/pdf" = [ "org.gnome.Evince.desktop" ];
+        "application/pdf" = [ "org.kde.okular.desktop" ];
       };
     };
   };
