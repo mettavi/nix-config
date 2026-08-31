@@ -63,6 +63,141 @@ in
             RemainAfterExit = true;
             RestartIfChanged = false;
             Restart = "on-failure";
+            script = ''
+              #!/usr/bin/env bash
+
+              # Adapted from https://github.com/tmllull/BitwardenAutomatedBackup
+              # and https://github.com/binarypatrick/BitwardenBackup
+              # See https://github.com/dh024/Bitwarden_Export for a good INTERACTIVE export script
+
+              # set the user account to backup
+              USER="timotheos"
+
+              # load env vars required by script and bw binary
+              # shellcheck disable=SC1090,SC1091
+              source "$XDG_CONFIG_HOME/sops-nix/secrets/users/$USER/bitwarden.env"
+
+              TIMESTAMP=$(date "+%Y%m%d")
+              EXPORT_PATH="$HOME/backups/bitwarden"
+              # EXPORT_PLAIN_FILE=bw_$TIMESTAMP.json
+              # EXPORT_ENCRYPTED_FILE=bw_enc_$TIMESTAMP.json
+              EXPORT_OPENSSL_FILE=bw_$TIMESTAMP.enc
+              # EXPORT_ORG_PLAIN_FILE=bw_org_$TIMESTAMP.json
+              # EXPORT_ORG_ENCRYPTED_FILE=bw_org_enc_$TIMESTAMP.json
+              EXPORT_ORG_OPENSSL_FILE=bw_org_$TIMESTAMP.enc
+
+              NOTIFICATION_EMAIL="timotheos.allen@gmail.com" # Email address used for notification if job fails
+              NOTIFICATION_EMAIL_SUBJECT="Bitwarden Unlock Failed"
+              NOTIFICATION_EMAIL_BODY="The automated Bitwarden backup failed when trying to unlock the vault"
+              SERVER=${cfg.server}
+
+              if [ ! -d "$EXPORT_PATH" ]; then
+                echo "Folder '~/backups/bitwarden' does not exist. Creating it..."
+                mkdir -p "$EXPORT_PATH"
+              else
+                echo "Folder '~/backups/bitwarden' already exists."
+              fi
+
+              MAX_RETRIES=5
+              RETRY_DELAY=15
+              ATTEMPT=1
+              LOGGED_IN=1
+
+              if [ -n "$SERVER" ]; then
+              bw config server "$SERVER" 
+
+              echo "Attempting Bitwarden API login..."
+              while [ $ATTEMPT -le $MAX_RETRIES ]; do
+                # Run login and capture errors silently
+                if bw login --apikey >/dev/null 2>&1; then
+                  echo "Successfully authenticated with API key."
+                  LOGGED_IN=0
+                  break
+                else
+                  echo "Login attempt $ATTEMPT failed. Network may be offline. Retrying in ${RETRY_DELAY}s..."
+                  sleep $RETRY_DELAY
+                  ATTEMPT=$((ATTEMPT + 1))
+                fi
+              done
+
+              # If all retries failed, send ONE email and exit
+              if [ $LOGGED_IN -ne 0 ]; then
+                echo "Error: Bitwarden API unreachable after $MAX_RETRIES attempts."
+                echo "$NOTIFICATION_EMAIL_BODY (API Login FetchError)" | mail -s "$NOTIFICATION_EMAIL_SUBJECT" "$NOTIFICATION_EMAIL"
+                exit 1
+              fi
+
+              # Force a 5-second pause to let the Android Hotspot NAT clear its connection tracking table
+              echo "Login successful. Cooling down for Hotspot routing..."
+              sleep 5
+
+              # Try to unlock the vault with internal fallback retries
+              echo "Attempting vault unlock..."
+              UNLOCK_ATTEMPT=1
+              while [ $UNLOCK_ATTEMPT -le 3 ]; do
+                BW_SESSION=$(bw unlock --passwordenv BW_PASSWORD --raw 2>/dev/null)
+
+                if [ -n "$BW_SESSION" ]; then
+                  echo "Vault unlocked successfully!"
+                  break
+                else
+                  echo "Unlock attempt $UNLOCK_ATTEMPT stalled by hotspot NAT. Retrying in 10s..."
+                  sleep 10
+                  UNLOCK_ATTEMPT=$((UNLOCK_ATTEMPT + 1))
+                fi
+              done
+
+              if [ -z "$BW_SESSION" ]; then
+                echo "Error: Master password decryption failed."
+                echo "$NOTIFICATION_EMAIL_BODY (Vault Unlock Failed)" | mail -s "$NOTIFICATION_EMAIL_SUBJECT" "$NOTIFICATION_EMAIL"
+                bw logout
+                exit 1
+              fi
+
+              # Unencrypted export (not recommended)
+              #bw --raw --session $BW_SESSION export --format json --output $EXPORT_PATH/$EXPORT_PLAIN_FILE
+
+              # Encrypted export using encrypted_json from bitwarden
+              # echo "Export encrypted json using bitwarden format..."
+              # bw --raw --session $BW_SESSION export --format encrypted_json --password $BW_PASSWORD --output $EXPORT_PATH/$EXPORT_ENCRYPTED_FILE
+              # chmod 644 $EXPORT_PATH/$EXPORT_ENCRYPTED_FILE
+
+              # Encrypted export using openssl
+              echo "Export encrypted json using openssl..."
+              (bw --raw --session "$BW_SESSION" export --format json 2>/dev/null) | openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -k "$OPENSSL_ENC_PASS" -out "$EXPORT_PATH"/"$EXPORT_OPENSSL_FILE"
+
+              # ORGANIZATION
+              if [[ -n "$BW_ORG_ID" ]]; then
+                # Unencrypted export (not recommended)
+                #bw --raw --session $BW_SESSION export --organizationid $BW_ORG_ID --format json --output $EXPORT_PATH/$EXPORT_ORG_PLAIN_FILE
+
+                # Encrypted export using encrypted_json from bitwarden
+                # echo "Export encrypted json using bitwarden format..."
+                # bw --raw --session $BW_SESSION export --organizationid $BW_ORG_ID --format encrypted_json --password $BW_PASSWORD --output $EXPORT_PATH/$EXPORT_ORG_ENCRYPTED_FILE
+                # chmod 644 $EXPORT_PATH/$EXPORT_ORG_ENCRYPTED_FILE
+
+                # Encrypted export using openssl
+                echo "Export encrypted json using openssl..."
+                bw --raw --session "$BW_SESSION" export --organizationid "$BW_ORG_ID" --format json | openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -k "$OPENSSL_ENC_PASS" -out "$EXPORT_PATH"/"$EXPORT_ORG_OPENSSL_FILE"
+              else
+                echo
+                echo "No organizational vault defined."
+              fi
+
+              # Cleanup old files.
+              # Adjust the number of files to keep and days
+              # depending on your use case.
+              # NB: Once there are > 12 backups, "mtime +12w" will remove all backups older than 12 weeks
+              NUM_FILES=$(find "$EXPORT_PATH" -type f | wc -l)
+              if [ "$NUM_FILES" -gt 12 ]; then
+                # keep backups from the last 12 weeks (7*12=84)
+                # NB: linux find does not allow "-mtime +12w" etc, only "-mtime +n" where n is the no. of days
+                find "$EXPORT_PATH" -type f -mtime +84 -exec rm {} \;
+              fi
+
+              echo "Export completed!"
+              bw logout
+            '';
             # prevent being spammed with failure notifications when the bitwarden network is down
             # restart a maximum of 5 times within a 10-second interval
             Type = "oneshot";
