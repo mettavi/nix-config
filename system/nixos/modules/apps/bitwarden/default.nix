@@ -59,8 +59,9 @@ in
             # Block execution until the internet is actively reachable
             ExecStartPre = "${pkgs.networkmanager}/bin/nm-online -q --timeout=30";
             ExecStart = "${inputs.self}/home/shared/bin/bw_backup.sh";
-            # do not start the service when running 'nixos-rebuild switch'
+            # do not start/restart the service when running 'nixos-rebuild switch'
             RemainAfterExit = true;
+            RestartIfChanged = false;
             Restart = "on-failure";
             # prevent being spammed with failure notifications when the bitwarden network is down
             # restart a maximum of 5 times within a 10-second interval
