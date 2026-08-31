@@ -25,7 +25,7 @@ jobs:
       - name: Open PR if anything changed
         uses: peter-evans/create-pull-request@v8.1.1
         with:
-          token: ${{ secrets.GH_TOKEN_FOR_UPDATES || secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TOKEN }}
           commit-message: "chore(pkgs): automated package version updates"
           branch: automated/nix-update-packages
           title: "Automated: local package updates"
