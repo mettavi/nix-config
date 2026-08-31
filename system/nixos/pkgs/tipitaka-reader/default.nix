@@ -5,7 +5,7 @@
 }:
 let
   pname = "tipitaka_pali_reader";
-  version = "2.8.7+117";
+  version = "2.9.2+122";
   src = pkgs.fetchurl {
     # Add an explicit name property to fetchurl to lock the name of the `src` fixed output derivation
     # this prevents re-downloads when tweaking incidental settings
