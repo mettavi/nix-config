@@ -43,11 +43,7 @@ in
     };
     environment.systemPackages = with pkgs; [
       # gtk version (the kdeIntegration variable defaults to false)
-      # TODO: Check status of bug report (see below)
-      # Roll back to a previous version due to the "NoSuchElementException" bug
-      # See https://github.com/NixOS/nixpkgs/issues/557751
-      # libreoffice-stable
-      inputs.libreoffice.legacyPackages.${pkgs.stdenv.hostPlatform.system}.libreoffice-fresh
+      libreoffice-stable
       hunspell
       hunspellDicts.en_AU
       hunspellDicts.en_US

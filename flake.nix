@@ -148,9 +148,6 @@
     # specific_package.url = "github:nixos/nixpkgs/specific_commit_hash_from_nixhub.io";
     # Then add the following to environment.systemPackages or an overlay:
     # inputs.specific_package.legacyPackages.${pkgs.stdenv.hostPlatform.system}.package_name_from_nixhub.io
-    # Roll back to a previous version due to the "NoSuchElementException" bug
-    # See https://github.com/NixOS/nixpkgs/issues/557751
-    libreoffice.url = "github:nixos/nixpkgs/8b7dc2ca50dd99ca3af5af1436b06b5adb1e54c9";
   };
 
   outputs =
