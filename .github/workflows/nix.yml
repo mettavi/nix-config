@@ -7,7 +7,21 @@ on:
   push:
     branches: [main]
 jobs:
+  # 1. Gate job to check if this commit/content was already built
+  pre_job:
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
+    steps:
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v5
+        with:
+          concurrent_skipping: 'same_content_newer'
+          skip_after_successful_duplicate: true
+  # 2. Flake check job
   check:
+    needs: pre_job
+    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
     name: "nix flake check"
     runs-on: ubuntu-latest
     steps:
@@ -33,7 +47,10 @@ jobs:
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - name: "Check flake health"
         run: nix flake check
+  # 3. Host build matrix job
   build:
+    needs: pre_job
+    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
     name: "build (${{ matrix.host }})"
     runs-on: ubuntu-latest
     strategy:
