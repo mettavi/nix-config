@@ -79,6 +79,8 @@ in
             USER="${username}"
 
             LABEL=${cfg.server.label}
+            LABEL_ABBREV="${substring 0 1 cfg.server.label + "w"}"
+            # Capitalize the label for email
             LABEL_CAP="${toUpper (substring 0 1 cfg.server.label) + (substring 1 (-1) cfg.server.label)}"
             # load env vars required by script and bw binary
             # shellcheck disable=SC1090,SC1091
@@ -88,10 +90,10 @@ in
             EXPORT_PATH="$HOME/backups/$LABEL"
             # EXPORT_PLAIN_FILE=bw_$TIMESTAMP.json
             # EXPORT_ENCRYPTED_FILE=bw_enc_$TIMESTAMP.json
-            EXPORT_OPENSSL_FILE=bw_$TIMESTAMP.enc
+            EXPORT_OPENSSL_FILE=''${LABEL_ABBREV}_$TIMESTAMP.enc
             # EXPORT_ORG_PLAIN_FILE=bw_org_$TIMESTAMP.json
             # EXPORT_ORG_ENCRYPTED_FILE=bw_org_enc_$TIMESTAMP.json
-            EXPORT_ORG_OPENSSL_FILE=bw_org_$TIMESTAMP.enc
+            EXPORT_ORG_OPENSSL_FILE=''${LABEL_ABBREV}_org_$TIMESTAMP.enc
 
             NOTIFICATION_EMAIL=${inputs.secrets.email.personal} # Email address used for notification if job fails
             NOTIFICATION_EMAIL_SUBJECT="$LABEL_CAP Unlock Failed"
