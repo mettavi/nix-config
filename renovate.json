@@ -28,7 +28,6 @@
         'minor',
       ],
       automerge: true,
-      // change to "branch" to skip PRs and CI
       automergeType: 'pr',
       platformAutomerge: true,
     },
@@ -37,7 +36,6 @@
     {
       customType: 'regex',
       description: 'Update container images in quadlet-nix definitions',
-      // matches *.nix files in the hosts and services directories
       managerFilePatterns: [
         '/^hosts/.*\\.nix$/',
         '/^services/.*\\.nix$/',
