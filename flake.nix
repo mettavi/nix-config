@@ -115,19 +115,6 @@
       url = "git+https://gitlab.com/celenityy/Phoenix.git?ref=pages";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # These 2 are already in nixpkgs, however this ensures you always fetch the most up to date version!
-    plugins-lze = {
-      url = "github:BirdeeHub/lze";
-      flake = false;
-    };
-    plugins-lzextras = {
-      url = "github:BirdeeHub/lzextras";
-      flake = false;
-    };
-    plugins-vim-maximizer = {
-      url = "github:szw/vim-maximizer";
-      flake = false;
-    };
     sops-nixos = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -144,6 +131,30 @@
       url = "github:BirdeeHub/nix-wrapper-modules";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    ################# NEOVIM PLUGINS (alphabetical) ##################
+    plugins-json5 = {
+      url = "github:json5/json5";
+      flake = false;
+    };
+    plugins-jsonlint = {
+      url = "github:zaach/jsonlint";
+      flake = false;
+    };
+    # These 2 are already in nixpkgs, however this ensures you always fetch the most up to date version!
+    plugins-lze = {
+      url = "github:BirdeeHub/lze";
+      flake = false;
+    };
+    plugins-lzextras = {
+      url = "github:BirdeeHub/lzextras";
+      flake = false;
+    };
+    plugins-vim-maximizer = {
+      url = "github:szw/vim-maximizer";
+      flake = false;
+    };
+
     # install a pinned version of a nix package with:
     # specific_package.url = "github:nixos/nixpkgs/specific_commit_hash_from_nixhub.io";
     # Then add the following to environment.systemPackages or an overlay:
