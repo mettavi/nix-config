@@ -218,6 +218,13 @@ in
         };
 
         # You can use the before and after fields to run them before or after other specs or spec of lists of specs
+        specs.bash = {
+          data = null;
+          runtimePkgs = with pkgs; [
+            bash-language-server
+            shfmt
+          ];
+        };
         specs.lua = {
           after = [ "lazy" ];
           lazy = true;
@@ -234,14 +241,6 @@ in
           runtimePkgs = with pkgs; [
             nixd
             nixfmt
-          ];
-        };
-
-        specs.bash = {
-          data = null;
-          runtimePkgs = with pkgs; [
-            bash-language-server
-            shfmt
           ];
         };
         specs.yaml = {
