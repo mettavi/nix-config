@@ -65,7 +65,7 @@ in
             options.runtimePkgs = lib.mkOption {
               type = lib.types.listOf wlib.types.stringable;
               default = [ ];
-              description = "an runtimePkgs spec field to put packages to suffix to the PATH";
+              description = "a runtimePkgs spec field to put packages to suffix to the PATH";
             };
           };
 
