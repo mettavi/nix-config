@@ -24,16 +24,20 @@ in
       # enable support for Logitech Wireless Devices
       wireless = {
         enable = true; # installs ltunify and logitech-udev-rules packages
-        enableGraphical = true; # installs solaar gui and command for extra functionality (eg. bolt connector devices)
       };
     };
-    # TODO: Comment out the new (very recent) options for solaar until the next flake update picks them up
-    # programs.solaar = {
-    #   enable = true;
-    #   userService = {
-    #     enable = true;
-    #   };
-    # };
+
+    # the open source driver for Logitech devices
+    programs.solaar = {
+      enable = true;
+      # Enable the systemd service for each user
+      userService = {
+        enable = true;
+        extraArgs = [ "--resart-on-wake-up" ];
+        window = "hide";
+      };
+    };
+
     home-manager.users.${username} =
       { config, nixosConfig, ... }:
       let
