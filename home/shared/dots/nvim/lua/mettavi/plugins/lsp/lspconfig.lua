@@ -24,6 +24,7 @@ return {
 
     vim.lsp.enable({
       "bashls",
+      "jsonls",
       "lua_ls",
       "nixd",
       "taplo",
@@ -32,6 +33,20 @@ return {
     })
 
     -- Server-specific settings. See `:help lsp-quickstart`
+
+    local nixInfo = require(vim.g.nix_info_plugin_name)
+    local default = nil
+    local jsonls_pth = nixInfo(default, "info", "jsonls_nixpth")
+
+    vim.lsp.config("jsonls", {
+      cmd = { jsonls_pth },
+    })
+    -- lspconfig("jsonls", {
+    --   settings = {
+    --     cmd = { nixInfo.info.jsonls_nixpth },
+    --   },
+    -- })
+
     vim.lsp.config("lua_ls", {
       settings = {
         Lua = {
