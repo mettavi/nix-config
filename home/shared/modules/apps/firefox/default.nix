@@ -43,7 +43,7 @@ in
 
     programs.firefox = {
       enable = true;
-      # explicitly set the config path because home.stateVersion` is less than "26.05"
+      # explicitly set the config path because home.stateVersion is less than "26.05"
       configPath = "${config.xdg.configHome}/mozilla/firefox";
       languagePacks = [
         "en_AU"
