@@ -636,6 +636,38 @@
         "url": "https://gitlab.com/celenityy/Phoenix.git"
       }
     },
+    "plugins-json5": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1729865551,
+        "narHash": "sha256-di+eK1J5UmzzYZxWoYprA7/5/wZ2PNDwJlNH+l15a9o=",
+        "owner": "json5",
+        "repo": "json5",
+        "rev": "b935d4a280eafa8835e6182551b63809e61243b0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "json5",
+        "repo": "json5",
+        "type": "github"
+      }
+    },
+    "plugins-jsonlint": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1626068725,
+        "narHash": "sha256-7baPQ96QrozMFvoHDerDXgQxUzvk7nsw0rEsNo8Oo8o=",
+        "owner": "zaach",
+        "repo": "jsonlint",
+        "rev": "f6624322e6ba7c2c6e7848729f7309873329e7cb",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zaach",
+        "repo": "jsonlint",
+        "type": "github"
+      }
+    },
     "plugins-lze": {
       "flake": false,
       "locked": {
@@ -724,6 +756,8 @@
         "nixpkgs-darwin": "nixpkgs-darwin",
         "nur": "nur",
         "phoenix": "phoenix",
+        "plugins-json5": "plugins-json5",
+        "plugins-jsonlint": "plugins-jsonlint",
         "plugins-lze": "plugins-lze",
         "plugins-lzextras": "plugins-lzextras",
         "plugins-vim-maximizer": "plugins-vim-maximizer",
