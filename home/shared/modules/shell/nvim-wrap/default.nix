@@ -91,6 +91,7 @@ in
             (nvim-treesitter.withPlugins (
               plugins: with plugins; [
                 json
+                # json5
                 javascript
                 typescript
                 tsx
@@ -225,6 +226,17 @@ in
             shfmt
           ];
         };
+        # specs.json = {
+        #   data = null;
+        #   runtimePkgs =
+        #     with pkgs;
+        #     with neovimPlugins;
+        #     [
+        #       jsonlint
+        #       json5
+        #       vscode-langservers-extracted
+        #     ];
+        # };
         specs.lua = {
           after = [ "lazy" ];
           lazy = true;
@@ -251,16 +263,16 @@ in
             yamllint
           ];
         };
+        #
+        # info = {
+        #   values = "for lua";
+        #   which = "will be placed in the generated info plugin for access";
+        # };
+        #
+        # info = {
+        #   jsonls_nixpth = "${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server";
+        # };
       };
-
-    #
-    #
-    #
-    # info = {
-    #   values = "for lua";
-    #   which = "will be placed in the generated info plugin for access";
-    # };
-    #
 
     home.sessionVariables =
       let
