@@ -3,6 +3,7 @@
   ...
 }:
 let
+  # builtins.fromJSON converts the string into a numeric value
   currentVersion = builtins.fromJSON nixosConfig.system.nixos.release;
 in
 
