@@ -30,7 +30,7 @@ in
     # linger = true;
     # required for rootless container with multiple users
     # autoSubUidGidRange = true;
-    # };{
+    # };
 
     sops.secrets = {
       # .env file for use with systemd service for PIA VPN
