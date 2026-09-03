@@ -27,17 +27,6 @@ in
       };
     };
 
-    # the open source driver for Logitech devices
-    programs.solaar = {
-      enable = true;
-      # Enable the systemd service for each user
-      userService = {
-        enable = true;
-        extraArgs = [ "--resart-on-wake-up" ];
-        window = "hide";
-      };
-    };
-
     home-manager.users.${username} =
       { config, nixosConfig, ... }:
       let
