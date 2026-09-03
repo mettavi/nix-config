@@ -198,6 +198,8 @@ with lib;
     };
   };
 
+  # NB: this code needs to be isolated here while other hosts are still on pre-26.11
+  # because of errors with "nix flake check"
   # the open source driver for Logitech devices
   programs.solaar = {
     enable = true;
