@@ -54,8 +54,6 @@ in
               SERVICE_REGIONS = "Australia";
               VPN_SERVICE_PROVIDER = cfg.vpn_provider;
               VPN_TYPE = "wireguard";
-            }
-            // mkIf (cfg.vpn_provider == "private internet access") {
               VPN_PORT_FORWARDING = "on";
               VPN_PORT_FORWARDING_PROVIDER = "private internet access";
             };
