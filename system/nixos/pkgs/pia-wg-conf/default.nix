@@ -6,13 +6,13 @@
 }:
 
 buildGoModule (finalAttrs: {
-  pname = "pia-wg-conf";
+  pname = "pia-wg-config";
   version = "1.1.1";
   __structuredAttrs = true;
 
   src = fetchFromGitHub {
     owner = "kylegrantlucas";
-    repo = "pia-wg-conf";
+    repo = "pia-wg-config";
     rev = "v${finalAttrs.version}";
     hash = "sha256-nVdmh9wOZBxbMOgMnC6nEsoaEh6cQ6o1ok+OONopXro=";
   };
@@ -32,6 +32,6 @@ buildGoModule (finalAttrs: {
     changelog = "https://github.com/kylegrantlucas/pia-wg-config/blob/${finalAttrs.src.rev}/CHANGELOG.md";
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ ];
-    mainProgram = "pia-wg-conf";
+    mainProgram = "pia-wg-config";
   };
 })
