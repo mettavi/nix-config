@@ -22,25 +22,29 @@ return {
       capabilities = capabilities,
     })
 
-    vim.lsp.enable({
-      "bashls",
-      "jsonls",
-      "lua_ls",
-      "nixd",
-      "taplo",
-      "ts_ls",
-      "yamlls",
-    })
-
     -- Server-specific settings. See `:help lsp-quickstart`
 
-    local nixInfo = require(vim.g.nix_info_plugin_name)
-    local default = nil
-    local jsonls_pth = nixInfo(default, "info", "jsonls_nixpth")
+    -- local nixInfo = require(vim.g.nix_info_plugin_name)
+    -- local default = nil
+    -- local jsonls_pth = nixInfo(default, "info", "jsonls_nixpth")
 
-    vim.lsp.config("jsonls", {
-      cmd = { jsonls_pth },
-    })
+    -- vim.lsp.config("jsonls", {
+    -- cmd = { jsonls_pth },
+    --   cmd = function(dispatchers, config)
+    --     local cmd = "vscode-json-language-server"
+    --     if (config or {}).root_dir then
+    --       local local_cmd = vim.fs.joinpath(
+    --         "/nix/store/szcw15pvqr9slg69mf68m9mdnqx138d6-vscode-langservers-extracted-1.126.04524/bin/",
+    --         cmd
+    --       )
+    --       if vim.fn.executable(local_cmd) == 1 then
+    --         cmd = local_cmd
+    --       end
+    --     end
+    --     return vim.lsp.rpc.start({ cmd, "--stdio" }, dispatchers)
+    --   end,
+    -- })
+
     -- lspconfig("jsonls", {
     --   settings = {
     --     cmd = { nixInfo.info.jsonls_nixpth },
@@ -157,6 +161,16 @@ return {
           },
         },
       },
+    })
+
+    vim.lsp.enable({
+      "bashls",
+      "jsonls",
+      "lua_ls",
+      "nixd",
+      "taplo",
+      "ts_ls",
+      "yamlls",
     })
 
     vim.api.nvim_create_autocmd("LspAttach", {

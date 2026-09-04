@@ -2,6 +2,7 @@
   config,
   inputs,
   lib,
+  pkgs,
   ...
 }:
 with lib;
@@ -226,17 +227,17 @@ in
             shfmt
           ];
         };
-        # specs.json = {
-        #   data = null;
-        #   runtimePkgs =
-        #     with pkgs;
-        #     with neovimPlugins;
-        #     [
-        #       jsonlint
-        #       json5
-        #       vscode-langservers-extracted
-        #     ];
-        # };
+        specs.json = {
+          data = null;
+          runtimePkgs =
+            with pkgs;
+            with neovimPlugins;
+            [
+              # jsonlint
+              # json5
+              vscode-langservers-extracted
+            ];
+        };
         specs.lua = {
           after = [ "lazy" ];
           lazy = true;
@@ -269,10 +270,12 @@ in
         #   which = "will be placed in the generated info plugin for access";
         # };
         #
-        # info = {
-        #   jsonls_nixpth = "${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server";
-        # };
+        info = {
+          jsonls_nixpth = "${pkgs.vscode-langservers-extracted}/bin/vscode-json-language-server";
+        };
       };
+
+    home.packages = [ pkgs.vscode-langservers-extracted ];
 
     home.sessionVariables =
       let
