@@ -8,7 +8,6 @@ with lib;
 with lib.types;
 let
   cfg = config.mettavi.system.services.gluetun;
-  # volumes = config.virtualisation.quadlet.volumes;
 in
 {
   options.mettavi.system.services.gluetun = {
@@ -29,6 +28,40 @@ in
             default = wireguard;
             description = "Whether to connect using the OpenVPN or Wireguard VPN protocol";
           };
+          servers = {
+            categories = mkOption {
+              type = str;
+              default = "";
+              description = "Comma separated list of server categories";
+            };
+            cities = mkOption {
+              type = str;
+              default = "";
+              description = "Comma separated list of cities";
+            };
+            countries = mkOption {
+              type = str;
+              default = "";
+              description = "Comma separated list of countries";
+            };
+            # Beware this is the narrowest filter
+            hostnames = mkOption {
+              type = str;
+              default = "";
+              description = "Comma separated list of server hostnames";
+            };
+            # required for PIA port-forwarding with wireguard
+            names = mkOption {
+              type = str;
+              default = "";
+              description = "Comma separated list of server names";
+            };
+            regions = mkOption {
+              type = str;
+              default = "";
+              description = "Comma separated list of VPN regions";
+            };
+          };
           openvpn = {
             user = mkOption {
               type = str;
@@ -45,7 +78,7 @@ in
               default = "";
               description = "Custom OpenVPN server endpoint port";
             };
-            endpoint_port = mkOption {
+            endpointPort = mkOption {
               type = types.str;
               default = "";
               description = "Custom OpenVPN server endpoint port";
@@ -61,9 +94,14 @@ in
           };
           portForwarding = {
             enabled = mkOption {
-              type = bool;
-              default = true;
+              type = str;
+              default = "on";
               desription = "Whether to turn port forwarding on";
+            };
+            only = mkOption {
+              type = bool;
+              default = false;
+              description = "Whether to only select servers with port forwarding";
             };
             provider = mkOption {
               type = str;
@@ -82,6 +120,7 @@ in
             };
           };
           wireguard = {
+            # IP network interface address in the format xx.xx.xx.xx/xx
             addresses = mkOption {
               type = listOf str;
               default = "";
@@ -140,14 +179,20 @@ in
             ];
             devices = [ "/dev/net/tun:/dev/net/tun" ];
             environments = {
+              # GENERAL
+              VPN_SERVICE_PROVIDER = cfg.providers.name;
+              VPN_TYPE = cfg.providers.type;
               LOG_LEVEL = "INFO";
-              # select servers with port forwarding only
-              PORT_FORWARD_ONLY = false;
+              UPDATER_PERIOD = "480h";
+              SERVER_NAMES = cfg.providers.servers.names;
               SERVICE_REGIONS = "Australia";
-              VPN_SERVICE_PROVIDER = cfg.vpn_provider;
-              VPN_TYPE = "wireguard";
-              VPN_PORT_FORWARDING = "on";
-              VPN_PORT_FORWARDING_PROVIDER = "private internet access";
+
+              # WIREGUARD
+
+              # PORT FORWARDING
+              VPN_PORT_FORWARDING = cfg.providers.portForwarding.enabled;
+              PORT_FORWARD_ONLY = cfg.providers.portForwarding.only;
+              VPN_PORT_FORWARDING_PROVIDER = cfg.providers.portForwarding.provider;
             };
             environmentFiles = [ "${config.sops.secrets."users/${username}/pia.env".path}" ];
             healthCmd = "CMD-SHELL /gluetun-entrypoint healthcheck";
