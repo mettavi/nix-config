@@ -22,12 +22,19 @@ in
   };
 
   config = mkIf cfg.enable {
+    environment.shellAliases = {
+      pia-cfg = getExe pkgs.pia-wg-config;
+      pia-cfg2 = getExe pkgs.pia-wg-config2;
+    };
+
     environment.systemPackages =
       with pkgs;
       with pkgs.xpkgs;
       [
         karere # Gtk4 WhatsApp client
         kdePackages.okular # KDE document viewer
+        linpkgs.pia-wg-config
+        linpkgs.pia-wg-config2
         mpv # General-purpose media player, fork of MPlayer and mplayer2
         pdfarranger # python-gtk application to merge/split/rotate/crop/rearrange PDFs
         picard # offical musicbrainz tagger
