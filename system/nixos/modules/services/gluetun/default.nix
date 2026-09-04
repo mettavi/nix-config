@@ -13,12 +13,108 @@ in
 {
   options.mettavi.system.services.gluetun = {
     enable = mkEnableOption "Install and set up the Gluetun VPN service";
-    vpn_provider = mkOption {
-      description = "Specify the default VPN provider to connect to";
-      type = enum [
-        "private internet access" # private internet access
-      ];
-      default = "private internet access";
+    providers = mkOption {
+      type = attrsOf (submodule {
+        options = {
+          name = mkOption {
+            type = str;
+            default = "custom";
+            description = "Provider name";
+          };
+          type = mkOption {
+            type = enum [
+              "openvpn"
+              "wireguard"
+            ];
+            default = wireguard;
+            description = "Whether to connect using the OpenVPN or Wireguard VPN protocol";
+          };
+          openvpn = {
+            user = mkOption {
+              type = str;
+              default = "";
+              description = "The username for the OpenVPN provider";
+            };
+            password = mkOption {
+              type = str;
+              default = "";
+              description = "The password for the OpenVPN provider";
+            };
+            customConfig = mkOption {
+              type = path;
+              default = "";
+              description = "Custom OpenVPN server endpoint port";
+            };
+            endpoint_port = mkOption {
+              type = types.str;
+              default = "";
+              description = "Custom OpenVPN server endpoint port";
+            };
+            protocol = mkOption {
+              type = enum [
+                "upd"
+                "tcp"
+              ];
+              default = "udp";
+              description = "The password for the OpenVPN provider";
+            };
+          };
+          portForwarding = {
+            enabled = mkOption {
+              type = bool;
+              default = true;
+              desription = "Whether to turn port forwarding on";
+            };
+            provider = mkOption {
+              type = str;
+              default = "private internet access";
+              description = "The provider of the port forwarding service";
+            };
+            username = mkOption {
+              type = str;
+              default = "";
+              description = "The username for the provider";
+            };
+            password = mkOption {
+              type = str;
+              default = "";
+              description = "The password for the provider";
+            };
+          };
+          wireguard = {
+            addresses = mkOption {
+              type = listOf str;
+              default = "";
+              description = "Wireguard IP addresses";
+            };
+            endpointIP = mkOption {
+              type = types.str;
+              default = "";
+              description = "Custom wireguard server endpoint IP address (not hostname)";
+            };
+            endpointPort = mkOption {
+              type = types.str;
+              default = "";
+              description = "Custom wireguard server endpoint port";
+            };
+            presharedKey = mkOption {
+              type = str;
+              default = "";
+              description = "The password for the OpenVPN provider";
+            };
+            privateKey = mkOption {
+              type = str;
+              default = "";
+              description = "The password for the OpenVPN provider";
+            };
+            publicKey = mkOption {
+              type = str;
+              default = "";
+              description = "The username for the OpenVPN provider";
+            };
+          };
+        };
+      });
     };
   };
 
