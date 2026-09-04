@@ -17,7 +17,7 @@ in
         options = {
           name = mkOption {
             type = str;
-            default = "custom";
+            default = "custom-pia";
             description = "Provider name";
           };
           type = mkOption {
@@ -165,7 +165,9 @@ in
 
     sops.secrets = {
       # .env file for use with systemd service for PIA VPN
-      "users/${username}/pia.env" = { };
+      "users/${username}/glueton-${cfg.providers.name}.env" = {
+        sopsFile = "${secrets_path}/secrets/apps/gluetun.yaml";
+      };
     };
 
     virtualisation.quadlet = {
@@ -194,7 +196,9 @@ in
               PORT_FORWARD_ONLY = cfg.providers.portForwarding.only;
               VPN_PORT_FORWARDING_PROVIDER = cfg.providers.portForwarding.provider;
             };
-            environmentFiles = [ "${config.sops.secrets."users/${username}/pia.env".path}" ];
+            environmentFiles = [
+              "${config.sops.secrets."users/${username}/gluetun-${cfg.providers.name}.env".path}"
+            ];
             healthCmd = "CMD-SHELL /gluetun-entrypoint healthcheck";
             healthInterval = "30s";
             healthOnFailure = "kill";
