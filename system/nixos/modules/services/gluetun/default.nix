@@ -121,12 +121,8 @@ in
   config = lib.mkIf cfg.enable {
     # to enable and configure generic podman settings
     mettavi.system.services.podman.enable = true;
-    # users.users.${username} = {
-    # required for auto start before user login
-    # linger = true;
-    # required for rootless container with multiple users
-    # autoSubUidGidRange = true;
-    # };
+
+    environment.systemPackages = with pkgs; [ linpkgs.pia-wg-config ];
 
     sops.secrets = {
       # .env file for use with systemd service for PIA VPN
