@@ -340,6 +340,12 @@ in
             ];
           };
           serviceConfig = {
+            ExecStartPre = pkgs.writeShellScript "pin-qbittorrent-localhostauth" ''
+              conf="${qbtContainerConfDir}/qBittorrent/qBittorrent.conf"
+              if [ -f "$conf" ]; then
+                ${pkgs.crudini}/bin/crudini --set "$conf" Preferences 'WebUI\LocalHostAuth' false
+              fi
+            '';
             Restart = "on-failure";
             RestartSec = "10";
           };
