@@ -293,7 +293,7 @@ in
           containerConfig = {
             autoStart = false;
             containerName = "pia-wg-refresh";
-            image = "ghcr.io/ccarpinteri/pia-wg-refresh:latest";
+            image = "ghcr.io/ccarpinteri/pia-wg-refresh:v0.8.3";
             environments = {
               GLUETUN_CONTAINER = "gluetun";
               LOG_LEVEL = "info";
