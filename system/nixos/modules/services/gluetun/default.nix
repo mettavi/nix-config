@@ -187,10 +187,8 @@ in
     ];
 
     sops.secrets = {
-      # .env file for use with systemd service for PIA VPN
-      "users/${username}/gluetun-${cfg.activeProvider}.env" = {
-        sopsFile = "${secrets_path}/secrets/apps/gluetun.yaml";
-      };
+      "users/${username}/gluetun-${cfg.activeProvider}.env" = sopsGluetunFile;
+      "users/${username}/wg-refresh-${cfg.activeProvider}.env" = sopsGluetunFile;
     };
 
     # host-side: watch the file, restart gluetun.service when it changes
@@ -294,7 +292,7 @@ in
               WG_CONF_PATH = "/config/wg0.conf";
             };
             environmentFiles = [
-              config.sops.secrets."users/${username}/pia-wg-refresh.env".path
+              config.sops.secrets."users/${username}/wg-refresh-${cfg.activeCfg}.env".path
             ];
             volumes = [
               "${pfEnvDir}:/hostenv"
