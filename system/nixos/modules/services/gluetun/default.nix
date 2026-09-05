@@ -331,7 +331,6 @@ in
             environments = {
               PUID = toString config.users.users.${username}.uid;
               PGID = toString config.users.groups.users.gid;
-              TORRENTING_PORT = "6887";
               WEBUI_PORT = "8090";
             };
             volumes = [
