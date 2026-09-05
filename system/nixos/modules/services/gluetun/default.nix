@@ -141,7 +141,6 @@ in
             };
           };
           wireguard = {
-            # IP network interface address in the format xx.xx.xx.xx/xx
             addresses = mkOption {
               type = listOf str;
               default = "";
