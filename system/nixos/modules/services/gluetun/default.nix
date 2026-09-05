@@ -10,7 +10,7 @@ with lib.types;
 let
   cfg = config.mettavi.system.services.gluetun;
   activeCfg = cfg.providers.${cfg.activeProvider};
-  # creates the only two read-only Gluetun control server API endpoints pia-wg-refresh needs
+  # creates the two read-only Gluetun control server API endpoints pia-wg-refresh needs access to
   authConfigFile = (pkgs.formats.toml { }).generate "gluetun-auth-config.toml" {
     roles = [
       {
