@@ -349,6 +349,15 @@ in
             Restart = "on-failure";
             RestartSec = "10";
           };
+          unitConfig = {
+            After = [
+              "home-manager-${username}.service"
+              "gluetun.service"
+            ];
+            Requires = [
+              "gluetun.service"
+            ];
+          };
         };
         qbittorrent-port-forward = {
           containerConfig = {
@@ -374,7 +383,6 @@ in
             ];
             Requires = [
               "gluetun.service"
-              "qbittorrent.service"
             ];
           };
         };
