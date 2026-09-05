@@ -266,9 +266,9 @@ in
             image = "docker.io/qmcgaw/gluetun:v3.41.3";
             notify = "healthy";
             publishPorts = [
-              "8888:8888/tcp" # HTTP proxy
-              "8388:8388/tcp" # Shadowsocks
-              "8388:8388/udp" # Shadowsocks
+              "6887:6887/tcp"
+              "6887:6887/udp"
+              "8090:8090/tcp" # qBittorrent WEBUI_PORT
             ];
 
             volumes = [
@@ -316,6 +316,27 @@ in
           unitConfig = {
             After = [ "gluetun.service" ];
             Requires = [ "gluetun.service" ];
+          };
+        };
+        qbittorrent = {
+          containerConfig = {
+            image = "docker.io/linuxserver/qbittorrent:latest";
+            network = "container:gluetun"; # joins gluetun's netns — no ports of its own
+            environments = {
+              PUID = toString config.users.users.${username}.uid;
+              PGID = toString config.users.groups.users.gid;
+              TORRENTING_PORT = "6887";
+              WEBUI_PORT = "8090";
+            };
+            volumes = [
+              "${config.users.users.${username}.home}/.config/qbittorrent-container:/config"
+              "${config.users.users.${username}.home}/Downloads/qbittorrent:/downloads"
+            ];
+          };
+          serviceConfig = {
+            Restart = "on-failure";
+            RestartSec = "10";
+            # make sure it (re)starts after gluetun exists
           };
         };
       };
