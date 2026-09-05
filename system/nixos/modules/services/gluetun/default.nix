@@ -25,6 +25,7 @@ let
   gluetunConfigDir = "${config.users.users.${username}.home}/.config/gluetun";
   pfEnvDir = "/var/lib/gluetun-portforward";
   pfEnvFile = "${pfEnvDir}/server-names.env";
+  sopsGluetunFile = "${secrets_path}/secrets/apps/gluetun.yaml";
   updateServerNameScript = pkgs.writeShellScript "update-server-name.sh" ''
     echo "SERVER_NAMES=$PIA_SERVER_NAME" > /hostenv/server-names.env
   '';
