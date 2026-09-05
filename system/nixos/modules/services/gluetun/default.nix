@@ -40,11 +40,6 @@ in
     providers = mkOption {
       type = attrsOf (submodule {
         options = {
-          # name = mkOption {
-          #   type = str;
-          #   default = "custom-pia";
-          #   description = "Provider name";
-          # };
           type = mkOption {
             type = enum [
               "openvpn"
@@ -137,16 +132,6 @@ in
               type = str;
               default = "private internet access";
               description = "The provider of the port forwarding service";
-            };
-            username = mkOption {
-              type = str;
-              default = "";
-              description = "The username for the provider";
-            };
-            password = mkOption {
-              type = str;
-              default = "";
-              description = "The password for the provider";
             };
           };
           wireguard = {
