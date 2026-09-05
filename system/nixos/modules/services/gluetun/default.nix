@@ -26,6 +26,7 @@ let
   gluetunConfigDir = "${config.users.users.${username}.home}/.config/gluetun";
   pfEnvDir = "/var/lib/gluetun-portforward";
   pfEnvFile = "${pfEnvDir}/server-names.env";
+  qbtContainerConfDir = "${config.users.users.${username}.home}/.config/qbittorrent-container";
   sopsGluetunFile = "${secrets_path}/secrets/apps/gluetun.yaml";
   updateServerNameScript = pkgs.writeShellScript "update-server-name.sh" ''
     echo "SERVER_NAMES=$PIA_SERVER_NAME" > /hostenv/server-names.env
@@ -334,7 +335,7 @@ in
               WEBUI_PORT = "8090";
             };
             volumes = [
-              "${config.users.users.${username}.home}/.config/qbittorrent-container:/config"
+              "${qbtContainerConfDir}:/config"
               "${config.users.users.${username}.home}/Downloads/qbittorrent:/downloads"
             ];
           };
@@ -373,5 +374,21 @@ in
         };
       };
     };
+
+    home-manager.users.${username} =
+      { config, ... }:
+      with lib;
+      let
+        inherit (config.lib.file) mkOutOfStoreSymlink;
+      in
+      {
+        xdg.configFile = {
+          # link without copying to nix store (manage externally) - must use absolute paths
+          # no documentation of config file syntax is available, so use the GUI to write to an out-of-store file
+          "qbittorrent-container" = {
+            source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/system/nixos/modules/services/gluetun/qbittorrent-container";
+          };
+        };
+      };
   };
 }
