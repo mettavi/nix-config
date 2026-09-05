@@ -161,11 +161,6 @@ in
               default = "";
               description = "Wireguard pre-shared key";
             };
-            privateKey = mkOption {
-              type = str;
-              default = "";
-              description = "Wireguard client private key to use";
-            };
             publicKey = mkOption {
               type = str;
               default = "";
