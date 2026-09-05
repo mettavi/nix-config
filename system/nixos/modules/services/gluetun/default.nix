@@ -10,6 +10,7 @@ with lib.types;
 let
   cfg = config.mettavi.system.services.gluetun;
   activeCfg = cfg.providers.${cfg.activeProvider};
+  # creates the only two read-only Gluetun control server API endpoints pia-wg-refresh needs
   authConfigFile = (pkgs.formats.toml { }).generate "gluetun-auth-config.toml" {
     roles = [
       {
@@ -216,7 +217,8 @@ in
     };
 
     systemd.tmpfiles.rules = [
-      # creates the only two read-only Gluetun control server API endpoints pia-wg-refresh needs
+      # creates the file containing the auth code for the access
+      # to the two Glueton API endpoints needed by pia-wg-refresh
       "d ${gluetunConfigDir}/auth 0750 ${username} users -"
       "L+ ${gluetunConfigDir}/auth/config.toml - - - - ${authConfigFile}"
       # creates the port forwarding .env file
