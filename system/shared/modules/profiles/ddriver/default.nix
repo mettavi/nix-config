@@ -23,8 +23,8 @@ in
 
   config = mkIf cfg.enable {
     environment.shellAliases = {
-      pia-cfg = getExe pkgs.pia-wg-config;
-      pia-cfg2 = getExe pkgs.pia-wg-config2;
+      pia-cfg = getExe pkgs.linpkgs.pia-wg-config;
+      pia-cfg2 = getExe pkgs.linpkgs.pia-wg-config2;
     };
 
     environment.systemPackages =
