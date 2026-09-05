@@ -346,7 +346,7 @@ in
         qbittorrent-port-forward = {
           containerConfig = {
             containerName = "qbittorrent-port-forward";
-            image = "docker.io/mjmeli/qbittorrent-port-forward-gluetun-server:latest";
+            image = "docker.io/mjmeli/qbittorrent-port-forward-gluetun-server:2025.12.21.02";
             network = "container:gluetun"; # same netns as gluetun + qbittorrent
             environments = {
               QBT_ADDR = "http://localhost:8090"; # matches your WEBUI_PORT
