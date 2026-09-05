@@ -142,9 +142,14 @@ in
           };
           wireguard = {
             addresses = mkOption {
-              type = listOf str;
+              type = str;
               default = "";
-              description = "Network interface address in the format xx.xx.xx.xx/xx";
+              description = "The client network interface address in the format xx.xx.xx.xx/xx";
+            };
+            allowedIPs = mkOption {
+              type = str;
+              default = "0.0.0.0/0,::/0";
+              description = "Wireguard peer allowed ips";
             };
             endpointIP = mkOption {
               type = types.str;
