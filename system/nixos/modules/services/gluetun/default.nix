@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   username,
   ...
 }:
@@ -8,24 +9,48 @@ with lib;
 with lib.types;
 let
   cfg = config.mettavi.system.services.gluetun;
+  activeCfg = cfg.providers.${cfg.activeProvider};
+  authConfigFile = (pkgs.formats.toml { }).generate "gluetun-auth-config.toml" {
+    roles = [
+      {
+        name = "pia-wg-refresh";
+        routes = [
+          "GET /v1/publicip/ip"
+          "GET /v1/portforward"
+        ];
+        auth = "none";
+      }
+    ];
+  };
+  gluetunConfigDir = "${config.users.users.${username}.home}/.config/gluetun";
+  pfEnvDir = "/var/lib/gluetun-portforward";
+  pfEnvFile = "${pfEnvDir}/server-names.env";
+  updateServerNameScript = pkgs.writeShellScript "update-server-name.sh" ''
+    echo "SERVER_NAMES=$PIA_SERVER_NAME" > /hostenv/server-names.env
+  '';
 in
 {
   options.mettavi.system.services.gluetun = {
     enable = mkEnableOption "Install and set up the Gluetun VPN service";
+    activeProvider = mkOption {
+      type = str;
+      default = "custom-pia";
+      description = "Which entry in `providers` to actually run";
+    };
     providers = mkOption {
       type = attrsOf (submodule {
         options = {
-          name = mkOption {
-            type = str;
-            default = "custom-pia";
-            description = "Provider name";
-          };
+          # name = mkOption {
+          #   type = str;
+          #   default = "custom-pia";
+          #   description = "Provider name";
+          # };
           type = mkOption {
             type = enum [
               "openvpn"
               "wireguard"
             ];
-            default = wireguard;
+            default = "wireguard";
             description = "Whether to connect using the OpenVPN or Wireguard VPN protocol";
           };
           servers = {
@@ -55,6 +80,11 @@ in
               type = str;
               default = "";
               description = "Comma separated list of server names";
+            };
+            names-pf = mkOption {
+              type = str;
+              default = "";
+              description = "Comma separated list of server names supporting port-forwarding";
             };
             regions = mkOption {
               type = str;
@@ -99,8 +129,8 @@ in
               desription = "Whether to turn port forwarding on";
             };
             only = mkOption {
-              type = bool;
-              default = false;
+              type = str;
+              default = "true";
               description = "Whether to only select servers with port forwarding";
             };
             provider = mkOption {
@@ -124,7 +154,7 @@ in
             addresses = mkOption {
               type = listOf str;
               default = "";
-              description = "Wireguard IP addresses";
+              description = "Network interface address in the format xx.xx.xx.xx/xx";
             };
             endpointIP = mkOption {
               type = types.str;
@@ -139,17 +169,17 @@ in
             presharedKey = mkOption {
               type = str;
               default = "";
-              description = "The password for the OpenVPN provider";
+              description = "Wireguard pre-shared key";
             };
             privateKey = mkOption {
               type = str;
               default = "";
-              description = "The password for the OpenVPN provider";
+              description = "Wireguard client private key to use";
             };
             publicKey = mkOption {
               type = str;
               default = "";
-              description = "The username for the OpenVPN provider";
+              description = "Wireguard server public key to use.";
             };
           };
         };
@@ -161,14 +191,41 @@ in
     # to enable and configure generic podman settings
     mettavi.system.services.podman.enable = true;
 
-    environment.systemPackages = with pkgs; [ linpkgs.pia-wg-config ];
+    environment.shellAliases = {
+      pia-cfg = getExe pkgs.linpkgs.pia-wg-config;
+      pia-cfg2 = getExe pkgs.linpkgs.pia-wg-config2;
+    };
+
+    environment.systemPackages = with pkgs.linpkgs; [
+      pia-wg-config
+      pia-wg-config2
+    ];
 
     sops.secrets = {
       # .env file for use with systemd service for PIA VPN
-      "users/${username}/glueton-${cfg.providers.name}.env" = {
+      "users/${username}/gluetun-${cfg.activeProvider}.env" = {
         sopsFile = "${secrets_path}/secrets/apps/gluetun.yaml";
       };
     };
+
+    # host-side: watch the file, restart gluetun.service when it changes
+    systemd.paths.gluetun-server-names-sync = {
+      wantedBy = [ "multi-user.target" ];
+      pathConfig.PathModified = pfEnvFile;
+    };
+    systemd.services.gluetun-server-names-sync = {
+      serviceConfig.Type = "oneshot";
+      script = "systemctl restart gluetun.service";
+    };
+
+    systemd.tmpfiles.rules = [
+      # creates the only two read-only Gluetun control server API endpoints pia-wg-refresh needs
+      "d ${gluetunConfigDir}/auth 0750 ${username} users -"
+      "L+ ${gluetunConfigDir}/auth/config.toml - - - - ${authConfigFile}"
+      # creates the port forwarding .env file
+      "d ${pfEnvDir} 0750 root root -"
+      "f ${pfEnvFile} 0640 root root - SERVER_NAMES="
+    ];
 
     virtualisation.quadlet = {
       containers = {
@@ -179,25 +236,36 @@ in
               "NET_ADMIN"
               "NET_RAW"
             ];
+            # this is the name that the `pia-wg-refresh` will look for
+            containerName = "gluetun";
             devices = [ "/dev/net/tun:/dev/net/tun" ];
             environments = {
               # GENERAL
-              VPN_SERVICE_PROVIDER = cfg.providers.name;
-              VPN_TYPE = cfg.providers.type;
+              VPN_SERVICE_PROVIDER = cfg.activeProvider;
+              VPN_TYPE = activeCfg.type;
               LOG_LEVEL = "INFO";
               UPDATER_PERIOD = "480h";
-              SERVER_NAMES = cfg.providers.servers.names;
+              SERVER_NAMES = activeCfg.servers.names;
               SERVICE_REGIONS = "Australia";
 
               # WIREGUARD
+              WIREGUARD_ADDRESSES = "10.25.239.98";
+              WIREGUARD_ALLOWED_IPS = "0.0.0.0/0,::/0";
+              WIREGUARD_ENDPOINT_IP = "";
+              WIREGUARD_ENDPOINT_PORT = "";
+              WIREGUARD_IMPLEMENTATION = "auto";
+              WIREGUARD_PERSISTENT_KEEPALIVE_INTERVAL = "25s";
+              WIREGUARD_PUBLIC_KEY = "";
 
               # PORT FORWARDING
-              VPN_PORT_FORWARDING = cfg.providers.portForwarding.enabled;
-              PORT_FORWARD_ONLY = cfg.providers.portForwarding.only;
-              VPN_PORT_FORWARDING_PROVIDER = cfg.providers.portForwarding.provider;
+              VPN_PORT_FORWARDING = activeCfg.portForwarding.enabled;
+              PORT_FORWARD_ONLY = activeCfg.portForwarding.only;
+              VPN_PORT_FORWARDING_PROVIDER = activeCfg.portForwarding.provider;
             };
             environmentFiles = [
-              "${config.sops.secrets."users/${username}/gluetun-${cfg.providers.name}.env".path}"
+              # gluetun reads its SERVER_NAMES from this file at every (re)start
+              pfEnvFile
+              "${config.sops.secrets."users/${username}/gluetun-${cfg.activeCfg}.env".path}"
             ];
             healthCmd = "CMD-SHELL /gluetun-entrypoint healthcheck";
             healthInterval = "30s";
@@ -215,12 +283,48 @@ in
 
             volumes = [
               # bind mounts
-              "${config.users.users.${username}.home}/.config/gluetun:/gluetun"
+              "${config.users.users.${username}.home}/.config/gluetun/wireguard:/gluetun/wireguard"
             ];
           };
           serviceConfig = {
             RestartSec = "10";
             Restart = "on-failure";
+          };
+        };
+        pia-wg-refresh = {
+          containerConfig = {
+            autoStart = false;
+            containerName = "pia-wg-refresh";
+            image = "ghcr.io/ccarpinteri/pia-wg-refresh:latest";
+            environments = {
+              GLUETUN_CONTAINER = "gluetun";
+              WG_CONF_PATH = "/config/wg0.conf";
+              # pia-wg-refresh writes to SERVER_NAMES (bind-mounted read-write) whenever the port/server changes
+              ON_PORT_CHANGE_SCRIPT = "/hooks/update-server-name.sh";
+              # tradeoff: will reliably work when the server changes but with the SAME PORT
+              # (as with above var) but will cause two restarts in a row on any given regen cycle
+              ON_RECOVERY_SCRIPT = "/hooks/update-server-name.sh";
+              PIA_PORT_FORWARDING = "true";
+              LOG_LEVEL = "info";
+            };
+            environmentFiles = [
+              config.sops.secrets."users/${username}/pia-wg-refresh.env".path
+            ];
+            volumes = [
+              "${pfEnvDir}:/hostenv"
+              "${updateServerNameScript}:/hooks/update-server-name.sh:ro"
+              "${config.users.users.${username}.home}/.config/gluetun/wireguard:/config"
+              "/var/run/docker.sock:/var/run/docker.sock"
+              "/var/log/pia-wg-refresh:/logs"
+            ];
+          };
+          serviceConfig = {
+            Restart = "on-failure";
+            RestartSec = "10";
+          };
+          unitConfig = {
+            After = [ "gluetun.service" ];
+            Requires = [ "gluetun.service" ];
           };
         };
       };
