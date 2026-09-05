@@ -81,6 +81,11 @@ in
               default = "";
               description = "Comma separated list of server names supporting port-forwarding";
             };
+            piaRegion = mkOption {
+              type = str;
+              default = "";
+              description = "PIA region code for pia-wg-refresh (e.g. us_chicago)";
+            };
             regions = mkOption {
               type = str;
               default = "";
@@ -283,14 +288,15 @@ in
             image = "ghcr.io/ccarpinteri/pia-wg-refresh:latest";
             environments = {
               GLUETUN_CONTAINER = "gluetun";
-              WG_CONF_PATH = "/config/wg0.conf";
+              LOG_LEVEL = "info";
               # pia-wg-refresh writes to SERVER_NAMES (bind-mounted read-write) whenever the port/server changes
               ON_PORT_CHANGE_SCRIPT = "/hooks/update-server-name.sh";
               # tradeoff: will reliably work when the server changes but with the SAME PORT
               # (problematic with ON_PORT_CHANGE_SCRIPT) but will cause two restarts in a row on any given regen cycle
               ON_RECOVERY_SCRIPT = "/hooks/update-server-name.sh";
               PIA_PORT_FORWARDING = "true";
-              LOG_LEVEL = "info";
+              PIA_REGION = activeCfg.piaRegion;
+              WG_CONF_PATH = "/config/wg0.conf";
             };
             environmentFiles = [
               config.sops.secrets."users/${username}/pia-wg-refresh.env".path
