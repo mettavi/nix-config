@@ -274,8 +274,6 @@ in
             image = "docker.io/qmcgaw/gluetun:v3.41.3";
             notify = "healthy";
             publishPorts = [
-              "6887:6887/tcp" # qBittorrent TORRENTING_PORT
-              "6887:6887/udp"
               "8090:8090/tcp" # qBittorrent WEBUI_PORT
             ];
 
