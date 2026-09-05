@@ -90,7 +90,7 @@ in
             regions = mkOption {
               type = str;
               default = "";
-              description = "Comma separated list of VPN regions";
+              description = "Comma separated list of VPN regions (eg. Australia)";
             };
           };
           openvpn = {
@@ -160,6 +160,15 @@ in
               type = types.str;
               default = "";
               description = "Custom wireguard server endpoint port";
+            };
+            implementation = mkOption {
+              type = types.enum [
+                "auto"
+                "kernelspace"
+                "userspace"
+              ];
+              default = "auto";
+              description = "Wireguard implementation to use";
             };
             presharedKey = mkOption {
               type = str;
@@ -233,17 +242,16 @@ in
               VPN_TYPE = activeCfg.type;
               LOG_LEVEL = "INFO";
               UPDATER_PERIOD = "480h";
-              SERVER_NAMES = activeCfg.servers.names;
-              SERVICE_REGIONS = "Australia";
+              SERVICE_REGIONS = activeCfg.servers.regions;
 
               # WIREGUARD
-              WIREGUARD_ADDRESSES = "10.25.239.98";
-              WIREGUARD_ALLOWED_IPS = "0.0.0.0/0,::/0";
-              WIREGUARD_ENDPOINT_IP = "";
-              WIREGUARD_ENDPOINT_PORT = "";
-              WIREGUARD_IMPLEMENTATION = "auto";
+              WIREGUARD_ADDRESSES = activeCfg.wireguard.addresses;
+              WIREGUARD_ALLOWED_IPS = activeCfg.wireguard.allowedIPs;
+              WIREGUARD_ENDPOINT_IP = activeCfg.wireguard.endpointIP;
+              WIREGUARD_ENDPOINT_PORT = activeCfg.wireguard.endpointPort;
+              WIREGUARD_IMPLEMENTATION = activeCfg.wireguard.implementation;
               WIREGUARD_PERSISTENT_KEEPALIVE_INTERVAL = "25s";
-              WIREGUARD_PUBLIC_KEY = "";
+              WIREGUARD_PUBLIC_KEY = activeCfg.wireguard.publicKey;
 
               # PORT FORWARDING
               VPN_PORT_FORWARDING = activeCfg.portForwarding.enabled;
@@ -264,7 +272,7 @@ in
             image = "docker.io/qmcgaw/gluetun:v3.41.3";
             notify = "healthy";
             publishPorts = [
-              "6887:6887/tcp"
+              "6887:6887/tcp" # qBittorrent TORRENTING_PORT
               "6887:6887/udp"
               "8090:8090/tcp" # qBittorrent WEBUI_PORT
             ];
