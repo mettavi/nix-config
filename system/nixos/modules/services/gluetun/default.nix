@@ -333,26 +333,7 @@ in
               After = [ "gluetun.service" ];
               Requires = [ "gluetun.service" ];
             };
-            environmentFiles = [
-              config.sops.secrets."users/${username}/wg-refresh-${cfg.activeCfg}.env".path
-            ];
-            volumes = [
-              "${pfEnvDir}:/hostenv"
-              "${updateServerNameScript}:/hooks/update-server-name.sh:ro"
-              "${config.users.users.${username}.home}/.config/gluetun/wireguard:/config"
-              "/var/run/docker.sock:/var/run/docker.sock"
-              "/var/log/pia-wg-refresh:/logs"
-            ];
           };
-          serviceConfig = {
-            Restart = "on-failure";
-            RestartSec = "10";
-          };
-          unitConfig = {
-            After = [ "gluetun.service" ];
-            Requires = [ "gluetun.service" ];
-          };
-        };
         # see the wiki at https://github.com/qbittorrent/qBittorrent/wiki
         qbittorrent =
           let
