@@ -299,6 +299,7 @@ in
             '';
           in
           {
+            autoStart = false;
             containerConfig = {
               name = "pia-wg-refresh";
               image = "ghcr.io/ccarpinteri/pia-wg-refresh:v0.8.3";
