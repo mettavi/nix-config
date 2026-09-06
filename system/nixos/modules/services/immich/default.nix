@@ -39,7 +39,6 @@ in
       environment = {
         IMMICH_CONFIG_FILE = "/run/immich/config.json";
         IMMICH_LOG_LEVEL = "log"; # verbose, debug, log, warn, error
-        TZ = "Australia/Melbourne";
       };
       # localhost or 0.0.0.0 for unrestricted
       host = "0.0.0.0";
