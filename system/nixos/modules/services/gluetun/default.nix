@@ -324,6 +324,7 @@ in
             Requires = [ "gluetun.service" ];
           };
         };
+        # see the wiki at https://github.com/qbittorrent/qBittorrent/wiki
         qbittorrent =
           let
             qbtContainerConfDir = "${config.users.users.${username}.home}/.config/qbittorrent-container";
@@ -333,6 +334,10 @@ in
               };
               BitTorrent = {
                 "Session\\DefaultSavePath" = "/downloads/completed";
+                # these two settings recommended in the docs,
+                # see https://github.com/qdm12/gluetun-wiki/blob/main/setup/popular-apps.md
+                "Session\\Interface" = "tun0";
+                "Session\\InterfaceAddress" = "0.0.0.0";
                 "Session\\TempPath" = "/downloads/incomplete";
                 "Session\\TempPathEnabled" = true;
               };
