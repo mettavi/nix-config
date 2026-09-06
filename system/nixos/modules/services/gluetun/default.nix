@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  secrets_path,
   username,
   ...
 }:
