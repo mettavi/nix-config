@@ -358,7 +358,7 @@ in
           {
             containerConfig = {
               image = "docker.io/linuxserver/qbittorrent:5.2.3";
-              network = "container:gluetun"; # joins gluetun's netns — no ports of its own
+              networks = [ "container:gluetun" ]; # joins gluetun's netns — no ports of its own
               environments = {
                 PUID = toString config.users.users.${username}.uid;
                 PGID = toString config.users.groups.users.gid;
@@ -394,7 +394,7 @@ in
           containerConfig = {
             name = "qbittorrent-port-forward";
             image = "docker.io/mjmeli/qbittorrent-port-forward-gluetun-server:2025.12.21.02";
-            network = "container:gluetun"; # same netns as gluetun + qbittorrent
+            networks = [ "container:gluetun" ]; # same netns as gluetun + qbittorrent
             environments = {
               QBT_ADDR = "http://localhost:8090"; # matches your WEBUI_PORT
               GTN_ADDR = "http://localhost:8000"; # gluetun's default control server port
