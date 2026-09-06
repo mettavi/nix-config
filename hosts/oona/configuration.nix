@@ -225,7 +225,7 @@ with lib;
         cal_lib = "${config.users.users.${username}.home}/media/calibre";
       };
       liboffice-lite.enable = true;
-      qbittorrent.enable = true;
+      qbittorrent.enable = false;
     };
     devices = {
       logitech.enable = true;
