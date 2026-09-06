@@ -336,6 +336,7 @@ in
                 "Session\\DefaultSavePath" = "/downloads/completed";
                 # these two settings recommended in the docs,
                 # see https://github.com/qdm12/gluetun-wiki/blob/main/setup/popular-apps.md
+                # and https://github.com/passteque/gluetun/issues/2735
                 "Session\\Interface" = "tun0";
                 "Session\\InterfaceAddress" = "0.0.0.0";
                 "Session\\TempPath" = "/downloads/incomplete";
