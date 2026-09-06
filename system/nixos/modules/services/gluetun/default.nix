@@ -325,40 +325,53 @@ in
             Requires = [ "gluetun.service" ];
           };
         };
-        qbittorrent = {
-          containerConfig = {
-            image = "docker.io/linuxserver/qbittorrent:latest";
-            network = "container:gluetun"; # joins gluetun's netns — no ports of its own
-            environments = {
-              PUID = toString config.users.users.${username}.uid;
-              PGID = toString config.users.groups.users.gid;
-              WEBUI_PORT = "8090";
+        qbittorrent =
+          let
+            qbtPinnedSettingsFile = (pkgs.formats.ini { }).generate "qbittorrent-pinned.ini" {
+              Preferences = {
+                "WebUI\\LocalHostAuth" = false;
+              };
+              BitTorrent = {
+                "Session\\DefaultSavePath" = "/downloads/completed";
+                "Session\\TempPath" = "/downloads/incomplete";
+                "Session\\TempPathEnabled" = true;
+              };
             };
-            volumes = [
-              "${qbtContainerConfDir}:/config"
-              "${config.users.users.${username}.home}/Downloads/qbittorrent:/downloads"
-            ];
+          in
+          {
+            containerConfig = {
+              image = "docker.io/linuxserver/qbittorrent:latest";
+              network = "container:gluetun"; # joins gluetun's netns — no ports of its own
+              environments = {
+                PUID = toString config.users.users.${username}.uid;
+                PGID = toString config.users.groups.users.gid;
+                WEBUI_PORT = "8090";
+              };
+              volumes = [
+                "${qbtContainerConfDir}:/config"
+                "${config.users.users.${username}.home}/Downloads/qbittorrent:/downloads"
+              ];
+            };
+            serviceConfig = {
+              ExecStartPre = pkgs.writeShellScript "pin-qbittorrent-settings" ''
+                conf="${qbtContainerConfDir}/qBittorrent/qBittorrent.conf"
+                if [ -f "$conf" ]; then
+                  ${pkgs.crudini}/bin/crudini --merge "$conf" < ${qbtPinnedSettingsFile}
+                fi
+              '';
+              Restart = "on-failure";
+              RestartSec = "10";
+            };
+            unitConfig = {
+              After = [
+                "home-manager-${username}.service"
+                "gluetun.service"
+              ];
+              Requires = [
+                "gluetun.service"
+              ];
+            };
           };
-          serviceConfig = {
-            ExecStartPre = pkgs.writeShellScript "pin-qbittorrent-localhostauth" ''
-              conf="${qbtContainerConfDir}/qBittorrent/qBittorrent.conf"
-              if [ -f "$conf" ]; then
-                ${pkgs.crudini}/bin/crudini --set "$conf" Preferences 'WebUI\LocalHostAuth' false
-              fi
-            '';
-            Restart = "on-failure";
-            RestartSec = "10";
-          };
-          unitConfig = {
-            After = [
-              "home-manager-${username}.service"
-              "gluetun.service"
-            ];
-            Requires = [
-              "gluetun.service"
-            ];
-          };
-        };
         qbittorrent-port-forward = {
           containerConfig = {
             containerName = "qbittorrent-port-forward";
