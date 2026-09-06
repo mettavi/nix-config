@@ -12,7 +12,6 @@ let
   activeCfg = cfg.providers.${cfg.activeProvider};
   pfEnvDir = "/var/lib/gluetun-portforward";
   pfEnvFile = "${pfEnvDir}/server-names.env";
-  sopsGluetunFile = "${secrets_path}/secrets/apps/gluetun.yaml";
   updateServerNameScript = pkgs.writeShellScript "update-server-name.sh" ''
     echo "SERVER_NAMES=$PIA_SERVER_NAME" > /hostenv/server-names.env
   '';
@@ -187,11 +186,15 @@ in
       pia-wg-config2
     ];
 
-    sops.secrets = {
-      "users/${username}/gluetun-${cfg.activeProvider}.env" = sopsGluetunFile;
-      "users/${username}/qbittorrent-port-forward.env" = sopsGluetunFile;
-      "users/${username}/wg-refresh-${cfg.activeProvider}.env" = sopsGluetunFile;
-    };
+    sops.secrets =
+      let
+        sopsGluetunFile = "${secrets_path}/secrets/apps/gluetun.yaml";
+      in
+      {
+        "users/${username}/gluetun-${cfg.activeProvider}.env" = sopsGluetunFile;
+        "users/${username}/qbittorrent-port-forward.env" = sopsGluetunFile;
+        "users/${username}/wg-refresh-${cfg.activeProvider}.env" = sopsGluetunFile;
+      };
 
     # host-side: watch the file, restart gluetun.service when it changes
     systemd.paths.gluetun-server-names-sync = {
