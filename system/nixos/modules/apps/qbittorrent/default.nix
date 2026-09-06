@@ -16,6 +16,7 @@ rec {
     isService = mkEnableOption "Use the qbittorrent web GUI with a systemd service"; # use the desktop app by default (no service)
   };
 
+  # see the wiki at https://github.com/qbittorrent/qBittorrent/wiki
   config = mkIf cfg.enable {
     # select the desktop app (no service)
     home-manager.users.${username} =
