@@ -185,12 +185,12 @@ in
 
     sops.secrets =
       let
-        sopsGluetunFile = "${secrets_path}/secrets/apps/gluetun.yaml";
+        gluetunSecrets.sopsFile = "${secrets_path}/secrets/apps/gluetun.yaml";
       in
       {
-        "users/${username}/gluetun-${cfg.activeProvider}.env" = sopsGluetunFile;
-        "users/${username}/qbittorrent-port-forward.env" = sopsGluetunFile;
-        "users/${username}/wg-refresh-${cfg.activeProvider}.env" = sopsGluetunFile;
+        "users/${username}/gluetun-${cfg.activeProvider}.env" = gluetunSecrets;
+        "users/${username}/qbittorrent-port-forward.env" = gluetunSecrets;
+        "users/${username}/wg-refresh-${cfg.activeProvider}.env" = gluetunSecrets;
       };
 
     # host-side: watch the file, restart gluetun.service when it changes
