@@ -203,6 +203,7 @@ in
 
     sops.secrets = {
       "users/${username}/gluetun-${cfg.activeProvider}.env" = sopsGluetunFile;
+      "users/${username}/qbittorrent-port-forward.env" = sopsGluetunFile;
       "users/${username}/wg-refresh-${cfg.activeProvider}.env" = sopsGluetunFile;
     };
 
