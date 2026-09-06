@@ -10,20 +10,6 @@ with lib.types;
 let
   cfg = config.mettavi.system.services.gluetun;
   activeCfg = cfg.providers.${cfg.activeProvider};
-  # creates the two read-only Gluetun control server API endpoints pia-wg-refresh needs access to
-  authConfigFile = (pkgs.formats.toml { }).generate "gluetun-auth-config.toml" {
-    roles = [
-      {
-        name = "pia-wg-refresh";
-        routes = [
-          "GET /v1/publicip/ip"
-          "GET /v1/portforward"
-        ];
-        auth = "none";
-      }
-    ];
-  };
-  gluetunConfigDir = "${config.users.users.${username}.home}/.config/gluetun";
   pfEnvDir = "/var/lib/gluetun-portforward";
   pfEnvFile = "${pfEnvDir}/server-names.env";
   sopsGluetunFile = "${secrets_path}/secrets/apps/gluetun.yaml";
@@ -217,15 +203,32 @@ in
       script = "systemctl restart gluetun.service";
     };
 
-    systemd.tmpfiles.rules = [
-      # creates the file containing the auth code for the access
-      # to the two Glueton API endpoints needed by pia-wg-refresh
-      "d ${gluetunConfigDir}/auth 0750 ${username} users -"
-      "L+ ${gluetunConfigDir}/auth/config.toml - - - - ${authConfigFile}"
-      # creates the port forwarding .env file
-      "d ${pfEnvDir} 0750 root root -"
-      "f ${pfEnvFile} 0640 root root - SERVER_NAMES="
-    ];
+    systemd.tmpfiles.rules =
+      let
+        # creates the two read-only Gluetun control server API endpoints pia-wg-refresh needs access to
+        authConfigFile = (pkgs.formats.toml { }).generate "gluetun-auth-config.toml" {
+          roles = [
+            {
+              name = "pia-wg-refresh";
+              routes = [
+                "GET /v1/publicip/ip"
+                "GET /v1/portforward"
+              ];
+              auth = "none";
+            }
+          ];
+        };
+        gluetunConfigDir = "${config.users.users.${username}.home}/.config/gluetun";
+      in
+      [
+        # creates the file containing the auth code for the access
+        # to the two Glueton API endpoints needed by pia-wg-refresh
+        "d ${gluetunConfigDir}/auth 0750 ${username} users -"
+        "L+ ${gluetunConfigDir}/auth/config.toml - - - - ${authConfigFile}"
+        # creates the port forwarding .env file
+        "d ${pfEnvDir} 0750 root root -"
+        "f ${pfEnvFile} 0640 root root - SERVER_NAMES="
+      ];
 
     virtualisation.quadlet = {
       containers = {
