@@ -241,7 +241,7 @@ in
               "NET_RAW"
             ];
             # this is the name that the `pia-wg-refresh` will look for
-            containerName = "gluetun";
+            name = "gluetun";
             devices = [ "/dev/net/tun:/dev/net/tun" ];
             environments = {
               # GENERAL
@@ -300,8 +300,7 @@ in
           in
           {
             containerConfig = {
-              autoStart = false;
-              containerName = "pia-wg-refresh";
+              name = "pia-wg-refresh";
               image = "ghcr.io/ccarpinteri/pia-wg-refresh:v0.8.3";
               environments = {
                 GLUETUN_CONTAINER = "gluetun";
@@ -392,7 +391,7 @@ in
           };
         qbittorrent-port-forward = {
           containerConfig = {
-            containerName = "qbittorrent-port-forward";
+            name = "qbittorrent-port-forward";
             image = "docker.io/mjmeli/qbittorrent-port-forward-gluetun-server:2025.12.21.02";
             network = "container:gluetun"; # same netns as gluetun + qbittorrent
             environments = {
