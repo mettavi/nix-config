@@ -12,9 +12,6 @@ let
   activeCfg = cfg.providers.${cfg.activeProvider};
   pfEnvDir = "/var/lib/gluetun-portforward";
   pfEnvFile = "${pfEnvDir}/server-names.env";
-  updateServerNameScript = pkgs.writeShellScript "update-server-name.sh" ''
-    echo "SERVER_NAMES=$PIA_SERVER_NAME" > /hostenv/server-names.env
-  '';
 in
 {
   options.mettavi.system.services.gluetun = {
@@ -294,22 +291,47 @@ in
             Restart = "on-failure";
           };
         };
-        pia-wg-refresh = {
-          containerConfig = {
-            autoStart = false;
-            containerName = "pia-wg-refresh";
-            image = "ghcr.io/ccarpinteri/pia-wg-refresh:v0.8.3";
-            environments = {
-              GLUETUN_CONTAINER = "gluetun";
-              LOG_LEVEL = "info";
-              # pia-wg-refresh writes to SERVER_NAMES (bind-mounted read-write) whenever the port/server changes
-              ON_PORT_CHANGE_SCRIPT = "/hooks/update-server-name.sh";
-              # tradeoff: will reliably work when the server changes but with the SAME PORT
-              # (problematic with ON_PORT_CHANGE_SCRIPT) but will cause two restarts in a row on any given regen cycle
-              ON_RECOVERY_SCRIPT = "/hooks/update-server-name.sh";
-              PIA_PORT_FORWARDING = "true";
-              PIA_REGION = activeCfg.piaRegion;
-              WG_CONF_PATH = "/config/wg0.conf";
+        pia-wg-refresh =
+          let
+            updateServerNameScript = pkgs.writeShellScript "update-server-name.sh" ''
+              echo "SERVER_NAMES=$PIA_SERVER_NAME" > /hostenv/server-names.env
+            '';
+          in
+          {
+            containerConfig = {
+              autoStart = false;
+              containerName = "pia-wg-refresh";
+              image = "ghcr.io/ccarpinteri/pia-wg-refresh:v0.8.3";
+              environments = {
+                GLUETUN_CONTAINER = "gluetun";
+                LOG_LEVEL = "info";
+                # pia-wg-refresh writes to SERVER_NAMES (bind-mounted read-write) whenever the port/server changes
+                ON_PORT_CHANGE_SCRIPT = "/hooks/update-server-name.sh";
+                # tradeoff: will reliably work when the server changes but with the SAME PORT
+                # (problematic with ON_PORT_CHANGE_SCRIPT) but will cause two restarts in a row on any given regen cycle
+                ON_RECOVERY_SCRIPT = "/hooks/update-server-name.sh";
+                PIA_PORT_FORWARDING = "true";
+                PIA_REGION = activeCfg.piaRegion;
+                WG_CONF_PATH = "/config/wg0.conf";
+              };
+              environmentFiles = [
+                config.sops.secrets."users/${username}/wg-refresh-${cfg.activeCfg}.env".path
+              ];
+              volumes = [
+                "${pfEnvDir}:/hostenv"
+                "${updateServerNameScript}:/hooks/update-server-name.sh:ro"
+                "${config.users.users.${username}.home}/.config/gluetun/wireguard:/config"
+                "/var/run/docker.sock:/var/run/docker.sock"
+                "/var/log/pia-wg-refresh:/logs"
+              ];
+            };
+            serviceConfig = {
+              Restart = "on-failure";
+              RestartSec = "10";
+            };
+            unitConfig = {
+              After = [ "gluetun.service" ];
+              Requires = [ "gluetun.service" ];
             };
             environmentFiles = [
               config.sops.secrets."users/${username}/wg-refresh-${cfg.activeCfg}.env".path
