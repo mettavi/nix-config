@@ -44,6 +44,11 @@ rec {
           "application/x-bittorrent" = "org.qbittorrent.qBittorrent.desktop";
         };
       };
+
+    environment.systemPackages = mkIf (cfg.isService) [
+      pkgs.vuetorrent # WEBUI for qBittorrent made with Vuejs
+    ];
+
     # select the web GUI and systemd service (qBittorrent-nox - "no X server")
     services.qbittorrent = mkIf (cfg.isService) {
       enable = true;
@@ -79,7 +84,4 @@ rec {
       };
     };
   };
-  environment.systemPackages = mkIf (cfg.isService) [
-    pkgs.vuetorrent # WEBUI for qBittorrent made with Vuejs
-  ];
 }
