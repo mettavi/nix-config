@@ -63,7 +63,9 @@ rec {
         Preferences = {
           General = {
             ClosetoTrayNotified = true;
-            CustomUIThemePath = ./dracula.qbtheme;
+            CustomUIThemePath = "${
+              config.users.users.${username}.home
+            }/${nix_repo}/system/nixos/modules/apps/qbittorrent/dracula.qbtheme";
             PreventFromSuspendWhenDownloading = true;
             UseCustomUITheme = true;
           };
