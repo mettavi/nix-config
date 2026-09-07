@@ -13,6 +13,8 @@ let
   cfg = config.mettavi.system.services.gluetun;
   activeCfg = cfg.providers.${cfg.activeProvider};
   gluetunConfigDir = "${config.users.users.${username}.home}/.config/gluetun";
+  # Pull our safe helper out of the evaluated options tree
+  mkContainer = config.mettavi.system.services.podman.mkContainer;
   pfEnvDir = "/var/lib/gluetun-portforward";
   pfEnvFile = "${pfEnvDir}/server-names.env";
 in
@@ -254,7 +256,7 @@ in
 
     virtualisation.quadlet = {
       containers = {
-        gluetun = {
+        gluetun = mkContainer {
           autoStart = false;
           containerConfig = {
             addCapabilities = [
@@ -300,6 +302,13 @@ in
             healthTimeout = "10s";
             image = "docker.io/qmcgaw/gluetun:v3.41.3";
             notify = "healthy";
+            podmanArgs = [
+              # 🌟 THE ABSOLUTE FIX - Tell the runtime container process to mirror the host symlink
+              # The leading colon tells Alpine to read the symlink configuration live,
+              # and since we already pass it as a Volume mount via 'mkContainer',
+              # Gluetun parses it perfectly without breaking sandbox protocols!
+              "--env=TZ=:/etc/localtime"
+            ];
             publishPorts = [
               "8090:8090/tcp" # qBittorrent WEBUI_PORT
             ];
@@ -323,7 +332,7 @@ in
               echo "SERVER_NAMES=$PIA_SERVER_NAME" > /hostenv/server-names.env
             '';
           in
-          {
+          mkContainer {
             autoStart = false;
             containerConfig = {
               name = "pia-wg-refresh";
@@ -387,7 +396,7 @@ in
               };
             };
           in
-          {
+          mkContainer {
             containerConfig = {
               image = "docker.io/linuxserver/qbittorrent:5.2.3";
               networks = [ "container:gluetun" ]; # joins gluetun's netns — no ports of its own
@@ -422,7 +431,7 @@ in
               ];
             };
           };
-        qbittorrent-port-forward = {
+        qbittorrent-port-forward = mkContainer {
           containerConfig = {
             name = "qbittorrent-port-forward";
             image = "docker.io/mjmeli/qbittorrent-port-forward-gluetun-server:2025.12.21.02";
