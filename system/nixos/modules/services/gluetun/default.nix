@@ -120,7 +120,7 @@ in
             enabled = mkOption {
               type = str;
               default = "on";
-              desription = "Whether to turn port forwarding on";
+              description = "Whether to turn port forwarding on";
             };
             only = mkOption {
               type = str;
