@@ -290,7 +290,7 @@ in
             environmentFiles = [
               # gluetun reads its SERVER_NAMES from this file at every (re)start
               pfEnvFile
-              "${config.sops.secrets."users/${username}/gluetun-${activeCfg}.env".path}"
+              "${config.sops.secrets."users/${username}/gluetun-${cfg.activeProvider}.env".path}"
             ];
             healthCmd = "CMD-SHELL /gluetun-entrypoint healthcheck";
             healthInterval = "30s";
@@ -338,7 +338,7 @@ in
                 WG_CONF_PATH = "/config/wg0.conf";
               };
               environmentFiles = [
-                config.sops.secrets."users/${username}/wg-refresh-${activeCfg}.env".path
+                config.sops.secrets."users/${username}/wg-refresh-${cfg.activeProvider}.env".path
               ];
               volumes = [
                 "${pfEnvDir}:/hostenv"
