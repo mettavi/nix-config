@@ -329,6 +329,10 @@ in
               name = "pia-wg-refresh";
               image = "ghcr.io/ccarpinteri/pia-wg-refresh:v0.8.3";
               environments = {
+                CHECK_INTERVAL_SECONDS = "60";
+                HEALTHY_CHECK_INTERVAL_SECONDS = "1800";
+                FAIL_THRESHOLD = "5";
+                MAX_GENERATION_RETRIES = "3";
                 GLUETUN_CONTAINER = "gluetun";
                 LOG_LEVEL = "info";
                 # pia-wg-refresh writes to SERVER_NAMES (bind-mounted read-write) whenever the port/server changes
