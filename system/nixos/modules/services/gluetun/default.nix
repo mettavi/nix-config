@@ -12,6 +12,7 @@ with lib.types;
 let
   cfg = config.mettavi.system.services.gluetun;
   activeCfg = cfg.providers.${cfg.activeProvider};
+  gluetunConfigDir = "${config.users.users.${username}.home}/.config/gluetun";
   pfEnvDir = "/var/lib/gluetun-portforward";
   pfEnvFile = "${pfEnvDir}/server-names.env";
 in
@@ -241,7 +242,6 @@ in
             }
           ];
         };
-        gluetunConfigDir = "${config.users.users.${username}.home}/.config/gluetun";
       in
       [
         # creates the file containing the auth code for the access
