@@ -343,6 +343,9 @@ in
               environmentFiles = [
                 config.sops.secrets."users/${username}/wg-refresh-${cfg.activeProvider}.env".path
               ];
+              healthCmd = "grep -q \"^Endpoint\" /config/wg0.conf || exit 1";
+              healthInterval = "5s";
+              healthStartPeriod = "10s";
               volumes = [
                 "${pfEnvDir}:/hostenv"
                 "${updateServerNameScript}:/hooks/update-server-name.sh:ro"
