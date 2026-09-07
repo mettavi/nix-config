@@ -346,9 +346,6 @@ in
                 LOG_LEVEL = "info";
                 # pia-wg-refresh writes to SERVER_NAMES (bind-mounted read-write) whenever the port/server changes
                 ON_PORT_CHANGE_SCRIPT = "/hooks/update-server-name.sh";
-                # tradeoff: will reliably work when the server changes but with the SAME PORT
-                # (problematic with ON_PORT_CHANGE_SCRIPT) but will cause two restarts in a row on any given regen cycle
-                ON_RECOVERY_SCRIPT = "/hooks/update-server-name.sh";
                 PIA_PORT_FORWARDING = "true";
                 PIA_REGION = activeCfg.servers.piaRegion;
                 WG_CONF_PATH = "/config/wg0.conf";
