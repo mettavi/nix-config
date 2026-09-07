@@ -306,7 +306,8 @@ in
 
             volumes = [
               # bind mounts
-              "${config.users.users.${username}.home}/.config/gluetun/wireguard:/gluetun/wireguard"
+              "${gluetunConfigDir}:/gluetun"
+              "${gluetunConfigDir}/auth:/gluetun/auth"
             ];
           };
           serviceConfig = {
