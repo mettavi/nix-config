@@ -248,9 +248,8 @@ in
         # to the two Glueton API endpoints needed by pia-wg-refresh
         "d ${gluetunConfigDir}/auth 0750 ${username} users -"
         "L+ ${gluetunConfigDir}/auth/config.toml - - - - ${authConfigFile}"
-        # creates the port forwarding .env file
-        "d ${pfEnvDir} 0750 root root -"
-        "f ${pfEnvFile} 0640 root root - SERVER_NAMES="
+        "d ${gluetunConfigDir}/wireguard 0750 ${username} users -"
+        "d /var/log/pia-wg-refresh 0750 root root -"
       ];
 
     virtualisation.quadlet = {
