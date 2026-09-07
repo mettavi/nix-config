@@ -316,7 +316,9 @@ in
         };
         pia-wg-refresh =
           let
-            updateServerNameScript = pkgs.writeShellScript "update-server-name.sh" ''
+            # the alpine container does not have bash and cannot resolve nix store paths - so use "writeScript" here
+            updateServerNameScript = pkgs.writeScript "update-server-name.sh" ''
+              #!/bin/sh
               echo "SERVER_NAMES=$PIA_SERVER_NAME" > /hostenv/server-names.env
             '';
           in
