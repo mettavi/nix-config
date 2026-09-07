@@ -346,7 +346,7 @@ in
                 "${pfEnvDir}:/hostenv"
                 "${updateServerNameScript}:/hooks/update-server-name.sh:ro"
                 "${config.users.users.${username}.home}/.config/gluetun/wireguard:/config"
-                "/var/run/docker.sock:/var/run/docker.sock"
+                "/run/podman/podman.sock:/var/run/docker.sock"
                 "/var/log/pia-wg-refresh:/logs"
               ];
             };
