@@ -26,6 +26,14 @@ in
     providers = mkOption {
       type = attrsOf (submodule {
         options = {
+          name = mkOption {
+            type = enum [
+              "custom"
+              "private-internet-access"
+            ];
+            default = "custom";
+            description = "Specify a supported VPN provider to use";
+          };
           type = mkOption {
             type = enum [
               "openvpn"
@@ -246,7 +254,7 @@ in
             devices = [ "/dev/net/tun:/dev/net/tun" ];
             environments = {
               # GENERAL
-              VPN_SERVICE_PROVIDER = cfg.activeProvider;
+              VPN_SERVICE_PROVIDER = activeCfg.name;
               VPN_TYPE = activeCfg.type;
               LOG_LEVEL = "INFO";
               UPDATER_PERIOD = "480h";
