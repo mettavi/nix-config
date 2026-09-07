@@ -67,7 +67,7 @@ in
             # required for PIA port-forwarding with wireguard
             names = mkOption {
               type = str;
-              default = "";
+              default = "Server-11666-5a";
               description = "Comma separated list of server names";
             };
             names-pf = mkOption {
@@ -77,7 +77,7 @@ in
             };
             piaRegion = mkOption {
               type = str;
-              default = "";
+              default = "srilanka";
               description = "PIA region code for pia-wg-refresh (e.g. us_chicago)";
             };
             regions = mkOption {
