@@ -271,6 +271,7 @@ in
               LOG_LEVEL = "INFO";
               UPDATER_PERIOD = "480h";
               SERVER_REGIONS = activeCfg.servers.regions;
+              SERVER_NAMES = activeCfg.servers.names;
 
               # WIREGUARD
               WIREGUARD_ADDRESSES = activeCfg.wireguard.addresses;
