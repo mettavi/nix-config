@@ -185,6 +185,11 @@ in
     mettavi.system.services.podman.enable = true;
 
     virtualisation.podman.dockerSocket.enable = true;
+
+    # Set the key name for each attribute set
+    # this set currenlty inherits the options defaults
+    mettavi.system.services.gluetun.providers."custom-pia" = { };
+
     environment.shellAliases = {
       pia-cfg = getExe pkgs.linpkgs.pia-wg-config;
       pia-cfg2 = getExe pkgs.linpkgs.pia-wg-config2;
