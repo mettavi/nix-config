@@ -124,7 +124,8 @@ in
             };
             only = mkOption {
               type = str;
-              default = "true";
+              # not applicable to the "custom" provider type
+              default = "false";
               description = "Whether to only select servers with port forwarding";
             };
             provider = mkOption {
