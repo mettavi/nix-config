@@ -270,7 +270,7 @@ in
               VPN_TYPE = activeCfg.type;
               LOG_LEVEL = "INFO";
               UPDATER_PERIOD = "480h";
-              SERVICE_REGIONS = activeCfg.servers.regions;
+              SERVER_REGIONS = activeCfg.servers.regions;
 
               # WIREGUARD
               WIREGUARD_ADDRESSES = activeCfg.wireguard.addresses;
