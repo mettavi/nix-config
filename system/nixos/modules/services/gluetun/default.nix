@@ -184,6 +184,7 @@ in
     # to enable and configure generic podman settings
     mettavi.system.services.podman.enable = true;
 
+    virtualisation.podman.dockerSocket.enable = true;
     environment.shellAliases = {
       pia-cfg = getExe pkgs.linpkgs.pia-wg-config;
       pia-cfg2 = getExe pkgs.linpkgs.pia-wg-config2;
