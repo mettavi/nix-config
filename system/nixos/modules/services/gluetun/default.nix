@@ -373,7 +373,7 @@ in
             };
             unitConfig = {
               After = [ "gluetun.service" ];
-              Requires = [ "gluetun.service" ];
+              Wants = [ "gluetun.service" ];
             };
           };
         # see the wiki at https://github.com/qbittorrent/qBittorrent/wiki
