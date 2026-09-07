@@ -458,7 +458,7 @@ in
                   "--generateAndSaveKeyTo=/var/config/key"
                   "--remoteConfig=http://localhost:3001/api/v1/"
                 ];
-                image = "docker.io/fosrl/gerbil:1.5.0";
+                image = "docker.io/fosrl/gerbil:1.5.1";
                 pod = "services.pod";
                 volumes = [
                   "${configHome}:/var/config"
