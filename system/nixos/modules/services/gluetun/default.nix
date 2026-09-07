@@ -210,6 +210,12 @@ in
         "users/${username}/wg-refresh-${cfg.activeProvider}.env" = gluetunSecrets;
       };
 
+    # creates the port forwarding .env file
+    system.activationScripts.gluetun-portforward-env = ''
+      mkdir -p ${pfEnvDir}
+      [ -f ${pfEnvFile} ] || echo "SERVER_NAMES=" > ${pfEnvFile}
+    '';
+
     # host-side: watch the file, restart gluetun.service when it changes
     systemd.paths.gluetun-server-names-sync = {
       wantedBy = [ "multi-user.target" ];
