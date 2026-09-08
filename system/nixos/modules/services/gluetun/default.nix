@@ -145,7 +145,7 @@ in
             };
             allowedIPs = mkOption {
               type = str;
-              default = "0.0.0.0/0,::/0";
+              default = "0.0.0.0/0";
               description = "Wireguard peer allowed ips";
             };
             endpointIP = mkOption {
