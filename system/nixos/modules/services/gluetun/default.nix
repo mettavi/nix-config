@@ -32,7 +32,7 @@ in
           name = mkOption {
             type = enum [
               "custom"
-              "private-internet-access"
+              "private internet access"
             ];
             default = "custom";
             description = "Specify a supported VPN provider to use";
