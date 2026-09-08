@@ -276,18 +276,28 @@ in
               SERVER_NAMES = activeCfg.servers.names;
 
               # WIREGUARD
-              WIREGUARD_ADDRESSES = activeCfg.wireguard.addresses;
-              WIREGUARD_ALLOWED_IPS = activeCfg.wireguard.allowedIPs;
-              WIREGUARD_ENDPOINT_IP = activeCfg.wireguard.endpointIP;
-              WIREGUARD_ENDPOINT_PORT = activeCfg.wireguard.endpointPort;
               WIREGUARD_IMPLEMENTATION = activeCfg.wireguard.implementation;
               WIREGUARD_PERSISTENT_KEEPALIVE_INTERVAL = "25s";
-              WIREGUARD_PUBLIC_KEY = activeCfg.wireguard.publicKey;
 
               # PORT FORWARDING
               VPN_PORT_FORWARDING = activeCfg.portForwarding.enabled;
               PORT_FORWARD_ONLY = activeCfg.portForwarding.only;
               VPN_PORT_FORWARDING_PROVIDER = activeCfg.portForwarding.provider;
+            }
+            // lib.optionalAttrs (activeCfg.wireguard.addresses != null || "") {
+              WIREGUARD_ADDRESSES = activeCfg.wireguard.addresses;
+            }
+            // lib.optionalAttrs (activeCfg.wireguard.allowedIPs != null || "") {
+              WIREGUARD_ALLOWED_IPS = activeCfg.wireguard.allowedIPs;
+            }
+            // lib.optionalAttrs (activeCfg.wireguard.endpointIP != null || "") {
+              WIREGUARD_ENDPOINT_IP = activeCfg.wireguard.endpointIP;
+            }
+            // lib.optionalAttrs (activeCfg.wireguard.endpointPort != null || "") {
+              WIREGUARD_ENDPOINT_IP = activeCfg.wireguard.endpointPort;
+            }
+            // lib.optionalAttrs (activeCfg.wireguard.publicKey != null || "") {
+              WIREGUARD_ENDPOINT_IP = activeCfg.wireguard.publicKey;
             };
             environmentFiles = [
               # gluetun reads its SERVER_NAMES from this file at every (re)start
