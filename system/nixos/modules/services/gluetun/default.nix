@@ -220,11 +220,15 @@ in
       let
         gluetunSecrets.sopsFile = "${secrets_path}/secrets/apps/gluetun.yaml";
       in
-      {
-        "users/${username}/gluetun-${cfg.activeProvider}.env" = gluetunSecrets;
-        "users/${username}/qbittorrent-port-forward.env" = gluetunSecrets;
-        "users/${username}/wg-refresh-${cfg.activeProvider}.env" = gluetunSecrets;
-      };
+      mkMerge [
+        {
+          "users/${username}/gluetun-${cfg.activeProvider}.env" = gluetunSecrets;
+          "users/${username}/qbittorrent-port-forward.env" = gluetunSecrets;
+        }
+        (mkIf (cfg.activeProvider == "custom-pia") {
+          "users/${username}/wg-refresh-${cfg.activeProvider}.env" = gluetunSecrets;
+        })
+      ];
 
     # creates the port forwarding .env file
     system.activationScripts.gluetun-portforward-env = ''
@@ -386,7 +390,7 @@ in
                 PIA_REGION = activeCfg.servers.piaRegion;
                 WG_CONF_PATH = "/config/wg0.conf";
               };
-              environmentFiles = [
+              environmentFiles = optionals (cfg.activeProvider == "custom-pia") [
                 config.sops.secrets."users/${username}/wg-refresh-${cfg.activeProvider}.env".path
               ];
               healthCmd = "grep -q \"^Endpoint\" /config/wg0.conf || exit 1";
