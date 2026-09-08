@@ -76,7 +76,8 @@ in
           WorkingDirectory = "/var/lib/pangolin";
         };
         wants = [ "network-online.target" ];
-        wantedBy = [ "multi-user.target" ];
+        # disable to prevent this running on boot
+        # wantedBy = [ "multi-user.target" ];
       };
     };
   };
