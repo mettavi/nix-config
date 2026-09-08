@@ -290,6 +290,8 @@ in
               LOG_LEVEL = "INFO";
               UPDATER_PERIOD = "480h";
               SERVER_REGIONS = activeCfg.servers.regions;
+              # this needs to be set if using port-forwarding with PIA
+              # NB: Comment out if using the pia-wg-refresh tool
               SERVER_NAMES = activeCfg.servers.names;
 
               # WIREGUARD
