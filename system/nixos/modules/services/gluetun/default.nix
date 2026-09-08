@@ -303,21 +303,13 @@ in
               PORT_FORWARD_ONLY = activeCfg.portForwarding.only;
               VPN_PORT_FORWARDING_PROVIDER = activeCfg.portForwarding.provider;
             }
-            // lib.optionalAttrs (activeCfg.wireguard.addresses != null || "") {
+            // (filterAttrs (_: v: v != null && v != "") {
               WIREGUARD_ADDRESSES = activeCfg.wireguard.addresses;
-            }
-            // lib.optionalAttrs (activeCfg.wireguard.allowedIPs != null || "") {
               WIREGUARD_ALLOWED_IPS = activeCfg.wireguard.allowedIPs;
-            }
-            // lib.optionalAttrs (activeCfg.wireguard.endpointIP != null || "") {
               WIREGUARD_ENDPOINT_IP = activeCfg.wireguard.endpointIP;
-            }
-            // lib.optionalAttrs (activeCfg.wireguard.endpointPort != null || "") {
-              WIREGUARD_ENDPOINT_IP = activeCfg.wireguard.endpointPort;
-            }
-            // lib.optionalAttrs (activeCfg.wireguard.publicKey != null || "") {
-              WIREGUARD_ENDPOINT_IP = activeCfg.wireguard.publicKey;
-            };
+              WIREGUARD_ENDPOINT_PORT = activeCfg.wireguard.endpointPort;
+              WIREGUARD_PUBLIC_KEY = activeCfg.wireguard.publicKey;
+            });
             environmentFiles = [
               # gluetun reads its SERVER_NAMES from this file at every (re)start
               pfEnvFile
