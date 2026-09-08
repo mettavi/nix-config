@@ -22,10 +22,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    environment.shellAliases = {
-      pia-cfg = getExe pkgs.linpkgs.pia-wg-config;
-      pia-cfg2 = getExe pkgs.linpkgs.pia-wg-config2;
-    };
 
     environment.systemPackages =
       with pkgs;
@@ -56,6 +52,7 @@ in
         ];
     mettavi.system = {
       services = {
+        gluetun.enable = true;
         pangolin-cli.enable = true;
       };
       shell = {
