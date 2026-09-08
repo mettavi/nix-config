@@ -116,7 +116,7 @@ in
                 "tcp"
               ];
               default = "udp";
-              description = "The password for the OpenVPN provider";
+              description = "Network protocol to use, only valid for OpenVPN";
             };
           };
           portForwarding = {
