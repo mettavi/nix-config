@@ -475,7 +475,6 @@ in
 
     home-manager.users.${username} =
       { config, ... }:
-      with lib;
       let
         inherit (config.lib.file) mkOutOfStoreSymlink;
       in
@@ -483,8 +482,8 @@ in
         xdg.configFile = {
           # link without copying to nix store (manage externally) - must use absolute paths
           # no documentation of config file syntax is available, so use the GUI to write to an out-of-store file
-          "qbittorrent-container" = {
-            source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/system/nixos/modules/services/gluetun/qbittorrent-container";
+          "qbittorrent-container/qBittorrent/qBittorrent.conf" = {
+            source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/system/nixos/modules/services/gluetun/qbittorrent-container/qBittorrent.conf";
           };
         };
       };
