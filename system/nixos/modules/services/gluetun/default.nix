@@ -191,7 +191,20 @@ in
 
     # Set the key name for each attribute set
     # this set currenlty inherits the options defaults
-    mettavi.system.services.gluetun.providers."custom-pia" = { };
+    mettavi.system.services.gluetun = {
+      activeProvider = "pia-ovpn";
+      providers = {
+        "custom-pia" = { };
+        "pia-ovpn" = {
+          name = "private internet access";
+          type = "openvpn";
+          portForwarding = {
+            enabled = "on";
+            only = "true";
+          };
+        };
+      };
+    };
 
     environment.shellAliases = {
       pia-cfg = getExe pkgs.linpkgs.pia-wg-config;
