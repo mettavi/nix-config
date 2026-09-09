@@ -13,7 +13,6 @@ let
   cfg = config.mettavi.system.services.gluetun;
   activeCfg = cfg.providers.${cfg.activeProvider};
   gluetunConfigDir = "${config.users.users.${username}.home}/.config/gluetun";
-  # Pull our safe helper out of the evaluated options tree
   mkContainer = config.mettavi.system.services.podman.mkContainer;
   pfEnvDir = "/var/lib/gluetun-portforward";
   pfEnvFile = "${pfEnvDir}/server-names.env";
