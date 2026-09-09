@@ -138,7 +138,7 @@ in
           private-internet-access = {
             useWgRefresh = mkOption {
               type = bool;
-              default = true;
+              default = false;
               description = "Whether to automatically update the wireguard config file with the pia-wg-refresh tool";
             };
             piaRegion = mkOption {
