@@ -208,7 +208,7 @@ in
         "custom-pia" = { config, ... }: {
           # sets SERVER_NAMES which is REQUIRED for PIA port-forwarding with wireguard
           # unless using the pia-wg-refresh tool
-          servers.names = if config.private-internet-access.useWgRefresh then "" else "toronto418";
+          servers.names = if config.private-internet-access.useWgRefresh then "" else "toronto401";
         };
         "pia-ovpn" = {
           name = "private internet access";
