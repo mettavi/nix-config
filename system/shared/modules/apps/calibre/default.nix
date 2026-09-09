@@ -54,6 +54,7 @@ in
         home.packages = with pkgs; [
           # TODO: The override is not working as at 2/9/2026
           # See https://github.com/NixOS/nixpkgs/issues/559101 for more details
+          # NB: Fixed in https://github.com/NixOS/nixpkgs/pull/558309 on 10-09-26
 
           # Comprehensive e-book software
           # (calibre.override {
