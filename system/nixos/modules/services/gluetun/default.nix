@@ -256,9 +256,12 @@ in
       wantedBy = [ "multi-user.target" ];
       pathConfig.PathModified = pfEnvFile;
     };
+
     systemd.services.gluetun-server-names-sync = {
       serviceConfig.Type = "oneshot";
       script = "systemctl restart gluetun.service";
+    };
+
     # prevent services from automtically starting when running `nixos-rebuild switch`
     systemd.services = {
       gluetun = {
@@ -310,7 +313,7 @@ in
               # GENERAL
               VPN_SERVICE_PROVIDER = activeCfg.name;
               VPN_TYPE = activeCfg.type;
-              LOG_LEVEL = "INFO";
+              LOG_LEVEL = "DEBUG";
               UPDATER_PERIOD = "480h";
               SERVER_REGIONS = activeCfg.servers.regions;
 
