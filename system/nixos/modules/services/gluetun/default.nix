@@ -70,7 +70,7 @@ in
             # required for PIA port-forwarding with wireguard
             names = mkOption {
               type = str;
-              default = "Server-11666-5a";
+              default = "";
               description = "Comma separated list of server names";
             };
             names-pf = mkOption {
@@ -206,7 +206,11 @@ in
     mettavi.system.services.gluetun = {
       activeProvider = "pia-ovpn";
       providers = {
-        "custom-pia" = { };
+        "custom-pia" = {
+          # required for PIA port-forwarding with wireguard
+          # BUT: Do not set a value if using the pia-wg-refresh tool
+          names = if activeCfg.private-internet-access.useWgRefresh then "" else "toronto418";
+        };
         "pia-ovpn" = {
           name = "private internet access";
           type = "openvpn";
@@ -315,7 +319,7 @@ in
             # don't set these variables if they are provided by a mounted wireguard config file (eg. wg0.conf)
             // (filterAttrs (_: v: v != null && v != "") {
               # this needs to be set if using port-forwarding with PIA
-              # but unset if using the pia-wg-refresh service
+              # unless using the pia-wg-refresh service
               SERVER_NAMES = activeCfg.servers.names;
               WIREGUARD_ADDRESSES = activeCfg.wireguard.addresses;
               WIREGUARD_ALLOWED_IPS = activeCfg.wireguard.allowedIPs;
