@@ -35,7 +35,7 @@ in
               "private internet access"
             ];
             default = "custom";
-            description = "Specify a supported VPN provider to use";
+            description = "Specify a Gluetun supported VPN provider to use";
           };
           type = mkOption {
             type = enum [
