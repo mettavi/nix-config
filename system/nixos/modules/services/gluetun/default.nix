@@ -198,7 +198,7 @@ in
 
     ######### PROVIDER CONFIGURATION ##############
     # Set the key name and non-default values for each attribute set
-    # this set currenlty inherits the options defaults
+    # this set currently inherits the options defaults
     mettavi.system.services.gluetun = {
       activeProvider = "custom-pia";
       providers = {
