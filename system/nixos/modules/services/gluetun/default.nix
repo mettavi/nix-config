@@ -256,6 +256,13 @@ in
     systemd.services.gluetun-server-names-sync = {
       serviceConfig.Type = "oneshot";
       script = "systemctl restart gluetun.service";
+    systemd.services = {
+      gluetun = {
+        restartIfChanged = false;
+      };
+      qbittorrent-port-forward = {
+        restartIfChanged = false;
+      };
     };
 
     systemd.tmpfiles.rules =
