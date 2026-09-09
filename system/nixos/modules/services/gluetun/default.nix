@@ -526,8 +526,10 @@ in
         xdg.configFile = {
           # link without copying to nix store (manage externally) - must use absolute paths
           # no documentation of config file syntax is available, so use the GUI to write to an out-of-store file
-          "qbittorrent-container/qBittorrent/qBittorrent.conf" = {
-            source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/system/nixos/modules/services/gluetun/qbittorrent-container/qBittorrent.conf";
+          # NB: qBittorrent will OVERWRITE FILE SYMLINKS, so symlink the parent directory instead
+          # and add contents to .gitignore with exceptions
+          "qbittorrent-container/qBittorrent" = {
+            source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/system/nixos/modules/services/gluetun/qbittorrent-container";
           };
         };
       };
