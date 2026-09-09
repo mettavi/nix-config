@@ -346,6 +346,7 @@ in
             volumes = [
               # bind mounts
               "${gluetunConfigDir}:/gluetun"
+              "${gluetunConfigDir}/wireguard/wg0.conf:/gluetun/wireguard/wg0.conf:ro"
               "${gluetunConfigDir}/auth:/gluetun/auth"
             ];
           };
