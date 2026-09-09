@@ -367,7 +367,8 @@ in
           };
           serviceConfig = {
             RestartSec = "10";
-            Restart = "on-failure";
+            # prevent too many restarts while troubleshooting connection problems
+            Restart = "no";
           };
         };
         pia-wg-refresh =
@@ -386,9 +387,9 @@ in
                       exit 0
                     fi
 
-                   tmp="''${file}.tmp.$$"
-                   printf '%s\n' "$new" > "$tmp"
-                   mv "$tmp" "$file"
+                     tmp="''${file}.tmp.$$"
+                     printf '%s\n' "$new" > "$tmp"
+                     mv "$tmp" "$file"
                 '';
           in
           mkContainer {
@@ -402,7 +403,7 @@ in
                 FAIL_THRESHOLD = "5";
                 MAX_GENERATION_RETRIES = "3";
                 GLUETUN_CONTAINER = "gluetun";
-                LOG_LEVEL = "info";
+                LOG_LEVEL = "debug";
                 # pia-wg-refresh writes to SERVER_NAMES (bind-mounted read-write) whenever the port/server changes
                 ON_PORT_CHANGE_SCRIPT = "/hooks/update-server-name.sh";
                 PIA_PORT_FORWARDING = "true";
