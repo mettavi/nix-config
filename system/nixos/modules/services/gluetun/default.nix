@@ -78,11 +78,6 @@ in
               default = "";
               description = "Comma separated list of server names supporting port-forwarding";
             };
-            piaRegion = mkOption {
-              type = str;
-              default = "srilanka";
-              description = "PIA region code for pia-wg-refresh (e.g. us_chicago)";
-            };
             regions = mkOption {
               type = str;
               default = "";
