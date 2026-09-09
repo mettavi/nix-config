@@ -137,6 +137,18 @@ in
               description = "The provider of the port forwarding service";
             };
           };
+          private-internet-access = {
+            useWgRefresh = mkOption {
+              type = bool;
+              default = true;
+              description = "Whether to automatically update the wireguard config file with the pia-wg-refresh tool";
+            };
+            piaRegion = mkOption {
+              type = str;
+              default = "ca_toronto";
+              description = "PIA region code for pia-wg-refresh (e.g. us_chicago)";
+            };
+          };
           wireguard = {
             addresses = mkOption {
               type = str;
@@ -382,7 +394,7 @@ in
                 # pia-wg-refresh writes to SERVER_NAMES (bind-mounted read-write) whenever the port/server changes
                 ON_PORT_CHANGE_SCRIPT = "/hooks/update-server-name.sh";
                 PIA_PORT_FORWARDING = "true";
-                PIA_REGION = activeCfg.servers.piaRegion;
+                PIA_REGION = activeCfg.private-internet-access.piaRegion;
                 WG_CONF_PATH = "/config/wg0.conf";
               };
               environmentFiles = optionals (cfg.activeProvider == "custom-pia") [
