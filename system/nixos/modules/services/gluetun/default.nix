@@ -202,8 +202,8 @@ in
       activeProvider = "pia-ovpn";
       providers = {
         "custom-pia" = {
-          # required for PIA port-forwarding with wireguard
-          # BUT: Do not set a value if using the pia-wg-refresh tool
+          # sets SERVER_NAMES which is REQUIRED for PIA port-forwarding with wireguard
+          # unless using the pia-wg-refresh tool
           names = if activeCfg.private-internet-access.useWgRefresh then "" else "toronto418";
         };
         "pia-ovpn" = {
@@ -313,8 +313,6 @@ in
             }
             # don't set these variables if they are provided by a mounted wireguard config file (eg. wg0.conf)
             // (filterAttrs (_: v: v != null && v != "") {
-              # this needs to be set if using port-forwarding with PIA
-              # unless using the pia-wg-refresh service
               SERVER_NAMES = activeCfg.servers.names;
               WIREGUARD_ADDRESSES = activeCfg.wireguard.addresses;
               WIREGUARD_ALLOWED_IPS = activeCfg.wireguard.allowedIPs;
