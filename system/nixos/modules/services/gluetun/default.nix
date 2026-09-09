@@ -290,9 +290,6 @@ in
               LOG_LEVEL = "INFO";
               UPDATER_PERIOD = "480h";
               SERVER_REGIONS = activeCfg.servers.regions;
-              # this needs to be set if using port-forwarding with PIA
-              # NB: Comment out if using the pia-wg-refresh tool
-              SERVER_NAMES = activeCfg.servers.names;
 
               # WIREGUARD
               WIREGUARD_IMPLEMENTATION = activeCfg.wireguard.implementation;
@@ -305,6 +302,9 @@ in
             }
             # don't set these variables if they are provided by a mounted wireguard config file (eg. wg0.conf)
             // (filterAttrs (_: v: v != null && v != "") {
+              # this needs to be set if using port-forwarding with PIA
+              # but unset if using the pia-wg-refresh service
+              SERVER_NAMES = activeCfg.servers.names;
               WIREGUARD_ADDRESSES = activeCfg.wireguard.addresses;
               WIREGUARD_ALLOWED_IPS = activeCfg.wireguard.allowedIPs;
               WIREGUARD_ENDPOINT_IP = activeCfg.wireguard.endpointIP;
