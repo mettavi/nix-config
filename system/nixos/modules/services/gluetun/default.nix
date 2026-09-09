@@ -256,6 +256,7 @@ in
     systemd.services.gluetun-server-names-sync = {
       serviceConfig.Type = "oneshot";
       script = "systemctl restart gluetun.service";
+    # prevent services from automtically starting when running `nixos-rebuild switch`
     systemd.services = {
       gluetun = {
         restartIfChanged = false;
