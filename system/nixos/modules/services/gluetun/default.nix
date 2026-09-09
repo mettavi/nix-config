@@ -132,6 +132,9 @@ in
               description = "The provider of the port forwarding service";
             };
           };
+          # Use this command to get a list of PIA servers that support port-forwarding:
+          # curl -s "https://serverlist.piaservers.net/vpninfo/servers/v6" \
+          # | jq -r '.regions[] | select(.port_forward == true) | .id' | sort -u
           private-internet-access = {
             useWgRefresh = mkOption {
               type = bool;
