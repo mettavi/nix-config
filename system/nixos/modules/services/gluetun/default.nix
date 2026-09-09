@@ -67,7 +67,8 @@ in
               default = "";
               description = "Comma separated list of server hostnames";
             };
-            # required for PIA port-forwarding with wireguard
+            # sets SERVER_NAMES which is REQUIRED for PIA port-forwarding with wireguard
+            # unless using the pia-wg-refresh tool
             names = mkOption {
               type = str;
               default = "";
