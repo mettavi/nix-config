@@ -334,10 +334,9 @@ in
             image = "docker.io/qmcgaw/gluetun:v3.41.3";
             notify = "healthy";
             podmanArgs = [
-              # 🌟 THE ABSOLUTE FIX - Tell the runtime container process to mirror the host symlink
               # The leading colon tells Alpine to read the symlink configuration live,
               # and since we already pass it as a Volume mount via 'mkContainer',
-              # Gluetun parses it perfectly without breaking sandbox protocols!
+              # Gluetun parses it perfectly without breaking sandbox protocols
               "--env=TZ=:/etc/localtime"
             ];
             publishPorts = [
