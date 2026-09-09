@@ -196,10 +196,11 @@ in
 
     virtualisation.podman.dockerSocket.enable = true;
 
-    # Set the key name for each attribute set
+    ######### PROVIDER CONFIGURATION ##############
+    # Set the key name and non-default values for each attribute set
     # this set currenlty inherits the options defaults
     mettavi.system.services.gluetun = {
-      activeProvider = "pia-ovpn";
+      activeProvider = "custom-pia";
       providers = {
         "custom-pia" = {
           # sets SERVER_NAMES which is REQUIRED for PIA port-forwarding with wireguard
