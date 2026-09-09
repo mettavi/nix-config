@@ -322,7 +322,7 @@ in
             }
             # don't read these variables if they are provided by a mounted wireguard config file (eg. wg0.conf)
             // (filterAttrs (_: v: v != null && v != "") {
-              SERVER_NAMES = activeCfg.servers.names; # set automatically if using pia-wg-refresh
+              SERVER_NAMES = activeCfg.servers.names; # configured automatically if using pia-wg-refresh
               WIREGUARD_ADDRESSES = activeCfg.wireguard.addresses;
               WIREGUARD_ALLOWED_IPS = activeCfg.wireguard.allowedIPs;
               WIREGUARD_ENDPOINT_IP = activeCfg.wireguard.endpointIP;
