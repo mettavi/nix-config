@@ -450,6 +450,7 @@ in
               healthInterval = "5s";
               healthStartPeriod = "10s";
               volumes = [
+                "${patchedRefreshLoop}:/app/refresh-loop.sh:ro"
                 "${pfEnvDir}:/hostenv"
                 "${updateServerNameScript}:/hooks/update-server-name.sh:ro"
                 "${config.users.users.${username}.home}/.config/gluetun/wireguard:/config"
