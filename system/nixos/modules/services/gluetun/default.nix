@@ -439,7 +439,7 @@ in
                 LOG_LEVEL = "debug";
                 # pia-wg-refresh writes to SERVER_NAMES (bind-mounted read-write) whenever the port/server changes
                 ON_PORT_CHANGE_SCRIPT = "/hooks/update-server-name.sh";
-                PIA_PORT_FORWARDING = "true";
+                PIA_PORT_FORWARDING = if (activeCfg.portForwarding.enabled == "on") then "true" else "false";
                 PIA_REGION = activeCfg.private-internet-access.piaRegion;
                 WG_CONF_PATH = "/config/wg0.conf";
               };
