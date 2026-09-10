@@ -326,30 +326,10 @@ in
       };
     };
 
-    systemd.tmpfiles.rules =
-      let
-        # creates the two read-only Gluetun control server API endpoints pia-wg-refresh needs access to
-        authConfigFile = (pkgs.formats.toml { }).generate "gluetun-auth-config.toml" {
-          roles = [
-            {
-              name = "pia-wg-refresh";
-              routes = [
-                "GET /v1/publicip/ip"
-                "GET /v1/portforward"
-              ];
-              auth = "none";
-            }
-          ];
-        };
-      in
-      [
-        # creates the file containing the auth code for the access
-        # to the two Glueton API endpoints needed by pia-wg-refresh
-        "d ${gluetunConfigDir}/auth 0750 ${username} users -"
-        "L+ ${gluetunConfigDir}/auth/config.toml - - - - ${authConfigFile}"
-        "d ${gluetunConfigDir}/wireguard 0750 ${username} users -"
-        "d /var/log/pia-wg-refresh 0750 root root -"
-      ];
+    systemd.tmpfiles.rules = [
+      "d ${gluetunConfigDir}/wireguard 0750 ${username} users -"
+      "d /var/log/pia-wg-refresh 0750 root root -"
+    ];
 
     virtualisation.quadlet = {
       containers = {
