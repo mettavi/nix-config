@@ -401,8 +401,7 @@ in
           };
           serviceConfig = {
             RestartSec = "10";
-            # prevent too many restarts while troubleshooting connection problems
-            Restart = "no";
+            Restart = "on-failure";
           };
         };
         pia-wg-refresh =
