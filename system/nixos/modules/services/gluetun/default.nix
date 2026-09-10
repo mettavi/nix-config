@@ -14,6 +14,24 @@ let
   activeCfg = cfg.providers.${cfg.activeProvider};
   gluetunConfigDir = "${config.users.users.${username}.home}/.config/gluetun";
   mkContainer = config.mettavi.system.services.podman.mkContainer;
+  patchedRefreshLoop =
+    pkgs.runCommand "refresh-loop-patched.sh" { } # bash
+      ''
+        cp ${./refresh-loop-0_8_3.sh} $out
+        chmod +w $out
+        # do_docker_restart normally issues `docker restart` directly against the
+        # podman socket, which conflicts with systemd's own supervision of the
+        # quadlet-managed gluetun.service. Replace it with a pure signal file;
+        # the actual restart is handled exclusively by systemd via the
+        # gluetun-restart-trigger path-unit below.
+        ${pkgs.gnused}/bin/sed -i \
+          '/^do_docker_restart() {/,/^}/c\
+          do_docker_restart() {\
+          date -u +%Y-%m-%dT%H:%M:%SZ > /hostenv/restart-trigger\
+          log info "Signaled systemd to restart $GLUETUN_CONTAINER"\
+          }' $out
+        chmod +x $out
+      '';
   pfEnvDir = "/var/lib/gluetun-portforward";
   pfEnvFile = "${pfEnvDir}/server-names.env";
 in
@@ -277,6 +295,16 @@ in
           cp -f ${authConfigFile} ${gluetunConfigDir}/auth/config.toml
         '';
       };
+
+    systemd.paths.gluetun-restart-trigger = {
+      wantedBy = [ "multi-user.target" ];
+      pathConfig.PathModified = "${pfEnvDir}/restart-trigger";
+    };
+    systemd.services.gluetun-restart-trigger = {
+      serviceConfig.Type = "oneshot";
+      script = "systemctl restart gluetun.service";
+    };
+
     # host-side: watch the file, restart gluetun.service when it changes
     systemd.paths.gluetun-server-names-sync = {
       wantedBy = [ "multi-user.target" ];
