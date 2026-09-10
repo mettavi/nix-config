@@ -55,8 +55,6 @@ in
           # Gnome shell native connector
           gnome-browser-connector
         ];
-      # required for screensharing under Wayland, see https://wiki.nixos.org/wiki/Firefox
-      package = (pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { });
 
       # policies = {
       #   HttpAllowlist = [
