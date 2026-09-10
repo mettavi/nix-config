@@ -161,7 +161,7 @@ in
             };
             piaRegion = mkOption {
               type = str;
-              default = "ca_toronto";
+              default = "uk";
               description = "PIA region code for pia-wg-refresh (e.g. us_chicago)";
             };
           };
@@ -226,7 +226,7 @@ in
         "custom-pia" = { config, ... }: {
           # sets SERVER_NAMES which is REQUIRED for PIA port-forwarding with wireguard
           # unless using the pia-wg-refresh tool
-          servers.names = if config.private-internet-access.useWgRefresh then "" else "toronto401";
+          servers.names = if config.private-internet-access.useWgRefresh then "" else "Server-10872-2a";
         };
         "pia-ovpn" = {
           name = "private internet access";
