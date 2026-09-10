@@ -251,6 +251,32 @@ in
       [ -f ${pfEnvFile} ] || echo "SERVER_NAMES=" > ${pfEnvFile}
     '';
 
+    # creates the file containing the auth code for the access
+    # to the two Glueton API endpoints needed by pia-wg-refresh
+    systemd.services.gluetun-auth-config =
+      let
+        authConfigFile = (pkgs.formats.toml { }).generate "gluetun-auth-config.toml" {
+          roles = [
+            {
+              name = "pia-wg-refresh";
+              routes = [
+                "GET /v1/publicip/ip"
+                "GET /v1/portforward"
+              ];
+              auth = "none";
+            }
+          ];
+        };
+      in
+      {
+        after = [ "sops-nix.service" ];
+        before = [ "gluetun.service" ];
+        wantedBy = [ "gluetun.service" ];
+        serviceConfig.Type = "oneshot";
+        script = ''
+          cp -f ${authConfigFile} ${gluetunConfigDir}/auth/config.toml
+        '';
+      };
     # host-side: watch the file, restart gluetun.service when it changes
     systemd.paths.gluetun-server-names-sync = {
       wantedBy = [ "multi-user.target" ];
