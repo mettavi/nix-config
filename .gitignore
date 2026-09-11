@@ -7,6 +7,6 @@ lockfile
 *.nix-backup
 result
 # exclude all contents
-system/nixos/modules/services/gluetun/qbittorrent-container/*
+system/nixos/modules/services/gluetun/qbittorrent-container/qBittorrent/*
 # except for this
-!system/nixos/modules/services/gluetun/qbittorrent-container/qBittorrent.conf
+!system/nixos/modules/services/gluetun/qbittorrent-container/qBittorrent/qBittorrent.conf
