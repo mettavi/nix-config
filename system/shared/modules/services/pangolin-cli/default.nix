@@ -73,6 +73,9 @@ in
           Environment = [
             "HOME=/var/lib/pangolin"
             "PANGOLIN_ENDPOINT=https://pangolin.${inputs.secrets.domain.primary}"
+            # direct the root systemd service to the user config path
+            # (e.g. to pick up accounts.json for authentication)
+            "XDG_CONFIG_HOME=${config.home-manager.users.${username}.xdg.configHome}"
           ];
           StateDirectory = "pangolin";
           WorkingDirectory = "/var/lib/pangolin";
