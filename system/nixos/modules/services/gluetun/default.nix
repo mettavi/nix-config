@@ -1,5 +1,7 @@
 {
   config,
+  hostname,
+  inputs,
   lib,
   pkgs,
   secrets_path,
@@ -255,7 +257,7 @@ in
       mkMerge [
         {
           "users/${username}/gluetun-${cfg.activeProvider}.env" = gluetunSecrets;
-          "users/${username}/qbittorrent-port-forward.env" = gluetunSecrets;
+          "users/${username}/qbittorrent-${hostname}.env" = gluetunSecrets;
         }
         (mkIf (cfg.activeProvider == "custom-pia") {
           "users/${username}/wg-refresh-${cfg.activeProvider}.env" = gluetunSecrets;
@@ -506,6 +508,7 @@ in
               ExecStartPre = pkgs.writeShellScript "pin-qbittorrent-settings" ''
                 targetDir="${qbtContainerConfDir}/qBittorrent"
                 conf="$targetDir/qBittorrent.conf"
+                secretFile="${config.sops.secrets."users/${username}/qbittorrent-${hostname}.env".path}"
 
                 # Ensure the directory exists on the host
                 ${pkgs.coreutils}/bin/mkdir -p "$targetDir"
@@ -513,8 +516,21 @@ in
                 # Initialize an empty file if it doesn't exist yet
                 [ -f "$conf" ] || touch "$conf"
 
+                # 1. Merge static pinned settings
                 # Merge pinned Nix settings into the untracked host config
                 ${pkgs.crudini}/bin/crudini --merge "$conf" < ${qbtPinnedSettingsFile}
+
+                # 2. Inject secret password hash from SOPS
+                if [ -f "$secretFile" ]; then
+                  set -a
+                  . "$secretFile"
+                  set +a
+
+                  if [ -n "''${QBT_PASSWORD_HASH:-}" ]; then
+                    ${pkgs.crudini}/bin/crudini --set "$conf" Preferences 'WebUI\Username' '${inputs.secrets.username.primary}'
+                    ${pkgs.crudini}/bin/crudini --set "$conf" Preferences 'WebUI\Password_PBKDF2' "$QBT_PASSWORD_HASH"
+                  fi
+                fi
               '';
               Restart = "on-failure";
               RestartSec = "10";
@@ -540,7 +556,7 @@ in
                   GTN_ADDR = "http://localhost:8000"; # gluetun's default control server port
                 };
                 environmentFiles = [
-                  config.sops.secrets."users/${username}/qbittorrent-port-forward.env".path
+                  config.sops.secrets."users/${username}/qbittorrent-${hostname}".path
                 ];
               };
               serviceConfig = {
