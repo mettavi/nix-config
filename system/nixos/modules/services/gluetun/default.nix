@@ -647,5 +647,20 @@ in
         };
       };
     };
+    home-manager.users.${username} =
+      { config, ... }:
+      let
+        inherit (config.lib.file) mkOutOfStoreSymlink;
+      in
+      {
+        xdg.configFile = {
+          # link without copying to nix store (manage externally) - must use absolute paths
+          # NB: apps that atomically write their own config commonly overwrite file
+          # symlinks outright, so symlink the parent directory instead
+          "vuetorrent-backend" = {
+            source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/system/nixos/modules/services/gluetun/vuetorrent-backend";
+          };
+        };
+      };
   };
 }
