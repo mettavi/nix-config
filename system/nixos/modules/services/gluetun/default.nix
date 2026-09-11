@@ -551,6 +551,7 @@ in
                 "home-manager-${username}.service"
                 "gluetun.service"
               ];
+              # tell gluetun to stop this container first before shutting down
               Requires = [
                 "gluetun.service"
               ];
