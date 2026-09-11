@@ -216,7 +216,8 @@ in
     # to enable and configure generic podman settings
     mettavi.system.services.podman.enable = true;
 
-    virtualisation.podman.dockerSocket.enable = true;
+    # this option is not required as we mount the podman socket directly (see the volume mounts below)
+    # virtualisation.podman.dockerSocket.enable = true;
 
     ######### PROVIDER CONFIGURATION ##############
     # Set the key name and non-default values for each attribute set
