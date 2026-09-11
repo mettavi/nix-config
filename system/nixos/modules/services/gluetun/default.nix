@@ -410,6 +410,10 @@ in
             RestartSec = "10";
             Restart = "on-failure";
           };
+          unitConfig = {
+            # start the dependent service on launch
+            Wants = [ "pia-wg-refresh.service" ];
+          };
         };
         pia-wg-refresh =
           let
