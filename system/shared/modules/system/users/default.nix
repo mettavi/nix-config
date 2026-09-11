@@ -45,13 +45,14 @@ in
           name: usrCfg:
           mkIf usrCfg.enable {
             description = usrCfg.description;
-            home = "/home/${usrCfg.username}";
-            isNormalUser = usrCfg.isNormalUser;
+            extraGroups = usrCfg.extraGroups;
             # this is required to enable password login
             # (create hash with "mkpasswd -m sha-512", or "mkpasswd" to use the stronger default "yes" encryption)
             hashedPasswordFile = usrCfg.passwordHashFile;
-            extraGroups = usrCfg.extraGroups;
+            home = "/home/${usrCfg.username}";
+            isNormalUser = usrCfg.isNormalUser;
             shell = pkgs.${usrCfg.shell};
+            uid = usrCfg.userId;
           }
         ) cfg.userConfig
       else

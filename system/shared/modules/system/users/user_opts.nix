@@ -26,6 +26,11 @@ in
               default = "timotheos";
               description = "The same as the attribute name, but useful for reference within the user module";
             };
+            userId = mkOption {
+              type = types.int;
+              default = 1000;
+              description = "Set the uid for the user to use the attribute in other modules";
+            };
             description = mkOption {
               type = types.str;
               default = "${cfg_username}";
