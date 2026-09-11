@@ -500,8 +500,8 @@ in
                 WEBUI_PORT = "8090";
               };
               volumes = [
-                "${qbtContainerConfDir}:/config"
                 "${config.users.users.${username}.home}/Downloads/qbittorrent:/downloads"
+                "${qbtContainerConfDir}:/config"
               ];
             };
             serviceConfig = {
