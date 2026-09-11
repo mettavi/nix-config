@@ -61,6 +61,8 @@ in
             ${pkgs.systemd}/bin/resolvectl dns pangolin 100.96.128.1
             # The '~' prefix defines this as a Routing Domain (only queries matching this domain go to 100.96.128.1)
             ${pkgs.systemd}/bin/resolvectl domain pangolin "~${inputs.secrets.domain.primary}"
+            # Prevent pangolin from being used for general internet DNS queries
+            resolvectl default-route pangolin false
           '';
           # Hardening measures (optional but recommended)
           ProtectSystem = "strict";
