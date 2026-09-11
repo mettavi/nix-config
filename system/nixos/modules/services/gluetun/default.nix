@@ -328,8 +328,10 @@ in
       };
     };
 
+    # create necessary directories, these are not auto-created by containers
     systemd.tmpfiles.rules = [
       "d ${gluetunConfigDir}/wireguard 0750 ${username} users -"
+      "d ${config.users.users.${username}.home}/.config/vuetorrent-backend 0750 ${username} users -"
       "d /var/log/pia-wg-refresh 0750 root root -"
     ];
 
