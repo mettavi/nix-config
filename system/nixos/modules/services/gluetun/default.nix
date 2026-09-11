@@ -505,10 +505,17 @@ in
             };
             serviceConfig = {
               ExecStartPre = pkgs.writeShellScript "pin-qbittorrent-settings" ''
-                conf="${qbtContainerConfDir}/qBittorrent/qBittorrent.conf"
-                if [ -f "$conf" ]; then
-                  ${pkgs.crudini}/bin/crudini --merge "$conf" < ${qbtPinnedSettingsFile}
-                fi
+                targetDir="${qbtContainerConfDir}/qBittorrent"
+                conf="$targetDir/qBittorrent.conf"
+
+                # Ensure the directory exists on the host
+                ${pkgs.coreutils}/bin/mkdir -p "$targetDir"
+
+                # Initialize an empty file if it doesn't exist yet
+                [ -f "$conf" ] || touch "$conf"
+
+                # Merge pinned Nix settings into the untracked host config
+                ${pkgs.crudini}/bin/crudini --merge "$conf" < ${qbtPinnedSettingsFile}
               '';
               Restart = "on-failure";
               RestartSec = "10";
@@ -555,22 +562,5 @@ in
           };
       };
     };
-
-    home-manager.users.${username} =
-      { config, ... }:
-      let
-        inherit (config.lib.file) mkOutOfStoreSymlink;
-      in
-      {
-        xdg.configFile = {
-          # link without copying to nix store (manage externally) - must use absolute paths
-          # no documentation of config file syntax is available, so use the GUI to write to an out-of-store file
-          # NB: qBittorrent will OVERWRITE FILE SYMLINKS, so symlink the parent directory instead
-          # and add contents to .gitignore with exceptions
-          "qbittorrent-container/qBittorrent" = {
-            source = mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/system/nixos/modules/services/gluetun/qbittorrent-container";
-          };
-        };
-      };
   };
 }
