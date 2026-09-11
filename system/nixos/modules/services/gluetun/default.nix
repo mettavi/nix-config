@@ -522,35 +522,37 @@ in
                 "gluetun.service"
               ];
             };
-          };
-        qbittorrent-port-forward = mkContainer {
-          containerConfig = {
-            name = "qbittorrent-port-forward";
-            image = "docker.io/mjmeli/qbittorrent-port-forward-gluetun-server:2025.12.21.02";
-            networks = [ "container:gluetun" ]; # same netns as gluetun + qbittorrent
-            environments = {
-              QBT_ADDR = "http://localhost:8090"; # matches your WEBUI_PORT
-              GTN_ADDR = "http://localhost:8000"; # gluetun's default control server port
+          }
+          // optionalAttrs (activeCfg.portForwarding.enabled == "on") {
+            qbittorrent-port-forward = mkContainer {
+              containerConfig = {
+                name = "qbittorrent-port-forward";
+                image = "docker.io/mjmeli/qbittorrent-port-forward-gluetun-server:2025.12.21.02";
+                networks = [ "container:gluetun" ]; # same netns as gluetun + qbittorrent
+                environments = {
+                  QBT_ADDR = "http://localhost:8090"; # matches your WEBUI_PORT
+                  GTN_ADDR = "http://localhost:8000"; # gluetun's default control server port
+                };
+                environmentFiles = [
+                  config.sops.secrets."users/${username}/qbittorrent-port-forward.env".path
+                ];
+              };
+              serviceConfig = {
+                Restart = "on-failure";
+                RestartSec = "10";
+              };
+              unitConfig = {
+                After = [
+                  "gluetun.service"
+                  "qbittorrent.service"
+                ];
+                Requires = [
+                  "gluetun.service"
+                  "qbittorrent.service"
+                ];
+              };
             };
-            environmentFiles = [
-              config.sops.secrets."users/${username}/qbittorrent-port-forward.env".path
-            ];
           };
-          serviceConfig = {
-            Restart = "on-failure";
-            RestartSec = "10";
-          };
-          unitConfig = {
-            After = [
-              "gluetun.service"
-              "qbittorrent.service"
-            ];
-            Requires = [
-              "gluetun.service"
-              "qbittorrent.service"
-            ];
-          };
-        };
       };
     };
 
