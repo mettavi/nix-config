@@ -573,7 +573,7 @@ in
                   GTN_ADDR = "http://localhost:8000"; # gluetun's default control server port
                 };
                 environmentFiles = [
-                  config.sops.secrets."users/${username}/qbittorrent-${hostname}".path
+                  config.sops.secrets."users/${username}/qbittorrent-${hostname}.env".path
                 ];
               };
               serviceConfig = {
