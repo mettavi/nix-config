@@ -484,9 +484,8 @@ in
             qbtContainerConfDir = "${config.users.users.${username}.home}/.config/qbittorrent-container";
             qbtPinnedSettingsFile = (pkgs.formats.ini { }).generate "qbittorrent-pinned.ini" {
               Preferences = {
-                "WebUI\\LocalHostAuth" = false;
-                "WebUI\\AlternativeUIEnabled" = true;
-                "WebUI\\RootFolder" = "/vuetorrent";
+                "WebUI\\HostHeaderValidation" = false; # required for vuetorrent-backend
+                "WebUI\\LocalHostAuth" = false; # required for gluetun
               };
               BitTorrent = {
                 "Session\\DefaultSavePath" = "/downloads/completed";
