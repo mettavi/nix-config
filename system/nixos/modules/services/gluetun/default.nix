@@ -328,7 +328,7 @@ in
       gluetun = {
         restartIfChanged = false;
       };
-      qbittorrent-port-forward = {
+      qbittorrent-port-forward = mkIf (activeCfg.portForwarding.enabled == "on") {
         restartIfChanged = false;
       };
     };
