@@ -341,239 +341,139 @@ in
     ];
 
     virtualisation.quadlet = {
-      containers = {
-        gluetun = mkContainer {
-          autoStart = false;
-          containerConfig = {
-            addCapabilities = [
-              "NET_ADMIN"
-              "NET_RAW"
-            ];
-            # this is the name that the `pia-wg-refresh` will look for
-            name = "gluetun";
-            devices = [ "/dev/net/tun:/dev/net/tun" ];
-            environments = {
-              # GENERAL
-              VPN_SERVICE_PROVIDER = activeCfg.name;
-              VPN_TYPE = activeCfg.type;
-              LOG_LEVEL = "DEBUG";
-              UPDATER_PERIOD = "480h";
-              SERVER_REGIONS = activeCfg.servers.regions;
-
-              # WIREGUARD
-              WIREGUARD_IMPLEMENTATION = activeCfg.wireguard.implementation;
-              WIREGUARD_PERSISTENT_KEEPALIVE_INTERVAL = "25s";
-
-              # PORT FORWARDING
-              VPN_PORT_FORWARDING = activeCfg.portForwarding.enabled;
-              PORT_FORWARD_ONLY = activeCfg.portForwarding.only;
-              VPN_PORT_FORWARDING_PROVIDER = activeCfg.portForwarding.provider;
-            }
-            # don't read these variables if they are provided by a mounted wireguard config file (eg. wg0.conf)
-            // (filterAttrs (_: v: v != null && v != "") {
-              SERVER_NAMES = activeCfg.servers.names; # configured automatically if using pia-wg-refresh
-              WIREGUARD_ADDRESSES = activeCfg.wireguard.addresses;
-              WIREGUARD_ALLOWED_IPS = activeCfg.wireguard.allowedIPs;
-              WIREGUARD_ENDPOINT_IP = activeCfg.wireguard.endpointIP;
-              WIREGUARD_ENDPOINT_PORT = activeCfg.wireguard.endpointPort;
-              WIREGUARD_PUBLIC_KEY = activeCfg.wireguard.publicKey;
-            });
-            environmentFiles = [
-              # gluetun reads its SERVER_NAMES from this file at every (re)start
-              pfEnvFile
-              "${config.sops.secrets."users/${username}/gluetun-${cfg.activeProvider}.env".path}"
-            ];
-            healthCmd = "CMD-SHELL /gluetun-entrypoint healthcheck";
-            healthInterval = "30s";
-            healthOnFailure = "kill";
-            healthRetries = 3;
-            healthStartPeriod = "20s";
-            healthTimeout = "10s";
-            image = "docker.io/qmcgaw/gluetun:v3.41.3";
-            notify = "healthy";
-            podmanArgs = [
-              # The leading colon tells Alpine to read the symlink configuration live,
-              # and since we already pass it as a Volume mount via 'mkContainer',
-              # Gluetun parses it perfectly without breaking sandbox protocols
-              "--env=TZ=:/etc/localtime"
-            ];
-            publishPorts = [
-              # qBittorrent ports, vuetorrent-backend will forward requests to it so no need to expose it
-              # "8090:8090/tcp" # qBittorrent WEBUI_PORT
-
-              # vuetorrent-backend
-              "8091:8091"
-            ];
-            volumes = [
-              # bind mounts
-              "${gluetunConfigDir}:/gluetun"
-              "${gluetunConfigDir}/wireguard/wg0.conf:/gluetun/wireguard/wg0.conf:ro"
-              "${gluetunConfigDir}/auth:/gluetun/auth"
-            ];
-          };
-          serviceConfig = {
-            RestartSec = "10";
-            Restart = "on-failure";
-          };
-          unitConfig = {
-            # start the dependent service on launch
-            Wants = [ "pia-wg-refresh.service" ];
-          };
-        };
-        pia-wg-refresh =
-          let
-            # the alpine container does not have bash and cannot resolve nix store paths - so use "writeScript" here
-            updateServerNameScript =
-              pkgs.writeScript "update-server-name.sh" # sh
-                ''
-                  #!/bin/sh
-                  set -eu
-
-                  file="/hostenv/server-names.env"
-                  new="SERVER_NAMES=$PIA_SERVER_NAME"
-
-                  if [ -f "$file" ] && [ "$(cat "$file")" = "$new" ]; then
-                      exit 0
-                    fi
-
-                     tmp="''${file}.tmp.$$"
-                     printf '%s\n' "$new" > "$tmp"
-                     mv "$tmp" "$file"
-                '';
-          in
-          mkContainer {
+      containers = mkMerge [
+        # Always-active containers
+        {
+          gluetun = mkContainer {
             autoStart = false;
             containerConfig = {
-              name = "pia-wg-refresh";
-              image = "ghcr.io/ccarpinteri/pia-wg-refresh:v0.8.3";
-              environments = {
-                CHECK_INTERVAL_SECONDS = "60";
-                HEALTHY_CHECK_INTERVAL_SECONDS = "1800";
-                FAIL_THRESHOLD = "5";
-                MAX_GENERATION_RETRIES = "3";
-                GLUETUN_CONTAINER = "gluetun";
-                LOG_LEVEL = "debug";
-                # pia-wg-refresh writes to SERVER_NAMES (bind-mounted read-write) whenever the port/server changes
-                ON_PORT_CHANGE_SCRIPT = "/hooks/update-server-name.sh";
-                PIA_PORT_FORWARDING = if (activeCfg.portForwarding.enabled == "on") then "true" else "false";
-                PIA_REGION = activeCfg.private-internet-access.piaRegion;
-                WG_CONF_PATH = "/config/wg0.conf";
-              };
-              environmentFiles = optionals (cfg.activeProvider == "custom-pia") [
-                config.sops.secrets."users/${username}/wg-refresh-${cfg.activeProvider}.env".path
+              addCapabilities = [
+                "NET_ADMIN"
+                "NET_RAW"
               ];
-              healthCmd = "grep -q \"^Endpoint\" /config/wg0.conf || exit 1";
-              healthInterval = "5s";
-              healthStartPeriod = "10s";
+              # this is the name that the `pia-wg-refresh` will look for
+              name = "gluetun";
+              devices = [ "/dev/net/tun:/dev/net/tun" ];
+              environments = {
+                # GENERAL
+                VPN_SERVICE_PROVIDER = activeCfg.name;
+                VPN_TYPE = activeCfg.type;
+                LOG_LEVEL = "DEBUG";
+                UPDATER_PERIOD = "480h";
+                SERVER_REGIONS = activeCfg.servers.regions;
+
+                # WIREGUARD
+                WIREGUARD_IMPLEMENTATION = activeCfg.wireguard.implementation;
+                WIREGUARD_PERSISTENT_KEEPALIVE_INTERVAL = "25s";
+
+                # PORT FORWARDING
+                VPN_PORT_FORWARDING = activeCfg.portForwarding.enabled;
+                PORT_FORWARD_ONLY = activeCfg.portForwarding.only;
+                VPN_PORT_FORWARDING_PROVIDER = activeCfg.portForwarding.provider;
+              }
+              # don't read these variables if they are provided by a mounted wireguard config file (eg. wg0.conf)
+              // (filterAttrs (_: v: v != null && v != "") {
+                SERVER_NAMES = activeCfg.servers.names; # configured automatically if using pia-wg-refresh
+                WIREGUARD_ADDRESSES = activeCfg.wireguard.addresses;
+                WIREGUARD_ALLOWED_IPS = activeCfg.wireguard.allowedIPs;
+                WIREGUARD_ENDPOINT_IP = activeCfg.wireguard.endpointIP;
+                WIREGUARD_ENDPOINT_PORT = activeCfg.wireguard.endpointPort;
+                WIREGUARD_PUBLIC_KEY = activeCfg.wireguard.publicKey;
+              });
+              environmentFiles = [
+                # gluetun reads its SERVER_NAMES from this file at every (re)start
+                pfEnvFile
+                "${config.sops.secrets."users/${username}/gluetun-${cfg.activeProvider}.env".path}"
+              ];
+              healthCmd = "CMD-SHELL /gluetun-entrypoint healthcheck";
+              healthInterval = "30s";
+              healthOnFailure = "kill";
+              healthRetries = 3;
+              healthStartPeriod = "20s";
+              healthTimeout = "10s";
+              image = "docker.io/qmcgaw/gluetun:v3.41.3";
+              notify = "healthy";
+              podmanArgs = [
+                # The leading colon tells Alpine to read the symlink configuration live,
+                # and since we already pass it as a Volume mount via 'mkContainer',
+                # Gluetun parses it perfectly without breaking sandbox protocols
+                "--env=TZ=:/etc/localtime"
+              ];
+              publishPorts = [
+                # qBittorrent ports, vuetorrent-backend will forward requests to it so no need to expose it
+                # "8090:8090/tcp" # qBittorrent WEBUI_PORT
+
+                # vuetorrent-backend
+                "8091:8091"
+              ];
               volumes = [
-                "${patchedRefreshLoop}:/app/refresh-loop.sh:ro"
-                "${pfEnvDir}:/hostenv"
-                "${updateServerNameScript}:/hooks/update-server-name.sh:ro"
-                "${config.users.users.${username}.home}/.config/gluetun/wireguard:/config"
-                "/run/podman/podman.sock:/var/run/docker.sock"
-                "/var/log/pia-wg-refresh:/logs"
+                # bind mounts
+                "${gluetunConfigDir}:/gluetun"
+                "${gluetunConfigDir}/wireguard/wg0.conf:/gluetun/wireguard/wg0.conf:ro"
+                "${gluetunConfigDir}/auth:/gluetun/auth"
               ];
             };
             serviceConfig = {
-              Restart = "on-failure";
               RestartSec = "10";
+              Restart = "on-failure";
             };
             unitConfig = {
-              After = [ "gluetun.service" ];
+              # start the dependent service on launch
+              Wants = [ "pia-wg-refresh.service" ];
             };
           };
+          pia-wg-refresh =
+            let
+              # the alpine container does not have bash and cannot resolve nix store paths - so use "writeScript" here
+              updateServerNameScript =
+                pkgs.writeScript "update-server-name.sh" # sh
+                  ''
+                    #!/bin/sh
+                    set -eu
 
-        # see the wiki at https://github.com/qbittorrent/qBittorrent/wiki
-        qbittorrent =
-          let
-            qbtContainerConfDir = "${config.users.users.${username}.home}/.config/qbittorrent-container";
-            qbtPinnedSettingsFile = (pkgs.formats.ini { }).generate "qbittorrent-pinned.ini" {
-              Preferences = {
-                "WebUI\\HostHeaderValidation" = false; # required for vuetorrent-backend
-                "WebUI\\LocalHostAuth" = false; # required for gluetun
-              };
-              BitTorrent = {
-                "Session\\DefaultSavePath" = "/downloads/completed";
-                # these two settings recommended in the docs,
-                # see https://github.com/qdm12/gluetun-wiki/blob/main/setup/popular-apps.md
-                # and https://github.com/passteque/gluetun/issues/2735
-                "Session\\Interface" = "tun0";
-                "Session\\InterfaceAddress" = "0.0.0.0";
-                "Session\\TempPath" = "/downloads/incomplete";
-                "Session\\TempPathEnabled" = true;
-              };
-            };
-          in
-          mkContainer {
-            autoStart = false;
-            containerConfig = {
-              image = "docker.io/linuxserver/qbittorrent:5.2.3";
-              networks = [ "container:gluetun" ]; # joins gluetun's netns — no ports of its own
-              environments = {
-                PUID = toString config.users.users.${username}.uid;
-                PGID = toString config.users.groups.users.gid;
-                # NB: The TORRENTING_PORT value is managed separately
-                WEBUI_PORT = "8090";
-              };
-              volumes = [
-                "${config.users.users.${username}.home}/Downloads/qbittorrent:/downloads"
-                "${qbtContainerConfDir}:/config"
-              ];
-            };
-            serviceConfig = {
-              ExecStartPre = pkgs.writeShellScript "pin-qbittorrent-settings" ''
-                targetDir="${qbtContainerConfDir}/qBittorrent"
-                conf="$targetDir/qBittorrent.conf"
-                secretFile="${config.sops.secrets."users/${username}/qbittorrent-${hostname}.env".path}"
+                    file="/hostenv/server-names.env"
+                    new="SERVER_NAMES=$PIA_SERVER_NAME"
 
-                # Ensure the directory exists on the host
-                ${pkgs.coreutils}/bin/mkdir -p "$targetDir"
+                    if [ -f "$file" ] && [ "$(cat "$file")" = "$new" ]; then
+                        exit 0
+                      fi
 
-                # Initialize an empty file if it doesn't exist yet
-                [ -f "$conf" ] || touch "$conf"
-
-                # 1. Merge static pinned settings
-                # Merge pinned Nix settings into the untracked host config
-                ${pkgs.crudini}/bin/crudini --merge "$conf" < ${qbtPinnedSettingsFile}
-
-                # 2. Inject secret password hash from SOPS
-                if [ -f "$secretFile" ]; then
-                  set -a
-                  . "$secretFile"
-                  set +a
-
-                  if [ -n "''${QBT_PASSWORD_HASH:-}" ]; then
-                    ${pkgs.crudini}/bin/crudini --set "$conf" Preferences 'WebUI\Username' '${inputs.secrets.username.primary}'
-                    ${pkgs.crudini}/bin/crudini --set "$conf" Preferences 'WebUI\Password_PBKDF2' "$QBT_PASSWORD_HASH"
-                  fi
-                fi
-              '';
-              Restart = "on-failure";
-              RestartSec = "10";
-            };
-            unitConfig = {
-              After = [
-                "home-manager-${username}.service"
-                "gluetun.service"
-              ];
-              # tell gluetun to stop this container first before shutting down
-              Requires = [
-                "gluetun.service"
-              ];
-            };
-          }
-          // optionalAttrs (activeCfg.portForwarding.enabled == "on") {
-            qbittorrent-port-forward = mkContainer {
+                       tmp="''${file}.tmp.$$"
+                       printf '%s\n' "$new" > "$tmp"
+                       mv "$tmp" "$file"
+                  '';
+            in
+            mkContainer {
+              autoStart = false;
               containerConfig = {
-                name = "qbittorrent-port-forward";
-                image = "docker.io/mjmeli/qbittorrent-port-forward-gluetun-server:2025.12.21.02";
-                networks = [ "container:gluetun" ]; # same netns as gluetun + qbittorrent
+                name = "pia-wg-refresh";
+                image = "ghcr.io/ccarpinteri/pia-wg-refresh:v0.8.3";
                 environments = {
-                  QBT_ADDR = "http://localhost:8090"; # matches your WEBUI_PORT
-                  GTN_ADDR = "http://localhost:8000"; # gluetun's default control server port
+                  CHECK_INTERVAL_SECONDS = "60";
+                  HEALTHY_CHECK_INTERVAL_SECONDS = "1800";
+                  FAIL_THRESHOLD = "5";
+                  MAX_GENERATION_RETRIES = "3";
+                  GLUETUN_CONTAINER = "gluetun";
+                  LOG_LEVEL = "debug";
+                  # pia-wg-refresh writes to SERVER_NAMES (bind-mounted read-write) whenever the port/server changes
+                  ON_PORT_CHANGE_SCRIPT = "/hooks/update-server-name.sh";
+                  PIA_PORT_FORWARDING = if (activeCfg.portForwarding.enabled == "on") then "true" else "false";
+                  PIA_REGION = activeCfg.private-internet-access.piaRegion;
+                  WG_CONF_PATH = "/config/wg0.conf";
                 };
-                environmentFiles = [
-                  config.sops.secrets."users/${username}/qbittorrent-${hostname}.env".path
+                environmentFiles = optionals (cfg.activeProvider == "custom-pia") [
+                  config.sops.secrets."users/${username}/wg-refresh-${cfg.activeProvider}.env".path
+                ];
+                healthCmd = "grep -q \"^Endpoint\" /config/wg0.conf || exit 1";
+                healthInterval = "5s";
+                healthStartPeriod = "10s";
+                volumes = [
+                  "${patchedRefreshLoop}:/app/refresh-loop.sh:ro"
+                  "${pfEnvDir}:/hostenv"
+                  "${updateServerNameScript}:/hooks/update-server-name.sh:ro"
+                  "${config.users.users.${username}.home}/.config/gluetun/wireguard:/config"
+                  "/run/podman/podman.sock:/var/run/docker.sock"
+                  "/var/log/pia-wg-refresh:/logs"
                 ];
               };
               serviceConfig = {
@@ -581,76 +481,179 @@ in
                 RestartSec = "10";
               };
               unitConfig = {
-                After = [
-                  "gluetun.service"
-                  "qbittorrent.service"
+                After = [ "gluetun.service" ];
+              };
+            };
+
+          # see the wiki at https://github.com/qbittorrent/qBittorrent/wiki
+          qbittorrent =
+            let
+              qbtContainerConfDir = "${config.users.users.${username}.home}/.config/qbittorrent-container";
+              qbtPinnedSettingsFile = (pkgs.formats.ini { }).generate "qbittorrent-pinned.ini" {
+                Preferences = {
+                  "WebUI\\HostHeaderValidation" = false; # required for vuetorrent-backend
+                  "WebUI\\LocalHostAuth" = false; # required for gluetun
+                };
+                BitTorrent = {
+                  "Session\\DefaultSavePath" = "/downloads/completed";
+                  # these two settings recommended in the docs,
+                  # see https://github.com/qdm12/gluetun-wiki/blob/main/setup/popular-apps.md
+                  # and https://github.com/passteque/gluetun/issues/2735
+                  "Session\\Interface" = "tun0";
+                  "Session\\InterfaceAddress" = "0.0.0.0";
+                  "Session\\TempPath" = "/downloads/incomplete";
+                  "Session\\TempPathEnabled" = true;
+                };
+              };
+            in
+            mkContainer {
+              autoStart = false;
+              containerConfig = {
+                image = "docker.io/linuxserver/qbittorrent:5.2.3";
+                networks = [ "container:gluetun" ]; # joins gluetun's netns — no ports of its own
+                environments = {
+                  PUID = toString config.users.users.${username}.uid;
+                  PGID = toString config.users.groups.users.gid;
+                  # NB: The TORRENTING_PORT value is managed separately
+                  WEBUI_PORT = "8090";
+                };
+                volumes = [
+                  "${config.users.users.${username}.home}/Downloads/qbittorrent:/downloads"
+                  "${qbtContainerConfDir}:/config"
                 ];
+              };
+              serviceConfig = {
+                ExecStartPre = pkgs.writeShellScript "pin-qbittorrent-settings" ''
+                  targetDir="${qbtContainerConfDir}/qBittorrent"
+                  conf="$targetDir/qBittorrent.conf"
+                  secretFile="${config.sops.secrets."users/${username}/qbittorrent-${hostname}.env".path}"
+
+                  # Ensure the directory exists on the host
+                  ${pkgs.coreutils}/bin/mkdir -p "$targetDir"
+
+                  # Initialize an empty file if it doesn't exist yet
+                  [ -f "$conf" ] || touch "$conf"
+
+                  # 1. Merge static pinned settings
+                  # Merge pinned Nix settings into the untracked host config
+                  ${pkgs.crudini}/bin/crudini --merge "$conf" < ${qbtPinnedSettingsFile}
+
+                  # 2. Inject secret password hash from SOPS
+                  if [ -f "$secretFile" ]; then
+                    set -a
+                    . "$secretFile"
+                    set +a
+
+                    if [ -n "''${QBT_PASSWORD_HASH:-}" ]; then
+                      ${pkgs.crudini}/bin/crudini --set "$conf" Preferences 'WebUI\Username' '${inputs.secrets.username.primary}'
+                      ${pkgs.crudini}/bin/crudini --set "$conf" Preferences 'WebUI\Password_PBKDF2' "$QBT_PASSWORD_HASH"
+                    fi
+                  fi
+                '';
+                Restart = "on-failure";
+                RestartSec = "10";
+              };
+              unitConfig = {
+                After = [
+                  "home-manager-${username}.service"
+                  "gluetun.service"
+                ];
+                # tell gluetun to stop this container first before shutting down
                 Requires = [
                   "gluetun.service"
-                  "qbittorrent.service"
                 ];
               };
             };
+          # See https://github.com/VueTorrent/vuetorrent-backend/blob/main/docker-compose.gluetun.yml
+          vuetorrent-backend = mkContainer {
+            containerConfig = {
+              name = "vuetorrent-backend";
+              environments =
+                let
+                  qbitWebPort =
+                    config.virtualisation.quadlet.containers.qbittorrent.containerConfig.environments.WEBUI_PORT;
+                in
+                {
+                  # Backend port can't match qbit one because of the network_mode
+                  # You'll have to remove "Host header validation" in qbit settings > WebUI
+                  PORT = "8091";
+                  # Here we can use localhost because both qbit and backend container are on the same docker host ("container:gluetun")
+                  QBIT_BASE = "http://localhost:${qbitWebPort}";
+                  # Use "dev" for nightly releases
+                  RELEASE_TYPE = "stable";
+                  # Optional, refer to the node-schedule package for compatible syntax
+                  # UPDATE_VT_CRON = "0 * * * *";
+
+                  # Define this if using self-signed certificates on qBittorrent
+                  # - NODE_EXTRA_CA_CERTS=/config/ssl/cert.pem
+                  # You can also disable SSL verification (not recommended)
+                  # - USE_INSECURE_SSL=true
+
+                  # Only enable if backend container is behind a proxy server which already add x-forward headers
+                  # - SKIP_X_FORWARD_HEADERS=true
+                  # Create a Github PAT with your account to increase API rate limit, fine-grained with only public repo access is enough
+                  # - GITHUB_AUTH=${GITHUB_AUTH}
+
+                  # Log all received requests
+                  # - LOG_REQUESTS=true
+
+                  # If you want HTTPS, define the following variables with respective paths
+                  # - SSL_CERT_PATH=/config/ssl/cert.pem
+                  # - SSL_KEY_PATH=/config/ssl/key.pem
+                  # Use these instead for passing the value directly
+                  # - SSL_CERT=*****
+                  # - SSL_KEY=*****
+                };
+              image = "ghcr.io/vuetorrent/vuetorrent-backend:2.7.3";
+              networks = [ "container:gluetun" ]; # joins gluetun's netns — no ports of its own
+              volumes = [
+                "${config.users.users.${username}.home}/.config/vuetorrent-backend:/config"
+              ];
+            };
+            serviceConfig = {
+              Restart = "on-failure";
+            };
+            unitConfig = {
+              After = [
+                "gluetun.service"
+                "qbittorrent.service"
+              ];
+              # tell gluetun to stop this container first before shutting down
+              Requires = [ "gluetun.service" ];
+            };
           };
-        # See https://github.com/VueTorrent/vuetorrent-backend/blob/main/docker-compose.gluetun.yml
-        vuetorrent-backend = {
-          containerConfig = {
-            name = "vuetorrent-backend";
-            environments =
-              let
-                qbitWebPort =
-                  config.virtualisation.quadlet.containers.qbittorrent.containerConfig.environments.WEBUI_PORT;
-              in
-              {
-                # Backend port can't match qbit one because of the network_mode
-                # You'll have to remove "Host header validation" in qbit settings > WebUI
-                PORT = "8091";
-                # Here we can use localhost because both qbit and backend container are on the same docker host ("container:gluetun")
-                QBIT_BASE = "http://localhost:${qbitWebPort}";
-                # Use "dev" for nightly releases
-                RELEASE_TYPE = "stable";
-                # Optional, refer to the node-schedule package for compatible syntax
-                # UPDATE_VT_CRON = "0 * * * *";
-
-                # Define this if using self-signed certificates on qBittorrent
-                # - NODE_EXTRA_CA_CERTS=/config/ssl/cert.pem
-                # You can also disable SSL verification (not recommended)
-                # - USE_INSECURE_SSL=true
-
-                # Only enable if backend container is behind a proxy server which already add x-forward headers
-                # - SKIP_X_FORWARD_HEADERS=true
-                # Create a Github PAT with your account to increase API rate limit, fine-grained with only public repo access is enough
-                # - GITHUB_AUTH=${GITHUB_AUTH}
-
-                # Log all received requests
-                # - LOG_REQUESTS=true
-
-                # If you want HTTPS, define the following variables with respective paths
-                # - SSL_CERT_PATH=/config/ssl/cert.pem
-                # - SSL_KEY_PATH=/config/ssl/key.pem
-                # Use these instead for passing the value directly
-                # - SSL_CERT=*****
-                # - SSL_KEY=*****
+        }
+        (mkIf (activeCfg.portForwarding.enabled == "on") {
+          qbittorrent-port-forward = mkContainer {
+            containerConfig = {
+              name = "qbittorrent-port-forward";
+              image = "docker.io/mjmeli/qbittorrent-port-forward-gluetun-server:2025.12.21.02";
+              networks = [ "container:gluetun" ]; # same netns as gluetun + qbittorrent
+              environments = {
+                QBT_ADDR = "http://localhost:8090"; # matches your WEBUI_PORT
+                GTN_ADDR = "http://localhost:8000"; # gluetun's default control server port
               };
-            image = "ghcr.io/vuetorrent/vuetorrent-backend:2.7.3";
-            networks = [ "container:gluetun" ]; # joins gluetun's netns — no ports of its own
-            volumes = [
-              "${config.users.users.${username}.home}/.config/vuetorrent-backend:/config"
-            ];
+              environmentFiles = [
+                config.sops.secrets."users/${username}/qbittorrent-${hostname}.env".path
+              ];
+            };
+            serviceConfig = {
+              Restart = "on-failure";
+              RestartSec = "10";
+            };
+            unitConfig = {
+              After = [
+                "gluetun.service"
+                "qbittorrent.service"
+              ];
+              Requires = [
+                "gluetun.service"
+                "qbittorrent.service"
+              ];
+            };
           };
-          serviceConfig = {
-            Restart = "on-failure";
-          };
-          unitConfig = {
-            After = [
-              "gluetun.service"
-              "qbittorrent.service"
-            ];
-            # tell gluetun to stop this container first before shutting down
-            Requires = [ "gluetun.service" ];
-          };
-        };
-      };
+        })
+      ];
     };
     home-manager.users.${username} =
       { config, ... }:
