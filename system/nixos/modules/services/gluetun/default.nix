@@ -245,6 +245,10 @@ in
     environment.shellAliases = {
       pia-cfg = getExe pkgs.linpkgs.pia-wg-config;
       pia-cfg2 = getExe pkgs.linpkgs.pia-wg-config2;
+      # this is to view the file contents, but let the GUI write to it only
+      vuetorrent-settings = "jq '.vuetorrent_webuiSettings |= fromjson' ${
+        config.users.users.${username}.home
+      }/.config/vuetorrent-backend/data.json";
     };
 
     environment.systemPackages = with pkgs.linpkgs; [
