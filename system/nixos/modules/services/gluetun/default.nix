@@ -3,6 +3,7 @@
   hostname,
   inputs,
   lib,
+  nix_repo,
   pkgs,
   secrets_path,
   username,
