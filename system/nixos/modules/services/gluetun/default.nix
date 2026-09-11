@@ -505,10 +505,6 @@ in
               image = "docker.io/linuxserver/qbittorrent:5.2.3";
               networks = [ "container:gluetun" ]; # joins gluetun's netns — no ports of its own
               environments = {
-                # Full-featured BitTorrent client written in Vue
-                # see the version history at:
-                # https://github.com/VueTorrent/VueTorrent/pkgs/container/vuetorrent-lsio-mod/versions
-                DOCKER_MODS = "ghcr.io/vuetorrent/vuetorrent-lsio-mod:2.34.1";
                 PUID = toString config.users.users.${username}.uid;
                 PGID = toString config.users.groups.users.gid;
                 # NB: The TORRENTING_PORT value is managed separately
