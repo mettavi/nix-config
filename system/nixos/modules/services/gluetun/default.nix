@@ -587,6 +587,64 @@ in
               };
             };
           };
+        # See https://github.com/VueTorrent/vuetorrent-backend/blob/main/docker-compose.gluetun.yml
+        vuetorrent-backend = {
+          containerConfig = {
+            name = "vuetorrent-backend";
+            environments =
+              let
+                qbitWebPort =
+                  config.virtualisation.quadlet.containers.qbittorrent.containerConfig.environments.WEBUI_PORT;
+              in
+              {
+                # Backend port can't match qbit one because of the network_mode
+                # You'll have to remove "Host header validation" in qbit settings > WebUI
+                PORT = "8091";
+                # Here we can use localhost because both qbit and backend container are on the same docker host ("container:gluetun")
+                QBIT_BASE = "http://localhost:${qbitWebPort}";
+                # Use "dev" for nightly releases
+                RELEASE_TYPE = "stable";
+                # Optional, refer to the node-schedule package for compatible syntax
+                # UPDATE_VT_CRON = "0 * * * *";
+
+                # Define this if using self-signed certificates on qBittorrent
+                # - NODE_EXTRA_CA_CERTS=/config/ssl/cert.pem
+                # You can also disable SSL verification (not recommended)
+                # - USE_INSECURE_SSL=true
+
+                # Only enable if backend container is behind a proxy server which already add x-forward headers
+                # - SKIP_X_FORWARD_HEADERS=true
+                # Create a Github PAT with your account to increase API rate limit, fine-grained with only public repo access is enough
+                # - GITHUB_AUTH=${GITHUB_AUTH}
+
+                # Log all received requests
+                # - LOG_REQUESTS=true
+
+                # If you want HTTPS, define the following variables with respective paths
+                # - SSL_CERT_PATH=/config/ssl/cert.pem
+                # - SSL_KEY_PATH=/config/ssl/key.pem
+                # Use these instead for passing the value directly
+                # - SSL_CERT=*****
+                # - SSL_KEY=*****
+              };
+            image = "ghcr.io/vuetorrent/vuetorrent-backend:2.7.3";
+            networks = [ "container:gluetun" ]; # joins gluetun's netns — no ports of its own
+            volumes = [
+              "${config.users.users.${username}.home}/.config/vuetorrent-backend:/config"
+            ];
+          };
+          serviceConfig = {
+            Restart = "on-failure";
+          };
+          unitConfig = {
+            After = [
+              "gluetun.service"
+              "qbittorrent.service"
+            ];
+            # tell gluetun to stop this container first before shutting down
+            Requires = [ "gluetun.service" ];
+          };
+        };
       };
     };
   };
