@@ -292,7 +292,7 @@ in
         wantedBy = [ "gluetun.service" ];
         serviceConfig.Type = "oneshot";
         script = ''
-          cp -f ${authConfigFile} ${gluetunConfigDir}/auth/config.toml
+          install -Dm0644 ${authConfigFile} ${gluetunConfigDir}/auth/config.toml
         '';
       };
 
