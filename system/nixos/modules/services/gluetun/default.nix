@@ -393,9 +393,12 @@ in
               "--env=TZ=:/etc/localtime"
             ];
             publishPorts = [
-              "8090:8090/tcp" # qBittorrent WEBUI_PORT
-            ];
+              # qBittorrent ports, vuetorrent-backend will forward requests to it so no need to expose it
+              # "8090:8090/tcp" # qBittorrent WEBUI_PORT
 
+              # vuetorrent-backend
+              "8091:8091"
+            ];
             volumes = [
               # bind mounts
               "${gluetunConfigDir}:/gluetun"
