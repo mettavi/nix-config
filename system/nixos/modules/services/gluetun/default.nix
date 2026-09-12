@@ -323,6 +323,23 @@ in
       script = "systemctl restart gluetun.service";
     };
 
+    # keep the 10 most recent backups and remove the rest
+    systemd.services.gluetun-wg-backup-cleanup = {
+      script = ''
+        cd ${gluetunConfigDir}/wireguard
+        ls -t wg0.conf.bak-* 2>/dev/null | tail -n +11 | xargs -r rm -f
+      '';
+      serviceConfig.Type = "oneshot";
+    };
+
+    systemd.timers.gluetun-wg-backup-cleanup = {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = "daily";
+        Persistent = true; # catches up if the machine was off at the scheduled time
+      };
+    };
+
     # prevent services from automtically starting when running `nixos-rebuild switch`
     systemd.services = {
       gluetun = {
