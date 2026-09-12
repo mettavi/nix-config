@@ -566,9 +566,9 @@ in
             };
           # See https://github.com/VueTorrent/vuetorrent-backend/blob/main/docker-compose.gluetun.yml
           vuetorrent-backend = mkContainer {
+            autoStart = false;
             containerConfig = {
               name = "vuetorrent-backend";
-              autoStart = false;
               environments =
                 let
                   qbitWebPort =
