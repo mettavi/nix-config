@@ -643,9 +643,9 @@ in
         }
         (mkIf (activeCfg.portForwarding.enabled == "on") {
           qbittorrent-port-forward = mkContainer {
+            autoStart = false;
             containerConfig = {
               name = "qbittorrent-port-forward";
-              autoStart = false;
               image = "docker.io/mjmeli/qbittorrent-port-forward-gluetun-server:2025.12.21.02";
               networks = [ "container:gluetun" ]; # same netns as gluetun + qbittorrent
               environments = {
