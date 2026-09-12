@@ -450,7 +450,7 @@ in
                 image = "ghcr.io/ccarpinteri/pia-wg-refresh:v0.8.3";
                 environments = {
                   CHECK_INTERVAL_SECONDS = "60";
-                  HEALTHY_CHECK_INTERVAL_SECONDS = "1800";
+                  HEALTHY_CHECK_INTERVAL_SECONDS = "1800"; # seconds, eg. 1800 = 30 mins
                   FAIL_THRESHOLD = "5";
                   MAX_GENERATION_RETRIES = "3";
                   GLUETUN_CONTAINER = "gluetun";
