@@ -27,8 +27,6 @@ in
       with pkgs;
       with pkgs.xpkgs;
       [
-        karere # Gtk4 WhatsApp client
-        kdePackages.okular # KDE document viewer
         linpkgs.pia-wg-config
         linpkgs.pia-wg-config2
         mpv # General-purpose media player, fork of MPlayer and mplayer2
@@ -99,6 +97,8 @@ in
       home = {
         packages = with pkgs; [
           goldendict-ng # Advanced multi-dictionary lookup program
+          karere # Gtk4 WhatsApp client
+          kdePackages.okular # KDE document viewer
           poppler-utils # PDF rendering library tools
           linpkgs.tipitaka_pali_reader
         ];
