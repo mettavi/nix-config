@@ -57,11 +57,11 @@ in
           # NB: Fixed in https://github.com/NixOS/nixpkgs/pull/558309 on 10-09-26
 
           # Comprehensive e-book software
-          # (calibre.override {
-          # to open .cbr and .cbz files
-          #   unrarSupport = true;
-          # })
-          calibre
+          (calibre.override {
+            # to open .cbr and .cbz files
+            unrarSupport = true;
+          })
+          # calibre
         ];
         xdg.mimeApps = {
           enable = true;
