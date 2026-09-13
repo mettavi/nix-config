@@ -101,6 +101,7 @@ in
           kdePackages.okular # KDE document viewer
           poppler-utils # PDF rendering library tools
           linpkgs.tipitaka_pali_reader
+          typora # A minimal Markdown editor and reader
         ];
         sessionVariables = {
           # required for electron apps, which don't read the mimeapps.list file
