@@ -579,6 +579,13 @@ in
                 Requires = [
                   "gluetun.service"
                 ];
+                # also start these containers after launch
+                Wants = [
+                  "vuetorrent-backend.service"
+                ]
+                ++ optionals (activeCfg.portForwarding.enabled == "on") [
+                  "qbittorrent-port-forward.service"
+                ];
               };
             };
           # See https://github.com/VueTorrent/vuetorrent-backend/blob/main/docker-compose.gluetun.yml
