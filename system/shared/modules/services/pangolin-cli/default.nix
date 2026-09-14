@@ -56,7 +56,7 @@ in
           # Apply split-DNS routing rules directly to the pangolin interface
           ExecStartPost = pkgs.writeShellScript "pangolin-split-dns" ''
             # Wait briefly for the pangolin interface to initialize
-            sleep 2
+            sleep 5
             # Assign the tunnel DNS to the pangolin interface only
             ${pkgs.systemd}/bin/resolvectl dns pangolin 100.96.128.1
             # The '~' prefix defines this as a Routing Domain (only queries matching this domain go to 100.96.128.1)
