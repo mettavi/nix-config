@@ -28,7 +28,7 @@
         "linuxserver/"
       ],
       // excludes any version strings starting with 18. or 20. (legacy Ubuntu releases)
-      "allowedVersions": "!/^(18|20)\\./"
+      "allowedVersions": "!/^(1[0-9]|20)\\./"
     }
   ],
   customManagers: [
