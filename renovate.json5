@@ -27,7 +27,7 @@
       description: "Update container images in quadlet-nix definitions",
       // matches *.nix files in the hosts and services directories
       managerFilePatterns: [
-        '/^system/nixos/modules/.*\\.nix$/',
+        "/^system/nixos/modules/.*\\.nix$/",
       ],
       matchStrings: [
         'image\\s*=\\s*"(?<depName>[a-zA-Z0-9./_:-]+):(?<currentValue>[a-zA-Z0-9._-]+)(@(?<currentDigest>sha256:[a-f0-9]+))?"',
