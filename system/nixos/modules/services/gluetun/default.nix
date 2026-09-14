@@ -420,7 +420,7 @@ in
                 # NB: If using PIA, do not add forwarded ports here, as it assigns them dynamically per session
                 # qBittorrent ports, vuetorrent-backend will forward requests to it so no need to expose it
                 # "8090:8090/tcp" # qBittorrent WEBUI_PORT
-                # vuetorrent-backend
+                # vuetorrent-backend (replaces the standard qbittorrent web interface port 8090)
                 "8091:8091"
               ];
               volumes = [
