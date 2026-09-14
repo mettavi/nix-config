@@ -674,7 +674,6 @@ in
               ];
               Requires = [
                 "gluetun.service"
-                "qbittorrent.service"
               ];
             };
           };
