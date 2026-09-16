@@ -215,7 +215,7 @@ in
           };
           # DISABLE THIS SETTING TO PREVENT THE ERROR:
           # "Using GtkSettings:gtk-application-prefer-dark-theme with libadwaita is unsupported.
-          # Please use AdwStyleManager:color-scheme instead""
+          # Please use AdwStyleManager:color-scheme instead"
           # Use the extraConfig setting instead (see below)
           # colorScheme = "dark";
           gtk3 = {
