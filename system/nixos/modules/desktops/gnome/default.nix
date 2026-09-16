@@ -223,6 +223,7 @@ in
             bookmarks = [
               "file://${config.xdg.userDirs.documents}"
               "file://${config.xdg.userDirs.download}"
+              "file://${config.home.homeDirectory}/media"
               "file://${config.xdg.userDirs.music}"
               "file://${config.xdg.userDirs.pictures}"
               "file://${config.xdg.userDirs.videos}"
