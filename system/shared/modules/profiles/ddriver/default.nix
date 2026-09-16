@@ -29,12 +29,8 @@ in
       [
         linpkgs.pia-wg-config
         linpkgs.pia-wg-config2
-        mpv # General-purpose media player, fork of MPlayer and mplayer2
-        pdfarranger # python-gtk application to merge/split/rotate/crop/rearrange PDFs
-        picard # offical musicbrainz tagger
         variety # wallpaper manager
         # localsend # Open source cross-platform alternative to AirDrop
-        zoom-us # video conferencing applications
       ]
       ++
         # Install global npm packages not available in nixpkgs repo
@@ -101,7 +97,11 @@ in
           kdePackages.okular # KDE document viewer
           poppler-utils # PDF rendering library tools
           linpkgs.tipitaka_pali_reader
+          mpv # General-purpose media player, fork of MPlayer and mplayer2
+          pdfarranger # python-gtk application to merge/split/rotate/crop/rearrange PDFs
+          picard # offical musicbrainz tagger
           typora # A minimal Markdown editor and reader
+          zoom-us # video conferencing applications
         ];
         sessionVariables = {
           # required for electron apps, which don't read the mimeapps.list file
