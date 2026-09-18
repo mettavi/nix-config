@@ -20,6 +20,10 @@ in
     programs.obsidian = {
       enable = true;
       defaultSettings = {
+        app = {
+          alwaysUpdateLinks = true;
+          spellcheck = true;
+        };
         # Core plugins omitted from this list are disabled.
         # Leave the option unset to manage core plugins through Obsidian.
         corePlugins = [
