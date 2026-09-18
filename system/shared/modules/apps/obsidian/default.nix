@@ -63,6 +63,7 @@ in
             "sync"
             "tag-pane"
             {
+              enable = true;
               name = "templates";
               settings.folder = "Templates";
             }
