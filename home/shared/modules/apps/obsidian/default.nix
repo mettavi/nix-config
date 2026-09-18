@@ -20,8 +20,11 @@ in
     programs.obsidian = {
       enable = true;
       defaultSettings = {
+        # Core plugins omitted from it are disabled. Leave the option unset to manage core plugins through Obsidian.
         corePlugins = [
+          "audio-recorder"
           "backlink"
+          "bases"
           "bookmarks"
           "canvas"
           "command-palette"
@@ -29,16 +32,27 @@ in
           "editor-status"
           "file-explorer"
           "file-recovery"
+          "footnotes"
           "global-search"
           "graph"
+          "markdown-importer"
           "note-composer"
           "outgoing-link"
           "outline"
           "page-preview"
+          "properties"
+          "publish"
+          "random-note"
+          "slash-command"
+          "slides"
           "switcher"
+          "sync"
           "tag-pane"
           "templates"
+          "webviewer"
           "word-count"
+          "workspaces"
+          "zk-prefixer"
         ];
       };
       vaults = {
