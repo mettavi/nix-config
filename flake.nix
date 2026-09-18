@@ -111,6 +111,10 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    obsidian-extensions = {
+      url = "github:karaolidis/nix-obsidian-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     phoenix = {
       url = "git+https://gitlab.com/celenityy/Phoenix.git?ref=pages";
       inputs.nixpkgs.follows = "nixpkgs";

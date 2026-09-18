@@ -1,5 +1,6 @@
 {
   config,
+  inputs,
   lib,
   ...
 }:
@@ -17,6 +18,10 @@ in
   };
 
   config = mkIf cfg.enable {
+    nixpkgs.overlays = [
+      inputs.obsidian-extensions.overlays.default
+    ];
+
     home-manager.users.${username} = {
       programs.obsidian = {
         enable = true;
