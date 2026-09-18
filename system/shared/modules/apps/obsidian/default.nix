@@ -53,7 +53,10 @@ in
           "switcher"
           "sync"
           "tag-pane"
-          "templates"
+          {
+            name = "templates";
+            settings.folder = "Templates";
+          }
           "webviewer"
           "word-count"
           "workspaces"
