@@ -20,7 +20,8 @@ in
     programs.obsidian = {
       enable = true;
       defaultSettings = {
-        # Core plugins omitted from it are disabled. Leave the option unset to manage core plugins through Obsidian.
+        # Core plugins omitted from this list are disabled.
+        # Leave the option unset to manage core plugins through Obsidian.
         corePlugins = [
           "audio-recorder"
           "backlink"
