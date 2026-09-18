@@ -19,7 +19,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    # enable the packages and themes from the obsidian-extensions flake
+    # enable pkgs.obsidianPlugins and pkgs.obsidianThemes from the obsidian-extensions flake
     nixpkgs.overlays = [
       inputs.obsidian-extensions.overlays.default
     ];
