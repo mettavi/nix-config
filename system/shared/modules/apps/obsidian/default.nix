@@ -69,6 +69,21 @@ in
             "workspaces"
             "zk-prefixer"
           ];
+          communityPlugins = with pkgs.obsidianPlugins; [
+            obsidian-importer
+            # example for configuring plugin settings
+            {
+              enable = true;
+              pkg = pkgs.obsidianPlugins.omnisearch;
+              # Settings to include in the plugin’s data.json.
+              settings = {
+                ribbonIcon = true;
+              };
+            }
+          ];
+          themes = with pkgs.obsidianThemes; [
+            catppuccin
+          ];
         };
         vaults = {
           "Documents/VaultsTest/AABCAP 2025-26" = {
