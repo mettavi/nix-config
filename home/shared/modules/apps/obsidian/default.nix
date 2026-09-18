@@ -3,9 +3,6 @@
   lib,
   ...
 }:
-# https://github.com/nix-community/home-manager/pull/6487
-# in early development, requires plugins to be manually compiled, will revisit later
-# see https://git.sr.ht/~neverness/multi-flake/tree/xlib/item/modules/programs/gui/obsidian for an example config
 with lib;
 let
   cfg = config.mettavi.apps.obsidian;
