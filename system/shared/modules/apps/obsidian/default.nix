@@ -19,6 +19,7 @@ in
   };
 
   config = mkIf cfg.enable {
+    # enable the packages and themes from the obsidian-extensions flake
     nixpkgs.overlays = [
       inputs.obsidian-extensions.overlays.default
     ];
@@ -26,6 +27,7 @@ in
     home-manager.users.${username} = {
       programs.obsidian = {
         enable = true;
+        # NB: Vault-specific settings take priority and will override these, if set.
         defaultSettings = {
           app = {
             alwaysUpdateLinks = true;
