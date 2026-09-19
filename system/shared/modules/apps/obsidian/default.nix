@@ -16,6 +16,55 @@ in
       default = false;
       description = "Install and configure Obsidian";
     };
+    pinnedSettings = mkOption {
+      type = types.attrsOf (
+        types.submodule {
+          options = {
+            app = mkOption {
+              type = types.nullOr jsonFormat.type;
+              default = null;
+              description = "Keys merged into this vault's app.json. Anything else already there (set via the GUI) is preserved.";
+            };
+            appearance = mkOption {
+              type = types.nullOr jsonFormat.type;
+              default = null;
+              description = "Keys merged into this vault's appearance.json.";
+            };
+            hotkeys = mkOption {
+              type = types.nullOr jsonFormat.type;
+              default = null;
+              description = "Keys merged into this vault's hotkeys.json.";
+            };
+            corePlugins = mkOption {
+              type = types.attrsOf jsonFormat.type;
+              default = { };
+              description = "Core plugin name -> keys merged into its settings file (e.g. `templates.json`, `bookmarks.json`) at the root of .obsidian/.";
+            };
+            plugins = mkOption {
+              type = types.attrsOf jsonFormat.type;
+              default = { };
+              description = "Plugin manifest id -> keys merged into that plugin's data.json.";
+            };
+            files = mkOption {
+              type = types.attrsOf jsonFormat.type;
+              default = { };
+              description = "Escape hatch: path relative to .obsidian/ -> keys merged into that JSON file.";
+            };
+          };
+        }
+      );
+      default = { };
+      description = ''
+        Per-vault settings merged (via jq) into the live, GUI-editable
+        Obsidian config files, rather than fully replacing them as
+        `programs.obsidian.vaults.<name>.settings` does. Keyed by the
+        same vault path used there. Do not set both
+        `programs.obsidian.vaults.<name>.settings.<x>` and
+        `pinnedSettings.<name>.<x>` for the same file — the plain
+        Nix-managed symlink will win and your merged patch will be
+        discarded on the next activation.
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
@@ -25,6 +74,64 @@ in
     ];
 
     home-manager.users.${username} = {
+      assertions = lib.mapAttrsToList (vaultName: vaultCfg: {
+        assertion =
+          let
+            declared =
+              config.home-manager.users.${username}.programs.obsidian.vaults.${vaultName}.settings or null;
+          in
+          declared == null
+          || (
+            (vaultCfg.app == null || declared.app == null)
+            && (vaultCfg.appearance == null || declared.appearance == null)
+            && (vaultCfg.hotkeys == null || declared.hotkeys == null)
+          );
+        message = "mettavi.apps.obsidian.pinnedSettings.\"${vaultName}\" overlaps with programs.obsidian.vaults.\"${vaultName}\".settings on app/appearance/hotkeys — pick one mechanism per file.";
+      }) cfg.pinnedSettings;
+
+      home.activation.obsidianPinnedSettings =
+        let
+          jq = lib.getExe pkgs.jq;
+
+          mkPatch =
+            path: values:
+            let
+              patchFile = jsonFormat.generate "patch.json" values;
+            in
+            ''
+              target=${lib.escapeShellArg path}
+              mkdir -p "$(dirname "$target")"
+              [ -f "$target" ] || echo '{}' > "$target"
+              tmp="$(mktemp)"
+              ${jq} -s '(.[0] // {}) * (.[1] // {})' "$target" ${lib.escapeShellArg patchFile} > "$tmp"
+              install -m644 "$tmp" "$target"
+              rm -f "$tmp"
+            '';
+
+          mkVaultPatches =
+            vaultName: vaultCfg:
+            let
+              obsidianDir = "${config.home.homeDirectory}/${vaultName}/.obsidian";
+            in
+            lib.concatStrings (
+              lib.optional (vaultCfg.app != null) (mkPatch "${obsidianDir}/app.json" vaultCfg.app)
+              ++ lib.optional (vaultCfg.appearance != null) (
+                mkPatch "${obsidianDir}/appearance.json" vaultCfg.appearance
+              )
+              ++ lib.mapAttrsToList (
+                pluginName: values: mkPatch "${obsidianDir}/${pluginName}.json" values
+              ) vaultCfg.corePlugins
+              ++ lib.optional (vaultCfg.hotkeys != null) (mkPatch "${obsidianDir}/hotkeys.json" vaultCfg.hotkeys)
+              ++ lib.mapAttrsToList (
+                pluginId: values: mkPatch "${obsidianDir}/plugins/${pluginId}/data.json" values
+              ) vaultCfg.plugins
+              ++ lib.mapAttrsToList (relPath: values: mkPatch "${obsidianDir}/${relPath}" values) vaultCfg.files
+            );
+        in
+        lib.hm.dag.entryAfter [ "writeBoundary" ] (
+          lib.concatStrings (lib.mapAttrsToList mkVaultPatches cfg.pinnedSettings)
+        );
+
       programs.obsidian = {
         enable = true;
         # NB: Vault-specific settings take priority and will override these, if set.
