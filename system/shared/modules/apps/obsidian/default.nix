@@ -237,6 +237,9 @@ in
         # Settings for any attribute here will replace ALL those set through the GUI;
         # Omit them here to set via the GUI and/or merge any desired mettavi.apps.obsidian.pinnedSettings instead.
         vaults = {
+          "Documents/Evernote" = {
+            enable = true;
+          };
           "Documents/VaultsTest/AABCAP 2025-26" = {
             enable = false;
             settings = {
