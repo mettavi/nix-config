@@ -235,7 +235,8 @@ in
           ];
         };
         # Settings for any attribute here will replace ALL those set through the GUI;
-        # Omit them here to set via the GUI and/or merge any desired mettavi.apps.obsidian.pinnedSettings instead.
+        # Omit them here to set via the GUI and/or merge any desired settings
+        # with `mettavi.apps.obsidian.pinnedSettings` (see above) instead.
         vaults = {
           "Documents/Evernote" = {
             enable = true;
