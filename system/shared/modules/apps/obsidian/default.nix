@@ -10,6 +10,14 @@ with lib;
 let
   cfg = config.mettavi.apps.obsidian;
   jsonFormat = pkgs.formats.json { };
+  emptyPinnedVaultSettings = {
+    app = null;
+    appearance = null;
+    hotkeys = null;
+    corePlugins = { };
+    plugins = { };
+    files = { };
+  };
   pinnedVaultSettingsSubmodule = types.submodule {
     options = {
       app = mkOption {
@@ -179,7 +187,8 @@ in
             );
 
             effectiveFor =
-              vaultName: mergePinned cfg.pinnedDefaultSettings (cfg.pinnedSettings.${vaultName} or { });
+              vaultName:
+              mergePinned cfg.pinnedDefaultSettings (cfg.pinnedSettings.${vaultName} or emptyPinnedVaultSettings);
 
             mkVaultPatches =
               vaultName:
