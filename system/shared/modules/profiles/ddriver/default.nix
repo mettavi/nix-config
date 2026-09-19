@@ -96,7 +96,6 @@ in
       home = {
         packages = with pkgs; [
           goldendict-ng # Advanced multi-dictionary lookup program
-          karere # Gtk4 WhatsApp client
           kdePackages.okular # KDE document viewer
           poppler-utils # PDF rendering library tools
           linpkgs.tipitaka_pali_reader
@@ -104,6 +103,7 @@ in
           pdfarranger # python-gtk application to merge/split/rotate/crop/rearrange PDFs
           picard # offical musicbrainz tagger
           typora # A minimal Markdown editor and reader
+          zapzap # WhatsApp desktop application written in Pyqt6 + PyQt6-WebEngine
           zoom-us # video conferencing applications
         ];
         sessionVariables = {
