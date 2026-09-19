@@ -212,7 +212,7 @@ in
           ];
         };
         # Settings for any attribute here will replace ALL those set through the GUI;
-        # omit them here to use the hybrid pinnedSettings (see above) instead
+        # Omit them here to set via the GUI and/or merge any desired mettavi.apps.obsidian.pinnedSettings instead.
         vaults = {
           "Documents/VaultsTest/AABCAP 2025-26" = {
             enable = false;
