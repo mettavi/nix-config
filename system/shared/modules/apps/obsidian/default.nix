@@ -180,14 +180,28 @@ in
             "zk-prefixer"
           ];
           communityPlugins = with pkgs.obsidianPlugins; [
+            # Bare package (coerced to { pkg = p; }): settings defaults to null.
+            # -> installed + enabled via Nix, data.json fully GUI-managed.
             obsidian-importer
+            # Same thing, spelled out, plus explicit enable control:
+            {
+              pkg = pkgs.obsidianPlugins.templater-obsidian;
+              enable = true;
+              # no `settings` key here -> data.json is GUI territory
+            }
+            # Installed but currently switched off (still Nix-controlled toggle):
+            {
+              pkg = pkgs.obsidianPlugins.highlightr-plugin;
+              enable = false;
+            }
             # example for configuring plugin settings
+            # Fully Nix-managed (no GUI), for comparison:
             {
               enable = true;
               pkg = pkgs.obsidianPlugins.omnisearch;
               # Settings to include in the plugin’s data.json.
               settings = {
-                ribbonIcon = true;
+                ribbonIcon = true; # data.json fully replaced every activation
               };
             }
           ];
