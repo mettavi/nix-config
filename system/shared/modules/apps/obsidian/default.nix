@@ -209,11 +209,11 @@ in
             catppuccin
           ];
         };
+        # Settings for any attribute here will replace ALL those set through the GUI;
+        # omit them here to use the hybrid pinnedSettings (see above) instead
         vaults = {
           "Documents/VaultsTest/AABCAP 2025-26" = {
             enable = false;
-            # Settings for any attribute here will replace ALL those set through the GUI;
-            # omit them here to use the hybrid pinnedSettings (see above) instead
             settings = {
               app = {
                 attachmentFolderPath = "Utilities/Assets/";
