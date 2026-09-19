@@ -45,6 +45,9 @@ in
           # npmGlobals.zeal-user-contrib
         ];
     mettavi.system = {
+      apps = {
+        obsidian.enable = true;
+      };
       services = {
         gluetun.enable = true;
         pangolin-cli.enable = true;
@@ -114,7 +117,6 @@ in
           firefox.enable = true;
           ghostty.enable = true;
           latex.enable = true;
-          obsidian.enable = true;
           thunderbird =
             let
               burner = inputs.secrets.email.burner;
