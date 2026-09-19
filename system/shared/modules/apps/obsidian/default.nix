@@ -113,21 +113,22 @@ in
     # any settings included here will be MERGED by an activation script along with any values set by the GUI
     mettavi.apps.obsidian = {
       pinnedDefaultSettings = {
+        app.alwaysUpdateLinks = true;
         corePlugins.templates.folder = "Utilities/Templates";
       };
       pinnedSettings = {
-        "Documents/Evernote" = {
-          app.alwaysUpdateLinks = true;
-          # corePlugins = {
-          #   templates.folder = "Utilities/Templates"; # flat file — safe to pin
-          # bookmarks = { ... };  # DON'T — bookmarks.json is essentially one big
-          # `items` array; pinning anything here would
-          # wipe out GUI-added bookmarks on next rebuild.
-          # Leave bookmarks.json out of both `corePlugins`
-          # here and `programs.obsidian...corePlugins`
-          # entirely if you want it GUI-owned.
-          # };
-        };
+        # "Documents/Evernote" = {
+        # app.alwaysUpdateLinks = true;
+        # corePlugins = {
+        #   templates.folder = "Utilities/Templates"; # flat file — safe to pin
+        # bookmarks = { ... };  # DON'T — bookmarks.json is essentially one big
+        # `items` array; pinning anything here would
+        # wipe out GUI-added bookmarks on next rebuild.
+        # Leave bookmarks.json out of both `corePlugins`
+        # here and `programs.obsidian...corePlugins`
+        # entirely if you want it GUI-owned.
+        # };
+        # };
         # "Documents/Personal Notes" = {
         #   app.spellcheck = true;
         #   hotkeys."command-palette:open" = [
