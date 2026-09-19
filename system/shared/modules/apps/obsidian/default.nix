@@ -8,6 +8,7 @@
 with lib;
 let
   cfg = config.mettavi.apps.obsidian;
+  jsonFormat = pkgs.formats.json { };
 in
 {
   options.mettavi.apps.obsidian = {
