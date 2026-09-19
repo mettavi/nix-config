@@ -376,9 +376,6 @@ with lib;
 
   # includes system settings (located in system directory)
   mettavi = {
-    apps = {
-      libreoffice.enable = false;
-    };
     profiles = {
       # install software for my "everyday use" desktop system
       dailydriver.enable = true;

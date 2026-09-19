@@ -45,15 +45,20 @@ in
           # npmGlobals.zeal-user-contrib
         ];
     mettavi.system = {
-      apps = {
-        obsidian.enable = true;
-      };
       services = {
         gluetun.enable = true;
         pangolin-cli.enable = true;
       };
       shell = {
         kanata.enable = true;
+      };
+    };
+
+    # includes system settings (located in system directory)
+    mettavi = {
+      apps = {
+        libreoffice.enable = false;
+        obsidian.enable = true;
       };
     };
 
