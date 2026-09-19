@@ -81,7 +81,6 @@ in
         add or change, not repeat the shared baseline.
       '';
     };
-
     pinnedSettings = mkOption {
       type = types.attrsOf pinnedVaultSettingsSubmodule;
       default = { };
