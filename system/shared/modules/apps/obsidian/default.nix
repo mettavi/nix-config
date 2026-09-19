@@ -171,11 +171,7 @@ in
             "switcher"
             "sync"
             "tag-pane"
-            {
-              enable = true;
-              name = "templates";
-              settings.folder = "Templates";
-            }
+            "templates"
             "webviewer"
             "word-count"
             "workspaces"
