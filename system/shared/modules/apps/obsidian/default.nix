@@ -75,7 +75,7 @@ in
     ];
 
     mettavi.apps.obsidian = {
-      # any settings included here will be MERGED by an activation script with any values set by the GUI
+      # any settings included here will be MERGED by an activation script along with any values set by the GUI
       pinnedSettings = {
         "Documents/Evernote" = {
           app.alwaysUpdateLinks = true;
