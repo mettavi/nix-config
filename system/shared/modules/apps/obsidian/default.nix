@@ -141,8 +141,9 @@ in
             alwaysUpdateLinks = true;
             spellcheck = true;
           };
+          # NB: Any plugin's settings configured here AND/OR in a vault's settings
+          # will overwrite ALL its GUI-configured settings (if set)
           # Core plugins omitted from this list are disabled.
-          # Leave the option unset to manage core plugins through Obsidian.
           corePlugins = [
             "audio-recorder"
             "backlink"
