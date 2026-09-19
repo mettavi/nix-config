@@ -615,6 +615,27 @@
         "type": "github"
       }
     },
+    "obsidian-extensions": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "treefmt-nix": "treefmt-nix_2"
+      },
+      "locked": {
+        "lastModified": 1789808885,
+        "narHash": "sha256-ZwXtwlAPEJlz9cSTRsO2SA0Vz6zrUD+La+lZa3o4B6M=",
+        "owner": "karaolidis",
+        "repo": "nix-obsidian-extensions",
+        "rev": "c50940c799dc3f0090e8fac717e7f2c248a914d6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "karaolidis",
+        "repo": "nix-obsidian-extensions",
+        "type": "github"
+      }
+    },
     "phoenix": {
       "inputs": {
         "nixpkgs": [
@@ -755,6 +776,7 @@
         "nixpkgs-26_05": "nixpkgs-26_05",
         "nixpkgs-darwin": "nixpkgs-darwin",
         "nur": "nur",
+        "obsidian-extensions": "obsidian-extensions",
         "phoenix": "phoenix",
         "plugins-json5": "plugins-json5",
         "plugins-jsonlint": "plugins-jsonlint",
@@ -894,6 +916,27 @@
         "owner": "numtide",
         "repo": "treefmt-nix",
         "rev": "5b4ee75aeefd1e2d5a1cc43cf6ba65eba75e83e4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "type": "github"
+      }
+    },
+    "treefmt-nix_2": {
+      "inputs": {
+        "nixpkgs": [
+          "obsidian-extensions",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785360170,
+        "narHash": "sha256-XE1lKgQ3eIO3E7zWryqcRsax+mYXod/5RHBn4YaR9YE=",
+        "owner": "numtide",
+        "repo": "treefmt-nix",
+        "rev": "d1187f8bc71fb8aab02395869ec3f5c1920f75c0",
         "type": "github"
       },
       "original": {
