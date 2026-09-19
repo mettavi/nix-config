@@ -10,6 +10,59 @@ with lib;
 let
   cfg = config.mettavi.apps.obsidian;
   jsonFormat = pkgs.formats.json { };
+  pinnedVaultSettingsSubmodule = types.submodule {
+    options = {
+      app = mkOption {
+        type = types.nullOr jsonFormat.type;
+        default = null;
+        description = "Keys merged into app.json.";
+      };
+      appearance = mkOption {
+        type = types.nullOr jsonFormat.type;
+        default = null;
+        description = "Keys merged into appearance.json.";
+      };
+      hotkeys = mkOption {
+        type = types.nullOr jsonFormat.type;
+        default = null;
+        description = "Keys merged into hotkeys.json.";
+      };
+      corePlugins = mkOption {
+        type = types.attrsOf jsonFormat.type;
+        default = { };
+        description = "Core plugin name -> keys merged into its <name>.json.";
+      };
+      plugins = mkOption {
+        type = types.attrsOf jsonFormat.type;
+        default = { };
+        description = "Community plugin manifest id -> keys merged into its data.json.";
+      };
+      files = mkOption {
+        type = types.attrsOf jsonFormat.type;
+        default = { };
+        description = "Path relative to .obsidian/ -> keys merged into that JSON file.";
+      };
+    };
+  };
+  # null-safe recursive merge: b wins on leaf conflicts, missing side treated as {}
+  mergeMaybe =
+    a: b:
+    if a == null && b == null then
+      null
+    else
+      lib.recursiveUpdate (if a == null then { } else a) (if b == null then { } else b);
+
+  # merge two full pinned-settings records: `override` wins over `base`,
+  # recursing into corePlugins/plugins/files per-key (and into each
+  # entry's own keys, since recursiveUpdate recurses through nested attrsets)
+  mergePinned = base: override: {
+    app = mergeMaybe base.app override.app;
+    appearance = mergeMaybe base.appearance override.appearance;
+    hotkeys = mergeMaybe base.hotkeys override.hotkeys;
+    corePlugins = lib.recursiveUpdate base.corePlugins override.corePlugins;
+    plugins = lib.recursiveUpdate base.plugins override.plugins;
+    files = lib.recursiveUpdate base.files override.files;
+  };
 in
 {
   options.mettavi.apps.obsidian = {
@@ -18,53 +71,28 @@ in
       default = false;
       description = "Install and configure Obsidian";
     };
-    pinnedSettings = mkOption {
-      type = types.attrsOf (
-        types.submodule {
-          options = {
-            app = mkOption {
-              type = types.nullOr jsonFormat.type;
-              default = null;
-              description = "Keys merged into this vault's app.json. Anything else already there (set via the GUI) is preserved.";
-            };
-            appearance = mkOption {
-              type = types.nullOr jsonFormat.type;
-              default = null;
-              description = "Keys merged into this vault's appearance.json.";
-            };
-            hotkeys = mkOption {
-              type = types.nullOr jsonFormat.type;
-              default = null;
-              description = "Keys merged into this vault's hotkeys.json.";
-            };
-            corePlugins = mkOption {
-              type = types.attrsOf jsonFormat.type;
-              default = { };
-              description = "Core plugin name -> keys merged into its settings file (e.g. `templates.json`, `bookmarks.json`) at the root of .obsidian/.";
-            };
-            plugins = mkOption {
-              type = types.attrsOf jsonFormat.type;
-              default = { };
-              description = "Plugin manifest id -> keys merged into that plugin's data.json.";
-            };
-            files = mkOption {
-              type = types.attrsOf jsonFormat.type;
-              default = { };
-              description = "Escape hatch: path relative to .obsidian/ -> keys merged into that JSON file.";
-            };
-          };
-        }
-      );
+    pinnedDefaultSettings = mkOption {
+      type = pinnedVaultSettingsSubmodule;
       default = { };
       description = ''
-        Per-vault settings merged (via jq) into the live, GUI-editable
-        Obsidian config files, rather than fully replacing them as
-        `programs.obsidian.vaults.<name>.settings` does. Keyed by the
-        same vault path used there. Do not set both
-        `programs.obsidian.vaults.<name>.settings.<x>` and
-        `pinnedSettings.<name>.<x>` for the same file — the plain
-        Nix-managed symlink will win and your merged patch will be
-        discarded on the next activation.
+        Settings merged into every enabled vault's live config files.
+        Per-vault entries in `pinnedSettings` are recursively merged on
+        top of this — a vault only needs to declare what it wants to
+        add or change, not repeat the shared baseline.
+      '';
+    };
+
+    pinnedSettings = mkOption {
+      type = types.attrsOf pinnedVaultSettingsSubmodule;
+      default = { };
+      description = ''
+        Per-vault overrides/additions on top of `pinnedDefaultSettings`,
+        keyed by the same vault path used in `programs.obsidian.vaults`.
+        Merged (via jq) into the live, GUI-editable Obsidian config
+        files rather than replacing them outright. Do not also set
+        `programs.obsidian.vaults.<name>.settings.<x>` for the same
+        file/plugin — the plain Nix-managed symlink wins on the next
+        activation and your merged patch is discarded.
       '';
     };
   };
@@ -75,20 +103,23 @@ in
       inputs.obsidian-extensions.overlays.default
     ];
 
+    # any settings included here will be MERGED by an activation script along with any values set by the GUI
     mettavi.apps.obsidian = {
-      # any settings included here will be MERGED by an activation script along with any values set by the GUI
+      pinnedDefaultSettings = {
+        corePlugins.templates.folder = "Utilities/Templates";
+      };
       pinnedSettings = {
         "Documents/Evernote" = {
           app.alwaysUpdateLinks = true;
-          corePlugins = {
-            templates.folder = "Utilities/Templates"; # flat file — safe to pin
-            # bookmarks = { ... };  # DON'T — bookmarks.json is essentially one big
-            # `items` array; pinning anything here would
-            # wipe out GUI-added bookmarks on next rebuild.
-            # Leave bookmarks.json out of both `corePlugins`
-            # here and `programs.obsidian...corePlugins`
-            # entirely if you want it GUI-owned.
-          };
+          # corePlugins = {
+          #   templates.folder = "Utilities/Templates"; # flat file — safe to pin
+          # bookmarks = { ... };  # DON'T — bookmarks.json is essentially one big
+          # `items` array; pinning anything here would
+          # wipe out GUI-added bookmarks on next rebuild.
+          # Leave bookmarks.json out of both `corePlugins`
+          # here and `programs.obsidian...corePlugins`
+          # entirely if you want it GUI-owned.
+          # };
         };
         # "Documents/Personal Notes" = {
         #   app.spellcheck = true;
@@ -144,20 +175,28 @@ in
                 rm -f "$tmp"
               '';
 
+            enabledVaultNames = lib.attrNames (
+              lib.filterAttrs (_: v: v.enable) config.programs.obsidian.vaults
+            );
+
+            effectiveFor =
+              vaultName: mergePinned cfg.pinnedDefaultSettings (cfg.pinnedSettings.${vaultName} or { });
+
             mkVaultPatches =
-              vaultName: vaultCfg:
+              vaultName:
               let
                 obsidianDir = "${config.home.homeDirectory}/${vaultName}/.obsidian";
+                vaultCfg = effectiveFor vaultName;
               in
               lib.concatStrings (
                 lib.optional (vaultCfg.app != null) (mkPatch "${obsidianDir}/app.json" vaultCfg.app)
                 ++ lib.optional (vaultCfg.appearance != null) (
                   mkPatch "${obsidianDir}/appearance.json" vaultCfg.appearance
                 )
-                ++ lib.mapAttrsToList (
-                  pluginName: values: mkPatch "${obsidianDir}/${pluginName}.json" values
-                ) vaultCfg.corePlugins
                 ++ lib.optional (vaultCfg.hotkeys != null) (mkPatch "${obsidianDir}/hotkeys.json" vaultCfg.hotkeys)
+                ++ lib.mapAttrsToList (
+                  name: values: mkPatch "${obsidianDir}/${name}.json" values
+                ) vaultCfg.corePlugins
                 ++ lib.mapAttrsToList (
                   pluginId: values: mkPatch "${obsidianDir}/plugins/${pluginId}/data.json" values
                 ) vaultCfg.plugins
@@ -165,7 +204,7 @@ in
               );
           in
           lib.hm.dag.entryAfter [ "writeBoundary" ] (
-            lib.concatStrings (lib.mapAttrsToList mkVaultPatches cfg.pinnedSettings)
+            lib.concatStrings (map mkVaultPatches enabledVaultNames)
           );
 
         programs.obsidian = {
@@ -207,6 +246,11 @@ in
               "sync"
               "tag-pane"
               "templates"
+              {
+                enable = true;
+                name = "templates";
+                settings.folder = "Utilities/Templates";
+              }
               "webviewer"
               "word-count"
               "workspaces"
