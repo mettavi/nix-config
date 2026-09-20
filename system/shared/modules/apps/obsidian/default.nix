@@ -79,6 +79,11 @@ in
       default = false;
       description = "Install and configure Obsidian";
     };
+    vaultsParent = mkOption {
+      type = types.str;
+      default = "Documents/Obsidian";
+      description = "Where the Obsidian vaults are saved";
+    };
     pinnedDefaultSettings = mkOption {
       type = pinnedVaultSettingsSubmodule;
       default = { };
@@ -117,7 +122,7 @@ in
         corePlugins.templates.folder = "Utilities/Templates";
       };
       pinnedSettings = {
-        # "Documents/Evernote" = {
+        # "${cfg.vaultsParent}/Evernote" = {
         # app.alwaysUpdateLinks = true;
         # corePlugins = {
         #   templates.folder = "Utilities/Templates"; # flat file — safe to pin
@@ -129,7 +134,7 @@ in
         # entirely if you want it GUI-owned.
         # };
         # };
-        # "Documents/Personal Notes" = {
+        # "${cfg.vaultsParent}/Personal Notes" = {
         #   app.spellcheck = true;
         #   hotkeys."command-palette:open" = [
         #     {
@@ -255,11 +260,6 @@ in
               "sync"
               "tag-pane"
               "templates"
-              {
-                enable = true;
-                name = "templates";
-                settings.folder = "Utilities/Templates";
-              }
               "webviewer"
               "word-count"
               "workspaces"
@@ -303,10 +303,10 @@ in
           # Omit them here to set via the GUI and/or merge any desired settings
           # with `mettavi.apps.obsidian.pinnedSettings` (see above) instead.
           vaults = {
-            "Documents/Evernote" = {
+            "${cfg.vaultsParent}/Evernote" = {
               enable = true;
             };
-            "Documents/VaultsTest/AABCAP 2025-26" = {
+            "${cfg.vaultsParent}/AABCAP 2025-26" = {
               enable = false;
               settings = {
                 app = {
