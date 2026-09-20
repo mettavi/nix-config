@@ -262,6 +262,9 @@ in
         programs.obsidian = {
           enable = true;
           # NB: Vault-specific settings take priority and will override these, if set.
+          # NB: Any plugin's settings configured here AND/OR in a vault's settings
+          # will overwrite ALL its GUI-configured settings (if set)
+          # Core plugins omitted from this list are disabled.
           defaultSettings = {
             corePlugins = [
               "audio-recorder"
