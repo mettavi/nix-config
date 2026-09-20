@@ -9,7 +9,8 @@ with lib;
 with pkgs.stdenv;
 let
   cfg = config.mettavi.system.apps.calibre;
-  logfile_dir = if isDarwin then "$HOME/Library/Logs/rclone" else "$XDG_STATE_HOME/logs/rclone";
+  logfile_dir =
+    if hostPlatform.isDarwin then "$HOME/Library/Logs/rclone" else "$XDG_STATE_HOME/logs/rclone";
   logfile = "${logfile_dir}/onedrive.log";
   calibre-and-sync =
     pkgs.writeShellScriptBin "calibre-and-sync.sh" # bash
