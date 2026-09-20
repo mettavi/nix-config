@@ -154,20 +154,57 @@ in
         ...
       }:
       {
-        assertions = lib.mapAttrsToList (vaultName: vaultCfg: {
-          assertion =
+        assertions =
+          lib.mapAttrsToList (vaultName: vaultCfg: {
+            assertion =
+              let
+                declared =
+                  config.home-manager.users.${username}.programs.obsidian.vaults.${vaultName}.settings or null;
+              in
+              declared == null
+              || (
+                (vaultCfg.app == null || declared.app == null)
+                && (vaultCfg.appearance == null || declared.appearance == null)
+                && (vaultCfg.hotkeys == null || declared.hotkeys == null)
+              );
+            message = "mettavi.apps.obsidian.pinnedSettings.\"${vaultName}\" overlaps with programs.obsidian.vaults.\"${vaultName}\".settings on app/appearance/hotkeys — pick one mechanism per file.";
+          }) cfg.pinnedSettings
+          ++ (
             let
-              declared =
-                config.home-manager.users.${username}.programs.obsidian.vaults.${vaultName}.settings or null;
+              obsidianVaults = config.programs.obsidian.vaults;
+              effectiveFor =
+                vaultName:
+                mergePinned cfg.pinnedDefaultSettings (cfg.pinnedSettings.${vaultName} or emptyPinnedVaultSettings);
             in
-            declared == null
-            || (
-              (vaultCfg.app == null || declared.app == null)
-              && (vaultCfg.appearance == null || declared.appearance == null)
-              && (vaultCfg.hotkeys == null || declared.hotkeys == null)
-            );
-          message = "mettavi.apps.obsidian.pinnedSettings.\"${vaultName}\" overlaps with programs.obsidian.vaults.\"${vaultName}\".settings on app/appearance/hotkeys — pick one mechanism per file.";
-        }) cfg.pinnedSettings;
+            lib.mapAttrsToList (vaultName: vaultCfg: {
+              assertion =
+                let
+                  declaredCore = obsidianVaults.${vaultName}.settings.corePlugins or null;
+                  pinnedCoreNames = lib.attrNames (effectiveFor vaultName).corePlugins;
+                  declaredWithSettings = lib.optionals (declaredCore != null) (
+                    map (p: p.name) (builtins.filter (p: p.settings != null) declaredCore)
+                  );
+                in
+                lib.intersectLists pinnedCoreNames declaredWithSettings == [ ];
+              message = "mettavi.apps.obsidian: vault \"${vaultName}\" has core plugin(s) [${
+                lib.concatStringsSep ", " (
+                  lib.intersectLists (lib.attrNames (effectiveFor vaultName).corePlugins) (
+                    map (p: p.name) (
+                      builtins.filter (p: p.settings != null) (obsidianVaults.${vaultName}.settings.corePlugins or [ ])
+                    )
+                  )
+                )
+              }] both pinned and declared with `settings` — pick one mechanism per plugin.";
+            }) obsidianVaults
+          )
+          ++ [
+            {
+              assertion = lib.all (
+                vaultName: builtins.hasAttr vaultName config.home-manager.users.${username}.programs.obsidian.vaults
+              ) (lib.attrNames cfg.pinnedSettings);
+              message = "mettavi.apps.obsidian.pinnedSettings has an entry for a vault not declared in programs.obsidian.vaults — check for a typo in the path.";
+            }
+          ];
 
         home.activation.obsidianPinnedSettings =
           let
