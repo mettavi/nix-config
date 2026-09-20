@@ -669,12 +669,6 @@ in
                     };
                   }
                   {
-                    name = "templates";
-                    settings = {
-                      folder = "Utilities/Templates";
-                    };
-                  }
-                  {
                     name = "workspaces";
                     settings = {
                       "main" = {
