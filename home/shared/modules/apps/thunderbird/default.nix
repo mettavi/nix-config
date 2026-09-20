@@ -317,7 +317,12 @@ in
             # the buildFirefoxXpiAddon function to install addons not available there
             extensions = with pkgs.nur.repos.rycee.thunderbird-addons; [ allow_html_temp ];
             # Extra preferences to add to file user.js.
-            extraConfig = "";
+            extraConfig = ''
+              # always query the calendar live rather than relying on a local 
+              # cache comparison that can go stale (see Mozilla bug 1694709)
+              # trade-off: no offline access to that calendar
+              user_pref("calendar.registry.calendar_${builtins.hashString "sha256" inputs.secrets.email.personal}.cache.enabled", false);
+            '';
             # RSS or Atom feeds
             # feedAccounts = {
             #   ${username} = { };
