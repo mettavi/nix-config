@@ -200,7 +200,7 @@ with lib;
 
   # NB: this code needs to be isolated here while other hosts are still on pre-26.11
   # because of errors with "nix flake check"
-  # the open source driver for Logitech devices
+  # 1. Enable Solaar (The open source driver for Logitech devices) and its background service
   programs.solaar = {
     enable = true;
     # Enable the systemd service for each user
@@ -210,6 +210,9 @@ with lib;
       window = "hide";
     };
   };
+
+  # 2. Tell the system tray daemon to actively listen to Solaar's hardware events
+  services.udev.packages = [ pkgs.solaar ];
 
   # SYSTEM MODULES SETTINGS
 
