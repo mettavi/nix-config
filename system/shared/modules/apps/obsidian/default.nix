@@ -217,6 +217,7 @@ in
               in
               ''
                 target=${lib.escapeShellArg path}
+                echo "obsidian: patching $target"
                 mkdir -p "$(dirname "$target")"
                 [ -f "$target" ] || echo '{}' > "$target"
                 tmp="$(mktemp)"
