@@ -206,7 +206,7 @@ with lib;
     # Enable the systemd service for each user
     userService = {
       enable = true;
-      extraArgs = [ "--resart-on-wake-up" ];
+      extraArgs = [ "--restart-on-wake-up" ];
       window = "hide";
     };
   };
