@@ -10,6 +10,7 @@ with lib;
 let
   cfg = config.mettavi.apps.obsidian;
   jsonFormat = pkgs.formats.json { };
+  # prevent errors if pinned settings is empty
   emptyPinnedVaultSettings = {
     app = null;
     appearance = null;
@@ -337,6 +338,7 @@ in
           # Omit them here to set via the GUI and/or merge any desired settings
           # with `mettavi.apps.obsidian.pinnedSettings` (see above) instead.
           vaults = {
+            # inherit most of the defaults from pinnedDefaultSettings
             "${cfg.vaultsParent}/Evernote" = {
               enable = true;
             };
