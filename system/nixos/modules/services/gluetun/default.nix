@@ -137,7 +137,7 @@ in
           portForwarding = {
             enabled = mkOption {
               type = str;
-              default = "on";
+              default = "off";
               description = "Whether to turn port forwarding on";
             };
             only = mkOption {
