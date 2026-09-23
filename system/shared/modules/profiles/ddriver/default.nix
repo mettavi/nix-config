@@ -100,6 +100,7 @@ in
 
       home = {
         packages = with pkgs; [
+          audacity # Sound editor with graphical UI
           goldendict-ng # Advanced multi-dictionary lookup program
           # gradia # edit screenshots of application windows
           kdePackages.okular # KDE document viewer
