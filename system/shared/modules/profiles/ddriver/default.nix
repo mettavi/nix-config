@@ -101,6 +101,7 @@ in
       home = {
         packages = with pkgs; [
           goldendict-ng # Advanced multi-dictionary lookup program
+          # gradia # edit screenshots of application windows
           kdePackages.okular # KDE document viewer
           poppler-utils # PDF rendering library tools
           linpkgs.tipitaka_pali_reader
