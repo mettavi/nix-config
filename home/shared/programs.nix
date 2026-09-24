@@ -36,6 +36,12 @@
       # NB: This option is deprecated as of v 2.9.0, as gpg-agent is no longer started by default
       # agents = [ "ssh" ];
       enableZshIntegration = true;
+      extraFlags = [
+        # begin coordinated SSH key activation without waiting for Enter
+        # (prevents "Press enter to initialize keys" prompt on reboot when keys have no passphrase)
+        # see https://github.com/danielrobbins/keychain/issues/230
+        "--immediate"
+      ];
       keys = [ "${config.home.username}-${hostname}_ed25519" ];
     };
     lazygit.enable = true;
