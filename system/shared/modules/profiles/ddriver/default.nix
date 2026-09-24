@@ -1,5 +1,6 @@
 {
   config,
+  hostname,
   inputs,
   lib,
   pkgs,
@@ -80,6 +81,16 @@ in
     time.timeZone = lib.mkForce null;
     # Enable the dynamic tracking daemon
     services.automatic-timezoned.enable = true;
+
+    # Bentopdf Privacy First PDF Toolkit
+    services.bentopdf = {
+      enable = true;
+      domain = "pdf.${hostname}";
+      nginx = {
+        enable = true;
+      };
+    };
+
     services.geoclue2 = {
       geoProviderUrl = "https://api.beacondb.net/v1/geolocate";
       # Allow the system daemon to read surrounding Wi-Fi signals
