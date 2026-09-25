@@ -21,10 +21,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # skip calibre tests in GitHub workflows (see nix.yml)
     nixpkgs.overlays = [
       (final: prev: {
         calibre = prev.calibre.overrideAttrs (old: {
+          # skip calibre tests in GitHub workflows (see nix.yml)
           doCheck = (builtins.getEnv "SKIP_CALIBRE_TESTS") != "1";
           # Propagate env vars for the acsm-calibre-plugin
           # See: https://github.com/Leseratte10/acsm-calibre-plugin/issues/68#issuecomment-2162686156
