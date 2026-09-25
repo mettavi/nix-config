@@ -26,7 +26,7 @@ stdenvNoCC.mkDerivation rec {
 
   installPhase = ''
     runHook preInstall
-    install -D --mode=0644 --target-directory=$out/lib/calibre/calibre-plugins "extract_isbn/Extract ISBN.zip"
+    install -D --mode=0644 --target-directory=$out "extract_isbn/Extract ISBN.zip"
     runHook postInstall
   '';
 
