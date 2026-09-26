@@ -43,8 +43,15 @@ in
           in
           {
             # See <https://www.zotero.org/support/preferences/hidden_preferences> also.
+            # do not auto-update Zotero
+            "app.update.auto" = false;
             "general.smoothScroll" = false;
             "intl.accept_language" = "en-US, en";
+
+            # whether to update extensions automatically
+            "extensions.update.autoUpdateDefault" = false;
+            # whether to check for extension updates
+            "extensions.update.enabled" = true;
 
             # Use the flake-provided versions of translators and styles.
             # "extensions.zotero.automaticScraperUpdates" = false;
