@@ -34,6 +34,12 @@ def main(args):
     if args.commit:
         nix_args += ['--argstr', 'commit', 'true']
 
+    if args.keep_going:
+        nix_args += ['--argstr', 'keep-going', 'true']
+
+    if args.skip_prompt:
+        nix_args += ['--argstr', 'skip-prompt', 'true']
+
     nix_shell = ['nix-shell'] + nix_args
 
     with subprocess.Popen(nix_shell, stdin=PIPE) as proc:
@@ -48,6 +54,8 @@ if __name__ == '__main__':
     req.add_argument('-a', '--attr_path', dest='attr_path', help='Attribute path of package to update')
     req.add_argument('-p', '--predicate', dest='predicate', help='Update all packages matching given predicate')
     parser.add_argument('-c', '--commit', help='Commit the changes', action='store_true')
+    parser.add_argument('-k', '--keep-going', dest='keep_going', help='Do not stop after first failure', action='store_true')
+    parser.add_argument('-s', '--skip-prompt', dest='skip_prompt', help='Do not wait for confirmation before running', action='store_true')
     parser.add_argument('-n', '--nixpkgs', dest='nixpkgs', help='Override the nixpkgs flake input with this path', nargs='?')
     parser.add_argument('-o', '--overlays', dest='overlays', nargs='+', default=['nixos', 'shared'], help='Overlay names (under system/overlays/) to include')
 

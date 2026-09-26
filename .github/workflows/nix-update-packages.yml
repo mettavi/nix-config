@@ -18,9 +18,11 @@ jobs:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
       - name: Run update script
+        # -k (--keep-going): Do not stop after first failure
+        # -s (--skip-prompt): Do not wait for confirmation before running 
         run: |
-          home/shared/dots/update/update.py -a linpkgs
-          home/shared/dots/update/update.py -a xpkgs
+          home/shared/dots/update/update.py -a linpkgs -k -s
+          home/shared/dots/update/update.py -a xpkgs -k -s
         continue-on-error: true
       - name: Open PR if anything changed
         uses: peter-evans/create-pull-request@v8.1.1
