@@ -5,6 +5,8 @@
   username,
   ...
 }:
+with lib;
+with lib.types;
 let
   cfg = config.mettavi.system.apps.calibre;
 in
@@ -12,15 +14,20 @@ in
   imports = [ ./calibre-and-sync.nix ];
 
   options.mettavi.system.apps.calibre = {
-    enable = lib.mkEnableOption "Install and set up the calibre ebook manager";
-    cal_lib = lib.mkOption {
+    enable = mkEnableOption "Install and set up the calibre ebook manager";
+    cal_lib = mkOption {
       description = "The location of the calibre library in the filesystem";
-      type = lib.types.path;
+      type = path;
       default = "${config.users.users.${username}.home}/Documents/calibre";
+    };
+    plugins = mkOption {
+      type = listOf package;
+      default = with pkgs.xpkgs.calibrePlugins; [ extract-isbn ];
+      description = "A list of calibre plugins to install";
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = mkIf cfg.enable {
     nixpkgs.overlays = [
       (final: prev: {
         calibre = prev.calibre.overrideAttrs (old: {
