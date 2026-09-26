@@ -4,5 +4,5 @@ import <nixpkgs> {
     (import ./system/overlays/nixos/default.nix)
     (import ./system/overlays/shared/default.nix)
   ];
-  config.nixpkgs.allowUnfree = true;
+  config.allowUnfree = true;
 }
