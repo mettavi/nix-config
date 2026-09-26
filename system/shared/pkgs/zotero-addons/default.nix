@@ -55,6 +55,8 @@ in
     url = "https://github.com/Dominic-DallOsto/zotero-reading-list/releases/download/v${version}/zotero-reading-list.xpi";
     hash = "sha256-oq2kjm8MBE28R4kTWnHMKYGzLMsuLvze+tzhGVv/Wzs=";
 
+    passthru.updateScript = pkgs.nix-update-script { extraArgs = [ "--version-regex=v(.*)" ]; };
+
     meta = with lib; {
       homepage = "https://github.com/Dominic-DallOsto/zotero-reading-list";
       license = [ licenses.gpl3 ];
