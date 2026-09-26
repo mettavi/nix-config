@@ -44,7 +44,7 @@ stdenvNoCC.mkDerivation {
     updateScript = pkgs.nix-update-script {
       extraArgs = [
         "--file"
-        ../../../../update.nix
+        ../../../../../update.nix
       ];
     };
   };
