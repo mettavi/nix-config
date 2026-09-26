@@ -48,7 +48,12 @@ in
     ];
 
     home-manager.users.${username} =
-      { lib, osConfig, ... }:
+      {
+        config,
+        lib,
+        osConfig,
+        ...
+      }:
       let
         pluginZip = plugin: "${plugin}/${plugin.pluginZip}";
       in
