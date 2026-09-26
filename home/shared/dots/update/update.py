@@ -5,7 +5,6 @@ import argparse
 import os
 import subprocess
 import sys
-from subprocess import PIPE
 
 
 def main(args):
@@ -42,9 +41,8 @@ def main(args):
 
     nix_shell = ['nix-shell'] + nix_args
 
-    with subprocess.Popen(nix_shell, stdin=PIPE) as proc:
-        proc.communicate(input=b'\n')
-        return proc.returncode
+    result = subprocess.run(nix_shell)
+    return result.returncode
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Update package source')
