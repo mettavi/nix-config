@@ -31,7 +31,6 @@ in
           buildInputs = (old.buildInputs or [ ]) ++ [
             pkgs.openssl
           ];
-          # --set QT_QPA_PLATFORM wayland \
           postInstall = ''
             wrapProgram $out/bin/calibre \
                 --set-default ACSM_LIBCRYPTO ${prev.openssl.out}/lib/libcrypto.so \
