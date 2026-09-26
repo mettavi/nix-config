@@ -1,4 +1,4 @@
 { pkgs, ... }:
 {
-  extract-isbn = (pkgs.callPackage ./extract_isbn { });
+  extract-isbn = (pkgs.callPackage ./kiwidude/extract_isbn { });
 }
