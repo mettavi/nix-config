@@ -29,6 +29,7 @@ stdenvNoCC.mkDerivation {
 
   buildPhase = ''
     runHook preBuild
+    cp common/common_*.py ${subdir}/
     (cd ${subdir} && ${lib.getExe python3} ../common/build.py)
     runHook postBuild
   '';
