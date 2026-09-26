@@ -1,8 +1,8 @@
-# Used by ./tasks/update
 { }:
 import <nixpkgs> {
   overlays = [
     (import ./system/overlays/nixos/default.nix)
+    (import ./system/overlays/shared/default.nix)
   ];
   config.nixpkgs.allowUnfree = true;
 }

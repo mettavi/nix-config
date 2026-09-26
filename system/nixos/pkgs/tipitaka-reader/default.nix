@@ -51,6 +51,8 @@ pkgs.appimageTools.wrapType2 {
 
   passthru.updateScript = nix-update-script {
     extraArgs = [
+      "--file"
+      ../../../../update.nix
       "--version-regex=^v(\\d+\\.\\d+\\.\\d+(?:\\+\\d+)?)$"
     ];
   };
