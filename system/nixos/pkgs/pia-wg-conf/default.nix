@@ -24,7 +24,13 @@ buildGoModule (finalAttrs: {
     "-w"
   ];
 
-  passthru.updateScript = nix-update-script { };
+  passthru.updateScript = nix-update-script {
+    extraArgs = [
+      "--file"
+      ../../../../update.nix
+      "--version-regex=v(.*)"
+    ];
+  };
 
   meta = {
     description = "A Wireguard config generator for Private Internet Access";
