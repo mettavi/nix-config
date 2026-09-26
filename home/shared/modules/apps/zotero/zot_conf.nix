@@ -13,7 +13,7 @@ in
   config = mkIf config.mettavi.apps.zotero.enable {
     mettavi.apps.zotero = {
       profiles.default = {
-        extensions = with pkgs.xpkgs.zotero-addons; [
+        extensions = with pkgs.xpkgs.zoteroAddons; [
           # MY EXTENSIONS
           # zotero-addon-market
           # zotero-attanger
