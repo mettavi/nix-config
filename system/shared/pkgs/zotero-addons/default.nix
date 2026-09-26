@@ -34,6 +34,9 @@ let
   );
 in
 {
+  # look inside nested attributes like xpgs.zoteroAddons.*
+  recurseForDerivations = true;
+
   zotero-reading-list = buildZoteroXpiAddon rec {
     pname = "zotero-reading-list";
     version = "1.5.18";
