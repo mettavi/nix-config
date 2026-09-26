@@ -1,4 +1,8 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
 let
   inherit (pkgs) lib;
@@ -13,12 +17,18 @@ let
       url,
       hash,
       meta,
+      passthru ? { },
       ...
     }:
     stdenv.mkDerivation {
       name = "${pname}-${version}";
 
-      inherit meta;
+      inherit
+        pname
+        version
+        meta
+        passthru
+        ;
 
       src = fetchurl { inherit url hash; };
 
