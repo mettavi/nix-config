@@ -22,7 +22,10 @@ in
     };
     plugins = mkOption {
       type = listOf package;
-      default = with pkgs.xpkgs.calibrePlugins; [ extract-isbn ];
+      default = with pkgs.xpkgs.calibrePlugins; [
+        annotations
+        extract-isbn
+      ];
       description = "A list of calibre plugins to install";
     };
   };
