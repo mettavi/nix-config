@@ -46,7 +46,7 @@ in
     hash = "sha256-oq2kjm8MBE28R4kTWnHMKYGzLMsuLvze+tzhGVv/Wzs=";
 
     meta = with lib; {
-      homepage = "https://github.com/retorquere/zotero-open-pdf";
+      homepage = "https://github.com/Dominic-DallOsto/zotero-reading-list";
       license = [ licenses.gpl3 ];
       platforms = platforms.all;
     };
