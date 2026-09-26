@@ -49,6 +49,9 @@ in
 
     home-manager.users.${username} =
       { osConfig, ... }:
+      let
+        pluginZip = plugin: "${plugin}/${plugin.pluginZip}";
+      in
       {
         dconf.settings = lib.mkIf osConfig.mettavi.system.desktops.gnome.enable {
           "org/gnome/desktop/app-folders" = {
@@ -68,6 +71,14 @@ in
             translate = false;
           };
         };
+        home.activation = {
+          copy-calibre-plugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            ${lib.concatMapStringsSep "\n" (plugin: ''
+              ${pkgs.calibre}/bin/calibre-customize --add-plugin=${lib.escapeShellArg (pluginZip plugin)}
+            '') cfg.plugins}
+              chmod +w ${config.xdg.configHome}/calibre/plugins/*.zip
+          '';
+        };
         home.packages = with pkgs; [
           # TODO: Fixed in https://github.com/NixOS/nixpkgs/pull/558309 on 10-09-26
           # See https://github.com/NixOS/nixpkgs/issues/559101 for more details
@@ -79,6 +90,7 @@ in
           # })
           calibre
         ];
+
         xdg.mimeApps = {
           enable = true;
           defaultApplications = {
