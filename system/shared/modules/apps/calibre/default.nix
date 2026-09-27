@@ -38,14 +38,14 @@ in
           doCheck = (builtins.getEnv "SKIP_CALIBRE_TESTS") != "1";
           # Propagate env vars for the acsm-calibre-plugin
           # See: https://github.com/Leseratte10/acsm-calibre-plugin/issues/68#issuecomment-2162686156
-          buildInputs = (old.buildInputs or [ ]) ++ [
-            pkgs.openssl
-          ];
-          postInstall = ''
-            wrapProgram $out/bin/calibre \
-                --set-default ACSM_LIBCRYPTO ${prev.openssl.out}/lib/libcrypto.so \
-                --set-default ACSM_LIBSSL ${prev.openssl.out}/lib/libssl.so
-          '';
+          # buildInputs = (old.buildInputs or [ ]) ++ [
+          #   pkgs.openssl
+          # ];
+          # postInstall = ''
+          #   wrapProgram $out/bin/calibre \
+          #       --set-default ACSM_LIBCRYPTO ${prev.openssl.out}/lib/libcrypto.so \
+          #       --set-default ACSM_LIBSSL ${prev.openssl.out}/lib/libssl.so
+          # '';
         });
       })
     ];
