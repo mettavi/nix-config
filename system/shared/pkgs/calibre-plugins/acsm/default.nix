@@ -51,7 +51,7 @@ stdenv.mkDerivation {
   version = "0.1.0-unstable-2026-09-23";
 
   src = fetchFromGitHub {
-    owner = "Leseratte10"; # or "Leseratte10" if you'd rather track upstream directly
+    owner = "Leseratte10";
     repo = "acsm-calibre-plugin";
     rev = "4eff3ee35ac760ccad063639401b303b7207aa9c";
     hash = "sha256-vHWPxwF4UlSzrEkfC6YmQFNBUJNifZ0vzynzN68UPh0=";
@@ -65,6 +65,8 @@ stdenv.mkDerivation {
   ];
   buildInputs = [ openssl ];
 
+  # Propagate env vars for the acsm-calibre-plugin
+  # See: https://github.com/Leseratte10/acsm-calibre-plugin/issues/68#issuecomment-2162686156
   postPatch = ''
     substituteInPlace ./calibre-plugin/__init__.py \
       --replace-fail 'libcrypto_path = os.getenv("ACSM_LIBCRYPTO", None)' 'libcrypto_path = os.getenv("ACSM_LIBCRYPTO", "${openssl.out}/lib/libcrypto.so")' \
