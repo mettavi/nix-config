@@ -23,6 +23,7 @@ in
     plugins = mkOption {
       type = listOf package;
       default = with pkgs.xpkgs.calibrePlugins; [
+        acsm # Calibre plugin for ACSM->EPUB and ACSM->PDF conversion
         annotations
         extract-isbn
       ];
