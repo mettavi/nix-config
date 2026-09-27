@@ -4,6 +4,7 @@
   fetchzip,
   lib,
   openssl,
+  pkgs,
   pkgsCross,
   zip,
   unzip,
@@ -43,15 +44,17 @@ let
     installPhase = "zip -r $out asn1crypto";
   };
 in
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   pname = "acsm-calibre-plugin";
-  version = "0.1.0-unstable-2025-xx-xx"; # match whatever rev you pin
+  # no tagged versions upstream, so use PLUGIN_VERSION_TUPLE declared in the code
+  # and append with `-unstable-<commit date>`
+  version = "0.1.0-unstable-2026-09-23";
 
   src = fetchFromGitHub {
-    owner = "nydragon"; # or "Leseratte10" if you'd rather track upstream directly
+    owner = "Leseratte10"; # or "Leseratte10" if you'd rather track upstream directly
     repo = "acsm-calibre-plugin";
-    rev = "80460ec79a0dea7135937b3e4f8228d1ca9dd167";
-    hash = "sha256-UEu7gWt+p2V5NcCGHRgymz4EIb8N/xD3vWWXjBLWgTA=";
+    rev = "4eff3ee35ac760ccad063639401b303b7207aa9c";
+    hash = "sha256-vHWPxwF4UlSzrEkfC6YmQFNBUJNifZ0vzynzN68UPh0=";
   };
 
   nativeBuildInputs = [
@@ -82,7 +85,15 @@ stdenv.mkDerivation rec {
     runHook postInstall
   '';
 
-  passthru.pluginZip = "calibre-plugin.zip";
+  passthru = {
+    pluginZip = "calibre-plugin.zip";
+    updateScript = pkgs.nix-update-script {
+      extraArgs = [
+        "--file"
+        ../../../../../update.nix
+      ];
+    };
+  };
 
   meta = {
     description = "Calibre plugin for ACSM->EPUB and ACSM->PDF conversion without Adobe Digital Editions";
