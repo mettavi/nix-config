@@ -312,7 +312,7 @@ in
           {
             isDefault = true;
             inherit (cfg) accountsOrder;
-            # list available addons with "nix-env -f '<nixpkgs>' -qaP -A nur.repos.rycee.thunderbird-addons"
+            # search available addons at https://nur.nix-community.org/repos/rycee/
             # see https://github.com/nix-community/home-manager/pull/6033 for instructions on using
             # the buildFirefoxXpiAddon function to install addons not available there
             extensions = with pkgs.nur.repos.rycee.thunderbird-addons; [ allow_html_temp ];
