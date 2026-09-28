@@ -87,7 +87,6 @@ in
             force = true;
             # NB: the nur module is imported in nixos/common.nix, thus the input prefix is not required
             packages = with pkgs.nur.repos.rycee.firefox-addons; [
-              bitwarden
               darkreader
               privacy-badger
               sponsorblock

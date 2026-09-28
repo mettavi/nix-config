@@ -246,10 +246,15 @@ in
       };
     };
     home-manager.users.${username} =
-      { nixosConfig, ... }:
+      { config, nixosConfig, ... }:
       {
         # install the package used for making bitwarden backups
         home.packages = with pkgs; mkIf nixosConfig.mettavi.system.apps.bitwarden.backup [ bitwarden-cli ];
+
+        # install the firefox extension
+        programs.firefox.profiles."mettavi".extensions.packages =
+          with pkgs.nur.repos.rycee.firefox-addons;
+          optionals (config.mettavi.apps.firefox.enable) [ bitwarden ];
 
         sops.secrets = {
           # bitwarden .env file for use with cli
