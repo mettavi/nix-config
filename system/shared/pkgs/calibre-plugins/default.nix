@@ -1,3 +1,5 @@
+# See https://github.com/jwillikers/media-juggler/tree/main/overlays/calibre-plugins
+# for examples of derivations for calibre plugins
 { pkgs, ... }:
 {
   acsm = (pkgs.callPackage ./acsm { });

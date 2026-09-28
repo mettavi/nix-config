@@ -71,6 +71,8 @@ in
           };
         };
         home.activation = {
+          # adapted with thanks from:
+          # https://github.com/jwillikers/media-juggler/blob/95cda525b82ce38b6802443bbedd67fbcfabeef1/home-manager-module.nix
           copy-calibre-plugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
             ${lib.concatMapStringsSep "\n" (plugin: ''
               ${pkgs.calibre}/bin/calibre-customize --add-plugin=${lib.escapeShellArg (pluginZip plugin)}
