@@ -158,7 +158,7 @@ in
         paperless-redis = {
           containerConfig = {
             # a Redis-compatible broker (a current release of Valkey or Redis)
-            image = "docker.io/library/redis:8.10.1";
+            image = "docker.io/library/redis:8.10.2";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
           };
         };
