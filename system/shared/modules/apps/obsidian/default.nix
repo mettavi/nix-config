@@ -260,6 +260,11 @@ in
             lib.concatStrings (map mkVaultPatches enabledVaultNames)
           );
 
+        # install the firefox extension
+        programs.firefox.profiles."mettavi".extensions.packages =
+          with pkgs.nur.repos.rycee.firefox-addons;
+          optionals (config.mettavi.apps.firefox.enable) [ web-clipper-obsidian ];
+
         programs.obsidian = {
           enable = true;
           # NB: Vault-specific settings take priority and will override these, if set.
