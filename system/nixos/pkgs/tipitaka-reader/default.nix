@@ -8,7 +8,8 @@ let
   version = "2.9.3+123";
   src = pkgs.fetchurl {
     # Add an explicit name property to fetchurl to lock the name of the `src` fixed output derivation
-    # this prevents re-downloads when tweaking incidental settings
+    # Along with `inherit src` below and `home/system.extraDependcies` in the module,
+    # this prevents the src being re-downloaded unnecessarily
     name = "tipitaka_pali_reader-${version}.AppImage";
     url = "https://github.com/bksubhuti/tipitaka-pali-reader/releases/download/v${version}/tipitaka_pali_reader.AppImage";
     hash = "sha256-013SJ5i5kwxwReW47NTED+3hwVJoyBP69xWNU3r7LW0=";
@@ -49,11 +50,14 @@ pkgs.appimageTools.wrapType2 {
     platforms = [ "x86_64-linux" ];
   };
 
-  passthru.updateScript = nix-update-script {
-    extraArgs = [
-      "--file"
-      ../../../../update.nix
-      "--version-regex=^v(\\d+\\.\\d+\\.\\d+(?:\\+\\d+)?)$"
-    ];
+  passthru = {
+    inherit src;
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--file"
+        ../../../../update.nix
+        "--version-regex=^v(\\d+\\.\\d+\\.\\d+(?:\\+\\d+)?)$"
+      ];
+    };
   };
 }
