@@ -114,6 +114,7 @@ in
         # so they're GC-rooted for as long as that generation exists
         # Keep the AppImage source rooted so GC doesn't force a re-download
         extraDependencies = [ pkgs.linpkgs.tipitaka_pali_reader.src ];
+
         packages = with pkgs; [
           audacity # Sound editor with graphical UI
           goldendict-ng # Advanced multi-dictionary lookup program
