@@ -276,7 +276,7 @@ in
       [ -f ${pfEnvFile} ] || echo "SERVER_NAMES=" > ${pfEnvFile}
     '';
 
-    # creates the file containing the auth code for the access
+    # creates the file containing the auth code for access
     # to the two Glueton API endpoints needed by pia-wg-refresh
     systemd.services.gluetun-auth-config =
       let
