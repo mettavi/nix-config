@@ -17,21 +17,59 @@ let
   gluetunConfigDir = "${config.users.users.${username}.home}/.config/gluetun";
   mkContainer = config.mettavi.system.services.podman.mkContainer;
   patchedRefreshLoop =
+    let
+      dockerRestartPatch =
+        pkgs.writeText "do_docker_restart.sh" # bash
+          ''
+            do_docker_restart() {
+              date -u +%Y-%m-%dT%H:%M:%SZ > /hostenv/restart-trigger
+              log info "Signaled systemd to restart $GLUETUN_CONTAINER"
+            }
+          '';
+      updateEnvPatch =
+        pkgs.writeText "update_env_server_names.sh" # bash
+          ''
+            update_env_server_names() {
+              new_server="$1"
+              file="/hostenv/server-names.env"
+              new="SERVER_NAMES=$new_server"
+              if [ -f "$file" ] && [ "$(cat "$file")" = "$new" ]; then
+                return 0
+              fi
+              tmp="''${file}.tmp.$$"
+              printf '%s\n' "$new" > "$tmp"
+              mv "$tmp" "$file"
+              log info "Updated SERVER_NAMES=$new_server in $file"
+              return 0
+            }
+          '';
+    in
     pkgs.runCommand "refresh-loop-patched.sh" { } # bash
       ''
         cp ${./refresh-loop-0_8_3.sh} $out
         chmod +w $out
+
         # do_docker_restart normally issues `docker restart` directly against the
         # podman socket, which conflicts with systemd's own supervision of the
         # quadlet-managed gluetun.service. Replace it with a pure signal file;
         # the actual restart is handled exclusively by systemd via the
         # gluetun-restart-trigger path-unit below.
         ${pkgs.gnused}/bin/sed -i \
-          '/^do_docker_restart() {/,/^}/c\
-          do_docker_restart() {\
-          date -u +%Y-%m-%dT%H:%M:%SZ > /hostenv/restart-trigger\
-          log info "Signaled systemd to restart $GLUETUN_CONTAINER"\
-          }' $out
+        -e "/^do_docker_restart() {/r ${dockerRestartPatch}" \
+        -e '/^do_docker_restart() {/,/^}/d' \
+        $out
+
+        # update_env_server_names normally only persists SERVER_NAMES when
+        # DOCKER_COMPOSE_HOST_DIR is set. Without it, the script's own
+        # SERVER_NAMES-mismatch self-healing branch correctly detects a stale
+        # SERVER_NAMES after a region change but silently fails to fix it.
+        # Redirect it to our host-mounted env file instead, mirroring the
+        # convention update-server-name.sh already uses.
+        ${pkgs.gnused}/bin/sed -i \
+        -e "/^update_env_server_names() {/r ${updateEnvPatch}" \
+        -e '/^update_env_server_names() {/,/^}/d' \
+        $out
+
         chmod +x $out
       '';
   pfEnvDir = "/var/lib/gluetun-portforward";
