@@ -175,7 +175,7 @@ in
           portForwarding = {
             enabled = mkOption {
               type = str;
-              default = "off";
+              default = "on";
               description = "Whether to turn port forwarding on";
             };
             only = mkOption {
@@ -201,7 +201,7 @@ in
             };
             piaRegion = mkOption {
               type = str;
-              default = "uk";
+              default = "bangladesh"; # REQUIRED for pia-wg-refresh
               description = "PIA region code for pia-wg-refresh (e.g. us_chicago)";
             };
           };
