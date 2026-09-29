@@ -452,12 +452,12 @@ in
                     new="SERVER_NAMES=$PIA_SERVER_NAME"
 
                     if [ -f "$file" ] && [ "$(cat "$file")" = "$new" ]; then
-                        exit 0
-                      fi
+                      exit 0
+                    fi
 
-                       tmp="''${file}.tmp.$$"
-                       printf '%s\n' "$new" > "$tmp"
-                       mv "$tmp" "$file"
+                    tmp="''${file}.tmp.$$"
+                    printf '%s\n' "$new" > "$tmp"
+                    mv "$tmp" "$file"
                   '';
             in
             mkContainer {
