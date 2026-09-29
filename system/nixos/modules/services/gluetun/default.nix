@@ -385,6 +385,7 @@ in
 
                 # PORT FORWARDING
                 VPN_PORT_FORWARDING = activeCfg.portForwarding.enabled;
+                # not applicable to the "custom" provider type
                 PORT_FORWARD_ONLY = activeCfg.portForwarding.only;
                 VPN_PORT_FORWARDING_PROVIDER = activeCfg.portForwarding.provider;
               }
@@ -398,7 +399,6 @@ in
                 WIREGUARD_PUBLIC_KEY = activeCfg.wireguard.publicKey;
               });
               environmentFiles = [
-                # gluetun reads its SERVER_NAMES from this file at every (re)start
                 pfEnvFile
                 "${config.sops.secrets."users/${username}/gluetun-${cfg.activeProvider}.env".path}"
               ];
@@ -475,7 +475,7 @@ in
                   # pia-wg-refresh writes to SERVER_NAMES (bind-mounted read-write) whenever the port/server changes
                   ON_PORT_CHANGE_SCRIPT = "/hooks/update-server-name.sh";
                   PIA_PORT_FORWARDING = if (activeCfg.portForwarding.enabled == "on") then "true" else "false";
-                  PIA_REGION = activeCfg.private-internet-access.piaRegion;
+                  PIA_REGION = activeCfg.private-internet-access.piaRegion; # MANDATORY
                   WG_CONF_PATH = "/config/wg0.conf";
                 };
                 environmentFiles = optionals (cfg.activeProvider == "custom-pia") [
