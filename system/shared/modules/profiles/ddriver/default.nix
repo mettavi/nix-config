@@ -122,7 +122,6 @@ in
           kdePackages.okular # KDE document viewer
           poppler-utils # PDF rendering library tools
           linpkgs.tipitaka_pali_reader
-          mpv # General-purpose media player, fork of MPlayer and mplayer2
           # parabolic # Graphical frontend for yt-dlp to download video and audio
           pdfarranger # python-gtk application to merge/split/rotate/crop/rearrange PDFs
           picard # offical musicbrainz tagger
@@ -141,6 +140,7 @@ in
           firefox.enable = true;
           ghostty.enable = true;
           latex.enable = true;
+          mpv.enable = true;
           thunderbird =
             let
               burner = inputs.secrets.email.burner;

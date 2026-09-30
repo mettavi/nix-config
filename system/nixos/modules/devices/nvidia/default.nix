@@ -77,7 +77,9 @@ in
 
     environment.variables = {
       # tell the VA-API library to load the NVIDIA driver
-      LIBVA_DRIVER_NAME = "nvidia";
+      # NB: Disable this option to prevent forcing the nvidia GPU by default
+      # which caused problems in mpv
+      # LIBVA_DRIVER_NAME = "nvidia";
       # Select the "direct" nvidia backend for VA-API
       NVD_BACKEND = "direct";
     };
