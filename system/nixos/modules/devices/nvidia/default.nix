@@ -81,6 +81,7 @@ in
       # which caused problems in mpv
       # LIBVA_DRIVER_NAME = "nvidia";
       # Select the "direct" nvidia backend for VA-API
+      # NB: This is only used if LIBVA_DRIVER_NAME = nividia
       NVD_BACKEND = "direct";
     };
     ######################################################################
