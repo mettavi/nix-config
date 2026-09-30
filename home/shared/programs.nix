@@ -41,6 +41,8 @@
         # (prevents "Press enter to initialize keys" prompt on reboot when keys have no passphrase)
         # see https://github.com/danielrobbins/keychain/issues/230
         "--immediate"
+        # suppress the confirmation message on shell launch
+        "--quiet"
       ];
       keys = [ "${config.home.username}-${hostname}_ed25519" ];
     };
