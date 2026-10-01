@@ -36,9 +36,20 @@ in
           translate = false;
         };
       };
-      xdg.mimeApps.defaultApplications = {
-        "application/vnd.oasis.opendocument.text" = [ "writer.desktop" ];
-      };
+      xdg.mimeApps.defaultApplications =
+        let
+          textTypes = [
+            "application/word" # *.doc
+            "application/vnd.oasis.opendocument.text" # *.odt
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document" # *.docx
+          ];
+        in
+        builtins.listToAttrs (
+          map (mtype: {
+            name = mtype;
+            value = [ "writer.desktop" ]; # Libreoffice Writer
+          }) textTypes
+        );
     };
     environment.systemPackages = with pkgs; [
       # gtk version (the kdeIntegration variable defaults to false)
