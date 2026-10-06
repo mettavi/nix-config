@@ -77,7 +77,7 @@ in
             ${lib.concatMapStringsSep "\n" (plugin: ''
               ${pkgs.calibre}/bin/calibre-customize --add-plugin=${lib.escapeShellArg (pluginZip plugin)}
             '') cfg.plugins}
-              chmod +w ${config.xdg.configHome}/calibre/plugins/*.zip
+              chmod +w ${lib.escapeShellArg config.xdg.configHome}/calibre/plugins/*.zip
           '';
         };
         home.packages = with pkgs; [
