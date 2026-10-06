@@ -163,6 +163,11 @@
     # specific_package.url = "github:nixos/nixpkgs/specific_commit_hash_from_nixhub.io";
     # Then add the following to environment.systemPackages or an overlay:
     # inputs.specific_package.legacyPackages.${pkgs.stdenv.hostPlatform.system}.package_name_from_nixhub.io
+
+    # Pin Zotero to a nixpkgs revision whose Firefox ESR is 140, which Zotero
+    # 10.x strictly requires. Newer nixpkgs bumped firefox-esr to 153 and the
+    # package fails to build. See NixOS/nixpkgs#568692 and the fix PR #569006.
+    zotero-7a0f12.url = "github:NixOS/nixpkgs/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f";
   };
 
   outputs =

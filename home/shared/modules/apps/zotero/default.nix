@@ -3,6 +3,7 @@
 # and https://github.com/crisbour/nix-hm-config/blob/7de8636c67c65b42e66ba244dbdfaf5ced991a14/home/features/productivity/zotero/default.nix#L19
 {
   config,
+  inputs,
   lib,
   pkgs,
   ...
@@ -69,7 +70,7 @@ in
 
     package = mkOption {
       type = types.package;
-      default = pkgs.zotero;
+      default = inputs.zotero-7a0f12.legacyPackages.${pkgs.stdenv.hostPlatform.system}.zotero;
       defaultText = literalExpression "pkgs.zotero";
       description = "The Zotero package to use.";
     };
@@ -206,6 +207,11 @@ in
         }
       )
     ];
+
+    # TODO: Pin Zotero to a nixpkgs revision that still ships Firefox ESR 140.
+    # Newer nixpkgs bumped firefox-esr to 153, which Zotero 10.x can't be
+    # built against. Drop this once NixOS/nixpkgs#569006 lands.
+    # cfg.package = inputs.zotero-7a0f12.legacyPackages.${pkgs.stdenv.hostPlatform.system}.zotero;
 
     home.packages = [ cfg.package ];
 

@@ -789,7 +789,8 @@
         "sops-nixos": "sops-nixos",
         "t2fanrd": "t2fanrd",
         "tmux-which-key": "tmux-which-key",
-        "wrappers": "wrappers"
+        "wrappers": "wrappers",
+        "zotero-7a0f12": "zotero-7a0f12"
       }
     },
     "secrets": {
@@ -962,6 +963,22 @@
       "original": {
         "owner": "BirdeeHub",
         "repo": "nix-wrapper-modules",
+        "type": "github"
+      }
+    },
+    "zotero-7a0f12": {
+      "locked": {
+        "lastModified": 1790578696,
+        "narHash": "sha256-ZoxIApko70jCdbH3l20HWXOBaT2HZd87orzd2yJ9dVE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f",
         "type": "github"
       }
     }
