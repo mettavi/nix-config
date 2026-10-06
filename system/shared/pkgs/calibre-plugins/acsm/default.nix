@@ -75,8 +75,8 @@ stdenv.mkDerivation {
 
   buildPhase = ''
     runHook preBuild
-    unzip ${asn1crypto} -d calibre-plugin/
-    unzip ${oscrypto} -d calibre-plugin/
+    cp ${asn1crypto} calibre-plugin/asn1crypto.zip
+    cp ${oscrypto} calibre-plugin/oscrypto.zip
     bash ./bundle_calibre_plugin.sh
     runHook postBuild
   '';
