@@ -74,6 +74,12 @@ in
           # adapted with thanks from:
           # https://github.com/jwillikers/media-juggler/blob/95cda525b82ce38b6802443bbedd67fbcfabeef1/home-manager-module.nix
           copy-calibre-plugins = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+            # Remove the previously installed ACSM Input plugin before invoking
+            # calibre-customize. calibre-customize initializes installed plugins
+            # before processing its command-line arguments, so a broken old copy
+            # can otherwise prevent the new copy from being installed.
+            rm -f ${lib.escapeShellArg "${config.xdg.configHome}/calibre/plugins/ACSM Input.zip"}
+            rm -rf ${lib.escapeShellArg "${config.xdg.configHome}/calibre/plugins/ACSMInput"}
             ${lib.concatMapStringsSep "\n" (plugin: ''
               ${pkgs.calibre}/bin/calibre-customize --add-plugin=${lib.escapeShellArg (pluginZip plugin)}
             '') cfg.plugins}

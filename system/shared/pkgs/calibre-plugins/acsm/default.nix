@@ -69,8 +69,14 @@ stdenv.mkDerivation {
   # See: https://github.com/Leseratte10/acsm-calibre-plugin/issues/68#issuecomment-2162686156
   postPatch = ''
     substituteInPlace ./calibre-plugin/__init__.py \
-      --replace-fail 'libcrypto_path = os.getenv("ACSM_LIBCRYPTO", None)' 'libcrypto_path = os.getenv("ACSM_LIBCRYPTO", "${openssl.out}/lib/libcrypto.so")' \
-      --replace-fail 'libssl_path = os.getenv("ACSM_LIBSSL", None)' 'libssl_path = os.getenv("ACSM_LIBSSL", "${openssl.out}/lib/libssl.so")'
+      --replace-fail 'libcrypto_path = os.getenv("ACSM_LIBCRYPTO", None)' \
+        'libcrypto_path = os.getenv("ACSM_LIBCRYPTO", "${openssl.out}/lib/libcrypto.so")' \
+      --replace-fail 'libssl_path = os.getenv("ACSM_LIBSSL", None)' \
+        'libssl_path = os.getenv("ACSM_LIBSSL", "${openssl.out}/lib/libssl.so")' \
+      --replace-fail 'sys.path.insert(0, os.path.join(self.moddir, "oscrypto"))' \
+        'sys.path.insert(0, self.moddir)' \
+      --replace-fail 'sys.path.insert(0, os.path.join(self.moddir, "asn1crypto"))' \
+        'sys.path.insert(0, self.moddir)'
   '';
 
   buildPhase = ''
