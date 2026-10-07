@@ -82,6 +82,8 @@ in
     nixpkgs.overlays = [
       (final: prev: {
         bees = prev.bees.overrideAttrs (old: {
+          # the patch is not required (and causes errors) for the `master` branch on GitHub
+          patches = [ ];
           version = "master";
           src = prev.fetchFromGitHub {
             owner = "Zygo";
