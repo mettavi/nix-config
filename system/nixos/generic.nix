@@ -44,13 +44,6 @@
       options = "--delete-older-than 30d"; # Delete generations older than 30 days
       persistent = true;
     };
-    # for traditional nix commands like nix-shell, this sets <nixpkgs> AND points it to the local nix store
-    # NB: this value must be set explicitly because nix.channel = false (which will default nixPath to null)
-    nixPath = (options.nix.nixPath.default or [ ]) ++ [
-      "nixpkgs=${inputs.nixpkgs}"
-      "nixpkgs-overlays=${config.users.users.${username}.home}/${nix_repo}/system/overlays/shared"
-      "home-manager=${inputs.home-manager}"
-    ];
     optimise = {
       automatic = true;
       dates = "02:15";
@@ -82,6 +75,14 @@
       ++ lib.optionals config.home-manager.users.${username}.mettavi.shell.yazi.enable [
         "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
       ];
+      # for traditional nix commands like nix-shell, this sets <nixpkgs> AND points it to the local nix store
+      # NB: this value must be set explicitly because nix.channel = false (which will default nixPath to null)
+      nix-path = (options.nix.nixPath.default or [ ]) ++ [
+        "nixpkgs=${inputs.nixpkgs}"
+        "nixpkgs-overlays=${config.users.users.${username}.home}/${nix_repo}/system/overlays/shared"
+        "home-manager=${inputs.home-manager}"
+      ];
+
       trusted-users = [
         "root"
         "@wheel"
