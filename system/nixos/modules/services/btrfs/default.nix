@@ -86,8 +86,8 @@ in
           src = prev.fetchFromGitHub {
             owner = "Zygo";
             repo = "bees";
-            rev = "b8086fb41af052bdadf35dc13382604e246dc12c";
-            hash = "sha256-HmXCQB477AhEo7dormAv+d7jz4cKiQEHQie9VvUqUzM=";
+            rev = "f1558d64a58cb760e0b0159623277e1e75516c24";
+            hash = "sha256-vSjlt2oNjGq+8ppb5ASgHwAbPGJo4D3TjN3rSIZ5j7I=";
           };
         });
       })
