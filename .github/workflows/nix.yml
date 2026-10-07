@@ -55,11 +55,20 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      max-parallel: 1 # Build one host at a time
       matrix:
         # Replace these with your actual NixOS hostname attributes from flake.nix
         host: [oona, remus, blue]
     steps:
       - uses: actions/checkout@v7
+      - name: Free up disk space between builds
+        run: |
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache
+          sudo rm -rf /usr/local/share/boost
+          df -h
       - name: Set up SSH agent
         uses: webfactory/ssh-agent@v0.10.0
         with:
@@ -84,3 +93,4 @@ jobs:
           SKIP_CALIBRE_TESTS: "1"
         run: |
           nix build --no-update-lock-file .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+          nix-collect-garbage -d
