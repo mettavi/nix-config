@@ -18,6 +18,41 @@ in
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = [
+      # NB: This script is useful when the system version of glibc changes,
+      # which leads to warnings from postgres to refresh its DBs
+      (pkgs.writeShellScriptBin "pg-fix-collation" ''
+        set -e
+        echo "Refreshing PostgreSQL collations and reindexing all accessible databases..."
+
+        PSQL="${config.services.postgresql.package}/bin/psql -U postgres"
+
+        # Query all databases that allow connections (includes template1, excludes template0)
+        DBS=$(${config.services.postgresql.package}/bin/psql -U postgres -t -A -c "SELECT datname FROM pg_database WHERE datallowconn = true;")
+
+        for db in $DBS; do
+          echo "--------------------------------------------------"
+          echo "Processing database: $db"
+
+          # 1. Limit connections to 0 (blocks apps, permits superuser)
+          $PSQL -d postgres -c "ALTER DATABASE \"$db\" WITH CONNECTION LIMIT 0;" > /dev/null
+
+          # 2. Terminate active client connections
+          $PSQL -d postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '$db' AND pid <> pg_backend_pid();" > /dev/null
+
+          # 3. Perform maintenance
+          $PSQL -d "$db" -c "REINDEX DATABASE \"$db\";"
+          $PSQL -d "$db" -c "ALTER DATABASE \"$db\" REFRESH COLLATION VERSION;"
+
+          # 4. Restore default connection limit (-1 = unlimited)
+          $PSQL -d postgres -c "ALTER DATABASE \"$db\" WITH CONNECTION LIMIT -1;" > /dev/null
+        done
+
+        echo "--------------------------------------------------"
+        echo "Collation refresh complete! All databases isolated and updated safely."
+      '')
+    ];
+
     services = {
       postgresql = {
         enable = true;
