@@ -381,6 +381,8 @@ in
 
               # 3. ATOMIC DATABASE SESSION
               echo "Starting PostgreSQL backup session..." >> ${logFile}
+              echo "(NB: If there is a 'collation version mismatch' warning," >> ${logFile}
+              echo "run the 'pg-fix-collation' script to rebuild indexes with the new glibc system library.)" >> ${logFile}
 
               label_file=$(mktemp)
               spcmap_file=$(mktemp)
