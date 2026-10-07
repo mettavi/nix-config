@@ -84,6 +84,14 @@ stdenv.mkDerivation {
     cp ${asn1crypto} calibre-plugin/asn1crypto.zip
     cp ${oscrypto} calibre-plugin/oscrypto.zip
     bash ./bundle_calibre_plugin.sh
+    # Upstream hardcodes module_id.txt to a static string, so Calibre's
+    # own staleness check can never detect that our build changed which
+    # openssl path is baked in. Overwrite it with something that changes
+    # exactly when that does, so re-extraction only happens when it
+    # actually needs to.
+    echo -n "${baseNameOf openssl.out}" > module_id.txt
+    zip calibre-plugin.zip module_id.txt
+    rm module_id.txt
     runHook postBuild
   '';
 
