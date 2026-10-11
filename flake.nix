@@ -159,10 +159,14 @@
       flake = false;
     };
 
-    # install a pinned version of a nix package with:
-    # specific_package.url = "github:nixos/nixpkgs/specific_commit_hash_from_nixhub.io";
+    # INSTALL A PINNED VERSION OF A NIX PACKAGE WITH:
+    # METHOD 1 (flake.nix): specific_package.url = "github:nixos/nixpkgs/specific_commit_hash_from_nixhub.io";
     # Then add the following to environment.systemPackages or an overlay:
     # inputs.specific_package.legacyPackages.${pkgs.stdenv.hostPlatform.system}.package_name_from_nixhub.io
+    # METHOD 2 (flake.lock - simpler for short-term fixes, eg. when the bug fix is already committed):
+    # run 'nix flake metadata github:NixOS/nixpkgs/specific_commit_hash_from_nixpkgs";
+    # then remove the url encoding from the narHash value using the 'urldecode' alias
+    # and convert the lastModified value to a Unix timestamp with 'date -d "2026-10-10 06:04:25" +%s'
 
     # Pin Zotero to a nixpkgs revision whose Firefox ESR is 140, which Zotero
     # 10.x strictly requires. Newer nixpkgs bumped firefox-esr to 153 and the

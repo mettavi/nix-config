@@ -68,8 +68,10 @@ in
       ];
       # Assign the alias to different binaries depending on host OS
       shellAliases = {
-        ts = if pkgs.stdenv.hostPlatform.isDarwin then "trash" else "trash-put";
         rm = "echo 'Please use ts instead.'; false";
+        ts = if pkgs.stdenv.hostPlatform.isDarwin then "trash" else "trash-put";
+        # use this with 'nix flake metadata` to remove url encoding when pinning an input directly in flake.loc
+        urldecode = "python3 -c \"import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1]))\"";
       };
       shellGlobalAliases = {
         # use gnu ls on darwin for nicer default colors
