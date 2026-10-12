@@ -124,8 +124,6 @@ with lib;
     '')
   ];
 
-  # patch the asusctl package to include "aura" keyboard lighting definitions for this model laptop
-  # NB: git clone the repo, add the new lines and then run 'git diff > ../aura_support_ga403w.patch
   nixpkgs.overlays = [
     (final: prev: {
       # TODO: Remove this overlay when v6.0.8 hits nixos-unstable branch
