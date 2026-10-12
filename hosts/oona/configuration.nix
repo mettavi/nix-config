@@ -176,18 +176,6 @@ with lib;
             final.python3Packages.keyring
             final.python3Packages.secretstorage # SecretService/gnome-keyring backend
           ];
-
-          # 3. Retain your original map window canvas variables
-          qtWrapperArgs = (oldAttrs.qtWrapperArgs or [ ]) ++ [
-            "--prefix"
-            "GI_TYPELIB_PATH"
-            ":"
-            "${final.osm-gps-map}/lib/girepository-1.0:${final.gtk3}/lib/girepository-1.0"
-            "--prefix"
-            "GSETTINGS_SCHEMAS_PATH"
-            ":"
-            "${final.gtk3}/share/gsettings-schemas/${final.gtk3.name}"
-          ];
         });
     })
   ];
