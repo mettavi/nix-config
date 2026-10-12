@@ -187,12 +187,38 @@ in
       sops.secrets = {
         "users/${username}/email/${inputs.secrets.email.burner}" = emailSecrets;
       };
-      xdg.autostart = {
-        enable = true;
-        entries = [
-          "${pkgs.variety}/share/applications/variety.desktop"
-        ];
-      };
+      xdg =
+        let
+          personfs-upstream = pkgs.fetchFromGitHub {
+            owner = "jmichault";
+            repo = "gramps-kromprogramoj";
+            rev = "f43fa5bb2ba4ddcd153bfcc8c69c37c77fc69cd9"; # pin a commit, not the branch name
+            hash = "sha256-695AL5qe+oJqp70/Pyjv827iDq6BbflE9l49moU79hY=";
+          };
+          personfs = pkgs.runCommand "gramps-addon-PersonFS" { nativeBuildInputs = [ pkgs.gettext ]; } ''
+            cp -r ${personfs-upstream}/fontoj/PersonFS $out
+            chmod -R u+w $out
+            for po in $out/po/*-local.po; do
+              lang=$(basename "$po" -local.po)
+              mkdir -p "$out/locale/$lang/LC_MESSAGES"
+              msgfmt "$po" -o "$out/locale/$lang/LC_MESSAGES/addon.mo"
+            done
+          '';
+        in
+        {
+          autostart = {
+            enable = true;
+            entries = [
+              "${pkgs.variety}/share/applications/variety.desktop"
+            ];
+          };
+          dataFile = {
+            "gramps/gramps60/plugins/PersonFS" = {
+              source = personfs;
+              recursive = true;
+            };
+          };
+        };
     };
   };
 }
