@@ -347,6 +347,9 @@ in
             "${cfg.vaultsParent}/Evernote" = {
               enable = true;
             };
+            "${cfg.vaultsParent}/myNotes" = {
+              enable = true;
+            };
             "${cfg.vaultsParent}/AABCAP 2025-26" = {
               enable = false;
               settings = {
