@@ -147,14 +147,6 @@ with lib;
 
         in
         prev.gramps.overrideAttrs (oldAttrs: {
-          version = "6.0.8";
-          src = prev.fetchFromGitHub {
-            owner = "gramps-project";
-            repo = "gramps";
-            rev = "v6.0.8";
-            hash = "sha256-Kq+QyhghBmUzl+ooCYSl2yNMvrBDnQS6Zg3nBI1jbRo=";
-          };
-
           # 2. Append extra modules to the core pythonPath wrapper target
           # This safely extends the path without breaking baseline GTK/GDK layers
           pythonPath = (oldAttrs.pythonPath or [ ]) ++ [
