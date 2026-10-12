@@ -49,11 +49,11 @@ in
 
   zotero-reading-list = buildZoteroXpiAddon rec {
     pname = "zotero-reading-list";
-    version = "1.7.0";
+    version = "1.7.1";
     addonId = "reading-list@hotmail.com";
 
     url = "https://github.com/Dominic-DallOsto/zotero-reading-list/releases/download/v${version}/zotero-reading-list.xpi";
-    hash = "sha256-Feva9EHmIBaEWNhMGynptyopHeveoPWdjSEFL2KDlnA=";
+    hash = "sha256-5JQkFUuAi9daoal43MZbw7C8qtNqTvPP6c/aBACsGZU=";
 
     passthru.updateScript = pkgs.nix-update-script {
       extraArgs = [
