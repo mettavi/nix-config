@@ -143,6 +143,26 @@ with lib;
             build-system = [ final.python3Packages.setuptools ];
             propagatedBuildInputs = [ final.python3Packages.requests ];
             doCheck = false;
+
+            # Python 3.14 (PEP 649/749): annotations are no longer stored in the
+            # class __dict__, so the original all_annotations() returns nothing.
+            postPatch = ''
+              substituteInPlace gedcomx_v1/_utila.py \
+                --replace-fail \
+                "ChainMap(*(k.__annotations__ for k in klaso.__mro__ if '__annotations__' in k.__dict__) )" \
+                "ChainMap(*(_ann(k) for k in klaso.__mro__))"
+
+              cat >> gedcomx_v1/_utila.py <<'EOF'
+
+              def _ann(k):
+                try:
+                  import annotationlib
+                  return annotationlib.get_annotations(
+                    k, format=annotationlib.Format.FORWARDREF)
+                except ImportError:
+                  return k.__dict__.get('__annotations__', {})
+              EOF
+            '';
           };
 
         in
