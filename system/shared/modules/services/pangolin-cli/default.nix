@@ -26,6 +26,11 @@ in
       pangolin-cli # Pangolin cli tool and VPS client
     ];
 
+    # Pin the hostname to the gateway VPS’s public IP in /etc/hosts
+    networking.hosts.${inputs.secrets.vps.pangolin.ip} = [
+      "pangolin.${inputs.secrets.domain.primary}"
+    ];
+
     networking.firewall = {
       enable = true;
       # Allow traffic on the pangolin virtual interface
