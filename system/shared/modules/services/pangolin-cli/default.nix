@@ -55,14 +55,25 @@ in
           ExecStart = "${pkgs.pangolin-cli}/bin/pangolin up --id \${CLIENT_ID} --secret \${CLIENT_SECRET} --endpoint \${PANGOLIN_ENDPOINT} --attach";
           # Apply split-DNS routing rules directly to the pangolin interface
           ExecStartPost = pkgs.writeShellScript "pangolin-split-dns" ''
-            # Wait briefly for the pangolin interface to initialize
-            sleep 5
-            # Assign the tunnel DNS to the pangolin interface only
-            ${pkgs.systemd}/bin/resolvectl dns pangolin 100.96.128.1
-            # The '~' prefix defines this as a Routing Domain (only queries matching this domain go to 100.96.128.1)
-            ${pkgs.systemd}/bin/resolvectl domain pangolin "~${inputs.secrets.domain.primary}"
-            # Prevent pangolin from being used for general internet DNS queries
-            resolvectl default-route pangolin false
+            # Wait up to 60s for the interface to appear
+            for i in $(seq 1 60); do
+              if ${pkgs.iproute2}/bin/ip link show pangolin >/dev/null 2>&1; then
+                break
+              fi
+              sleep 1
+            done
+
+            if ! ${pkgs.iproute2}/bin/ip link show pangolin >/dev/null 2>&1; then
+              echo "pangolin interface never appeared" >&2
+              exit 1
+            fi
+
+              # Assign the tunnel DNS to the pangolin interface only
+              ${pkgs.systemd}/bin/resolvectl dns pangolin 100.96.128.1
+              # The '~' prefix defines this as a Routing Domain (only queries matching this domain go to 100.96.128.1)
+              ${pkgs.systemd}/bin/resolvectl domain pangolin "~${inputs.secrets.domain.primary}"
+              # Prevent pangolin from being used for general internet DNS queries
+              ${pkgs.systemd}/bin/resolvectl default-route pangolin false
           '';
           # Hardening measures (optional but recommended)
           ProtectSystem = "strict";
