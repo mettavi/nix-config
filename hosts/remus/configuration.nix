@@ -60,6 +60,7 @@
       };
       profiles = {
         # hostinger vps (eg. ssh hardening)
+        # NB: No need for secrets as this VPS is intentionally public-facing
         vps = {
           enable = true;
           netInterface = "eth0";
