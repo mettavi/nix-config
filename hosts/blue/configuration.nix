@@ -1,4 +1,5 @@
 {
+  inputs,
   modulesPath,
   username,
   ...
@@ -64,14 +65,14 @@
           enable = true;
           netInterface = "ens18";
           ip4 = {
-            addr = "187.127.105.244";
+            addr = "${inputs.secrets.vps.app.ip4.addr}";
             prefix = 24;
-            gateway = "187.127.105.254";
+            gateway = "${inputs.secrets.vps.app.ip4.gateway}";
           };
           ip6 = {
-            addr = "2a02:4780:5e:616::1";
+            addr = "${inputs.secrets.vps.app.ip6.addr}";
             prefix = 48;
-            gateway = "2a02:4780:5e::1";
+            gateway = "${inputs.secrets.vps.app.ip6.gateway}";
           };
         };
       };
