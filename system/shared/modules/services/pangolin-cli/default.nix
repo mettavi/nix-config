@@ -46,6 +46,14 @@ in
         after = [ "network.target" ];
         description = "Pangolin Machine Client Service";
         serviceConfig = {
+          # Provide persistent state directory & set $HOME
+          Environment = [
+            "HOME=/var/lib/pangolin"
+            "PANGOLIN_ENDPOINT=https://pangolin.${inputs.secrets.domain.primary}"
+            # direct the root systemd service to the user config path
+            # (e.g. to pick up accounts.json for authentication)
+            "XDG_CONFIG_HOME=${config.home-manager.users.${username}.xdg.configHome}"
+          ];
           # Load environment variables securely at service start
           EnvironmentFile = config.sops.secrets."users/${username}/pangolin-cli-${hostname}.env".path;
           # Run in foreground (--attach) so systemd can track process state
@@ -79,15 +87,7 @@ in
           ProtectSystem = "strict";
           ProtectHome = true; # Keeps /home inaccessible; /var/lib is unaffected
           Restart = "always";
-          RestartSec = "5s";
-          # Provide persistent state directory & set $HOME
-          Environment = [
-            "HOME=/var/lib/pangolin"
-            "PANGOLIN_ENDPOINT=https://pangolin.${inputs.secrets.domain.primary}"
-            # direct the root systemd service to the user config path
-            # (e.g. to pick up accounts.json for authentication)
-            "XDG_CONFIG_HOME=${config.home-manager.users.${username}.xdg.configHome}"
-          ];
+          RestartSec = "15s";
           StateDirectory = "pangolin";
           WorkingDirectory = "/var/lib/pangolin";
         };
