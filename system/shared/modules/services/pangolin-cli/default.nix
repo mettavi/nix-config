@@ -48,7 +48,7 @@ in
     systemd.services = {
       pangolin-cli = {
         enable = true;
-        after = [ "network.target" ];
+        after = [ "network-online.target" ];
         description = "Pangolin Machine Client Service";
         serviceConfig = {
           # Provide persistent state directory & set $HOME
@@ -88,12 +88,17 @@ in
               # Prevent pangolin from being used for general internet DNS queries
               ${pkgs.systemd}/bin/resolvectl default-route pangolin false
           '';
+          # Clean up on stop, so a killed service doesn’t leave things behind
+          # NB: The leading - tolerates failure when the interface is already gone
+          ExecStopPost = "-${pkgs.systemd}/bin/resolvectl revert pangolin";
           # Hardening measures (optional but recommended)
           ProtectSystem = "strict";
           ProtectHome = true; # Keeps /home inaccessible; /var/lib is unaffected
           Restart = "always";
           RestartSec = "15s";
           StateDirectory = "pangolin";
+          # Give ExecStartPost enough time to wait
+          TimeoutStartSec = "90s";
           WorkingDirectory = "/var/lib/pangolin";
         };
         wants = [ "network-online.target" ];
