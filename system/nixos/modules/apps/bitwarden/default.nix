@@ -79,8 +79,6 @@ in
             LABEL=${cfg.server.label}
             # create a two-letter abbreviation for the exported file
             LABEL_ABBREV="${substring 0 1 cfg.server.label + "w"}"
-            # Capitalize the label for email
-            LABEL_CAP="${toUpper (substring 0 1 cfg.server.label) + (substring 1 (-1) cfg.server.label)}"
 
             # load env vars required by script and bw binary
             # shellcheck disable=SC1090,SC1091
