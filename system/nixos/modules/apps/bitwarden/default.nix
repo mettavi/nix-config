@@ -92,6 +92,8 @@ in
             set -uo pipefail
             umask 077
 
+            # a missing or empty value fails the run immediately 
+            # instead of producing a backup encrypted with an empty passphrase
             : "''${OPENSSL_ENC_PASS:?OPENSSL_ENC_PASS is not set}"
             export OPENSSL_ENC_PASS
 
