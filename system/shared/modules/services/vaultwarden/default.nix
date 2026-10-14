@@ -40,6 +40,10 @@ in
       config = {
         DOMAIN = "https://vault.${inputs.secrets.domain.primary}"; # must match the resource hostname you create in Pangolin
         EMERGENCY_ACCESS_ALLOWED = true;
+        # Enable biometric unlock over the SDK IPC framework (Desktop >= 2026.9.0, Browser >= 2026.9.0)
+        # TODO: enable the next line when https://github.com/dani-garcia/vaultwarden/pull/7813 ships,
+        # probably with version 1.37.5.
+        # EXPERIMENTAL_CLIENT_FEATURE_FLAGS = "biometrics-sdk-ipc";
         SENDS_ALLOWED = true;
         SIGNUPS_ALLOWED = false;
         SIGNUPS_VERIFY = true;
