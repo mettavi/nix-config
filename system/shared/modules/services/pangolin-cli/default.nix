@@ -62,7 +62,6 @@ in
           # Load environment variables securely at service start
           EnvironmentFile = config.sops.secrets."users/${username}/pangolin-cli-${hostname}.env".path;
           # Run in foreground (--attach) so systemd can track process state
-          # ExecStart = "${pkgs.pangolin-cli}/bin/pangolin up --endpoint https://pangolin.${inputs.secrets.domain.primary} --attach";
           # Systemd performs the \${VAR} substitution dynamically at runtime!
           # This keeps your Nix store completely clean of any hardcoded secrets.
           ExecStart = "${pkgs.pangolin-cli}/bin/pangolin up --id \${CLIENT_ID} --secret \${CLIENT_SECRET} --endpoint \${PANGOLIN_ENDPOINT} --attach";
