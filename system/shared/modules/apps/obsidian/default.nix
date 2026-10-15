@@ -121,7 +121,39 @@ in
     enabledCorePlugins = {
       default = mkOption {
         type = types.listOf types.str;
-        default = [ ];
+        default = [
+          "audio-recorder"
+          "backlink"
+          "bases"
+          "bookmarks"
+          "canvas"
+          "command-palette"
+          "daily-notes"
+          "editor-status"
+          "file-explorer"
+          "file-recovery"
+          "footnotes"
+          "global-search"
+          "graph"
+          "markdown-importer"
+          "note-composer"
+          "outgoing-link"
+          "outline"
+          "page-preview"
+          "properties"
+          "publish"
+          "random-note"
+          "slash-command"
+          "slides"
+          "switcher"
+          "sync"
+          "tag-pane"
+          "templates"
+          "webviewer"
+          "word-count"
+          "workspaces"
+          "zk-prefixer"
+        ];
         description = "Core plugins enabled in every vault.";
       };
       perVault = mkOption {
