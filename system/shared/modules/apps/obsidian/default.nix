@@ -213,6 +213,11 @@ in
 
     # NB: any settings included here will be MERGED by an activation script along with any values set by the GUI
     mettavi.apps.obsidian = {
+      enabledCommunityPlugins.perVault = {
+        "${cfg.vaultsParent}/Evernote".add = with pkgs.obsidianPlugins; [
+          obsidian-importer
+        ];
+      };
       # Settings merged into every enabled vault's live config files
       pinnedDefaultSettings = {
         app = {
