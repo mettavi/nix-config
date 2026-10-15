@@ -395,7 +395,7 @@ in
             # {
             #   pkg = pkgs.obsidianPlugins.templater-obsidian;
             #   enable = true;
-            # # no `settings` key here -> data.json is GUI territory
+            # no `settings` key here -> data.json is GUI territory
             # }
             # INSTALLED BUT CURRENTLY SWITCHED OFF (STILL NIX-CONTROLLED TOGGLE):
             # {
