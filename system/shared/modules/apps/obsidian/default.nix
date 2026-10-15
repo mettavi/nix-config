@@ -313,7 +313,7 @@ in
             # Plugin attributes use the IDs from the official Obsidian plugin registry.
             # They do not always match the display names shown in Obsidian.
             # Check ${pkgs.obsidianPlugins.foo}/manifest.json's id field,
-            # or just look at the folder once the plugin's installed.
+            # or just look at the folder once the plugin is installed.
             communityPlugins = with pkgs.obsidianPlugins; [
               # BARE PACKAGE (COERCED TO { PKG = P; }): SETTINGS DEFAULTS TO NULL.
               # -> INSTALLED + ENABLED VIA NIX, DATA.JSON FULLY GUI-MANAGED.
