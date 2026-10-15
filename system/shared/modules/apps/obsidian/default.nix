@@ -32,6 +32,10 @@ let
         default = null;
         description = "Keys merged into appearance.json.";
       };
+      # Plugin attributes use the IDs from the official Obsidian plugin registry.
+      # They do not always match the display names shown in Obsidian.
+      # Check ${pkgs.obsidianPlugins.foo}/manifest.json's id field,
+      # or just look at the folder once the plugin is installed.
       communityPlugins = mkOption {
         type = types.attrsOf jsonFormat.type;
         default = { };
