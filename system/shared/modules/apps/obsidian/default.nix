@@ -383,42 +383,8 @@ in
           # NB: Vault-specific settings take priority and will REPLACE (not merge) these, if set.
           # Core plugins omitted from this list are disabled.
           defaultSettings = {
-            corePlugins = [
-              "audio-recorder"
-              "backlink"
-              "bases"
-              "bookmarks"
-              "canvas"
-              "command-palette"
-              "daily-notes"
-              "editor-status"
-              "file-explorer"
-              "file-recovery"
-              "footnotes"
-              "global-search"
-              "graph"
-              "markdown-importer"
-              "note-composer"
-              "outgoing-link"
-              "outline"
-              "page-preview"
-              "properties"
-              "publish"
-              "random-note"
-              "slash-command"
-              "slides"
-              "switcher"
-              "sync"
-              "tag-pane"
-              "templates"
-              "webviewer"
-              "word-count"
-              "workspaces"
-              "zk-prefixer"
-            ];
-            # Use this as an override for any vault which ADDS to this default global list
-            # See 'programs.obsidian.vaults...Evernote' below for an example
-            communityPlugins = sharedCommunityPlugins;
+            communityPlugins = cfg.enabledCommunityPlugins.default;
+            corePlugins = cfg.enabledCorePlugins.default;
             # BARE PACKAGE (COERCED TO { PKG = P; }): SETTINGS DEFAULTS TO NULL.
             # -> INSTALLED + ENABLED VIA NIX, DATA.JSON FULLY GUI-MANAGED.
             # omnisearch
