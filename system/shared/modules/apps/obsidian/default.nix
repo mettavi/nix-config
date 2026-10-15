@@ -158,6 +158,15 @@ in
         pkgs,
         ...
       }:
+      let
+        # Plugin attributes use the IDs from the official Obsidian plugin registry.
+        # They do not always match the display names shown in Obsidian.
+        # Check ${pkgs.obsidianPlugins.foo}/manifest.json's id field,
+        # or just look at the folder once the plugin is installed.
+        sharedCommunityPlugins = with pkgs.obsidianPlugins; [
+          omnisearch
+        ];
+      in
       {
         assertions =
           lib.mapAttrsToList (vaultName: vaultCfg: {
@@ -310,36 +319,32 @@ in
               "workspaces"
               "zk-prefixer"
             ];
-            # Plugin attributes use the IDs from the official Obsidian plugin registry.
-            # They do not always match the display names shown in Obsidian.
-            # Check ${pkgs.obsidianPlugins.foo}/manifest.json's id field,
-            # or just look at the folder once the plugin is installed.
-            ##### ADD THESE PLUGINS IN ALL VAULTS #####
-            communityPlugins = with pkgs.obsidianPlugins; [
-              # BARE PACKAGE (COERCED TO { PKG = P; }): SETTINGS DEFAULTS TO NULL.
-              # -> INSTALLED + ENABLED VIA NIX, DATA.JSON FULLY GUI-MANAGED.
-              omnisearch
-              # SAME THING, SPELLED OUT, PLUS EXPLICIT ENABLE CONTROL:
-              # {
-              #   pkg = pkgs.obsidianPlugins.templater-obsidian;
-              #   enable = true;
-              # # no `settings` key here -> data.json is GUI territory
-              # }
-              # INSTALLED BUT CURRENTLY SWITCHED OFF (STILL NIX-CONTROLLED TOGGLE):
-              # {
-              #   pkg = pkgs.obsidianPlugins.highlightr-plugin;
-              #   enable = false;
-              # }
-              # FULLY NIX-MANAGED (NO GUI), FOR COMPARISON:
-              # {
-              #   enable = true;
-              #   pkg = pkgs.obsidianPlugins.omnisearch;
-              #   # Settings to include in the plugin’s data.json.
-              #   settings = {
-              #     ribbonIcon = true; # data.json fully replaced every activation
-              #   };
-              # }
-            ];
+            # Use this as an override for any vault which ADDS to this default global list
+            # See 'programs.obsidian.vaults...Evernote' below for an example
+            communityPlugins = sharedCommunityPlugins;
+            # BARE PACKAGE (COERCED TO { PKG = P; }): SETTINGS DEFAULTS TO NULL.
+            # -> INSTALLED + ENABLED VIA NIX, DATA.JSON FULLY GUI-MANAGED.
+            # omnisearch
+            # SAME THING, SPELLED OUT, PLUS EXPLICIT ENABLE CONTROL:
+            # {
+            #   pkg = pkgs.obsidianPlugins.templater-obsidian;
+            #   enable = true;
+            # # no `settings` key here -> data.json is GUI territory
+            # }
+            # INSTALLED BUT CURRENTLY SWITCHED OFF (STILL NIX-CONTROLLED TOGGLE):
+            # {
+            #   pkg = pkgs.obsidianPlugins.highlightr-plugin;
+            #   enable = false;
+            # }
+            # FULLY NIX-MANAGED (NO GUI), FOR COMPARISON:
+            # {
+            #   enable = true;
+            #   pkg = pkgs.obsidianPlugins.omnisearch;
+            #   # Settings to include in the plugin’s data.json.
+            #   settings = {
+            #     ribbonIcon = true; # data.json fully replaced every activation
+            #   };
+            # }
             themes = with pkgs.obsidianThemes; [
               catppuccin
             ];
@@ -352,11 +357,14 @@ in
             "${cfg.vaultsParent}/Evernote" = {
               enable = true;
               settings = {
-                communityPlugins = with pkgs.obsidianPlugins; [
-                  obsidian-importer
-                ];
+                communityPlugins =
+                  sharedCommunityPlugins
+                  ++ (with pkgs.obsidianPlugins; [
+                    obsidian-importer
+                  ]);
               };
             };
+            # no override, so it inherits defaultSettings.communityPlugins
             "${cfg.vaultsParent}/myNotes" = {
               enable = true;
             };
