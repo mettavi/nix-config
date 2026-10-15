@@ -234,13 +234,12 @@ in
       # Per-vault overrides/additions on top of `pinnedDefaultSettings`
       pinnedSettings = {
         # "${cfg.vaultsParent}/Evernote" = {
-        # bookmarks = { ... };  # DON'T — bookmarks.json is essentially one big
+        # corePlugins.bookmarks = { ... };  # DON'T — bookmarks.json is essentially one big
         # `items` array; pinning anything here would
         # wipe out GUI-added bookmarks on next rebuild.
         # Leave bookmarks.json out of both `corePlugins`
         # here and `programs.obsidian...corePlugins`
         # entirely if you want it GUI-owned.
-        # };
         # };
         # "${cfg.vaultsParent}/Personal Notes" = {
         #   app.spellcheck = true;
@@ -261,15 +260,6 @@ in
         pkgs,
         ...
       }:
-      let
-        # Plugin attributes use the IDs from the official Obsidian plugin registry.
-        # They do not always match the display names shown in Obsidian.
-        # Check ${pkgs.obsidianPlugins.foo}/manifest.json's id field,
-        # or just look at the folder once the plugin is installed.
-        sharedCommunityPlugins = with pkgs.obsidianPlugins; [
-          omnisearch
-        ];
-      in
       {
         assertions =
           lib.mapAttrsToList (vaultName: vaultCfg: {
