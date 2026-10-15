@@ -269,7 +269,7 @@ in
           with pkgs.nur.repos.rycee.firefox-addons;
           optionals (config.mettavi.apps.firefox.enable) [ web-clipper-obsidian ];
 
-        # NB: Any plugin's settings configured here 
+        # NB: Any plugin's settings configured here
         # will overwrite ALL its GUI-configured settings (if set)
         # Prefer the pinnedDefaultSettings and pinnedSettings options, which are more flexible
         programs.obsidian = {
@@ -314,10 +314,10 @@ in
             # They do not always match the display names shown in Obsidian.
             # Check ${pkgs.obsidianPlugins.foo}/manifest.json's id field,
             # or just look at the folder once the plugin is installed.
+            ##### ADD THESE PLUGINS IN ALL VAULTS #####
             communityPlugins = with pkgs.obsidianPlugins; [
               # BARE PACKAGE (COERCED TO { PKG = P; }): SETTINGS DEFAULTS TO NULL.
               # -> INSTALLED + ENABLED VIA NIX, DATA.JSON FULLY GUI-MANAGED.
-              obsidian-importer
               omnisearch
               # SAME THING, SPELLED OUT, PLUS EXPLICIT ENABLE CONTROL:
               # {
@@ -351,6 +351,11 @@ in
             # inherit most of the defaults from pinnedDefaultSettings
             "${cfg.vaultsParent}/Evernote" = {
               enable = true;
+              settings = {
+                communityPlugins = with pkgs.obsidianPlugins; [
+                  obsidian-importer
+                ];
+              };
             };
             "${cfg.vaultsParent}/myNotes" = {
               enable = true;
