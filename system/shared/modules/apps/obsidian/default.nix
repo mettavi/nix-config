@@ -46,6 +46,9 @@ let
         default = { };
         description = "Core plugin name -> keys merged into its <name>.json.";
       };
+      # used for non-standard settings files, such as files which are not tied to a plugin
+      # (eg. types.json, for property types in front matter)
+      # or perhaps a second JSON file belonging to a plugin (not stored in data.json)
       files = mkOption {
         type = types.attrsOf jsonFormat.type;
         default = { };
