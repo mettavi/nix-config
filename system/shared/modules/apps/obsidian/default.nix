@@ -14,10 +14,11 @@ let
   emptyPinnedVaultSettings = {
     app = null;
     appearance = null;
-    hotkeys = null;
-    corePlugins = { };
-    plugins = { };
     files = { };
+    folders = [ ];
+    hotkeys = null;
+    communityPlugins = { };
+    corePlugins = { };
   };
   pinnedVaultSettingsSubmodule = types.submodule {
     options = {
@@ -31,25 +32,30 @@ let
         default = null;
         description = "Keys merged into appearance.json.";
       };
-      hotkeys = mkOption {
-        type = types.nullOr jsonFormat.type;
-        default = null;
-        description = "Keys merged into hotkeys.json.";
+      communityPlugins = mkOption {
+        type = types.attrsOf jsonFormat.type;
+        default = { };
+        description = "Community plugin manifest id -> keys merged into its data.json.";
       };
       corePlugins = mkOption {
         type = types.attrsOf jsonFormat.type;
         default = { };
         description = "Core plugin name -> keys merged into its <name>.json.";
       };
-      plugins = mkOption {
-        type = types.attrsOf jsonFormat.type;
-        default = { };
-        description = "Community plugin manifest id -> keys merged into its data.json.";
-      };
       files = mkOption {
         type = types.attrsOf jsonFormat.type;
         default = { };
         description = "Path relative to .obsidian/ -> keys merged into that JSON file.";
+      };
+      folders = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "Folders (relative to the vault root) to create if missing.";
+      };
+      hotkeys = mkOption {
+        type = types.nullOr jsonFormat.type;
+        default = null;
+        description = "Keys merged into hotkeys.json.";
       };
     };
   };
@@ -67,10 +73,11 @@ let
   mergePinned = base: override: {
     app = mergeMaybe base.app override.app;
     appearance = mergeMaybe base.appearance override.appearance;
-    hotkeys = mergeMaybe base.hotkeys override.hotkeys;
+    communityPlugins = lib.recursiveUpdate base.plugins override.plugins;
     corePlugins = lib.recursiveUpdate base.corePlugins override.corePlugins;
-    plugins = lib.recursiveUpdate base.plugins override.plugins;
     files = lib.recursiveUpdate base.files override.files;
+    folders = lib.unique (base.folders ++ override.folders);
+    hotkeys = mergeMaybe base.hotkeys override.hotkeys;
   };
 in
 {
@@ -80,10 +87,57 @@ in
       default = false;
       description = "Install and configure Obsidian";
     };
-    vaultsParent = mkOption {
-      type = types.str;
-      default = "Documents/Obsidian";
-      description = "Where the Obsidian vaults are saved";
+    enabledCommunityPlugins = {
+      default = mkOption {
+        type = types.listOf types.str;
+        default = with pkgs.obsidianPlugins; [
+          omnisearch
+        ];
+        description = "Community plugins enabled in every vault.";
+      };
+      perVault = mkOption {
+        type = types.attrsOf (
+          types.submodule {
+            options = {
+              add = mkOption {
+                type = types.listOf types.str;
+                default = [ ];
+              };
+              remove = mkOption {
+                type = types.listOf types.str;
+                default = [ ];
+              };
+            };
+          }
+        );
+        default = { };
+        description = "Per-vault additions and removals, keyed by vault path.";
+      };
+    };
+    enabledCorePlugins = {
+      default = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "Core plugins enabled in every vault.";
+      };
+      perVault = mkOption {
+        type = types.attrsOf (
+          types.submodule {
+            options = {
+              add = mkOption {
+                type = types.listOf types.str;
+                default = [ ];
+              };
+              remove = mkOption {
+                type = types.listOf types.str;
+                default = [ ];
+              };
+            };
+          }
+        );
+        default = { };
+        description = "Per-vault additions and removals, keyed by vault path.";
+      };
     };
     pinnedDefaultSettings = mkOption {
       type = pinnedVaultSettingsSubmodule;
@@ -108,6 +162,11 @@ in
         activation and your merged patch is discarded.
       '';
     };
+    vaultsParent = mkOption {
+      type = types.str;
+      default = "Documents/Obsidian";
+      description = "Where the Obsidian vaults are saved";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -127,6 +186,9 @@ in
         corePlugins = {
           templates.folder = "Utilities/Templates"; # flat file — safe to pin
         };
+        folders = [
+          "Utilities/Templates"
+        ];
       };
       # Per-vault overrides/additions on top of `pinnedDefaultSettings`
       pinnedSettings = {
@@ -253,9 +315,13 @@ in
               let
                 obsidianDir = "${config.home.homeDirectory}/${vaultName}/.obsidian";
                 vaultCfg = effectiveFor vaultName;
+                vaultRoot = "${config.home.homeDirectory}/${vaultName}";
               in
               lib.concatStrings (
-                lib.optional (vaultCfg.app != null) (mkPatch "${obsidianDir}/app.json" vaultCfg.app)
+                (map (folder: ''
+                  mkdir -p ${lib.escapeShellArg "${vaultRoot}/${folder}"}
+                '') vaultCfg.folders)
+                ++ lib.optional (vaultCfg.app != null) (mkPatch "${obsidianDir}/app.json" vaultCfg.app)
                 ++ lib.optional (vaultCfg.appearance != null) (
                   mkPatch "${obsidianDir}/appearance.json" vaultCfg.appearance
                 )
@@ -265,7 +331,7 @@ in
                 ) vaultCfg.corePlugins
                 ++ lib.mapAttrsToList (
                   pluginId: values: mkPatch "${obsidianDir}/plugins/${pluginId}/data.json" values
-                ) vaultCfg.plugins
+                ) vaultCfg.communityPlugins
                 ++ lib.mapAttrsToList (relPath: values: mkPatch "${obsidianDir}/${relPath}" values) vaultCfg.files
               );
           in
