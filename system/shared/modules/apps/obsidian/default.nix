@@ -123,7 +123,9 @@ in
           alwaysUpdateLinks = true;
           spellcheck = true;
         };
-        corePlugins.templates.folder = "Utilities/Templates"; # flat file — safe to pin
+        corePlugins = {
+          templates.folder = "Utilities/Templates"; # flat file — safe to pin
+        };
       };
       pinnedSettings = {
         # "${cfg.vaultsParent}/Evernote" = {
