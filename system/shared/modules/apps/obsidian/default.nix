@@ -283,7 +283,7 @@ in
         # Prefer the pinnedDefaultSettings and pinnedSettings options, which are more flexible
         programs.obsidian = {
           enable = true;
-          # NB: Vault-specific settings take priority and will override these, if set.
+          # NB: Vault-specific settings take priority and will REPLACE (not merge) these, if set.
           # Core plugins omitted from this list are disabled.
           defaultSettings = {
             corePlugins = [
