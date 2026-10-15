@@ -73,7 +73,7 @@ let
   mergePinned = base: override: {
     app = mergeMaybe base.app override.app;
     appearance = mergeMaybe base.appearance override.appearance;
-    communityPlugins = lib.recursiveUpdate base.plugins override.plugins;
+    communityPlugins = lib.recursiveUpdate base.communityPlugins override.communityPlugins;
     corePlugins = lib.recursiveUpdate base.corePlugins override.corePlugins;
     files = lib.recursiveUpdate base.files override.files;
     folders = lib.unique (base.folders ++ override.folders);
@@ -89,7 +89,7 @@ in
     };
     enabledCommunityPlugins = {
       default = mkOption {
-        type = types.listOf types.str;
+        type = types.listOf types.package;
         default = with pkgs.obsidianPlugins; [
           omnisearch
         ];
@@ -100,11 +100,11 @@ in
           types.submodule {
             options = {
               add = mkOption {
-                type = types.listOf types.str;
+                type = types.listOf types.package;
                 default = [ ];
               };
               remove = mkOption {
-                type = types.listOf types.str;
+                type = types.listOf types.package;
                 default = [ ];
               };
             };
