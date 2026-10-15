@@ -116,8 +116,9 @@ in
       inputs.obsidian-extensions.overlays.default
     ];
 
-    # any settings included here will be MERGED by an activation script along with any values set by the GUI
+    # NB: any settings included here will be MERGED by an activation script along with any values set by the GUI
     mettavi.apps.obsidian = {
+      # Settings merged into every enabled vault's live config files
       pinnedDefaultSettings = {
         app = {
           alwaysUpdateLinks = true;
@@ -127,6 +128,7 @@ in
           templates.folder = "Utilities/Templates"; # flat file — safe to pin
         };
       };
+      # Per-vault overrides/additions on top of `pinnedDefaultSettings`
       pinnedSettings = {
         # "${cfg.vaultsParent}/Evernote" = {
         # bookmarks = { ... };  # DON'T — bookmarks.json is essentially one big
@@ -267,10 +269,11 @@ in
           with pkgs.nur.repos.rycee.firefox-addons;
           optionals (config.mettavi.apps.firefox.enable) [ web-clipper-obsidian ];
 
+        # NB: Any plugin's settings configured here 
+        # will overwrite ALL its GUI-configured settings (if set)
+        # Prefer the pinnedDefaultSettings and pinnedSettings options, which are more flexible
         programs.obsidian = {
           enable = true;
-          # NB: Any plugin's settings configured here AND/OR in a vault's settings
-          # will overwrite ALL its GUI-configured settings (if set)
           # NB: Vault-specific settings take priority and will override these, if set.
           # Core plugins omitted from this list are disabled.
           defaultSettings = {
