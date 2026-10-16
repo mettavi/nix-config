@@ -86,6 +86,11 @@ let
     folders = lib.unique (base.folders ++ override.folders);
     hotkeys = mergeMaybe base.hotkeys override.hotkeys;
   };
+
+  vaults = {
+    evernote = "${cfg.vaultsParent}/Evernote";
+    myNotes = "${cfg.vaultsParent}/myNotes";
+  };
 in
 {
   options.mettavi.apps.obsidian = {
@@ -217,7 +222,7 @@ in
     # NB: any settings included here will be MERGED by an activation script along with any values set by the GUI
     mettavi.apps.obsidian = {
       enabledCommunityPlugins.perVault = {
-        "${cfg.vaultsParent}/Evernote".add = with pkgs.obsidianPlugins; [
+        ${vaults.evernote}.add = with pkgs.obsidianPlugins; [
           obsidian-importer
         ];
       };
@@ -236,7 +241,7 @@ in
       };
       # Per-vault overrides/additions on top of `pinnedDefaultSettings`
       pinnedSettings = {
-        # "${cfg.vaultsParent}/Evernote" = {
+        # ${vaults.evernote} = {
         # corePlugins.bookmarks = { ... };  # DON'T — bookmarks.json is essentially one big
         # `items` array; pinning anything here would
         # wipe out GUI-added bookmarks on next rebuild.
@@ -422,10 +427,10 @@ in
             # 1. Hand-written vault definitions
             {
               # inherit most of the settings from pinnedDefaultSettings
-              "${cfg.vaultsParent}/Evernote" = {
+              ${vaults.evernote} = {
                 enable = true;
               };
-              "${cfg.vaultsParent}/myNotes" = {
+              ${vaults.myNotes} = {
                 enable = true;
               };
             }
