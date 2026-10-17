@@ -1,74 +1,131 @@
-{
-  config,
-  hostname,
-  lib,
-  secrets_path,
-  ...
-}:
+{ config, lib, ... }:
 let
-  cfg = config.mettavi.shell.syncthing;
-  cert_pem = "users/${config.home.username}/syncthing/st_${hostname}_cert.pem";
-  key_pem = "users/${config.home.username}/syncthing/st_${hostname}_key.pem";
-  gui_pw = "users/${config.home.username}/syncthing/st_${hostname}_guipw";
-  syncthingSecrets.sopsFile = "${secrets_path}/secrets/apps/syncthing.yaml";
-  # do not attempt to set the gui_apikey until a hm syncthing module option is available
-  # gui_apikey = "users/${config.home.username}/syncthing/st_${hostname}_guiapikey";
+  inherit (lib)
+    mkOption
+    mkEnableOption
+    mkIf
+    types
+    filterAttrs
+    mapAttrs
+    mapAttrsToList
+    optionalAttrs
+    elem
+    all
+    any
+    filter
+    ;
+
+  cfg = config.my.syncthing;
+  self = cfg.deviceName;
+  selfUntrusted = cfg.devices.${self}.untrusted or false;
+  isUntrusted = d: cfg.devices.${d}.untrusted or false;
+
+  myFolders = filterAttrs (_: f: elem self f.devices) cfg.folders;
+  otherDevices = filterAttrs (n: _: n != self) cfg.devices;
 in
 {
-  options.mettavi.shell.syncthing = {
-    enable = lib.mkEnableOption "Install and configure syncthing";
+  options.my.syncthing = {
+    enable = mkEnableOption "declarative Syncthing network";
+
+    deviceName = mkOption {
+      type = types.str;
+      default = config.networking.hostName;
+    };
+
+    devices = mkOption {
+      default = { };
+      type = types.attrsOf (
+        types.submodule {
+          options = {
+            id = mkOption { type = types.str; };
+            addresses = mkOption {
+              type = types.listOf types.str;
+              default = [ "dynamic" ];
+            };
+            untrusted = mkOption {
+              type = types.bool;
+              default = false;
+              description = "Holds only encrypted data (receiveencrypted).";
+            };
+          };
+        }
+      );
+    };
+
+    folders = mkOption {
+      default = { };
+      type = types.attrsOf (
+        types.submodule {
+          options = {
+            devices = mkOption { type = types.listOf types.str; };
+            path = mkOption {
+              type = types.nullOr types.str;
+              default = null;
+            };
+            paths = mkOption {
+              type = types.attrsOf types.str;
+              default = { };
+            };
+            settings = mkOption {
+              type = types.attrs;
+              default = { };
+            };
+          };
+        }
+      );
+    };
+
+    # Per-host secret paths (e.g. sops-nix / agenix), set only on trusted hosts.
+    encryptionPasswordFiles = mkOption {
+      type = types.attrsOf types.str; # str, not path: must not be copied to the store
+      default = { };
+      description = "Folder name -> runtime path of the password used for untrusted peers.";
+    };
   };
 
-  config = lib.mkIf cfg.enable {
-    # a specific module option has been requested at
-    home.file."Library/Application Support/Syncthing/.stignore".text = # bash
-      ''
-        .DS_Store
-      '';
+  config = mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = cfg.devices ? ${self};
+        message = "my.syncthing.deviceName '${self}' is not in my.syncthing.devices.";
+      }
+    ]
+    ++ mapAttrsToList (name: f: {
+      assertion = all (d: cfg.devices ? ${d}) f.devices;
+      message = "my.syncthing.folders.${name} references an undefined device.";
+    }) cfg.folders
+    ++ mapAttrsToList (name: f: {
+      assertion = selfUntrusted || !(any isUntrusted f.devices) || cfg.encryptionPasswordFiles ? ${name};
+      message = "Set my.syncthing.encryptionPasswordFiles.${name} on this host.";
+    }) myFolders;
+
     services.syncthing = {
       enable = true;
-      cert = "${config.sops.secrets.${cert_pem}.path}";
-      guiCredentials = {
-        # contains bcrypt hashed pw
-        passwordFile = "${config.sops.secrets.${gui_pw}.path}";
-        username = "mettavi";
-      };
-      key = "${config.sops.secrets.${key_pem}.path}";
-      overrideDevices = true;
-      overrideFolders = true;
       settings = {
-        folders = {
-          "koreader" = {
-            devices = [
-              "Kindle Oasis"
-              "Pixel 8 Pro"
-            ];
-            id = "default";
-            path = "~/Library/Application Support/koreader/Books/Sync";
-            versioning.type = "simple";
-          };
-        };
-        devices = {
-          "Kindle Oasis".id = "S3YJCK4-6URNLBD-FO4UWWP-RVFGQ5C-5ZLFBYA-L5YLK4K-6FWXHMU-VSR2XQH";
-          "Pixel 8 Pro".id = "PHMZ76M-RKYU66P-G7M3FEI-5R5FC2Z-DC5LVBG-7CSIQLP-KU5GZEB-YQIO4Q2";
-        };
-        gui = {
-          # builtin themes: default, dark, black, light
-          theme = "black";
-          user = "mettavi";
-        };
-        options = {
-          # do not enable anonymous usage reporting
-          urAccepted = -1;
-        };
+        devices = mapAttrs (_: d: { inherit (d) id addresses; }) otherDevices;
+
+        folders = mapAttrs (
+          name: f:
+          let
+            p = f.paths.${self} or f.path;
+            mkPeer =
+              d:
+              if isUntrusted d then
+                {
+                  name = d;
+                  encryptionPasswordFile = cfg.encryptionPasswordFiles.${name};
+                }
+              else
+                d;
+          in
+          f.settings
+          // {
+            devices = map mkPeer (filter (d: d != self) f.devices);
+          }
+          // optionalAttrs (p != null) { path = p; }
+          // optionalAttrs selfUntrusted { type = "receiveencrypted"; }
+        ) myFolders;
       };
-    };
-    sops.secrets = {
-      "${cert_pem}" = syncthingSecrets;
-      "${key_pem}" = syncthingSecrets;
-      "${gui_pw}" = syncthingSecrets;
-      # see note above
-      # "${gui_apikey}" = syncthingSecrets;
     };
   };
 }
