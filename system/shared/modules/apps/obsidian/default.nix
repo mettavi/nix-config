@@ -52,7 +52,7 @@ let
       files = mkOption {
         type = types.attrsOf jsonFormat.type;
         default = { };
-        description = "Path relative to .obsidian/ -> keys merged into that JSON file.";
+        description = "Per-vault path relative to .obsidian/ -> keys merged into that JSON file.";
       };
       folders = mkOption {
         type = types.listOf types.str;
