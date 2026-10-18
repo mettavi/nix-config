@@ -49,6 +49,14 @@ in
       services = {
         gluetun.enable = true;
         pangolin-cli.enable = true;
+        syncthing = {
+          enable = false;
+          inherit (import ../../services/syncthing/topology.nix) devices folders;
+          encryptionPasswordFiles = {
+            obsidian = config.sops.secrets."users/${username}/syncthing/st_obsidian.key".path;
+            koreader = config.sops.secrets."users/${username}/syncthing/st_koreader.key".path;
+          };
+        };
       };
       shell = {
         kanata.enable = true;
