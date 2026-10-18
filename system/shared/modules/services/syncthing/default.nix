@@ -152,8 +152,13 @@ in
           // optionalAttrs (p != null) { path = p; }
           // optionalAttrs selfUntrusted { type = "receiveencrypted"; }
         ) myFolders;
+        options = {
+          localAnnounceEnabled = true;
+          urAccepted = -1;
+        };
       };
     };
+
     sops.secrets = {
       ${cert_pem} = syncthingSecrets;
       ${key_pem} = syncthingSecrets;
