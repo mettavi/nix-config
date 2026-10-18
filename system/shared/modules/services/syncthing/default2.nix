@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  username,
+  ...
+}:
 let
   inherit (lib)
     mkOption
@@ -25,11 +30,12 @@ let
 in
 {
   options.my.syncthing = {
-    enable = mkEnableOption "declarative Syncthing network";
+    enable = mkEnableOption "Set up a declarative Syncthing network";
 
     deviceName = mkOption {
       type = types.str;
       default = config.networking.hostName;
+      description = "The local hostname to be excluded from the list of remote devices";
     };
 
     devices = mkOption {
@@ -57,14 +63,19 @@ in
       type = types.attrsOf (
         types.submodule {
           options = {
-            devices = mkOption { type = types.listOf types.str; };
+            devices = mkOption {
+              type = types.listOf types.str;
+              description = "The devices this folder is shared with";
+            };
             path = mkOption {
               type = types.nullOr types.str;
               default = null;
+              description = "The default path for a shared folder";
             };
             paths = mkOption {
               type = types.attrsOf types.str;
               default = { };
+              description = "The override folder path for a device";
             };
             settings = mkOption {
               type = types.attrs;
@@ -101,6 +112,10 @@ in
 
     services.syncthing = {
       enable = true;
+      user = "${username}";
+      group = "users";
+      dataDir = "/home/${username}";
+      configDir = "/home/${username}/.config/syncthing";
       settings = {
         devices = mapAttrs (_: d: { inherit (d) id addresses; }) otherDevices;
 
