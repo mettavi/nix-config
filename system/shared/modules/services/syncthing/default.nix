@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  username,
   ...
 }:
 let
@@ -75,7 +74,7 @@ in
             paths = mkOption {
               type = types.attrsOf types.str;
               default = { };
-              description = "The override folder path for a device";
+              description = "An attribute set with a device and its non-default folder path";
             };
             settings = mkOption {
               type = types.attrs;
@@ -104,6 +103,10 @@ in
     ++ mapAttrsToList (name: f: {
       assertion = all (d: cfg.devices ? ${d}) f.devices;
       message = "my.syncthing.folders.${name} references an undefined device.";
+    }) cfg.folders
+    ++ mapAttrsToList (name: f: {
+      assertion = all (d: elem d f.devices) (builtins.attrNames f.paths);
+      message = "my.syncthing.folders.${name}.paths has a key that is not in its devices list.";
     }) cfg.folders
     ++ mapAttrsToList (name: f: {
       assertion = selfUntrusted || !(any isUntrusted f.devices) || cfg.encryptionPasswordFiles ? ${name};
