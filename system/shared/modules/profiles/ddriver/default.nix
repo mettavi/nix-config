@@ -84,6 +84,14 @@ in
       };
     };
 
+    # services.syncthing = {
+    #   user = "${username}";
+    #   group = "users";
+    #   dataDir = "/home/${username}";
+    #   configDir = "/home/${username}/.config/syncthing";
+    #   openDefaultPorts = true;
+    # };
+
     # Force override the global UTC default to let systemd handle it dynamically
     # view available values with "timedatectl list-timezones | grep <America/Australia/...>"
     time.timeZone = lib.mkForce null;
