@@ -112,11 +112,6 @@ in
 
     services.syncthing = {
       enable = true;
-      user = "${username}";
-      group = "users";
-      dataDir = "/home/${username}";
-      configDir = config.services.syncthing.dataDir + "/.config/syncthing";
-      databaseDir = config.services.syncthing.configDir;
       settings = {
         devices = mapAttrs (_: d: { inherit (d) id addresses; }) otherDevices;
 
