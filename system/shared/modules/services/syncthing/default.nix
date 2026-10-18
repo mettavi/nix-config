@@ -1,6 +1,9 @@
 {
   config,
+  hostname,
   lib,
+  secrets_path,
+  username,
   ...
 }:
 let
@@ -26,6 +29,10 @@ let
 
   myFolders = filterAttrs (_: f: elem self f.devices) cfg.folders;
   otherDevices = filterAttrs (n: _: n != self) cfg.devices;
+
+  cert_pem = "users/${username}/syncthing/st_${hostname}_cert.pem";
+  key_pem = "users/${username}/syncthing/st_${hostname}_key.pem";
+  syncthingSecrets.sopsFile = "${secrets_path}/secrets/apps/syncthing.yaml";
 in
 {
   options.mettavi.system.services.syncthing = {
@@ -33,7 +40,7 @@ in
 
     deviceName = mkOption {
       type = types.str;
-      default = config.networking.hostName;
+      default = hostname;
       description = "The local hostname to be excluded from the list of remote devices";
     };
 
@@ -115,6 +122,8 @@ in
 
     services.syncthing = {
       enable = true;
+      cert = "${config.sops.secrets.${cert_pem}.path}";
+      key = "${config.sops.secrets.${key_pem}.path}";
       settings = {
         devices = mapAttrs (_: d: { inherit (d) id addresses; }) otherDevices;
 
@@ -140,6 +149,13 @@ in
           // optionalAttrs selfUntrusted { type = "receiveencrypted"; }
         ) myFolders;
       };
+    };
+    sops.secrets = {
+      ${cert_pem} = syncthingSecrets;
+      ${key_pem} = syncthingSecrets;
+      "${gui_pw}" = syncthingSecrets;
+      # see note above
+      # "${gui_apikey}" = syncthingSecrets;
     };
   };
 }
