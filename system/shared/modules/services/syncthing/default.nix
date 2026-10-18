@@ -163,7 +163,7 @@ in
     sops.secrets = {
       ${cert_pem} = syncthingSecrets;
       ${key_pem} = syncthingSecrets;
-      "${gui_pw}" = syncthingSecrets;
+      # "${gui_pw}" = syncthingSecrets;
       # see note above
       # "${gui_apikey}" = syncthingSecrets;
     };
