@@ -1,4 +1,9 @@
-{ inputs, username, ... }:
+{
+  config,
+  inputs,
+  username,
+  ...
+}:
 {
   devices = {
     oona.id = "QJ3EAEO-BK22DVP-DZ6SGFH-JSWJ6RI-T5KCKSE-MUMNMWS-Y2T5HHO-4GZX6A4";
@@ -18,7 +23,7 @@
         "pixel"
         "vps"
       ];
-      paths.oona = "/home/${username}/Documents/Obsidian";
+      paths.oona = config.mettavi.apps.obsidian.vaultsParent;
       settings.versioning = {
         type = "simple";
         params.keep = "10";
