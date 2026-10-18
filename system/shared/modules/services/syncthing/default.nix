@@ -19,7 +19,7 @@ let
     filter
     ;
 
-  cfg = config.my.syncthing;
+  cfg = config.mettavi.system.services.syncthing;
   self = cfg.deviceName;
   selfUntrusted = cfg.devices.${self}.untrusted or false;
   isUntrusted = d: cfg.devices.${d}.untrusted or false;
@@ -28,7 +28,7 @@ let
   otherDevices = filterAttrs (n: _: n != self) cfg.devices;
 in
 {
-  options.my.syncthing = {
+  options.mettavi.system.services.syncthing = {
     enable = mkEnableOption "Set up a declarative Syncthing network";
 
     deviceName = mkOption {
@@ -97,20 +97,20 @@ in
     assertions = [
       {
         assertion = cfg.devices ? ${self};
-        message = "my.syncthing.deviceName '${self}' is not in my.syncthing.devices.";
+        message = "mettavi.system.services.syncthing.deviceName '${self}' is not in mettavi.system.services.syncthing.devices.";
       }
     ]
     ++ mapAttrsToList (name: f: {
       assertion = all (d: cfg.devices ? ${d}) f.devices;
-      message = "my.syncthing.folders.${name} references an undefined device.";
+      message = "mettavi.system.services.syncthing.folders.${name} references an undefined device.";
     }) cfg.folders
     ++ mapAttrsToList (name: f: {
       assertion = all (d: elem d f.devices) (builtins.attrNames f.paths);
-      message = "my.syncthing.folders.${name}.paths has a key that is not in its devices list.";
+      message = "mettavi.system.services.syncthing.folders.${name}.paths has a key that is not in its devices list.";
     }) cfg.folders
     ++ mapAttrsToList (name: f: {
       assertion = selfUntrusted || !(any isUntrusted f.devices) || cfg.encryptionPasswordFiles ? ${name};
-      message = "Set my.syncthing.encryptionPasswordFiles.${name} on this host.";
+      message = "Set mettavi.system.services.syncthing.encryptionPasswordFiles.${name} on this host.";
     }) myFolders;
 
     services.syncthing = {
