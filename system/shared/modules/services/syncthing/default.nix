@@ -154,6 +154,7 @@ in
         ) myFolders;
         options = {
           localAnnounceEnabled = true;
+          # do not enable anonymous usage reporting
           urAccepted = -1;
         };
       };
