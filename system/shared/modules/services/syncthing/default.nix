@@ -125,6 +125,7 @@ in
       enable = true;
       cert = "${config.sops.secrets.${cert_pem}.path}";
       key = "${config.sops.secrets.${key_pem}.path}";
+      guiAddress = lib.mkDefault "127.0.0.1:8384";
       # Whether to delete the devices which are not configured via the devices option
       overrideDevices = true;
       # Whether to delete the folders which are not configured via the folders option
