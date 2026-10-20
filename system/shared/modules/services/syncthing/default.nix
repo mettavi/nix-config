@@ -155,6 +155,7 @@ in
         ) myFolders;
         gui.user = "${inputs.secrets.username.primary}";
         options = {
+          # Whether to send announcements to the local LAN
           localAnnounceEnabled = true;
           # do not enable anonymous usage reporting
           urAccepted = -1;
