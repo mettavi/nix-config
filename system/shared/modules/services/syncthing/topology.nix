@@ -10,7 +10,7 @@
     pixel.id = "PHMZ76M-RKYU66P-G7M3FEI-5R5FC2Z-DC5LVBG-7CSIQLP-KU5GZEB-YQIO4Q2";
     kindle.id = "S3YJCK4-6URNLBD-FO4UWWP-RVFGQ5C-5ZLFBYA-L5YLK4K-6FWXHMU-VSR2XQH";
     vps = {
-      id = "DDDDDDD-...";
+      id = "6XHSTOA-RGKBBIQ-BHEU4GU-USTUQ7S-P3SCYUJ-HOLYUJ6-STNJSEQ-6PHSIQS";
       addresses = [ "tcp://pangolin.${inputs.secrets.domain.primary}:22000" ];
       untrusted = true;
     };
@@ -27,7 +27,7 @@
       settings = {
         # to apply this selectively, add it to
         # ...settings.folders.<name>.ignorePerms in the host file instead
-        # ignorePerms = true; 
+        # ignorePerms = true;
         versioning = {
           type = "simple";
           params.keep = "10";
