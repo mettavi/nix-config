@@ -24,9 +24,14 @@
         "vps"
       ];
       paths.oona = config.mettavi.apps.obsidian.vaultsParent;
-      settings.versioning = {
-        type = "simple";
-        params.keep = "10";
+      settings = {
+        # to apply this selectively, add it to
+        # ...settings.folders.<name>.ignorePerms in the host file instead
+        # ignorePerms = true; 
+        versioning = {
+          type = "simple";
+          params.keep = "10";
+        };
       };
     };
     koreader = {
