@@ -1,6 +1,7 @@
 {
   config,
   hostname,
+  inputs,
   lib,
   secrets_path,
   username,
@@ -152,6 +153,7 @@ in
           // optionalAttrs (p != null) { path = p; }
           // optionalAttrs selfUntrusted { type = "receiveencrypted"; }
         ) myFolders;
+        gui.user = "${inputs.secrets.username.primary}";
         options = {
           localAnnounceEnabled = true;
           # do not enable anonymous usage reporting
