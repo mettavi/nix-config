@@ -479,7 +479,7 @@ in
                   config.sops.secrets."users/${username}/traefik.env".path
                 ];
                 exec = "--configFile=/etc/traefik/traefik_config.yml";
-                image = "docker.io/traefik:v3.7.14";
+                image = "docker.io/traefik:v3.7.15";
                 pod = "services.pod";
                 volumes = [
                   "${configHome}/traefik:/etc/traefik:ro"
