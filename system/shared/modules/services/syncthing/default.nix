@@ -33,6 +33,7 @@ let
 
   cert_pem = "users/${username}/syncthing/st_${hostname}_cert.pem";
   key_pem = "users/${username}/syncthing/st_${hostname}_key.pem";
+  web_pw = "users/${username}/syncthing/st_${hostname}_web.key";
   syncthingSecrets.sopsFile = "${secrets_path}/secrets/apps/syncthing.yaml";
 in
 {
@@ -126,6 +127,8 @@ in
       cert = "${config.sops.secrets.${cert_pem}.path}";
       key = "${config.sops.secrets.${key_pem}.path}";
       guiAddress = lib.mkDefault "127.0.0.1:8384";
+      # the module will create the bcrypt hash of the password itself
+      guiPasswordFile = "${config.sops.secret.${web_pw}.path}";
       # Whether to delete the devices which are not configured via the devices option
       overrideDevices = true;
       # Whether to delete the folders which are not configured via the folders option
@@ -167,7 +170,7 @@ in
     sops.secrets = {
       ${cert_pem} = syncthingSecrets;
       ${key_pem} = syncthingSecrets;
-      # "${gui_pw}" = syncthingSecrets;
+      ${web_pw} = syncthingSecrets;
       # see note above
       # "${gui_apikey}" = syncthingSecrets;
     };
