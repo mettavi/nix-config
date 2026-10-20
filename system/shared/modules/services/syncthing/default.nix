@@ -171,8 +171,6 @@ in
       ${cert_pem} = syncthingSecrets;
       ${key_pem} = syncthingSecrets;
       ${web_pw} = syncthingSecrets;
-      # see note above
-      # "${gui_apikey}" = syncthingSecrets;
     };
   };
 }
