@@ -9,7 +9,6 @@
 }:
 let
   inherit (lib)
-    mkDefault
     mkOption
     mkEnableOption
     mkMerge
@@ -136,7 +135,7 @@ in
         enable = true;
         cert = "${config.sops.secrets.${cert_pem}.path}";
         key = "${config.sops.secrets.${key_pem}.path}";
-        guiAddress = mkDefault "127.0.0.1:8384";
+        guiAddress = "127.0.0.1:8384";
         # the module will create the bcrypt hash of the password itself
         guiPasswordFile = "${config.sops.secret.${web_pw}.path}";
         # Whether to delete the devices which are not configured via the devices option
