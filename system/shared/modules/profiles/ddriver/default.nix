@@ -83,6 +83,9 @@ in
       dataDir = "${config.users.users.${username}.home}";
       configDir = "${config.users.users.${username}.home}/.config/";
       openDefaultPorts = true;
+      # do not enforce that the Host header looks like localhost
+      # (its behind a nginx proxy)
+      settings.gui.insecureSkipHostcheck = true;
     };
 
     # Force override the global UTC default to let systemd handle it dynamically
