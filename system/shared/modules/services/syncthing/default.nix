@@ -41,6 +41,8 @@ let
   syncthingSecrets.sopsFile = "${secrets_path}/secrets/apps/syncthing.yaml";
 in
 {
+  imports = [ ./topology.nix ];
+
   options.mettavi.system.services.syncthing = {
     enable = mkEnableOption "Set up a declarative Syncthing network";
 
@@ -126,10 +128,6 @@ in
         assertion = selfUntrusted || !(any isUntrusted f.devices) || cfg.encryptionPasswordFiles ? ${name};
         message = "Set mettavi.system.services.syncthing.encryptionPasswordFiles.${name} on this host.";
       }) myFolders;
-
-      mettavi.system.services.syncthing = {
-        inherit (import ../../services/syncthing/topology.nix) devices folders;
-      };
 
       services.syncthing = {
         enable = true;
