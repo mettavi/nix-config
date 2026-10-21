@@ -51,6 +51,22 @@ in
         #   };
         # };
         private-resources = {
+          syncthing = {
+            enabled = true;
+            name = "Syncthing";
+            destination = "127.0.0.1";
+            destination-port = 8384;
+            full-domain = "sync.${baseDomain}";
+            # the admin role is not valid here
+            roles = [ "Member" ];
+            # Oona machine
+            machines = [ "similar-ichthyophis-mindanaoensis" ];
+            mode = "http";
+            scheme = "http";
+            sites = [ "Services" ];
+            ssl = true;
+            users = [ inputs.secrets.email.personal ];
+          };
           vaultwarden = {
             enabled = true;
             name = "Vaultwarden";
