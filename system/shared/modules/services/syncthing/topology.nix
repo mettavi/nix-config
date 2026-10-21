@@ -43,7 +43,7 @@
           "kindle"
           "blue"
         ];
-        paths.oona = "/home/${username}/Documents/koreader";
+        paths.oona = "${config.users.users.${username}.home}/Documents/koreader";
       };
     };
   };
