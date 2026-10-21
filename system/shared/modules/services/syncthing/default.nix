@@ -147,6 +147,8 @@ in
             name: f:
             let
               p = f.paths.${self} or f.path;
+              # if null, 'path' falls back to <dataDir>/<folderName>
+              fallback = "${config.services.syncthing.dataDir}/${name}";
               mkPeer =
                 d:
                 if isUntrusted d then
@@ -161,7 +163,9 @@ in
             // {
               devices = map mkPeer (filter (d: d != self) f.devices);
             }
-            // optionalAttrs (p != null) { path = p; }
+            // {
+              path = if p != null then p else fallback;
+            }
             // optionalAttrs selfUntrusted { type = "receiveencrypted"; }
           ) myFolders;
           gui.user = "${inputs.secrets.username.primary}";
