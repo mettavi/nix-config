@@ -25,7 +25,7 @@
           "pixel"
           "blue"
         ];
-        paths.oona = config.mettavi.apps.obsidian.vaultsParent;
+        paths.oona = "${config.users.users.${username}.home}/Documents/Obsidian";
         settings = {
           # to apply this selectively, add it to
           # ...settings.folders.<name>.ignorePerms in the host file instead
