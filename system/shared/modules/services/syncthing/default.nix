@@ -9,6 +9,7 @@
 }:
 let
   inherit (lib)
+    mkDefault
     mkOption
     mkEnableOption
     mkMerge
@@ -34,6 +35,7 @@ let
   myFolders = filterAttrs (_: f: elem self f.devices) cfg.folders;
   otherDevices = filterAttrs (n: _: n != self) cfg.devices;
 
+  # secrets
   cert_pem = "users/${username}/syncthing/st_${hostname}_cert.pem";
   key_pem = "users/${username}/syncthing/st_${hostname}_key.pem";
   web_pw = "users/${username}/syncthing/st_${hostname}_web.key";
@@ -134,7 +136,7 @@ in
         enable = true;
         cert = "${config.sops.secrets.${cert_pem}.path}";
         key = "${config.sops.secrets.${key_pem}.path}";
-        guiAddress = lib.mkDefault "127.0.0.1:8384";
+        guiAddress = mkDefault "127.0.0.1:8384";
         # the module will create the bcrypt hash of the password itself
         guiPasswordFile = "${config.sops.secret.${web_pw}.path}";
         # Whether to delete the devices which are not configured via the devices option
