@@ -60,7 +60,8 @@
         "https://cachix.cachix.org"
         "https://mettavi.cachix.org"
         # for nix-cachyos-kernel flake input
-        "https://attic.xuyh0120.win/lantian"
+        # TODO: Disable due to https://github.com/xddxdd/nix-cachyos-kernel/issues/110
+        # "https://attic.xuyh0120.win/lantian"
       ]
       ++ lib.optionals config.home-manager.users.${username}.mettavi.shell.yazi.enable [
         "https://yazi.cachix.org"
@@ -70,7 +71,7 @@
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "cachix.cachix.org-1:eWNHQldwUO7G2VkjpnjDbWwy4KQ/HNxht7H4SSoMckM="
         "mettavi.cachix.org-1:rYvLGZOMT4z4hK7u5pzrbt8svJ/2JcUA/PTa1bQx4FU="
-        "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+        # "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
       ]
       ++ lib.optionals config.home-manager.users.${username}.mettavi.shell.yazi.enable [
         "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
