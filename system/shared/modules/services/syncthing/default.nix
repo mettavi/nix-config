@@ -32,7 +32,6 @@ let
   isUntrusted = d: cfg.devices.${d}.untrusted or false;
 
   myFolders = filterAttrs (_: f: elem self f.devices) cfg.folders;
-  otherDevices = filterAttrs (n: _: n != self) cfg.devices;
 
   # secrets
   cert_pem = "users/${username}/syncthing/st_${hostname}_cert.pem";
@@ -141,7 +140,7 @@ in
         # Whether to delete the folders which are not configured via the folders option
         overrideFolders = true;
         settings = {
-          devices = mapAttrs (_: d: { inherit (d) id addresses; }) otherDevices;
+          devices = mapAttrs (_: d: { inherit (d) id addresses; }) cfg.devices;
 
           folders = mapAttrs (
             name: f:
