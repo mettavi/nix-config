@@ -1,5 +1,7 @@
 {
+  config,
   inputs,
+  lib,
   modulesPath,
   username,
   ...
@@ -78,6 +80,7 @@
       };
       services = {
         newt.enable = true;
+        syncthing.enable = true;
         vaultwarden.enable = true;
       };
       # enable system users
@@ -85,6 +88,13 @@
         timotheos.enable = true;
       };
     };
+  };
+
+  services.syncthing = lib.mkIf config.mettavi.system.services.syncthing.enable {
+    openDefaultPorts = true;
+    # do not enforce that the Host header looks like localhost
+    # (its behind a pangolin/traefik reverse proxy)
+    settings.gui.insecureSkipHostcheck = true;
   };
 
   # (HOST-SPECIFIC) HOME-MANAGER SETTINGS
