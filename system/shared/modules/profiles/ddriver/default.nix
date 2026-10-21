@@ -49,7 +49,7 @@ in
       services = {
         gluetun.enable = true;
         pangolin-cli.enable = true;
-        syncthing.enable = false;
+        syncthing.enable = true;
       };
       shell = {
         kanata.enable = true;
@@ -77,13 +77,13 @@ in
       };
     };
 
-    # services.syncthing = {
-    #   user = "${username}";
-    #   group = "users";
-    #   dataDir = "/home/${username}";
-    #   configDir = "/home/${username}/.config/syncthing";
-    #   openDefaultPorts = true;
-    # };
+    services.syncthing = mkIf config.mettavi.system.services.syncthing.enable {
+      user = "${username}";
+      group = "users";
+      dataDir = "${config.users.users.${username}.home}";
+      configDir = "${config.users.users.${username}.home}/.config/";
+      openDefaultPorts = true;
+    };
 
     # Force override the global UTC default to let systemd handle it dynamically
     # view available values with "timedatectl list-timezones | grep <America/Australia/...>"
