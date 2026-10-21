@@ -11,11 +11,14 @@ let
   inherit (lib)
     mkOption
     mkEnableOption
+    mkMerge
     mkIf
     types
     filterAttrs
     mapAttrs
+    mapAttrs'
     mapAttrsToList
+    nameValuePair
     optionalAttrs
     elem
     all
@@ -102,75 +105,99 @@ in
     };
   };
 
-  config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = cfg.devices ? ${self};
-        message = "mettavi.system.services.syncthing.deviceName '${self}' is not in mettavi.system.services.syncthing.devices.";
-      }
-    ]
-    ++ mapAttrsToList (name: f: {
-      assertion = all (d: cfg.devices ? ${d}) f.devices;
-      message = "mettavi.system.services.syncthing.folders.${name} references an undefined device.";
-    }) cfg.folders
-    ++ mapAttrsToList (name: f: {
-      assertion = all (d: elem d f.devices) (builtins.attrNames f.paths);
-      message = "mettavi.system.services.syncthing.folders.${name}.paths has a key that is not in its devices list.";
-    }) cfg.folders
-    ++ mapAttrsToList (name: f: {
-      assertion = selfUntrusted || !(any isUntrusted f.devices) || cfg.encryptionPasswordFiles ? ${name};
-      message = "Set mettavi.system.services.syncthing.encryptionPasswordFiles.${name} on this host.";
-    }) myFolders;
+  config = mkMerge [
+    (mkIf cfg.enable {
+      assertions = [
+        {
+          assertion = cfg.devices ? ${self};
+          message = "mettavi.system.services.syncthing.deviceName '${self}' is not in mettavi.system.services.syncthing.devices.";
+        }
+      ]
+      ++ mapAttrsToList (name: f: {
+        assertion = all (d: cfg.devices ? ${d}) f.devices;
+        message = "mettavi.system.services.syncthing.folders.${name} references an undefined device.";
+      }) cfg.folders
+      ++ mapAttrsToList (name: f: {
+        assertion = all (d: elem d f.devices) (builtins.attrNames f.paths);
+        message = "mettavi.system.services.syncthing.folders.${name}.paths has a key that is not in its devices list.";
+      }) cfg.folders
+      ++ mapAttrsToList (name: f: {
+        assertion = selfUntrusted || !(any isUntrusted f.devices) || cfg.encryptionPasswordFiles ? ${name};
+        message = "Set mettavi.system.services.syncthing.encryptionPasswordFiles.${name} on this host.";
+      }) myFolders;
 
-    services.syncthing = {
-      enable = true;
-      cert = "${config.sops.secrets.${cert_pem}.path}";
-      key = "${config.sops.secrets.${key_pem}.path}";
-      guiAddress = lib.mkDefault "127.0.0.1:8384";
-      # the module will create the bcrypt hash of the password itself
-      guiPasswordFile = "${config.sops.secret.${web_pw}.path}";
-      # Whether to delete the devices which are not configured via the devices option
-      overrideDevices = true;
-      # Whether to delete the folders which are not configured via the folders option
-      overrideFolders = true;
-      settings = {
-        devices = mapAttrs (_: d: { inherit (d) id addresses; }) otherDevices;
+      mettavi.system.services.syncthing = {
+        inherit (import ../../services/syncthing/topology.nix) devices folders;
+      };
 
-        folders = mapAttrs (
-          name: f:
-          let
-            p = f.paths.${self} or f.path;
-            mkPeer =
-              d:
-              if isUntrusted d then
-                {
-                  name = d;
-                  encryptionPasswordFile = cfg.encryptionPasswordFiles.${name};
-                }
-              else
-                d;
-          in
-          f.settings
-          // {
-            devices = map mkPeer (filter (d: d != self) f.devices);
-          }
-          // optionalAttrs (p != null) { path = p; }
-          // optionalAttrs selfUntrusted { type = "receiveencrypted"; }
-        ) myFolders;
-        gui.user = "${inputs.secrets.username.primary}";
-        options = {
-          # Whether to send announcements to the local LAN
-          localAnnounceEnabled = true;
-          # do not enable anonymous usage reporting
-          urAccepted = -1;
+      services.syncthing = {
+        enable = true;
+        cert = "${config.sops.secrets.${cert_pem}.path}";
+        key = "${config.sops.secrets.${key_pem}.path}";
+        guiAddress = lib.mkDefault "127.0.0.1:8384";
+        # the module will create the bcrypt hash of the password itself
+        guiPasswordFile = "${config.sops.secret.${web_pw}.path}";
+        # Whether to delete the devices which are not configured via the devices option
+        overrideDevices = true;
+        # Whether to delete the folders which are not configured via the folders option
+        overrideFolders = true;
+        settings = {
+          devices = mapAttrs (_: d: { inherit (d) id addresses; }) otherDevices;
+
+          folders = mapAttrs (
+            name: f:
+            let
+              p = f.paths.${self} or f.path;
+              mkPeer =
+                d:
+                if isUntrusted d then
+                  {
+                    name = d;
+                    encryptionPasswordFile = cfg.encryptionPasswordFiles.${name};
+                  }
+                else
+                  d;
+            in
+            f.settings
+            // {
+              devices = map mkPeer (filter (d: d != self) f.devices);
+            }
+            // optionalAttrs (p != null) { path = p; }
+            // optionalAttrs selfUntrusted { type = "receiveencrypted"; }
+          ) myFolders;
+          gui.user = "${inputs.secrets.username.primary}";
+          options = {
+            # Whether to send announcements to the local LAN
+            localAnnounceEnabled = true;
+            # do not enable anonymous usage reporting
+            urAccepted = -1;
+          };
         };
       };
-    };
 
-    sops.secrets = {
-      ${cert_pem} = syncthingSecrets;
-      ${key_pem} = syncthingSecrets;
-      ${web_pw} = syncthingSecrets;
-    };
-  };
+      sops.secrets = {
+        ${cert_pem} = syncthingSecrets;
+        ${key_pem} = syncthingSecrets;
+        ${web_pw} = syncthingSecrets;
+      };
+    })
+    (mkIf (cfg.enable && !selfUntrusted) (
+      let
+        needsPassword = filterAttrs (_: f: any isUntrusted f.devices) myFolders;
+      in
+      {
+        sops.secrets = mapAttrs' (
+          name: _:
+          nameValuePair "users/${username}/syncthing/st_${name}.key" {
+            owner = config.services.syncthing.user;
+            sopsFile = "${secrets_path}/secrets/apps/syncthing.yaml";
+          }
+        ) needsPassword;
+
+        mettavi.system.services.syncthing.encryptionPasswordFiles = mapAttrs (
+          name: _: config.sops.secrets."users/${username}/syncthing/st_${name}.key".path
+        ) needsPassword;
+      }
+    ))
+  ];
 }
