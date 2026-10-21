@@ -17,6 +17,7 @@
   };
 
   folders = {
+    # attribute names are used as the folder id by default
     obsidian = {
       devices = [
         "oona"
