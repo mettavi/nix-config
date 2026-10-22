@@ -21,27 +21,39 @@
       platformAutomerge: true,
     },
     {
-      "matchDatasources": [
-        "docker"
-      ],
-      "matchPackagePatterns": [
-        "linuxserver/"
-      ],
+      // must come AFTER the general automerge rule, because later rules win
+      matchPackageNames: ["docker.io/fosrl/pangolin", "fosrl/pangolin"],
+      matchUpdateTypes: ["minor", "major"],
+      automerge: false,
+    },
+    {
+      // tags look like "ee-1.21.1"; patch is optional in case some are "ee-1.25"
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.io/fosrl/pangolin", "fosrl/pangolin"],
+      versioning: "regex:^ee-(?<major>\\d+)\\.(?<minor>\\d+)(\\.(?<patch>\\d+))?$",
+    },
+    {
+      // locally built images: there is no registry to check
+      matchPackageNames: ["localhost/**"],
+      enabled: false,
+    },
+    {
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/linuxserver\\//"],
       // excludes any version strings between 10 and 20 (legacy Ubuntu releases)
-      "allowedVersions": "!/^(1[0-9]|20)\\./"
-    }
+      allowedVersions: "!/^(1[0-9]|20)\\./",
+    },
   ],
   customManagers: [
     {
       customType: "regex",
       description: "Update container images in quadlet-nix definitions",
-      // matches *.nix files in the hosts and services directories
+      // matches *.nix files in {system,home}/{nixos,shared}/modules
       managerFilePatterns: [
-        "/^system/nixos/modules/.*\\.nix$/",
+        "/^(system|home)/(nixos|shared)/modules/.*\\.nix$/",
       ],
       matchStrings: [
         'image\\s*=\\s*"(?<depName>[a-zA-Z0-9./_:-]+):(?<currentValue>[a-zA-Z0-9._-]+)(@(?<currentDigest>sha256:[a-f0-9]+))?"',
-        "image\\s*=\\s*\"(?<depName>[a-zA-Z0-9./_:-]+):(?<currentValue>[a-zA-Z0-9._-]+)(@(?<currentDigest>sha256:[a-f0-9]+))?\""
       ],
       datasourceTemplate: "docker",
       versioningTemplate: "docker",
