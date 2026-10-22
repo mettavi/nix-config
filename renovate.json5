@@ -27,6 +27,13 @@
       automerge: false,
     },
     {
+      // pre-1.0 images: minor bumps can be breaking, so review them by hand
+      matchDatasources: ["docker"],
+      matchCurrentValue: "/^v?0\\./",
+      matchUpdateTypes: ["minor", "major"],
+      automerge: false,
+    },
+    {
       // tags look like "ee-1.21.1"; patch is optional in case some are "ee-1.25"
       matchDatasources: ["docker"],
       matchPackageNames: ["docker.io/fosrl/pangolin", "fosrl/pangolin"],
