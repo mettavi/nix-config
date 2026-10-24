@@ -129,6 +129,7 @@ in
     enabledCorePlugins = {
       default = mkOption {
         type = types.listOf types.str;
+        # Core plugins omitted from this list are disabled.
         default = [
           "audio-recorder"
           "backlink"
@@ -389,7 +390,6 @@ in
         programs.obsidian = {
           enable = true;
           # NB: Vault-specific settings take priority and will REPLACE (not merge) these, if set.
-          # Core plugins omitted from this list are disabled.
           defaultSettings = {
             communityPlugins = cfg.enabledCommunityPlugins.default;
             corePlugins = cfg.enabledCorePlugins.default;
