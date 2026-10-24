@@ -212,6 +212,7 @@ in
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "nix-backup";
+            overwriteBackup = true;
             extraSpecialArgs = sharedArgs hostAttrs.system hostname;
             sharedModules = [ inputs.sops-nix-darwin.homeManagerModules.sops ];
           };

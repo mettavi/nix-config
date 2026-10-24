@@ -63,6 +63,7 @@
     useGlobalPkgs = true;
     useUserPackages = true;
     backupFileExtension = "nix-backup";
+    overwriteBackup = true;
     extraSpecialArgs = {
       inherit
         hostname
