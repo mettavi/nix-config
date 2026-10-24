@@ -283,8 +283,7 @@ in
           lib.mapAttrsToList (vaultName: vaultCfg: {
             assertion =
               let
-                declared =
-                  config.home-manager.users.${username}.programs.obsidian.vaults.${vaultName}.settings or null;
+                declared = config.programs.obsidian.vaults.${vaultName}.settings or null;
               in
               declared == null
               || (
@@ -325,7 +324,7 @@ in
           ++ [
             {
               assertion = lib.all (
-                vaultName: builtins.hasAttr vaultName config.home-manager.users.${username}.programs.obsidian.vaults
+                vaultName: builtins.hasAttr vaultName config.programs.obsidian.vaults
               ) (lib.attrNames cfg.pinnedSettings);
               message = "mettavi.apps.obsidian.pinnedSettings has an entry for a vault not declared in programs.obsidian.vaults — check for a typo in the path.";
             }
