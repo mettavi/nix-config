@@ -232,6 +232,8 @@ in
         app = {
           alwaysUpdateLinks = true;
           spellcheck = true;
+          promptDelete = false;
+          showUnsupportedFiles = true;
         };
         corePlugins = {
           templates.folder = "Utilities/Templates"; # flat file — safe to pin
