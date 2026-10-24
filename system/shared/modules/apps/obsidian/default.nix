@@ -103,6 +103,7 @@ in
       default = mkOption {
         type = types.listOf types.package;
         default = with pkgs.obsidianPlugins; [
+          obsidian-style-settings # user interface for adjusting theme, plugin, and snippet CSS variables
           omnisearch
         ];
         description = "Community plugins enabled in every vault.";

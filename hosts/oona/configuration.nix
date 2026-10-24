@@ -126,9 +126,6 @@ with lib;
 
   nixpkgs.overlays = [
     (final: prev: {
-      # TODO: Remove this overlay when v6.0.8 hits nixos-unstable branch
-      # install a newer version for bugfix https://github.com/gramps-project/gramps/pull/2204
-      # (and other updates added to v6.0.8)
       gramps =
         let
           # 1. Compile the exact version of the missing Python library
