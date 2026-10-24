@@ -341,13 +341,22 @@ in
               in
               ''
                 target=${lib.escapeShellArg path}
-                echo "obsidian: patching $target"
                 mkdir -p "$(dirname "$target")"
                 [ -f "$target" ] || echo '{}' > "$target"
-                tmp="$(mktemp)"
-                ${jq} -s '(.[0] // {}) * (.[1] // {})' "$target" ${lib.escapeShellArg patchFile} > "$tmp"
-                install -m644 "$tmp" "$target"
-                rm -f "$tmp"
+                tmp="$(mktemp --suffix=.nix-tmp "$target.XXXXXX")"
+                if ${jq} -s '(.[0] // {}) * (.[1] // {})' "$target" ${lib.escapeShellArg patchFile} > "$tmp" \
+                && [ -s "$tmp" ]; then
+                  if cmp -s "$tmp" "$target"; then
+                    rm -f "$tmp"
+                  else
+                    echo "obsidian: patching $target"
+                    chmod 644 "$tmp"
+                    mv -f "$tmp" "$target"
+                  fi
+                else
+                  rm -f "$tmp"
+                  echo "obsidian: could not patch $target" >&2
+                fi
               '';
 
             enabledVaultNames = lib.attrNames (
