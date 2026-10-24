@@ -245,6 +245,12 @@ in
       };
       # Per-vault overrides/additions on top of `pinnedDefaultSettings`
       pinnedSettings = {
+        ${vaults.myNotes} = {
+          app = {
+            # whether to limit maximum line length
+            readableLineLength = false;
+          };
+        };
         # ${vaults.evernote} = {
         # corePlugins.bookmarks = { ... };  # DON'T — bookmarks.json is essentially one big
         # `items` array; pinning anything here would
