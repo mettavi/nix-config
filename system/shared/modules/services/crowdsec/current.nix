@@ -73,18 +73,6 @@ in
             share_context = true;
           };
         };
-        parsers.s02Enrich = [
-          {
-            stage = "s02-enrich"; # optional, the module's own example omits it
-            name = "my-ip-whitelists";
-            description = "Whitelist my home IP";
-            whitelist = {
-              reason = "Admin home IP";
-              ip = [ "175.157.84.137" ];
-              cidr = [ "175.157.84.0/24" ];
-            };
-          }
-        ];
       };
     };
 
