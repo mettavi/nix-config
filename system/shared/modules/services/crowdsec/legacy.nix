@@ -2,6 +2,7 @@
   config,
   hostname,
   lib,
+  modulesPath,
   pkgs,
   secrets_path,
   username,
@@ -15,7 +16,14 @@ in
 {
   # See https://github.com/nixos/nixpkgs/issues/446764
   disabledModules = [ "services/security/crowdsec.nix" ];
-  imports = [ ./crowdsec-patch.nix ];
+  # imports = [ ./crowdsec-patch.nix ];
+  # only import the patch for nixpkgs version 26.05
+  # the >26.05 module has been refactored, which will require migrating
+  # when the remus host is updated
+  # see https://github.com/NixOS/nixpkgs/pull/535319
+  imports = lib.optional (builtins.pathExists (
+    modulesPath + "/services/security/crowdsec.nix"
+  )) ./crowdsec-patch.nix;
 
   options.mettavi.system.services.crowdsec = {
     enable = mkOption {
