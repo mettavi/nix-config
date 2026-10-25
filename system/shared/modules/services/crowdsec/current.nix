@@ -1,13 +1,16 @@
 /*
   MIGRATION GOTCHAS ON REMUS
   Data moves. The old database lived in /var/lib/crowdsec/state/, and the new default is /var/lib/crowdsec/data/crowdsec.db.
-  If you use a Traefik bouncer for Pangolin, its API key lives in the old database, so a fresh start means re-adding it with cscli bouncers add and updating the key in Traefik.
+  If you use a Traefik bouncer for Pangolin, its API key lives in the old database,
+  so a fresh start means re-adding it with cscli bouncers add and updating the key in Traefik.
 
   Migrating instead. You can move the old crowdsec.db and the two credentials files into data/.
-  A moved database that has a machine named remus plus a missing local_api_credentials.yaml makes cscli machines add fail, because the name already exists. The credentials files must move together with the database.
+  A moved database that has a machine named remus plus a missing local_api_credentials.yaml makes cscli machines add fail,
+  because the name already exists. The credentials files must move together with the database.
 
   Stale bouncer state. /var/lib/crowdsec-firewall-bouncer-register is currently a symlink into private/,
-  and the new module manages it with a tmpfiles d rule. Several people in the PR thread had to remove stale private/ leftovers, so before the upgrade stop the services and rm both the symlink and /var/lib/private/crowdsec-firewall-bouncer-register.
+  and the new module manages it with a tmpfiles d rule. Several people in the PR thread had to remove stale private/ leftovers,
+  so before the upgrade stop the services and rm both the symlink and /var/lib/private/crowdsec-firewall-bouncer-register.
   The new register script re-registers automatically if the API key file is missing.
 
   /etc/crowdsec is fully generated. Deleting it before the first switch avoids stale symlinks from the old module, as testers in the thread did.
