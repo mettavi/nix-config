@@ -145,7 +145,7 @@ in
       };
     };
 
-    systemd.services.crowdsec-firewall-bouncer.serviceConfig.After = [
+    systemd.services.crowdsec-firewall-bouncer.after = [
       "crowdsec-firewall-bouncer-register.service"
     ];
 
