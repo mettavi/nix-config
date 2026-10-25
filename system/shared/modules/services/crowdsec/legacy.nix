@@ -34,19 +34,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    # Whitelist Parser Rule
-    environment.etc."crowdsec/parsers/s02-enrich/my-whitelists.yaml".text = ''
-      stage: s02-enrich
-      name: my-ip-whitelists
-      description: "Whitelist my home IP"
-      whitelist:
-        reason: "Admin home IP"
-        ip:
-          - "175.157.84.137"
-        # cidr:
-        #   - "175.157.84.0/24"
-    '';
-
     systemd.tmpfiles.rules =
       let
         consoleSeed =
