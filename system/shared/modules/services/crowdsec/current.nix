@@ -1,5 +1,5 @@
 /*
-  Migration gotchas on remus
+  MIGRATION GOTCHAS ON REMUS
   Data moves. The old database lived in /var/lib/crowdsec/state/, and the new default is /var/lib/crowdsec/data/crowdsec.db.
   If you use a Traefik bouncer for Pangolin, its API key lives in the old database, so a fresh start means re-adding it with cscli bouncers add and updating the key in Traefik.
 
