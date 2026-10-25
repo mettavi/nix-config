@@ -323,9 +323,9 @@ in
           )
           ++ [
             {
-              assertion = lib.all (
-                vaultName: builtins.hasAttr vaultName config.programs.obsidian.vaults
-              ) (lib.attrNames cfg.pinnedSettings);
+              assertion = lib.all (vaultName: builtins.hasAttr vaultName config.programs.obsidian.vaults) (
+                lib.attrNames cfg.pinnedSettings
+              );
               message = "mettavi.apps.obsidian.pinnedSettings has an entry for a vault not declared in programs.obsidian.vaults — check for a typo in the path.";
             }
           ];
@@ -429,6 +429,7 @@ in
 
         # NB: Any plugin's settings configured here
         # will overwrite ALL its GUI-configured settings (if set)
+        # In addition, the GUI may not work properly with a nix store symlink
         # Prefer the pinnedDefaultSettings and pinnedSettings options, which are more flexible
         programs.obsidian = {
           enable = true;
