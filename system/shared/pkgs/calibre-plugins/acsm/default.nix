@@ -7,7 +7,6 @@
   pkgs,
   pkgsCross,
   zip,
-  unzip,
 }:
 let
   oscrypto = stdenv.mkDerivation {
@@ -61,7 +60,6 @@ stdenv.mkDerivation {
     pkgsCross.mingw32.buildPackages.gcc
     pkgsCross.mingwW64.buildPackages.gcc
     zip
-    unzip
   ];
   buildInputs = [ openssl ];
 
