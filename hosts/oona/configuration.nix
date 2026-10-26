@@ -12,6 +12,7 @@ with lib;
   imports = [
     # customise the hardware scan config
     # NB: hardware-configuration.nix is auto-generated during install and is imported in the mkNixos function
+    ./dailydriver.nix
     ./gpuHang.nix
     ./mount.nix
     ./kernel.nix
@@ -374,10 +375,6 @@ with lib;
 
   # includes system settings (located in system directory)
   mettavi = {
-    profiles = {
-      # install software for my "everyday use" desktop system
-      dailydriver.enable = true;
-    };
     services = {
       gramps-web.enable = true;
     };

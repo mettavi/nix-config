@@ -10,231 +10,220 @@
 }:
 with lib;
 let
-  cfg = config.mettavi.profiles.dailydriver;
   emailSecrets.sopsFile = "${secrets_path}/secrets/apps/email.yaml";
 in
 {
-  options.mettavi.profiles.dailydriver = {
-    enable = mkOption {
-      type = types.bool;
-      default = false;
-      description = "A profile for my daily driver";
+  environment.systemPackages =
+    with pkgs;
+    with pkgs.xpkgs;
+    [
+      linpkgs.pia-wg-config
+      linpkgs.pia-wg-config2
+      variety # wallpaper manager
+      # localsend # Open source cross-platform alternative to AirDrop
+    ]
+    ++
+      # Install global npm packages not available in nixpkgs repo
+      # using node2nix and overlay (see above)
+      [
+        # npmGlobals.functional-javascript-workshop
+        # npmGlobals.how-to-markdown
+        # npmGlobals.javascripting
+        # npmGlobals.js-best-practices
+        # npmGlobals.learnyoubash
+        # npmGlobals.regex-adventure
+        # npmGlobals.zeal-user-contrib
+      ];
+  mettavi.system = {
+    services = {
+      gluetun.enable = true;
+      pangolin-cli.enable = true;
+      syncthing.enable = true;
+    };
+    shell = {
+      kanata.enable = true;
     };
   };
 
-  config = mkIf cfg.enable {
+  # includes system settings (located in system directory)
+  mettavi = {
+    apps = {
+      libreoffice.enable = false;
+      obsidian.enable = true;
+    };
+  };
 
-    environment.systemPackages =
-      with pkgs;
-      with pkgs.xpkgs;
-      [
-        linpkgs.pia-wg-config
-        linpkgs.pia-wg-config2
-        variety # wallpaper manager
-        # localsend # Open source cross-platform alternative to AirDrop
-      ]
-      ++
-        # Install global npm packages not available in nixpkgs repo
-        # using node2nix and overlay (see above)
-        [
-          # npmGlobals.functional-javascript-workshop
-          # npmGlobals.how-to-markdown
-          # npmGlobals.javascripting
-          # npmGlobals.js-best-practices
-          # npmGlobals.learnyoubash
-          # npmGlobals.regex-adventure
-          # npmGlobals.zeal-user-contrib
-        ];
-    mettavi.system = {
-      services = {
-        gluetun.enable = true;
-        pangolin-cli.enable = true;
-        syncthing.enable = true;
-      };
-      shell = {
-        kanata.enable = true;
+  # use Avahi’s service discovery facilities
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true; # allows applications to resolve names in the .local domain
+    openFirewall = true; # open UDP port 5353
+    settings = {
+      publish = {
+        # Whether to disable publishing in general
+        disable-publishing = false;
+        # Whether to register mDNS address records for all local IP addresses
+        publish-addresses = true;
+        # Whether to register a service of type “_workstation._tcp” on the local LAN
+        publish-workstation = true;
       };
     };
+  };
 
-    # includes system settings (located in system directory)
+  services.syncthing = {
+    user = "${username}";
+    group = "users";
+    dataDir = "${config.users.users.${username}.home}";
+    configDir = "${config.users.users.${username}.home}/.config/";
+    openDefaultPorts = true;
+    # do not enforce that the Host header looks like localhost
+    # (its behind a nginx proxy)
+    settings.gui.insecureSkipHostcheck = true;
+  };
+
+  # Force override the global UTC default to let systemd handle it dynamically
+  # view available values with "timedatectl list-timezones | grep <America/Australia/...>"
+  time.timeZone = lib.mkForce null;
+  # Enable the dynamic tracking daemon
+  services.automatic-timezoned.enable = true;
+
+  # Bentopdf Privacy First PDF Toolkit
+  services.bentopdf = {
+    enable = true;
+    domain = "pdf.${hostname}";
+    nginx = {
+      enable = true;
+    };
+  };
+
+  services.geoclue2 = {
+    geoProviderUrl = "https://api.beacondb.net/v1/geolocate";
+    # Allow the system daemon to read surrounding Wi-Fi signals
+    enableWifi = true;
+    # Optional: Submit data back to beaconDB to build out regional maps
+    # (Requires a working GPS antenna if true, change to false if you lack one)
+    submitData = false;
+  };
+
+  home-manager.users.${username} = {
+    # soothing pastel themes
+    catppuccin = {
+      # see color demos at https://github.com/catppuccin/catppuccin
+      enable = true;
+      # don't autoenable all the module's ports
+      autoEnable = false;
+    };
+
+    home = {
+      # NB: this option adds paths to the system closure without installing them,
+      # so they're GC-rooted for as long as that generation exists
+      # Keep the AppImage source rooted so GC doesn't force a re-download
+      extraDependencies = [ pkgs.linpkgs.tipitaka_pali_reader.src ];
+
+      packages = with pkgs; [
+        audacity # Sound editor with graphical UI
+        goldendict-ng # Advanced multi-dictionary lookup program
+        # gradia # edit screenshots of application windows
+        kdePackages.okular # KDE document viewer
+        poppler-utils # PDF rendering library tools
+        linpkgs.tipitaka_pali_reader
+        # parabolic # Graphical frontend for yt-dlp to download video and audio
+        pdfarranger # python-gtk application to merge/split/rotate/crop/rearrange PDFs
+        picard # offical musicbrainz tagger
+        typora # A minimal Markdown editor and reader
+        zapzap # WhatsApp desktop application written in Pyqt6 + PyQt6-WebEngine
+        zoom-us # video conferencing applications
+      ];
+      sessionVariables = {
+        # required for electron apps, which don't read the mimeapps.list file
+        DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox";
+      };
+    };
     mettavi = {
       apps = {
-        libreoffice.enable = false;
-        obsidian.enable = true;
-      };
-    };
-
-    # use Avahi’s service discovery facilities
-    services.avahi = {
-      enable = true;
-      nssmdns4 = true; # allows applications to resolve names in the .local domain
-      openFirewall = true; # open UDP port 5353
-      settings = {
-        publish = {
-          # Whether to disable publishing in general
-          disable-publishing = false;
-          # Whether to register mDNS address records for all local IP addresses
-          publish-addresses = true;
-          # Whether to register a service of type “_workstation._tcp” on the local LAN
-          publish-workstation = true;
-        };
-      };
-    };
-
-    services.syncthing = mkIf config.mettavi.system.services.syncthing.enable {
-      user = "${username}";
-      group = "users";
-      dataDir = "${config.users.users.${username}.home}";
-      configDir = "${config.users.users.${username}.home}/.config/";
-      openDefaultPorts = true;
-      # do not enforce that the Host header looks like localhost
-      # (its behind a nginx proxy)
-      settings.gui.insecureSkipHostcheck = true;
-    };
-
-    # Force override the global UTC default to let systemd handle it dynamically
-    # view available values with "timedatectl list-timezones | grep <America/Australia/...>"
-    time.timeZone = lib.mkForce null;
-    # Enable the dynamic tracking daemon
-    services.automatic-timezoned.enable = true;
-
-    # Bentopdf Privacy First PDF Toolkit
-    services.bentopdf = {
-      enable = true;
-      domain = "pdf.${hostname}";
-      nginx = {
-        enable = true;
-      };
-    };
-
-    services.geoclue2 = {
-      geoProviderUrl = "https://api.beacondb.net/v1/geolocate";
-      # Allow the system daemon to read surrounding Wi-Fi signals
-      enableWifi = true;
-      # Optional: Submit data back to beaconDB to build out regional maps
-      # (Requires a working GPS antenna if true, change to false if you lack one)
-      submitData = false;
-    };
-
-    home-manager.users.${username} = {
-      # soothing pastel themes
-      catppuccin = {
-        # see color demos at https://github.com/catppuccin/catppuccin
-        enable = true;
-        # don't autoenable all the module's ports
-        autoEnable = false;
-      };
-
-      home = {
-        # NB: this option adds paths to the system closure without installing them,
-        # so they're GC-rooted for as long as that generation exists
-        # Keep the AppImage source rooted so GC doesn't force a re-download
-        extraDependencies = [ pkgs.linpkgs.tipitaka_pali_reader.src ];
-
-        packages = with pkgs; [
-          audacity # Sound editor with graphical UI
-          goldendict-ng # Advanced multi-dictionary lookup program
-          # gradia # edit screenshots of application windows
-          kdePackages.okular # KDE document viewer
-          poppler-utils # PDF rendering library tools
-          linpkgs.tipitaka_pali_reader
-          # parabolic # Graphical frontend for yt-dlp to download video and audio
-          pdfarranger # python-gtk application to merge/split/rotate/crop/rearrange PDFs
-          picard # offical musicbrainz tagger
-          typora # A minimal Markdown editor and reader
-          zapzap # WhatsApp desktop application written in Pyqt6 + PyQt6-WebEngine
-          zoom-us # video conferencing applications
-        ];
-        sessionVariables = {
-          # required for electron apps, which don't read the mimeapps.list file
-          DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox";
-        };
-      };
-      mettavi = {
-        apps = {
-          anki.enable = true;
-          firefox.enable = true;
-          ghostty.enable = true;
-          latex.enable = true;
-          mpv.enable = true;
-          thunderbird =
-            let
-              burner = inputs.secrets.email.burner;
-              monk = inputs.secrets.email.monk;
-              personal = inputs.secrets.email.personal;
-              # NB: 1. leave "accountFilters" unassigned in extraEmailAccounts to use all filters
-              # 2. the default "flavor" is "gmail.com"
-            in
-            {
-              enable = true;
-              accountsOrder = [
-                personal
-                monk
-                burner
-              ];
-              extraEmailAccounts = {
-                ${monk} = {
-                  accountFilters = [
-                    "tagGH"
-                  ];
-                  address = monk;
-                  aliases = [ personal ];
-                };
-                ${burner} = {
-                  accountFilters = [
-                  ];
-                  address = burner;
-                };
+        anki.enable = true;
+        firefox.enable = true;
+        ghostty.enable = true;
+        latex.enable = true;
+        mpv.enable = true;
+        thunderbird =
+          let
+            burner = inputs.secrets.email.burner;
+            monk = inputs.secrets.email.monk;
+            personal = inputs.secrets.email.personal;
+            # NB: 1. leave "accountFilters" unassigned in extraEmailAccounts to use all filters
+            # 2. the default "flavor" is "gmail.com"
+          in
+          {
+            enable = true;
+            accountsOrder = [
+              personal
+              monk
+              burner
+            ];
+            extraEmailAccounts = {
+              ${monk} = {
+                accountFilters = [
+                  "tagGH"
+                ];
+                address = monk;
+                aliases = [ personal ];
+              };
+              ${burner} = {
+                accountFilters = [
+                ];
+                address = burner;
               };
             };
-          zotero.enable = true;
-        };
-        shell = {
-          atuin.enable = true;
-          bash.enable = true;
-          fzf.enable = true;
-          nh.enable = true;
-          nvim-wrap.enable = true;
-          tmux.enable = true;
-          yazi.enable = true;
-        };
+          };
+        zotero.enable = true;
       };
-      # define sops secrets for email accounts used specifically on my daily system
-      sops.secrets = {
-        "users/${username}/email/${inputs.secrets.email.burner}" = emailSecrets;
+      shell = {
+        atuin.enable = true;
+        bash.enable = true;
+        fzf.enable = true;
+        nh.enable = true;
+        nvim-wrap.enable = true;
+        tmux.enable = true;
+        yazi.enable = true;
       };
-      xdg =
-        let
-          personfs-upstream = pkgs.fetchFromGitHub {
-            owner = "jmichault";
-            repo = "gramps-kromprogramoj";
-            rev = "f43fa5bb2ba4ddcd153bfcc8c69c37c77fc69cd9"; # pin a commit, not the branch name
-            hash = "sha256-695AL5qe+oJqp70/Pyjv827iDq6BbflE9l49moU79hY=";
-          };
-          personfs = pkgs.runCommand "gramps-addon-PersonFS" { nativeBuildInputs = [ pkgs.gettext ]; } ''
-            cp -r ${personfs-upstream}/fontoj/PersonFS $out
-            chmod -R u+w $out
-            for po in $out/po/*-local.po; do
-              lang=$(basename "$po" -local.po)
-              mkdir -p "$out/locale/$lang/LC_MESSAGES"
-              msgfmt "$po" -o "$out/locale/$lang/LC_MESSAGES/addon.mo"
-            done
-          '';
-        in
-        {
-          autostart = {
-            enable = true;
-            entries = [
-              "${pkgs.variety}/share/applications/variety.desktop"
-            ];
-          };
-          dataFile = {
-            "gramps/gramps60/plugins/PersonFS" = {
-              source = personfs;
-              recursive = true;
-            };
-          };
-        };
     };
+    # define sops secrets for email accounts used specifically on my daily system
+    sops.secrets = {
+      "users/${username}/email/${inputs.secrets.email.burner}" = emailSecrets;
+    };
+    xdg =
+      let
+        personfs-upstream = pkgs.fetchFromGitHub {
+          owner = "jmichault";
+          repo = "gramps-kromprogramoj";
+          rev = "f43fa5bb2ba4ddcd153bfcc8c69c37c77fc69cd9"; # pin a commit, not the branch name
+          hash = "sha256-695AL5qe+oJqp70/Pyjv827iDq6BbflE9l49moU79hY=";
+        };
+        personfs = pkgs.runCommand "gramps-addon-PersonFS" { nativeBuildInputs = [ pkgs.gettext ]; } ''
+          cp -r ${personfs-upstream}/fontoj/PersonFS $out
+          chmod -R u+w $out
+          for po in $out/po/*-local.po; do
+            lang=$(basename "$po" -local.po)
+            mkdir -p "$out/locale/$lang/LC_MESSAGES"
+            msgfmt "$po" -o "$out/locale/$lang/LC_MESSAGES/addon.mo"
+          done
+        '';
+      in
+      {
+        autostart = {
+          enable = true;
+          entries = [
+            "${pkgs.variety}/share/applications/variety.desktop"
+          ];
+        };
+        dataFile = {
+          "gramps/gramps60/plugins/PersonFS" = {
+            source = personfs;
+            recursive = true;
+          };
+        };
+      };
   };
+  # };
 }
