@@ -69,11 +69,15 @@ in
       enable = true;
       nssmdns4 = true; # allows applications to resolve names in the .local domain
       openFirewall = true; # open UDP port 5353
-      publish = {
-        # advertise the connection to other devices
-        enable = true;
-        addresses = true;
-        workstation = true;
+      settings = {
+        publish = {
+          # Whether to disable publishing in general
+          disable-publishing = false;
+          # Whether to register mDNS address records for all local IP addresses
+          publish-addresses = true;
+          # Whether to register a service of type “_workstation._tcp” on the local LAN
+          publish-workstation = true;
+        };
       };
     };
 
