@@ -18,7 +18,7 @@ in
     enable = mkOption {
       type = types.bool;
       default = false;
-      description = "A profile for my daily driver (currently a macbookpro)";
+      description = "A profile for my daily driver";
     };
   };
 
