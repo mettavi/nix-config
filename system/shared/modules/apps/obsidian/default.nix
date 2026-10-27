@@ -232,6 +232,7 @@ in
       pinnedDefaultSettings = {
         app = {
           alwaysUpdateLinks = true;
+          attachmentFolderPath = "Utilities/Assets";
           spellcheck = true;
           promptDelete = false;
           showUnsupportedFiles = true;
@@ -240,6 +241,7 @@ in
           templates.folder = "Utilities/Templates"; # flat file — safe to pin
         };
         folders = [
+          "Utilities/Assets"
           "Utilities/Templates"
         ];
       };
