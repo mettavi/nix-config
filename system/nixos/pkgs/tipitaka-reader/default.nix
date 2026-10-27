@@ -5,14 +5,14 @@
 }:
 let
   pname = "tipitaka_pali_reader";
-  version = "2.9.3+123";
+  version = "3.1.0+131";
   src = pkgs.fetchurl {
     # Add an explicit name property to fetchurl to lock the name of the `src` fixed output derivation
     # Along with `inherit src` below and `home/system.extraDependcies` in the module,
     # this prevents the src being re-downloaded unnecessarily
     name = "tipitaka_pali_reader-${version}.AppImage";
     url = "https://github.com/bksubhuti/tipitaka-pali-reader/releases/download/v${version}/tipitaka_pali_reader.AppImage";
-    hash = "sha256-013SJ5i5kwxwReW47NTED+3hwVJoyBP69xWNU3r7LW0=";
+    hash = "sha256-kZ41k+ImhO4T9TTTzyP+SOJ08ksG61U4LQUn87osrwI=";
   };
   getIcon = ./logo-128.png;
 
