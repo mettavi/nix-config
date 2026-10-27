@@ -81,7 +81,7 @@ in
           };
         };
         console = {
-          enrollKeyFile = config.sops.secrets."users/${username}/crowdsec/crowdsec-capi-enrollment.key".path;
+          enrollKeyFile = config.sops.secrets."users/${username}/crowdsec-capi-enrollment.key".path;
           configuration = {
             share_manual_decisions = true;
             share_tainted = true;
