@@ -49,6 +49,7 @@ in
         "bitwarden-backup" = {
           enable = true;
           environment = {
+            # Force Node.js/Bitwarden CLI to prioritize stable IPv4 connections
             NODE_OPTIONS = "--dns-result-order=ipv4first";
             SSL_CERT_FILE = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
           };
@@ -116,6 +117,18 @@ in
             }
             trap cleanup EXIT
 
+            # ENCRYPTED EXPORT
+            # bw --raw --session "$BW_SESSION" export --format json 2>/dev/null | openssl enc -aes-256-cbc -pbkdf2 -iter 600000 -pass env:OPENSSL_ENC_PASS -out "$EXPORT_PATH"/"$EXPORT_OPENSSL_FILE"
+            # NB: prefer -pass env:OPENSSL_ENC_PASS over -k "$OPENSSL_ENC_PASS", as it keeps the passphrase out of 'ps'
+
+            # ENCRYPTED EXPORT USING ENCRYPTED_JSON FROM BITWARDEN
+            # echo "Export encrypted json using bitwarden format..."
+            # bw --raw --session $BW_SESSION export --format encrypted_json --password $BW_PASSWORD --output $EXPORT_PATH/$EXPORT_ENCRYPTED_FILE
+            # chmod 644 $EXPORT_PATH/$EXPORT_ENCRYPTED_FILE
+
+            # UNENCRYPTED EXPORT (NOT RECOMMENDED)
+            #bw --raw --session $BW_SESSION export --format json --output $EXPORT_PATH/$EXPORT_PLAIN_FILE
+
             # Encrypt an export to the given file; remove partial output on failure.
             # Usage: export_vault <outfile> [extra bw export args...]
             export_vault() {
@@ -159,6 +172,7 @@ in
               fi
             done
 
+            # If all retries failed, send ONE email and exit
             if [ "$LOGGED_IN" -ne 0 ]; then
               echo "Error: Bitwarden API unreachable after $MAX_RETRIES attempts (API login failed)." >&2
               exit 1
@@ -206,15 +220,17 @@ in
                 exit 1
               fi
             else
+              echo
               echo "No organizational vault defined."
             fi
 
             # Cleanup old files (only reached if the exports above succeeded, so old
             # backups are never deleted without a fresh one in place).
+            # Adjust the number of files to keep and days depending on your use case.
             # NB: linux find does not allow "-mtime +12w", only "-mtime +n" where n is the no. of days
             NUM_FILES=$(find "$EXPORT_PATH" -type f | wc -l)
             if [ "$NUM_FILES" -gt 12 ]; then
-              # keep backups from the last 12 weeks (7*12=84)
+              # keep backups from the last 12 weeks (7*12=84), with a minimum of 12
               find "$EXPORT_PATH" -type f -mtime +84 -delete
             fi
 
