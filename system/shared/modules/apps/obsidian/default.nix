@@ -434,8 +434,7 @@ in
           with pkgs.nur.repos.rycee.firefox-addons;
           optionals (config.mettavi.apps.firefox.enable) [ web-clipper-obsidian ];
 
-        # NB: Any plugin's settings configured here
-        # will overwrite ALL its GUI-configured settings (if set)
+        # NB: Any plugin's settings configured here will overwrite ALL its GUI-configured settings (if set)
         # In addition, the GUI may not work properly (overwrite or read-only) with a nix store symlink
         # Prefer the pinnedDefaultSettings and pinnedSettings options, which are more flexible
         programs.obsidian = {
@@ -471,9 +470,6 @@ in
               catppuccin
             ];
           };
-          # Settings for any attribute here will replace ALL those set through the GUI;
-          # Omit them here to set via the GUI and/or merge any desired settings
-          # with `mettavi.apps.obsidian.pinnedSettings` (see above) instead.
           vaults = lib.mkMerge [
             # 1. Hand-written vault definitions
             {
