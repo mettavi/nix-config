@@ -233,9 +233,11 @@ in
         app = {
           alwaysUpdateLinks = true;
           attachmentFolderPath = "Utilities/Assets";
+          communityPlugin = true;
           spellcheck = true;
           promptDelete = false;
           showUnsupportedFiles = true;
+          vimMode = true;
         };
         corePlugins = {
           templates.folder = "Utilities/Templates"; # flat file — safe to pin
