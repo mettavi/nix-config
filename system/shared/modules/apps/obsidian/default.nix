@@ -254,6 +254,20 @@ in
             # whether to limit maximum line length
             readableLineLength = false;
           };
+          appearance = {
+            # set the vault's theme
+            cssTheme = "Catppuccin";
+          };
+          communityPlugins = {
+            obsidian-style-settings = {
+              # set bold to lavender (default is sapphire)
+              "catppuccin-font-styles@@ctp-bold" = "var(--ctp-blue)";
+              # set italics to lavender (default is green)
+              "catppuccin-font-styles@@ctp-italic" = "var(--ctp-lavender)";
+              # show the tags with a contrasting background
+              "catppuccin-tag-styles@@ctp-tag-pill" = true;
+            };
+          };
         };
         # ${vaults.evernote} = {
         # corePlugins.bookmarks = { ... };  # DON'T — bookmarks.json is essentially one big
