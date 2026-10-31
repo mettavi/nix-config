@@ -239,6 +239,9 @@ in
           showUnsupportedFiles = true;
           vimMode = true;
         };
+        appearance = {
+          theme = "dark";
+        };
         corePlugins = {
           templates.folder = "Utilities/Templates"; # flat file — safe to pin
         };
