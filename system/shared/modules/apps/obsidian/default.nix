@@ -261,7 +261,7 @@ in
         # here and `programs.obsidian...corePlugins`
         # entirely if you want it GUI-owned.
         # };
-        # "${cfg.vaultsParent}/Personal Notes" = {
+        # ${vaults.personalNotes} = {
         #   app.spellcheck = true;
         #   hotkeys."command-palette:open" = [
         #     {
