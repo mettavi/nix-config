@@ -277,6 +277,7 @@ in
       {
         config,
         lib,
+        osConfig,
         pkgs,
         ...
       }:
