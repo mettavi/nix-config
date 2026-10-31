@@ -431,7 +431,7 @@ in
 
         # NB: Any plugin's settings configured here
         # will overwrite ALL its GUI-configured settings (if set)
-        # In addition, the GUI may not work properly with a nix store symlink
+        # In addition, the GUI may not work properly (overwrite or read-only) with a nix store symlink
         # Prefer the pinnedDefaultSettings and pinnedSettings options, which are more flexible
         programs.obsidian = {
           enable = true;
