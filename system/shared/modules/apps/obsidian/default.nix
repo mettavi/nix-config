@@ -240,7 +240,8 @@ in
           vimMode = true;
         };
         appearance = {
-          theme = "dark";
+          # set to dark mode
+          theme = "obsidian";
         };
         corePlugins = {
           templates.folder = "Utilities/Templates"; # flat file — safe to pin
