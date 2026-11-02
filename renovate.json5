@@ -3,7 +3,7 @@
   dependencyDashboard: true,
   extends: ["config:recommended"],
   timezone: "Asia/Colombo",
-  schedule: ["before 6am on monday"],
+  schedule: ["on monday"],
   packageRules: [
     {
       matchDatasources: ["docker"],
