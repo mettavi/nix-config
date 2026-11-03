@@ -667,7 +667,7 @@ in
                   # - SSL_CERT=*****
                   # - SSL_KEY=*****
                 };
-              image = "ghcr.io/vuetorrent/vuetorrent-backend:2.7.3";
+              image = "ghcr.io/vuetorrent/vuetorrent-backend:2.7.4";
               networks = [ "container:gluetun" ]; # joins gluetun's netns — no ports of its own
               volumes = [
                 "${config.users.users.${username}.home}/.config/vuetorrent-backend:/config"
