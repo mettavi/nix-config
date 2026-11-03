@@ -50,6 +50,11 @@
       // excludes any version strings between 10 and 20 (legacy Ubuntu releases)
       allowedVersions: "!/^(1[0-9]|20)\\./",
     },
+    {
+    // hold new releases back for 3 days before proposing them
+    matchDatasources: ["docker"],
+    minimumReleaseAge: "3 days",
+    },
   ],
   customManagers: [
     {
