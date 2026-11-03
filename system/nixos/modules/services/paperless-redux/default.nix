@@ -168,7 +168,7 @@ in
         name: inst:
         nameValuePair "paperless-${name}" {
           containerConfig = {
-            image = "ghcr.io/paperless-ngx/paperless-ngx:3.3.2";
+            image = "ghcr.io/paperless-ngx/paperless-ngx:3.3.4";
             autoUpdate = "registry";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
             publishPorts = [ "127.0.0.1:${toString inst.appPort}:8000" ];
