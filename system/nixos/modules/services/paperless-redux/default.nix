@@ -239,7 +239,7 @@ in
             nameValuePair "paperless-gpt-${name}" {
               containerConfig = {
                 # NB: you can browse ghcr images at https://github.com/icereed/paperless-gpt/pkgs/container/paperless-gpt/
-                image = "ghcr.io/icereed/paperless-gpt:v0.29.0@sha256:4127ea223e0f496c1075a3a05661df4847140974c3c3ce89a4ba991be50320cb";
+                image = "ghcr.io/icereed/paperless-gpt:v0.31.0@sha256:d668941a829552cc0eddbc7c22506b3480dfbf61bd0d6eae881ad9fcfe2de70c";
                 autoUpdate = "registry";
                 noNewPrivileges = true;
                 networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
