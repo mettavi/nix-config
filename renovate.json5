@@ -62,6 +62,8 @@
       matchStrings: [
         'image\\s*=\\s*"(?<depName>[a-zA-Z0-9./_:-]+):(?<currentValue>[a-zA-Z0-9._-]+)(@(?<currentDigest>sha256:[a-f0-9]+))?"',
       ],
+      // lets Renovate add or update the digest, even when none exists yet
+      autoReplaceStringTemplate: 'image = "{{{depName}}}:{{{newValue}}}{{#if newDigest}}@{{{newDigest}}}{{/if}}"',
       datasourceTemplate: "docker",
       versioningTemplate: "docker",
     },
