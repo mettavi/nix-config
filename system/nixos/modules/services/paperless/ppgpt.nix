@@ -178,7 +178,7 @@ in
               LOG_LEVEL = "info"; # Optional: debug, info, warn, error
             };
             # pull from the github container registry (ghcr)
-            image = "ghcr.io/icereed/paperless-gpt:v0.31.0";
+            image = "ghcr.io/icereed/paperless-gpt:v0.31.0@sha256:d668941a829552cc0eddbc7c22506b3480dfbf61bd0d6eae881ad9fcfe2de70c";
             # give the container access to the host network
             networks = [ "host" ];
             noNewPrivileges = true;

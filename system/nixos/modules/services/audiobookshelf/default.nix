@@ -38,7 +38,7 @@ in
             environments = {
             };
             # pull from the github container registry (ghcr)
-            image = "ghcr.io/advplyr/audiobookshelf:2.37.2";
+            image = "ghcr.io/advplyr/audiobookshelf:2.37.2@sha256:b897c33f05972fb1bf484f7487bc878fa91ec8691335c1db6e2929c3a7658efa";
             noNewPrivileges = true;
             publishPorts = [ "13378:80" ];
             # the current user’s UID:GID are mapped to the same values in the container

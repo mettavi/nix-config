@@ -158,7 +158,7 @@ in
         paperless-redis = {
           containerConfig = {
             # a Redis-compatible broker (a current release of Valkey or Redis)
-            image = "docker.io/library/redis:8.10.3";
+            image = "docker.io/library/redis:8.10.3@sha256:de1068af6f552240dfab67bcc9bfef99bfc60f776bb4580ef077ea4c8c97e848";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
           };
         };
@@ -168,7 +168,7 @@ in
         name: inst:
         nameValuePair "paperless-${name}" {
           containerConfig = {
-            image = "ghcr.io/paperless-ngx/paperless-ngx:3.4.1";
+            image = "ghcr.io/paperless-ngx/paperless-ngx:3.4.1@sha256:1a08d8dfc2b51a08de09652dd86ad4d0c611c362382f944533ad38b73125fbc4";
             autoUpdate = "registry";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
             publishPorts = [ "127.0.0.1:${toString inst.appPort}:8000" ];
@@ -239,7 +239,7 @@ in
             nameValuePair "paperless-gpt-${name}" {
               containerConfig = {
                 # NB: you can browse ghcr images at https://github.com/icereed/paperless-gpt/pkgs/container/paperless-gpt/
-                image = "ghcr.io/icereed/paperless-gpt:v0.29.0";
+                image = "ghcr.io/icereed/paperless-gpt:v0.29.0@sha256:4127ea223e0f496c1075a3a05661df4847140974c3c3ce89a4ba991be50320cb";
                 autoUpdate = "registry";
                 noNewPrivileges = true;
                 networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
