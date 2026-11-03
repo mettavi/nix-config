@@ -231,7 +231,7 @@ in
 
               grampsweb_redis = mkContainer {
                 containerConfig = {
-                  image = "docker.io/valkey/valkey:9.1.3-alpine";
+                  image = "docker.io/valkey/valkey:9.1.3-alpine@sha256:bf09d58e96d6b4524a15396b65b242bbe18beebbcc15a04d8ee75ddac62fae0b";
 
                   # COMPLETELY REMOVE the networks key
                   # Use ONLY podmanArgs to pass the explicit rootless string flag

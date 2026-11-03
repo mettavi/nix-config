@@ -446,7 +446,7 @@ in
               healthRetries = 3;
               healthStartPeriod = "20s";
               healthTimeout = "10s";
-              image = "docker.io/qmcgaw/gluetun:v3.41.3";
+              image = "docker.io/qmcgaw/gluetun:v3.41.3@sha256:fa19cc76b2af13d57a8d3dc3066f2ada061b1c761b8aecf989b3877c0486e027";
               notify = "healthy";
               podmanArgs = [
                 # The leading colon tells Alpine to read the symlink configuration live,
@@ -502,7 +502,7 @@ in
               autoStart = false;
               containerConfig = {
                 name = "pia-wg-refresh";
-                image = "ghcr.io/ccarpinteri/pia-wg-refresh:v0.8.3";
+                image = "ghcr.io/ccarpinteri/pia-wg-refresh:v0.8.3@sha256:ab9b2cf869f45df273b5d96eee6ae57f951d2ff7fcdad7178205f6640a806697";
                 environments = {
                   CHECK_INTERVAL_SECONDS = "60";
                   HEALTHY_CHECK_INTERVAL_SECONDS = "1800"; # seconds, eg. 1800 = 30 mins
@@ -564,7 +564,7 @@ in
             mkContainer {
               autoStart = false;
               containerConfig = {
-                image = "docker.io/linuxserver/qbittorrent:5.3.0";
+                image = "docker.io/linuxserver/qbittorrent:5.3.0@sha256:05c1454f9a32967affc1f34f67f8cc0cc57dd805dca45489fe797095a6286556";
                 networks = [ "container:gluetun" ]; # joins gluetun's netns — no ports of its own
                 environments = {
                   PUID = toString config.users.users.${username}.uid;
@@ -667,7 +667,7 @@ in
                   # - SSL_CERT=*****
                   # - SSL_KEY=*****
                 };
-              image = "ghcr.io/vuetorrent/vuetorrent-backend:2.7.4";
+              image = "ghcr.io/vuetorrent/vuetorrent-backend:2.7.4@sha256:8887bd34b17396543c8374dcf2ab98af4c7deb24b24889cbc47742b3d56e4adc";
               networks = [ "container:gluetun" ]; # joins gluetun's netns — no ports of its own
               volumes = [
                 "${config.users.users.${username}.home}/.config/vuetorrent-backend:/config"
@@ -691,7 +691,7 @@ in
             autoStart = false;
             containerConfig = {
               name = "qbittorrent-port-forward";
-              image = "docker.io/mjmeli/qbittorrent-port-forward-gluetun-server:2025.12.21.02";
+              image = "docker.io/mjmeli/qbittorrent-port-forward-gluetun-server:2025.12.21.02@sha256:4e30826d2f46bdcf387b6c3a610478ab3856d55fff457f98196e4d48975eb1dd";
               networks = [ "container:gluetun" ]; # same netns as gluetun + qbittorrent
               environments = {
                 QBT_ADDR = "http://localhost:8090"; # matches your WEBUI_PORT
