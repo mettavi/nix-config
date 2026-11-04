@@ -96,8 +96,8 @@ in
     ) true;
 
     services.ollama.loadModels =
-      optionalString (cfg.ppgpt.llm.generic.provider == "ollama") [ "${cfg.ppgpt.llm.generic.model}" ]
-      ++ optionalString (cfg.ppgpt.llm.ocr.provider == "ollama") [ "${cfg.ppgpt.llm.ocr.model}" ];
+      optionals (cfg.ppgpt.llm.generic.provider == "ollama") [ "${cfg.ppgpt.llm.generic.model}" ]
+      ++ optionals (cfg.ppgpt.llm.ocr.provider == "ollama") [ "${cfg.ppgpt.llm.ocr.model}" ];
 
     # add paperless databases to the postgresqlBackup module
     services.postgresqlBackup.databases = flatten (
