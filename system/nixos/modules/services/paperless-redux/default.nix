@@ -294,6 +294,10 @@ in
                 Restart = "on-failure";
                 UMask = "0007";
               };
+              unitConfig = {
+                After = [ "paperless-${name}.service" ];
+                Wants = [ "paperless-${name}.service" ];
+              };
             }
           ) instances)
         else
