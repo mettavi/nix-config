@@ -135,10 +135,11 @@ in
         "d /var/lib/paperless/${name}/data 0700 paperless paperless -"
         "d /var/lib/paperless/${name}/export 0770 paperless paperless -"
         "d /var/lib/paperless/${name}/paperless-gpt 0770 paperless paperless -"
-        "d /var/lib/paperless/${name}/paperless-gpt/prompts 0770 paperless paperless -"
+        "d /var/lib/paperless/${name}/paperless-gpt/config 0770 paperless paperless -"
+        "d /var/lib/paperless/${name}/paperless-gpt/db 0770 paperless paperless -"
         "d /var/lib/paperless/${name}/paperless-gpt/hocr 0770 paperless paperless -"
         "d /var/lib/paperless/${name}/paperless-gpt/pdf 0770 paperless paperless -"
-        "d /var/lib/paperless/${name}/paperless-gpt/config 0770 paperless paperless -"
+        "d /var/lib/paperless/${name}/paperless-gpt/prompts 0770 paperless paperless -"
 
         # POSIX ACL Layer: Forces 'paperless' group rwX inheritance on the dynamic instances
         "a+ /var/lib/paperless/${name}/media - - - - g:paperless:rwX"
@@ -280,6 +281,7 @@ in
                 };
 
                 volumes = [
+                  "/var/lib/paperless/${name}/paperless-gpt/db:/app/db"
                   "/var/lib/paperless/${name}/paperless-gpt/prompts:/app/prompts"
                   "/var/lib/paperless/${name}/paperless-gpt/hocr:/app/hocr"
                   "/var/lib/paperless/${name}/paperless-gpt/pdf:/app/pdf"
