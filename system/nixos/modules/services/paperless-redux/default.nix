@@ -8,6 +8,7 @@
 }:
 with lib;
 let
+  mkContainer = config.mettavi.system.services.podman.mkContainer;
   cfg = config.mettavi.system.services.paperless-redux;
 
   # =========================================================================
@@ -156,21 +157,21 @@ in
 
       containers = {
         # Shared Caching Engine
-        paperless-redis = {
+        paperless-redis = mkContainer {
           containerConfig = {
             # a Redis-compatible broker (a current release of Valkey or Redis)
             image = "docker.io/library/redis:8.10.3@sha256:de1068af6f552240dfab67bcc9bfef99bfc60f776bb4580ef077ea4c8c97e848";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
           };
         };
-        paperless-tika = {
+        paperless-tika = mkContainer {
           containerConfig = {
             image = "docker.io/apache/tika:4.2.0-1@sha256:b99f19c4fd76237dafe7d22f719b9bddfa9a449da687c597a41e2f6d9a595418";
             autoUpdate = "registry";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
           };
         };
-        paperless-gotenberg = {
+        paperless-gotenberg = mkContainer {
           containerConfig = {
             image = "docker.io/gotenberg/gotenberg:8.39.0@sha256:13672f317b443c793e972b1bd2155ec62a3e7b6891b411e8196442cc053ee5f5";
             autoUpdate = "registry";
@@ -195,6 +196,7 @@ in
             healthStartPeriod = "60s";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
             publishPorts = [ "127.0.0.1:${toString inst.appPort}:8000" ];
+            timezone = "local";
             environmentFiles = [
               config.sops.secrets."users/${username}/paperless/ppless-${hostname}.env".path
             ];
@@ -277,12 +279,11 @@ in
                 noNewPrivileges = true;
                 networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
                 publishPorts = [ "127.0.0.1:${toString inst.gptPort}:8080" ];
-
+                timezone = "local";
                 environmentFiles = [
                   config.sops.secrets."users/${username}/paperless/ppless-gpt-${name}-${hostname}.env".path
                 ];
                 environments = {
-                  TZ = "Australia/Melbourne";
                   UMASK = "0007"; # Retained to align metadata files
                   PAPERLESS_BASE_URL = "http://paperless-${name}:8000";
                   OLLAMA_HOST = "http://10.89.0.1:11434";
