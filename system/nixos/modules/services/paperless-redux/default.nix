@@ -187,6 +187,12 @@ in
           containerConfig = {
             image = "ghcr.io/paperless-ngx/paperless-ngx:3.4.1@sha256:1a08d8dfc2b51a08de09652dd86ad4d0c611c362382f944533ad38b73125fbc4";
             autoUpdate = "registry";
+            notify = "healthy";
+            healthCmd = "curl -fs -S --max-time 2 http://localhost:8000";
+            healthInterval = "10s";
+            healthTimeout = "5s";
+            healthRetries = 5;
+            healthStartPeriod = "60s";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
             publishPorts = [ "127.0.0.1:${toString inst.appPort}:8000" ];
             environmentFiles = [
