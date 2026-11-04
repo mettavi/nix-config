@@ -163,6 +163,22 @@ in
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
           };
         };
+        paperless-tika = {
+          containerConfig = {
+            image = "docker.io/apache/tika:4.2.0-1@sha256:b99f19c4fd76237dafe7d22f719b9bddfa9a449da687c597a41e2f6d9a595418";
+            autoUpdate = "registry";
+            networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
+          };
+        };
+        paperless-gotenberg = {
+          containerConfig = {
+            image = "docker.io/gotenberg/gotenberg:8.39.0@sha256:13672f317b443c793e972b1bd2155ec62a3e7b6891b411e8196442cc053ee5f5";
+            autoUpdate = "registry";
+            networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
+            # flags recommended by the paperless-ngx docs
+            exec = "gotenberg --chromium-disable-javascript=true --chromium-allow-list=^file:///tmp/.*";
+          };
+        };
       }
       # Dynamically inject the generated app instances into the container list
       // (mapAttrs' (
@@ -173,11 +189,9 @@ in
             autoUpdate = "registry";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
             publishPorts = [ "127.0.0.1:${toString inst.appPort}:8000" ];
-
             environmentFiles = [
               config.sops.secrets."users/${username}/paperless/ppless-${hostname}.env".path
             ];
-
             environments = {
               # required when using a reverse proxy (eg. nginx)
               PAPERLESS_URL = "http://${inst.alias}.${hostname}";
@@ -217,16 +231,28 @@ in
 
               # use Tika and Gotenberg for parsing and converting "Office" documents
               PAPERLESS_TIKA_ENABLED = "true";
-              PAPERLESS_TIKA_ENDPOINT = "http://localhost:9998";
-              PAPERLESS_TIKA_GOTENBERG_ENDPOINT = "http://localhost:3000";
+              PAPERLESS_TIKA_ENDPOINT = "http://paperless-tika:9998";
+              PAPERLESS_TIKA_GOTENBERG_ENDPOINT = "http://paperless-gotenberg:3000";
             };
-
             volumes = [
               "/var/lib/paperless/${name}/data:/usr/src/paperless/data"
               "/var/lib/paperless/${name}/export:/usr/src/paperless/export"
               "/var/lib/paperless/${name}/media:/usr/src/paperless/media"
               "/var/lib/paperless/${name}/consume:/usr/src/paperless/consume"
               "/var/lib/paperless/Trash:/usr/src/paperless/Trash"
+            ];
+          };
+          serviceConfig = {
+            TimeoutStartSec = "300";
+          };
+          unitConfig = {
+            After = [
+              "paperless-tika.service"
+              "paperless-gotenberg.service"
+            ];
+            Wants = [
+              "paperless-tika.service"
+              "paperless-gotenberg.service"
             ];
           };
         }
@@ -249,7 +275,6 @@ in
                 environmentFiles = [
                   config.sops.secrets."users/${username}/paperless/ppless-gpt-${name}-${hostname}.env".path
                 ];
-
                 environments = {
                   TZ = "Australia/Melbourne";
                   UMASK = "0007"; # Retained to align metadata files
@@ -279,7 +304,6 @@ in
                   # NB: View the logs with 'journalctl -u paperless-gpt.service -f'
                   LOG_LEVEL = "info"; # Optional: debug, info, warn, error
                 };
-
                 volumes = [
                   "/var/lib/paperless/${name}/paperless-gpt/db:/app/db"
                   "/var/lib/paperless/${name}/paperless-gpt/prompts:/app/prompts"
