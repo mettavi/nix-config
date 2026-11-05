@@ -169,6 +169,12 @@ in
           ) myFolders;
           gui.user = "${inputs.secrets.username.primary}";
           options = {
+            # This ensures Syncthing listens on all network interfaces,
+            # including the internal loopback that Pangolin maps to.
+            listenAddresses = [
+              "tcp://0.0.0.0:22000"
+              "quic://0.0.0.0:22000"
+            ];
             # Whether to send announcements to the local LAN
             localAnnounceEnabled = true;
             # do not enable anonymous usage reporting
