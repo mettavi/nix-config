@@ -80,12 +80,23 @@ in
               exit 1
             fi
 
-              # Assign the tunnel DNS to the pangolin interface only
-              ${pkgs.systemd}/bin/resolvectl dns pangolin 100.96.128.1
-              # The '~' prefix defines this as a Routing Domain (only queries matching this domain go to 100.96.128.1)
-              ${pkgs.systemd}/bin/resolvectl domain pangolin "~${inputs.secrets.domain.primary}"
-              # Prevent pangolin from being used for general internet DNS queries
-              ${pkgs.systemd}/bin/resolvectl default-route pangolin false
+            # 1. FORCE THE ROUTE TO THE CENTRAL DNS/PROXY SUBNET
+            # This ensures that even if your client IP is 100.90.x.x, your laptop knows
+            # it must talk to the 100.96.x.x network through the Pangolin mesh tunnel.
+            echo "Adding explicit route for the Pangolin server overlay network..."
+            ${pkgs.iproute2}/bin/ip route add 100.96.128.0/20 dev pangolin proto static || true
+
+            # 2. ASSIGN THE CORE DNS PROXY GATEWAY
+            DNS_SERVER="100.96.128.1"
+            echo "Assigning static Pangolin central DNS endpoint: $DNS_SERVER"
+
+            # Assign the dynamic tunnel DNS to the pangolin interface only
+            ${pkgs.systemd}/bin/resolvectl dns pangolin "$DNS_SERVER"
+
+            # The '~' prefix defines this as a Routing Domain
+            ${pkgs.systemd}/bin/resolvectl domain pangolin "~${inputs.secrets.domain.primary}"
+            # Prevent pangolin from being used for general internet DNS queries
+            ${pkgs.systemd}/bin/resolvectl default-route pangolin false
           '';
           # Clean up on stop, so a killed service doesn’t leave things behind
           # NB: The leading - tolerates failure when the interface is already gone
