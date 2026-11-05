@@ -12,7 +12,10 @@
       kindle.id = "S3YJCK4-6URNLBD-FO4UWWP-RVFGQ5C-5ZLFBYA-L5YLK4K-6FWXHMU-VSR2XQH";
       blue = {
         id = "6XHSTOA-RGKBBIQ-BHEU4GU-USTUQ7S-P3SCYUJ-HOLYUJ6-STNJSEQ-6PHSIQS";
-        addresses = [ "tcp://sync.${inputs.secrets.domain.primary}:22000" ];
+        addresses = [
+          "tcp://data.syncthing.${inputs.secrets.domain.primary}:22000"
+          "quic://data.syncthing.${inputs.secrets.domain.primary}:22000"
+        ];
         untrusted = true;
       };
     };
