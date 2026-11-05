@@ -51,20 +51,35 @@ in
         #   };
         # };
         private-resources = {
-          syncthing = {
+          syncthing-gui = {
             enabled = true;
-            name = "Syncthing";
+            mode = "http";
+            name = "Syncthing-GUI";
             destination = "127.0.0.1";
             destination-port = 8384;
             full-domain = "sync.${baseDomain}";
-            # the admin role is not valid here
-            roles = [ "Member" ];
-            # Oona machine
-            machines = [ "similar-ichthyophis-mindanaoensis" ];
-            mode = "http";
             scheme = "http";
             sites = [ "Services" ];
             ssl = true;
+            # AUTHENTICATION
+            # the admin role is not valid here
+            roles = [ "Member" ];
+            machines = [ "similar-ichthyophis-mindanaoensis" ]; # Oona machine
+            users = [ inputs.secrets.email.personal ];
+          };
+          syncthing-sync = {
+            enabled = true;
+            mode = "host";
+            name = "Syncthing-Sync";
+            # Set a clear private DNS alias for the data stream
+            alias = "data.syncthing.mettavi.cloud";
+            destination = "127.0.0.1";
+            disable-icmp = false;
+            sites = [ "Services" ];
+            tcp-ports = "22000";
+            udp-ports = "22000";
+            # AUTHENTICATION
+            machines = [ "similar-ichthyophis-mindanaoensis" ]; # Oona machine
             users = [ inputs.secrets.email.personal ];
           };
           vaultwarden = {
