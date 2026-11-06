@@ -15,4 +15,6 @@ sudo /run/current-system/bin/switch-to-configuration boot # clear the boot menu
 # This command will create a secret using the openssl package
 openssl rand -hex 32
 
+# or use python
+python3 -c "import secrets; print(secrets.token_urlsafe(64))"
 ```
