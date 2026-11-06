@@ -107,17 +107,14 @@ in
       ]) instances
     );
 
-    sops.secrets = {
-      "users/${username}/paperless/ppless-${hostname}.env" = paperlessSecrets;
-    }
-    // (mapAttrs' (
-      name: inst:
-      nameValuePair "users/${username}/paperless/ppless-gpt-${name}-${hostname}.env" {
-        group = "${config.users.users.paperless.name}";
-        mode = "0440";
-        sopsFile = "${secrets_path}/secrets/apps/paperless.yaml";
-      }
-    ) instances);
+    sops.secrets = listToAttrs (
+      flatten (
+        mapAttrsToList (name: _: [
+          (nameValuePair "users/${username}/paperless/ppless-${name}-${hostname}.env" paperlessSecrets)
+          (nameValuePair "users/${username}/paperless/ppless-gpt-${name}-${hostname}.env" paperlessSecrets)
+        ]) instances
+      )
+    );
 
     # =========================================================================
     # 2. DYNAMIC DIRECTORY GENERATION & ACL PERMISSIONS
@@ -198,7 +195,7 @@ in
             publishPorts = [ "127.0.0.1:${toString inst.appPort}:8000" ];
             timezone = "local";
             environmentFiles = [
-              config.sops.secrets."users/${username}/paperless/ppless-${hostname}.env".path
+              config.sops.secrets."users/${username}/paperless/ppless-${name}-${hostname}.env".path
             ];
             environments = {
               # required when using a reverse proxy (eg. nginx)
