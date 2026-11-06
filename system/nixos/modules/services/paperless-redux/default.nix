@@ -1,6 +1,7 @@
 {
   config,
   hostname,
+  inputs,
   lib,
   secrets_path,
   username,
@@ -200,8 +201,9 @@ in
             environments = {
               # required when using a reverse proxy (eg. nginx)
               PAPERLESS_URL = "http://${inst.alias}.${hostname}";
-              # also requires PAPERLESS_ADMIN_PASSWORD to be set (in the env file)
-              PAPERLESS_ADMIN_USER = "admin";
+              # these two also require PAPERLESS_ADMIN_PASSWORD to be set (in the env file)
+              PAPERLESS_ADMIN_USER = "${inputs.secrets.username.primary}";
+              PAPERLESS_ADMIN_MAIL = "${inputs.secrets.email.personal}";
               PAPERLESS_APP_TITLE = lib.toSentenceCase "${name}" + " Archive";
               PAPERLESS_REDIS = "redis://paperless-redis:6379/${toString inst.redisDbIndex}";
               PAPERLESS_OCR_LANGUAGE = "eng";
