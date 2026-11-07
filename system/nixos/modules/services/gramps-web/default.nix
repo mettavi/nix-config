@@ -197,7 +197,7 @@ in
 
               grampsweb_celery = mkContainer {
                 containerConfig = {
-                  image = "localhost/grampsweb:cuda";
+                  image = builds.grampsweb_cuda.ref;
                   exec = "celery -A gramps_webapi.celery worker --loglevel=INFO --concurrency=2";
                   environmentFiles = [
                     config.sops.secrets."users/${username}/grampsweb-${hostname}.env".path
