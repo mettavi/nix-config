@@ -72,5 +72,18 @@
       datasourceTemplate: "docker",
       versioningTemplate: "docker",
     },
+    {
+      customType: "regex",
+      description: "Update FROM lines in Containerfiles embedded in Nix strings",
+      managerFilePatterns: [
+        "/^(system|home)/(nixos|shared)/modules/.*\\.nix$/",
+      ],
+      matchStrings: [
+        "\\bFROM\\s+(?<depName>[a-zA-Z0-9./_-]+):(?<currentValue>[a-zA-Z0-9._-]+)(@(?<currentDigest>sha256:[a-f0-9]+))?",
+      ],
+      autoReplaceStringTemplate: "FROM {{{depName}}}:{{{newValue}}}{{#if newDigest}}@{{{newDigest}}}{{/if}}",
+      datasourceTemplate: "docker",
+      versioningTemplate: "docker",
+    },
   ],
 }
