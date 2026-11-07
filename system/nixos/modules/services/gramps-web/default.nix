@@ -36,7 +36,7 @@ in
         # 1. Define a standard Containerfile to build the GPU-enabled image
         # This avoids the Nix-store/FHS mismatch by using standard pip in the container.
         grampsCudaContainerfile = pkgs.writeText "Containerfile" ''
-          FROM ghcr.io/gramps-project/grampsweb:26.6.2
+          FROM ghcr.io/gramps-project/grampsweb:26.6.2@sha256:dfaaf42c4dcb2c919b4cece188f23385e860d118b8e30dd1a1d5d3bc39b0d5d2
           # Force the container to pull down the Linux PDF thumbnail extraction binaries
           USER root
           RUN apt-get update && apt-get install -y poppler-utils ghostscript fontconfig --no-install-recommends && apt-get clean
