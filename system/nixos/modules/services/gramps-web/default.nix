@@ -84,7 +84,6 @@ in
           GRAMPSWEB_CELERY_CONFIG__task_acks_late = "true"; # Ensure task safety if a container cycles
 
           # AI and LLM parameters
-          GRAMPSWEB_VECTOR_EMBEDDING_MODEL = "sentence-transformers/distiluse-base-multilingual-cased-v2";
           # Use Podman's special DNS name to reach the host, and add /v1 for the OpenAI API format
           GRAMPSWEB_LLM_BASE_URL = "http://host.containers.internal:11434/v1";
           # This tells pydantic-ai's core router which model to launch
