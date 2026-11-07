@@ -56,8 +56,10 @@
     },
     {
     // hold new releases back for 3 days before proposing them
+    // (only possible where the registry supplies a release timestamp, i.e. Docker Hub)
     matchDatasources: ["docker"],
     minimumReleaseAge: "3 days",
+    minimumReleaseAgeBehaviour: "timestamp-optional",
     },
   ],
   customManagers: [
