@@ -58,7 +58,8 @@ in
           # force the api to translate absolute desktop paths to internal app paths
           GRAMPSWEB_DATA_DIR = "/root/.gramps/grampsdb";
           GRAMPSWEB_MEDIA_BASE_DIR = "/app/media";
-          GRAMPSWEB_BASE_URL = "http://gw.oona";
+          # used to build links in e-mails, such as password resets
+          GRAMPSWEB_BASE_URL = "http://localhost"; # default is http://localhost
           GRAMPSWEB_CORS_ORIGINS = "*";
           GRAMPSWEB_INDEX_DIR = "/app/indexdir";
           GRAMPSWEB_THUMBNAIL_CACHE_DIR = "/app/thumbnail_cache";
