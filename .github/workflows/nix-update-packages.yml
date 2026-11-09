@@ -25,7 +25,7 @@ jobs:
           home/shared/dots/update/update.py -a xpkgs -k -s
         continue-on-error: true
       - name: Open PR if anything changed
-        uses: peter-evans/create-pull-request@v8.1.1
+        uses: peter-evans/create-pull-request@v8.1.2
         with:
           token: ${{ secrets.PAT_TOKEN }}
           commit-message: "chore(pkgs): automated package version updates"
