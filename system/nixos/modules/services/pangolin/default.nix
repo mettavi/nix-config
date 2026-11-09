@@ -420,7 +420,7 @@ in
               autoStart = "default.target";
               containerConfig = {
                 # "ee" is the enterprise edition (free for personal use)
-                image = "docker.io/fosrl/pangolin:ee-1.25.3@sha256:f2c0fc54e1b59efcd23b8685e8df84350f363e14ebe1c13ce88a681f181ca49e";
+                image = "docker.io/fosrl/pangolin:ee-1.26.0@sha256:c65b8b4656b3336cea3f2647fc20da955764cd18103c51b2ea6164bbb054e0de";
                 # use the renovate GitHub workflow to check for version updates
                 # autoUpdate = "registry";
                 environments = {
@@ -458,7 +458,7 @@ in
                   "--generateAndSaveKeyTo=/var/config/key"
                   "--remoteConfig=http://localhost:3001/api/v1/"
                 ];
-                image = "docker.io/fosrl/gerbil:1.5.2@sha256:1f6e64eaba7997282c7067ba19922fc7e46b5f73e1a27add3dd66a591d50512f";
+                image = "docker.io/fosrl/gerbil:1.6.0@sha256:420f5210b6d1a6d3035f15c3938b5289fee5aeff51ffdcb9b217838338908885";
                 pod = "services.pod";
                 volumes = [
                   "${configHome}:/var/config"
@@ -479,7 +479,7 @@ in
                   config.sops.secrets."users/${username}/traefik.env".path
                 ];
                 exec = "--configFile=/etc/traefik/traefik_config.yml";
-                image = "docker.io/traefik:v3.7.17@sha256:68ae5fe5b64ca166704b746a9e8afcd385e36b3f569a5691401bf652d57b3748";
+                image = "docker.io/traefik:v3.7.17@sha256:f4bb143d1135a579b630ed491e17ec50f6f7c9c6a30585ff3d385471d2a86f5a";
                 pod = "services.pod";
                 volumes = [
                   "${configHome}/traefik:/etc/traefik:ro"
