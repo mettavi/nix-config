@@ -91,5 +91,18 @@
       datasourceTemplate: "docker",
       versioningTemplate: "docker",
     },
+    {
+      "customType": "regex",
+      "description": "Update Traefik plugin versions in Nix definitions",
+      "managerFilePatterns": [
+        "/^(system|home)/(nixos|shared)/modules/.*\\.nix$/"
+      ],
+      "matchStrings": [
+        "moduleName\\s*=\\s*\"github\\.com/(?<depName>[^\"]+)\";\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\";"
+      ],
+      "autoReplaceStringTemplate": "moduleName = \"github.com/{{{depName}}}\";\n              version = \"{{{newValue}}}\";",
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver"
+    },
   ],
 }
