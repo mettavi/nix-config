@@ -420,7 +420,7 @@ in
               autoStart = "default.target";
               containerConfig = {
                 # "ee" is the enterprise edition (free for personal use)
-                image = "docker.io/fosrl/pangolin:ee-1.25.3@sha256:f2c0fc54e1b59efcd23b8685e8df84350f363e14ebe1c13ce88a681f181ca49e";
+                image = "docker.io/fosrl/pangolin:ee-1.26.0@sha256:c65b8b4656b3336cea3f2647fc20da955764cd18103c51b2ea6164bbb054e0de";
                 # use the renovate GitHub workflow to check for version updates
                 # autoUpdate = "registry";
                 environments = {
