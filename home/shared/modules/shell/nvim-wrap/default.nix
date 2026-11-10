@@ -91,7 +91,7 @@ in
             (nvim-treesitter.withPlugins (
               plugins: with plugins; [
                 json
-                # json5
+                json5
                 javascript
                 typescript
                 tsx

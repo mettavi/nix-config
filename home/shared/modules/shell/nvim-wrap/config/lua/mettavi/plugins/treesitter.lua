@@ -8,6 +8,7 @@ return {
 
     local languages = {
       "json",
+      "json5",
       "javascript",
       "typescript",
       "tsx",
@@ -16,7 +17,6 @@ return {
       "css",
       "markdown",
       "markdown_inline",
-      "svelte",
       "bash",
       "lua",
       "vim",
