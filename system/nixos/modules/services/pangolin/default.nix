@@ -198,13 +198,13 @@ in
             plugins = {
               badger = {
                 moduleName = "github.com/fosrl/badger";
-                version = "v1.4.0";
+              version = "v1.8.0";
               };
             }
             // lib.optionalAttrs crowdsec.enable {
               bouncer = {
                 moduleName = "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin";
-                version = "v1.7.1";
+              version = "v1.8.1";
               };
             };
           };
