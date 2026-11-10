@@ -198,7 +198,7 @@ in
             plugins = {
               badger = {
                 moduleName = "github.com/fosrl/badger";
-                version = "v1.4.0";
+              version = "v1.8.0";
               };
             }
             // lib.optionalAttrs crowdsec.enable {
