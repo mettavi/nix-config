@@ -257,6 +257,12 @@ nixInfo.lze.load({
       -- if you provide the filetypes it doesn't ask lspconfig for the filetypes
       -- (meaning it doesn't call the callback function we defined in the main init.lua)
       filetypes = { "json", "jsonc" },
+      settings = {
+        json = {
+          schemas = require("schemastore").json.schemas(),
+          validate = { enable = true },
+        },
+      },
     },
   },
   {
