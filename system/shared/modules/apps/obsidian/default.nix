@@ -216,9 +216,15 @@ in
   };
 
   config = mkIf cfg.enable {
-    # enable pkgs.obsidianPlugins and pkgs.obsidianThemes from the obsidian-extensions flake
     nixpkgs.overlays = [
+      # enable pkgs.obsidianPlugins and pkgs.obsidianThemes from the obsidian-extensions flake
       inputs.obsidian-extensions.overlays.default
+      # use the prebuilt Electron so CI doesn't compile Chromium from source
+      (final: prev: {
+        obsidian = prev.obsidian.override {
+          electron = final.electron_43-bin;
+        };
+      })
     ];
 
     # NB: any settings included here will be MERGED by an activation script along with any values set by the GUI

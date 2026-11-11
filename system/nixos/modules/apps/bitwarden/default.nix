@@ -40,6 +40,14 @@ in
       bitwarden-desktop
     ];
 
+    nixpkgs.overlays = [
+      (final: prev: {
+        bitwarden-desktop = prev.bitwarden-desktop.override {
+          electron_43 = final.electron_43-bin;
+        };
+      })
+    ];
+
     # the backup option relies on an email module to enable email notification of failed backups
     mettavi.system.services.postfix.enable = mkIf cfg.backup true;
 
