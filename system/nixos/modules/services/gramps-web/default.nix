@@ -134,7 +134,7 @@ in
 
             # Define the image build process
             builds = {
-              grampsweb_cuda = {
+              grampsweb_local = {
                 buildConfig = {
                   file = grampsContainerfile.outPath;
                   tag = "grampsweb:local";
@@ -149,7 +149,7 @@ in
                 autoStart = true;
                 containerConfig = {
                   # Use the image we built above
-                  image = builds.grampsweb_cuda.ref;
+                  image = builds.grampsweb_local.ref;
                   environmentFiles = [
                     config.sops.secrets."users/${username}/grampsweb-${hostname}.env".path
                   ];
@@ -177,12 +177,12 @@ in
                   # Ensure the image is built and redis is running first
                   After = [
                     containers.grampsweb_redis.ref
-                    builds.grampsweb_cuda.ref
+                    builds.grampsweb_local.ref
                     config.virtualisation.quadlet.networks.gramps_net.ref
                   ];
                   Requires = [
                     containers.grampsweb_redis.ref
-                    builds.grampsweb_cuda.ref
+                    builds.grampsweb_local.ref
                     config.virtualisation.quadlet.networks.gramps_net.ref
                   ];
                 };
@@ -190,7 +190,7 @@ in
 
               grampsweb_celery = mkContainer {
                 containerConfig = {
-                  image = builds.grampsweb_cuda.ref;
+                  image = builds.grampsweb_local.ref;
                   exec = "celery -A gramps_webapi.celery worker --loglevel=INFO --concurrency=2";
                   environmentFiles = [
                     config.sops.secrets."users/${username}/grampsweb-${hostname}.env".path
