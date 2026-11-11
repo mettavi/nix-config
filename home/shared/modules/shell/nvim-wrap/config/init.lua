@@ -165,7 +165,7 @@ nixInfo.lze.load({
   {
     "Schemastore.nvim",
     auto_enable = true,
-    dep_of = "yaml-language-server",
+    dep_of = { "yaml-language-server" },
   },
   {
     "telescope-fzf-native.nvim",
