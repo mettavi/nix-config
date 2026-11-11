@@ -41,6 +41,7 @@ in
     ];
 
     nixpkgs.overlays = [
+      # use the prebuilt Electron so CI doesn't compile Chromium from source
       (final: prev: {
         bitwarden-desktop = prev.bitwarden-desktop.override {
           electron_43 = final.electron_43-bin;
