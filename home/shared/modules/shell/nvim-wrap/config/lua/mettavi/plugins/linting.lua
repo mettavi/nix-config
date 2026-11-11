@@ -13,7 +13,7 @@ return {
       typescript = { "eslint_d" },
       javascriptreact = { "eslint_d" },
       -- json = { "jsonlint" },
-      -- json5 = { "json5" },
+      json5 = { "json5" },
       typescriptreact = { "eslint_d" },
       svelte = { "eslint_d" },
       nix = { "nix" },
