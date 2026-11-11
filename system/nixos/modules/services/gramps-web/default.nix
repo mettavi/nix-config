@@ -169,8 +169,6 @@ in
                   # Keep user ID mapping the same as the host to fix bind mount permissions
                   # this requires not using any privileged ports (below 1024)
                   # userns = "keep-id";
-                  # Pass the NVIDIA GPU to the container
-                  devices = [ "nvidia.com/gpu=all" ];
                 };
                 serviceConfig = {
                   Restart = "always";
