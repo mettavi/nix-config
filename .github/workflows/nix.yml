@@ -82,6 +82,8 @@ jobs:
         with:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+            extra-substituters = https://cache.lantian.pub/lantian
+            extra-trusted-public-keys = lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ=
       - uses: DeterminateSystems/magic-nix-cache-action@v15
         with:
           diagnostic-endpoint: ""
