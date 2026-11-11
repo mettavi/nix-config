@@ -35,7 +35,7 @@ in
         inherit (config.virtualisation.quadlet) volumes;
         # 1. Define a standard Containerfile to build the GPU-enabled image
         # This avoids the Nix-store/FHS mismatch by using standard pip in the container.
-        grampsCudaContainerfile = pkgs.writeText "Containerfile" ''
+        grampsContainerfile = pkgs.writeText "Containerfile" ''
           FROM ghcr.io/gramps-project/grampsweb:26.11.2@sha256:80a1d75ca0f67f9203aecca60f7639312a2769fe0af45b34608b0add64f7c07f
           # Force the container to pull down the Linux PDF thumbnail extraction binaries
           USER root
@@ -136,8 +136,8 @@ in
             builds = {
               grampsweb_cuda = {
                 buildConfig = {
-                  file = grampsCudaContainerfile.outPath;
-                  tag = "grampsweb:cuda";
+                  file = grampsContainerfile.outPath;
+                  tag = "grampsweb:local";
                   # Add this to force Podman to look at the config directory instead of the Nix Store
                   # contextType = "configdir";
                 };
