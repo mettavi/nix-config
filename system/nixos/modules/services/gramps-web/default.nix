@@ -43,11 +43,6 @@ in
 
           # Initialize the font configuration cache layer inside the container layout
           RUN fc-cache -f -v
-
-          # Uninstall the built-in CPU versions first to guarantee a clean slate,
-          # then install the CUDA-enabled versions.
-          RUN pip uninstall -y torch torchvision && \
-            pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu121
         '';
 
         # 2. Extract shared configuration so both grampsweb and celery can inherit it properly
