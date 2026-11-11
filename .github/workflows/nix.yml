@@ -53,6 +53,7 @@ jobs:
     if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
     name: "build (${{ matrix.host }})"
     runs-on: ubuntu-latest
+    timeout-minutes: 90
     strategy:
       fail-fast: false
       max-parallel: 1 # Build one host at a time
