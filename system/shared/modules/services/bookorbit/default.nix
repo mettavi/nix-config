@@ -38,10 +38,10 @@ in
       };
     };
 
-    sops.secrets = {
-      "users/${username}/bookorbit-${hostname}.env" = {
-        sopsFile = "${secrets_path}/secrets/apps/bookorbit.yaml";
-      };
+    sops.secrets."users/${username}/bookorbit-${hostname}.env" = {
+      sopsFile = "${secrets_path}/secrets/apps/bookorbit.yaml";
+      owner = "bookorbit";
+      group = "bookorbit";
     };
   };
 }
