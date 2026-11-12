@@ -79,6 +79,7 @@
         };
       };
       services = {
+        bookOrbit.enable = false;
         newt.enable = true;
         syncthing.enable = true;
         vaultwarden.enable = true;
