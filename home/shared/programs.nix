@@ -7,6 +7,18 @@
 }:
 {
   home.packages = with pkgs; [
+    # create a wrapper to load the cachix_auth_token from sops-nix (eg. for git push operations)
+    (pkgs.writeShellApplication {
+      name = "cachix-sops";
+      runtimeInputs = [ pkgs.cachix ];
+      text = ''
+        CACHIX_AUTH_TOKEN="$(< ${
+          config.sops.secrets."users/${config.home.username}/cachix_auth_token".path
+        })"
+        export CACHIX_AUTH_TOKEN
+        exec cachix "$@"
+      '';
+    })
     fastfetch # neofetch-like sys info tool
   ];
 
