@@ -9,8 +9,8 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkOption;
-  inherit (lib.types) str;
+  inherit (lib) mkEnableOption mkOption optionals;
+  inherit (lib.types) bool str;
   cfg = config.mettavi.services.gramps-web;
 in
 {
@@ -21,13 +21,18 @@ in
       default = "http://localhost";
       description = "The url where the app will be hosted";
     };
+    openFirewall = mkOption {
+      type = bool;
+      default = false;
+      description = "Whether to open the port in the firewall";
+    };
   };
 
   config = lib.mkIf cfg.enable {
 
     # --- SYSTEM-LEVEL CONFIGURATIONS ---
     mettavi.system.services.podman.enable = true;
-    networking.firewall.allowedTCPPorts = [ 5000 ];
+    networking.firewall.allowedTCPPorts = optionals cfg.openFirewall [ 5000 ];
 
     # Explicitly assign SubUID/SubGID ranges and enable linger for auto-start
     users.users."${username}" = {
