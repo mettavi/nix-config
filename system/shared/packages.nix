@@ -17,11 +17,6 @@ let
   # bfg-repo-cleaner_zulu = pkgs.bfg-repo-cleaner.override { jre = pkgs.zulu; };
 in
 {
-
-  imports = [
-    ./vim.nix
-  ];
-
   fonts.packages = with pkgs; [
     nerd-fonts.meslo-lg
   ];
