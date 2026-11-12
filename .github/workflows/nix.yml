@@ -111,6 +111,7 @@ jobs:
 
           # 4. would an ordinary build fetch the kernel, or build it?
           nix build --dry-run .#nixosConfigurations.oona.config.boot.kernelPackages.kernel 2>&1 | tail -15
+          nix build --dry-run .#nixosConfigurations.oona.config.boot.kernelPackages.kernel.dev 2>&1 | tail -5
       - name: "Build NixOS System"
         env:
           NIX_CONFIG: |
