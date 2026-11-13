@@ -94,16 +94,15 @@ jobs:
         with:
           name: mettavi
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-      - name: Debug kernel cache (temporary)
-        if: matrix.host == 'oona'
-        timeout-minutes: 15
-        continue-on-error: true
+      - name: Guard against heavy source builds
         run: |
-          nix config show substituters
-          nix config show trusted-public-keys
-          nix build --no-link --max-jobs 0 \
-            .#nixosConfigurations.oona.config.boot.kernelPackages.kernel.dev 2>&1 \
-            | grep -E "copying path|error|cannot|required to build"
+          plan=$(nix build --dry-run --no-update-lock-file \
+            .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel 2>&1)
+          if echo "$plan" | sed -n '/will be built/,/will be fetched/p' \
+             | grep -E -- '-(electron-unwrapped|vtk|opencv)-[0-9.]+\.drv$|-linux-cachyos-latest-[0-9.]+\.drv$'; then
+            echo "::error::A heavy derivation would be built from source. Build it locally and cachix push it."
+            exit 1
+          fi
       - name: "Build NixOS System"
         run: |
           nix build --no-update-lock-file .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
