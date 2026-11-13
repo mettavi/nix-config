@@ -18,10 +18,16 @@ let
     optional
     optionalAttrs
     ;
+  inherit (lib.types) str;
 in
 {
   options.mettavi.system.services.bookOrbit = {
     enable = mkEnableOption "Install and set up the BookOrbit self-hosted library platform";
+    appUrl = mkOption {
+      type = str;
+      default = "http://localhost:3000";
+      description = "The url where the app will be hosted";
+    };
   };
 
   config = mkMerge [
