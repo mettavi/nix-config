@@ -51,6 +51,20 @@ in
         #   };
         # };
         private-resources = {
+          bookorbit = {
+            enabled = true;
+            mode = "http";
+            name = "BookOrbit";
+            destination = "127.0.0.1";
+            destination-port = 3000;
+            full-domain = "books.${baseDomain}";
+            scheme = "http";
+            sites = [ "Services" ];
+            ssl = true;
+            # AUTHENTICATION
+            machines = [ "similar-ichthyophis-mindanaoensis" ]; # Oona machine
+            users = [ inputs.secrets.email.personal ];
+          };
           syncthing-gui = {
             enabled = true;
             mode = "http";
