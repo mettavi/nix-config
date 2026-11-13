@@ -54,6 +54,11 @@ jobs:
     name: "build (${{ matrix.host }})"
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    env:
+      NIX_CONFIG: |
+        extra-substituters = https://cache.lantian.pub/lantian https://nix-community.cachix.org
+        extra-trusted-public-keys = lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
+      SKIP_CALIBRE_TESTS: "1"
     strategy:
       fail-fast: false
       max-parallel: 1 # Build one host at a time
@@ -90,34 +95,16 @@ jobs:
           name: mettavi
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - name: Debug kernel cache (temporary)
-        timeout-minutes: 10
+        if: matrix.host == 'oona'
+        timeout-minutes: 15
         continue-on-error: true
         run: |
-          set -x
-          H=s0fh2k3cg3nsiiv3fmjczxq53rx21cc4
-          P=/nix/store/$H-linux-cachyos-latest-7.3.1
-
-          # 1. can the runner reach the cache at all?
-          curl -sS -o /dev/null -w 'HTTP %{http_code} in %{time_total}s\n' \
-            "https://cache.lantian.pub/lantian/$H.narinfo"
-
-          # 2. is the path there, and is its signature trusted? (bypasses the substituter list)
-          nix path-info --store https://cache.lantian.pub/lantian "$P"
-
-          # 3. which caches does Nix actually have configured?
           nix config show substituters
           nix config show trusted-public-keys
-          cat ~/.config/nix/nix.conf /etc/nix/nix.conf
-
-          # 4. would an ordinary build fetch the kernel, or build it?
-          nix build --dry-run .#nixosConfigurations.oona.config.boot.kernelPackages.kernel 2>&1 | tail -15
-          nix build --dry-run .#nixosConfigurations.oona.config.boot.kernelPackages.kernel.dev 2>&1 | tail -5
+          nix build --no-link --max-jobs 0 \
+            .#nixosConfigurations.oona.config.boot.kernelPackages.kernel.dev 2>&1 \
+            | grep -E "copying path|error|cannot|required to build"
       - name: "Build NixOS System"
-        env:
-          NIX_CONFIG: |
-            extra-substituters = https://cache.lantian.pub/lantian https://nix-community.cachix.org
-            extra-trusted-public-keys = lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=
-          SKIP_CALIBRE_TESTS: "1"
         run: |
           nix build --no-update-lock-file .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
           nix-collect-garbage -d
