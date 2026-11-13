@@ -26,7 +26,6 @@ in
 
   config = mkMerge [
     # NB:use 'optionalAttrs'; 'mkIf' doesn’t stop “option does not exist” errors
-    # as this module is not available on nixpkgs version < 26.11
     # Only defined on releases that actually declare services.bookorbit
     (optionalAttrs hasNewModule {
       services.bookorbit = mkIf cfg.enable {
