@@ -79,7 +79,10 @@
         };
       };
       services = {
-        bookOrbit.enable = false;
+        bookOrbit = {
+          enable = true;
+          appUrl = "https://books.mettavi.cloud";
+        };
         newt.enable = true;
         syncthing.enable = true;
         vaultwarden.enable = true;
