@@ -19,7 +19,7 @@ let
     optional
     optionalAttrs
     ;
-  inherit (lib.types) str;
+  inherit (lib.types) bool str;
 in
 {
   options.mettavi.system.services.bookOrbit = {
@@ -28,6 +28,11 @@ in
       type = str;
       default = "http://localhost:3000";
       description = "The url where the app will be hosted";
+    };
+    openFwPort = mkOption {
+      type = bool;
+      default = false;
+      description = "Whether to open the port in the firewall";
     };
   };
 
@@ -60,7 +65,7 @@ in
         group = "bookorbit";
         # Keep false if Pangolin/Newt reaches this VPS over a private WireGuard tunnel.
         # Set to true ONLY if Pangolin connects to this VPS's public IP directly.
-        openFirewall = false;
+        openFirewall = cfg.openFwPort;
       };
     })
     (mkIf (cfg.enable && hasNewModule) {
