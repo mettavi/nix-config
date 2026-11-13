@@ -15,6 +15,7 @@ let
     mkEnableOption
     mkIf
     mkMerge
+    mkOption
     optional
     optionalAttrs
     ;
@@ -36,17 +37,29 @@ in
     (optionalAttrs hasNewModule {
       services.bookorbit = mkIf cfg.enable {
         enable = true;
+        # POSTGRES_USER and POSTGRES_DB default to "bookorbit"
         createDatabaseLocally = true;
+        # Environment variables to pass to the BookOrbit service.
+        # See <https://bookorbit.app/installation.html#configuration> for available options.
         environment = {
+          # Data storage directory.
           APP_DATA_PATH = "/var/lib/bookorbit";
-          APP_URL = "http://localhost:3000";
-          BOOKS_HOST_PATH = "${config.users.users.${username}.home}/media/bookorbit";
+          # The address you will use to open BookOrbit.
+          # Direct LAN access: http://your-server-ip:3000
+          # Behind a reverse proxy with a domain: https://books.example.com
+          # Must match the public domain configured in your Pangolin dashboard
+          APP_URL = cfg.appUrl;
           LOG_LEVEL = "info";
+          # TCP port for the BookOrbit server.
           PORT = "3000";
+          # Required when running behind a reverse proxy like Traefik/Pangolin
+          TRUST_PROXY = "true";
         };
         environmentFile = config.sops.secrets."users/${username}/bookorbit-${hostname}.env".path;
         user = "bookorbit";
         group = "bookorbit";
+        # Keep false if Pangolin/Newt reaches this VPS over a private WireGuard tunnel.
+        # Set to true ONLY if Pangolin connects to this VPS's public IP directly.
         openFirewall = false;
       };
     })
