@@ -14,6 +14,9 @@ let
   inherit (lib)
     mkEnableOption
     mkIf
+    mkMerge
+    optional
+    optionalAttrs
     ;
 in
 {
@@ -21,9 +24,12 @@ in
     enable = mkEnableOption "Install and set up the BookOrbit self-hosted library platform";
   };
 
-  config = mkIf cfg.enable {
-    services = {
-      bookorbit = {
+  config = mkMerge [
+    # NB:use 'optionalAttrs'; 'mkIf' doesn’t stop “option does not exist” errors
+    # as this module is not available on nixpkgs version < 26.11
+    # Only defined on releases that actually declare services.bookorbit
+    (optionalAttrs hasNewModule {
+      services.bookorbit = mkIf cfg.enable {
         enable = true;
         createDatabaseLocally = true;
         environment = {
@@ -38,12 +44,19 @@ in
         group = "bookorbit";
         openFirewall = false;
       };
-    };
-
-    sops.secrets."users/${username}/bookorbit-${hostname}.env" = {
-      sopsFile = "${secrets_path}/secrets/apps/bookorbit.yaml";
-      owner = "bookorbit";
-      group = "bookorbit";
-    };
-  };
+    })
+    (mkIf (cfg.enable && hasNewModule) {
+      sops.secrets."users/${username}/bookorbit-${hostname}.env" = {
+        sopsFile = "${secrets_path}/secrets/apps/bookorbit.yaml";
+        owner = "bookorbit";
+        group = "bookorbit";
+      };
+    })
+    # make it obvious if you enable it on a release that lacks the module
+    {
+      warnings = optional (
+        cfg.enable && !hasNewModule
+      ) "bookOrbit is enabled but this nixpkgs has no services.bookorbit module; nothing was configured.";
+    }
+  ];
 }
