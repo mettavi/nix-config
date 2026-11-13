@@ -2,6 +2,7 @@
   config,
   hostname,
   lib,
+  modulesPath,
   secrets_path,
   username,
   ...
@@ -9,6 +10,7 @@
 
 let
   cfg = config.mettavi.system.services.bookOrbit;
+  hasNewModule = builtins.pathExists (modulesPath + "/services/web-apps/bookorbit.nix");
   inherit (lib)
     mkEnableOption
     mkIf
