@@ -66,6 +66,7 @@ in
     (mkIf (cfg.enable && hasNewModule) {
       sops.secrets."users/${username}/bookorbit-${hostname}.env" = {
         sopsFile = "${secrets_path}/secrets/apps/bookorbit.yaml";
+        mode = "0600";
         owner = "bookorbit";
         group = "bookorbit";
       };
