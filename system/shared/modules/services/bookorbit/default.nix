@@ -79,8 +79,8 @@ in
         "d /srv/media 2770 bookorbit bookorbit -"
         "d /srv/media/audiobooks 2770 bookorbit bookorbit -"
         "d /srv/media/ebooks 2770 bookorbit bookorbit -"
-        "d /srv/media/comics 2770 bookorbit bookorbit -"
       ];
+
       # add the admin user to the bookorbit group
       users.users.${username}.extraGroups = [ "bookorbit" ];
     })
