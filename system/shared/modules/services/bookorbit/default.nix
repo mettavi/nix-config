@@ -69,6 +69,19 @@ in
         owner = "bookorbit";
         group = "bookorbit";
       };
+
+      # Allow admin user (via bookorbit group) to browse files BookOrbit organizes
+      systemd.services.bookorbit.serviceConfig.UMask = "0007";
+
+      # let NixOS enforce the directory structure and permissions on every rebuild
+      systemd.tmpfiles.rules = [
+        "d /srv/media 2770 bookorbit bookorbit -"
+        "d /srv/media/audiobooks 2770 bookorbit bookorbit -"
+        "d /srv/media/ebooks 2770 bookorbit bookorbit -"
+        "d /srv/media/comics 2770 bookorbit bookorbit -"
+      ];
+      # add the admin user to the bookorbit group
+      users.users.${username}.extraGroups = [ "bookorbit" ];
     })
     # make it obvious if you enable it on a release that lacks the module
     {
