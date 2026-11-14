@@ -36,35 +36,88 @@ in
       # See https://docs.pangolin.net/manage/blueprints
       # NB: These do not require the integration API to be enabled
       blueprint = {
-        # public-resources = {
-        #   example = {
-        #     name = "Vaultwarden";
-        #     mode = "http";
-        #     "full-domain" = "vault.${baseDomain}";
-        #     targets = [
-        #       {
-        #         hostname = "127.0.0.1";
-        #         port = config.services.vaultwarden.config.ROCKET_PORT;
-        #         method = "http";
-        #       }
-        #     ];
-        #   };
-        # };
-        private-resources = {
+        # proxy-resources = public-resources (alias)
+        proxy-resources = {
           bookorbit = {
-            enabled = true;
-            mode = "http";
             name = "BookOrbit";
-            destination = "127.0.0.1";
-            destination-port = 3000;
+            enabled = true;
             full-domain = "books.${baseDomain}";
-            scheme = "http";
-            sites = [ "Services" ];
+            mode = "http";
             ssl = true;
-            # AUTHENTICATION
-            machines = [ "similar-ichthyophis-mindanaoensis" ]; # Oona machine
-            users = [ inputs.secrets.email.personal ];
+            auth = {
+              sso-enabled = true;
+              sso-users = [ inputs.secrets.email.personal ];
+            };
+            rules = [
+              {
+                enabled = true;
+                action = "allow";
+                match = "path";
+                value = "/api/v1/koreader/*";
+                priority = 1;
+              }
+              {
+                enabled = true;
+                action = "allow";
+                match = "path";
+                value = "/api/v1/opds*";
+                priority = 2;
+              }
+            ];
+            targets = [
+              {
+                enabled = true;
+                site = "Services";
+                forward-identity-headers = true;
+                hostname = "127.0.0.1";
+                method = "http";
+                port = 3000;
+                priority = 100;
+                healthcheck = {
+                  hostname = "127.0.0.1";
+                  port = 3000;
+                  path = "/";
+                  scheme = "http";
+                  mode = "http";
+                  interval = 5;
+                  unhealthy-interval = 30;
+                  timeout = 5;
+                  follow-redirects = true;
+                  method = "GET";
+                  healthy-threshold = 1;
+                  unhealthy-threshold = 1;
+                };
+              }
+            ];
           };
+          # example = {
+          #   name = "Vaultwarden";
+          #   mode = "http";
+          #   "full-domain" = "vault.${baseDomain}";
+          #   targets = [
+          #     {
+          #       hostname = "127.0.0.1";
+          #       port = config.services.vaultwarden.config.ROCKET_PORT;
+          #       method = "http";
+          #     }
+          #   ];
+          # };
+        };
+        private-resources = {
+          # bookorbit = {
+          #   enabled = true;
+          #   mode = "http";
+          #   name = "BookOrbit";
+          #   destination = "127.0.0.1";
+          #   destination-port = 3000;
+          #   full-domain = "books.${baseDomain}";
+          #   scheme = "http";
+          #   sites = [ "Services" ];
+          #   ssl = true;
+          #   # AUTHENTICATION
+          #   machines = [ "similar-ichthyophis-mindanaoensis" ]; # Oona machine
+          #   users = [ inputs.secrets.email.personal ];
+          # };
           syncthing-gui = {
             enabled = true;
             mode = "http";
