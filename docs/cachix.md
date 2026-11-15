@@ -5,7 +5,7 @@
 Use the `cachix-sops` wrapper (see `/home/shared/programs.nix`)
 to wrap the `CACHIX_AUTH_TOKEN` secret from sops into the `cachix` binary.
 
-1. ### Make sure you’re on the same lock file as CI
+1. Make sure you’re on the same lock file as CI
 
    The `nix.yml` guard script fires on the weekly update-flake-lock PR, whose flake.lock is newer than your local one.
    Before building anything, check out the PR’s branch. If you build on an older lock,
@@ -17,7 +17,7 @@ to wrap the `CACHIX_AUTH_TOKEN` secret from sops into the `cachix` binary.
    > [!NOTE] What the checkout does and doesn’t do
    > A checkout only swaps the files in your working directory. It doesn’t create any .drv files.
 
-1. ### Evaluate the system, which makes Nix write the .drv files into your store.
+1. Evaluate the system, which makes Nix write the .drv files into your store.
 
    ```sh
    nix build --dry-run .#nixosConfigurations.oona.config.system.build.toplevel # writes the .drv files
@@ -29,7 +29,7 @@ to wrap the `CACHIX_AUTH_TOKEN` secret from sops into the `cachix` binary.
    > usually because of the wrong branch or uncommitted changes to flake inputs.
    > In that case, jump to step 4.
 
-1. ### Run `nix-store --realise` on the path the guard printed.
+1. Run `nix-store --realise` on the path the guard printed.
 
    > [!NOTE]
    > `nix-store --realise` needs the .drv file (step 2) to already be in your local store.
@@ -42,7 +42,7 @@ to wrap the `CACHIX_AUTH_TOKEN` secret from sops into the `cachix` binary.
      | xargs -n1 nix-store --realise | cachix-sops push mettavi
    ```
 
-1. ### If you don’t have the `.drv`, use `nix build`
+1. If you don’t have the `.drv`, use `nix build`
 
    > [!NOTE]
    > `nix build` doesn’t need the .drv path from the log, but it does depend on matching CI’s lock file,
@@ -55,7 +55,7 @@ to wrap the `CACHIX_AUTH_TOKEN` secret from sops into the `cachix` binary.
    # NB: The kernel uses its own attribute (.#nixosConfigurations.oona.config.boot.kernelPackages.kernel^*).
    ```
 
-1. ### Check afterwards
+1. Check afterwards
 
    ```sh
    # Take the hash from one pushed output path (the 32 characters after /nix/store/) and confirm it’s in your cache.
@@ -64,7 +64,7 @@ to wrap the `CACHIX_AUTH_TOKEN` secret from sops into the `cachix` binary.
    # Afterwards, run `git switch -` to go back to your usual branch.
    ```
 
-# BULK PUSHING ALL PACKAGES
+## BULK PUSHING ALL PACKAGES
 
 1. Download the raw log from the GitHub CI run.
 
