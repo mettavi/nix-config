@@ -99,7 +99,7 @@ jobs:
           plan=$(nix build --dry-run --no-update-lock-file \
             .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel 2>&1)
           heavy=$(echo "$plan" | sed -n '/will be built/,/will be fetched/p' \
-            | grep -E '/nix/store/[a-z0-9]{32}-(electron-unwrapped|vtk|opencv|linux-cachyos-latest)-[0-9.]+\.drv$' || true)
+            | grep -E '/nix/store/[a-z0-9]{32}-(electron-unwrapped|vtk|opencv|ollama|linux-cachyos-latest)-[0-9.]+\.drv$' || true)
           if [ -n "$heavy" ]; then
             echo "$heavy"
             echo "::error::A heavy derivation would be built from source. Build it locally and cachix push it."
