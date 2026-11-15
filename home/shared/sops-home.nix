@@ -47,6 +47,7 @@ in
       };
       "users/${username}/github_token" = {
       };
+      "users/${username}/nixAccessTokens" = { };
     };
     # secrets.test = {
     #   # sopsFile = ./secrets.yml.enc; # optionally define per-secret files
