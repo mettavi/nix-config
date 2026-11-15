@@ -107,5 +107,5 @@ jobs:
           fi
       - name: "Build NixOS System"
         run: |
-          nix build --no-update-lock-file .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+          nix build -L --no-update-lock-file .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
           nix-collect-garbage -d
