@@ -135,7 +135,7 @@ in
       videoAcceleration = true; # default = true
     };
 
-    # build packages with CUDA support by default while building nixpkgs packages
+    # build nixpkgs packages with CUDA support by default
     # WARNING: enabling this option caused the IR emitter to fail when using howdy authentication via the GUI
     # Workaround: enable for individual packages instead
     # nixpkgs.config.cudaSupport = true;
