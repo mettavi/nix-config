@@ -9,7 +9,7 @@
     devices = {
       oona.id = "QJ3EAEO-BK22DVP-DZ6SGFH-JSWJ6RI-T5KCKSE-MUMNMWS-Y2T5HHO-4GZX6A4";
       pixel.id = "PHMZ76M-RKYU66P-G7M3FEI-5R5FC2Z-DC5LVBG-7CSIQLP-KU5GZEB-YQIO4Q2";
-      kindle.id = "S3YJCK4-6URNLBD-FO4UWWP-RVFGQ5C-5ZLFBYA-L5YLK4K-6FWXHMU-VSR2XQH";
+      # kindle.id = "S3YJCK4-6URNLBD-FO4UWWP-RVFGQ5C-5ZLFBYA-L5YLK4K-6FWXHMU-VSR2XQH";
       blue = {
         id = "6XHSTOA-RGKBBIQ-BHEU4GU-USTUQ7S-P3SCYUJ-HOLYUJ6-STNJSEQ-6PHSIQS";
         addresses = [
@@ -39,15 +39,15 @@
           };
         };
       };
-      koreader = {
-        devices = [
-          "oona"
-          "pixel"
-          "kindle"
-          "blue"
-        ];
-        paths.oona = "${config.users.users.${username}.home}/Documents/koreader/Books/Sync";
-      };
+      # koreader = {
+      #   devices = [
+      #     "oona"
+      #     "pixel"
+      #     "kindle"
+      #     "blue"
+      #   ];
+      #   paths.oona = "${config.users.users.${username}.home}/Documents/koreader/Books/Sync";
+      # };
     };
   };
 }
