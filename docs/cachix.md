@@ -25,7 +25,7 @@ to wrap the `CACHIX_AUTH_TOKEN` secret from sops into the `cachix` binary.
    ```
 
    > [!NOTE]
-   > If the `ls` fails after the evaluation, your local evaluation differs from CI’s,
+   > If the `ls` fails after the evaluation, your local evaluation differs from CI's,
    > usually because of the wrong branch or uncommitted changes to flake inputs.
    > In that case, jump to step 4.
 
