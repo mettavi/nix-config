@@ -7,7 +7,8 @@
 }:
 {
   home.packages = with pkgs; [
-    # create a wrapper to load the cachix_auth_token from sops-nix (eg. for git push operations)
+    # create a wrapper to load the cachix_auth_token from sops-nix
+    # See ../../docs/cachix.md for details of 'cachix push` commands
     (pkgs.writeShellApplication {
       name = "cachix-sops";
       runtimeInputs = [ pkgs.cachix ];
