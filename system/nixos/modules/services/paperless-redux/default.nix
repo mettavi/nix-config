@@ -171,7 +171,7 @@ in
         };
         paperless-gotenberg = mkContainer {
           containerConfig = {
-            image = "docker.io/gotenberg/gotenberg:9.0.0@sha256:01144a5c897a21b966f1abb9836d2f3bac1e3c8196087bab73f697878345638a";
+            image = "docker.io/gotenberg/gotenberg:9.5.0@sha256:ac61457a1e889ef1ca256a9afc117cff8caf517f19e66ea23cede3feb22f69a5";
             autoUpdate = "registry";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
             # flags recommended by the paperless-ngx docs
