@@ -564,7 +564,7 @@ in
             mkContainer {
               autoStart = false;
               containerConfig = {
-                image = "docker.io/linuxserver/qbittorrent:5.3.0@sha256:05c1454f9a32967affc1f34f67f8cc0cc57dd805dca45489fe797095a6286556";
+                image = "docker.io/linuxserver/qbittorrent:5.3.0@sha256:3d4c4545d51a690a0df15a2ff99038823a88a9822df8e794526447b9afbd7384";
                 networks = [ "container:gluetun" ]; # joins gluetun's netns — no ports of its own
                 environments = {
                   PUID = toString config.users.users.${username}.uid;

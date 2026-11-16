@@ -201,7 +201,7 @@ in
             // lib.optionalAttrs crowdsec.enable {
               bouncer = {
                 moduleName = "github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin";
-                version = "v1.8.1";
+              version = "v1.8.2";
               };
             };
           };
@@ -476,7 +476,7 @@ in
                   config.sops.secrets."users/${username}/traefik.env".path
                 ];
                 exec = "--configFile=/etc/traefik/traefik_config.yml";
-                image = "docker.io/traefik:v3.7.17@sha256:f4bb143d1135a579b630ed491e17ec50f6f7c9c6a30585ff3d385471d2a86f5a";
+                image = "docker.io/traefik:v3.7.18@sha256:9c437ac4f09ce6f4980a8544902d3475fdf70a1a7c578729581d2535dfa7d635";
                 pod = "services.pod";
                 volumes = [
                   "${configHome}/traefik:/etc/traefik:ro"
