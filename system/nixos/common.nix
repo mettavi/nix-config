@@ -48,6 +48,11 @@
   nixpkgs = {
     # Allow unfree packages
     config.allowUnfree = true;
+    # TODO: This workaround is required for Zotero 10. Remove when Zotero 11 ships.
+    # See https://github.com/NixOS/nixpkgs/issues/568692 for details
+    config.permittedInsecurePackages = [
+      "firefox-esr-140-bin-unwrapped-140.17.0esr"
+    ];
     hostPlatform = "${system}";
   };
 
