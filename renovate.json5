@@ -92,6 +92,7 @@
       versioningTemplate: "docker",
     },
     {
+      // no auto-merge (type is 'github-releases', not 'docker')
       "customType": "regex",
       "description": "Update Traefik plugin versions in Nix definitions",
       "managerFilePatterns": [
