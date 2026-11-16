@@ -2,9 +2,15 @@
   config,
   hostname,
   inputs,
+  lib,
+  osConfig,
   pkgs,
   ...
 }:
+let
+  currentVersion = builtins.fromJSON osConfig.system.nixos.release;
+  inherit (lib) optionals;
+in
 {
   home.packages = with pkgs; [
     # create a wrapper to load the cachix_auth_token from sops-nix
@@ -50,12 +56,14 @@
       # agents = [ "ssh" ];
       enableZshIntegration = true;
       extraFlags = [
+        # suppress the confirmation message on shell launch
+        "--quiet"
+      ]
+      ++ optionals (currentVersion > 26.05) [
         # begin coordinated SSH key activation without waiting for Enter
         # (prevents "Press enter to initialize keys" prompt on reboot when keys have no passphrase)
         # see https://github.com/danielrobbins/keychain/issues/230
         "--immediate"
-        # suppress the confirmation message on shell launch
-        "--quiet"
       ];
       keys = [ "${config.home.username}-${hostname}_ed25519" ];
     };
