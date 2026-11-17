@@ -1,5 +1,6 @@
 {
   config,
+  hostname,
   inputs,
   lib,
   modulesPath,
@@ -86,6 +87,70 @@
         newt.enable = true;
         syncthing.enable = true;
         vaultwarden.enable = true;
+        # restic = {
+        #   enable = false;
+        #   jobs = {
+        #     "${hostname}" = {
+        #       localConfig = { };
+        #       repo = "rclone:b2:";
+        #       volumes = {
+        #         "@adminhome" = {
+        #           exclusions = [
+        #             ".Trash-0"
+        #             ".Trash-1000"
+        #             ".local/share/Trash"
+        #             ".local/share/containers/.Trash-1000"
+        #             ".npm"
+        #           ];
+        #           mount = "/home/${username}";
+        #           paths = [ "." ];
+        #         };
+        #         "@adminmedia" = {
+        #           exclusions = [
+        #             ".Trash-0"
+        #             ".Trash-1000"
+        #           ];
+        #           mount = "/home/${username}/media";
+        #           paths = [ "." ];
+        #         };
+        #         "@root" = {
+        #           exclusions = [
+        #             ".Trash-0"
+        #             "/var/backup/postgresql/*.prev.sql"
+        #             # do not backup temporary VMs
+        #             "/var/lib/libvirt/images/test"
+        #           ];
+        #           mount = "/";
+        #           paths = [
+        #             "etc/group"
+        #             "etc/machine-id"
+        #             "etc/NetworkManager/system-connections"
+        #             "etc/passwd"
+        #             "etc/ssh/ssh_${hostname}_ed25519_key*"
+        #             "etc/subgid"
+        #             "var/backup/postgresql"
+        #             "var/backup/luks"
+        #             # includes the important /var/lib/nixos
+        #             "var/lib"
+        #           ];
+        #         };
+        #         "@roothome" = {
+        #           exclusions = [
+        #             ".Trash-0"
+        #             ".local/share/Trash"
+        #           ];
+        #           mount = "/root";
+        #           paths = [ "." ];
+        #         };
+        #         "@vlpostgres" = {
+        #           exclusions = [ ".Trash-0" ];
+        #           mount = "/var/lib/postgresql";
+        #           paths = [ "." ];
+        #         };
+        #       };
+        #     };
+        #   };
+        # };
       };
       # enable system users
       userConfig = {
