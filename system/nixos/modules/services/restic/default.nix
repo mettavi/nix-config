@@ -164,6 +164,32 @@ let
       "--keep-yearly 10"
       "--group-by tags"
     ];
+    rcloneConfigFile = config.home-manager.users.${username}.sops.templates."rclone.conf".path;
+    rcloneOptions = {
+      # checkers do the equality checking of files during a sync
+      checkers = "50";
+      # The number of file transfers to run in parallel
+      transfers = "50";
+      # Use recursive listing if available; uses more memory but fewer transactions
+      fast-list = true;
+      # redirect messages to a file
+      log-file = "/var/log/rclone/sync-$(date +%Y-%m-%d_%H-%M-%S).log";
+      log-level = "INFO";
+      # max files queued at once for being checked or transferred
+      max-backlog = "30000";
+      # allocate x% of threads to to smallest items (hence 100-x% to smallest)
+      order-by = "size,mixed,75";
+      # view real-time transfer statistics (updates per 500ms)
+      progress = true;
+      # print the string ETA: %s to the terminal title
+      progress-terminal-title = true;
+      retries = "3"; # default 3
+      # override progress display update interval, logged at INFO level by default
+      stats = "2m";
+      # -v, --verbose count (-v or 1 INFO, -vv or 2 DEBUG)
+      # NB: Overridden by the log-level option
+      # verbose = 1; # default is NOTICE
+    };
     runCheck = false;
     # run backups when the removable disk is mounted, not on a schedule
     timerConfig = null;
