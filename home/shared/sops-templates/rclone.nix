@@ -27,6 +27,8 @@ in
             type = b2
             account = 004471da6ad00020000000001
             key = ${config.sops.placeholder."users/${username}/rclone_keys/rclone_b2_appkey"}
+            # Permanently delete files on remote removal
+            hard_delete = true
 
             [aws_gda]
             type = s3
