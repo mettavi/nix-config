@@ -268,7 +268,7 @@ with lib;
             {
               inherit vol_label;
               localConfig = { };
-              repo = "/run/media/${username}/${vol_label}";
+              repo = "/run/media/${username}/${vol_label}/";
               volumes = {
                 "@adminhome" = {
                   exclusions = [

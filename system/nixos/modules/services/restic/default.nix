@@ -317,7 +317,7 @@ in
                 [ ]
             ) job.volumes
           );
-          repository = "${job.repo}/${name}";
+          repository = "${job.repo}${name}/restic";
           user = "${job.user}";
         }
       ) enabledJobs;
@@ -663,7 +663,7 @@ in
             User = job.user;
           };
           environment = {
-            RESTIC_REPOSITORY = "${job.repo}/${name}";
+            RESTIC_REPOSITORY = config.services.restic.backups.${name}.repository;
           };
           script = ''
             STATE_DIR="/var/lib/restic-check"
