@@ -81,10 +81,10 @@ in
     users.users.paperless = {
       isSystemUser = true;
       group = "paperless";
-      uid = config.ids.uids.paperless;
+      uid = 315;
     };
     users.groups.paperless = {
-      gid = config.ids.gids.paperless;
+      gid = 315;
     };
 
     # add the admin user to the paperless group
