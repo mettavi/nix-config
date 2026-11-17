@@ -176,6 +176,10 @@ in
 
   config = mkIf cfg.enable {
     assertions = [
+      {
+        assertion = lib.strings.hasPrefix "10" pkgs.zotero.version;
+        message = "Remove the permittedInsecurePackages setting";
+      }
       (
         let
           defaults = catAttrs "name" (filter (a: a.isDefault) (attrValues cfg.profiles));
