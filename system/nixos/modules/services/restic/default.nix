@@ -190,8 +190,9 @@ let
       max-backlog = "30000";
       # allocate x% of threads to the smallest items (hence 100-x% to largest)
       order-by = "size,mixed,75";
+      # NB: the --progress flag is intended for interactive use
+      # (emitting ANSI cursor-movement escape codes), not a systemd service
       retries = "3"; # default 3
-      # override progress display update interval, logged at INFO level by default
       stats = "2m";
       # -v, --verbose count (-v or 1 INFO, -vv or 2 DEBUG)
       # NB: Overridden by the log-level option
