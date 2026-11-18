@@ -184,12 +184,12 @@ let
       transfers = "50";
       # Use recursive listing if available; uses more memory but fewer transactions
       fast-list = true;
+      # Log to stderr (captured automatically by systemd journald)
+      log-level = "INFO";
       # max files queued at once for being checked or transferred
       max-backlog = "30000";
       # allocate x% of threads to the smallest items (hence 100-x% to largest)
       order-by = "size,mixed,75";
-      # view real-time transfer statistics (updates per 500ms, override with 'stats')
-      progress = true;
       retries = "3"; # default 3
       # override progress display update interval, logged at INFO level by default
       stats = "2m";
