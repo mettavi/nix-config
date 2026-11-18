@@ -291,69 +291,71 @@ in
     services.restic = {
       backups = mapAttrs (
         name: job:
-        commonConfig
-        // job.localConfig
-        // {
-          # NB: this command has been moved to serviceConfig.ExecCondition, see below
-          # backupPrepareCommand = if isDiskJob then diskPrepare else cloudPrepare;
-          backupCleanupCommand = # bash
-            concatMapAttrsStringSep "\n" (
-              vol: pth:
-              let
-                # the escaped mount point of the pre-backup snapshot
-                subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
-              in
-              optionalString pth.enable ''
-                if [ -e ${subvolMount} ]; then 
-                 ${pkgs.btrfs-progs}/bin/btrfs subvolume delete ${subvolMount}
+        mkMerge [
+          commonConfig
+          job.localConfig
+          {
+            # NB: this command has been moved to serviceConfig.ExecCondition, see below
+            # backupPrepareCommand = if isDiskJob then diskPrepare else cloudPrepare;
+            backupCleanupCommand = # bash
+              concatMapAttrsStringSep "\n" (
+                vol: pth:
+                let
+                  # the escaped mount point of the pre-backup snapshot
+                  subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+                in
+                optionalString pth.enable ''
+                  if [ -e ${subvolMount} ]; then 
+                   ${pkgs.btrfs-progs}/bin/btrfs subvolume delete ${subvolMount}
+                  fi
+                ''
+              ) job.volumes
+              + "\n"
+              # + ''
+              #   # 1. Stop the session first to generate the latest .backup label
+              #   ${pkgs.systemd}/bin/systemctl stop postgres-backup-session.service
+              # ''
+              # bash
+              + ''
+                # 2. NOW clean up the WAL archive
+                # WAL Archive Cleanup
+                # Keep the 5th most recent label, effectively keeping ~5 hours of logs
+                ARCHIVE_DIR="/var/backup/postgresql/archive"
+                # This now sees the NEWEST .backup file created by the command above
+                OLDEST_BACKUP_FILE=$(ls -1t $ARCHIVE_DIR/*.backup 2>/dev/null | sed -n '5p')
+
+                if [ -n "$OLDEST_BACKUP_FILE" ]; then
+                  # Extract just the filename for pg_archivecleanup
+                  CLEANUP_TARGET=$(basename "$OLDEST_BACKUP_FILE")
+                  ${config.services.postgresql.package}/bin/pg_archivecleanup -d "$ARCHIVE_DIR" "$CLEANUP_TARGET"
                 fi
-              ''
-            ) job.volumes
-            + "\n"
-            # + ''
-            #   # 1. Stop the session first to generate the latest .backup label
-            #   ${pkgs.systemd}/bin/systemctl stop postgres-backup-session.service
-            # ''
-            # bash
-            + ''
-              # 2. NOW clean up the WAL archive
-              # WAL Archive Cleanup
-              # Keep the 5th most recent label, effectively keeping ~5 hours of logs
-              ARCHIVE_DIR="/var/backup/postgresql/archive"
-              # This now sees the NEWEST .backup file created by the command above
-              OLDEST_BACKUP_FILE=$(ls -1t $ARCHIVE_DIR/*.backup 2>/dev/null | sed -n '5p')
+              '';
 
-              if [ -n "$OLDEST_BACKUP_FILE" ]; then
-                # Extract just the filename for pg_archivecleanup
-                CLEANUP_TARGET=$(basename "$OLDEST_BACKUP_FILE")
-                ${config.services.postgresql.package}/bin/pg_archivecleanup -d "$ARCHIVE_DIR" "$CLEANUP_TARGET"
-              fi
-            '';
-
-          # Patterns to exclude when backing up
-          exclude = concatLists (
-            mapAttrsToList (
-              vol: pth:
-              if pth.enable then
-                map (exc: replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}/${exc}") pth.exclusions
-              else
-                [ ]
-            ) job.volumes
-          );
-          passwordFile = config.sops.secrets."users/${username}/restic-${name}".path;
-          # paths to actually back up
-          paths = concatLists (
-            mapAttrsToList (
-              vol: pth:
-              if pth.enable then
-                map (p: replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}/${p}") pth.paths
-              else
-                [ ]
-            ) job.volumes
-          );
-          repository = "${job.repo}${name}/restic";
-          user = "${job.user}";
-        }
+            # Patterns to exclude when backing up
+            exclude = concatLists (
+              mapAttrsToList (
+                vol: pth:
+                if pth.enable then
+                  map (exc: replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}/${exc}") pth.exclusions
+                else
+                  [ ]
+              ) job.volumes
+            );
+            passwordFile = config.sops.secrets."users/${username}/restic-${name}".path;
+            # paths to back up
+            paths = concatLists (
+              mapAttrsToList (
+                vol: pth:
+                if pth.enable then
+                  map (p: replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}/${p}") pth.paths
+                else
+                  [ ]
+              ) job.volumes
+            );
+            repository = "${job.repo}${name}/restic";
+            user = "${job.user}";
+          }
+        ]
       ) enabledJobs;
     };
 
