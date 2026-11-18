@@ -172,9 +172,6 @@ let
       transfers = "50";
       # Use recursive listing if available; uses more memory but fewer transactions
       fast-list = true;
-      # redirect messages to a file
-      log-file = "/var/log/rclone/sync-$(date +%Y-%m-%d_%H-%M-%S).log";
-      log-level = "INFO";
       # max files queued at once for being checked or transferred
       max-backlog = "30000";
       # allocate x% of threads to the smallest items (hence 100-x% to largest)
