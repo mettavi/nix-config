@@ -123,18 +123,20 @@ let
     checkOpts = [
       "--with-cache" # just to make checks faster
     ];
-    createWrapper = true;
+    createWrapper = mkDefault true;
+    # Extra arguments passed to 'restic backup'
+    # No mkDefault here so job.localConfig.extraBackupArgs appends to this list
     extraBackupArgs = [
       "--tag ${hostname}"
     ];
     # Prevent the system from sleeping while backing up
-    inhibitsSleep = true;
+    inhibitsSleep = mkDefault true;
     # create the repo if it doesn't exist
-    initialize = true;
+    initialize = mkDefault true;
     # Use a wrapper to pass the parent id to workaround problem with --files-from flag discussed at
     # https://github.com/restic/restic/issues/2246
-    package =
-      mkDefault pkgs.writeShellScriptBin "restic"
+    package = mkDefault (
+      pkgs.writeShellScriptBin "restic"
         # bash
         ''
           # If the command is 'backup', we inject our parent logic
@@ -160,7 +162,9 @@ let
             # For all other commands (unlock, check, etc.), execute normally
             exec ${pkgs.restic}/bin/restic "$@"
           fi
-        '';
+        ''
+    );
+    # Wrapped in mkDefault so a job can cleanly replace the entire retention policy
     pruneOpts = mkDefault [
       "--keep-daily 7"
       "--keep-weekly 5"
@@ -168,8 +172,12 @@ let
       "--keep-yearly 10"
       "--group-by tags"
     ];
-    rcloneConfigFile = config.home-manager.users.${username}.sops.templates."rclone.conf".path;
-    rcloneOptions = {
+    rcloneConfigFile =
+      mkDefault
+        config.home-manager.users.${username}.sops.templates."rclone.conf".path;
+    # Individual keys use mkDefault so job.localConfig.rcloneOptions can override
+    # specific settings while inheriting all other defaults
+    rcloneOptions = lib.mapAttrs (_: lib.mkDefault) {
       # checkers do the equality checking of files during a sync
       checkers = "50";
       # The number of file transfers to run in parallel
@@ -189,9 +197,10 @@ let
       # NB: Overridden by the log-level option
       # verbose = 1; # default is NOTICE
     };
-    runCheck = false;
+    runCheck = mkDefault false;
     # run backups when the removable disk is mounted, not on a schedule
-    timerConfig = null;
+    # Default to manual/udev trigger; override in job.localConfig for scheduled VPS backups
+    timerConfig = mkDefault null;
   };
 
   # Filter only the backup jobs where 'enable = true'
