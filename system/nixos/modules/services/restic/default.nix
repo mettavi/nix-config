@@ -177,7 +177,7 @@ let
       log-level = "INFO";
       # max files queued at once for being checked or transferred
       max-backlog = "30000";
-      # allocate x% of threads to to smallest items (hence 100-x% to smallest)
+      # allocate x% of threads to the smallest items (hence 100-x% to largest)
       order-by = "size,mixed,75";
       # view real-time transfer statistics (updates per 500ms)
       progress = true;
