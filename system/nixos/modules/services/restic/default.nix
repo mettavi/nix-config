@@ -178,8 +178,6 @@ let
       order-by = "size,mixed,75";
       # view real-time transfer statistics (updates per 500ms, override with 'stats')
       progress = true;
-      # print the string ETA: %s to the terminal title
-      progress-terminal-title = true;
       retries = "3"; # default 3
       # override progress display update interval, logged at INFO level by default
       stats = "2m";
