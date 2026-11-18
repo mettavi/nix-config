@@ -179,7 +179,7 @@ let
       max-backlog = "30000";
       # allocate x% of threads to the smallest items (hence 100-x% to largest)
       order-by = "size,mixed,75";
-      # view real-time transfer statistics (updates per 500ms)
+      # view real-time transfer statistics (updates per 500ms, override with 'stats')
       progress = true;
       # print the string ETA: %s to the terminal title
       progress-terminal-title = true;
