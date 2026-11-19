@@ -10,6 +10,7 @@
   pname,
   version,
   hash,
+  file, # each plugin passes ./default.nix, so nix-update knows which file to patch
   subdir ? pname, # the plugin's directory inside the monorepo, if it differs from pname
   zipName, # the exact .zip filename the build produces
   meta,
@@ -42,12 +43,27 @@ stdenvNoCC.mkDerivation {
 
   passthru = {
     pluginZip = zipName;
-    updateScript = pkgs.nix-update-script {
-      extraArgs = [
-        "--file"
-        ../../../../../update.nix
-      ];
-    };
+    updateScript = pkgs.writeShellScript "update-${pname}" ''
+      set -euo pipefail
+      latest=$(${lib.getExe pkgs.git} ls-remote --tags --refs \
+          https://github.com/kiwidude68/calibre_plugins "refs/tags/${pname}-*" \
+        | ${lib.getExe pkgs.gnused} -E 's|.*refs/tags/${pname}-v?||' \
+        | ${pkgs.gnugrep}/bin/grep -E '^[0-9]+(\.[0-9]+)*$' \
+        | ${pkgs.coreutils}/bin/sort -V \
+        | ${pkgs.coreutils}/bin/tail -n1) || true
+      if [ -z "$latest" ]; then
+        echo "no ${pname}-* tags found" >&2
+        exit 1
+      fi
+      if ! ${lib.getExe pkgs.nix-update} \
+          --file ${toString ../../../../../update.nix} \
+          --override-filename ${toString file} \
+          --version "$latest" \
+          "$UPDATE_NIX_ATTR_PATH"; then
+        ${lib.getExe pkgs.git} checkout -- ${toString file}
+        exit 1
+      fi
+    '';
   };
 
   meta = {
