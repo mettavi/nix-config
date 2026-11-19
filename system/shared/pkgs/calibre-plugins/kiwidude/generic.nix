@@ -51,6 +51,7 @@ stdenvNoCC.mkDerivation {
   };
 
   meta = {
+    changelog = "https://github.com/kiwidude68/calibre_plugins/releases/tag/${pname}-${version}";
     platforms = with lib.platforms; linux ++ darwin ++ windows;
     license = lib.licenses.gpl3Only;
   }
