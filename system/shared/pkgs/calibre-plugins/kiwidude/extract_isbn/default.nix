@@ -2,8 +2,8 @@
 callPackage ../generic.nix { } {
   pname = "extract_isbn";
   version = "1.6.6";
-  file = ./default.nix;
   hash = "sha256-SJc6CDdg1Da8SCLv4AeSkxZOcH26AHZ1xa4UEjXN8zM=";
+  file = ./default.nix;
   zipName = "Extract ISBN.zip";
   meta = {
     description = "This plugin can be used to try to find the ISBN for a book using the text within a book format";
