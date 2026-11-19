@@ -58,6 +58,5 @@ stdenvNoCC.mkDerivation rec {
     changelog = "https://github.com/calibre-annotations/Annotations/releases/tag/v${version}";
     platforms = with lib.platforms; linux ++ darwin ++ windows;
     license = lib.licenses.gpl3Only; # per source headers; repo has no separate LICENSE file
-    maintainers = with lib.maintainers; [ mettavi ];
   };
 }

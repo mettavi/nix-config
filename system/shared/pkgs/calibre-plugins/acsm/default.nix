@@ -114,6 +114,5 @@ stdenv.mkDerivation {
     homepage = "https://github.com/Leseratte10/acsm-calibre-plugin";
     platforms = with lib.platforms; linux ++ darwin ++ windows;
     license = lib.licenses.gpl3Only;
-    maintainers = with lib.maintainers; [ mettavi ];
   };
 }
