@@ -1,8 +1,8 @@
 { callPackage, ... }:
 callPackage ../generic.nix { } {
   pname = "extract_isbn";
-  version = "1.6.6";
-  hash = "sha256-SJc6CDdg1Da8SCLv4AeSkxZOcH26AHZ1xa4UEjXN8zM=";
+  version = "1.6.7";
+  hash = "sha256-k4z6hUeD9PPAMlZzCiKVFUDOaqgWCuIMsyRvAm9TjNQ=";
   file = ./default.nix;
   zipName = "Extract ISBN.zip";
   meta = {
