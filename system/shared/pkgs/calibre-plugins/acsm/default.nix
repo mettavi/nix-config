@@ -101,12 +101,26 @@ stdenv.mkDerivation {
 
   passthru = {
     pluginZip = "calibre-plugin.zip";
-    updateScript = pkgs.nix-update-script {
-      extraArgs = [
-        "--file"
-        ../../../../../update.nix
-      ];
-    };
+    updateScript = pkgs.writeShellScript "update-acsm" ''
+      set -euo pipefail
+      file=${toString ./default.nix}
+
+      ${lib.getExe pkgs.nix-update} \
+        --file ${toString ../../../../../update.nix} \
+        --version=branch \
+        "$UPDATE_NIX_ATTR_PATH"
+
+      rev=$(${lib.getExe pkgs.gnused} -nE 's/^[[:space:]]*rev = "([0-9a-f]{40})";.*/\1/p' "$file")
+      tuple=$(${lib.getExe pkgs.curl} -fsSL \
+          "https://raw.githubusercontent.com/Leseratte10/acsm-calibre-plugin/$rev/calibre-plugin/__init__.py" \
+        | ${lib.getExe pkgs.gnused} -nE 's/^PLUGIN_VERSION_TUPLE = \(([0-9]+), ([0-9]+), ([0-9]+)\).*/\1.\2.\3/p')
+
+      if [ -z "$tuple" ]; then
+        echo "could not read PLUGIN_VERSION_TUPLE" >&2
+        exit 1
+      fi
+      ${lib.getExe pkgs.gnused} -i -E "s/version = \"[0-9.]+-unstable-/version = \"$tuple-unstable-/" "$file"
+    '';
   };
 
   meta = {
