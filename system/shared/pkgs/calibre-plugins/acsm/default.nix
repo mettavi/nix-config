@@ -68,9 +68,9 @@ stdenv.mkDerivation {
   postPatch = ''
     substituteInPlace ./calibre-plugin/__init__.py \
       --replace-fail 'libcrypto_path = os.getenv("ACSM_LIBCRYPTO", None)' \
-        'libcrypto_path = os.getenv("ACSM_LIBCRYPTO", "${openssl.out}/lib/libcrypto.so")' \
+        'libcrypto_path = os.getenv("ACSM_LIBCRYPTO", "${openssl.out}/lib/libcrypto${stdenv.hostPlatform.extensions.sharedLibrary}")' \
       --replace-fail 'libssl_path = os.getenv("ACSM_LIBSSL", None)' \
-        'libssl_path = os.getenv("ACSM_LIBSSL", "${openssl.out}/lib/libssl.so")' \
+        'libssl_path = os.getenv("ACSM_LIBSSL", "${openssl.out}/lib/libssl${stdenv.hostPlatform.extensions.sharedLibrary}")' \
       --replace-fail 'sys.path.insert(0, os.path.join(self.moddir, "oscrypto"))' \
         'sys.path.insert(0, self.moddir)' \
       --replace-fail 'sys.path.insert(0, os.path.join(self.moddir, "asn1crypto"))' \
