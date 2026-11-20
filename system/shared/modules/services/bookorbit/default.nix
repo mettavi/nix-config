@@ -23,6 +23,76 @@ let
     mkOption
     ;
   inherit (lib.types) bool str;
+  updateOpfScript =
+    pkgs.writers.writePython3Bin "update-bookorbit-opf" { } # py
+      ''
+        import glob
+        import html
+        import json
+        import re
+
+        # Move <dc:subject> into bookorbit:tags and remove duplicate Genres
+        STRIP_GENRES = True
+
+        updated = 0
+        for path in glob.glob('/srv/media/ebooks/**/metadata.opf', recursive=True):
+            with open(path, 'r', encoding='utf-8') as f:
+                content = f.read()
+
+            changed = False
+            new_tags_xml = []
+
+            # 1. Extract #pagecount / #pages and write bookorbit:page_count
+            m = re.search(
+                r'<meta\s+name="calibre:user_metadata:'
+                r'#(?:pagecount|page_count|pages)"\s+content="([^"]+)"',
+                content,
+            )
+            if m and 'bookorbit:page_count' not in content:
+                try:
+                    meta_json = json.loads(html.unescape(m.group(1)))
+                    pages = meta_json.get('#value#')
+                    if isinstance(pages, int) and pages > 0:
+                        tag = (
+                            f'        <meta name="bookorbit:page_count"'
+                            f' content="{pages}"/>'
+                        )
+                        new_tags_xml.append(tag)
+                except Exception:
+                    pass
+
+            # 2. Extract <dc:subject> tags and write bookorbit:tags
+            subjects = [
+                html.unescape(s.strip())
+                for s in re.findall(
+                    r'<dc:subject>(.*?)</dc:subject>', content, flags=re.DOTALL
+                )
+                if s.strip()
+            ]
+            if subjects and 'bookorbit:tags' not in content:
+                joined = html.escape(', '.join(subjects), quote=True)
+                tag = f'        <meta name="bookorbit:tags" content="{joined}"/>'
+                new_tags_xml.append(tag)
+
+            if new_tags_xml:
+                inject = '\n'.join(new_tags_xml) + '\n    </metadata>'
+                content = content.replace('</metadata>', inject, 1)
+                changed = True
+
+            # 3. Strip <dc:subject> so BookOrbit doesn't duplicate Tags in Genres
+            if STRIP_GENRES and '<dc:subject>' in content:
+                content = re.sub(
+                    r'\s*<dc:subject>.*?</dc:subject>', ''', content, flags=re.DOTALL
+                )
+                changed = True
+
+            if changed:
+                with open(path, 'w', encoding='utf-8') as f:
+                    f.write(content)
+                updated += 1
+
+        print(f"Updated {updated} metadata.opf files.")
+      '';
 in
 {
   # Import the bookorbit NixOS module directly from the unstable input
@@ -45,6 +115,8 @@ in
   };
 
   config = mkIf cfg.enable {
+    environment.systemPackages = [ updateOpfScript ];
+
     # NB:use 'optionalAttrs'; 'mkIf' doesn’t stop “option does not exist” errors
     services.bookorbit = mkIf cfg.enable {
       enable = true;
