@@ -45,9 +45,10 @@ let
 in
 stdenv.mkDerivation {
   pname = "acsm-calibre-plugin";
-  # no tagged versions upstream, so use PLUGIN_VERSION_TUPLE declared in the code
-  # and append with `-unstable-<commit date>`
-  version = "0.1.0-unstable-2026-09-23";
+  # Upstream's tags are stale (0.0.16), so track the latest commit instead
+  # (--version=branch). The version base comes from PLUGIN_VERSION_TUPLE in the
+  # plugin's code and is appended with `-unstable-<commit date>`. updateScript
+  # keeps this, rev and hash in sync.
 
   src = fetchFromGitHub {
     owner = "Leseratte10";
