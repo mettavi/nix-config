@@ -28,6 +28,7 @@ return {
       "toml",
       "regex",
       "nix",
+      "python",
     }
     -- replicate `ensure_installed`, runs asynchronously, skips existing languages
     require("nvim-treesitter").install(languages)

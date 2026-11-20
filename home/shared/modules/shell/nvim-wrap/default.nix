@@ -119,6 +119,7 @@ in
                   toml
                   regex
                   nix
+                  python
                 ]
               ))
               treesitter-modules-nvim
