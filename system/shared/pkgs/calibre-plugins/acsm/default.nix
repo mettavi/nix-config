@@ -49,12 +49,13 @@ stdenv.mkDerivation {
   # (--version=branch). The version base comes from PLUGIN_VERSION_TUPLE in the
   # plugin's code and is appended with `-unstable-<commit date>`. updateScript
   # keeps this, rev and hash in sync.
+  version = "0.1.0-unstable-2026-11-19";
 
   src = fetchFromGitHub {
     owner = "Leseratte10";
     repo = "acsm-calibre-plugin";
-    rev = "4eff3ee35ac760ccad063639401b303b7207aa9c";
-    hash = "sha256-vHWPxwF4UlSzrEkfC6YmQFNBUJNifZ0vzynzN68UPh0=";
+    rev = "c3f50909d20a6eac59cf22a6ccd783600c230820";
+    hash = "sha256-acEKvhkkNbEF+dU8ntxA2AUvHW16BnUkhokmmxJsTSI=";
   };
 
   nativeBuildInputs = [
