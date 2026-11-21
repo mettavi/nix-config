@@ -318,7 +318,8 @@ in
                   "/var/lib/paperless/${name}/paperless-gpt/hocr:/app/hocr"
                   "/var/lib/paperless/${name}/paperless-gpt/pdf:/app/pdf"
                   "/var/lib/paperless/${name}/paperless-gpt/config:/app/config"
-                  "/var/lib/paperless/${name}/media:/app/media:z"
+                  # this mount caused permissions errors (changing ownership to 10001) and is unnecessary
+                  # "/var/lib/paperless/${name}/media:/app/media:z"
                 ];
               };
               serviceConfig = {
