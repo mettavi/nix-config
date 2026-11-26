@@ -30,6 +30,14 @@
       inputs.nixpkgs.follows = "nixpkgs-darwin";
     };
 
+######## NIX-ON-DROID ########
+
+nix-on-droid = {
+      url = "github:nix-community/nix-on-droid";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
     ######## NIX-DARWIN ########
     nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-unstable"; # for nix-darwin
     # migrate to this input when 26.05 stable is released, which is the last version to support intel darwin
