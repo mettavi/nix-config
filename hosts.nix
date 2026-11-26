@@ -87,6 +87,12 @@ let
 in
 {
 
+options.flake.nixOnDroidConfigurations = lib.mkOption {
+    type = lib.types.attrsOf lib.types.raw;
+    default = { };
+    description = "Nix-on-Droid configurations exposed as flake outputs.";
+  };
+
 config = {
   # -------------------------------------------------------------
   # 3. GENERATION GENERATORS: Mapping layouts to flake-parts
