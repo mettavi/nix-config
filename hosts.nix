@@ -261,7 +261,7 @@ home-manager = {
           useUserPackages = true;
           backupFileExtension = "nix-backup";
           extraSpecialArgs = sharedArgs hostAttrs.system hostname;
-          sharedModules = [ inputs.sops-nix.homeManagerModules.sops ];
+          sharedModules = [ inputs.sops-nixos.homeManagerModules.sops ];
 
           # Equivalent to home-manager.users.<user> on NixOS/Darwin:
           config = ./hosts/${hostname}/home.nix;
