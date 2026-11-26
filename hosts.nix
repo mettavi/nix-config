@@ -256,6 +256,16 @@ let
           experimental-features = nix-command flakes
           warn-dirty = false
         '';
+home-manager = {
+          useGlobalPkgs = true;
+          useUserPackages = true;
+          backupFileExtension = "nix-backup";
+          extraSpecialArgs = sharedArgs hostAttrs.system hostname;
+
+          # Equivalent to home-manager.users.<user> on NixOS/Darwin:
+          config = ./hosts/${hostname}/home.nix;
+        };
+      }
 }
 ];
 }) androidHosts;
