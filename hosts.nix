@@ -235,5 +235,29 @@ config = {
       ];
     }
   ) darwinHosts;
+
+# --- 🌟 Nix-on-Droid Profiles ---
+# Build using: nix-on-droid switch --flake .#hostname
+flake.nixOnDroidConfigurations = builtins.mapAttrs (
+    hostname: hostAttrs:
+let
+    hostNixpkgs = inputs."${hostAttrs.channel}";
+  in inputs.nix-on-droid.lib.nixOnDroidConfiguration {
+      pkgs = import hostNixpkgs {
+        inherit (hostAttrs) system;
+        config.allowUnfree = true;
+        overlays = [ inputs.nix-on-droid.overlays.default ] ;
+    };
+      extraSpecialArgs = sharedArgs hostAttrs.system hostname;
+      modules = [
+        ./hosts/${hostname}/configuration.nix
+        {
+          nix.extraOptions = ''
+          experimental-features = nix-command flakes
+          warn-dirty = false
+        '';
+}
+];
+}) androidHosts;
 };
 }
