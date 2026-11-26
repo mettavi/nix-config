@@ -57,6 +57,13 @@ let
     };
   };
 
+  androidHosts = {
+     coco = {
+      system = "aarch64-linux";
+      channel = "nixpkgs-26_05";
+    };
+  };
+
   ################################  NIXOS-ANYWHERE BUILDS  ######################################
   # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
   # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on remote \
