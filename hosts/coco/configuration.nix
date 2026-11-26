@@ -12,6 +12,8 @@
   # Backup files instead of failing on activation collisions
   environment.etcBackupExtension = ".bak";
 
+terminal.font = "${pkgs.nerd-fonts.jetbrains-mono}/share/fonts/truetype/NerdFonts/JetBrainsMono/JetBrainsMonoNerdFont-Regular.ttf";
+
   # Set your timezone (matches your current location)
   time.timeZone = "Asia/Colombo";
 
