@@ -267,7 +267,6 @@ home-manager = {
           config = ./hosts/${hostname}/home.nix;
         };
       }
-}
 ];
 }) androidHosts;
 };
