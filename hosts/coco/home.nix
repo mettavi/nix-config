@@ -1,10 +1,10 @@
 { pkgs, ... }:
 {
   imports = [
-    ../../home/shared/sops-home.nix
     # Add your shared Neovim/shell/git Home Manager modules here, e.g.:
-    # ../../home/shared/neovim.nix
     # ../../home/shared/git.nix
+    ../../home/shared/sops-home.nix
+    ../../home/shared/nvim-wrap
   ];
 
   home = {
@@ -26,4 +26,6 @@
     ripgrep
     fd
   ];
+
+  mettavi.shell.nvim-wrap.enable = true;
 }
