@@ -4,7 +4,7 @@
     # Add your shared Neovim/shell/git Home Manager modules here, e.g.:
     # ../../home/shared/git.nix
     ../../home/shared/sops-home.nix
-    ../../home/shared/nvim-wrap
+    ../../home/shared/modules/shell/nvim-wrap
   ];
 
   home = {
