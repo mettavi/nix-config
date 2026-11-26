@@ -27,5 +27,5 @@
     fd
   ];
 
-  mettavi.shell.nvim-wrap.enable = true;
+ # mettavi.shell.nvim-wrap.enable = true;
 }
