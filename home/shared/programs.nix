@@ -3,13 +3,62 @@
   hostname,
   inputs,
   lib,
-  osConfig,
+  options,
+  osConfig ? null,
   pkgs,
+  sops_username ? config.home.username,
   ...
 }:
 let
-  currentVersion = builtins.fromJSON osConfig.system.nixos.release;
-  inherit (lib) optionals;
+  username = sops_username;
+  # Safely fall back when osConfig is null (Nix-on-Droid / standalone HM) or on Darwin
+  releaseStr =
+    if osConfig != null && (osConfig ? system.nixos.release) then
+      osConfig.system.nixos.release
+    else
+      lib.trivial.release;
+      currentVersion = builtins.fromJSON releaseStr;
+  inherit (lib) optionals mkIf;
+  useNewSsh = options.programs.ssh ? settings;
+  # Shared SSH host blocks
+  sshBlocks = {
+    "github.com" = {
+      identityFile = "${config.home.homeDirectory}/.ssh/${username}-${hostname}_ed25519";
+      # Completely decouple GitHub from multiplexing rules
+      controlMaster = "no";
+    };
+    "*.${inputs.secrets.domain.primary}" = {
+      compression = true;
+      # Stops slow cellular DNS lookups from stalling connection handshakes
+      addressFamily = "inet";
+    };
+    "*" = {
+      forwardAgent = false;
+      # add ssh keys to ssh-agent when making the first connection
+      # (helpful for caching passphrases and finding non-standard key names)
+      # NB: ssh-agent must be started, eg. using NIXOS startAgent option (enabled by default on darwin)
+      # NB: this is not required if the keychain utility is installed
+      addKeysToAgent = "no";
+      # Speeds up high-latency setups by compressing text streams
+      compression = false;
+      # more robust settings for control* options (especially a shorter controlPath value)
+      controlMaster = "auto"; # use an existing ssh connection if available
+      controlPath = "~/.ssh/master-%C";
+      controlPersist = "10m";
+      hashKnownHosts = false;
+      # Send a background ping every 15 seconds to keep a cellular tunnel open
+      serverAliveInterval = 15;
+      # Allow up to 4 missed pings (1 minute total) before giving up on a dead socket
+      serverAliveCountMax = 4;
+      userKnownHostsFile = "~/.ssh/known_hosts";
+    } // (
+       # Let the OS track TCP connections alongside OpenSSH protocols
+      if useNewSsh then
+        { tcpKeepAlive = true; }
+      else
+        { extraOptions.TCPKeepAlive = "yes"; }
+    );
+  };
 in
 {
   home.packages = with pkgs; [
@@ -20,13 +69,14 @@ in
       runtimeInputs = [ pkgs.cachix ];
       text = ''
         CACHIX_AUTH_TOKEN="$(< ${
-          config.sops.secrets."users/${config.home.username}/cachix_auth_token".path
+          config.sops.secrets."users/${username}/cachix_auth_token".path
         })"
         export CACHIX_AUTH_TOKEN
         exec cachix "$@"
       '';
     })
     fastfetch # neofetch-like sys info tool
+    gitleaks
   ];
 
   # install the HTML manual and "home-manager-help" command
@@ -65,51 +115,22 @@ in
         # see https://github.com/danielrobbins/keychain/issues/230
         "--immediate"
       ];
-      keys = [ "${config.home.username}-${hostname}_ed25519" ];
+      keys = [ "${username}-${hostname}_ed25519" ];
     };
     lazygit.enable = true;
     # pyenv.enable = true;
     # rbenv.enable = true;
     ripgrep.enable = true;
 
-    ssh = {
+    # Use programs.ssh.settings on HM >= 26.05
+    ssh = if options.programs.ssh ? settings then {
       enable = true;
       enableDefaultConfig = false;
-      settings = {
-        "github.com" = {
-          identityFile = "${config.home.homeDirectory}/.ssh/${config.home.username}-${hostname}_ed25519";
-          # Completely decouple GitHub from multiplexing rules
-          controlMaster = "no";
-        };
-        "*.${inputs.secrets.domain.primary}" = {
-          # Speeds up high-latency setups by compressing text streams
-          compression = true;
-          # Stops slow cellular DNS lookups from stalling connection handshakes
-          addressFamily = "inet";
-        };
-        "*" = {
-          forwardAgent = false;
-          # add ssh keys to ssh-agent when making the first connection
-          # (helpful for caching passphrases and finding non-standard key names)
-          # NB: ssh-agent must be started, eg. using NIXOS startAgent option (enabled by default on darwin)
-          # NB: this is not required if the keychain utility is installed
-          addKeysToAgent = "no";
-          compression = false;
-          # more robust settings for control* options (especially a shorter controlPath value)
-          controlMaster = "auto"; # use an existing ssh connection if available
-          controlPath = "~/.ssh/master-%C";
-          controlPersist = "10m";
-          hashKnownHosts = false;
-          # Send a background ping every 15 seconds to keep a cellular tunnel open
-          serverAliveInterval = 15;
-          # Allow up to 4 missed pings (1 minute total) before giving up on a dead socket
-          serverAliveCountMax = 4;
-          # Let the OS track TCP connections alongside OpenSSH protocols
-          tcpKeepAlive = true;
-          userKnownHostsFile = "~/.ssh/known_hosts";
-        };
+      settings = sshBlocks; 
+        } else {
+          enable = true;
+          matchBlocks = sshBlocks;
       };
-    };
 
     # Terminal command correction, alternative to thefuck, written in Rust
     # default alias is "f"
