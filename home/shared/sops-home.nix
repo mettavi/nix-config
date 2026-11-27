@@ -2,10 +2,11 @@
   config,
   hostname,
   secrets_path,
+  sops_username ? config.home.username,
   ...
 }:
 let
-  username = config.home.username;
+  username = sops_username;
   rcloneSecrets.sopsFile = "${secrets_path}/secrets/apps/rclone.yaml";
 in
 {

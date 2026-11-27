@@ -1,9 +1,10 @@
 {
   config,
+  sops_username,
   ...
 }:
 let
-  username = config.home.username;
+  username = sops_username;
 in
 {
   sops = {
