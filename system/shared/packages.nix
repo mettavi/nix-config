@@ -35,7 +35,6 @@ in
     # cmake
     cmatrix
     cowsay
-    gitleaks
     gyb # a command line tool for backing up your Gmail messages
     # allow running home-manager "standalone" using the nixosConfigurations namespace (see flake.nix)
     home-manager
