@@ -60,7 +60,7 @@ let
   androidHosts = {
      coco = {
       system = "aarch64-linux";
-      channel = "nixpkgs-26_05";
+      channel = "nixpkgs-25_11";
     };
   };
 
@@ -242,13 +242,15 @@ flake.nixOnDroidConfigurations = builtins.mapAttrs (
     hostname: hostAttrs:
 let
     hostNixpkgs = inputs."${hostAttrs.channel}";
+    pkgs2605 = inputs.nixpkgs-26_05.legacyPackages.${hostAttrs.system};
   in inputs.nix-on-droid.lib.nixOnDroidConfiguration {
       pkgs = import hostNixpkgs {
         inherit (hostAttrs) system;
         config.allowUnfree = true;
-        overlays = [ inputs.nix-on-droid.overlays.default ] ;
+        overlays = [ inputs.nix-on-droid.overlays.default 
+        ];
     };
-      extraSpecialArgs = sharedArgs hostAttrs.system hostname;
+      extraSpecialArgs = sharedArgs hostAttrs.system hostname; 
       modules = [
         ./hosts/${hostname}/configuration.nix
         {
