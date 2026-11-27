@@ -7,6 +7,7 @@
     ######### NIXOS #########
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-26_05.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs-25_11.url = "github:NixOS/nixpkgs/nixos-25.11";
     # Do not override cachyos-kernel nixpkgs input, otherwise there can
     # be mismatch between patches and kernel version
     cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
@@ -25,6 +26,10 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs-26_05";
     };
+    home-manager-25_11 = {
+      url = "github:nix-community/home-manager/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs-25_11";
+    };
     home-manager-darwin = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs-darwin";
@@ -34,8 +39,8 @@
 
 nix-on-droid = {
       url = "github:nix-community/nix-on-droid";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-25_11";
+      inputs.home-manager.follows = "home-manager-25_11";
     };
 
     ######## NIX-DARWIN ########
