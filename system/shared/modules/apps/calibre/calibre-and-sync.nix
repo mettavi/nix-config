@@ -9,7 +9,8 @@ with lib;
 with pkgs.stdenv;
 let
   cfg = config.mettavi.system.apps.calibre;
-  logfile_dir = if isDarwin then "$HOME/Library/Logs/rclone" else "$XDG_STATE_HOME/logs/rclone";
+  logfile_dir =
+    if hostPlatform.isDarwin then "$HOME/Library/Logs/rclone" else "$XDG_STATE_HOME/logs/rclone";
   logfile = "${logfile_dir}/onedrive.log";
   calibre-and-sync =
     pkgs.writeShellScriptBin "calibre-and-sync.sh" # bash
@@ -46,7 +47,7 @@ in
         ls /run/current-system/sw/share/applications # for global packages
         ls /etc/profiles/per-user/$(id -n -u)/share/applications # for user packages
       */
-      xdg.desktopEntries.CaliSync = mkIf pkgs.stdenv.isLinux {
+      xdg.desktopEntries.CaliSync = mkIf pkgs.stdenv.hostPlatform.isLinux {
         name = "CaliSync";
         exec = "${calibre-and-sync}/bin/calibre-and-sync.sh";
         icon = "${pkgs.calibre}/share/icons/hicolor/128x128/apps/calibre-gui.png";

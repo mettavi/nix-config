@@ -165,7 +165,7 @@ nixInfo.lze.load({
   {
     "Schemastore.nvim",
     auto_enable = true,
-    dep_of = "yaml-language-server",
+    dep_of = { "yaml-language-server" },
   },
   {
     "telescope-fzf-native.nvim",
@@ -249,6 +249,21 @@ nixInfo.lze.load({
     after = function()
       require("nvim-web-devicons").setup()
     end,
+  },
+  -- ################ LSPs ####################
+  {
+    "jsonls",
+    lsp = {
+      -- if you provide the filetypes it doesn't ask lspconfig for the filetypes
+      -- (meaning it doesn't call the callback function we defined in the main init.lua)
+      filetypes = { "json", "jsonc" },
+      settings = {
+        json = {
+          schemas = require("schemastore").json.schemas(),
+          validate = { enable = true },
+        },
+      },
+    },
   },
   {
     "taplo",

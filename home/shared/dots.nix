@@ -26,22 +26,15 @@ in
   home.file = {
     ".npmrc".source = ./dots/node/.npmrc;
     # "Library/Preferences/com.plexapp.plexmediaserver.plist".source =
-    #  if pkgs.stdenv.isDarwin then ./dots/plex/com.plexapp.plexmediaserver.plist else "";
+    #  if pkgs.stdenv.hostPlatform.isDarwin then ./dots/plex/com.plexapp.plexmediaserver.plist else "";
   };
 
   xdg = {
     # enable management of xdg base directories
     enable = true;
     configFile = {
-      "atuin".source = ./dots/atuin;
       "bat/themes/tokyonight_night.tmTheme".source = ./dots/bat/themes/tokyonight_night.tmTheme;
       "fastfetch/config.jsonc".source = ./dots/fastfetch/config.jsonc;
-      "fzf/.fzfrc".source = ./dots/fzf/.fzfrc;
-      "mpv/mpv.conf".text = ''
-        # enable hardware acceleration
-        hwdec=auto
-        gpu-context=wayland
-      '';
     };
   };
 }

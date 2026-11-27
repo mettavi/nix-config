@@ -1,0 +1,108 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  dependencyDashboard: true,
+  extends: ["config:recommended"],
+  timezone: "Asia/Colombo",
+  schedule: ["on monday"],
+  packageRules: [
+    {
+      matchDatasources: ["docker"],
+      pinDigests: true,
+      separateMinorPatch: true,
+      semanticCommits: "enabled",
+      commitMessagePrefix: "feat(containers):",
+    },
+    {
+      matchDatasources: ["docker"],
+      matchUpdateTypes: ["digest", "patch", "minor"],
+      automerge: true,
+      // change to "branch" to skip PRs and CI
+      automergeType: "pr",
+      platformAutomerge: true,
+    },
+    {
+      // must come AFTER the general automerge rule, because later rules win
+      matchPackageNames: ["docker.io/fosrl/pangolin", "fosrl/pangolin"],
+      matchUpdateTypes: ["minor", "major"],
+      automerge: false,
+    },
+    {
+      // pre-1.0 images: minor bumps can be breaking, so review them by hand
+      matchDatasources: ["docker"],
+      matchCurrentValue: "/^v?0\\./",
+      matchUpdateTypes: ["minor", "major"],
+      automerge: false,
+    },
+    {
+      // tags look like "ee-1.21.1"; patch is optional in case some are "ee-1.25"
+      matchDatasources: ["docker"],
+      matchPackageNames: ["docker.io/fosrl/pangolin", "fosrl/pangolin"],
+      versioning: "regex:^ee-(?<major>\\d+)\\.(?<minor>\\d+)(\\.(?<patch>\\d+))?$",
+    },
+    {
+      // locally built images: there is no registry to check
+      matchPackageNames: ["localhost/**"],
+      enabled: false,
+    },
+    {
+      matchDatasources: ["docker"],
+      matchPackageNames: ["/linuxserver\\//"],
+      // excludes any version strings between 10 and 20 (legacy Ubuntu releases)
+      allowedVersions: "!/^(1[0-9]|20)\\./",
+    },
+    {
+      matchPackageNames: ["ghcr.io/gramps-project/grampsweb"],
+      automerge: false,
+    },
+    {
+    // hold new releases back for 3 days before proposing them
+    // (only possible where the registry supplies a release timestamp, i.e. Docker Hub)
+    matchDatasources: ["docker"],
+    minimumReleaseAge: "3 days",
+    minimumReleaseAgeBehaviour: "timestamp-optional",
+    },
+  ],
+  customManagers: [
+    {
+      customType: "regex",
+      description: "Update container images in quadlet-nix definitions",
+      // matches *.nix files in {system,home}/{nixos,shared}/modules
+      managerFilePatterns: [
+        "/^(system|home)/(nixos|shared)/modules/.*\\.nix$/",
+      ],
+      matchStrings: [
+        'image\\s*=\\s*"(?<depName>[a-zA-Z0-9./_:-]+):(?<currentValue>[a-zA-Z0-9._-]+)(@(?<currentDigest>sha256:[a-f0-9]+))?"',
+      ],
+      // lets Renovate add or update the digest, even when none exists yet
+      autoReplaceStringTemplate: 'image = "{{{depName}}}:{{{newValue}}}{{#if newDigest}}@{{{newDigest}}}{{/if}}"',
+      datasourceTemplate: "docker",
+      versioningTemplate: "docker",
+    },
+    {
+      customType: "regex",
+      description: "Update FROM lines in Containerfiles embedded in Nix strings",
+      managerFilePatterns: [
+        "/^(system|home)/(nixos|shared)/modules/.*\\.nix$/",
+      ],
+      matchStrings: [
+        "\\bFROM\\s+(?<depName>[a-zA-Z0-9./_-]+):(?<currentValue>[a-zA-Z0-9._-]+)(@(?<currentDigest>sha256:[a-f0-9]+))?",
+      ],
+      autoReplaceStringTemplate: "FROM {{{depName}}}:{{{newValue}}}{{#if newDigest}}@{{{newDigest}}}{{/if}}",
+      datasourceTemplate: "docker",
+      versioningTemplate: "docker",
+    },
+    {
+      // no auto-merge (type is 'github-releases', not 'docker')
+      "customType": "regex",
+      "description": "Update Traefik plugin versions in Nix definitions",
+      "managerFilePatterns": [
+        "/^(system|home)/(nixos|shared)/modules/.*\\.nix$/"
+      ],
+      "matchStrings": [
+        "moduleName\\s*=\\s*\"github\\.com/(?<depName>[^\"]+)\";\\s*version\\s*=\\s*\"(?<currentValue>[^\"]+)\";"
+      ],
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver"
+    },
+  ],
+}

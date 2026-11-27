@@ -215,7 +215,7 @@ in
           };
           # DISABLE THIS SETTING TO PREVENT THE ERROR:
           # "Using GtkSettings:gtk-application-prefer-dark-theme with libadwaita is unsupported.
-          # Please use AdwStyleManager:color-scheme instead""
+          # Please use AdwStyleManager:color-scheme instead"
           # Use the extraConfig setting instead (see below)
           # colorScheme = "dark";
           gtk3 = {
@@ -223,6 +223,7 @@ in
             bookmarks = [
               "file://${config.xdg.userDirs.documents}"
               "file://${config.xdg.userDirs.download}"
+              "file://${config.home.homeDirectory}/media"
               "file://${config.xdg.userDirs.music}"
               "file://${config.xdg.userDirs.pictures}"
               "file://${config.xdg.userDirs.videos}"

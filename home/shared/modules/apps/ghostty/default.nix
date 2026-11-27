@@ -25,18 +25,20 @@ in
       # settings will be written to $XDG_CONFIG_HOME/ghostty/config
       settings = mkMerge [
         {
-          background-opacity = 0.8; # default is 1 (fully opaque)
+          # 0.0 (invisible) -> 1.0 (opaque, default)
+          background-opacity = 0.85;
           # blur is not supported on gnome without the blur my shell extension
           # background-blur = 20;
-          font-size = "14";
-          # make right_alt send an escape sequence in ghostty
-          # macos-option-as-alt = true;
+          font-size = "16";
           # start windows maximized
           maximize = true;
-          shell-integration-features = "sudo";
+          # ssh-env,ssh-terminfo: set up the remote terminal environment
+          # See https://ghostty.org/docs/features/ssh#shell-integration
+          shell-integration-features = "sudo,ssh-env,ssh-terminfo";
           theme = "iTerm2 Pastel Dark Background";
+          working-directory = "~/.nix-config";
         }
-        (mkIf pkgs.stdenv.isDarwin {
+        (mkIf pkgs.stdenv.hostPlatform.isDarwin {
           # make right_alt send an escape sequence in ghostty
           macos-option-as-alt = true;
         })

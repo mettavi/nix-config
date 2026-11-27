@@ -20,9 +20,10 @@ in
     prompt = mkOption {
       type = types.enum [
         "manual"
+        "oh-my-posh"
         "p10k"
       ];
-      default = "p10k";
+      default = "oh-my-posh";
       description = "Set the shell prompt";
     };
   };
@@ -33,16 +34,16 @@ in
       ".p10k.zsh".source =
         mkOutOfStoreSymlink "${config.home.homeDirectory}/${nix_repo}/home/shared/dots/zsh/.p10k.zsh";
     };
-    xdg.configFile = {
-      "zsh/.zsh_aliases".source = ../../../dots/zsh/.zsh_aliases;
-      "zsh/.zsh_functions".source = ../../../dots/zsh/.zsh_functions;
+    programs.oh-my-posh = mkIf (cfg.prompt == "oh-my-posh") {
+      enable = true;
+      configFile = ../../../dots/oh-my-posh/iterm2.toml;
+      enableZshIntegration = true;
     };
     programs.zsh = {
       enable = true;
       antidote = {
         enable = true;
         plugins = [
-          "Aloxaf/fzf-tab"
           "olets/zsh-autosuggestions-abbreviations-strategy"
           "MichaelAquilina/zsh-you-should-use"
         ];
@@ -67,15 +68,21 @@ in
       ];
       # Assign the alias to different binaries depending on host OS
       shellAliases = {
-        ts = if pkgs.stdenv.isDarwin then "trash" else "trash-put";
         rm = "echo 'Please use ts instead.'; false";
+        ts = if pkgs.stdenv.hostPlatform.isDarwin then "trash" else "trash-put";
+        # use this with 'nix flake metadata` to remove url encoding when pinning an input directly in flake.loc
+        urldecode = "python3 -c \"import sys, urllib.parse; print(urllib.parse.unquote(sys.argv[1]))\"";
       };
       shellGlobalAliases = {
         # use gnu ls on darwin for nicer default colors
-        ls = if pkgs.stdenv.isDarwin then "gls --color" else "ls --color";
+        ls = if pkgs.stdenv.hostPlatform.isDarwin then "gls --color" else "ls --color";
       };
       syntaxHighlighting.enable = true;
       zsh-abbr.enable = true;
+    };
+    xdg.configFile = {
+      "zsh/.zsh_aliases".source = ../../../dots/zsh/.zsh_aliases;
+      "zsh/.zsh_functions".source = ../../../dots/zsh/.zsh_functions;
     };
   };
 }

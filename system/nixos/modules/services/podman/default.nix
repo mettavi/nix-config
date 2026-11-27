@@ -15,10 +15,21 @@ in
 
   options.mettavi.system.services.podman = {
     enable = lib.mkEnableOption "Install and set up the nixos podman server";
+    # configure podman using quadlet-nix at https://github.com/SEIAROTg/quadlet-nix
     quadlet = mkOption {
       type = types.bool;
       description = "Configure podman using quadlets with a flake service";
       default = true;
+    };
+    # export a wrapper helper function as an option to use it anywhere
+    mkContainer = mkOption {
+      type = types.functionTo types.attrs;
+      description = "Helper function to inject shared timezone volumes into quadlets";
+      default =
+        containerConfig:
+        lib.recursiveUpdate containerConfig {
+          containerConfig.timezone = "local";
+        };
     };
   };
 
@@ -43,10 +54,16 @@ in
       defaultNetwork.settings.dns_enabled = true;
     };
 
-    # enable podman & podman systemd generator using the podman quadlet flake
+    # enable podman & podman systemd generator for the podman quadlet-nix flake
     virtualisation.quadlet = mkIf cfg.quadlet {
       enable = true;
       autoUpdate.enable = true;
+    };
+    home-manager.users.${username} = mkIf cfg.quadlet {
+      imports = [ inputs.quadlet-nix.homeManagerModules.quadlet ];
+      virtualisation.quadlet = {
+        enable = true;
+      };
     };
   };
 }

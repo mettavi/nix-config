@@ -40,6 +40,9 @@ setopt HIST_FIND_NO_DUPS  # Do not display previously found event
 # (implies INC_APPEND_HISTORY and incompatible with EXTENDED_HISTORY)
 setopt SHARE_HISTORY
 
+# show expanded history before running
+setopt HIST_VERIFY
+
 
 #################### LOAD PLUGINS & CONFIGS #################### 
 
@@ -50,12 +53,6 @@ fi
 
 # source additional zsh configurations
 [[ -f $ZDOTDIR/.zsh_aliases ]] && source $ZDOTDIR/.zsh_aliases
-
-# source the script for loading and configuring fzf
-source ~/.config/fzf/.fzfrc
-
-# source the script for loading and configuring atuin
-source ~/.config/atuin/.atuinrc
 
 # make sure these custom functions are sourced last
 [[ -f $ZDOTDIR/.zsh_functions ]] && source $ZDOTDIR/.zsh_functions

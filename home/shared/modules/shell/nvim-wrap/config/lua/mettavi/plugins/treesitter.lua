@@ -8,6 +8,7 @@ return {
 
     local languages = {
       "json",
+      "json5",
       "javascript",
       "typescript",
       "tsx",
@@ -16,7 +17,6 @@ return {
       "css",
       "markdown",
       "markdown_inline",
-      "svelte",
       "bash",
       "lua",
       "vim",
@@ -28,6 +28,7 @@ return {
       "toml",
       "regex",
       "nix",
+      "python",
     }
     -- replicate `ensure_installed`, runs asynchronously, skips existing languages
     require("nvim-treesitter").install(languages)

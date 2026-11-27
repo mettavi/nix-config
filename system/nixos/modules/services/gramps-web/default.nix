@@ -9,18 +9,30 @@
   ...
 }:
 let
+  inherit (lib) mkEnableOption mkOption optionals;
+  inherit (lib.types) bool str;
   cfg = config.mettavi.services.gramps-web;
 in
 {
   options.mettavi.services.gramps-web = {
-    enable = lib.mkEnableOption "Install and set up the gramps-web service";
+    enable = mkEnableOption "Install and set up the gramps-web service";
+    baseUrl = mkOption {
+      type = str;
+      default = "http://localhost";
+      description = "The url where the app will be hosted";
+    };
+    openFirewall = mkOption {
+      type = bool;
+      default = false;
+      description = "Whether to open the port in the firewall";
+    };
   };
 
   config = lib.mkIf cfg.enable {
 
     # --- SYSTEM-LEVEL CONFIGURATIONS ---
     mettavi.system.services.podman.enable = true;
-    networking.firewall.allowedTCPPorts = [ 5000 ];
+    networking.firewall.allowedTCPPorts = optionals cfg.openFirewall [ 5000 ];
 
     # Explicitly assign SubUID/SubGID ranges and enable linger for auto-start
     users.users."${username}" = {
@@ -30,47 +42,41 @@ in
 
     # --- HOME MANAGER (USER-LEVEL) CONFIGURATIONS ---
     home-manager.users."${username}" =
-      { config, ... }:
+      { config, nixosConfig, ... }:
       let
         inherit (config.virtualisation.quadlet) volumes;
         # 1. Define a standard Containerfile to build the GPU-enabled image
         # This avoids the Nix-store/FHS mismatch by using standard pip in the container.
-        grampsCudaContainerfile = pkgs.writeText "Containerfile" ''
-          FROM ghcr.io/gramps-project/grampsweb:latest
+        grampsContainerfile = pkgs.writeText "Containerfile" ''
+          FROM ghcr.io/gramps-project/grampsweb:26.11.3@sha256:bf672745c0428ec37f398f51a89e07a0dabe4f2abc1038fd0952e358ae0228a3
           # Force the container to pull down the Linux PDF thumbnail extraction binaries
           USER root
           RUN apt-get update && apt-get install -y poppler-utils ghostscript fontconfig --no-install-recommends && apt-get clean
 
           # Initialize the font configuration cache layer inside the container layout
           RUN fc-cache -f -v
-
-          # Uninstall the built-in CPU versions first to guarantee a clean slate,
-          # then install the CUDA-enabled versions.
-          RUN pip uninstall -y torch torchvision && \
-            pip install torch torchvision --extra-index-url https://download.pytorch.org/whl/cu121
         '';
 
         # 2. Extract shared configuration so both grampsweb and celery can inherit it properly
         sharedContainerEnv = {
-          TZ = "Australia/Melbourne";
           GRAMPSWEB_TREE = "Allen";
 
           # PATHS AND NETWORK DOMAIN CONFIGURATIONS
           # force the api to translate absolute desktop paths to internal app paths
           GRAMPSWEB_DATA_DIR = "/root/.gramps/grampsdb";
           GRAMPSWEB_MEDIA_BASE_DIR = "/app/media";
-          GRAMPSWEB_BASE_URL = "http://gw.oona";
+          # used to build links in e-mails, such as password resets
+          GRAMPSWEB_BASE_URL = cfg.baseUrl;
           GRAMPSWEB_CORS_ORIGINS = "*";
           GRAMPSWEB_INDEX_DIR = "/app/indexdir";
           GRAMPSWEB_THUMBNAIL_CACHE_DIR = "/app/thumbnail_cache";
 
           # SYSTEM EMAIL ACCOUNT (eg. for sending password reset emails)
-          GRAMPSWEB_EMAIL_HOST = "smtp.gmail.com";
+          GRAMPSWEB_EMAIL_HOST = "9wmsrvh2zzw2.jd2m.mail-manager-smtp.amazonaws.com";
           GRAMPSWEB_EMAIL_PORT = "587";
-          GRAMPSWEB_EMAIL_HOST_USER = inputs.secrets.email.personal;
           GRAMPSWEB_EMAIL_USE_SSL = "false";
           GRAMPSWEB_EMAIL_USE_STARTTLS = "true";
-          GRAMPSWEB_DEFAULT_FROM_EMAIL = inputs.secrets.name;
+          GRAMPSWEB_DEFAULT_FROM_EMAIL = inputs.secrets.email.cloud;
 
           # Database Connection Brokers
           GRAMPSWEB_CELERY_CONFIG__broker_url = "redis://grampsweb_redis:6379/0";
@@ -85,7 +91,6 @@ in
           GRAMPSWEB_CELERY_CONFIG__task_acks_late = "true"; # Ensure task safety if a container cycles
 
           # AI and LLM parameters
-          GRAMPSWEB_VECTOR_EMBEDDING_MODEL = "sentence-transformers/distiluse-base-multilingual-cased-v2";
           # Use Podman's special DNS name to reach the host, and add /v1 for the OpenAI API format
           GRAMPSWEB_LLM_BASE_URL = "http://host.containers.internal:11434/v1";
           # This tells pydantic-ai's core router which model to launch
@@ -131,6 +136,7 @@ in
         virtualisation.quadlet =
           let
             inherit (config.virtualisation.quadlet) builds containers;
+            mkContainer = nixosConfig.mettavi.system.services.podman.mkContainer;
           in
           {
             # Create a shared network so the containers can resolve 'grampsweb_redis'
@@ -140,10 +146,10 @@ in
 
             # Define the image build process
             builds = {
-              grampsweb_cuda = {
+              grampsweb_local = {
                 buildConfig = {
-                  file = grampsCudaContainerfile.outPath;
-                  tag = "grampsweb:cuda";
+                  file = grampsContainerfile.outPath;
+                  tag = "grampsweb:local";
                   # Add this to force Podman to look at the config directory instead of the Nix Store
                   # contextType = "configdir";
                 };
@@ -151,11 +157,11 @@ in
             };
 
             containers = {
-              grampsweb = {
+              grampsweb = mkContainer {
                 autoStart = true;
                 containerConfig = {
                   # Use the image we built above
-                  image = builds.grampsweb_cuda.ref;
+                  image = builds.grampsweb_local.ref;
                   environmentFiles = [
                     config.sops.secrets."users/${username}/grampsweb-${hostname}.env".path
                   ];
@@ -175,8 +181,6 @@ in
                   # Keep user ID mapping the same as the host to fix bind mount permissions
                   # this requires not using any privileged ports (below 1024)
                   # userns = "keep-id";
-                  # Pass the NVIDIA GPU to the container
-                  devices = [ "nvidia.com/gpu=all" ];
                 };
                 serviceConfig = {
                   Restart = "always";
@@ -185,20 +189,20 @@ in
                   # Ensure the image is built and redis is running first
                   After = [
                     containers.grampsweb_redis.ref
-                    builds.grampsweb_cuda.ref
+                    builds.grampsweb_local.ref
                     config.virtualisation.quadlet.networks.gramps_net.ref
                   ];
                   Requires = [
                     containers.grampsweb_redis.ref
-                    builds.grampsweb_cuda.ref
+                    builds.grampsweb_local.ref
                     config.virtualisation.quadlet.networks.gramps_net.ref
                   ];
                 };
               };
 
-              grampsweb_celery = {
+              grampsweb_celery = mkContainer {
                 containerConfig = {
-                  image = "localhost/grampsweb:cuda";
+                  image = builds.grampsweb_local.ref;
                   exec = "celery -A gramps_webapi.celery worker --loglevel=INFO --concurrency=2";
                   environmentFiles = [
                     config.sops.secrets."users/${username}/grampsweb-${hostname}.env".path
@@ -230,9 +234,9 @@ in
                 };
               };
 
-              grampsweb_redis = {
+              grampsweb_redis = mkContainer {
                 containerConfig = {
-                  image = "docker.io/valkey/valkey:8-alpine";
+                  image = "docker.io/valkey/valkey:9.2.0-alpine@sha256:c8e2d17498838af5d91e12eb7c11220b3434a7b7131a333e3af52ad5e0b80882";
 
                   # COMPLETELY REMOVE the networks key
                   # Use ONLY podmanArgs to pass the explicit rootless string flag

@@ -93,6 +93,10 @@ in
               "ppg"
               28982
             ] # paperless-genealogy
+            [
+              "st"
+              8384
+            ] # syncthing
           ];
           configgen = (
             host: xs:

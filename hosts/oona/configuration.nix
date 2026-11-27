@@ -4,28 +4,19 @@
   inputs,
   lib,
   pkgs,
-  secrets_path,
   username,
   ...
 }:
 with lib;
-let
-  emailSecrets.sopsFile = "${secrets_path}/secrets/apps/email.yaml";
-in
 {
   imports = [
     # customise the hardware scan config
     # NB: hardware-configuration.nix is auto-generated during install and is imported in the mkNixos function
+    ./dailydriver.nix
     ./gpuHang.nix
     ./mount.nix
     ./kernel.nix
   ];
-
-  # Set the timezone to null with mkForce to allow the service to claim it
-  time.timeZone = lib.mkForce null;
-
-  # 2. Enable the automatic geo-timezone daemon
-  services.tzupdate.enable = true;
 
   users.users.${username} = {
     # authorize remote login using ssh key
@@ -134,13 +125,8 @@ in
     '')
   ];
 
-  # patch the asusctl package to include "aura" keyboard lighting definitions for this model laptop
-  # NB: git clone the repo, add the new lines and then run 'git diff > ../aura_support_ga403w.patch
   nixpkgs.overlays = [
     (final: prev: {
-      # TODO: Remove this overlay when v6.0.8 hits nixos-unstable branch
-      # install a newer version for bugfix https://github.com/gramps-project/gramps/pull/2204
-      # (and other updates added to v6.0.8)
       gramps =
         let
           # 1. Compile the exact version of the missing Python library
@@ -155,18 +141,30 @@ in
             build-system = [ final.python3Packages.setuptools ];
             propagatedBuildInputs = [ final.python3Packages.requests ];
             doCheck = false;
+
+            # Python 3.14 (PEP 649/749): annotations are no longer stored in the
+            # class __dict__, so the original all_annotations() returns nothing.
+            postPatch = ''
+              substituteInPlace gedcomx_v1/_utila.py \
+                --replace-fail \
+                "ChainMap(*(k.__annotations__ for k in klaso.__mro__ if '__annotations__' in k.__dict__) )" \
+                "ChainMap(*(_ann(k) for k in klaso.__mro__))"
+
+              cat >> gedcomx_v1/_utila.py <<'EOF'
+
+              def _ann(k):
+                try:
+                  import annotationlib
+                  return annotationlib.get_annotations(
+                    k, format=annotationlib.Format.FORWARDREF)
+                except ImportError:
+                  return k.__dict__.get('__annotations__', {})
+              EOF
+            '';
           };
 
         in
         prev.gramps.overrideAttrs (oldAttrs: {
-          version = "6.0.8";
-          src = prev.fetchFromGitHub {
-            owner = "gramps-project";
-            repo = "gramps";
-            rev = "v6.0.8";
-            hash = "sha256-Kq+QyhghBmUzl+ooCYSl2yNMvrBDnQS6Zg3nBI1jbRo=";
-          };
-
           # 2. Append extra modules to the core pythonPath wrapper target
           # This safely extends the path without breaking baseline GTK/GDK layers
           pythonPath = (oldAttrs.pythonPath or [ ]) ++ [
@@ -175,18 +173,6 @@ in
             my-gedcomx
             final.python3Packages.keyring
             final.python3Packages.secretstorage # SecretService/gnome-keyring backend
-          ];
-
-          # 3. Retain your original map window canvas variables
-          qtWrapperArgs = (oldAttrs.qtWrapperArgs or [ ]) ++ [
-            "--prefix"
-            "GI_TYPELIB_PATH"
-            ":"
-            "${final.osm-gps-map}/lib/girepository-1.0:${final.gtk3}/lib/girepository-1.0"
-            "--prefix"
-            "GSETTINGS_SCHEMAS_PATH"
-            ":"
-            "${final.gtk3}/share/gsettings-schemas/${final.gtk3.name}"
           ];
         });
     })
@@ -208,6 +194,22 @@ in
     };
   };
 
+  # NB: this code needs to be isolated here while other hosts are still on pre-26.11
+  # because of errors with "nix flake check"
+  # 1. Enable Solaar (The open source driver for Logitech devices) and its background service
+  programs.solaar = {
+    enable = true;
+    # Enable the systemd service for each user
+    userService = {
+      enable = true;
+      extraArgs = [ "--restart-on-wake-up" ];
+      window = "hide";
+    };
+  };
+
+  # 2. Tell the system tray daemon to actively listen to Solaar's hardware events
+  services.udev.packages = [ pkgs.solaar ];
+
   # SYSTEM MODULES SETTINGS
 
   mettavi.system = {
@@ -216,15 +218,13 @@ in
         enable = true;
         backup = true; # this also enables the postfix module
       };
-      # TODO: disable brave due to an error "attribute override missing",
-      # see https://github.com/nix-community/home-manager/issues/9755
-      brave.enable = false;
+      brave.enable = true;
       calibre = {
         enable = true;
         cal_lib = "${config.users.users.${username}.home}/media/calibre";
       };
       liboffice-lite.enable = true;
-      qbittorrent.enable = true;
+      qbittorrent.enable = false;
     };
     devices = {
       logitech.enable = true;
@@ -268,19 +268,24 @@ in
             {
               inherit vol_label;
               localConfig = { };
-              repo = "/run/media/${username}/${vol_label}";
+              repo = "/run/media/${username}/${vol_label}/";
               volumes = {
                 "@adminhome" = {
                   exclusions = [
                     ".Trash-0"
+                    ".Trash-1000"
                     ".local/share/Trash"
+                    ".local/share/containers/.Trash-1000"
                     ".npm"
                   ];
                   mount = "/home/${username}";
                   paths = [ "." ];
                 };
                 "@adminmedia" = {
-                  exclusions = [ ".Trash-0" ];
+                  exclusions = [
+                    ".Trash-0"
+                    ".Trash-1000"
+                  ];
                   mount = "/home/${username}/media";
                   paths = [ "." ];
                 };
@@ -288,6 +293,8 @@ in
                   exclusions = [
                     ".Trash-0"
                     "/var/backup/postgresql/*.prev.sql"
+                    # do not backup temporary VMs
+                    "/var/lib/libvirt/images/test"
                   ];
                   mount = "/";
                   paths = [
@@ -342,10 +349,11 @@ in
           };
         };
       };
+      tailscale.enable = false;
     };
     shell = {
       # see the host-specific keyboard config below
-      kanata.enable = true;
+      # kanata.enable = true;
     };
     userConfig = {
       timotheos.enable = true;
@@ -367,9 +375,6 @@ in
 
   # includes system settings (located in system directory)
   mettavi = {
-    apps = {
-      libreoffice.enable = false;
-    };
     services = {
       gramps-web.enable = true;
     };
@@ -447,24 +452,24 @@ in
       packages = with pkgs; [
         # Simple GPU Profile switcher for ASUS laptops using Supergfxctl
         gnomeExtensions.gpu-supergfxctl-switch
-        goldendict-ng # Advanced multi-dictionary lookup program
         gramps # Genealogy software
         # these two are required for the PersonFS plugin in gramps
         gobject-introspection
         osm-gps-map
-        poppler-utils # PDF rendering library tools
-        linpkgs.tipitaka_pali_reader
+        mosh # Mobile shell (ssh replacement)
       ];
-      sessionVariables = {
-        # required for electron apps, which don't read the mimeapps.list file
-        DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox";
-      };
       stateVersion = "25.11";
     };
 
-    # define sops secrets for email accounts used specifically on this host
-    sops.secrets = {
-      "users/${username}/email/${inputs.secrets.email.burner}" = emailSecrets;
+    programs.zsh = {
+      enable = true;
+      shellAliases = {
+        # Connects via mosh and automatically attaches to a tmux session named "main"
+        # If the session doesn't exist, it creates it automatically.
+        # The "-a/--predict=always" flag forces Mosh to always execute instant local echo
+        mpangolin = "mosh --predict=always timotheos@pangolin.${inputs.secrets.domain.primary} -- tmux new-session -A -s main";
+        mcloud = "mosh --predict=always timotheos@apps.${inputs.secrets.domain.primary} -- tmux new-session -A -s main";
+      };
     };
 
     # create a symlink to the paperless genealogy media directory for gramps (not possible with home.file)
@@ -486,59 +491,13 @@ in
       */
       # See http://discourse.nixos.org/t/how-can-i-configure-the-default-apps-for-gnome/36034
       defaultApplications = {
+        "application/pdf" = [ "org.kde.okular.desktop" ];
         # gnome image viewer
         "image/jpeg" = [ "org.gnome.Loupe.desktop" ];
         # do not add jpg, as it is not a valid mimetype
         # see https://stackoverflow.com/questions/33692835/is-the-mime-type-image-jpg-the-same-as-image-jpeg
         # "image/jpg" = [ "org.gnome.Loupe.desktop" ];
-        # gnome document viewer
-        "application/pdf" = [ "org.gnome.Evince.desktop" ];
-      };
-    };
-    mettavi = {
-      apps = {
-        anki.enable = true;
-        firefox.enable = true;
-        ghostty.enable = true;
-        latex.enable = true;
-        obsidian.enable = true;
-        thunderbird =
-          let
-            burner = inputs.secrets.email.burner;
-            monk = inputs.secrets.email.monk;
-            personal = inputs.secrets.email.personal;
-            # NB: 1. leave "accountFilters" unassigned in extraEmailAccounts to use all filters
-            # 2. the default "flavor" is "gmail.com"
-          in
-          {
-            enable = true;
-            accountsOrder = [
-              personal
-              monk
-              burner
-            ];
-            extraEmailAccounts = {
-              ${monk} = {
-                accountFilters = [
-                  "tagGH"
-                ];
-                address = monk;
-                aliases = [ personal ];
-              };
-              ${burner} = {
-                accountFilters = [
-                ];
-                address = burner;
-              };
-            };
-          };
-      };
-      shell = {
-        bash.enable = true;
-        nh.enable = true;
-        nvim-wrap.enable = true;
-        tmux.enable = true;
-        yazi.enable = true;
+        "text/markdown" = [ "typora.desktop" ];
       };
     };
   };
@@ -556,5 +515,4 @@ in
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "25.11"; # Did you read the comment?
-
 }

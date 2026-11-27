@@ -1,25 +1,12 @@
 {
   description = "Metta's Nix system flake";
 
-  # Binary cache
-  # this setting allows untrusted users of this flake to approve substituters interactively
-  # it is only useful in a multi-user system
-  # nixConfig = {
-  # will be appended to the system-level substituters
-  # extra-substituters = [
-  # ];
-  # will be appended to the system-level trusted-public-keys
-  #   extra-trusted-public-keys = [
-  #   ];
-  # };
-
   inputs = {
     ####################### MAIN INPUTS ##########################
 
     ######### NIXOS #########
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-26_05.url = "github:NixOS/nixpkgs/nixos-26.05";
-    nixpkgs-25_11.url = "github:NixOS/nixpkgs/nixos-25.11";
     # Do not override cachyos-kernel nixpkgs input, otherwise there can
     # be mismatch between patches and kernel version
     cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
@@ -37,6 +24,18 @@
     home-manager-26_05 = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs-26_05";
+    };
+    home-manager-darwin = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs-darwin";
+    };
+
+######## NIX-ON-DROID ########
+
+nix-on-droid = {
+      url = "github:nix-community/nix-on-droid";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
 
     ######## NIX-DARWIN ########
@@ -120,22 +119,13 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    obsidian-extensions = {
+      url = "github:karaolidis/nix-obsidian-extensions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     phoenix = {
       url = "git+https://gitlab.com/celenityy/Phoenix.git?ref=pages";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    # These 2 are already in nixpkgs, however this ensures you always fetch the most up to date version!
-    plugins-lze = {
-      url = "github:BirdeeHub/lze";
-      flake = false;
-    };
-    plugins-lzextras = {
-      url = "github:BirdeeHub/lzextras";
-      flake = false;
-    };
-    plugins-vim-maximizer = {
-      url = "github:szw/vim-maximizer";
-      flake = false;
     };
     sops-nixos = {
       url = "github:Mic92/sops-nix";
@@ -153,33 +143,57 @@
       url = "github:BirdeeHub/nix-wrapper-modules";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # install a pinned version of a nix package with:
-    # specific_package.url = "github:nixos/nixpkgs/specific_commit_hash_from_nixhub.io";
+
+    ################# NEOVIM PLUGINS (alphabetical) ##################
+    plugins-json5 = {
+      url = "github:json5/json5";
+      flake = false;
+    };
+    plugins-jsonlint = {
+      url = "github:zaach/jsonlint";
+      flake = false;
+    };
+    # These 2 are already in nixpkgs, however this ensures you always fetch the most up to date version!
+    plugins-lze = {
+      url = "github:BirdeeHub/lze";
+      flake = false;
+    };
+    plugins-lzextras = {
+      url = "github:BirdeeHub/lzextras";
+      flake = false;
+    };
+    plugins-vim-maximizer = {
+      url = "github:szw/vim-maximizer";
+      flake = false;
+    };
+
+    # INSTALL A PINNED VERSION OF A NIX PACKAGE WITH:
+    # METHOD 1 (flake.nix): specific_package.url = "github:nixos/nixpkgs/commit_hash_from_nixhub.io";
     # Then add the following to environment.systemPackages or an overlay:
     # inputs.specific_package.legacyPackages.${pkgs.stdenv.hostPlatform.system}.package_name_from_nixhub.io
-  };
-  outputs =
-    inputs@{
-      self,
-      ...
-    }:
+    # METHOD 2 (flake.lock - simpler for short-term fixes, eg. when the bug fix is already committed):
+    # run 'nix flake lock --override-input nixpkgs github:NixOS/nixpkgs/<commit hash>', or
+    # 'sudo nixos-rebuild switch --override-input nixpkgs github:NixOS/nixpkgs/<commit hash>'
+    # (This is more reliable than editing flake.lock manually)
 
-    let
-      mkDarwin = import ./lib/mkDarwin.nix { inherit inputs self; };
-      mkNixos = import ./lib/mkNixos.nix { inherit inputs self; };
-      initNixos = import ./lib/initNixos.nix { inherit inputs; };
-    in
-    inputs.flake-parts.lib.mkFlake { inherit inputs; } {
+  };
+
+  outputs =
+    inputs@{ self, flake-parts, ... }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+
+      # To import an internal flake module: ./other.nix
+      # To import an external flake module:
+      #   1. Add foo to inputs
+      #   2. Add foo as a parameter to the outputs function
+      #   3. Add here: foo.flakeModule
       imports = [
-        # To import an internal flake module: ./other.nix
-        # To import an external flake module:
-        #   1. Add foo to inputs
-        #   2. Add foo as a parameter to the outputs function
-        #   3. Add here: foo.flakeModule
+        ./hosts.nix
       ];
+
       systems = [
         "x86_64-linux"
-        "aarch64-darwin"
+        "x86_64-darwin"
       ];
 
       # perSystem = { config, self', inputs', pkgs, system, ... }: {
@@ -191,52 +205,12 @@
       #   packages.default = pkgs.hello;
       # };
 
-      flake =
+      flake = {
         # The usual flake attributes can be defined here, including system-
         # agnostic ones like nixosModule and system-enumerating ones, although
         # those are more easily expressed in perSystem.
-        {
-          nix_repo = ".nix-config";
-          secrets_path = toString inputs.secrets;
-
-          # DARWIN-REBUILD BUILDS
-          # Build darwin flake using:
-          # $ darwin-rebuild build --flake .#hostname
-          darwinConfigurations = {
-            "mack" = mkDarwin.mkDarwinConfiguration "mack" "x86_64-darwin";
-          };
-
-          # NIXOS-REBUILD BUILDS
-          # Build nixos flake using:
-          # nixos-rebuild build --flake .#hostname
-          nixosConfigurations = {
-            "oona" = mkNixos.mkNixosConfiguration "oona" "x86_64-linux" "";
-            "lady" = mkNixos.mkNixosConfiguration "lady" "x86_64-linux" "";
-            "blue" = mkNixos.mkNixosConfiguration "blue" "x86_64-linux" "-26_05";
-          };
-
-          ################################  NIXOS-ANYWHERE BUILDS  ######################################
-
-          # nix run github:nix-community/nixos-anywhere -- --generate-hardware-config nixos-generate-config ./hardware-configuration.nix \
-          # --flake <path to configuration>#<configuration name> -i <identity_file> --build-on remote \
-          # --print-build-log --target-host username@<ip address>
-          # nixosConfigurations = {
-          #   "remus" = initNixos.mkNixosConfiguration "remus" "x86_64-linux" "timotheos" "nixpkgs-26_05";
-          # };
-
-          ################################# NIXOS QEMU VMS #############################################
-          # run "nix build -L .#nixosConfigurations.nix-guest.config.system.build.vm" to create the guest vm
-          # launch the vm with "QEMU_KERNEL_PARAMS=console=ttyS0 ./result/bin/run-nixos-vm -nographic; reset"
-          # for ssh connections, add QEMU_NET_OPTS="hostfwd=tcp:127.0.0.1:2222-:22"
-          # to set up port fowarding to the guest and add the "-p 2222" flag to ssh
-          # See https://nix.dev/tutorials/nixos/nixos-configuration-on-vm and
-          # https://dev.to/vst/running-nixos-guests-on-qemu-3lpa
-          nixosConfigurations."nix-guest" = inputs.nixpkgs-26_05.lib.nixosSystem {
-            system = "x86_64-linux";
-            modules = [
-              ./hosts/nix-guest/configuration.nix
-            ];
-          };
-        };
+        nix_repo = ".nix-config";
+        secrets_path = toString inputs.secrets;
+      };
     };
 }

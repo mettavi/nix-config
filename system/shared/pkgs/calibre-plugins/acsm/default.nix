@@ -1,0 +1,134 @@
+{
+  stdenv,
+  fetchFromGitHub,
+  fetchzip,
+  lib,
+  openssl,
+  pkgs,
+  pkgsCross,
+  zip,
+}:
+let
+  oscrypto = stdenv.mkDerivation {
+    pname = "oscrypto";
+    version = "1.3.0";
+    src = fetchzip {
+      url = "https://github.com/Leseratte10/acsm-calibre-plugin/releases/download/config/oscrypto_1.3.0_fork_2023-12-19.zip";
+      hash = "sha256-LuPodbEpPMLsFqtuogcQtcj1LSG/7E+Q7TsLeCCKI/E=";
+    };
+    doCheck = false;
+    postPatch = ''
+      for file in oscrypto/_openssl/_libcrypto_c{ffi,types}.py; do
+        substituteInPlace $file \
+          --replace-fail "get_library('crypto', 'libcrypto.dylib', '42')" "'${openssl.out}/lib/libcrypto${stdenv.hostPlatform.extensions.sharedLibrary}'"
+      done
+      for file in oscrypto/_openssl/_libssl_c{ffi,types}.py; do
+        substituteInPlace $file \
+          --replace-fail "get_library('ssl', 'libssl', '44')" "'${openssl.out}/lib/libssl${stdenv.hostPlatform.extensions.sharedLibrary}'"
+      done
+    '';
+    nativeBuildInputs = [ zip ];
+    installPhase = "zip -r $out oscrypto";
+  };
+
+  asn1crypto = stdenv.mkDerivation {
+    pname = "asn1crypto";
+    version = "1.5.1";
+    src = fetchzip {
+      url = "https://github.com/Leseratte10/acsm-calibre-plugin/releases/download/config/asn1crypto_1.5.1.zip";
+      hash = "sha256-HKOpZnBb34oYjgruO+KQhU4j5oTuT3c9ABgONW3lmiM=";
+    };
+    doCheck = false;
+    nativeBuildInputs = [ zip ];
+    installPhase = "zip -r $out asn1crypto";
+  };
+in
+stdenv.mkDerivation {
+  pname = "acsm-calibre-plugin";
+  # Upstream's tags are stale (0.0.16), so track the latest commit instead
+  # (--version=branch). The version base comes from PLUGIN_VERSION_TUPLE in the
+  # plugin's code and is appended with `-unstable-<commit date>`. updateScript
+  # keeps this, rev and hash in sync.
+  version = "0.1.0-unstable-2026-11-19";
+
+  src = fetchFromGitHub {
+    owner = "Leseratte10";
+    repo = "acsm-calibre-plugin";
+    rev = "c3f50909d20a6eac59cf22a6ccd783600c230820";
+    hash = "sha256-acEKvhkkNbEF+dU8ntxA2AUvHW16BnUkhokmmxJsTSI=";
+  };
+
+  nativeBuildInputs = [
+    pkgsCross.mingw32.buildPackages.gcc
+    pkgsCross.mingwW64.buildPackages.gcc
+    zip
+  ];
+  buildInputs = [ openssl ];
+
+  # Propagate env vars for the acsm-calibre-plugin
+  # See: https://github.com/Leseratte10/acsm-calibre-plugin/issues/68#issuecomment-2162686156
+  postPatch = ''
+    substituteInPlace ./calibre-plugin/__init__.py \
+      --replace-fail 'libcrypto_path = os.getenv("ACSM_LIBCRYPTO", None)' \
+        'libcrypto_path = os.getenv("ACSM_LIBCRYPTO", "${openssl.out}/lib/libcrypto${stdenv.hostPlatform.extensions.sharedLibrary}")' \
+      --replace-fail 'libssl_path = os.getenv("ACSM_LIBSSL", None)' \
+        'libssl_path = os.getenv("ACSM_LIBSSL", "${openssl.out}/lib/libssl${stdenv.hostPlatform.extensions.sharedLibrary}")' \
+      --replace-fail 'sys.path.insert(0, os.path.join(self.moddir, "oscrypto"))' \
+        'sys.path.insert(0, self.moddir)' \
+      --replace-fail 'sys.path.insert(0, os.path.join(self.moddir, "asn1crypto"))' \
+        'sys.path.insert(0, self.moddir)'
+  '';
+
+  buildPhase = ''
+    runHook preBuild
+    cp ${asn1crypto} calibre-plugin/asn1crypto.zip
+    cp ${oscrypto} calibre-plugin/oscrypto.zip
+    bash ./bundle_calibre_plugin.sh
+    # Upstream hardcodes module_id.txt to a static string, so Calibre's
+    # own staleness check can never detect that our build changed which
+    # openssl path is baked in. Overwrite it with something that changes
+    # exactly when that does, so re-extraction only happens when it
+    # actually needs to.
+    echo -n "${baseNameOf openssl.out}" > module_id.txt
+    zip calibre-plugin.zip module_id.txt
+    rm module_id.txt
+    runHook postBuild
+  '';
+
+  installPhase = ''
+    runHook preInstall
+    install -D --mode=0644 --target-directory=$out calibre-plugin.zip
+    runHook postInstall
+  '';
+
+  passthru = {
+    pluginZip = "calibre-plugin.zip";
+    updateScript = pkgs.writeShellScript "update-acsm" ''
+      set -euo pipefail
+      file=${toString ./default.nix}
+
+      ${lib.getExe pkgs.nix-update} \
+        --file ${toString ../../../../../update.nix} \
+        --version=branch \
+        "$UPDATE_NIX_ATTR_PATH"
+
+      rev=$(${lib.getExe pkgs.gnused} -nE 's/^[[:space:]]*rev = "([0-9a-f]{40})";.*/\1/p' "$file")
+      tuple=$(${lib.getExe pkgs.curl} -fsSL \
+          "https://raw.githubusercontent.com/Leseratte10/acsm-calibre-plugin/$rev/calibre-plugin/__init__.py" \
+        | ${lib.getExe pkgs.gnused} -nE 's/^PLUGIN_VERSION_TUPLE = \(([0-9]+), ([0-9]+), ([0-9]+)\).*/\1.\2.\3/p')
+
+      if [ -z "$tuple" ]; then
+        echo "could not read PLUGIN_VERSION_TUPLE" >&2
+        exit 1
+      fi
+      ${lib.getExe pkgs.gnused} -i -E "s/version = \"[0-9.]+-unstable-/version = \"$tuple-unstable-/" "$file"
+    '';
+  };
+
+  meta = {
+    description = "Calibre plugin for ACSM->EPUB and ACSM->PDF conversion without Adobe Digital Editions";
+    homepage = "https://github.com/Leseratte10/acsm-calibre-plugin";
+    platforms = with lib.platforms; linux ++ darwin ++ windows;
+    license = lib.licenses.gpl3Only;
+  };
+}

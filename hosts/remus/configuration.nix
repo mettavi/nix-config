@@ -11,12 +11,8 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     (modulesPath + "/profiles/qemu-guest.nix")
     ./disko-config.nix
-    ../../system/nixos/modules/devices/disko-btrfs
-    # ./hardware-configuration.nix
+    ./hardware-configuration.nix
   ];
-
-  # install the ghostty terminfo (which is missing from current versions of terminfo) for ssh sessions to this host
-  # environment.systemPackages = with pkgs; [ ghostty.terminfo ];
 
   ########## IMPORTANT SETTINGS ###########
 
@@ -36,6 +32,9 @@
   };
 
   ########## SYSTEM ARCHITECTURE ###########
+
+  # lower the unprivileged port floor so rootless containers can bind under port 1024
+  boot.kernel.sysctl."net.ipv4.ip_unprivileged_port_start" = 0;
 
   # enable in-memory compressed devices and swap space
   zramSwap = {
@@ -61,6 +60,7 @@
       };
       profiles = {
         # hostinger vps (eg. ssh hardening)
+        # NB: No need for secrets as this VPS is intentionally public-facing
         vps = {
           enable = true;
           netInterface = "eth0";
@@ -75,6 +75,11 @@
             gateway = "2a02:4780:5e::1";
           };
         };
+      };
+      services = {
+        crowdsec.enable = true;
+        geoipupdate.enable = true;
+        pangolin.enable = true;
       };
       # enable system users
       userConfig = {

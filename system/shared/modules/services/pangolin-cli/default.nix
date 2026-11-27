@@ -1,0 +1,120 @@
+{
+  config,
+  hostname,
+  inputs,
+  lib,
+  pkgs,
+  secrets_path,
+  username,
+  ...
+}:
+with lib;
+let
+  cfg = config.mettavi.system.services.pangolin-cli;
+  inherit (lib)
+    mkEnableOption
+    mkIf
+    ;
+in
+{
+  options.mettavi.system.services.pangolin-cli = {
+    enable = mkEnableOption "Install and configure the pangolin-cli client";
+  };
+
+  config = mkIf cfg.enable {
+    environment.systemPackages = with pkgs; [
+      pangolin-cli # Pangolin cli tool and VPS client
+    ];
+
+    # Pin the hostname to the gateway VPS’s public IP in /etc/hosts
+    networking.hosts.${inputs.secrets.vps.pangolin.ip} = [
+      "pangolin.${inputs.secrets.domain.primary}"
+    ];
+
+    networking.firewall = {
+      enable = true;
+      # Allow traffic on the pangolin virtual interface
+      trustedInterfaces = [ "pangolin" ];
+      # Essential for WireGuard / overlay mesh routing
+      checkReversePath = "loose";
+    };
+
+    sops.secrets."users/${username}/pangolin-cli-${hostname}.env" = {
+      # Optional: specify path or restart systemd service on secret change
+      restartUnits = [ "pangolin-cli.service" ];
+      sopsFile = "${secrets_path}/secrets/apps/pangolin.yaml";
+    };
+
+    systemd.services = {
+      pangolin-cli = {
+        enable = true;
+        after = [ "network-online.target" ];
+        description = "Pangolin Machine Client Service";
+        serviceConfig = {
+          # Provide persistent state directory & set $HOME
+          Environment = [
+            "HOME=/var/lib/pangolin"
+            "PANGOLIN_ENDPOINT=https://pangolin.${inputs.secrets.domain.primary}"
+            # direct the root systemd service to the user config path
+            # (e.g. to pick up accounts.json for authentication)
+            "XDG_CONFIG_HOME=${config.home-manager.users.${username}.xdg.configHome}"
+          ];
+          # Load environment variables securely at service start
+          EnvironmentFile = config.sops.secrets."users/${username}/pangolin-cli-${hostname}.env".path;
+          # Run in foreground (--attach) so systemd can track process state
+          # Systemd performs the \${VAR} substitution dynamically at runtime!
+          # This keeps your Nix store completely clean of any hardcoded secrets.
+          ExecStart = "${pkgs.pangolin-cli}/bin/pangolin up --id \${CLIENT_ID} --secret \${CLIENT_SECRET} --endpoint \${PANGOLIN_ENDPOINT} --attach";
+          # Apply split-DNS routing rules directly to the pangolin interface
+          ExecStartPost = pkgs.writeShellScript "pangolin-split-dns" ''
+            # Wait up to 60s for the interface to appear
+            for i in $(seq 1 60); do
+              if ${pkgs.iproute2}/bin/ip link show pangolin >/dev/null 2>&1; then
+                break
+              fi
+              sleep 1
+            done
+
+            if ! ${pkgs.iproute2}/bin/ip link show pangolin >/dev/null 2>&1; then
+              echo "pangolin interface never appeared" >&2
+              exit 1
+            fi
+
+            # 1. FORCE THE ROUTE TO THE CENTRAL DNS/PROXY SUBNET
+            # This ensures that even if your client IP is 100.90.x.x, your laptop knows
+            # it must talk to the 100.96.x.x network through the Pangolin mesh tunnel.
+            echo "Adding explicit route for the Pangolin server overlay network..."
+            ${pkgs.iproute2}/bin/ip route add 100.96.128.0/20 dev pangolin proto static || true
+
+            # 2. ASSIGN THE CORE DNS PROXY GATEWAY
+            DNS_SERVER="100.96.128.1"
+            echo "Assigning static Pangolin central DNS endpoint: $DNS_SERVER"
+
+            # Assign the dynamic tunnel DNS to the pangolin interface only
+            ${pkgs.systemd}/bin/resolvectl dns pangolin "$DNS_SERVER"
+
+            # The '~' prefix defines this as a Routing Domain
+            ${pkgs.systemd}/bin/resolvectl domain pangolin "~${inputs.secrets.domain.primary}"
+            # Prevent pangolin from being used for general internet DNS queries
+            ${pkgs.systemd}/bin/resolvectl default-route pangolin false
+          '';
+          # Clean up on stop, so a killed service doesn’t leave things behind
+          # NB: The leading - tolerates failure when the interface is already gone
+          ExecStopPost = "-${pkgs.systemd}/bin/resolvectl revert pangolin";
+          # Hardening measures (optional but recommended)
+          ProtectSystem = "strict";
+          ProtectHome = true; # Keeps /home inaccessible; /var/lib is unaffected
+          Restart = "always";
+          RestartSec = "15s";
+          StateDirectory = "pangolin";
+          # Give ExecStartPost enough time to wait
+          TimeoutStartSec = "90s";
+          WorkingDirectory = "/var/lib/pangolin";
+        };
+        wants = [ "network-online.target" ];
+        # disable to prevent this running on boot
+        wantedBy = [ "multi-user.target" ];
+      };
+    };
+  };
+}

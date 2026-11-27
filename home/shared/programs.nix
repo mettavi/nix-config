@@ -1,15 +1,32 @@
 {
   config,
   hostname,
+  inputs,
+  lib,
+  osConfig,
   pkgs,
   ...
 }:
+let
+  currentVersion = builtins.fromJSON osConfig.system.nixos.release;
+  inherit (lib) optionals;
+in
 {
   home.packages = with pkgs; [
-    atuin
+    # create a wrapper to load the cachix_auth_token from sops-nix
+    # See ../../docs/cachix.md for details of 'cachix push` commands
+    (pkgs.writeShellApplication {
+      name = "cachix-sops";
+      runtimeInputs = [ pkgs.cachix ];
+      text = ''
+        CACHIX_AUTH_TOKEN="$(< ${
+          config.sops.secrets."users/${config.home.username}/cachix_auth_token".path
+        })"
+        export CACHIX_AUTH_TOKEN
+        exec cachix "$@"
+      '';
+    })
     fastfetch # neofetch-like sys info tool
-    # Bash and zsh key bindings for Git objects, powered by fzf
-    fzf-git-sh
   ];
 
   # install the HTML manual and "home-manager-help" command
@@ -19,7 +36,6 @@
     # ensure home-manager itself is installed
     home-manager.enable = true;
     aria2.enable = true;
-    # atuin.enable = true;
     bat.enable = true;
     delta = {
       enable = true;
@@ -30,20 +46,6 @@
       enableZshIntegration = false;
     };
     fd.enable = true;
-    fzf = {
-      enable = true;
-      tmux = {
-        # Sets FZF_TMUX=1, enabling fzf in tmux popups
-        enableShellIntegration = true;
-        # open in popup windows in 80% width, 60% height
-        shellIntegrationOptions = [ "-p 80%,60%" ];
-      };
-    };
-    java = {
-      # Certified builds of OpenJDK (with JavaFX included for Pali Platform app)
-      enable = true;
-      package = pkgs.zulu.override { enableJavaFX = true; };
-    };
     jq.enable = true;
     # manage ssh-agent and ssh-add automatically and extend caching to once per system login
     # NB: this works cross-platform and doesn't depend on macOS-specific "UseKeyChain" option in ssh config
@@ -53,6 +55,16 @@
       # NB: This option is deprecated as of v 2.9.0, as gpg-agent is no longer started by default
       # agents = [ "ssh" ];
       enableZshIntegration = true;
+      extraFlags = [
+        # suppress the confirmation message on shell launch
+        "--quiet"
+      ]
+      ++ optionals (currentVersion > 26.05) [
+        # begin coordinated SSH key activation without waiting for Enter
+        # (prevents "Press enter to initialize keys" prompt on reboot when keys have no passphrase)
+        # see https://github.com/danielrobbins/keychain/issues/230
+        "--immediate"
+      ];
       keys = [ "${config.home.username}-${hostname}_ed25519" ];
     };
     lazygit.enable = true;
@@ -66,6 +78,14 @@
       settings = {
         "github.com" = {
           identityFile = "${config.home.homeDirectory}/.ssh/${config.home.username}-${hostname}_ed25519";
+          # Completely decouple GitHub from multiplexing rules
+          controlMaster = "no";
+        };
+        "*.${inputs.secrets.domain.primary}" = {
+          # Speeds up high-latency setups by compressing text streams
+          compression = true;
+          # Stops slow cellular DNS lookups from stalling connection handshakes
+          addressFamily = "inet";
         };
         "*" = {
           forwardAgent = false;
@@ -80,8 +100,12 @@
           controlPath = "~/.ssh/master-%C";
           controlPersist = "10m";
           hashKnownHosts = false;
-          serverAliveInterval = 0;
-          serverAliveCountMax = 3;
+          # Send a background ping every 15 seconds to keep a cellular tunnel open
+          serverAliveInterval = 15;
+          # Allow up to 4 missed pings (1 minute total) before giving up on a dead socket
+          serverAliveCountMax = 4;
+          # Let the OS track TCP connections alongside OpenSSH protocols
+          tcpKeepAlive = true;
           userKnownHostsFile = "~/.ssh/known_hosts";
         };
       };

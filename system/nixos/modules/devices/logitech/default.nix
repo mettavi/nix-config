@@ -24,9 +24,9 @@ in
       # enable support for Logitech Wireless Devices
       wireless = {
         enable = true; # installs ltunify and logitech-udev-rules packages
-        enableGraphical = true; # installs solaar gui and command for extra functionality (eg. bolt connector devices)
       };
     };
+
     home-manager.users.${username} =
       { config, nixosConfig, ... }:
       let

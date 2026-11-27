@@ -101,11 +101,7 @@ in
             uuid = "7765e74e-3662-4d35-870b-7ffd537bba20";
           };
           ipv4 = {
-            address1 = "10.113.171.25/24";
-            dns = "10.113.171.135";
-            gateway = "10.113.171.135";
-            method = "manual";
-            never-default = "false";
+            method = "auto";
           };
           ipv6 = {
             addr-gen-mode = "default";
@@ -115,6 +111,8 @@ in
             mac-address-blacklist = "";
             mode = "infrastructure";
             ssid = "MV-Pix8Pro";
+            # set a fixed mac-address to enhance network reliability over a mobile hotspot
+            cloned-mac-address = "permanent";
           };
           wifi-security = {
             auth-alg = "open";

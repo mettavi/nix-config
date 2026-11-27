@@ -36,10 +36,9 @@ in
           containerConfig = {
             autoUpdate = "registry";
             environments = {
-              TZ = "Australia/Melbourne";
             };
             # pull from the github container registry (ghcr)
-            image = "ghcr.io/advplyr/audiobookshelf:latest";
+            image = "ghcr.io/advplyr/audiobookshelf:2.38.0@sha256:60064c23f32fd9099fd39e82c5132c51701d1221135bbca04cd099b589e1edc3";
             noNewPrivileges = true;
             publishPorts = [ "13378:80" ];
             # the current user’s UID:GID are mapped to the same values in the container

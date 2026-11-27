@@ -1,6 +1,7 @@
 {
   config,
   hostname,
+  inputs,
   lib,
   secrets_path,
   username,
@@ -8,6 +9,7 @@
 }:
 with lib;
 let
+  mkContainer = config.mettavi.system.services.podman.mkContainer;
   cfg = config.mettavi.system.services.paperless-redux;
 
   # =========================================================================
@@ -79,9 +81,11 @@ in
     users.users.paperless = {
       isSystemUser = true;
       group = "paperless";
+      # plain attribute set in ids.nix (not a documented option)
       uid = config.ids.uids.paperless;
     };
     users.groups.paperless = {
+      # see comment above
       gid = config.ids.gids.paperless;
     };
 
@@ -96,8 +100,8 @@ in
     ) true;
 
     services.ollama.loadModels =
-      optionalString (cfg.ppgpt.llm.generic.provider == "ollama") [ "${cfg.ppgpt.llm.generic.model}" ]
-      ++ optionalString (cfg.ppgpt.llm.ocr.provider == "ollama") [ "${cfg.ppgpt.llm.ocr.model}" ];
+      optionals (cfg.ppgpt.llm.generic.provider == "ollama") [ "${cfg.ppgpt.llm.generic.model}" ]
+      ++ optionals (cfg.ppgpt.llm.ocr.provider == "ollama") [ "${cfg.ppgpt.llm.ocr.model}" ];
 
     # add paperless databases to the postgresqlBackup module
     services.postgresqlBackup.databases = flatten (
@@ -106,17 +110,14 @@ in
       ]) instances
     );
 
-    sops.secrets = {
-      "users/${username}/paperless/ppless-${hostname}.env" = paperlessSecrets;
-    }
-    // (mapAttrs' (
-      name: inst:
-      nameValuePair "users/${username}/paperless/ppless-gpt-${name}-${hostname}.env" {
-        group = "${config.users.users.paperless.name}";
-        mode = "0440";
-        sopsFile = "${secrets_path}/secrets/apps/paperless.yaml";
-      }
-    ) instances);
+    sops.secrets = listToAttrs (
+      flatten (
+        mapAttrsToList (name: _: [
+          (nameValuePair "users/${username}/paperless/ppless-${name}-${hostname}.env" paperlessSecrets)
+          (nameValuePair "users/${username}/paperless/ppless-gpt-${name}-${hostname}.env" paperlessSecrets)
+        ]) instances
+      )
+    );
 
     # =========================================================================
     # 2. DYNAMIC DIRECTORY GENERATION & ACL PERMISSIONS
@@ -135,10 +136,11 @@ in
         "d /var/lib/paperless/${name}/data 0700 paperless paperless -"
         "d /var/lib/paperless/${name}/export 0770 paperless paperless -"
         "d /var/lib/paperless/${name}/paperless-gpt 0770 paperless paperless -"
-        "d /var/lib/paperless/${name}/paperless-gpt/prompts 0770 paperless paperless -"
+        "d /var/lib/paperless/${name}/paperless-gpt/config 0770 paperless paperless -"
+        "d /var/lib/paperless/${name}/paperless-gpt/db 0770 paperless paperless -"
         "d /var/lib/paperless/${name}/paperless-gpt/hocr 0770 paperless paperless -"
         "d /var/lib/paperless/${name}/paperless-gpt/pdf 0770 paperless paperless -"
-        "d /var/lib/paperless/${name}/paperless-gpt/config 0770 paperless paperless -"
+        "d /var/lib/paperless/${name}/paperless-gpt/prompts 0770 paperless paperless -"
 
         # POSIX ACL Layer: Forces 'paperless' group rwX inheritance on the dynamic instances
         "a+ /var/lib/paperless/${name}/media - - - - g:paperless:rwX"
@@ -155,10 +157,27 @@ in
 
       containers = {
         # Shared Caching Engine
-        paperless-redis = {
+        paperless-redis = mkContainer {
           containerConfig = {
-            image = "docker.io/library/redis:7-alpine";
+            # a Redis-compatible broker (a current release of Valkey or Redis)
+            image = "docker.io/library/redis:8.10.3@sha256:1f88291b4c57bdf249f02eb085a8669889b2d2954e91d4de5118a5da6b78dd53";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
+          };
+        };
+        paperless-tika = mkContainer {
+          containerConfig = {
+            image = "docker.io/apache/tika:4.2.0-1@sha256:b99f19c4fd76237dafe7d22f719b9bddfa9a449da687c597a41e2f6d9a595418";
+            autoUpdate = "registry";
+            networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
+          };
+        };
+        paperless-gotenberg = mkContainer {
+          containerConfig = {
+            image = "docker.io/gotenberg/gotenberg:9.9.1@sha256:0fc05327fcc4af8ba84bb99b3da35fe728840d98cef9d3bf0d701bd077834eb5";
+            autoUpdate = "registry";
+            networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
+            # flags recommended by the paperless-ngx docs
+            exec = "gotenberg --chromium-disable-javascript=true --chromium-allow-list=^file:///tmp/.*";
           };
         };
       }
@@ -167,20 +186,26 @@ in
         name: inst:
         nameValuePair "paperless-${name}" {
           containerConfig = {
-            image = "ghcr.io/paperless-ngx/paperless-ngx:latest";
+            image = "ghcr.io/paperless-ngx/paperless-ngx:3.4.2@sha256:d704e84f88300eb6ab001ab15720a2330ff99169cf9f94d6b8fcc44b63a84c84";
             autoUpdate = "registry";
+            notify = "healthy";
+            healthCmd = "curl -fs -S --max-time 2 http://localhost:8000";
+            healthInterval = "10s";
+            healthTimeout = "5s";
+            healthRetries = 5;
+            healthStartPeriod = "60s";
             networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
             publishPorts = [ "127.0.0.1:${toString inst.appPort}:8000" ];
-
+            timezone = "local";
             environmentFiles = [
-              config.sops.secrets."users/${username}/paperless/ppless-${hostname}.env".path
+              config.sops.secrets."users/${username}/paperless/ppless-${name}-${hostname}.env".path
             ];
-
             environments = {
               # required when using a reverse proxy (eg. nginx)
               PAPERLESS_URL = "http://${inst.alias}.${hostname}";
-              # also requires PAPERLESS_ADMIN_PASSWORD to be set (in the env file)
-              PAPERLESS_ADMIN_USER = "admin";
+              # these two also require PAPERLESS_ADMIN_PASSWORD to be set (in the env file)
+              PAPERLESS_ADMIN_USER = "${inputs.secrets.username.primary}";
+              PAPERLESS_ADMIN_MAIL = "${inputs.secrets.email.personal}";
               PAPERLESS_APP_TITLE = lib.toSentenceCase "${name}" + " Archive";
               PAPERLESS_REDIS = "redis://paperless-redis:6379/${toString inst.redisDbIndex}";
               PAPERLESS_OCR_LANGUAGE = "eng";
@@ -215,16 +240,28 @@ in
 
               # use Tika and Gotenberg for parsing and converting "Office" documents
               PAPERLESS_TIKA_ENABLED = "true";
-              PAPERLESS_TIKA_ENDPOINT = "http://localhost:9998";
-              PAPERLESS_TIKA_GOTENBERG_ENDPOINT = "http://localhost:3000";
+              PAPERLESS_TIKA_ENDPOINT = "http://paperless-tika:9998";
+              PAPERLESS_TIKA_GOTENBERG_ENDPOINT = "http://paperless-gotenberg:3000";
             };
-
             volumes = [
               "/var/lib/paperless/${name}/data:/usr/src/paperless/data"
               "/var/lib/paperless/${name}/export:/usr/src/paperless/export"
               "/var/lib/paperless/${name}/media:/usr/src/paperless/media"
               "/var/lib/paperless/${name}/consume:/usr/src/paperless/consume"
               "/var/lib/paperless/Trash:/usr/src/paperless/Trash"
+            ];
+          };
+          serviceConfig = {
+            TimeoutStartSec = "300";
+          };
+          unitConfig = {
+            After = [
+              "paperless-tika.service"
+              "paperless-gotenberg.service"
+            ];
+            Wants = [
+              "paperless-tika.service"
+              "paperless-gotenberg.service"
             ];
           };
         }
@@ -237,18 +274,17 @@ in
             name: inst:
             nameValuePair "paperless-gpt-${name}" {
               containerConfig = {
-                image = "ghcr.io/icereed/paperless-gpt:latest";
+                # NB: you can browse ghcr images at https://github.com/icereed/paperless-gpt/pkgs/container/paperless-gpt/
+                image = "ghcr.io/icereed/paperless-gpt:v0.31.0@sha256:d668941a829552cc0eddbc7c22506b3480dfbf61bd0d6eae881ad9fcfe2de70c";
                 autoUpdate = "registry";
                 noNewPrivileges = true;
                 networks = [ config.virtualisation.quadlet.networks.paperless-net.ref ];
                 publishPorts = [ "127.0.0.1:${toString inst.gptPort}:8080" ];
-
+                timezone = "local";
                 environmentFiles = [
                   config.sops.secrets."users/${username}/paperless/ppless-gpt-${name}-${hostname}.env".path
                 ];
-
                 environments = {
-                  TZ = "Australia/Melbourne";
                   UMASK = "0007"; # Retained to align metadata files
                   PAPERLESS_BASE_URL = "http://paperless-${name}:8000";
                   OLLAMA_HOST = "http://10.89.0.1:11434";
@@ -273,22 +309,27 @@ in
                   PDF_OCR_TAGGING = "true"; # Optional, add tag to processed documents
                   PDF_OCR_COMPLETE_TAG = "paperless-gpt-ocr-complete"; # Optional, tag name
                   OCR_LIMIT_PAGES = "0"; # Optional, default: 5. Set to 0 for no limit.
-                  # NB: View the logs with 'journalctl -u paperless-gpt.service -f'
+                  # NB: View the logs with 'journalctl -u paperless-gpt-{name}.service -f'
                   LOG_LEVEL = "info"; # Optional: debug, info, warn, error
                 };
-
                 volumes = [
+                  "/var/lib/paperless/${name}/paperless-gpt/db:/app/db"
                   "/var/lib/paperless/${name}/paperless-gpt/prompts:/app/prompts"
                   "/var/lib/paperless/${name}/paperless-gpt/hocr:/app/hocr"
                   "/var/lib/paperless/${name}/paperless-gpt/pdf:/app/pdf"
                   "/var/lib/paperless/${name}/paperless-gpt/config:/app/config"
-                  "/var/lib/paperless/${name}/media:/app/media:z"
+                  # this mount caused permissions errors (changing ownership to 10001) and is unnecessary
+                  # "/var/lib/paperless/${name}/media:/app/media:z"
                 ];
               };
               serviceConfig = {
                 RestartSec = "10";
                 Restart = "on-failure";
                 UMask = "0007";
+              };
+              unitConfig = {
+                After = [ "paperless-${name}.service" ];
+                Wants = [ "paperless-${name}.service" ];
               };
             }
           ) instances)

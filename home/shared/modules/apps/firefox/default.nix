@@ -43,7 +43,7 @@ in
 
     programs.firefox = {
       enable = true;
-      # explicitly set the config path because home.stateVersion` is less than "26.05"
+      # explicitly set the config path because home.stateVersion is less than "26.05"
       configPath = "${config.xdg.configHome}/mozilla/firefox";
       languagePacks = [
         "en_AU"
@@ -55,8 +55,6 @@ in
           # Gnome shell native connector
           gnome-browser-connector
         ];
-      # required for screensharing under Wayland, see https://wiki.nixos.org/wiki/Firefox
-      package = (pkgs.wrapFirefox (pkgs.firefox-unwrapped.override { pipewireSupport = true; }) { });
 
       # policies = {
       #   HttpAllowlist = [
@@ -84,12 +82,11 @@ in
               }
             ];
           };
-          # list available addons with "nix-env -f '<nixpkgs>' -qaP -A nur.repos.rycee.firefox-addons"
+          # search available addons at https://nur.nix-community.org/repos/rycee/
           extensions = {
             force = true;
-            # NB: the nur module is imported in mkNixos.nix, thus the input prefix is not required
+            # NB: the nur module is imported in nixos/common.nix, thus the input prefix is not required
             packages = with pkgs.nur.repos.rycee.firefox-addons; [
-              bitwarden
               darkreader
               privacy-badger
               sponsorblock
@@ -282,8 +279,10 @@ in
               "network.auth.subresource-http-auth-allow" = 1;
 
               # Trusted DNS (TRR) https://wiki.mozilla.org/Trusted_Recursive_Resolver
-              # 0 for off, 2 for TRR first (using DoH with a standard fallback), and 3 for TRR only (only using DoH).
-              "network.trr.mode" = 2;
+              # 2 for TRR first (using DNS over HTTPS/DoH with a standard fallback),
+              # 3 for TRR only (only using DoH), 5 for off
+              # NB: Disable to prevent the pangolin VPS being overriden
+              "network.trr.mode" = 5;
               "network.trr.uri" = "https://mozilla.cloudflare-dns.com/dns-query";
               "network.dns.skipTRR-when-parental-control-enabled" = false;
 

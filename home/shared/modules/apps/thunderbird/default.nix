@@ -226,10 +226,7 @@ in
   };
 
   config = mkIf cfg.enable {
-    catppuccin = {
-      enable = true;
-      # don't autoenable all the module's ports
-      autoEnable = false;
+    catppuccin = mkIf config.catppuccin.enable {
       thunderbird = {
         enable = true;
         flavor = "mocha";
@@ -315,12 +312,17 @@ in
           {
             isDefault = true;
             inherit (cfg) accountsOrder;
-            # list available addons with "nix-env -f '<nixpkgs>' -qaP -A nur.repos.rycee.thunderbird-addons"
+            # search available addons at https://nur.nix-community.org/repos/rycee/
             # see https://github.com/nix-community/home-manager/pull/6033 for instructions on using
             # the buildFirefoxXpiAddon function to install addons not available there
             extensions = with pkgs.nur.repos.rycee.thunderbird-addons; [ allow_html_temp ];
             # Extra preferences to add to file user.js.
-            extraConfig = "";
+            extraConfig = ''
+              // always query the calendar live rather than relying on a local 
+              // cache comparison that can go stale (see Mozilla bug 1694709)
+              // trade-off: no offline access to that calendar
+              user_pref("calendar.registry.calendar_${builtins.hashString "sha256" inputs.secrets.email.personal}.cache.enabled", false);
+            '';
             # RSS or Atom feeds
             # feedAccounts = {
             #   ${username} = { };
@@ -572,9 +574,6 @@ in
                 else
                   enable;
 
-              # Dynamically calculate the same folder name used for your mail
-              folderName = getEmailPrefix address;
-
             in
             {
               enable = finalEnable;
@@ -603,22 +602,66 @@ in
                   username
                 ];
                 perIdentitySettings = id: { };
-                settings = id: {
-                  # Explicitly lock friendly paths based on the email address username
-                  "mail.server.server_${id}.directory" =
-                    "/home/${username}/.thunderbird/${username}/ImapMail/${folderName}";
-                  "mail.server.server_${id}.directory-rel" = "[ProfD]ImapMail/${folderName}";
+                settings =
+                  id:
+                  let
+                    escAddress = replaceStrings [ "@" ] [ "%40" ] address;
+                    # 1. Define your base/generic settings
+                    baseSettings = {
+                      # disable the "friendly" directory names with the ${folderName} variable (unreliable)
+                      # "mail.server.server_${id}.directory" =
+                      #   "/home/${username}/.thunderbird/${username}/ImapMail/${folderName}";
+                      # "mail.server.server_${id}.directory-rel" = "[ProfD]ImapMail/${folderName}";
 
-                  "mail.server.server_${id}.autosync_max_age_days" = 30;
-                  # Reply before the quoted text (gmail style)
-                  "mail.identity.id_${id}.reply_on_top" = 1;
-                  # Signature before the quoted text (gmail style)
-                  "mail.identity.id_${id}.sig_bottom" = false;
-                  # Include signature on forwards
-                  "mail.identity.id_${id}.sig_on_fwd" = true;
-                  # Enable HTML in signature
-                  "mail.identity.id_${id}.htmlSigFormat" = false;
-                };
+                      "mail.server.server_${id}.autosync_max_age_days" = 30;
+
+                      "mail.identity.id_${id}.reply_on_top" = 1;
+                      "mail.identity.id_${id}.sig_bottom" = false;
+                      "mail.identity.id_${id}.sig_on_fwd" = true;
+                      "mail.identity.id_${id}.htmlSigFormat" = false;
+
+                    };
+
+                    # 2. Define conditional Gmail overrides
+                    gmailSettings = lib.optionalAttrs (flavor == "gmail.com") {
+                      # Disables Thunderbird's local "Sent" copy tool
+                      # This lets Gmail's server natively handle the sent indexing without duplicates
+                      "mail.identity.id_${id}.fcc" = false;
+                      # Gmail treats deletion differently based on model preferences
+                      # Value 0 tells Thunderbird to simply mark it deleted locally (stripping Inbox label)
+                      "mail.server.server_${id}.delete_model" = 0;
+                      "mail.server.server_${id}.spamLevel" = 0;
+                      # FORCE GLOBAL DEFAULT FALLBACKS TO FALSE
+                      # "mail.server.default.autosync_offline_stores" = false;
+                      # "mail.server.default.offline_download" = false;
+                      # Now safely unchecked globally per account
+                      # "mail.server.server_${id}.autosync_offline_stores" = false;
+                      # "mail.server.server_${id}.offline_download" = false;
+
+                      # Disable standard Thunderbird archiving for this identity
+                      "mail.identity.id_${id}.archive_enabled" = false;
+
+                      # Force immediate background label synchronization on deletion
+                      "mail.server.server_${id}.download_on_biff" = true;
+                      "mail.server.server_${id}.expunge_after_delete" = true;
+
+                      # Clean-up duplicate management rules for this specific account
+                      "mail.server.server_${id}.show_only_subscribed_folders" = true;
+                      "mail.server.server_${id}.using_subscription" = true;
+                      "mail.server.server_${id}.check_all_folders_for_new" = false;
+                      "mail.server.server_${id}.biff_minus_download" = true;
+
+                      # UK ENGLISH LOCALIZATION OVERRIDE:
+                      # This forces Thunderbird to map its trash functions to Gmail's "Bin" folder
+                      "mail.server.server_${id}.trash_folder_name" = "[Gmail]/Bin";
+
+                      # Force Drafts to save straight into Gmail's server-side Drafts folder
+                      "mail.identity.id_${id}.draft_folder" = "imap://${escAddress}@imap.gmail.com/[Gmail]/Drafts";
+                      "mail.identity.id_${id}.drafts_folder_picker_mode" = "0";
+                    };
+                  in
+                  # 3. Perform a safe deep merge instead of a list concatenation or shallow replacement
+                  lib.recursiveUpdate baseSettings gmailSettings;
               };
             };
         in
@@ -671,17 +714,22 @@ in
             # Pass the raw string payload directly to writeText
             filterContentFile = pkgs.writeText "msgFilterRules.dat" filterTextContent;
 
-            targetDir = "$HOME/.thunderbird/${username}/ImapMail/${folderName}";
+            # disable the friendly ${folderName} config
+            # targetDir = "$HOME/.thunderbird/${username}/ImapMail/${folderName}";
           in
           lib.optionalString value.enable ''
-            # Ensure the destination folder exists before writing to it
-            mkdir -p "${targetDir}"
-
-            # Copy the compiled template into a local, normal, writable file
-            cp -f "${filterContentFile}" "${targetDir}/msgFilterRules.dat"
-
-            # Explicitly grant owner read/write permissions so Thunderbird can edit it freely
-            chmod 600 "${targetDir}/msgFilterRules.dat"
+            PROFILE_IMAP="$HOME/.thunderbird/${username}/ImapMail"
+            if [ -d "$PROFILE_IMAP" ]; then
+            # Find the active directory mapping on disk by matching files or directories
+            # If a folderName fragment or directory matching hash exists, inject rules into it
+              for target in "$PROFILE_IMAP"/*"${folderName}"* "$PROFILE_IMAP"/????????????????????????????????????????????????????????????????; do
+                if [ -d "$target" ]; then
+                  echo "Injecting filter rules safely into active directory: $target"
+                  cp -f "${filterContentFile}" "$target/msgFilterRules.dat"
+                  chmod 600 "$target/msgFilterRules.dat"
+                fi
+              done
+            fi
           '';
       in
       {

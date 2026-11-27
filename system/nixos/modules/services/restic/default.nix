@@ -123,50 +123,85 @@ let
     checkOpts = [
       "--with-cache" # just to make checks faster
     ];
-    createWrapper = true;
+    createWrapper = mkDefault true;
+    # Extra arguments passed to 'restic backup'
+    # No mkDefault here so job.localConfig.extraBackupArgs appends to this list
     extraBackupArgs = [
       "--tag ${hostname}"
     ];
     # Prevent the system from sleeping while backing up
-    inhibitsSleep = true;
+    inhibitsSleep = mkDefault true;
     # create the repo if it doesn't exist
-    initialize = true;
+    initialize = mkDefault true;
     # Use a wrapper to pass the parent id to workaround problem with --files-from flag discussed at
     # https://github.com/restic/restic/issues/2246
-    package = pkgs.writeShellScriptBin "restic" ''
-      # If the command is 'backup', we inject our parent logic
-      if [[ "$1" == "backup" ]]; then
-        shift # remove 'backup' from the argument list
-        
-        echo "Custom Wrapper: Determining latest snapshot for --parent..."
-        
-        # Extract the ID of the latest snapshot
-        # We use --quiet to avoid extra noise in the JSON output
-        PARENT_ID=$(${pkgs.restic}/bin/restic --json snapshots --quiet | \
-          ${pkgs.jq}/bin/jq -r 'try max_by(.time) | .short_id // empty')
+    package = mkDefault (
+      pkgs.writeShellScriptBin "restic"
+        # bash
+        ''
+          # If the command is 'backup', we inject our parent logic
+          if [[ "$1" == "backup" ]]; then
+            shift # remove 'backup' from the argument list
+            
+            echo "Custom Wrapper: Determining latest snapshot for host ${hostname}..."
+            
+            # Extract the ID of the latest snapshot
+            # We use --quiet to avoid extra noise in the JSON output
+            # Filter by host so we never pick a snapshot from another machine
+            PARENT_ID=$(${pkgs.restic}/bin/restic --json snapshots --host "${hostname}" --quiet | \
+              ${pkgs.jq}/bin/jq -r 'try max_by(.time) | .short_id // empty')
 
-        if [ -n "$PARENT_ID" ]; then
-          echo "Custom Wrapper: Using parent snapshot $PARENT_ID"
-          exec ${pkgs.restic}/bin/restic backup --parent "$PARENT_ID" "$@"
-        else
-          echo "Custom Wrapper: No existing snapshots found. Starting fresh."
-          exec ${pkgs.restic}/bin/restic backup "$@"
-        fi
-      else
-        # For all other commands (unlock, check, etc.), execute normally
-        exec ${pkgs.restic}/bin/restic "$@"
-      fi
-    '';
-    pruneOpts = [
+            if [ -n "$PARENT_ID" ]; then
+              echo "Custom Wrapper: Using parent snapshot $PARENT_ID"
+              exec ${pkgs.restic}/bin/restic backup --parent "$PARENT_ID" "$@"
+            else
+              echo "Custom Wrapper: No existing snapshots found for ${hostname}. Starting fresh."
+              exec ${pkgs.restic}/bin/restic backup "$@"
+            fi
+          else
+            # For all other commands (unlock, check, etc.), execute normally
+            exec ${pkgs.restic}/bin/restic "$@"
+          fi
+        ''
+    );
+    # Wrapped in mkDefault so a job can cleanly replace the entire retention policy
+    pruneOpts = mkDefault [
       "--keep-daily 7"
       "--keep-weekly 5"
       "--keep-monthly 12"
       "--keep-yearly 10"
       "--group-by tags"
     ];
-    runCheck = false;
+    rcloneConfigFile =
+      mkDefault
+        config.home-manager.users.${username}.sops.templates."rclone.conf".path;
+    # Individual keys use mkDefault so job.localConfig.rcloneOptions can override
+    # specific settings while inheriting all other defaults
+    rcloneOptions = lib.mapAttrs (_: lib.mkDefault) {
+      # checkers do the equality checking of files during a sync
+      checkers = "50";
+      # The number of file transfers to run in parallel
+      transfers = "50";
+      # Use recursive listing if available; uses more memory but fewer transactions
+      fast-list = true;
+      # Log to stderr (captured automatically by systemd journald)
+      log-level = "INFO";
+      # max files queued at once for being checked or transferred
+      max-backlog = "30000";
+      # allocate x% of threads to the smallest items (hence 100-x% to largest)
+      order-by = "size,mixed,75";
+      # NB: the --progress flag is intended for interactive use
+      # (emitting ANSI cursor-movement escape codes), not a systemd service
+      retries = "3"; # default 3
+      stats = "2m";
+      # -v, --verbose count (-v or 1 INFO, -vv or 2 DEBUG)
+      # NB: Overridden by the log-level option
+      # verbose = 1; # default is NOTICE
+    };
+    runCheck = mkDefault false;
     # run backups when the removable disk is mounted, not on a schedule
-    timerConfig = null;
+    # Default to manual/udev trigger; override in job.localConfig for scheduled VPS backups
+    timerConfig = mkDefault null;
   };
 
   # Filter only the backup jobs where 'enable = true'
@@ -257,69 +292,71 @@ in
     services.restic = {
       backups = mapAttrs (
         name: job:
-        commonConfig
-        // job.localConfig
-        // {
-          # NB: this command has been moved to serviceConfig.ExecCondition, see below
-          # backupPrepareCommand = if isDiskJob then diskPrepare else cloudPrepare;
-          backupCleanupCommand = # bash
-            concatMapAttrsStringSep "\n" (
-              vol: pth:
-              let
-                # the escaped mount point of the pre-backup snapshot
-                subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
-              in
-              optionalString pth.enable ''
-                if [ -e ${subvolMount} ]; then 
-                 ${pkgs.btrfs-progs}/bin/btrfs subvolume delete ${subvolMount}
+        mkMerge [
+          commonConfig
+          job.localConfig
+          {
+            # NB: this command has been moved to serviceConfig.ExecCondition, see below
+            # backupPrepareCommand = if isDiskJob then diskPrepare else cloudPrepare;
+            backupCleanupCommand = # bash
+              concatMapAttrsStringSep "\n" (
+                vol: pth:
+                let
+                  # the escaped mount point of the pre-backup snapshot
+                  subvolMount = replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}";
+                in
+                optionalString pth.enable ''
+                  if [ -e ${subvolMount} ]; then 
+                   ${pkgs.btrfs-progs}/bin/btrfs subvolume delete ${subvolMount}
+                  fi
+                ''
+              ) job.volumes
+              + "\n"
+              # + ''
+              #   # 1. Stop the session first to generate the latest .backup label
+              #   ${pkgs.systemd}/bin/systemctl stop postgres-backup-session.service
+              # ''
+              # bash
+              + ''
+                # 2. NOW clean up the WAL archive
+                # WAL Archive Cleanup
+                # Keep the 5th most recent label, effectively keeping ~5 hours of logs
+                ARCHIVE_DIR="/var/backup/postgresql/archive"
+                # This now sees the NEWEST .backup file created by the command above
+                OLDEST_BACKUP_FILE=$(ls -1t $ARCHIVE_DIR/*.backup 2>/dev/null | sed -n '5p')
+
+                if [ -n "$OLDEST_BACKUP_FILE" ]; then
+                  # Extract just the filename for pg_archivecleanup
+                  CLEANUP_TARGET=$(basename "$OLDEST_BACKUP_FILE")
+                  ${config.services.postgresql.package}/bin/pg_archivecleanup -d "$ARCHIVE_DIR" "$CLEANUP_TARGET"
                 fi
-              ''
-            ) job.volumes
-            + "\n"
-            # + ''
-            #   # 1. Stop the session first to generate the latest .backup label
-            #   ${pkgs.systemd}/bin/systemctl stop postgres-backup-session.service
-            # ''
-            # bash
-            + ''
-              # 2. NOW clean up the WAL archive
-              # WAL Archive Cleanup
-              # Keep the 5th most recent label, effectively keeping ~5 hours of logs
-              ARCHIVE_DIR="/var/backup/postgresql/archive"
-              # This now sees the NEWEST .backup file created by the command above
-              OLDEST_BACKUP_FILE=$(ls -1t $ARCHIVE_DIR/*.backup 2>/dev/null | sed -n '5p')
+              '';
 
-              if [ -n "$OLDEST_BACKUP_FILE" ]; then
-                # Extract just the filename for pg_archivecleanup
-                CLEANUP_TARGET=$(basename "$OLDEST_BACKUP_FILE")
-                ${config.services.postgresql.package}/bin/pg_archivecleanup -d "$ARCHIVE_DIR" "$CLEANUP_TARGET"
-              fi
-            '';
-
-          # Patterns to exclude when backing up
-          exclude = concatLists (
-            mapAttrsToList (
-              vol: pth:
-              if pth.enable then
-                map (exc: replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}/${exc}") pth.exclusions
-              else
-                [ ]
-            ) job.volumes
-          );
-          passwordFile = config.sops.secrets."users/${username}/restic-${name}".path;
-          # paths to actually back up
-          paths = concatLists (
-            mapAttrsToList (
-              vol: pth:
-              if pth.enable then
-                map (p: replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}/${p}") pth.paths
-              else
-                [ ]
-            ) job.volumes
-          );
-          repository = "${job.repo}/${name}";
-          user = "${job.user}";
-        }
+            # Patterns to exclude when backing up
+            exclude = concatLists (
+              mapAttrsToList (
+                vol: pth:
+                if pth.enable then
+                  map (exc: replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}/${exc}") pth.exclusions
+                else
+                  [ ]
+              ) job.volumes
+            );
+            passwordFile = config.sops.secrets."users/${username}/restic-${name}".path;
+            # paths to back up
+            paths = concatLists (
+              mapAttrsToList (
+                vol: pth:
+                if pth.enable then
+                  map (p: replaceStrings [ "//" ] [ "/" ] "${pth.mount}/${vol}/${p}") pth.paths
+                else
+                  [ ]
+              ) job.volumes
+            );
+            repository = "${job.repo}${name}/restic";
+            user = "${job.user}";
+          }
+        ]
       ) enabledJobs;
     };
 
@@ -342,6 +379,8 @@ in
             let
               dbs = config.services.postgresqlBackup.databases;
               pgPkg = config.services.postgresql.package;
+              pgVolumeName = "@vlpostgres";
+              pgVolumeMount = "/var/lib/postgresql";
               logFile = "/var/log/restic-pg-prep.log";
               # Set your threshold (e.g., 90% full)
               threshold = 90;
@@ -379,10 +418,15 @@ in
 
               # 3. ATOMIC DATABASE SESSION
               echo "Starting PostgreSQL backup session..." >> ${logFile}
+              echo "(NB: If there is a 'collation version mismatch' warning," >> ${logFile}
+              echo "run the 'pg-fix-collation' script to rebuild indexes with the new glibc system library.)" >> ${logFile}
+
+              label_file=$(mktemp)
+              spcmap_file=$(mktemp)
+
               if ! ${pgPkg}/bin/psql -U postgres >> ${logFile} 2>&1 <<EOF
               SELECT pg_backup_start('restic-snap'); 
 
-              -- \! tells psql to run a shell command
               ${concatMapAttrsStringSep "\n" (
                 vol: pth:
                 let
@@ -392,17 +436,43 @@ in
                 optionalString pth.enable "\\! ${pkgs.btrfs-progs}/bin/btrfs subvolume snapshot -r ${pth.mount} ${subvolMount}"
               ) job.volumes}
 
+              -- \! tells psql to run a shell command
               \! ${pkgs.restic}/bin/restic unlock
 
-              SELECT pg_backup_stop();
+              SELECT * FROM pg_backup_stop() \gset bkp_
+              \o $label_file
+              \qecho :bkp_labelfile
+              \o
+              \o $spcmap_file
+              \qecho :bkp_spcmapfile
+              \o
               EOF
                 then
                   echo "ERROR: PostgreSQL session failed!" >> ${logFile}
+                  rm -f "$label_file" "$spcmap_file"
                   # Notify user on failure (using your existing WAYLAND_ENV logic)
                   /run/wrappers/bin/sudo -u ${username} env $WAYLAND_ENV \
                   ${pkgs.zenity}/bin/zenity --error --title="Backup Error" --text="PostgreSQL snapshot session failed. Check ${logFile}"
                   exit 1
                 fi
+
+              # Write backup_label / tablespace_map into the PGDATA snapshot only
+              pg_snap_path="${replaceStrings [ "//" ] [ "/" ] "${pgVolumeMount}/${pgVolumeName}"}"
+
+              if [ -d "$pg_snap_path" ]; then
+                ${pkgs.btrfs-progs}/bin/btrfs property set -f "$pg_snap_path" ro false
+                install -m 0600 -o postgres -g postgres "$label_file" "$pg_snap_path/backup_label"
+                install -m 0600 -o postgres -g postgres "$spcmap_file" "$pg_snap_path/tablespace_map"
+                if ! ${pkgs.btrfs-progs}/bin/btrfs property set -f "$pg_snap_path" ro true; then
+                  echo "ERROR: failed to re-lock $pg_snap_path as read-only!" >> ${logFile}
+                  logger -t postgres-backup -p err "Snapshot $pg_snap_path left writable after backup_label write"
+                fi
+                echo "backup_label written to $pg_snap_path" >> ${logFile}
+              else
+                echo "WARNING: PGDATA snapshot not found at $pg_snap_path — backup_label not written" >> ${logFile}
+              fi
+
+              rm -f "$label_file" "$spcmap_file"
 
               # 4. VERIFICATION LOOP: Check if snapshots exist
               echo "Verifying new snapshots..." >> ${logFile}
@@ -630,7 +700,7 @@ in
             User = job.user;
           };
           environment = {
-            RESTIC_REPOSITORY = "${job.repo}/${name}";
+            RESTIC_REPOSITORY = config.services.restic.backups.${name}.repository;
           };
           script = ''
             STATE_DIR="/var/lib/restic-check"

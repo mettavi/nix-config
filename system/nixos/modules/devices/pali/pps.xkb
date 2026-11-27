@@ -7,6 +7,7 @@ xkb_symbols "pps" {
     name[Group1]= "English, with Pali, Prakrit and Sanskrit";
 
     // 1. Right Windows key (<RWIN> / rmet) acts as Level 3 Switch for Pali
+    // Use the virtual <RWIN> keys: l (right hand) and s (left hand)
     key <RWIN> { [ ISO_Level3_Shift ] };
     modifier_map Mod5 { ISO_Level3_Shift };
 

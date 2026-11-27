@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  username,
   ...
 }:
 with lib;
@@ -22,7 +23,7 @@ in
     useDHCP = mkOption {
       type = bool;
       default = false;
-      description = "Whether the use DHCP on the VPS host";
+      description = "Whether to use DHCP on the VPS host";
     };
     devName = mkOption {
       type = str;
@@ -98,18 +99,12 @@ in
       systemd-boot.enable = false;
     };
 
-    services.openssh = {
-      settings = {
-        # options to harden openssh, especially for servers
-        # forbid the use of ssh password authentication
-        PasswordAuthentication = false;
-      };
+    # Set your routing (FIND THESE IN THE VPS)
+    networking.defaultGateway = "${cfg.ip4.gateway}";
+    networking.defaultGateway6 = {
+      address = "${cfg.ip6.gateway}";
+      interface = "${cfg.netInterface}";
     };
-
-    services.qemuGuest.enable = cfg.isQemuGuest;
-
-    # Many VPS services use static networking
-    networking.useDHCP = cfg.useDHCP;
 
     # Explicitly configure your network interface
     networking.interfaces.${cfg.netInterface} = {
@@ -128,17 +123,37 @@ in
       ];
     };
 
-    # Set your routing (FIND THESE IN THE VPS)
-    networking.defaultGateway = "${cfg.ip4.gateway}";
-    networking.defaultGateway6 = {
-      address = "${cfg.ip6.gateway}";
-      interface = "${cfg.netInterface}";
-    };
-
     # Set DNS resolvers
     networking.nameservers = [
       "8.8.8.8"
       "1.1.1.1"
     ];
+
+    # Many VPS services use static networking (default to static)
+    networking.useDHCP = cfg.useDHCP;
+
+    programs = {
+      # Enable Mosh (MObile SHell) server side and auto-configure firewall rules
+      mosh = {
+        enable = true;
+        openFirewall = true; # opens UDP port range 60000-61000
+      };
+    };
+
+    services.openssh = {
+      settings = {
+        # options to harden openssh, especially for servers
+        # forbid the use of ssh password authentication
+        PasswordAuthentication = false;
+      };
+    };
+
+    # enable the qemu guest agent if required
+    services.qemuGuest.enable = cfg.isQemuGuest;
+
+    # keep terminal sessions alive on the server
+    home-manager.users.${username} = {
+      mettavi.shell.tmux.enable = true;
+    };
   };
 }

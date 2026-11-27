@@ -1,0 +1,75 @@
+{
+  ensureNewerSourcesForZipFilesHook,
+  fetchFromGitHub,
+  lib,
+  pkgs,
+  python3,
+  stdenvNoCC,
+}:
+{
+  pname,
+  version,
+  hash,
+  file, # each plugin passes ./default.nix, so nix-update knows which file to patch
+  subdir ? pname, # the plugin's directory inside the monorepo, if it differs from pname
+  zipName, # the exact .zip filename the build produces
+  meta,
+}:
+
+stdenvNoCC.mkDerivation {
+  inherit pname version;
+
+  src = fetchFromGitHub {
+    owner = "kiwidude68";
+    repo = "calibre_plugins";
+    rev = "refs/tags/${pname}-${version}";
+    inherit hash;
+  };
+
+  nativeBuildInputs = [ ensureNewerSourcesForZipFilesHook ];
+
+  buildPhase = ''
+    runHook preBuild
+    cp common/common_*.py ${subdir}/
+    (cd ${subdir} && ${lib.getExe python3} ../common/build.py)
+    runHook postBuild
+  '';
+
+  installPhase = ''
+    runHook preInstall
+    install -D --mode=0644 --target-directory=$out "${subdir}/${zipName}"
+    runHook postInstall
+  '';
+
+  passthru = {
+    pluginZip = zipName;
+    updateScript = pkgs.writeShellScript "update-${pname}" ''
+      set -euo pipefail
+      latest=$(${lib.getExe pkgs.git} ls-remote --tags --refs \
+          https://github.com/kiwidude68/calibre_plugins "refs/tags/${pname}-*" \
+        | ${lib.getExe pkgs.gnused} -E 's|.*refs/tags/${pname}-v?||' \
+        | ${pkgs.gnugrep}/bin/grep -E '^[0-9]+(\.[0-9]+)*$' \
+        | ${pkgs.coreutils}/bin/sort -V \
+        | ${pkgs.coreutils}/bin/tail -n1) || true
+      if [ -z "$latest" ]; then
+        echo "no ${pname}-* tags found" >&2
+        exit 1
+      fi
+      if ! ${lib.getExe pkgs.nix-update} \
+          --file ${toString ../../../../../update.nix} \
+          --override-filename ${toString file} \
+          --version "$latest" \
+          "$UPDATE_NIX_ATTR_PATH"; then
+        ${lib.getExe pkgs.git} checkout -- ${toString file}
+        exit 1
+      fi
+    '';
+  };
+
+  meta = {
+    changelog = "https://github.com/kiwidude68/calibre_plugins/releases/tag/${pname}-${version}";
+    platforms = with lib.platforms; linux ++ darwin ++ windows;
+    license = lib.licenses.gpl3Only;
+  }
+  // meta;
+}

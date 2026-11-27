@@ -147,40 +147,50 @@ in
           # We use 'ExecStart' overrides to wrap the snapper command in a single session
           serviceConfig.ExecStart = lib.mkForce (
             pkgs.writeShellScript "snapper-pg-wrapper" ''
-              set -e
+              set -uo pipefail # note: no -e — we want pg_backup_stop to always run, see below
 
-              # 2. Add a 'Wait' check just in case
+              PG_BIN=${pgPkg}/bin
+              SNAPPER_HELPER=${pkgs.snapper}/lib/snapper/systemd-helper
+              PGCONFIG=vlpostgres    # your snapper config name for the postgres data dir
+              PGDATA_MOUNT=/var/lib/postgresql   # the mountpoint that config snapshots
+
+              # Add a 'Wait' check just in case
               # This prevents the "socket not found" error at boot
               until ${pgPkg}/bin/pg_isready -U postgres; do
                 echo "Waiting for PostgreSQL socket..."
                 sleep 1
               done
 
-              # 3. Create a FIFO (Named Pipe) to talk to a single psql session
-              pipe=$(mktemp -u)
-              mkfifo "$pipe"
+              label_file=$(mktemp)
+              spcmap_file=$(mktemp)
 
-              # 4. Start psql in the background, reading from the pipe
-              # Use 'tail -f' here as well to make this more robust
-              ${pkgs.coreutils}/bin/tail -f "$pipe" | ${pgPkg}/bin/psql -U postgres &
-              PSQL_PID=$!
+              "$PG_BIN/psql" -U postgres <<EOF
+              SELECT pg_backup_start('snapper-hourly');
+              \! $SNAPPER_HELPER --timeline
+              SELECT * FROM pg_backup_stop() \gset bkp_
+              \o $label_file
+              # `echo` does not work
+              \qecho :bkp_labelfile
+              \o
+              \o $spcmap_file
+              \qecho :bkp_spcmapfile
+              \o
+              EOF
 
-              # Open the pipe for writing
-              # exec 3> "$pipe"
+              # Find the snapshot that was just created for the postgres config
+              snap_num=$(${pkgs.snapper}/bin/snapper -c "$PGCONFIG" list --columns number | tail -n1 | tr -d ' ')
+              snap_path="''${PGDATA_MOUNT}/.snapshots/''${snap_num}/snapshot"
 
-              # 3. Start Backup
-              echo "SELECT pg_backup_start('snapper-hourly');" > "$pipe" 
+              if [ -d "$snap_path" ]; then
+              ${pkgs.btrfs-progs}/bin/btrfs property set -f "$snap_path" ro false
+              install -m 0600 -o postgres -g postgres "$label_file" "$snap_path/backup_label"
+              install -m 0600 -o postgres -g postgres "$spcmap_file" "$snap_path/tablespace_map"
+              ${pkgs.btrfs-progs}/bin/btrfs property set -f "$snap_path" ro true
+              else
+              echo "WARNING: could not find snapshot path $snap_path — backup_label not written" >&2
+              fi
 
-              # 4. Run Snapper
-              ${pkgs.snapper}/lib/snapper/systemd-helper --timeline
-                
-              # 5. Stop Backup
-              echo "SELECT pg_backup_stop();" > "$pipe"
-
-              # Clean up: Close pipe and wait for psql to exit
-              # exec 3>&-
-              wait $PSQL_PID
-              rm "$pipe"
+              rm -f "$label_file" "$spcmap_file"
             ''
           );
         };

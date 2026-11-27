@@ -134,7 +134,6 @@
       apps = {
         brave.enable = true;
         calibre.enable = true;
-        libreoffice.enable = true;
         qbittorrent.enable = true;
       };
       desktops = {
@@ -165,13 +164,20 @@
     };
   };
 
+  # includes system settings (located in system directory)
+  mettavi = {
+    apps = {
+      libreoffice.enable = false;
+    };
+  };
+
   sops.secrets."users/${username}/jellyfin_admin-lady" =
-    lib.mkIf config.mettavi.system.services.jellar.enable
+    lib.mkIf config.mettavi.system.services.jellarr.enable
       {
         sopsFile = "${secrets_path}/secrets/hosts/lady.yaml";
       };
 
-  # this config is disabling the trackpad for some reason, so disabling
+  # commented out because this config is disabling the trackpad for some reason
   # services.kanata.keyboards."home-keys".extraDefCfg = ''
   #   linux-dev-names-include (
   #     "Apple Inc. Apple Internal Keyboard / Trackpad"

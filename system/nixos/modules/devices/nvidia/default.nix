@@ -77,8 +77,11 @@ in
 
     environment.variables = {
       # tell the VA-API library to load the NVIDIA driver
-      LIBVA_DRIVER_NAME = "nvidia";
+      # NB: Disable this option to prevent forcing the nvidia GPU by default
+      # which caused problems in mpv
+      # LIBVA_DRIVER_NAME = "nvidia";
       # Select the "direct" nvidia backend for VA-API
+      # NB: This is only used if LIBVA_DRIVER_NAME = nividia
       NVD_BACKEND = "direct";
     };
     ######################################################################
@@ -132,18 +135,20 @@ in
       videoAcceleration = true; # default = true
     };
 
-    # build packages with CUDA support by default while building nixpkgs packages
+    # build nixpkgs packages with CUDA support by default
     # WARNING: enabling this option caused the IR emitter to fail when using howdy authentication via the GUI
     # Workaround: enable for individual packages instead
     # nixpkgs.config.cudaSupport = true;
 
     # enable the CUDA binary cache (eg. prefetch packages like ollama which require CUDA to prevent re-compiling from source)
     nix.settings = {
-      substituters = [
+      extra-substituters = [
         "https://cache.nixos-cuda.org"
+        "https://cache.flox.dev"
       ];
-      trusted-public-keys = [
+      extra-trusted-public-keys = [
         "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M="
+        "flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs="
       ];
     };
   };

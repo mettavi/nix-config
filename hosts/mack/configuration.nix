@@ -35,9 +35,6 @@
 
   # SYSTEM MODULES
   mettavi = {
-    profiles = {
-      dailydriver.enable = true;
-    };
     system = {
       # enable system users
       userConfig = {

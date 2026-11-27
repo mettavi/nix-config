@@ -1,5 +1,6 @@
 { pkgs, ... }:
 {
-  npmGlobals = (pkgs.callPackage ./npm_globals { });
-  zotero-addons = (pkgs.callPackage ./zotero-addons { });
+  # npmGlobals = (pkgs.callPackage ./npm_globals { });
+  calibrePlugins = (pkgs.callPackage ./calibre-plugins { });
+  zoteroAddons = (pkgs.callPackage ./zotero-addons { });
 }

@@ -7,7 +7,7 @@
 }:
 with lib;
 let
-  platform = if pkgs.stdenv.isDarwin then "darwin" else "nixos";
+  platform = if pkgs.stdenv.hostPlatform.isDarwin then "darwin" else "nixos";
   # Get all users defined for your nix systems
   cfg = config.mettavi.system;
 in
@@ -39,19 +39,20 @@ in
     ) cfg.userConfig;
 
     users.users =
-      if pkgs.stdenv.isLinux then
+      if pkgs.stdenv.hostPlatform.isLinux then
         # nixos config
         mapAttrs (
           name: usrCfg:
           mkIf usrCfg.enable {
             description = usrCfg.description;
-            home = "/home/${usrCfg.username}";
-            isNormalUser = usrCfg.isNormalUser;
+            extraGroups = usrCfg.extraGroups;
             # this is required to enable password login
             # (create hash with "mkpasswd -m sha-512", or "mkpasswd" to use the stronger default "yes" encryption)
             hashedPasswordFile = usrCfg.passwordHashFile;
-            extraGroups = usrCfg.extraGroups;
+            home = "/home/${usrCfg.username}";
+            isNormalUser = usrCfg.isNormalUser;
             shell = pkgs.${usrCfg.shell};
+            uid = usrCfg.userId;
           }
         ) cfg.userConfig
       else
@@ -76,13 +77,14 @@ in
             ../../../../../home/shared/sops-home.nix
             ../../../../../home/shared/modules
             ../../../../../home/${platform}
+            # see color demos at https://github.com/catppuccin/catppuccin
             inputs.catppuccin.homeModules.catppuccin
           ];
           home = {
             # username and homeDirectory are set automatically when using home-manager as a system module
             # username = "${usrCfg.username}";
             # homeDirectory =
-            #   if pkgs.stdenv.isDarwin then "/Users/${usrCfg.username}" else "/home/${usrCfg.username}";
+            #   if pkgs.stdenv.hostPlatform.isDarwin then "/Users/${usrCfg.username}" else "/home/${usrCfg.username}";
             # make programs use XDG directories whenever supported
             preferXdgDirectories = true;
           };

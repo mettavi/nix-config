@@ -1,0 +1,34 @@
+# yamllint disable-file
+name: nix-update-packages
+on:
+  schedule:
+    - cron: "0 4 * * 1" # weekly, Monday 04:00 UTC
+  workflow_dispatch: {}
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: cachix/install-nix-action@v31
+        with:
+          nix_path: nixpkgs=channel:nixos-unstable
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - name: Run update script
+        # -k (--keep-going): Do not stop after first failure
+        # -s (--skip-prompt): Do not wait for confirmation before running 
+        run: |
+          home/shared/dots/update/update.py -a linpkgs -k -s
+          home/shared/dots/update/update.py -a xpkgs -k -s
+        continue-on-error: true
+      - name: Open PR if anything changed
+        uses: peter-evans/create-pull-request@v8.1.3
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+          commit-message: "chore(pkgs): automated package version updates"
+          branch: automated/nix-update-packages
+          title: "Automated: local package updates"
+          body: "Opened automatically by nix-update-packages workflow. Review diffs before merging — hashes were refetched by nix-update.nix."

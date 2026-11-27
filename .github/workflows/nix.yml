@@ -1,111 +1,111 @@
+# yamllint disable-file
 name: "nix"
 on:
+  workflow_dispatch: # allows manual triggering
   pull_request:
     branches: [main]
   push:
     branches: [main]
-
 jobs:
-  # NB: this command does not recognise nix-darwin "warning: unknown flake output 'darwinPackages'"
-  # check:
-  #   name: "nix flake check"
-  #   runs-on: macos-13
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: cachix/install-nix-action@v30
-  #       with:
-  #         extra_nix_config: |
-  #           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-  #     - uses: DeterminateSystems/magic-nix-cache-action@v8
-  #       with:
-  #         diagnostic-endpoint: ""
-  #     - uses: cachix/cachix-action@v15
-  #       with:
-  #         name: mettavi
-  #         # If you chose API tokens for write access OR if you have a private cache
-  #         authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-  #     - name: "nix flake check"
-  #       run: |
-  #         cd ./nix-darwin
-  #         nix flake check -Lvv
-  build:
-    name: "nix build"
-    runs-on: macos-13
+  # 1. Gate job to check if this commit/content was already built
+  pre_job:
+    runs-on: ubuntu-latest
+    outputs:
+      should_skip: ${{ steps.skip_check.outputs.should_skip }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v30
+      - id: skip_check
+        uses: fkirc/skip-duplicate-actions@v5
+        with:
+          concurrent_skipping: 'same_content_newer'
+          skip_after_successful_duplicate: true
+  # 2. Flake check job
+  check:
+    needs: pre_job
+    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
+    name: "nix flake check"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.10.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Add known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - uses: cachix/install-nix-action@v31
         with:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-      - uses: DeterminateSystems/magic-nix-cache-action@v8
+      - uses: DeterminateSystems/magic-nix-cache-action@v15
         with:
           diagnostic-endpoint: ""
-      - uses: cachix/cachix-action@v15
+      - uses: cachix/cachix-action@v17
         with:
           name: mettavi
-          # If you chose API tokens for write access OR if you have a private cache
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-      - name: "nix build"
+      - name: "Check flake health"
+        run: nix flake check
+  # 3. Host build matrix job
+  build:
+    needs: pre_job
+    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
+    name: "build (${{ matrix.host }})"
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      NIX_CONFIG: |
+        extra-substituters = https://cache.lantian.pub/lantian https://nix-community.cachix.org https://cache.nixos-cuda.org https://cache.flox.dev
+        extra-trusted-public-keys = lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ= nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M= flox-cache-public-1:7F4OyH7ZCnFhcze3fJdfyXYLQw/aV7GEed86nQ7IsOs=
+      SKIP_CALIBRE_TESTS: "1"
+    strategy:
+      fail-fast: false
+      max-parallel: 1 # Build one host at a time
+      matrix:
+        # Replace these with your actual NixOS hostname attributes from flake.nix
+        host: [oona, remus, blue]
+    steps:
+      - uses: actions/checkout@v7
+      - name: Free up disk space between builds
         run: |
-          cd ./nix-darwin
-          # nix-fast-build --cachix-cache mettavi -- --skip-cached --no-nom --flake ".#checks.$(nix eval --raw --impure --expr builtins.currentSystem)"
-          nix build -Lvvv --no-update-lock-file --show-trace --print-build-logs .#darwinConfigurations."MVs-MBP".system
-  # nix-develop:
-  #   name: "nix develop"
-  #   runs-on: macos-13
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: DeterminateSystems/magic-nix-cache-action@v8
-  #       with:
-  #         diagnostic-endpoint: ""
-  #     - uses: cachix/install-nix-action@v30
-  #       with:
-  #         extra_nix_config: |
-  #           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-  #     - uses: cachix/cachix-action@v15
-  #       with:
-  #         name: mettavi
-  #         # If you chose API tokens for write access OR if you have a private cache
-  #         authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-  #     - name: "nix develop"
-  #       run: |
-  #         cd ./nix-darwin
-  #         nix develop -Lvvv
-  # format:
-  #   name: "treefmt"
-  #   runs-on: macos-13
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: cachix/install-nix-action@v30
-  #       with:
-  #         extra_nix_config: |
-  #           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-  #     - uses: DeterminateSystems/magic-nix-cache-action@v8
-  #       with:
-  #         diagnostic-endpoint: ""
-  #     - uses: cachix/cachix-action@v15
-  #       with:
-  #         name: mettavi
-  #         # If you chose API tokens for write access OR if you have a private cache
-  #         authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-  #     - name: "nix shell treefmt"
-  #       run: nix develop .#fmtShell --command treefmt --fail-on-change
-  # actionlint:
-  #   name: "actionlint"
-  #   runs-on: macos-13
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: cachix/install-nix-action@v30
-  #       with:
-  #         extra_nix_config: |
-  #           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-  #     - uses: DeterminateSystems/magic-nix-cache-action@v8
-  #       with:
-  #         diagnostic-endpoint: ""
-  #     - uses: cachix/cachix-action@v15
-  #       with:
-  #         name: mettavi
-  #         # If you chose API tokens for write access OR if you have a private cache
-  #         authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-  #     - name: "nix shell actionlint"
-  #       run: nix develop .#actionlintShell --command actionlint
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/hostedtoolcache
+          sudo rm -rf /usr/local/share/boost
+          df -h
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.10.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Add known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - uses: cachix/install-nix-action@v31
+        with:
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+      - uses: DeterminateSystems/magic-nix-cache-action@v15
+        with:
+          diagnostic-endpoint: ""
+      - uses: cachix/cachix-action@v17
+        with:
+          name: mettavi
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - name: Guard against heavy source builds
+        run: |
+          plan=$(nix build --dry-run --no-update-lock-file \
+            .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel 2>&1)
+          heavy=$(echo "$plan" | sed -n '/will be built/,/will be fetched/p' \
+            | grep -E '/nix/store/[a-z0-9]{32}-(electron-unwrapped|vtk|opencv|ollama|linux-cachyos-latest)-[0-9.]+\.drv$' || true)
+          if [ -n "$heavy" ]; then
+            echo "$heavy"
+            echo "::error::A heavy derivation would be built from source. Build it locally and cachix push it."
+            exit 1
+          fi
+      - name: "Build NixOS System"
+        run: |
+          nix build -L --no-update-lock-file .#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel
+          nix-collect-garbage -d

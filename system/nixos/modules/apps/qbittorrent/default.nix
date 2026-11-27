@@ -16,6 +16,7 @@ rec {
     isService = mkEnableOption "Use the qbittorrent web GUI with a systemd service"; # use the desktop app by default (no service)
   };
 
+  # see the wiki at https://github.com/qbittorrent/qBittorrent/wiki
   config = mkIf cfg.enable {
     # select the desktop app (no service)
     home-manager.users.${username} =
@@ -43,6 +44,11 @@ rec {
           "application/x-bittorrent" = "org.qbittorrent.qBittorrent.desktop";
         };
       };
+
+    environment.systemPackages = mkIf (cfg.isService) [
+      pkgs.vuetorrent # WEBUI for qBittorrent made with Vuejs
+    ];
+
     # select the web GUI and systemd service (qBittorrent-nox - "no X server")
     services.qbittorrent = mkIf (cfg.isService) {
       enable = true;
@@ -51,30 +57,31 @@ rec {
       profileDir = "${config.users.users.${username}.home}/.config/qbittorrent"; # location of configuration files
       serverConfig = {
         LegalNotice.Accepted = true;
+        BitTorrent = {
+          Session = {
+            DefaultSavePath = "${config.users.users.${username}.home}/Downloads/qbittorrent/completed";
+            Port = "61131";
+            TempPathEnabled = true;
+            TempPath = "${config.users.users.${username}.home}/Downloads/qbittorrent/incomplete";
+            TorrentExportDirectory = "${config.users.users.${username}.home}/Downloads/qbittorrent/torrents";
+          };
+        };
         Preferences = {
           General = {
-            BitTorrent = {
-              Session = {
-                ClosetoTrayNotified = true;
-                DefaultSavePath = "${config.users.users.${username}.home}/Downloads/qbittorrent/completed";
-                PreventFromSuspendWhenDownloading = true;
-                TempPathEnabled = true;
-                TempPath = "${config.users.users.${username}.home}/Downloads/qbittorrent/incomplete";
-                TorrentExportDirectory = "${config.users.users.${username}.home}/Downloads/qbittorrent/torrents";
-              };
-              WebUI = {
-                AlternativeUIEnabled = true;
-                RootFolder = "${pkgs.vuetorrent}/share/vuetorrent";
-              };
-            };
+            ClosetoTrayNotified = true;
+            CustomUIThemePath = "${
+              config.users.users.${username}.home
+            }/${nix_repo}/system/nixos/modules/apps/qbittorrent/dracula.qbtheme";
+            PreventFromSuspendWhenDownloading = true;
+            UseCustomUITheme = true;
           };
-          torrentingPort = null; # use a random outgoing port
-          webuiPort = 8090;
+          WebUI = {
+            AlternativeUIEnabled = true;
+            Port = "8090";
+            RootFolder = "${pkgs.vuetorrent}/share/vuetorrent";
+          };
         };
       };
     };
-    environment.systemPackages = mkIf (cfg.isService) [
-      pkgs.vuetorrent # WEBUI for qBittorrent made with Vuejs
-    ];
   };
 }

@@ -5,15 +5,16 @@
 }:
 let
   pname = "tipitaka_pali_reader";
-  version = "2.7.8+108";
+  version = "3.1.8+139";
   src = pkgs.fetchurl {
+    # Add an explicit name property to fetchurl to lock the name of the `src` fixed output derivation
+    # Along with `inherit src` below and `home/system.extraDependcies` in the module,
+    # this prevents the src being re-downloaded unnecessarily
+    name = "tipitaka_pali_reader-${version}.AppImage";
     url = "https://github.com/bksubhuti/tipitaka-pali-reader/releases/download/v${version}/tipitaka_pali_reader.AppImage";
-    hash = "sha256-R4j0iMIGmPY7+Gzd0MbMWX1MFyfVLE4cemy7Gh6mr58=";
+    hash = "sha256-6IZD5VFmeh6CL1bLYPEi1QYnqV2g0/FAfPDTqPvkTLg=";
   };
-  getIcon = builtins.fetchurl {
-    url = "file:///home/timotheos/.nix-config/system/nixos/pkgs/tipitaka-reader/logo-128.png";
-    sha256 = "sha256:0hyk3nw70nyx0avkhxq8kxv1y24vmp29mq2bgpryxaxkz4fsr599";
-  };
+  getIcon = ./logo-128.png;
 
   appimageContents = pkgs.appimageTools.extract { inherit pname version src; };
 in
@@ -49,5 +50,14 @@ pkgs.appimageTools.wrapType2 {
     platforms = [ "x86_64-linux" ];
   };
 
-  passthru.updateScript = nix-update-script { };
+  passthru = {
+    inherit src;
+    updateScript = nix-update-script {
+      extraArgs = [
+        "--file"
+        ../../../../update.nix
+        "--version-regex=^v(\\d+\\.\\d+\\.\\d+(?:\\+\\d+)?)$"
+      ];
+    };
+  };
 }

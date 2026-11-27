@@ -17,11 +17,6 @@ let
   # bfg-repo-cleaner_zulu = pkgs.bfg-repo-cleaner.override { jre = pkgs.zulu; };
 in
 {
-
-  imports = [
-    ./vim.nix
-  ];
-
   fonts.packages = with pkgs; [
     nerd-fonts.meslo-lg
   ];
@@ -60,11 +55,11 @@ in
     # poppler
     # python-launcher
     ruby
-    rustc
     shellcheck
     sops # Simple and flexible tool for managing secrets
     ssh-to-age # convert ssh keys in ed25519 format to age keys
     # texinfo # to read info files
+    tcpdump # network sniffer
     tldr
     tree
     wget

@@ -1,28 +1,40 @@
+# yamllint disable-file
+# Use SSH for git operations, and an HTTPS token for API calls (eg. PRs)
 name: update-flake-lock
 on:
   workflow_dispatch: # allows manual triggering
   schedule:
     - cron: '0 0 * * 0' # runs weekly on Sunday at 00:00
-
+permissions:
+  contents: write
+  pull-requests: write
 jobs:
   lockfile:
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     environment: update
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
+        with:
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-known-hosts: github.com
+          ssh-strict: true
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.10.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Add known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
       - name: Install Nix
-        uses: cachix/install-nix-action@v30
-        with:
-          extra_nix_config: |
-            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
+        uses: DeterminateSystems/nix-installer-action@v23
       - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@v24
+        uses: DeterminateSystems/update-flake-lock@v29
         with:
-          path-to-flake-dir: 'nix-darwin/'
-          token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          path-to-flake-dir: '.'
+          token: ${{ secrets.PAT_TOKEN }}
           pr-labels: |
             dependencies
             automated
             nix
-

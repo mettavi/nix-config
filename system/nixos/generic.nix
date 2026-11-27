@@ -32,10 +32,12 @@
     extraOptions = # bash
       ''
         warn-dirty = false
-        # import this file into nix.conf (set "access-tokens" key to my GitHub token 
-        # to authenticate with github and get a higher API threshold for rate-limiting)
+        # import this file into nix.conf (set "access-tokens" keys for nix operations,
+        # such as my GitHub token to authenticate with github and get a higher API threshold for rate-limiting)
         # see https://github.com/NixOS/nix/issues/6536 for more details
-        !include ${config.home-manager.users.${username}.sops.secrets."users/${username}/github_token".path}
+        !include ${
+          config.home-manager.users.${username}.sops.secrets."users/${username}/nixAccessTokens".path
+        }
       '';
     # enable automatic garbage collection and store optimisation
     gc = {
@@ -44,13 +46,6 @@
       options = "--delete-older-than 30d"; # Delete generations older than 30 days
       persistent = true;
     };
-    # for traditional nix commands like nix-shell, this sets <nixpkgs> AND points it to the local nix store
-    # NB: this value must be set explicitly because nix.channel = false (which will default nixPath to null)
-    nixPath = options.nix.nixPath.default ++ [
-      "nixpkgs=${inputs.nixpkgs}"
-      "nixpkgs-overlays=${config.users.users.${username}.home}/${nix_repo}/system/overlays/shared"
-      "home-manager=${inputs.home-manager}"
-    ];
     optimise = {
       automatic = true;
       dates = "02:15";
@@ -67,7 +62,7 @@
         "https://cachix.cachix.org"
         "https://mettavi.cachix.org"
         # for nix-cachyos-kernel flake input
-        "https://attic.xuyh0120.win/lantian"
+        "https://cache.lantian.pub/lantian"
       ]
       ++ lib.optionals config.home-manager.users.${username}.mettavi.shell.yazi.enable [
         "https://yazi.cachix.org"
@@ -77,14 +72,23 @@
         "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "cachix.cachix.org-1:eWNHQldwUO7G2VkjpnjDbWwy4KQ/HNxht7H4SSoMckM="
         "mettavi.cachix.org-1:rYvLGZOMT4z4hK7u5pzrbt8svJ/2JcUA/PTa1bQx4FU="
-        "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
+        "lantian:WVGO7vsRMSEN+h7Lp7kv6SAmrkEXgUGbbXm7jMDjBuQ="
       ]
       ++ lib.optionals config.home-manager.users.${username}.mettavi.shell.yazi.enable [
         "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
       ];
+      # for traditional nix commands like nix-shell, this sets <nixpkgs> AND points it to the local nix store
+      # NB: this value must be set explicitly because nix.channel = false (which will default nixPath to null)
+      nix-path = (options.nix.nixPath.default or [ ]) ++ [
+        "nixpkgs=${inputs.nixpkgs}"
+        "nixpkgs-overlays=${config.users.users.${username}.home}/${nix_repo}/system/overlays/shared"
+        "home-manager=${inputs.home-manager}"
+      ];
+
       trusted-users = [
-        "@staff"
         "root"
+        "@wheel"
+        "${username}"
       ];
     };
   };

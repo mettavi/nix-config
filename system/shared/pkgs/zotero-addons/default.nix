@@ -1,4 +1,8 @@
-{ lib, pkgs, ... }:
+{
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
 let
   inherit (pkgs) lib;
@@ -13,12 +17,18 @@ let
       url,
       hash,
       meta,
+      passthru ? { },
       ...
     }:
     stdenv.mkDerivation {
       name = "${pname}-${version}";
 
-      inherit meta;
+      inherit
+        pname
+        version
+        meta
+        passthru
+        ;
 
       src = fetchurl { inherit url hash; };
 
@@ -34,16 +44,27 @@ let
   );
 in
 {
+  # look inside nested attributes like xpgs.zoteroAddons.*
+  recurseForDerivations = true;
+
   zotero-reading-list = buildZoteroXpiAddon rec {
     pname = "zotero-reading-list";
-    version = "1.5.18";
+    version = "1.7.3";
     addonId = "reading-list@hotmail.com";
 
     url = "https://github.com/Dominic-DallOsto/zotero-reading-list/releases/download/v${version}/zotero-reading-list.xpi";
-    hash = "sha256-oq2kjm8MBE28R4kTWnHMKYGzLMsuLvze+tzhGVv/Wzs=";
+    hash = "sha256-EHlk0FKEV/pTgIXe8eH037U36Sv+fmkVYCPUvQvPBOM=";
+
+    passthru.updateScript = pkgs.nix-update-script {
+      extraArgs = [
+        "--file"
+        ../../../../update.nix
+        "--version-regex=v(.*)"
+      ];
+    };
 
     meta = with lib; {
-      homepage = "https://github.com/retorquere/zotero-open-pdf";
+      homepage = "https://github.com/Dominic-DallOsto/zotero-reading-list";
       license = [ licenses.gpl3 ];
       platforms = platforms.all;
     };
