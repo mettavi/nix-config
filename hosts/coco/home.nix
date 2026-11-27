@@ -1,4 +1,7 @@
-{ pkgs, inputs, ... }:
+{ config, lib, pkgs, inputs, ... }:
+let
+  runtimeDir = "${config.home.homeDirectory}/.local/state/run";
+in
 {
   _module.args.sops_username = "timotheos";
   imports = [
@@ -10,6 +13,24 @@
         ../../home/shared/modules/shell/git
     # ../../home/shared/modules/shell/nvim-wrap
   ];
+
+  # Ensure XDG_RUNTIME_DIR is exported in interactive shells on Nix-on-Droid
+  home.sessionVariables = {
+    XDG_RUNTIME_DIR = runtimeDir;
+  };
+
+  # Automatically decrypt and link sops-nix secrets during Home Manager activation
+  # (since Nix-on-Droid does not run a systemd --user daemon)
+  home.activation.installSopsSecrets = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "${runtimeDir}"
+    chmod 700 "${runtimeDir}"
+    if [ -f "${config.xdg.configHome}/systemd/user/sops-nix.service" ]; then
+      exec_cmd=$(sed -n 's/^ExecStart=//p' "${config.xdg.configHome}/systemd/user/sops-nix.service")
+      if [ -n "$exec_cmd" ]; then
+        XDG_RUNTIME_DIR="${runtimeDir}" $DRY_RUN_CMD $exec_cmd
+      fi
+    fi
+  '';
 
   mettavi.shell.git.enable = true;
 
