@@ -1,10 +1,9 @@
 {
   config,
-  sops_username,
   ...
 }:
 let
-  username = sops_username;
+  username = config._module.args.sops_username or config.home.username;
 in
 {
   sops = {

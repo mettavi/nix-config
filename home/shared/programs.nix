@@ -6,11 +6,10 @@
   options,
   osConfig ? null,
   pkgs,
-  sops_username ? config.home.username,
   ...
 }:
 let
-  username = sops_username;
+  username = config._module.args.sops_username or config.home.username;
   # Safely fall back when osConfig is null (Nix-on-Droid / standalone HM) or on Darwin
   releaseStr =
     if osConfig != null && (osConfig ? system.nixos.release) then
