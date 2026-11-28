@@ -67,9 +67,7 @@ in
       name = "cachix-sops";
       runtimeInputs = [ pkgs.cachix ];
       text = ''
-        CACHIX_AUTH_TOKEN="$(< ${
-          config.sops.secrets."users/${username}/cachix_auth_token".path
-        })"
+        CACHIX_AUTH_TOKEN="$(< ${config.sops.secrets."users/${username}/cachix_auth_token".path})"
         export CACHIX_AUTH_TOKEN
         exec cachix "$@"
       '';
@@ -122,14 +120,20 @@ in
     ripgrep.enable = true;
 
     # Use programs.ssh.settings on HM >= 26.05
-    ssh = if options.programs.ssh ? settings then {
+    ssh = {
       enable = true;
       enableDefaultConfig = false;
-      settings = sshBlocks; 
-        } else {
-          enable = true;
+    }
+    // (
+      if options.programs.ssh ? settings then
+        {
+          settings = sshBlocks;
+        }
+      else
+        {
           matchBlocks = sshBlocks;
-      };
+        }
+    );
 
     # Terminal command correction, alternative to thefuck, written in Rust
     # default alias is "f"
