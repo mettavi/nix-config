@@ -17,7 +17,6 @@ let
     else
       lib.trivial.release;
       currentVersion = builtins.fromJSON releaseStr;
-  inherit (lib) optionals mkIf;
   useNewSsh = options.programs.ssh ? settings;
   # Shared SSH host blocks
   sshBlocks = {
