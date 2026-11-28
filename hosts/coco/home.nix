@@ -11,7 +11,7 @@ in
         ../../home/shared/sops-home.nix
        # ../../home/shared/modules
         ../../home/shared/modules/shell/git
-    # ../../home/shared/modules/shell/nvim-wrap
+        ../../home/shared/modules/shell/nvim-wrap
   ];
 
   # Ensure XDG_RUNTIME_DIR is exported in interactive shells on Nix-on-Droid
@@ -44,12 +44,12 @@ in
   };
 
   # Quick test if you don't import a shared Neovim module yet:
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-  };
+#  programs.neovim = {
+#    enable = true;
+#    defaultEditor = true;
+#    viAlias = true;
+#    vimAlias = true;
+#  };
 
   home.packages = with pkgs; [
     rclone
@@ -57,5 +57,5 @@ in
     fd
   ];
 
- # mettavi.shell.nvim-wrap.enable = true;
+ mettavi.shell.nvim-wrap.enable = true;
 }
